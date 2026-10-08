@@ -12,6 +12,9 @@ work; it is the owner's intent and every decision cites it.
 
 ## Rules
 
+- Work on `dev`. Never push to or merge into `main`; the owner merges releases by hand
+  (ADR-0004).
+
 - English for the site, docs and commits. The owner talks in Turkish, often by dictation:
   read through transcription errors and confirm names.
 - Conventional Commits, lower-case subject, header at most 100 chars. Use the commit trailers
