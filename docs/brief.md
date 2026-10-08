@@ -83,3 +83,33 @@ log design are to be explored.
 - Step by step, no deadline. Build the foundation and the workflow first; a roadmap is
   valuable at every stage.
 - The owner reviews on both phone and desktop.
+
+## 7. Amendments
+
+### 2026-10-08 (after the requirements research)
+
+- **Character:** more social and brand-led than CV-like; the link that sits on a LinkedIn
+  profile. Not a research site.
+- **Look:** direction D (ADR-0003), but dark: a black ground, possibly aura, photographs or
+  glass (none mandatory). More shaped, beautiful animation and effects than the D prototype.
+- **Structure:** a few tabs instead of everything stacked down one page.
+- **Projects:** each project gets a real view of its own (a pop-up or an in-page focused view),
+  not a small accordion, so a visitor can actually get to know it.
+- **Objects:** instead of the processor, high-quality, high-resolution 3D objects that are
+  more fun and still professional. An idea to explore: objects that appear as you move through
+  the site, mini-game style, each tied to what that part is about.
+- **Two kinds of work:** the AI-directed products are big productions and get the full
+  presentation. Hand-written work (CS50, open-source contributions) is smaller and gets its own,
+  lighter format, not the same concept. None exists yet.
+- **AI note:** framed as a two-track education. School and courses build the engineering
+  fundamentals by hand; projects built by directing AI build project discipline and product
+  skill. Both matter, and the owner does not stay away from AI.
+- **First log entries:** why I built this site; the two-track education; my university; the
+  projects I am working on.
+- **Language:** English only for now.
+- **Photos:** one or two casual but clean photographs, not a formal portrait.
+- **No CV** and no work-authorisation line for now.
+- **Name:** the owner leaves the choice to the research (full surname recommended for
+  findability); spelling to confirm.
+- **Address:** keep the repo name only if the root address works without renaming; otherwise
+  rename. No hurry.
