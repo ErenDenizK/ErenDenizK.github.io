@@ -96,7 +96,7 @@ button { font: inherit; color: inherit; }
 .label.hot, .label:hover { background: rgba(14,16,22,.55); border-color: var(--line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 .label.hot span { color: var(--ink-2); }
 .focused .label { visibility: hidden; }
-@media (min-width: 760px) { .focused .nav, .focused .hint { visibility: hidden; } }
+@media (min-width: 760px) { .focused .nav, .focused .hint { visibility: hidden; } .focused .proto-tag { right: auto; left: 14px; } }
 
 /* still twin: drawn in CSS, shown until the first WebGL frame and whenever WebGL is absent */
 .still { position: absolute; inset: 0; z-index: 0; overflow: hidden;
@@ -129,7 +129,7 @@ button { font: inherit; color: inherit; }
   border: 1px solid rgba(255,255,255,.45); border-radius: 3px; background: radial-gradient(closest-side, var(--c), transparent); }
 .st[data-k="about"] .obj { width: 60px; height: 82px; border-width: 5px; border-color: rgba(255,255,255,.28); }
 .st b { font-size: 14.5px; font-weight: 600; }
-.st span { color: var(--ink-3); font: 400 11.5px/1.2 var(--mono); margin-top: -10px; }
+.st .kd { color: var(--ink-3); font: 400 11.5px/1.2 var(--mono); margin-top: -10px; }
 .st.cur b { text-decoration: underline; text-underline-offset: 5px; text-decoration-color: var(--c); }
 
 /* phone station card */
@@ -232,7 +232,7 @@ footer { padding: 0 32px 64px; max-width: 1180px; margin: 0 auto; color: var(--i
   .still .bench { top: 56%; left: 0; right: 0; }
   .st { gap: 10px; }
   .st b { font-size: 11.5px; }
-  .st span { display: none; }
+  .st .kd { display: none; }
   .st[data-k="recto"] .obj { width: 40px; height: 54px; }
   .st[data-k="prep"] .obj { width: 50px; height: 9px; margin-top: 30px; }
   .st[data-k="eat"] .obj { width: 30px; height: 58px; border-radius: 8px; }
@@ -398,7 +398,7 @@ const cards = document.getElementById('cards');
 DATA.forEach((d, i) => {
   nav.append(h('button', { 'data-id': d.id, onclick: (e) => open(d.id, e.currentTarget) }, dot(d.c), d.name));
   stillRow.append(h('button', { class: 'st', 'data-k': d.id, style: `--c:${d.c}`, onclick: (e) => open(d.id, e.currentTarget) },
-    h('span', { class: 'glow' }), h('span', { class: 'obj' }), h('b', {}, d.name), h('span', {}, d.kind)));
+    h('span', { class: 'glow' }), h('span', { class: 'obj' }), h('b', {}, d.name), h('span', { class: 'kd' }, d.kind)));
   const card = h('article', { class: 'card', style: `--c:${d.c}` },
     h('h3', {}, dot(d.c), d.name), h('div', { class: 'k mono' }, d.kind),
     h('p', {}, d.teaser, d.teaserPlaceholder ? [' ', sample('placeholder description')] : null),
@@ -943,7 +943,10 @@ async function initGL() {
   else if (phone) lab.station(station);
 }
 
-initGL().catch((err) => { root.classList.add('no-gl'); console.info('Glass Lab: still version (' + err.message + ')'); });
+initGL().catch((err) => {
+  root.classList.add('no-gl');
+  const hint = document.getElementById('hint');
+  hint.replaceChildren('Still version · choose an object · ', h('a', { href: '#index' }, 'or read the list')); console.info('Glass Lab: still version (' + err.message + ')'); });
 
 const fromHash = location.hash.slice(1);
 if (byId[fromHash]) open(fromHash);
