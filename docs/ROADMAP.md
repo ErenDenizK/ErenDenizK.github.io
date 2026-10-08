@@ -13,8 +13,9 @@ and a desktop.
 
 ## Level 1: concept prototypes
 
-- [ ] Three to four rough, clickable prototypes of the concept directions, each on desktop
-      and phone, published for the owner to try
+- [x] Four rough, clickable prototypes (`prototypes/a-die`, `b-glass-lab`, `c-canvas`,
+      `d-quiet`), published privately for the owner to try (2026-10-08)
+- [ ] Owner's verdict on the prototypes
 - [ ] Owner sends references they like; agent collects a mood board
 - [ ] Choose a direction (ADR-0003) and a visual language (tokens, type, colour, motion)
 
