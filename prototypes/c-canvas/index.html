@@ -1,0 +1,1077 @@
+<title>Workbench Canvas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  color-scheme: dark;
+  --bg: #0a0b10;
+  --ink: #eef0f6;
+  --ink-2: #b9bece;
+  --ink-3: #8a90a2;
+  --glass: rgba(20, 22, 31, 0.56);
+  --glass-strong: rgba(16, 18, 26, 0.82);
+  --glass-hud: rgba(16, 18, 26, 0.86);
+  --edge: rgba(255, 255, 255, 0.12);
+  --edge-2: rgba(255, 255, 255, 0.24);
+  --hairline: rgba(255, 255, 255, 0.07);
+  --recto: #bbed26;
+  --sakura: #efb1cb;
+  --sakura-deep: #922e55;
+  --iris: #9a9cff;
+  --lagoon: #5cc9cc;
+  --eat: #ff9d5c;
+  --about: #c39bff;
+  --lab: #40d9b8;
+  --log: #7ea6ff;
+  --start: #a9b4ff;
+  --focus: #ffffff;
+  --serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --r-card: 22px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); }
+body { font: 400 16px/1.55 var(--sans); -webkit-font-smoothing: antialiased; overflow: hidden; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 8px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+#aura { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; }
+#app { position: fixed; inset: 0; z-index: 1; }
+
+/* ---------- HUD ---------- */
+.hud { position: fixed; z-index: 20; }
+.pill-group {
+  display: flex; align-items: center; gap: 2px; padding: 4px;
+  background: var(--glass-hud); border: 1px solid var(--edge); border-radius: 999px;
+  backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+.topbar { top: 14px; left: 16px; right: 16px; display: flex; justify-content: space-between; gap: 12px; pointer-events: none; }
+.topbar > * { pointer-events: auto; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 4px 14px 4px 4px; text-decoration: none; }
+.mark {
+  width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  font: 500 12px/1 var(--mono); color: #0a0b10;
+  background: conic-gradient(from 200deg, var(--recto), var(--sakura), var(--iris), var(--lagoon), var(--recto));
+}
+.brand b { font-weight: 600; font-size: 14px; letter-spacing: .01em; }
+.left-group { display: flex; gap: 8px; align-items: center; min-width: 0; }
+.nav button, .tools button {
+  border: 0; background: transparent; padding: 7px 13px; border-radius: 999px; cursor: pointer;
+  font-size: 13.5px; font-weight: 500; color: var(--ink-2); display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+}
+.nav button:hover, .tools button:hover { color: var(--ink); background: rgba(255,255,255,.07); }
+.nav button[aria-current="true"] { color: var(--ink); background: rgba(255,255,255,.1); }
+.nav .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--hue); box-shadow: 0 0 10px var(--hue); }
+.nav kbd { font: 400 10.5px var(--mono); color: var(--ink-3); }
+.tools .zoom-val { font: 400 12px var(--mono); color: var(--ink-3); min-width: 44px; text-align: center; }
+.tools .sq { width: 32px; height: 32px; padding: 0; justify-content: center; font-size: 17px; }
+.tools .list-toggle[aria-pressed="true"] { background: rgba(255,255,255,.12); color: var(--ink); }
+
+.hint {
+  bottom: 14px; left: 16px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  font: 400 11.5px/1 var(--mono); color: var(--ink-3);
+}
+.hint span.k { padding: 7px 10px; border-radius: 999px; background: var(--glass-hud); border: 1px solid var(--edge); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.proto-tag {
+  font: 500 11px/1 var(--mono); letter-spacing: .04em; color: #0a0b10; background: rgba(238,240,246,.88);
+  padding: 7px 10px; border-radius: 999px;
+}
+
+.minimap {
+  right: 16px; bottom: 14px; padding: 10px; border-radius: 16px;
+  background: var(--glass-hud); border: 1px solid var(--edge);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+.minimap .mm-label { font: 400 10px/1 var(--mono); color: var(--ink-3); display: flex; justify-content: space-between; margin-bottom: 8px; }
+.mm-world { position: relative; cursor: pointer; touch-action: none; border-radius: 6px; background: rgba(255,255,255,.03); }
+.mm-zone { position: absolute; border-radius: 4px; background: color-mix(in srgb, var(--hue) 22%, transparent); border: 1px solid color-mix(in srgb, var(--hue) 55%, transparent); }
+.mm-zone span { position: absolute; left: 4px; top: 3px; font: 500 8.5px/1 var(--mono); color: var(--ink-2); white-space: nowrap; }
+.mm-view { position: absolute; border: 1.5px solid #fff; border-radius: 3px; box-shadow: 0 0 0 999px rgba(0,0,0,.18); pointer-events: none; }
+.mm-world { overflow: hidden; }
+
+/* ---------- Viewport & world (canvas mode) ---------- */
+#viewport { position: absolute; inset: 0; overflow: hidden; }
+.mode-canvas #viewport {
+  touch-action: none; cursor: grab;
+  background-image: radial-gradient(circle, rgba(255,255,255,var(--dot-a, .09)) 1px, transparent 1.6px);
+  background-size: var(--gs, 32px) var(--gs, 32px);
+  background-position: var(--gx, 0) var(--gy, 0);
+}
+.mode-canvas.dragging #viewport { cursor: grabbing; }
+.mode-canvas #world { position: absolute; left: 0; top: 0; width: 2560px; height: 2080px; transform-origin: 0 0; will-change: transform; user-select: none; -webkit-user-select: none; }
+.mode-canvas .zone { position: absolute; left: var(--x); top: var(--y); width: var(--w); min-height: var(--h); padding: 40px; border-radius: 40px; }
+.mode-canvas .zone:not(.zone-start) { border: 1px dashed rgba(255,255,255,.1); background: linear-gradient(180deg, rgba(255,255,255,.015), transparent 40%); }
+.mode-canvas .zone-projects .card.project, .mode-canvas .zone-projects .slot { position: absolute; left: var(--px); top: var(--py); width: var(--pw); }
+.mode-canvas .zone-projects .card.is-open { left: var(--ox, var(--px)); width: var(--ow, var(--pw)); }
+a, img, svg { -webkit-user-drag: none; }
+
+/* ---------- Zone heads ---------- */
+.zone-head { margin: 0 0 28px; max-width: 560px; }
+.zone-num { font: 500 12px/1 var(--mono); letter-spacing: .08em; color: var(--hue); display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+.zone-num::before { content: ''; width: 22px; height: 1px; background: var(--hue); }
+.zone-head h2 { font: 400 64px/1 var(--serif); margin: 12px 0 10px; letter-spacing: -.01em; }
+.zone-head p { margin: 0; color: var(--ink-2); font-size: 17px; }
+
+/* ---------- Glass card ---------- */
+.card {
+  position: relative; background: var(--glass); border: 1px solid var(--edge); border-radius: var(--r-card);
+  backdrop-filter: blur(22px) saturate(150%); -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 20px 50px rgba(0,0,0,.35);
+  padding: 26px;
+}
+.card::before { /* hue rim light along the top edge */
+  content: ''; position: absolute; left: 24px; right: 24px; top: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hue, #fff), transparent); opacity: .8;
+}
+.card:has(.toggle:focus-visible), .card.entry:focus-visible { outline: 2px solid var(--focus); outline-offset: 5px; border-radius: var(--r-card); }
+.card .toggle:focus-visible { outline: none; }
+
+.kicker { font: 400 11.5px/1.3 var(--mono); color: var(--ink-3); letter-spacing: .03em; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.kicker .live { color: var(--hue); display: inline-flex; align-items: center; gap: 6px; }
+.kicker .live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--hue); box-shadow: 0 0 8px var(--hue); }
+
+.tag {
+  font: 500 10px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2);
+  border: 1px dashed rgba(255,255,255,.35); padding: 4px 6px; border-radius: 6px; white-space: nowrap;
+}
+
+/* Projects */
+.project h3 { margin: 10px 0 6px; font: 400 44px/1.02 var(--serif); }
+.project h3 .toggle { all: unset; cursor: pointer; }
+.project .teaser { margin: 0; font-size: 18px; line-height: 1.45; color: var(--ink); max-width: 46ch; }
+.preview {
+  height: 160px; border-radius: 14px; margin: -8px -8px 20px; overflow: hidden; position: relative;
+  background:
+    radial-gradient(120% 140% at 15% 0%, color-mix(in srgb, var(--hue) 32%, transparent), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.25));
+  border: 1px solid var(--hairline);
+}
+.preview svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 9px 15px; border-radius: 999px; cursor: pointer;
+  font-size: 14px; font-weight: 500; text-decoration: none; border: 1px solid var(--edge-2); background: rgba(255,255,255,.05);
+}
+.btn:hover { background: rgba(255,255,255,.1); }
+.btn.primary { background: var(--hue); color: #0b0c10; border-color: transparent; box-shadow: 0 0 24px color-mix(in srgb, var(--hue) 45%, transparent); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn .arr { font-family: var(--mono); font-size: 12px; }
+
+.depth { display: flex; gap: 6px; align-items: center; margin-left: auto; font: 400 10.5px var(--mono); color: var(--ink-3); }
+.depth i { width: 18px; height: 3px; border-radius: 2px; background: rgba(255,255,255,.18); }
+.card[data-depth="0"] .depth i:nth-child(-n+1),
+.card[data-depth="1"] .depth i:nth-child(-n+2),
+.card[data-depth="2"] .depth i:nth-child(-n+3) { background: var(--hue); }
+
+.layer { display: none; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--hairline); }
+.card[data-depth="1"] .l1, .card[data-depth="2"] .l1, .card[data-depth="2"] .l2 { display: block; }
+.layer h4 { margin: 0 0 8px; font: 500 11.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--hue); }
+.layer p { margin: 0 0 10px; color: var(--ink-2); }
+.layer ul { margin: 0; padding-left: 18px; color: var(--ink-2); }
+.layer li { margin: 4px 0; }
+.layer li::marker { color: var(--hue); }
+.stats { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 4px; }
+.stat { padding: 8px 12px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid var(--hairline); }
+.stat b { font: 400 26px/1 var(--serif); display: block; }
+.stat span { font: 400 11px var(--mono); color: var(--ink-3); }
+.sheets { display: grid; gap: 12px; }
+.sheet { padding: 16px 18px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid var(--hairline); }
+.sheet:nth-child(2) { margin-left: 10px; }
+.sheet:nth-child(3) { margin-left: 20px; }
+.ph-box { border: 1px dashed rgba(255,255,255,.28); border-radius: 12px; padding: 10px 12px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+blockquote { margin: 0 0 10px; font: italic 400 22px/1.3 var(--serif); color: var(--ink); }
+.close { position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--edge-2); background: var(--glass-strong); cursor: pointer; display: none; place-items: center; font-size: 18px; line-height: 1; z-index: 3; }
+.card.is-open .close { display: grid; }
+
+.card.is-open {
+  z-index: 10; background: var(--glass-strong);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 40px 90px rgba(0,0,0,.55),
+    10px 12px 0 -2px color-mix(in srgb, var(--hue) 20%, rgba(20,22,31,.6)),
+    20px 24px 0 -5px color-mix(in srgb, var(--hue) 10%, rgba(20,22,31,.4));
+}
+.card[data-depth="1"].is-open { box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 40px 90px rgba(0,0,0,.55), 10px 12px 0 -2px color-mix(in srgb, var(--hue) 20%, rgba(20,22,31,.6)); }
+#world.has-open .card:not(.is-open), #world.has-open .slot { filter: saturate(.5) brightness(.6); }
+.card, .slot { transition: filter .3s var(--ease); }
+@keyframes rise { from { transform: scale(.975); } to { transform: none; } }
+.card.is-open { animation: rise .32s var(--ease); }
+
+.slot {
+  border: 1px dashed rgba(255,255,255,.22); border-radius: var(--r-card); padding: 22px; color: var(--ink-3);
+  min-height: 170px; display: flex; flex-direction: column; gap: 10px; justify-content: space-between;
+}
+.slot p { margin: 0; font-size: 14.5px; }
+
+/* Start */
+.hero { padding: 40px; }
+.hero h1 { font: 400 96px/.95 var(--serif); margin: 18px 0 22px; letter-spacing: -.015em; }
+.hero h1 em { font-style: italic; color: transparent; background: linear-gradient(100deg, var(--recto), var(--sakura) 55%, var(--iris)); -webkit-background-clip: text; background-clip: text; }
+.hero .lead { font-size: 20px; line-height: 1.45; margin: 0 0 12px; }
+.hero p { margin: 0 0 10px; color: var(--ink-2); font-size: 17px; }
+.badge { display: inline-flex; gap: 8px; align-items: center; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.06); border: 1px solid var(--edge); font-size: 13.5px; margin-top: 6px; }
+.badge b { font: 400 18px/1 var(--serif); color: var(--sakura); }
+
+/* About */
+.photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 18px 0; }
+.photo { aspect-ratio: 4/5; border-radius: 14px; border: 1px dashed rgba(255,255,255,.25); position: relative; overflow: hidden;
+  background: radial-gradient(80% 60% at 50% 30%, color-mix(in srgb, var(--hue) 30%, transparent), transparent 70%), rgba(255,255,255,.03); }
+.photo::after { content: ''; position: absolute; left: 50%; top: 38%; width: 34%; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%,-50%); background: rgba(255,255,255,.12); box-shadow: 0 60px 0 18px rgba(255,255,255,.08); }
+.photo .tag { position: absolute; left: 8px; bottom: 8px; z-index: 1; background: rgba(0,0,0,.4); }
+.about-card p { margin: 0 0 10px; color: var(--ink-2); font-size: 16.5px; }
+.about-card p.lead { color: var(--ink); font-size: 19px; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn.muted { border-style: dashed; color: var(--ink-3); cursor: default; }
+
+/* Lab */
+.lab-slots { display: grid; gap: 14px; }
+.lab-slots .slot { min-height: 150px; position: static; }
+.lab-slots .slot .n { font: 400 40px/1 var(--serif); color: color-mix(in srgb, var(--hue) 60%, var(--ink-3)); }
+
+/* Log */
+.log-legend { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; font: 400 11.5px var(--mono); color: var(--ink-3); }
+.log-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.log-legend i { display: inline-block; height: 8px; border-radius: 2px; background: var(--hue); opacity: .8; }
+.entry { padding: 18px 20px; }
+.entry h3 { margin: 8px 0 4px; font: 400 26px/1.1 var(--serif); }
+.entry p { margin: 0; color: var(--ink-2); font-size: 15px; }
+.entry.medium h3 { font-size: 30px; }
+.entry.long h3 { font-size: 34px; }
+.entry .bars { margin-top: 14px; display: grid; gap: 7px; }
+.entry .bars i { display: block; height: 7px; border-radius: 4px; background: rgba(255,255,255,.09); }
+.entry .bars i:last-child { width: 62%; }
+.entry .fig { height: 92px; border-radius: 12px; margin-top: 14px; border: 1px dashed rgba(255,255,255,.2); position: relative; overflow: hidden;
+  background: linear-gradient(90deg, rgba(126,166,255,.12), rgba(187,237,38,.10)); }
+.entry .fig span { position: absolute; left: 10px; bottom: 8px; }
+.entry .fig svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.len { color: var(--hue); }
+
+.timeline { display: none; }
+.mode-canvas .timeline { display: block; position: absolute; left: 0; right: 0; top: 360px; height: 0; }
+.mode-canvas .entry { position: absolute; left: calc(var(--x) - 24px); top: 360px; }
+.mode-canvas .entry.short { width: 270px; }
+.mode-canvas .entry.medium { width: 340px; }
+.mode-canvas .entry.long { width: 440px; }
+.mode-canvas .entry.above { transform: translateY(calc(-100% - 40px)); }
+.mode-canvas .entry.below { transform: translateY(40px); }
+.mode-canvas .entry::after { content: ''; position: absolute; left: 23px; width: 1px; height: 40px; background: linear-gradient(var(--hue), transparent); }
+.mode-canvas .entry.above::after { top: 100%; background: linear-gradient(var(--hue), rgba(255,255,255,.2)); }
+.mode-canvas .entry.below::after { bottom: 100%; background: linear-gradient(rgba(255,255,255,.2), var(--hue)); }
+.tl-past { position: absolute; left: 40px; top: -1px; height: 2px; width: calc(var(--now) - 40px); border-radius: 2px;
+  background: linear-gradient(90deg, rgba(126,166,255,.2), var(--log) 30%, var(--iris) 70%, var(--lagoon)); box-shadow: 0 0 18px rgba(126,166,255,.5); }
+.tl-future { position: absolute; left: var(--now); right: 40px; top: -1px; border-top: 2px dashed rgba(255,255,255,.18); }
+.tl-band { position: absolute; top: -26px; height: 0; }
+.tl-band span { position: absolute; left: 0; bottom: 6px; white-space: nowrap; font: 400 11.5px var(--mono); color: var(--ink-2); }
+.tl-band::before { content: ''; position: absolute; left: 0; right: 0; top: 20px; height: 12px; border-radius: 6px; background: linear-gradient(90deg, color-mix(in srgb, var(--recto) 30%, transparent), color-mix(in srgb, var(--sakura) 30%, transparent)); }
+.tick { position: absolute; top: 0; width: 1px; height: 10px; background: rgba(255,255,255,.3); }
+.tick span { position: absolute; top: 14px; left: -20px; width: 40px; text-align: center; font: 400 10.5px var(--mono); color: var(--ink-3); }
+.tl-dot { position: absolute; top: -5px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--bg); border: 2px solid var(--log); }
+.now { position: absolute; top: -22px; width: 2px; height: 44px; margin-left: -1px; background: #fff; box-shadow: 0 0 14px #fff; border-radius: 2px; }
+.now span { position: absolute; left: 8px; top: 2px; font: 500 10.5px var(--mono); color: #fff; letter-spacing: .06em; }
+.tl-next { position: absolute; top: -30px; font: 400 12px var(--mono); color: var(--ink-3); white-space: nowrap; }
+
+/* ---------- List mode (desktop alternative, and no-JS default) ---------- */
+#app:not(.mode-canvas):not(.mode-snap) #viewport { overflow-y: auto; }
+#app:not(.mode-canvas):not(.mode-snap) #world { max-width: 960px; margin: 0 auto; padding: 96px 16px 120px; display: grid; gap: 28px; }
+#app:not(.mode-canvas):not(.mode-snap) .zone { padding: 28px; border-radius: 32px; border: 1px dashed rgba(255,255,255,.1); }
+#app:not(.mode-canvas):not(.mode-snap) .zone-start { border: 0; padding: 0; }
+#app:not(.mode-canvas):not(.mode-snap) .proj-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+#app:not(.mode-canvas):not(.mode-snap) .proj-grid .is-open { grid-column: 1 / -1; }
+.mode-list .zone-head h2 { font-size: 52px; }
+.mode-list .tools .sq, .mode-list .tools .zoom-val, .mode-list .hint .k, .mode-list .nav kbd { display: none; }
+/* flow timeline for list + phone */
+#app:not(.mode-canvas) .log-list { display: grid; gap: 14px; padding-left: 22px; border-left: 2px solid color-mix(in srgb, var(--log) 50%, transparent); }
+#app:not(.mode-canvas) .entry::before { left: 24px; }
+#app:not(.mode-canvas) .entry::after { content: ''; position: absolute; left: -29px; top: 26px; width: 10px; height: 10px; border-radius: 50%; background: var(--bg); border: 2px solid var(--log); }
+
+/* ---------- Phone: snapping zones ---------- */
+.mode-snap .topbar { flex-direction: column; align-items: stretch; gap: 8px; top: 10px; left: 0; right: 0; padding: 0 16px; }
+.mode-snap .left-group { flex-direction: column; align-items: stretch; gap: 8px; }
+.mode-snap .brand { align-self: flex-start; }
+.mode-snap .nav { overflow-x: auto; scrollbar-width: none; justify-content: space-between; }
+.mode-snap .nav::-webkit-scrollbar { display: none; }
+.mode-snap .nav button { padding: 8px 10px; font-size: 13px; gap: 6px; }
+.mode-snap .nav kbd, .mode-snap .tools, .mode-snap .minimap, .mode-snap .hint .k, .mode-list .minimap { display: none; }
+.mode-snap .hint { left: auto; right: 12px; bottom: 10px; pointer-events: none; }
+.mode-snap .proto-tag { font-size: 10px; padding: 6px 8px; opacity: .9; }
+.mode-snap #world {
+  display: flex; height: 100%; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory;
+  scrollbar-width: none; overscroll-behavior-x: contain;
+}
+.mode-snap #world::-webkit-scrollbar { display: none; }
+.mode-snap .zone {
+  flex: 0 0 100%; height: 100%; overflow-y: auto; scroll-snap-align: start; scroll-snap-stop: always;
+  padding: 122px 16px 72px; overscroll-behavior-y: contain;
+}
+.mode-snap .zone-head { margin-bottom: 20px; }
+.mode-snap .zone-head h2 { font-size: 46px; margin: 10px 0 8px; }
+.mode-snap .zone-head p { font-size: 16px; }
+.mode-snap .proj-grid { display: grid; gap: 16px; }
+.mode-snap .card { padding: 20px; }
+.mode-snap .hero { padding: 26px 22px; }
+.mode-snap .hero h1 { font-size: 60px; margin: 14px 0 16px; }
+.mode-snap .hero .lead { font-size: 18px; }
+.mode-snap .project h3 { font-size: 38px; }
+.mode-snap .preview { height: 130px; }
+.mode-snap .project .teaser { font-size: 17px; }
+.mode-snap .sheet:nth-child(n) { margin-left: 0; }
+.mode-snap .card.is-open { animation: none; }
+.mode-snap .swipe-hint { display: flex; }
+.swipe-hint { display: none; margin-top: 18px; gap: 8px; align-items: center; font: 400 12px var(--mono); color: var(--ink-3); }
+
+/* ---------- Reduced motion: a complete still version ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+
+<canvas id="aura" aria-hidden="true"></canvas>
+
+<div id="app" class="mode-list">
+  <header class="hud topbar">
+    <div class="left-group">
+      <a class="brand pill-group" href="#z-start" data-jump="z-start" aria-label="Eren Deniz K., back to start">
+        <span class="mark" aria-hidden="true">EK</span><b>Eren Deniz K.</b>
+      </a>
+      <nav class="nav pill-group" aria-label="Jump to zone">
+        <button type="button" data-jump="z-start" style="--hue:var(--start)"><span class="dot"></span>Start <kbd>1</kbd></button>
+        <button type="button" data-jump="z-projects" style="--hue:var(--recto)"><span class="dot"></span>Projects <kbd>2</kbd></button>
+        <button type="button" data-jump="z-log" style="--hue:var(--log)"><span class="dot"></span>Log <kbd>3</kbd></button>
+        <button type="button" data-jump="z-about" style="--hue:var(--about)"><span class="dot"></span>About <kbd>4</kbd></button>
+        <button type="button" data-jump="z-lab" style="--hue:var(--lab)"><span class="dot"></span>Lab <kbd>5</kbd></button>
+      </nav>
+    </div>
+    <div class="tools pill-group" role="group" aria-label="View">
+      <button type="button" class="sq" data-zoom="out" aria-label="Zoom out">&minus;</button>
+      <span class="zoom-val" aria-live="polite">100%</span>
+      <button type="button" class="sq" data-zoom="in" aria-label="Zoom in">+</button>
+      <button type="button" class="list-toggle" aria-pressed="false">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 3h12M1 7h12M1 11h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        List view
+      </button>
+    </div>
+  </header>
+
+  <div class="hud hint" aria-hidden="false">
+    <span class="proto-tag">Prototype C — Workbench Canvas</span>
+    <span class="k drag-hint">Drag to pan · scroll or pinch to zoom</span>
+    <span class="k">Tab cards · arrows pan · 0 home</span>
+  </div>
+
+  <div class="hud minimap" aria-hidden="true">
+    <div class="mm-label"><span>map</span><span class="mm-pos">—</span></div>
+    <div class="mm-world"></div>
+  </div>
+
+  <main id="viewport" aria-label="Portfolio canvas">
+    <div id="world">
+
+      <!-- START -->
+      <section class="zone zone-start" id="z-start" data-rect="0 60 640 600" data-hue="--start" style="--hue:var(--start)" aria-label="Start">
+        <div class="card hero" style="--hue:var(--start)">
+          <p class="kicker"><span class="live">Istanbul · first year · building in public</span></p>
+          <h1>Eren <em>Deniz</em> K.</h1>
+          <p class="lead">I study Computer Engineering at Yıldız Technical University, Istanbul. First year.</p>
+          <p>I'm drawn to the low level: processors, embedded systems, the machine's own language.</p>
+          <p>I build products by directing AI agents, and I treat that as a discipline of its own.</p>
+          <span class="badge"><b>AA</b> English prep year, full marks</span>
+          <div class="actions">
+            <button type="button" class="btn primary" data-jump="z-projects" style="--hue:var(--recto)">See what I'm building <span class="arr">→</span></button>
+            <button type="button" class="btn" data-jump="z-log">Read the log</button>
+            <a class="btn" href="https://github.com/ErenDenizK">GitHub <span class="arr">↗</span></a>
+          </div>
+          <p class="swipe-hint"><span>Swipe sideways for each area</span><span aria-hidden="true">→</span></p>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section class="zone zone-projects" id="z-projects" data-rect="720 0 1180 1000" style="--hue:var(--recto)" aria-labelledby="h-projects">
+        <div class="zone-head">
+          <p class="zone-num">02 · Projects</p>
+          <h2 id="h-projects">Projects</h2>
+          <p>Three things I'm building. All in active development.</p>
+        </div>
+        <div class="proj-grid">
+
+          <article class="card project" id="p-recto" data-depth="0" data-pos="40 170 520" data-open="40 760" style="--hue:var(--recto)">
+            <button type="button" class="close" data-act="close" aria-label="Close Recto">×</button>
+            <div class="preview" aria-hidden="true">
+              <svg viewBox="0 0 480 160" preserveAspectRatio="xMidYMid slice">
+                <g transform="translate(26 26)">
+                  <g fill="#f2f4ee" opacity=".92">
+                    <rect x="0" width="56" height="76" rx="4"/><rect x="72" width="56" height="76" rx="4"/><rect x="144" width="56" height="76" rx="4"/>
+                    <rect x="216" width="56" height="76" rx="4"/><rect x="288" width="56" height="76" rx="4"/><rect x="360" width="56" height="76" rx="4"/>
+                  </g>
+                  <g fill="#c8ccd6">
+                    <rect x="8" y="12" width="40" height="4" rx="2"/><rect x="8" y="22" width="32" height="4" rx="2"/><rect x="8" y="32" width="38" height="4" rx="2"/>
+                    <rect x="80" y="12" width="40" height="4" rx="2"/><rect x="80" y="22" width="26" height="4" rx="2"/>
+                    <rect x="152" y="12" width="40" height="4" rx="2"/><rect x="152" y="22" width="36" height="4" rx="2"/><rect x="152" y="44" width="40" height="18" rx="2"/>
+                    <rect x="224" y="12" width="40" height="4" rx="2"/><rect x="224" y="32" width="30" height="4" rx="2"/>
+                    <rect x="296" y="12" width="40" height="4" rx="2"/><rect x="296" y="22" width="34" height="4" rx="2"/>
+                    <rect x="368" y="12" width="40" height="4" rx="2"/><rect x="368" y="22" width="40" height="4" rx="2"/><rect x="368" y="32" width="22" height="4" rx="2"/>
+                  </g>
+                  <rect x="224" y="20" width="40" height="8" fill="#0b0c10"/>
+                  <rect x="296" y="30" width="36" height="7" fill="#bbed26" opacity=".7"/>
+                  <rect x="69" y="-3" width="62" height="82" rx="6" fill="none" stroke="#bbed26" stroke-width="2.5"/>
+                </g>
+                <g transform="translate(160 118)">
+                  <rect width="160" height="26" rx="13" fill="rgba(187,237,38,.14)" stroke="#bbed26" stroke-opacity=".7"/>
+                  <circle cx="30" cy="13" r="4" fill="#bbed26"/><circle cx="60" cy="13" r="4" fill="#eef0f6" opacity=".6"/><circle cx="90" cy="13" r="4" fill="#eef0f6" opacity=".6"/><circle cx="120" cy="13" r="4" fill="#eef0f6" opacity=".6"/>
+                </g>
+              </svg>
+            </div>
+            <p class="kicker"><span class="live">Active</span><span>since Sep 2026</span><span>1.0.0-beta</span></p>
+            <h3><button type="button" class="toggle" data-act="open" aria-expanded="false" aria-controls="recto-more">Recto</button></h3>
+            <p class="teaser">A PDF editor that runs entirely in your browser. Nothing is uploaded.</p>
+            <div id="recto-more">
+              <div class="layer l1">
+                <h4>What it is</h4>
+                <p>Open many PDFs, arrange their pages on one light table, annotate, fill, redact, edit text, recognise scans, compare, sign. Public beta (1.0.0-beta).</p>
+              </div>
+              <div class="layer l2">
+                <div class="sheets">
+                  <div class="sheet">
+                    <h4>How</h4>
+                    <ul>
+                      <li>PDFium compiled to WebAssembly in a Web Worker; Vite, React 19, TypeScript.</li>
+                      <li>CSP limits connections to its own origin.</li>
+                      <li>Every export is re-opened and checked before download.</li>
+                      <li>Redaction removes the content under each mark and re-reads the output.</li>
+                      <li>E2E tests in Chromium, Firefox and WebKit.</li>
+                    </ul>
+                  </div>
+                  <div class="sheet"><h4>Why</h4><div class="ph-box"><span>Why I made it, in my words.</span><span class="tag">placeholder</span></div></div>
+                  <div class="sheet"><h4>Learned</h4><div class="ph-box"><span>What building it taught me.</span><span class="tag">placeholder</span></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="actions">
+              <button type="button" class="btn primary" data-act="step"><span class="step-label">Take a look</span> <span class="arr">→</span></button>
+              <a class="btn" href="https://erendenizk.github.io/recto/">Live <span class="arr">↗</span></a>
+              <a class="btn" href="https://github.com/ErenDenizK/recto">Code <span class="arr">↗</span></a>
+              <span class="depth" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+          </article>
+
+          <article class="card project" id="p-ep" data-depth="0" data-pos="620 170 520" data-open="380 760" style="--hue:var(--sakura)">
+            <button type="button" class="close" data-act="close" aria-label="Close English Prep">×</button>
+            <div class="preview" aria-hidden="true" style="background: radial-gradient(90% 140% at 10% 0%, rgba(239,177,203,.35), transparent 60%), radial-gradient(70% 120% at 100% 100%, rgba(154,156,255,.28), transparent 60%), radial-gradient(60% 90% at 60% 110%, rgba(92,201,204,.2), transparent 60%), rgba(0,0,0,.15);">
+              <svg viewBox="0 0 480 160" preserveAspectRatio="xMinYMid slice">
+                <text x="28" y="40" fill="#fbe3ed" font-family="Instrument Serif, Georgia, serif" font-size="22">Present Perfect <tspan font-style="italic" fill="#efb1cb">vs</tspan> Past Simple</text>
+                <g transform="translate(28 60)">
+                  <rect width="110" height="8" rx="4" fill="#eef0f6" opacity=".35"/>
+                  <rect x="120" y="7" width="70" height="2" fill="#efb1cb"/>
+                  <rect x="200" width="150" height="8" rx="4" fill="#eef0f6" opacity=".35"/>
+                  <rect y="18" width="250" height="8" rx="4" fill="#eef0f6" opacity=".22"/>
+                </g>
+                <g transform="translate(28 104)">
+                  <rect width="128" height="34" rx="12" fill="#efb1cb"/>
+                  <path d="M16 17l6 6 12-12" stroke="#922e55" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  <rect x="44" y="13" width="64" height="8" rx="4" fill="#922e55" opacity=".55"/>
+                  <rect x="140" width="128" height="34" rx="12" fill="none" stroke="#9a9cff" stroke-width="1.5"/>
+                  <path d="M156 11l12 12M168 11l-12 12" stroke="#9a9cff" stroke-width="2.5" stroke-linecap="round"/>
+                  <rect x="184" y="13" width="64" height="8" rx="4" fill="#9a9cff" opacity=".5"/>
+                  <rect x="280" width="128" height="34" rx="12" fill="none" stroke="rgba(255,255,255,.25)"/>
+                  <rect x="300" y="13" width="80" height="8" rx="4" fill="#eef0f6" opacity=".25"/>
+                </g>
+              </svg>
+            </div>
+            <p class="kicker"><span class="live">Active</span><span>since Sep 2026</span><span>v0.75</span></p>
+            <h3><button type="button" class="toggle" data-act="open" aria-expanded="false" aria-controls="ep-more">English Prep</button></h3>
+            <p class="teaser">A study space for Turkish university English proficiency exams.</p>
+            <div id="ep-more">
+              <div class="layer l1">
+                <h4>What it is</h4>
+                <p>Article-led lessons, each a contrast ("Present Perfect vs Past Simple"), then paragraph-cloze tests with explained feedback. Built for learners who already speak English and lack the labels.</p>
+                <div class="stats"><div class="stat"><b>10</b><span>topics</span></div><div class="stat"><b>60</b><span>lessons</span></div><div class="stat"><b>241</b><span>questions</span></div></div>
+              </div>
+              <div class="layer l2">
+                <div class="sheets">
+                  <div class="sheet">
+                    <h4>How</h4>
+                    <ul>
+                      <li>No build step: plain HTML, CSS and ES modules.</li>
+                      <li>Zero runtime dependencies; no innerHTML.</li>
+                      <li>Everything stored in the learner's own browser.</li>
+                      <li>Content validated in CI; questions reviewed blind. Version 0.75.</li>
+                    </ul>
+                  </div>
+                  <div class="sheet"><h4>Why</h4><blockquote>"I built it for myself and friends sitting the exam."</blockquote></div>
+                  <div class="sheet"><h4>Learned</h4><div class="ph-box"><span>What building it taught me.</span><span class="tag">placeholder</span></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="actions">
+              <button type="button" class="btn primary" data-act="step"><span class="step-label">Take a look</span> <span class="arr">→</span></button>
+              <a class="btn" href="https://erendenizk.github.io/english-prep/">Live <span class="arr">↗</span></a>
+              <a class="btn" href="https://github.com/ErenDenizK/english-prep">Code <span class="arr">↗</span></a>
+              <span class="depth" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+          </article>
+
+          <article class="card project" id="p-eat" data-depth="0" data-pos="40 690 460" data-open="40 600" style="--hue:var(--eat)">
+            <button type="button" class="close" data-act="close" aria-label="Close Eat Map">×</button>
+            <div class="preview" aria-hidden="true" style="height:120px">
+              <svg viewBox="0 0 440 120" preserveAspectRatio="xMidYMid slice">
+                <g stroke="#ff9d5c" stroke-opacity=".28" stroke-width="2" fill="none">
+                  <path d="M0 40h440M0 86h440M70 0v120M180 0v120M300 0v120M390 0v120M0 120L200 0"/>
+                </g>
+                <g fill="#ff9d5c">
+                  <path d="M120 64c0-9 7-15 15-15s15 6 15 15c0 11-15 24-15 24s-15-13-15-24z"/>
+                  <path d="M250 40c0-7 5-12 12-12s12 5 12 12c0 9-12 19-12 19s-12-10-12-19z" opacity=".7"/>
+                  <path d="M340 78c0-6 4-10 10-10s10 4 10 10c0 7-10 16-10 16s-10-9-10-16z" opacity=".5"/>
+                </g>
+                <circle cx="135" cy="64" r="5" fill="#2a1408"/>
+              </svg>
+            </div>
+            <p class="kicker"><span class="live">In development</span><span>iOS · Xcode</span><span class="tag">accent: placeholder</span></p>
+            <h3><button type="button" class="toggle" data-act="open" aria-expanded="false" aria-controls="eat-more">Eat Map</button></h3>
+            <p class="teaser">An iOS app, built in Xcode.</p>
+            <div id="eat-more">
+              <div class="layer l1">
+                <h4>What it is</h4>
+                <div class="ph-box"><span>A description is on its way.</span><span class="tag">placeholder</span></div>
+                <p style="margin-top:12px">Status: in development, code not public yet.</p>
+              </div>
+            </div>
+            <div class="actions">
+              <button type="button" class="btn primary" data-act="step" data-max="1"><span class="step-label">Take a look</span> <span class="arr">→</span></button>
+              <span class="depth" aria-hidden="true"><i></i><i></i></span>
+            </div>
+          </article>
+
+          <div class="slot" data-pos="540 690 400">
+            <span class="tag" style="align-self:flex-start">empty slot</span>
+            <p>The next project lands here. Small school work may follow later, in its own group, labelled AI-built or hand-written.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAB -->
+      <section class="zone zone-lab" id="z-lab" data-rect="2000 0 560 1000" style="--hue:var(--lab)" aria-labelledby="h-lab">
+        <div class="zone-head">
+          <p class="zone-num">05 · Lab</p>
+          <h2 id="h-lab">Lab</h2>
+          <p>Small experiments will live here.</p>
+        </div>
+        <div class="lab-slots">
+          <div class="slot"><span class="n">01</span><p>Empty bench.</p><span class="tag" style="align-self:flex-start">placeholder</span></div>
+          <div class="slot"><span class="n">02</span><p>Empty bench.</p><span class="tag" style="align-self:flex-start">placeholder</span></div>
+          <div class="slot"><span class="n">03</span><p>Empty bench.</p><span class="tag" style="align-self:flex-start">placeholder</span></div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="zone zone-about" id="z-about" data-rect="0 720 640 560" style="--hue:var(--about)" aria-labelledby="h-about">
+        <div class="zone-head">
+          <p class="zone-num">04 · About</p>
+          <h2 id="h-about">About</h2>
+        </div>
+        <div class="card about-card">
+          <p class="lead">I'm Eren, a first-year Computer Engineering student at Yıldız Technical University in Istanbul.</p>
+          <p>I passed the English prep year with AA, full marks. I like the low level: processors, embedded systems, the machine's own language. I build products by directing AI agents.</p>
+          <div class="photos" aria-label="Photo placeholders">
+            <div class="photo"><span class="tag">photo · placeholder</span></div>
+            <div class="photo" style="--hue:var(--iris)"><span class="tag">photo · placeholder</span></div>
+            <div class="photo" style="--hue:var(--lagoon)"><span class="tag">photo · placeholder</span></div>
+          </div>
+          <div class="links">
+            <a class="btn" href="https://github.com/ErenDenizK">GitHub <span class="arr">↗</span></a>
+            <span class="btn muted">LinkedIn <span class="tag">placeholder</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- LOG -->
+      <section class="zone zone-log" id="z-log" data-rect="0 1340 2560 760" data-focus="0 1340 2000 720" style="--hue:var(--log)" aria-labelledby="h-log">
+        <div class="zone-head">
+          <p class="zone-num">03 · Log</p>
+          <h2 id="h-log">Log</h2>
+          <p>What I did, why, and what I'm building. Every entry below is a sample.</p>
+          <div class="log-legend"><span><i style="width:14px"></i>short</span><span><i style="width:24px"></i>medium</span><span><i style="width:36px"></i>long</span></div>
+        </div>
+        <div class="timeline" aria-hidden="true">
+          <div class="tl-past"></div><div class="tl-future"></div>
+        </div>
+        <div class="log-list">
+          <article class="card entry short" tabindex="0" data-date="2026-10-08" style="--hue:var(--lagoon)">
+            <p class="kicker"><span>8 Oct 2026</span><span class="len">short</span><span class="tag">sample</span></p>
+            <h3>Starting this site</h3>
+            <p>Why a portfolio that grows for four years.</p>
+          </article>
+          <article class="card entry medium" tabindex="0" data-date="2026-10-04" style="--hue:var(--sakura)">
+            <p class="kicker"><span>4 Oct 2026</span><span class="len">medium</span><span class="tag">sample</span></p>
+            <h3>English Prep v0.75</h3>
+            <p>What changed and why.</p>
+            <div class="bars" aria-hidden="true"><i></i><i></i><i></i></div>
+          </article>
+          <article class="card entry long" tabindex="0" data-date="2026-09-26" style="--hue:var(--recto)">
+            <p class="kicker"><span>26 Sep 2026</span><span class="len">long</span><span class="tag">sample</span></p>
+            <h3>Why Recto runs PDFium in a worker</h3>
+            <p>An explainer.</p>
+            <div class="fig" aria-hidden="true">
+              <svg viewBox="0 0 400 92" preserveAspectRatio="xMidYMid meet">
+                <rect x="40" y="26" width="110" height="40" rx="8" fill="none" stroke="#eef0f6" stroke-opacity=".5"/>
+                <rect x="250" y="26" width="110" height="40" rx="8" fill="rgba(187,237,38,.15)" stroke="#bbed26"/>
+                <path d="M156 40h88M244 52h-88" stroke="#eef0f6" stroke-opacity=".6" stroke-dasharray="4 4"/>
+                <path d="M238 36l6 4-6 4M162 48l-6 4 6 4" fill="none" stroke="#eef0f6" stroke-opacity=".6"/>
+              </svg>
+              <span class="tag">figure · sample</span>
+            </div>
+            <div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="card entry short" tabindex="0" data-date="2026-09-15" style="--hue:var(--iris)">
+            <p class="kicker"><span>15 Sep 2026</span><span class="len">short</span><span class="tag">sample</span></p>
+            <h3>CS50, week 4: memory</h3>
+            <p>Notes on pointers.</p>
+          </article>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(() => {
+  const app = document.getElementById('app');
+  const vp = document.getElementById('viewport');
+  const world = document.getElementById('world');
+  const auraEl = document.getElementById('aura');
+  const zoomVal = document.querySelector('.zoom-val');
+  const listBtn = document.querySelector('.list-toggle');
+  const navBtns = [...document.querySelectorAll('.nav [data-jump]')];
+  const zones = [...document.querySelectorAll('.zone')];
+  const rmMQ = matchMedia('(prefers-reduced-motion: reduce)');
+  const phoneMQ = matchMedia('(max-width: 720px)');
+  const coarse = matchMedia('(pointer: coarse)').matches;
+  let reduce = rmMQ.matches;
+  const W = 2560, H = 2100, MIN = 0.28, MAX = 1.6;
+  const cam = { x: 0, y: 0, s: 1 };
+  let mode = '';
+  let listPref = false;
+  try { listPref = localStorage.getItem('wc-list') === '1'; } catch (e) {}
+
+  if (coarse) document.querySelector('.drag-hint').textContent = 'Drag to pan · pinch to zoom';
+
+  /* ---- layout from data ---- */
+  zones.forEach((z) => {
+    const [x, y, w, h] = z.dataset.rect.split(' ').map(Number);
+    z._r = { x, y, w, h };
+    z.style.setProperty('--x', x + 'px'); z.style.setProperty('--y', y + 'px');
+    z.style.setProperty('--w', w + 'px'); z.style.setProperty('--h', h + 'px');
+  });
+  document.querySelectorAll('[data-pos]').forEach((el) => {
+    const [x, y, w] = el.dataset.pos.split(' ').map(Number);
+    el.style.setProperty('--px', x + 'px'); el.style.setProperty('--py', y + 'px'); el.style.setProperty('--pw', w + 'px');
+    if (el.dataset.open) {
+      const [ox, ow] = el.dataset.open.split(' ').map(Number);
+      el.style.setProperty('--ox', ox + 'px'); el.style.setProperty('--ow', ow + 'px');
+    }
+  });
+
+  // Log: entries are placed by their date, so a new entry needs no layout work.
+  const T0 = Date.UTC(2026, 8, 1), DAY = 864e5, X0 = 120, PPD = 40;
+  const dayX = (t) => X0 + ((t - T0) / DAY) * PPD;
+  const tl = document.querySelector('.timeline');
+  const entries = [...document.querySelectorAll('.entry')];
+  entries
+    .map((e) => ({ e, t: Date.parse(e.dataset.date + 'T00:00:00Z') }))
+    .sort((a, b) => a.t - b.t)
+    .forEach(({ e, t }, i) => {
+      e.style.setProperty('--x', dayX(t) + 'px');
+      e.classList.add(i % 2 ? 'below' : 'above');
+      const d = document.createElement('span'); d.className = 'tl-dot'; d.style.left = dayX(t) + 'px'; d.style.borderColor = getComputedStyle(e).getPropertyValue('--hue'); tl.append(d);
+    });
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  for (let d = 0; d <= 56; d += 7) {
+    const t = new Date(T0 + d * DAY);
+    const k = document.createElement('span'); k.className = 'tick'; k.style.left = dayX(+t) + 'px';
+    const l = document.createElement('span'); l.textContent = t.getUTCDate() + ' ' + MONTHS[t.getUTCMonth()]; k.append(l); tl.append(k);
+  }
+  const nowT = Math.min(Date.UTC(2026, 9, 31), Math.max(T0, Date.now()));
+  tl.style.setProperty('--now', dayX(nowT) + 'px');
+  const now = document.createElement('span'); now.className = 'now'; now.style.left = dayX(nowT) + 'px';
+  const nl = document.createElement('span'); nl.textContent = 'NOW'; now.append(nl); tl.append(now);
+  const band = document.createElement('div'); band.className = 'tl-band';
+  band.style.left = dayX(T0) + 'px'; band.style.width = (30 * PPD) + 'px';
+  const bl = document.createElement('span'); bl.textContent = 'Sep 2026 · Recto and English Prep started'; band.append(bl); tl.append(band);
+  const next = document.createElement('span'); next.className = 'tl-next'; next.style.left = (dayX(nowT) + 340) + 'px';
+  next.textContent = 'next entries land here →'; tl.append(next);
+
+  /* ---- camera ---- */
+  const vw = () => vp.clientWidth, vh = () => vp.clientHeight;
+  const PAD = { t: 78, b: 64, l: 28, r: 28 };
+  const clampS = (s) => Math.min(MAX, Math.max(MIN, s));
+  function clampCam() {
+    const m = 140;
+    cam.x = Math.min(vw() - m, Math.max(m - W * cam.s, cam.x));
+    cam.y = Math.min(vh() - m, Math.max(m - H * cam.s, cam.y));
+  }
+  function apply() {
+    clampCam();
+    world.style.transform = `translate3d(${cam.x}px, ${cam.y}px, 0) scale(${cam.s})`;
+    const gs = 32 * cam.s;
+    vp.style.setProperty('--gs', gs + 'px');
+    vp.style.setProperty('--gx', cam.x + 'px');
+    vp.style.setProperty('--gy', cam.y + 'px');
+    vp.style.setProperty('--dot-a', Math.min(.1, Math.max(0, (cam.s - .3) * .18)).toFixed(3));
+    zoomVal.textContent = Math.round(cam.s * 100) + '%';
+    drawMini(); markCurrent(); auraDirty = true;
+  }
+  function fitRect(r, maxS = 1, minS = MIN) {
+    const aw = vw() - PAD.l - PAD.r, ah = vh() - PAD.t - PAD.b;
+    const s = Math.min(maxS, Math.max(minS, Math.min(aw / r.w, ah / r.h)));
+    const x = PAD.l + (aw - r.w * s) / 2 - r.x * s;
+    const y = PAD.t + Math.max(0, (ah - r.h * s) / 2) - r.y * s;
+    return { x, y, s };
+  }
+  const union = (...rs) => {
+    const x = Math.min(...rs.map((r) => r.x)), y = Math.min(...rs.map((r) => r.y));
+    return { x, y, w: Math.max(...rs.map((r) => r.x + r.w)) - x, h: Math.max(...rs.map((r) => r.y + r.h)) - y };
+  };
+  const zoneById = (id) => zones.find((z) => z.id === id);
+  const homeView = () => fitRect(union(zoneById('z-start')._r, zoneById('z-projects')._r), 1, 0.5);
+
+  let anim = null, mom = null;
+  function stopMotion() { anim = null; mom = null; }
+  function flyTo(t, dur = 700) {
+    stopMotion();
+    if (reduce || mode !== 'canvas') { Object.assign(cam, t); apply(); return; }
+    const s0 = cam.s, s1 = t.s, w = vw(), h = vh();
+    const c0 = { x: (w / 2 - cam.x) / s0, y: (h / 2 - cam.y) / s0 };
+    const c1 = { x: (w / 2 - t.x) / s1, y: (h / 2 - t.y) / s1 };
+    const dist = Math.hypot(c1.x - c0.x, c1.y - c0.y);
+    const bump = Math.min(0.55, (dist * Math.min(s0, s1)) / w * 0.35);
+    const start = performance.now();
+    const me = (anim = { });
+    const ease = (u) => (u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
+    (function step(now) {
+      if (anim !== me) return;
+      const u = Math.min(1, (now - start) / dur), e = ease(u);
+      const s = Math.exp(Math.log(s0) + (Math.log(s1) - Math.log(s0)) * e - bump * Math.sin(Math.PI * e));
+      const cx = c0.x + (c1.x - c0.x) * e, cy = c0.y + (c1.y - c0.y) * e;
+      cam.s = s; cam.x = w / 2 - cx * s; cam.y = h / 2 - cy * s;
+      if (u >= 1) Object.assign(cam, t);
+      apply();
+      if (u < 1) requestAnimationFrame(step); else anim = null;
+    })(start);
+  }
+  function zoomAt(sx, sy, f) {
+    const ns = clampS(cam.s * f);
+    const wx = (sx - cam.x) / cam.s, wy = (sy - cam.y) / cam.s;
+    cam.x = sx - wx * ns; cam.y = sy - wy * ns; cam.s = ns;
+  }
+  function worldRect(el) {
+    const r = el.getBoundingClientRect(), v = vp.getBoundingClientRect();
+    return { x: (r.left - v.left - cam.x) / cam.s, y: (r.top - v.top - cam.y) / cam.s, w: r.width / cam.s, h: r.height / cam.s };
+  }
+
+  /* ---- jumps ---- */
+  function jump(id) {
+    const z = zoneById(id); if (!z) return;
+    if (mode === 'canvas') {
+      const f = z.dataset.focus ? (([x, y, w, h]) => ({ x, y, w, h }))(z.dataset.focus.split(' ').map(Number)) : z._r;
+      flyTo(id === 'z-start' ? homeView() : fitRect(f, 1, 0.42));
+    } else if (mode === 'snap') {
+      world.scrollTo({ left: z.offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
+    } else {
+      vp.scrollTo({ top: z.offsetTop - 80, behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  document.addEventListener('click', (e) => {
+    const j = e.target.closest('[data-jump]');
+    if (j) { e.preventDefault(); jump(j.dataset.jump); }
+  });
+  function markCurrent() {
+    let cur = 'z-start';
+    if (mode === 'canvas') {
+      const cx = (vw() / 2 - cam.x) / cam.s, cy = (vh() / 2 - cam.y) / cam.s;
+      let best = Infinity;
+      zones.forEach((z) => {
+        const r = z._r;
+        const dx = Math.max(r.x - cx, 0, cx - r.x - r.w), dy = Math.max(r.y - cy, 0, cy - r.y - r.h);
+        const d = Math.hypot(dx, dy);
+        if (d < best) { best = d; cur = z.id; }
+      });
+    } else if (mode === 'snap') {
+      cur = zones[Math.round(world.scrollLeft / Math.max(1, world.clientWidth))]?.id || cur;
+    } else {
+      zones.forEach((z) => { if (z.offsetTop - 160 <= vp.scrollTop) cur = z.id; });
+    }
+    navBtns.forEach((b) => b.setAttribute('aria-current', String(b.dataset.jump === cur)));
+    if (mode === 'snap') {
+      const b = navBtns.find((n) => n.dataset.jump === cur); const nav = b.parentElement;
+      const want = b.offsetLeft - (nav.clientWidth - b.offsetWidth) / 2;
+      if (Math.abs(nav.scrollLeft - want) > 4) nav.scrollLeft = want;
+    }
+  }
+
+  /* ---- pointer: drag, pinch, momentum ---- */
+  const pts = new Map();
+  let drag = null, pinch = null, suppressClick = false;
+  vp.addEventListener('dragstart', (e) => e.preventDefault());
+  vp.addEventListener('pointerdown', (e) => {
+    if (mode !== 'canvas') return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    stopMotion(); suppressClick = false;
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pts.size === 1) {
+      drag = { id: e.pointerId, lx: e.clientX, ly: e.clientY, sx: e.clientX, sy: e.clientY, moved: false, samples: [{ x: e.clientX, y: e.clientY, t: performance.now() }] };
+    } else if (pts.size === 2) {
+      const [a, b] = [...pts.values()];
+      const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }, v = vp.getBoundingClientRect();
+      pinch = { d0: Math.hypot(a.x - b.x, a.y - b.y) || 1, s0: cam.s, w: { x: (mid.x - v.left - cam.x) / cam.s, y: (mid.y - v.top - cam.y) / cam.s } };
+      if (drag) drag.moved = true;
+      [...pts.keys()].forEach((id) => { try { vp.setPointerCapture(id); } catch (err) {} });
+      app.classList.add('dragging');
+    }
+  });
+  vp.addEventListener('pointermove', (e) => {
+    if (!pts.has(e.pointerId)) return;
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pinch && pts.size >= 2) {
+      const [a, b] = [...pts.values()], v = vp.getBoundingClientRect();
+      const mid = { x: (a.x + b.x) / 2 - v.left, y: (a.y + b.y) / 2 - v.top };
+      cam.s = clampS(pinch.s0 * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d0);
+      cam.x = mid.x - pinch.w.x * cam.s; cam.y = mid.y - pinch.w.y * cam.s;
+      apply(); return;
+    }
+    if (!drag || drag.id !== e.pointerId) return;
+    if (!drag.moved && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 6) {
+      drag.moved = true; app.classList.add('dragging');
+      try { vp.setPointerCapture(e.pointerId); } catch (err) {}
+    }
+    if (drag.moved) {
+      cam.x += e.clientX - drag.lx; cam.y += e.clientY - drag.ly; apply();
+      const t = performance.now();
+      drag.samples.push({ x: e.clientX, y: e.clientY, t });
+      while (drag.samples.length > 2 && t - drag.samples[0].t > 90) drag.samples.shift();
+    }
+    drag.lx = e.clientX; drag.ly = e.clientY;
+  });
+  function endPointer(e) {
+    if (!pts.has(e.pointerId)) return;
+    pts.delete(e.pointerId);
+    if (pinch && pts.size < 2) {
+      pinch = null;
+      if (pts.size === 1) { const [[id, p]] = [...pts.entries()]; drag = { id, lx: p.x, ly: p.y, sx: p.x, sy: p.y, moved: true, samples: [{ ...p, t: performance.now() }] }; }
+      return;
+    }
+    if (pts.size === 0) {
+      app.classList.remove('dragging');
+      if (drag && drag.moved) {
+        suppressClick = true;
+        const s = drag.samples, a = s[0], b = s[s.length - 1], dt = b.t - a.t;
+        if (!reduce && dt > 0 && performance.now() - b.t < 60) momentum((b.x - a.x) / dt, (b.y - a.y) / dt);
+      }
+      drag = null;
+    }
+  }
+  vp.addEventListener('pointerup', endPointer);
+  vp.addEventListener('pointercancel', endPointer);
+  vp.addEventListener('click', (e) => { if (suppressClick) { e.stopPropagation(); e.preventDefault(); suppressClick = false; } }, true);
+  function momentum(vx, vy) {
+    const me = (mom = {}); let last = performance.now();
+    (function step(now) {
+      if (mom !== me) return;
+      const dt = Math.min(40, now - last); last = now;
+      cam.x += vx * dt; cam.y += vy * dt; apply();
+      const f = Math.pow(0.93, dt / 16); vx *= f; vy *= f;
+      if (Math.hypot(vx, vy) > 0.02) requestAnimationFrame(step); else mom = null;
+    })(last);
+  }
+  vp.addEventListener('wheel', (e) => {
+    if (mode !== 'canvas') return;
+    e.preventDefault(); stopMotion();
+    const v = vp.getBoundingClientRect(), sx = e.clientX - v.left, sy = e.clientY - v.top;
+    let dx = e.deltaX, dy = e.deltaY;
+    if (e.deltaMode === 1) { dx *= 16; dy *= 16; }
+    const mouseWheel = e.deltaMode === 1 || (dx === 0 && Math.abs(dy) >= 50 && Number.isInteger(dy));
+    if (e.ctrlKey) zoomAt(sx, sy, Math.exp(-dy * 0.01));
+    else if (e.shiftKey) cam.x -= dy || dx;
+    else if (mouseWheel) zoomAt(sx, sy, Math.exp(-dy * 0.0016));
+    else { cam.x -= dx; cam.y -= dy; }
+    apply();
+  }, { passive: false });
+  // Focusing an off-screen element must never scroll the clipped viewport.
+  vp.addEventListener('scroll', () => { if (mode === 'canvas' && (vp.scrollLeft || vp.scrollTop)) { vp.scrollLeft = 0; vp.scrollTop = 0; } });
+
+  /* ---- keyboard ---- */
+  document.querySelectorAll('[data-zoom]').forEach((b) => b.addEventListener('click', () => {
+    const f = b.dataset.zoom === 'in' ? 1.25 : 0.8;
+    const t = { ...cam }; const ns = clampS(cam.s * f);
+    t.x = vw() / 2 - ((vw() / 2 - cam.x) / cam.s) * ns; t.y = vh() / 2 - ((vh() / 2 - cam.y) / cam.s) * ns; t.s = ns;
+    flyTo(t, 260);
+  }));
+  addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && openCard) { const c = openCard; setDepth(c, 0); c.querySelector('.toggle').focus({ preventScroll: true }); return; }
+    if (mode !== 'canvas' || e.altKey || e.metaKey || e.ctrlKey) return;
+    const step = e.shiftKey ? 360 : 140;
+    const k = { ArrowLeft: [step, 0], ArrowRight: [-step, 0], ArrowUp: [0, step], ArrowDown: [0, -step] }[e.key];
+    if (k) { e.preventDefault(); flyTo({ x: cam.x + k[0], y: cam.y + k[1], s: cam.s }, 220); return; }
+    const t = e.target;
+    if (t && t.closest && t.closest('input,textarea')) return;
+    if (e.key === '+' || e.key === '=') document.querySelector('[data-zoom="in"]').click();
+    else if (e.key === '-' || e.key === '_') document.querySelector('[data-zoom="out"]').click();
+    else if (e.key === '0') flyTo(homeView());
+    else if (/^[1-5]$/.test(e.key)) jump(navBtns[+e.key - 1].dataset.jump);
+  });
+  // Tab focuses cards; the camera follows whatever gets focus.
+  world.addEventListener('focusin', (e) => {
+    if (mode !== 'canvas' || drag) return;
+    const el = e.target.closest('.card, .slot, .zone-head') || e.target;
+    const r = worldRect(el);
+    const sx = r.x * cam.s + cam.x, sy = r.y * cam.s + cam.y, sw = r.w * cam.s, sh = r.h * cam.s;
+    const inView = sx >= PAD.l && sy >= PAD.t && sx + sw <= vw() - PAD.r && sy + sh <= vh() - PAD.b;
+    if (inView) return;
+    const s = Math.max(cam.s, 0.62);
+    const fits = r.w * s <= vw() - PAD.l - PAD.r && r.h * s <= vh() - PAD.t - PAD.b;
+    flyTo(fits ? { s, x: vw() / 2 - (r.x + r.w / 2) * s, y: PAD.t + (vh() - PAD.t - PAD.b) / 2 - (r.y + r.h / 2) * s } : fitRect(r, 1, 0.4), 420);
+  });
+
+  /* ---- cards: teaser → overview → how/why/learned ---- */
+  let openCard = null;
+  const LABELS = ['Take a look', 'How it’s built', 'Back to teaser'];
+  function setDepth(card, d) {
+    if (d > 0 && openCard && openCard !== card) setDepth(openCard, 0);
+    card.dataset.depth = String(d);
+    card.classList.toggle('is-open', d > 0);
+    openCard = d > 0 ? card : (openCard === card ? null : openCard);
+    world.classList.toggle('has-open', !!openCard);
+    card.querySelector('.toggle').setAttribute('aria-expanded', String(d > 0));
+    const max = +(card.querySelector('[data-act="step"]').dataset.max || 2);
+    card.querySelector('.step-label').textContent = d >= max ? 'Close' : LABELS[d];
+    if (d > 0 && mode === 'canvas') requestAnimationFrame(() => {
+      const r = worldRect(card);
+      flyTo(fitRect({ x: r.x - 20, y: r.y - 20, w: r.w + 60, h: r.h + 60 }, 1, 0.45), 620);
+    });
+    if (d === 0 && mode === 'canvas') auraDirty = true;
+  }
+  world.addEventListener('click', (e) => {
+    const card = e.target.closest('.card.project');
+    if (!card) return;
+    const act = e.target.closest('[data-act]');
+    const d = +card.dataset.depth;
+    const max = +(card.querySelector('[data-act="step"]').dataset.max || 2);
+    if (act) {
+      const a = act.dataset.act;
+      if (a === 'close') { setDepth(card, 0); card.querySelector('.toggle').focus({ preventScroll: true }); }
+      else if (a === 'open') setDepth(card, d === 0 ? 1 : 0);
+      else if (a === 'step') setDepth(card, d >= max ? 0 : d + 1);
+      return;
+    }
+    if (!e.target.closest('a, button') && d === 0) setDepth(card, 1);
+  });
+
+  /* ---- mini-map ---- */
+  const mm = document.querySelector('.mm-world'), MMW = 200, MS = MMW / W;
+  mm.style.width = MMW + 'px'; mm.style.height = Math.round(H * MS) + 'px';
+  zones.forEach((z) => {
+    const r = z._r, d = document.createElement('div'); d.className = 'mm-zone';
+    d.style.cssText = `left:${r.x * MS}px;top:${r.y * MS}px;width:${r.w * MS}px;height:${r.h * MS}px;--hue:${getComputedStyle(z).getPropertyValue('--hue')}`;
+    const l = document.createElement('span'); l.textContent = z.getAttribute('aria-label') || z.querySelector('h2')?.textContent || ''; d.append(l); mm.append(d);
+  });
+  const mmView = document.createElement('div'); mmView.className = 'mm-view'; mm.append(mmView);
+  const mmPos = document.querySelector('.mm-pos');
+  function drawMini() {
+    const x = -cam.x / cam.s, y = -cam.y / cam.s, w = vw() / cam.s, h = vh() / cam.s;
+    mmView.style.cssText = `left:${x * MS}px;top:${y * MS}px;width:${w * MS}px;height:${h * MS}px`;
+    mmPos.textContent = `${Math.round(x + w / 2)}, ${Math.round(y + h / 2)}`;
+  }
+  let mmDrag = false;
+  function mmCenter(e, fly) {
+    const r = mm.getBoundingClientRect();
+    const wx = (e.clientX - r.left) / MS, wy = (e.clientY - r.top) / MS;
+    const t = { s: cam.s, x: vw() / 2 - wx * cam.s, y: vh() / 2 - wy * cam.s };
+    if (fly) flyTo(t, 420); else { stopMotion(); Object.assign(cam, t); apply(); }
+  }
+  mm.addEventListener('pointerdown', (e) => { mmDrag = true; mm.setPointerCapture(e.pointerId); mmCenter(e, true); });
+  mm.addEventListener('pointermove', (e) => { if (mmDrag && e.buttons) mmCenter(e, false); });
+  mm.addEventListener('pointerup', () => { mmDrag = false; });
+
+  /* ---- aura (canvas, 1/4 resolution, positioned in world space) ---- */
+  const ctx = auraEl.getContext('2d');
+  const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  // [zoneId, x, y (world), radius, colour, alpha]
+  const BLOBS = [
+    ['z-start', 260, 220, 460, '#9a9cff', .34], ['z-start', 80, 560, 300, '#5cc9cc', .22],
+    ['z-projects', 1050, 380, 420, '#bbed26', .30], ['z-projects', 1620, 340, 400, '#efb1cb', .32],
+    ['z-projects', 1800, 600, 260, '#9a9cff', .26], ['z-projects', 1450, 640, 240, '#5cc9cc', .22],
+    ['z-projects', 960, 860, 300, '#ff9d5c', .26],
+    ['z-lab', 2280, 460, 380, '#40d9b8', .24],
+    ['z-about', 300, 1000, 380, '#c39bff', .30],
+    ['z-log', 600, 1700, 420, '#7ea6ff', .26], ['z-log', 1400, 1700, 460, '#9a9cff', .24], ['z-log', 2200, 1700, 400, '#5cc9cc', .22],
+  ].map(([z, x, y, r, c, a], i) => {
+    const zone = zoneById(z), zr = zone._r;
+    return { zone, px: (x - zr.x) / zr.w, py: (y - zr.y) / zr.h, x, y, r, rgb: hex(c), a, ph: i * 1.7 };
+  });
+  let aw = 0, ah = 0, auraDirty = true;
+  const Q = 4;
+  function sizeAura() { aw = Math.ceil(innerWidth / Q); ah = Math.ceil(innerHeight / Q); auraEl.width = aw; auraEl.height = ah; auraDirty = true; }
+  function drawAura(t) {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#0a0b10'; ctx.fillRect(0, 0, aw, ah);
+    ctx.globalCompositeOperation = 'lighter';
+    const rects = new Map();
+    for (const b of BLOBS) {
+      const dx = reduce ? 0 : Math.sin(t * 0.00021 + b.ph) * 46, dy = reduce ? 0 : Math.cos(t * 0.00017 + b.ph * 1.3) * 34;
+      let x, y, r;
+      if (mode === 'canvas') {
+        x = (b.x + dx) * cam.s + cam.x; y = (b.y + dy) * cam.s + cam.y; r = Math.max(b.r * cam.s, 150);
+      } else {
+        if (!rects.has(b.zone)) rects.set(b.zone, b.zone.getBoundingClientRect());
+        const zr = rects.get(b.zone);
+        x = zr.left + b.px * zr.width + dx * .6; y = zr.top + Math.min(b.py * zr.height, innerHeight * .8) + dy * .6; r = b.r * (mode === 'snap' ? .62 : .8);
+      }
+      x /= Q; y /= Q; r /= Q;
+      if (x + r < 0 || y + r < 0 || x - r > aw || y - r > ah) continue;
+      const [R, G, B] = b.rgb, g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, `rgba(${R},${G},${B},${b.a * 1.3})`);
+      g.addColorStop(.55, `rgba(${R},${G},${B},${b.a * .5})`);
+      g.addColorStop(1, `rgba(${R},${G},${B},0)`);
+      ctx.fillStyle = g; ctx.fillRect(x - r, y - r, r * 2, r * 2);
+    }
+  }
+  let lastDraw = 0;
+  function loop(t) {
+    if (!document.hidden && (auraDirty || (!reduce && t - lastDraw > 33))) { drawAura(t); auraDirty = false; lastDraw = t; }
+    requestAnimationFrame(loop);
+  }
+
+  /* ---- modes ---- */
+  function setMode() {
+    const m = phoneMQ.matches ? 'snap' : listPref ? 'list' : 'canvas';
+    const prev = mode; mode = m;
+    app.className = 'mode-' + m;
+    listBtn.setAttribute('aria-pressed', String(m === 'list'));
+    if (m === 'canvas') {
+      if (prev !== 'canvas') { Object.assign(cam, homeView()); }
+      apply();
+    } else {
+      world.style.transform = ''; markCurrent();
+    }
+    auraDirty = true;
+  }
+  listBtn.addEventListener('click', () => {
+    listPref = !listPref;
+    try { localStorage.setItem('wc-list', listPref ? '1' : '0'); } catch (e) {}
+    setMode();
+  });
+  world.addEventListener('scroll', () => { if (mode === 'snap') { markCurrent(); auraDirty = true; } }, { passive: true });
+  vp.addEventListener('scroll', () => { if (mode === 'list') { markCurrent(); auraDirty = true; } }, { passive: true });
+  zones.forEach((z) => z.addEventListener('scroll', () => { auraDirty = true; }, { passive: true }));
+  addEventListener('resize', () => { sizeAura(); const before = mode; setMode(); if (before === 'canvas' && mode === 'canvas') apply(); });
+  phoneMQ.addEventListener?.('change', setMode);
+  rmMQ.addEventListener?.('change', () => { reduce = rmMQ.matches; auraDirty = true; });
+
+  sizeAura(); setMode();
+  requestAnimationFrame(loop);
+})();
+</script>
