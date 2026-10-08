@@ -9,12 +9,12 @@ work; it is the owner's intent and every decision cites it.
 - `docs/brief.md`: what the owner wants. `docs/ROADMAP.md`: what is next.
 - `docs/adr/`: decisions. Proposed ones are not binding until the owner accepts.
 - `docs/research/`: dated research; it distinguishes verified facts from recollection.
+  `2026-10-requirements.md` is what the site must contain and why.
 
 ## Rules
 
 - Work on `dev`. Never push to or merge into `main`; the owner merges releases by hand
   (ADR-0004).
-
 - English for the site, docs and commits. The owner talks in Turkish, often by dictation:
   read through transcription errors and confirm names.
 - Conventional Commits, lower-case subject, header at most 100 chars. Use the commit trailers
@@ -29,4 +29,5 @@ work; it is the owner's intent and every decision cites it.
 
 The owner dictates raw notes (often Turkish). Write the entry in English in their voice,
 keep their facts and claims exactly, ask before inventing detail, and show the draft before
-publishing.
+publishing. Strip names and places of private people. Avoid the AI tells listed in
+`docs/research/2026-10-requirements.md` §18.

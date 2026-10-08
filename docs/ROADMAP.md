@@ -16,7 +16,7 @@ and a desktop.
 - [x] Four rough, clickable prototypes (`prototypes/a-die`, `b-glass-lab`, `c-canvas`,
       `d-quiet`), published privately for the owner to try (2026-10-08)
 - [x] Owner's verdict: direction D (ADR-0003)
-- [ ] Requirements research: what the site must contain, from hiring, engineer and friend views
+- [x] Requirements research (`research/2026-10-requirements.md`)
 - [ ] UI/UX planning from the requirements
 - [ ] Owner sends references they like; agent collects a mood board
 - [ ] Define a visual language (tokens, type, colour, motion)
