@@ -1,0 +1,27 @@
+---
+/* A hidden workbench for the Postcard component (ADR-0008): not linked from anywhere, noindex, and left
+   out of the sitemap (astro.config.mjs). Photo entries in the record will use the component when the
+   owner sends photographs for them. The notes below are placeholders for the demo, not claims. */
+import Base from '../../layouts/Base.astro';
+import Postcard from '../../components/Postcard.astro';
+import gateW from '../../../content/photos/eren-ytu-gate-1000.webp?url';
+import c750a from '../../assets/photos/courtyard-750.avif?url';
+import c750w from '../../assets/photos/courtyard-750.webp?url';
+---
+<Base title="Postcard" tab={null} description="A workbench for the postcard component." noindex>
+  <div class="inner lab">
+    <header class="vhead">
+      <p class="meta">Lab · not linked from the site</p>
+      <h1 class="vtitle">Postcard</h1>
+    </header>
+    <div class="lab-row">
+      <Postcard src={gateW} width={1000} height={750} alt="A selfie at the YTU gate on a rainy day." note="Sample note: a line or two about the photograph, written on the back." place="Istanbul" date={new Date('2026-10-09')} />
+      <Postcard src={c750w} avif={`${c750a} 750w`} width={750} height={1111} alt="The university's inner courtyard seen through a tinted lens." note="Sample note for a portrait photograph." place="YTU" date="Oct 2026" accent="var(--log)" />
+    </div>
+  </div>
+</Base>
+<style>
+  .lab { padding: 0 var(--gut) 120px; }
+  .lab-row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 64px; align-items: start; }
+  @media (max-width: 899.98px) { .lab-row { grid-template-columns: 1fr; gap: 48px; } }
+</style>
