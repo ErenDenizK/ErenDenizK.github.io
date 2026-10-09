@@ -6,11 +6,12 @@
    object; .m-stage is one additive group (glow + ground-subtracted media, plus-lighter) and is what
    morphs between pages (ADR-0007). */
 import { poster } from '../lib/media';
-interface Props { obj: string; slot: string; stage?: boolean; class?: string; sizes?: string; priority?: boolean; light?: string }
-const { obj, slot, stage = false, class: cls = '', sizes = '(min-width: 900px) 470px, 60vw', priority = false, light } = Astro.props;
+/* solo: one of several stages on a page (Work); only the one the page focuses moves (scripts/media.ts, focus) */
+interface Props { obj: string; slot: string; stage?: boolean; solo?: boolean; class?: string; sizes?: string; priority?: boolean; light?: string }
+const { obj, slot, stage = false, solo = false, class: cls = '', sizes = '(min-width: 900px) 470px, 60vw', priority = false, light } = Astro.props;
 const p = poster(obj);
 ---
-<div class:list={['media', cls, { stage }]} data-slot={slot} data-obj={obj} data-manifest={p.manifest} style={`--light: ${light || p.light}`} aria-hidden="true">
+<div class:list={['media', cls, { stage }]} data-slot={slot} data-obj={obj} data-manifest={p.manifest} data-solo={solo ? '' : undefined} style={`--light: ${light || p.light}`} aria-hidden="true">
   {p.shadow && (
     <picture class="m-shadow-pic">
       {p.shadow.sources.map((s) => <source type={s.type} srcset={s.src} />)}

@@ -21,6 +21,7 @@
   "work": {
     "kicker": "Three products, all in development",
     "title": "Products I direct",
+    "cta": "Take a look",
     "dek": "I write the specs, make the decisions and review what AI agents build. Open one to see what it is, why it exists, how it is made and what comes next.",
     "groups": { "directed": "Directed with AI agents", "byHand": "By hand" },
     "byHand": "Work I write myself, without agents: course problem sets, low-level experiments, contributions. It gets its own lighter format, and appears here as it happens."

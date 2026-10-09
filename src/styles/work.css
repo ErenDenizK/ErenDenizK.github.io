@@ -1,0 +1,100 @@
+/* Work: a page that grows downward (owner, 2026-10-09), one section per project, each about one screen
+   tall at 1440x900 and never clipped (min-height, content-driven). The object stands large on its own
+   stage; sections alternate sides so three projects do not read as one card three times. Each section
+   is the porch of docs/design/family.md §3.1: house ground, the project's light pool, object, title,
+   facts, one way in. Home's showcase (styles/showcase.css) keeps the giant title and the serif pitch;
+   Work speaks in the house's quieter voice: a title, a lede, a line of labelled facts. Tokens are global.css.
+   Isolation rule (media research §3.1): nothing forms a stacking context around a blended object; the
+   light is a positioned sibling painted first, the content is positioned after it (the .case-top pattern). */
+.w-intro { padding-bottom: 16px; }
+.w-intro .vdek { max-width: 34em; }
+
+.w-ghead { padding: 72px 0 0; }
+.w-ghead h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: -0.012em; }
+.w-gnote { margin-top: 10px; max-width: 34em; color: var(--ink-2); text-wrap: pretty; }
+
+.w-proj {
+  --obj: min(100%, 640px, calc(100svh - var(--bar-h) - 136px));
+  position: relative; min-height: calc(100svh - var(--bar-h));
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 72px; align-items: center;
+  padding: 56px 0;
+}
+.w-proj > * { position: relative; }
+.w-proj.flip { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+.w-proj.flip > .w-obj { order: 2; }
+
+/* the project's light: a pool behind the object and a faint wash over the section, feathered top and
+   bottom so neighbouring sections hand over without an edge. It spans the window, not the column. */
+.w-light {
+  position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; translate: -50% 0; pointer-events: none;
+  background:
+    radial-gradient(34% 46% at var(--lx, 31%) 50%, color-mix(in srgb, var(--pg) 12%, transparent), color-mix(in srgb, var(--pg) 4%, transparent) 60%, transparent),
+    radial-gradient(22% 30% at var(--lx2, 46%) 72%, color-mix(in srgb, var(--p3, var(--p2, var(--pg))) 5%, transparent), transparent),
+    linear-gradient(color-mix(in srgb, var(--pg) 2.5%, transparent), color-mix(in srgb, var(--pg) 2.5%, transparent));
+  -webkit-mask-image: linear-gradient(transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(transparent, #000 22%, #000 78%, transparent);
+}
+.w-proj.flip .w-light { --lx: 69%; --lx2: 54%; }
+
+.w-obj { width: var(--obj); justify-self: center; }
+
+.w-text { max-width: 31em; }
+.w-proj:not(.flip) .w-text { justify-self: start; }
+.w-index { display: flex; align-items: baseline; gap: 2px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.w-index .w-n { color: var(--p); }
+.w-title { margin: 14px 0 0 -0.03em; font: 400 var(--t-title)/var(--lh-title) var(--f-display); letter-spacing: -0.02em; }
+.w-sum { margin-top: 22px; font: 400 var(--t-lede)/var(--lh-lede) var(--f-ui); letter-spacing: -0.015em; color: var(--ink); text-wrap: pretty; }
+.w-what { margin-top: 16px; color: var(--ink-2); text-wrap: pretty; }
+.w-numbers { display: flex; gap: 40px; margin-top: 22px; }
+.w-numbers div { display: flex; flex-direction: column-reverse; gap: 2px; }
+.w-numbers dd { margin: 0; font: 400 var(--t-h2)/1 var(--f-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums lining-nums; }
+
+/* the quiet facts: labelled, on one line where it fits, under a hairline */
+.w-facts { display: flex; flex-wrap: wrap; gap: 12px 32px; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); }
+.w-facts div { display: grid; gap: 3px; min-width: 0; }
+.w-facts .f-runs, .w-facts .f-role { flex: 1 1 14em; }
+.w-facts dd { margin: 0; display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-ui); line-height: var(--lh-ui); color: var(--ink-2); font-variant-numeric: tabular-nums; text-wrap: pretty; }
+.w-facts .f-status dd { color: var(--ink); white-space: nowrap; }
+.w-facts .f-status .icon { color: var(--p); }
+
+.w-links { margin-top: 30px; }
+
+/* the section in view: its object is the page's stage (scripts/site.ts); a hairline in its colour marks it */
+.w-proj::before { content: ""; position: absolute; left: 0; top: 0; width: 56px; height: 1px; background: var(--p); opacity: 0; transition: opacity var(--d-4) var(--ease-out); }
+.w-proj.flip::before { left: auto; right: 0; }
+.w-proj.is-current::before { opacity: 0.7; }
+.w-proj + .w-proj { border-top: 1px solid var(--rule); }
+
+/* hand-written work, when it exists, is lighter (brief §7, 2026-10-08): smaller object, no screen height */
+.w-proj.light { --obj: min(100%, 360px); min-height: 0; padding: 48px 0; }
+.w-proj.light .w-title { font-size: var(--t-h2); line-height: var(--lh-h2); }
+
+@media (max-width: 1240px) {
+  .w-proj { column-gap: 44px; padding: 48px 0; }
+  .w-text { max-width: 28em; }
+}
+
+/* phone: each project stacks, object above text, as tall as its content */
+@media (max-width: 899.98px) {
+  .w-intro { padding-bottom: 8px; }
+  .w-proj, .w-proj.flip { grid-template-columns: minmax(0, 1fr); min-height: 0; padding: 36px 0 52px; }
+  .w-proj.flip > .w-obj { order: 0; }
+  .w-obj, .w-proj.light .w-obj { width: min(84vw, 360px); margin: -8px auto 4px; }
+  .w-light, .w-proj.flip .w-light { --lx: 50%; --lx2: 62%; background-position: 0 0; }
+  .w-proj .w-light { background:
+    radial-gradient(60% 26% at 50% 24%, color-mix(in srgb, var(--pg) 12%, transparent), color-mix(in srgb, var(--pg) 4%, transparent) 60%, transparent),
+    linear-gradient(color-mix(in srgb, var(--pg) 2.5%, transparent), color-mix(in srgb, var(--pg) 2.5%, transparent)); }
+  .w-text { max-width: none; }
+  .w-title { font-size: clamp(42px, 12vw, 56px); }
+  .w-sum { margin-top: 16px; font-size: 20px; }
+  .w-numbers { gap: 28px; }
+  .w-facts { gap: 12px 24px; }
+  .w-proj::before, .w-proj.flip::before { left: 0; right: auto; }
+  .w-ghead { padding-top: 48px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .w-proj::before { transition-duration: 1ms; }
+}
+@media (min-width: 900px) {
+  /* the first project begins right under the intro, so its title and summary are in the first screen */
+  .w-group:first-of-type .w-proj:first-of-type { padding-top: 24px; }
+}

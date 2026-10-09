@@ -177,14 +177,38 @@ test.describe('desktop', () => {
     await ctx.close();
   });
 
-  test('S16 hover sweep over catalog rows changes the object at most twice', async ({ page }) => {
+  test('S16 a fast scroll through Work sections moves only the section in view', async ({ page }) => {
+    /* the old catalog's intent, for the page that grows downward (ADR-0009): sweeping past projects
+       never swaps or thrashes an object; only the section in view goes past its poster, at most one
+       video plays, the others hold no decoders, and the stage and the accent follow the section */
     await page.goto('work/'); await settle(page, 1200);
     const c0 = await page.evaluate(() => (window as any).MediaStage.changes);
-    const boxes = await page.evaluate(() => [...document.querySelectorAll('.cat-row')].map((t) => { const r = t.getBoundingClientRect(); return [r.left + 100, r.top + r.height / 2]; }));
-    for (let k = 0; k < 2; k++) for (const [x, y] of k ? boxes.slice().reverse() : boxes) { await page.mouse.move(x, y, { steps: 3 }); await page.waitForTimeout(70); }
-    await settle(page, 1200);
-    const n = (await page.evaluate(() => (window as any).MediaStage.changes)) - c0;
-    expect(n, 'object changes for a 70 ms-per-row sweep').toBeLessThanOrEqual(2);
+    const tops = await page.evaluate(() => [...document.querySelectorAll('.w-proj')].map((s) => Math.round(s.getBoundingClientRect().top + scrollY)));
+    expect(tops.length, 'one section per project').toBeGreaterThanOrEqual(3);
+    for (let k = 0; k < 2; k++) for (const y of k ? tops.slice().reverse() : tops) { await page.evaluate((y) => scrollTo(0, y - 60), y); await page.waitForTimeout(70); }
+    await page.evaluate((y) => scrollTo(0, y - 60), tops[1]);
+    await settle(page, 1500);
+    const r = await page.evaluate(() => {
+      const cur = document.querySelector<HTMLElement>('.w-proj.is-current');
+      const media = [...document.querySelectorAll('#main .media')];
+      return {
+        changes: (window as any).MediaStage.changes,
+        cur: cur?.id ?? null,
+        playing: [...document.querySelectorAll('video')].filter((v) => !v.paused).length,
+        heavyElsewhere: media.filter((m) => !cur?.contains(m) && m.querySelector('video:not(.m-drop), .m-lean')).length,
+        stages: document.querySelectorAll('.media.stage').length,
+        stageInCur: !!cur?.querySelector('.media.stage'),
+        accent: document.documentElement.style.getPropertyValue('--accent').trim().toLowerCase(),
+        light: cur?.dataset.light?.toLowerCase() ?? '',
+      };
+    });
+    expect(r.changes - c0, 'objects swapped while scrolling').toBe(0);
+    expect(r.cur, 'the second section is in view').toBe(await page.evaluate(() => document.querySelectorAll('.w-proj')[1].id));
+    expect(r.playing, 'videos playing').toBeLessThanOrEqual(1);
+    expect(r.heavyElsewhere, 'sections out of view holding videos or frames').toBe(0);
+    expect(r.stages, 'exactly one stage (a unique view-transition name)').toBe(1);
+    expect(r.stageInCur, 'the stage is the section in view').toBe(true);
+    expect(r.accent, 'the accent follows the section in view').toBe(r.light);
   });
 });
 

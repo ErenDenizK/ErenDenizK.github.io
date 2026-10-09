@@ -31,7 +31,7 @@ interface Props {
 const site = await getSite();
 const { title, description = site.description, tab, og = 'home', ogAlt, type = 'website', published, modified, jsonld = [], pageClass = '', noindex = false, accent } = Astro.props;
 /* The page accent (brief §7, after v0): the dot in the mark and the light in the active tab take it.
-   Work starts neutral and follows the project you dwell on (scripts/accent.ts). */
+   Work starts neutral and follows the project section in view (scripts/accent.ts). */
 const tabAccent = { home: 'var(--edk)', work: 'var(--accent-neutral)', record: 'var(--log)', about: 'var(--about)' } as const;
 const pageAccent = accent ?? (tab ? tabAccent[tab] : 'var(--accent-neutral)');
 const fullTitle = title ? `${title} · ${site.name}` : site.name;
