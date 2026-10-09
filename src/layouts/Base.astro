@@ -17,7 +17,7 @@ import { ogPath } from '../lib/files.mjs';
 interface Props {
   title?: string;            // page title without the site name; omitted on Home
   description?: string;
-  tab: 'home' | 'work' | 'log' | 'about' | null;
+  tab: 'home' | 'work' | 'record' | 'about' | null;
   og?: string;               // card id in tools/og/out
   ogAlt?: string;
   type?: 'website' | 'article' | 'profile';
@@ -26,9 +26,14 @@ interface Props {
   jsonld?: object[];
   pageClass?: string;
   noindex?: boolean;
+  accent?: string;           // the page's light (a project's colour); otherwise the tab's token
 }
 const site = await getSite();
-const { title, description = site.description, tab, og = 'home', ogAlt, type = 'website', published, modified, jsonld = [], pageClass = '', noindex = false } = Astro.props;
+const { title, description = site.description, tab, og = 'home', ogAlt, type = 'website', published, modified, jsonld = [], pageClass = '', noindex = false, accent } = Astro.props;
+/* The page accent (brief §7, after v0): the dot in the mark and the light in the active tab take it.
+   Work starts neutral and follows the project you dwell on (scripts/accent.ts). */
+const tabAccent = { home: 'var(--edk)', work: 'var(--accent-neutral)', record: 'var(--log)', about: 'var(--about)' } as const;
+const pageAccent = accent ?? (tab ? tabAccent[tab] : 'var(--accent-neutral)');
 const fullTitle = title ? `${title} · ${site.name}` : site.name;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogFile = ogPath(og) ?? ogPath('home');
@@ -47,7 +52,7 @@ const graph = [
 ];
 ---
 <!doctype html>
-<html lang="en" data-base={url()}>
+<html lang="en" data-base={url()} style={`--accent: ${pageAccent}`}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -64,7 +69,7 @@ const graph = [
   <link rel="icon" type="image/png" sizes="32x32" href={url('favicon-32.png')}>
   <link rel="apple-touch-icon" href={url('apple-touch-icon.png')}>
   <link rel="manifest" href={url('manifest.webmanifest')}>
-  <link rel="alternate" type="application/atom+xml" title={`Log · ${site.name}`} href={url('log/feed.xml')}>
+  <link rel="alternate" type="application/atom+xml" title={`${site.log.title} · ${site.name}`} href={url('record/feed.xml')}>
   <link rel="sitemap" href={url('sitemap-index.xml')}>
   <meta property="og:type" content={type}>
   <meta property="og:site_name" content={site.name}>
@@ -95,11 +100,20 @@ const graph = [
         var p = String(path || '').replace(/^https?:\/\/[^/]+/, '');
         if (p.indexOf(base) === 0) p = p.slice(base.length);
         var m = p.split(/[?#]/)[0].split('/').filter(Boolean);
-        var tabs = ['', 'work', 'log', 'about'];
+        var tabs = ['', 'work', 'record', 'about'];
         var t = tabs.indexOf(m[0] || '');
         return { tab: t < 0 ? -1 : t, depth: m.length > 1 ? 1 : 0 };
       }
       addEventListener('pageswap', function () { try { sessionStorage.setItem('vt-from', location.pathname); } catch (e) {} });
+      /* the accent changes smoothly across pages: the last page's light is where this one's starts */
+      try {
+        var acc = JSON.parse(sessionStorage.getItem('edk-accent') || 'null');
+        if (acc && Date.now() - acc.t < 4000 && acc.c) { d.style.setProperty('--accent-from', acc.c); d.classList.add('accent-arrive'); }
+        sessionStorage.removeItem('edk-accent');
+      } catch (e) {}
+      function keepAccent() { try { sessionStorage.setItem('edk-accent', JSON.stringify({ c: getComputedStyle(d).getPropertyValue('--accent').trim(), t: Date.now() })); } catch (e) {} }
+      addEventListener('pageswap', keepAccent);
+      addEventListener('pagehide', keepAccent);
       addEventListener('pagereveal', function (e) {
         if (!e.viewTransition) return;
         var from = null;

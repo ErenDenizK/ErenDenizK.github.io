@@ -1,5 +1,5 @@
 ---
-/* One entry of any kind at its frozen address /log/<year>/<slug>/ (log.md §6.1). Essays get the long
+/* One entry of any kind at its frozen address /record/<year>/<slug>/ (log.md §6.1). Essays get the long
    layout with a contents list from 1240 px; entries and notes the same page without it. */
 import Base from '../../../layouts/Base.astro';
 import Icon from '../../../components/Icon.astro';
@@ -28,14 +28,14 @@ const jsonld = d.kind === 'note' ? [] : [{
   url: abs(entryPath(e)), author: { '@id': abs('#me') }, inLanguage: 'en',
 }];
 ---
-<Base title={title} tab="log" description={d.dek ?? title} type="article" published={d.date} modified={modified} og="home" jsonld={jsonld}>
+<Base title={title} tab="record" description={d.dek ?? title} type="article" published={d.date} modified={modified} og="home" jsonld={jsonld}>
   <div class:list={['inner post-wrap', { 'has-toc': toc.length > 0 }]}>
     <nav class="post-toc" aria-label="On this page">
-      <a class="qlink post-back" href={url('log/')}><Icon name="arrow-left" />{site.log.title}</a>
+      <a class="qlink post-back" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
       {toc.length > 0 && <><p class="meta">On this page</p><ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></>}
     </nav>
     <article class:list={['post', `post-${d.kind}`]} data-slug={entrySlug(e)}>
-      <a class="qlink post-back post-back-sm" href={url('log/')}><Icon name="arrow-left" />{site.log.title}</a>
+      <a class="qlink post-back post-back-sm" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
       <header class="post-head">
         <p class="meta"><time datetime={iso(d.date)}>{longDate(d.date)}</time> · {meta.join(' · ')}{pj.map((p) => <> · <a class="pj" href={url(`work/${p.id}/`)} style={`--p: ${p.data.accent.glow ?? p.data.accent.color}`}>{p.data.title}</a></>)}</p>
         {d.kind === 'note' ? <h1 class="vh">{title}</h1> : <h1 class="post-title">{title}</h1>}

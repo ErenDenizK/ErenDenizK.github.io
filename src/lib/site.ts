@@ -39,7 +39,7 @@ export const projectPath = (p: Project | string) => `work/${typeof p === 'string
 /** The frozen slug is the file name (log.md §6.1). */
 export const entrySlug = (e: LogEntry) => e.id.split('/').pop()!;
 export const entryYear = (e: LogEntry) => String(e.data.date.getUTCFullYear());
-export const entryPath = (e: LogEntry) => `log/${entryYear(e)}/${entrySlug(e)}/`;
+export const entryPath = (e: LogEntry) => `record/${entryYear(e)}/${entrySlug(e)}/`;
 
 const MON = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec'.split(' ');
 const MONTH = 'January February March April May June July August September October November December'.split(' ');

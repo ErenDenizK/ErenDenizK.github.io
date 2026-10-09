@@ -6,7 +6,7 @@
   "host": "erendenizk.github.io",
   "kicker": { "study": "Computer Engineering", "school": "Yıldız Technical University", "schoolShort": "YTU", "year": "First year" },
   "lede": "I study Computer Engineering in Istanbul and build products by directing AI agents. I'm drawn to the low level: processors, embedded systems, the machine's own language.",
-  "description": "Eren Deniz Kuyucaklıoğlu: Computer Engineering at Yıldız Technical University, Istanbul. Products built by directing AI agents, and a log of the work.",
+  "description": "Eren Deniz Kuyucaklıoğlu: Computer Engineering at Yıldız Technical University, Istanbul. Products built by directing AI agents, and a record of the work.",
   "links": {
     "github": "https://github.com/ErenDenizK",
     "linkedin": "https://www.linkedin.com/in/eren-d-kuyucakl%C4%B1o%C4%9Flu-7037b433a"
@@ -72,7 +72,7 @@
       "both": "Both matter. I don't stay away from AI, and I don't let it stand in for the first track."
     },
     "colophon": [
-      ["The log", "starts as notes I dictate, often in Turkish. An AI agent edits them into English in my voice, keeps my facts as they are, and I read every draft before it goes up."],
+      ["The record", "starts as notes I dictate, often in Turkish. An AI agent edits them into English in my voice, keeps my facts as they are, and I read every draft before it goes up."],
       ["The site", "is built the same way as my projects: I decide and review, agents write most of the code. The glass objects are modelled in Blender and rendered ahead of time; the page shows the renders."]
     ],
     "now": { "label": "Oct 2026", "text": "First term at YTU. Recto in public beta, English Prep at 0.75, Eat Map in Xcode." }
