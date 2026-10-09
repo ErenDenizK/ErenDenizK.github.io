@@ -143,3 +143,10 @@ log design are to be explored.
 - **Content:** descriptions and project texts will be discussed at length later; no rush.
   Improving the presentation inside the projects themselves is much later; the portfolio
   comes first.
+- **Owner's notes on E (later the same day):** the top navigation is troublesome, especially
+  clicking Home. On wide screens the pop-up project views were good and the live 3D was not.
+  On phones the rendered objects looked good, but projects opening as a drawer did not.
+- **2.5D photo:** not now; the owner will send more photos when one suits it. The photos sent
+  are full resolution.
+- **Icons:** build them to the same quality bar as the objects, with a system or tool if one
+  helps.

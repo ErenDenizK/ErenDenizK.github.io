@@ -28,7 +28,9 @@ Three principles guide every track:
 | 3 | Craft audit: type, motion, visuals of prototype E; premium type pairings with licences | `research/2026-10-craft-audit.md`, type specimen shots | done |
 | 4 | Tools and skills for motion and drawing | `research/2026-10-tools.md` | done |
 | 5 | Eat Map identity: colour from the owner's screenshot, object and poster re-lit | updated object, poster, accent | done |
-| 6 | Synthesis: pick the 3D strategy, the type system and the motion system; prototype F | ADR-0006/0007, prototype F | after 1–5 |
+| 6 | Synthesis: pick the 3D strategy, the type system and the motion system; prototype F | ADR-0006/0007, prototype F | running |
+| 8 | Icon system: a reproducible tool that draws every icon from one set of rules | `tools/icons/`, `research/2026-10-icons.md` | running |
+| 9 | Media delivery research: still-to-video handoff, codecs, ground match, photos | `research/2026-10-media.md` | done |
 | 7 | Level 2 prep: repo rename, ADR acceptances, Astro scaffold | — | waiting on owner |
 
 ## Owner decisions (2026-10-09)
@@ -39,8 +41,6 @@ icons on phones. Content waits. See brief §7.
 
 ## Open questions for the owner
 
-- What exactly went wrong in transitions and navigation (device, tab, what happened)?
-- Full-resolution originals of the photos, if the ones sent were compressed.
 - Eat Map: one line on what the app is, in their words; exact hex if it differs from `#eb4f6b`.
 
 ## Done this round
@@ -48,3 +48,11 @@ icons on phones. Content waits. See brief §7.
 - Prototype E on the real Blender objects, rig lighting and Cycles posters (2026-10-09).
 - Research: 3D quality, motion and drawing tools, craft audit with type pairings.
 - Eat Map re-lit in the app's rose.
+
+## Notes for later
+
+- 2.5D About photo: two hand-cut layers (lens rim and fingers in front, courtyard behind)
+  moved with CSS, or a Depth Anything V2 depth map (runs offline here, soft edges, ~1%
+  parallax). Wait for a photo the owner picks for it (`research/2026-10-media.md`).
+- iPhone checks for the owner once F has video: ground seam in a dark room, Low Power Mode,
+  loop seam, every tab twice without a crash.
