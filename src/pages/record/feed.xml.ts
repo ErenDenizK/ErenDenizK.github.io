@@ -16,6 +16,8 @@ export const GET: APIRoute = async () => {
     let html = e.rendered?.html ?? '';
     html = html.replace(/<figure class="fig"[\s\S]*?<figcaption[^>]*>([\s\S]*?)<\/figcaption><\/figure>/g, (_m, cap) => `<p>[Figure: ${cap}] <a href="${link}">See it on the site.</a></p>`);
     if (!html) html = `<p>${esc(e.data.dek ?? '')} <a href="${link}">Read it on the site.</a></p>`;
+    if (e.data.key) html = `<p><strong>${esc(e.data.key)}</strong></p>` + html;
+    if (e.data.next) html += `<p><strong>Next:</strong> ${esc(e.data.next)}</p>`;
     return `  <entry>
     <id>tag:erendenizk.github.io,${iso(e.data.date)}:record/${entrySlug(e)}</id>
     <title>${esc(entryTitle(e))}</title>
