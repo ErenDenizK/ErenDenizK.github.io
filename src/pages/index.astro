@@ -1,14 +1,26 @@
 ---
+/* Home is the showcase, Work is the catalog (owner, 2026-10-09: no duplication). After the hero, the
+   project that leads (leadProject: `featured`, else the latest record activity) is shown object
+   first, with its pitch, status and one way in; the others follow as a quiet "also building" strip.
+   Every project link opens the focus view (ADR-0007 item 4). */
 import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
 import Icon from '../components/Icon.astro';
+import Thumb from '../components/Thumb.astro';
 import Foot from '../components/Foot.astro';
-import ProjectTeaser from '../components/ProjectTeaser.astro';
-import { getSite, getProjects, getLog, url, entryPath, entryTitle, dayMonYear, isPlaceholder } from '../lib/site';
+import '../styles/showcase.css';
+import { getSite, getProjects, getLog, url, projectPath, entryPath, entryTitle, dayMonYear, isPlaceholder, leadProject, statusLine } from '../lib/site';
 const site = await getSite();
+const log = await getLog();
 const projects = (await getProjects()).filter((p) => p.data.group === 'directed');
-const latest = (await getLog())[0];
+const lead = leadProject(projects, log);
+const others = projects.filter((p) => p !== lead);
+const latest = log[0];
 const k = site.kicker;
+const sc = site.home.showcase;
+const L = lead.data;
+const la = L.accent;
+const leadVars = [`--p: ${la.color}`, `--pg: ${la.glow ?? la.color}`, la.p2 && `--p2: ${la.p2}`, la.p3 && `--p3: ${la.p3}`].filter(Boolean).join('; ');
 ---
 <Base tab="home" og="home" ogAlt={`${site.name}, with the edk glass object.`} type="profile">
   <div class="inner">
@@ -26,11 +38,42 @@ const k = site.kicker;
       <Media obj="edk" slot="home" stage priority />
     </div>
 
-    <section class="teasers" aria-labelledby="h-sel">
-      <div class="sec-head"><h2 id="h-sel">Work in progress</h2><a class="more" href={url('work/')}>All work <Icon name="arrow-right" /></a></div>
-      <div class="teaser-list">
-        {projects.map((p) => <ProjectTeaser p={p} />)}
+    <section class="showcase" aria-labelledby="h-show" data-lead={lead.id} style={leadVars}>
+      <div class="sc-light" aria-hidden="true"></div>
+      <div class="sc-lead">
+        <Media obj={L.object} slot="showcase" class="sc-obj" light={la.glow ?? la.color} sizes="(min-width: 900px) 600px, 80vw" />
+        <div class="sc-text">
+          <p class="meta sc-kicker"><Icon name="dot" />{sc.kicker}</p>
+          <h2 class="sc-title" id="h-show"><span class="t-title" id={`sc-title-${lead.id}`}>{L.title}</span></h2>
+          <p class="meta sc-status">{statusLine(lead)}{L.statusNote && ` · ${L.statusNote}`}</p>
+          <p class="sc-pitch">{L.summary}</p>
+          {L.what.text && <p class="sc-what">{L.what.text}</p>}
+          {!!L.what.numbers?.length && (
+            <dl class="sc-numbers">{L.what.numbers.map((n) => <div><dt class="meta">{n.label}</dt><dd>{n.value}</dd></div>)}</dl>
+          )}
+          <div class="links">
+            <a class="btn tint p-open" href={url(projectPath(lead))} data-p={lead.id} data-ptitle={`sc-title-${lead.id}`}>{sc.cta} <Icon name="arrow-right" weight="medium" /></a>
+          </div>
+        </div>
       </div>
+
+      {others.length > 0 && (
+        <div class="sc-also">
+          <div class="sc-also-head"><h2 class="meta" id="h-also">{sc.also}</h2><a class="more" href={url('work/')}>All work <Icon name="arrow-right" /></a></div>
+          <ul class="also-list" aria-labelledby="h-also">
+            {others.map((p) => (
+              <li><a class="also p-open" href={url(projectPath(p))} data-p={p.id} style={`--p: ${p.data.accent.glow ?? p.data.accent.color}`}>
+                <Thumb obj={p.data.object} size={96} class="also-thumb" />
+                <span class="also-text">
+                  <span class="also-name on-serif"><span class="t-title">{p.data.title}</span><Icon name="arrow-right" size={20} /></span>
+                  <span class="meta">{statusLine(p)}</span>
+                  <span class="also-sum">{p.data.summary}</span>
+                </span>
+              </a></li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
 
     <div class="now-grid">

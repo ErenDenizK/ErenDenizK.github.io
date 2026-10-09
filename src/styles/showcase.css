@@ -1,0 +1,71 @@
+/* Home's showcase (owner, 2026-10-09: Home is a showcase, Work the full catalog). After the hero, the
+   leading project is a scene of its own: its object large on the left, mirroring the hero's object on
+   the right, lit by the project's colour; then a quiet strip of the others. Tokens are global.css.
+   Isolation rule (media research §3.1): nothing here forms a stacking context around the blended
+   object, so it adds onto the page ground and the light; the light is a positioned sibling painted
+   first, and the content is positioned above it (the .case-top pattern). */
+.showcase { position: relative; margin-top: 24px; }
+.sc-light {
+  position: absolute; left: -18%; top: -14%; width: 84%; aspect-ratio: 1; pointer-events: none;
+  background:
+    radial-gradient(closest-side, color-mix(in srgb, var(--pg) 11%, transparent), color-mix(in srgb, var(--pg) 4%, transparent) 58%, transparent),
+    radial-gradient(26% 26% at 70% 70%, color-mix(in srgb, var(--p3, var(--pg)) 5%, transparent), transparent);
+}
+.sc-lead { position: relative; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 56px; align-items: center; }
+.sc-lead > * { position: relative; }
+.sc-obj { width: min(100%, 600px); justify-self: center; cursor: pointer; }
+.sc-kicker { display: inline-flex; align-items: center; gap: 8px; color: var(--ink-2); }
+.sc-kicker .icon { color: var(--p); }
+.sc-title { margin: 18px 0 0 -0.035em; font: 400 clamp(60px, 6.6vw, 104px)/0.92 var(--f-display); letter-spacing: -0.024em; }
+.sc-status { margin-top: 18px; }
+.sc-pitch { margin-top: 26px; max-width: 18em; font: 400 clamp(25px, 2.3vw, 34px)/1.2 var(--f-display); letter-spacing: -0.012em; text-wrap: balance; }
+.sc-what { margin-top: 18px; max-width: 30em; color: var(--ink-2); text-wrap: pretty; }
+.sc-numbers { display: flex; gap: 40px; margin-top: 24px; }
+.sc-numbers div { display: flex; flex-direction: column-reverse; gap: 2px; }
+.sc-numbers dd { margin: 0; font: 400 var(--t-h2)/1 var(--f-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums lining-nums; }
+.sc-text .links { margin-top: 30px; }
+.sc-text .btn.tint { background: var(--p); }
+
+/* the others: one quiet strip, never the cards Work uses */
+.sc-also { position: relative; margin-top: 48px; }
+.sc-also-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--rule); }
+.sc-also-head h2 { color: var(--ink-2); }
+.sc-also-head .more { font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
+.sc-also-head .more:hover { color: var(--ink); }
+.also-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 40px; }
+.also { position: relative; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 20px; align-items: center; padding: 20px 0 8px; text-decoration: none; color: inherit; }
+.also::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--p); transform: scaleX(0); transform-origin: 0 50%; transition: transform var(--d-4) var(--ease-out); }
+.also:hover::before, .also:focus-visible::before { transform: none; }
+.also-thumb-pic { display: contents; }
+.also-thumb { width: 96px; height: 96px; object-fit: cover; opacity: 0.86; transition: opacity var(--d-2), transform var(--d-3) var(--ease-out);
+  -webkit-mask-image: radial-gradient(closest-side, #000 50%, rgba(0, 0, 0, 0.6) 72%, transparent); mask-image: radial-gradient(closest-side, #000 50%, rgba(0, 0, 0, 0.6) 72%, transparent); }
+.also:hover .also-thumb, .also:focus-visible .also-thumb { opacity: 1; transform: scale(1.06); }
+.also-text { display: grid; gap: 4px; }
+.also-name { display: flex; align-items: center; gap: 10px; font: 400 28px/1.1 var(--f-display); letter-spacing: -0.015em; }
+.also-name .icon { color: var(--ink-3); transition: color var(--d-1), transform 200ms var(--ease-out); }
+.also:hover .also-name .icon { color: var(--p); transform: translateX(3px); }
+.also-sum { color: var(--ink-2); font-size: var(--t-ui); line-height: var(--lh-ui); max-width: 28em; text-wrap: pretty; }
+
+@media (max-width: 1240px) {
+  .sc-lead { gap: 40px; }
+}
+@media (max-width: 899.98px) {
+  .showcase { margin-top: 32px; }
+  .sc-light { left: -40%; top: -6%; width: 180%; }
+  .sc-lead { grid-template-columns: 1fr; gap: 0; }
+  .sc-obj { width: min(80vw, 340px); margin: 0 auto -8px; }
+  .sc-title { margin-top: 14px; font-size: clamp(48px, 13vw, 64px); }
+  .sc-pitch { margin-top: 18px; font-size: 24px; }
+  .sc-numbers { gap: 28px; }
+  .sc-also { margin-top: 40px; }
+  .also-list { grid-template-columns: 1fr; }
+  .also { grid-template-columns: minmax(0, 1fr) 76px; padding: 18px 0; border-top: 1px solid var(--rule); }
+  .also-list li:first-child .also { border-top: 0; }
+  .also-thumb { grid-column: 2; grid-row: 1; width: 76px; height: 76px; }
+  .also-text { grid-column: 1; grid-row: 1; }
+  .also-name { font-size: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .also::before { transition-duration: 1ms; }
+  .also:hover .also-thumb, .also:focus-visible .also-thumb, .also:hover .also-name .icon { transform: none; }
+}

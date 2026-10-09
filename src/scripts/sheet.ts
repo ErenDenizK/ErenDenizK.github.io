@@ -31,7 +31,8 @@ function prefetch(href: string) { const u = new URL(href, location.href).pathnam
 
 export function initSheet() {
   if (!enabled || !('showModal' in HTMLDialogElement.prototype)) return;
-  const projectLinks = () => [...document.querySelectorAll<HTMLAnchorElement>('a.teaser[data-p], a.tile[data-p]')];
+  /* every link that opens a project: Home's showcase and strip, Work's catalog rows */
+  const projectLinks = () => [...document.querySelectorAll<HTMLAnchorElement>('a.p-open[data-p]')];
 
   /* ---- the dialog, built once ---- */
   const dlg = document.createElement('dialog');
@@ -178,7 +179,7 @@ export function initSheet() {
   const siteName = baseTitle.includes(' · ') ? baseTitle.split(' · ').pop()! : baseTitle;
   function titleFor(slug: string) {
     const a = resolved.get(base + 'work/' + slug + '/');
-    const t = a?.dataset.title || document.querySelector(`[data-p="${slug}"] .t-title, [data-p="${slug}"] .tile-name`)?.textContent || slug;
+    const t = a?.dataset.title || document.querySelector(`[data-p="${slug}"] .t-title`)?.textContent || slug;
     return `${t} · ${siteName}`;
   }
 
@@ -231,14 +232,16 @@ export function initSheet() {
     if (S.key === slug) return;
     history.pushState({ sheet: 1, base: pageBase, k: ++keySeq } as St, '', a.href);
     document.title = titleFor(slug);
-    open(slug, { how: 'push', src: a.querySelector('.tile-name, .t-title') });
+    /* the title that morphs into the sheet's: inside the link, or named by data-ptitle (Home's showcase button) */
+    const src = a.dataset.ptitle ? document.getElementById(a.dataset.ptitle) : a.querySelector('.t-title');
+    open(slug, { how: 'push', src });
   }
 
   document.addEventListener('click', (e) => {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !mq.wide.matches) return;
     const a = (e.target as Element).closest?.('a') as HTMLAnchorElement | null;
     if (!a) return;
-    if (a.matches('a.teaser[data-p], a.tile[data-p]') && !dlg.contains(a)) { e.preventDefault(); go(a); return; }
+    if (a.matches('a.p-open[data-p]') && !dlg.contains(a)) { e.preventDefault(); go(a); return; }
     if (dlg.contains(a)) {
       if (a.matches('.case-next a[data-go]')) { e.preventDefault(); stepTo(a.dataset.go!); return; }
       const h = a.getAttribute('href') || '';

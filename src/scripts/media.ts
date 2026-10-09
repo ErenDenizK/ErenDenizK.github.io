@@ -6,7 +6,7 @@
      the idle loop, and the droplet change between tabs (droplet.out here, droplet.in on arrival);
    - desktop with a fine pointer, in addition: the lean grid (the four nearest half-size frames summed
      with "lighter", the exact bilinear blend; at rest it settles on an exact full-size frame) and the
-     interaction clip on a press or on hover intent over a Work tile.
+     interaction clip on a press or on hover intent over a Work row.
    At most one video plays; offscreen slots pause; hidden documents pause everything. Everything is
    ground-subtracted and drawn with plus-lighter inside .m-stage. */
 import { mq, reduce, motionOK, idle } from './env';
