@@ -119,8 +119,30 @@ const graph = [
       function keepAccent() { try { sessionStorage.setItem('edk-accent', JSON.stringify({ c: getComputedStyle(d).getPropertyValue('--accent').trim(), t: Date.now() })); } catch (e) {} }
       addEventListener('pageswap', keepAccent);
       addEventListener('pagehide', keepAccent);
+      /* While a cross-document view transition plays (up to 720 ms after the page is drawn, longer on a
+         slow phone), its overlay takes every press and the browser reports the root as the target, so a
+         tab or the mark clicked as the page arrives would do nothing. The press ends the transition and
+         the click goes to what is under it. Same-document transitions (the sheet) are not touched:
+         sheet.ts reads a press on the root there as one on the backdrop. */
+      var live = null, cut = -1e9;
+      addEventListener('pointerdown', function (e) {
+        if (!live || e.target !== d) return;
+        try { live.skipTransition(); } catch (x) {}
+        live = null; cut = performance.now();
+      }, true);
+      addEventListener('click', function (e) {
+        if (e.target !== d || !e.isTrusted || performance.now() - cut > 2000) return;
+        cut = -1e9;
+        var t = document.elementFromPoint(e.clientX, e.clientY);
+        if (!t || t === d) return;
+        e.stopImmediatePropagation(); e.preventDefault();
+        t.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, composed: true, view: window, detail: e.detail, button: e.button, buttons: e.buttons,
+          clientX: e.clientX, clientY: e.clientY, screenX: e.screenX, screenY: e.screenY, ctrlKey: e.ctrlKey, shiftKey: e.shiftKey, altKey: e.altKey, metaKey: e.metaKey }));
+      }, true);
       addEventListener('pagereveal', function (e) {
         if (!e.viewTransition) return;
+        var vt = live = e.viewTransition;
+        vt.finished.finally(function () { if (live === vt) live = null; });
         var from = null;
         try { from = navigation.activation && navigation.activation.from && navigation.activation.from.url; } catch (x) {}
         if (!from) try { from = sessionStorage.getItem('vt-from'); } catch (x) {}

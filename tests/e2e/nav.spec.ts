@@ -285,3 +285,33 @@ for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
     });
   });
 }
+
+/* While a cross-document view transition plays, its overlay takes every press and the browser reports the
+   root as the target. A tab or the mark pressed as a page arrives (a slow phone stretches that window) must
+   still navigate. The transition is held for 5 s here, so the press always lands inside it. */
+for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
+  test.describe(label, () => {
+    test.use(size);
+    test(`S18 a press while the page is still arriving (${label})`, async ({ page }) => {
+      const isPhone = label === 'phone';
+      await page.addInitScript(() => {
+        const w = window as any;
+        addEventListener('pagereveal', (e: any) => { w.__vt = !!e.viewTransition; e.viewTransition?.finished.finally(() => { w.__vt = false; }); });
+        document.addEventListener('DOMContentLoaded', () => {
+          const s = document.createElement('style');
+          s.textContent = '::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation-duration: 5s !important; }';
+          document.head.appendChild(s);
+        });
+      });
+      await page.goto(''); await settle(page);
+      for (const [t, sel, want] of [['work', '.tabs a[data-tab="record"]', 'record'], ['about', '.mark', '']] as const) {
+        await tab(page, t, { tap: isPhone });
+        expect(await page.evaluate(() => (window as any).__vt), 'a view transition is playing').toBe(true);
+        const r = await page.evaluate((s) => { const b = document.querySelector(s)!.getBoundingClientRect(); return [b.left + b.width / 2, b.top + b.height / 2]; }, sel);
+        if (isPhone) await page.touchscreen.tap(r[0], r[1]); else await page.mouse.click(r[0], r[1]);
+        await settle(page, 600);
+        await check(page, `${sel} pressed while arriving on /${t}`, (s) => (s.path === want ? [] : ['ended on /' + s.path]));
+      }
+    });
+  });
+}
