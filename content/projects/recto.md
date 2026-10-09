@@ -10,6 +10,7 @@ started: 2026-09
 runsOn: Desktop and tablet browsers; phones read-only
 stack: Web · WebAssembly · PDFium
 accent: { color: "#bbed26", glow: "#a6d873" }
+wordmark: { face: Funnel Display, weight: 600, tracking: -0.03 }
 object: recto
 og: recto
 summary: A PDF editor that runs entirely in your browser. Nothing is uploaded.

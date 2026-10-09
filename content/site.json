@@ -16,7 +16,7 @@
     "text": "First term of Computer Engineering at YTU. Recto is in public beta; English Prep is at 0.75."
   },
   "home": {
-    "showcase": { "kicker": "Building now", "cta": "Take a look", "also": "Also building" }
+    "showcase": { "title": "Work", "all": "All work", "kicker": "Building now", "cta": "Take a look", "also": "Also building" }
   },
   "work": {
     "kicker": "Three products, all in development",
