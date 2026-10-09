@@ -1,0 +1,64 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Object rig compare</title>
+<!-- Side by side: the Cycles poster (left) and the GLB through prototypes/e-dark/objects/rig.js
+     in three.js 0.170 (right). Opened by compare.mjs; ?name=recto[&dir=...]. -->
+<style>
+  html, body { margin: 0; background: #0A0A0B; color: #cfcac2; font: 13px/1 ui-sans-serif, system-ui, sans-serif; }
+  .row { display: flex; }
+  .cell { width: 600px; }
+  .label { height: 28px; display: flex; align-items: center; padding-left: 12px; letter-spacing: .02em; }
+  img, canvas { display: block; width: 600px; height: 600px; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+<div class="row">
+  <div class="cell"><div class="label" id="l1">Cycles poster</div><img id="poster" alt=""></div>
+  <div class="cell"><div class="label" id="l2">three.js 0.170 + rig.js</div><canvas id="c" width="600" height="600"></canvas></div>
+</div>
+<script>
+  addEventListener('error', (e) => { window.__err = String(e.message); window.__ready = true; });
+  addEventListener('unhandledrejection', (e) => { window.__err = String(e.reason); window.__ready = true; });
+</script>
+<script type="module">
+  import * as THREE from 'three';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+  import { createRig } from '/prototypes/e-dark/objects/rig.js';
+
+  const q = new URLSearchParams(location.search);
+  const name = q.get('name');
+  const dir = q.get('dir') || '/prototypes/e-dark/objects';
+  document.getElementById('poster').src = `${dir}/${name}-poster-600.webp`;
+  document.getElementById('l1').textContent = `${name}: Cycles poster`;
+
+  const canvas = document.getElementById('c');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(1);
+  renderer.setSize(600, 600, false);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+
+  const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+  const gltf = await loader.loadAsync(`${dir}/${name}.glb`);
+  const obj = gltf.scene;
+  let accent = '#ffffff';
+  obj.traverse((o) => { if (o.userData && o.userData.accent) accent = o.userData.accent; });
+  const rig = createRig(THREE, renderer, scene, { accent });
+  rig.prepare(obj);
+  rig.frameCamera(camera, obj);
+  scene.add(obj);
+  let tris = 0;
+  obj.traverse((o) => { if (o.isMesh) tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; });
+  document.getElementById('l2').textContent = `three.js 0.170 + rig.js (${Math.round(tris)} tris)`;
+  rig.update();
+  renderer.render(scene, camera);
+  await new Promise((r) => requestAnimationFrame(r));
+  rig.update();
+  renderer.render(scene, camera);
+  window.__ready = true;
+</script>
