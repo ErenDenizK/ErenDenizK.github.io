@@ -1530,7 +1530,10 @@ html.sheet-open { overflow: hidden; }
       prevEl.classList.add('leaving');
       prevEl.style.top = prevTop + 'px';
       var out = prevEl.animate([{ opacity: prevOp }, { opacity: 0 }], { duration: reduce() ? 120 : 160, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' });
-      out.onfinish = function () { if (g !== viewGen) return; prevEl.hidden = true; cleanView(prevEl); out.cancel(); Media.refresh(); };
+      var outDone = function () { if (g !== viewGen || !prevEl.classList.contains('leaving')) return; prevEl.hidden = true; cleanView(prevEl); out.cancel(); Media.refresh(); };
+      out.onfinish = outDone;
+      /* state never waits on a frame: if the compositor stalls, the outgoing view still goes */
+      setTimeout(outDone, 600);
       viewAnims.push(out);
     }
     /* scroll resets (or restores) before the incoming view paints */
@@ -1614,7 +1617,7 @@ html.sheet-open { overflow: hidden; }
   }
 
   /* =====================================================================================
-     3c. The focus sheet: closed → opening → open → closing, every phase interruptible
+     3c. The focus sheet: closed, opening, open, closing; every phase interruptible
      ===================================================================================== */
   var dlg = document.getElementById('focus');
   var sheetEl = document.getElementById('sheet');
@@ -1712,6 +1715,7 @@ html.sheet-open { overflow: hidden; }
     var a2 = backlight.animate([{ opacity: from.back }, { opacity: 1 }], { duration: d, easing: 'cubic-bezier(0.2, 0.7, 0.1, 1)' });
     Sheet.anims = [a1, a2];
     a1.onfinish = opened;
+    setTimeout(function () { if (g === Sheet.gen && Sheet.phase === 'opening') { Sheet.anims.forEach(function (a) { try { a.finish(); } catch (e) {} }); opened(); } }, d + 500);
   };
 
   /* Closes what is on screen. The URL has already been made to agree by the caller. */
@@ -1727,7 +1731,7 @@ html.sheet-open { overflow: hidden; }
     setLight(lightFor(shown.view || 'work'));
     if (key && shown.view === 'work') setWorkProject(key, true);
     function done() {
-      if (g !== Sheet.gen) return;
+      if (g !== Sheet.gen || Sheet.phase !== 'closing') return;
       Sheet.anims.forEach(function (a) { try { a.cancel(); } catch (e) {} });
       Sheet.anims = [];
       Sheet.phase = 'closed';
@@ -1747,6 +1751,7 @@ html.sheet-open { overflow: hidden; }
     sheetEl.style.transform = ''; sheetEl.style.transition = '';
     Sheet.anims = [b1, b2];
     b1.onfinish = done;
+    setTimeout(done, d + 500);   /* closing never waits on a stalled frame */
   };
 
   Sheet.step = function (key) {
