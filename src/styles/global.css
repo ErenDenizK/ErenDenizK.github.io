@@ -266,7 +266,7 @@ img.blend { mix-blend-mode: plus-lighter; }
 .latest span { color: var(--ink-2); display: block; margin-top: 6px; }
 .latest:hover b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; text-decoration-color: var(--ink-4); }
 
-/* ---------- side column (Log). Work's catalog is styles/catalog.css, Home's showcase styles/showcase.css ---------- */
+/* ---------- side column (Log). Work's sections are styles/work.css, Home's showcase styles/showcase.css ---------- */
 .stagecol { position: relative; }
 .stagecol .sticky { position: sticky; top: calc(var(--bar-h) + 24px); background: var(--ground); }
 

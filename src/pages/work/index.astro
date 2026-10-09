@@ -1,96 +1,100 @@
 ---
-/* Work is the catalog, Home the showcase (owner, 2026-10-09: no duplication). Every project is one
-   index row with its facts and its object small; groups follow the two kinds of work (brief §7,
-   2026-10-08), and a group with nothing in it is left out (hidden until written). The object in the
-   head follows the row you dwell on (scripts/site.ts); a row opens the focus view (ADR-0007 item 4). */
+/* Work grows downward (owner, 2026-10-09: "each project starting within its own screen height, with
+   large objects"; the catalog table and the small objects packed together are gone). A short intro
+   states the role once, then every project is a section about one screen tall: its object large on its
+   own stage, the name, a quiet line of facts, the summary and what it is, one way in (the focus view,
+   ADR-0007 item 4) and its links out. Each section is the porch of family.md §3.1, so a threshold and an
+   embassy can later grow under it. Groups follow the two kinds of work (brief §7, 2026-10-08); a group
+   with nothing in it is left out, and so is any unwritten fact (hidden until written).
+   Media (ADR-0009): one stage per section; only the section in view moves (scripts/site.ts, media.ts). */
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
 import Icon from '../../components/Icon.astro';
-import Thumb from '../../components/Thumb.astro';
 import Foot from '../../components/Foot.astro';
-import '../../styles/catalog.css';
-import { poster } from '../../lib/media';
-import { getSite, getProjects, getLog, url, projectPath, ym, iso, dayMonYear, isPlaceholder, entriesFor, threads, type Project } from '../../lib/site';
+import '../../styles/work.css';
+import { getSite, getProjects, getLog, url, projectPath, ym, iso, dayMonYear, isPlaceholder, entriesFor, type Project } from '../../lib/site';
 const site = await getSite();
 const all = await getProjects();
 const log = await getLog();
-const first = all[0];
-const threadOf = new Map(threads(log, all).rows.map((t) => [t.project.id, t]));
-/* the record column appears once any project has an entry */
-const withRecord = all.some((p) => entriesFor(p, log).length > 0);
 const groups = [
   { id: 'directed', title: site.work.groups.directed, note: null, items: all.filter((p) => p.data.group === 'directed') },
   { id: 'by-hand', title: site.work.groups.byHand, note: site.work.byHand, items: all.filter((p) => p.data.group === 'by-hand') },
 ].filter((g) => g.items.length > 0);
-/* posters of every project's object, for the stage to change into without a request for markup */
-const mediaIndex = Object.fromEntries(all.map((p) => {
-  const x = poster(p.data.object);
-  return [x.name, { manifest: x.manifest, src: x.src, srcset: x.sources, shadow: x.shadow, light: p.data.accent.glow ?? p.data.accent.color }];
-}));
+/* the role is said once, in the intro; a project whose role differs says its own */
+const directed = groups.find((g) => g.id === 'directed')?.items ?? [];
+const roles = new Map<string, number>();
+directed.forEach((p) => roles.set(p.data.role, (roles.get(p.data.role) ?? 0) + 1));
+const commonRole = [...roles].sort((a, b) => b[1] - a[1])[0]?.[0];
 const light = (p: Project) => p.data.accent.glow ?? p.data.accent.color;
-const cols = [['name', 'Project'], ['status', 'Status'], ['ver', 'Version'], ['start', 'Started'], ['role', 'Role'], ['runs', 'Runs on'], ...(withRecord ? [['rec', 'In the record']] : [])];
+const vars = (p: Project) => {
+  const a = p.data.accent;
+  return [`--p: ${a.color}`, `--pg: ${light(p)}`, a.p2 && `--p2: ${a.p2}`, a.p3 && `--p3: ${a.p3}`].filter(Boolean).join('; ');
+};
+const facts = (p: Project): [string, string, string?][] => {
+  const d = p.data;
+  const mine = entriesFor(p, log);
+  return ([
+    ['Status', [d.status, d.statusNote].filter(Boolean).join(', ')],
+    ['Version', d.version && !isPlaceholder(d.version) ? d.version : null],
+    ['Started', isPlaceholder(d.started) ? null : ym(d.started), isPlaceholder(d.started) ? undefined : d.started],
+    ['Runs on', d.runsOn],
+    ['Role', d.group === 'by-hand' || d.role !== commonRole ? d.role : null],
+    ['Last in the record', mine.length ? dayMonYear(mine[0].data.date) : null, mine.length ? iso(mine[0].data.date) : undefined],
+  ] as [string, string | null, string?][]).filter((f): f is [string, string, string?] => !!f[1]);
+};
+const two = (n: number) => String(n).padStart(2, '0');
+let n = 0;
 ---
 <Base title="Work" tab="work" description={site.work.dek}>
-  <div class:list={['inner', 'catalog', { 'has-record': withRecord }]}>
-    <div class="cat-head">
-      <header class="vhead">
-        <p class="meta">{site.work.kicker}</p>
-        <h1 class="vtitle" id="h-work">{site.work.title}</h1>
-        <p class="vdek lede">{site.work.dek}</p>
-      </header>
-      <div class="cat-stage" aria-hidden="true">
-        <Media obj={first.data.object} slot="work" stage light={light(first)} sizes="(min-width: 900px) 340px, 1px" priority />
-      </div>
-    </div>
+  <div class="inner work">
+    <header class="vhead w-intro">
+      <p class="meta">{site.work.kicker}</p>
+      <h1 class="vtitle" id="h-work">{site.work.title}</h1>
+      <p class="vdek lede">{site.work.dek}</p>
+    </header>
 
     {groups.map((g) => (
-      <section class="cat-group" data-group={g.id} aria-labelledby={`h-${g.id}`}>
-        <div class="cat-ghead">
-          <h2 id={`h-${g.id}`}>{g.title}</h2>
-          <span class="meta">{g.items.length} {g.items.length === 1 ? 'project' : 'projects'}</span>
-        </div>
-        {g.note && <p class="cat-gnote">{g.note}</p>}
-        <div class="cat-cols meta" aria-hidden="true"><span class="c-thumb"></span>{cols.map(([k, c]) => <span class={`h-${k}`}>{c}</span>)}<span class="c-go"></span></div>
-        <ol class="cat-list">
-          {g.items.map((p) => {
-            const d = p.data;
-            const mine = entriesFor(p, log);
-            const t = threadOf.get(p.id);
-            return (
-              <li><a class="cat-row p-open" href={url(projectPath(p))} data-p={p.id} data-obj={d.object} data-light={light(p)} style={`--p: ${light(p)}`}>
-                <Thumb obj={d.object} size={64} class="cat-thumb" />
-                <span class="c-name">
-                  <span class="t-title">{d.title}</span>
-                  <span class="c-sum">{d.summary}</span>
-                </span>
-                <span class="c-cell c-status"><span class="c-lab">Status</span><span class="c-state"><Icon name="dot" />{d.status}</span>{d.statusNote && <span class="meta">{d.statusNote}</span>}</span>
-                <span class="c-cell c-ver">{d.version && !isPlaceholder(d.version) && <><span class="c-lab">Version</span>{d.version}</>}</span>
-                <span class="c-cell c-start">{!isPlaceholder(d.started) && <><span class="c-lab">Started</span><time datetime={d.started}>{ym(d.started)}</time></>}</span>
-                <span class="c-cell c-role"><span class="c-lab">Role</span>{d.role}</span>
-                <span class="c-cell c-runs"><span class="c-lab">Runs on</span>{d.runsOn}</span>
-                {withRecord && (
-                  <span class="c-cell c-rec">
-                    {mine.length > 0 && <>
-                      <span class="c-lab">In the record</span><time datetime={iso(mine[0].data.date)}>{dayMonYear(mine[0].data.date)}</time>
-                      <span class="meta">{mine.length} {mine.length === 1 ? 'entry' : 'entries'}</span>
-                      {t && (
-                        <svg class="c-thread" aria-hidden="true" focusable="false" height="12">
-                          <line x1={`${t.line[0]}%`} x2={`${t.line[1]}%`} y1="6" y2="6" stroke="var(--p)" stroke-opacity="0.4" stroke-width="1" />
-                          {t.marks.map((m) => <circle cx={`${m.x}%`} cy="6" r={m.kind === 'note' ? 2 : 3} fill="var(--p)" />)}
-                          {t.ticks.map((k) => <rect x={`calc(${k.x}% - 1px)`} y={6 - k.h / 4} width="2" height={k.h / 2} rx="1" fill="var(--p)" />)}
-                        </svg>
-                      )}
-                    </>}
-                  </span>
+      <section class="w-group" data-group={g.id} aria-labelledby={groups.length > 1 || g.note ? `h-${g.id}` : 'h-work'}>
+        {(groups.length > 1 || g.note) && (
+          <div class="w-ghead">
+            <h2 id={`h-${g.id}`}>{g.title}</h2>
+            {g.note && <p class="w-gnote">{g.note}</p>}
+          </div>
+        )}
+        {g.items.map((p) => {
+          const d = p.data;
+          const i = n++;
+          const live = d.links.find((l) => l.kind === 'live');
+          const rest = d.links.filter((l) => l !== live);
+          return (
+            <article class:list={['w-proj', { flip: i % 2 === 1, light: g.id === 'by-hand' }]} id={p.id} data-p-sec={p.id} data-light={light(p)} style={vars(p)} aria-labelledby={`w-title-${p.id}`}>
+              <div class="w-light" aria-hidden="true"></div>
+              <Media obj={d.object} slot="work" class="w-obj" stage={i === 0} solo light={light(p)} sizes="(min-width: 900px) 640px, 84vw" priority={i === 0} />
+              <div class="w-text">
+                <p class="meta w-index"><span class="w-n">{two(i + 1)}</span><span class="w-of"> of {two(all.length)}</span></p>
+                <h2 class="w-title" id={`w-title-${p.id}`}><span class="t-title" id={`w-t-${p.id}`}>{d.title}</span></h2>
+                <p class="w-sum">{d.summary}</p>
+                {d.what.text && <p class="w-what">{d.what.text}</p>}
+                {!!d.what.numbers?.length && (
+                  <dl class="w-numbers">{d.what.numbers.map((x) => <div><dt class="meta">{x.label}</dt><dd>{x.value}</dd></div>)}</dl>
                 )}
-                <span class="c-go" aria-hidden="true"><Icon name="arrow-right" size={20} /></span>
-              </a></li>
-            );
-          })}
-        </ol>
+                <dl class="w-facts">
+                  {facts(p).map(([k, v, dt]) => (
+                    <div class:list={[`f-${k.split(' ')[0].toLowerCase()}`]}><dt class="meta">{k}</dt><dd>{k === 'Status' && <Icon name="dot" />}{dt ? <time datetime={dt}>{v}</time> : v}</dd></div>
+                  ))}
+                </dl>
+                <div class="links w-links">
+                  <a class="btn tint p-open" href={url(projectPath(p))} data-p={p.id} data-ptitle={`w-t-${p.id}`}>{site.work.cta}<span class="vh"> at {d.title}</span> <Icon name="arrow-right" weight="medium" /></a>
+                  {live && <a class="qlink" href={live.href}>{live.label} <Icon name="arrow-up-right" /></a>}
+                  {rest.map((l) => <a class="qlink" href={l.href}>{l.label}<span class="vh">, {d.title}</span> <Icon name="arrow-up-right" /></a>)}
+                  {d.linksNote && <span class="qlink is-note">{d.linksNote}</span>}
+                </div>
+              </div>
+            </article>
+          );
+        })}
       </section>
     ))}
     <Foot />
   </div>
-  <script type="application/json" id="media-index" set:html={JSON.stringify(mediaIndex)} />
 </Base>
