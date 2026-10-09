@@ -75,8 +75,9 @@ test.describe('desktop', () => {
     await page.evaluate(() => document.querySelector('#focus .emb-promise')!.scrollIntoView({ block: 'center' })); await page.waitForTimeout(400);
     expect(await page.$eval('#focus .kl-field', (f) => (f as HTMLElement).dataset.klRunning)).toBe('true');
     expect(await page.$eval('#sheet-scroll', (s) => s.scrollWidth - s.clientWidth), 'no sideways scroll').toBeLessThanOrEqual(0);
-    await page.keyboard.press('Escape'); await page.waitForTimeout(600);
-    expect(await page.evaluate(() => [...document.querySelectorAll('video')].filter((x) => !x.paused && x.closest('#focus')).length)).toBe(0);
+    await page.keyboard.press('Escape');
+    await expect.poll(() => page.evaluate(() => (document.getElementById('focus') as HTMLDialogElement).open), { timeout: 4000 }).toBe(false);
+    await expect.poll(() => page.evaluate(() => [...document.querySelectorAll('#focus video')].filter((x) => !(x as HTMLVideoElement).paused).length), { timeout: 4000 }).toBe(0);
   });
 });
 

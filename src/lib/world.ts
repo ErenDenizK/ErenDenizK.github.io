@@ -15,6 +15,10 @@ export async function getWorld(slug: string): Promise<World | null> {
   return e?.data ?? null;
 }
 
+/** A gradient is the button's fill only when it starts at the accent (English Prep's Sakura pair); a
+    gradient that does not (Recto's mark gradient) belongs to the mark, and the button keeps the one accent. */
+export const fills = (w: World) => !!w.accent.gradient && w.accent.gradient.stops[0].toLowerCase() === w.accent.color.toLowerCase();
+
 const curve = (s: Spring, fallback: { easing: string; duration: number }) => (s ? toLinear(s) : fallback);
 
 /** The world's tokens, scoped to the embassy: styles/embassy.css re-points the house names (--ink,
@@ -29,7 +33,7 @@ export function worldVars(w: World): string {
     '--w-hair': w.ground.hairline ?? 'rgba(255, 255, 255, 0.1)',
     '--w-ink': w.ink.primary, '--w-ink2': w.ink.secondary, '--w-ink3': w.ink.tertiary ?? w.ink.secondary, '--w-link': w.ink.link ?? w.ink.primary,
     '--w-accent': w.accent.color, '--w-accent-ink': w.accent.ink, '--w-accent-light': w.accent.light ?? w.accent.color,
-    '--w-accent-fill': g ? `linear-gradient(${g.angle}deg in srgb, ${g.stops.join(', ')})` : w.accent.color,
+    '--w-accent-fill': fills(w) ? `linear-gradient(${g!.angle}deg in srgb, ${g!.stops.join(', ')})` : w.accent.color,
     '--w-radius': `${w.accent.radius ?? 999}px`,
     '--w-face': w.fonts.ui.stack, '--w-btn-w': w.fonts.ui.weights?.includes(500) ? 500 : (w.fonts.ui.weights?.at(-1) ?? 500), '--w-ui-t': `${w.fonts.ui.tracking ?? 0}em`,
     '--w-display': display.stack, '--w-display-w': display.weights?.at(-1) ?? 600, '--w-display-t': `${display.tracking ?? -0.02}em`,
@@ -84,13 +88,15 @@ export type Shot = {
   frame: 'wide' | 'phone'; img: ImageMetadata;
   video?: { src: string; type: string }[]; duration?: number;
 };
-/* Codec strings for what tools/captures/clip.mjs writes; the level follows the frame size (a wide clip of
-   1440 x 900 is level 4.0 in all three codecs, a phone clip of 390 x 844 level 3.x). A wrong string makes a
-   browser skip a source it could play, so tests/worlds.mjs reads the levels back with ffprobe. */
-const TYPES: Record<'wide' | 'phone', Record<string, string>> = {
-  wide: { av1: 'video/mp4; codecs="av01.0.08M.10"', hevc: 'video/mp4; codecs="hvc1.2.4.L120.B0"', h264: 'video/mp4; codecs="avc1.640028"' },
-  phone: { av1: 'video/mp4; codecs="av01.0.04M.10"', hevc: 'video/mp4; codecs="hvc1.2.4.L90.B0"', h264: 'video/mp4; codecs="avc1.64001e"' },
-};
+/* Codec strings by the clip's pixel width (viewport x dpr): a phone clip (390 px), a wide one at 1x (1440 px,
+   level 4.0 in all three codecs) and a wide one at 2x (2880 px at 60 fps, level 5.1 / 5.2). A wrong string
+   makes a browser skip a source it could play, so tests/worlds.mjs reads the levels back with ffprobe. */
+export const CLIP_LEVELS = {
+  phone: { av1: 4, hevc: 90, h264: 30 }, wide: { av1: 8, hevc: 120, h264: 40 }, hi: { av1: 13, hevc: 153, h264: 52 },
+} as const;
+export const clipBucket = (px: number) => (px < 600 ? 'phone' : px <= 1920 ? 'wide' : 'hi');
+const codec = (kind: string, level: number) => kind === 'av1' ? `av01.0.${String(level).padStart(2, '0')}M.10`
+  : kind === 'hevc' ? `hvc1.2.4.L${level}.B0` : `avc1.6400${level.toString(16).padStart(2, '0')}`;
 
 /** A capture chosen in the project's frontmatter, resolved against its world.json entry and the master
     file beside it. A missing id or file fails the build, so a typo never ships an empty frame. */
@@ -102,8 +108,12 @@ export function shot(slug: string, w: World, pick: { id: string; at?: string; ca
   if (!img) throw new Error(`${slug}: capture "${c.id}" needs its PNG master in content/projects/${slug}/captures/`);
   const alt = c.alt ?? c.caption;
   const frame = c.viewport[0] < 600 ? 'phone' : 'wide';
+  const levels = CLIP_LEVELS[clipBucket(c.viewport[0] * c.dpr)] as Record<string, number>;
   const video = kind === 'signature'
-    ? c.files.filter((f) => f.endsWith('.mp4')).map((f) => ({ src: url(`media/captures/${slug}/${f.split('/').pop()}`), type: TYPES[frame][f.split('.').at(-2)!] ?? 'video/mp4' }))
+    ? c.files.filter((f) => f.endsWith('.mp4')).map((f) => {
+      const k = f.split('.').at(-2)!;
+      return { src: url(`media/captures/${slug}/${f.split('/').pop()}`), type: levels[k] ? `video/mp4; codecs="${codec(k, levels[k])}"` : 'video/mp4' };
+    })
     : undefined;
   return {
     id: c.id, alt, caption: pick.caption ?? c.caption, at: pick.at, shot: c.shot,
