@@ -1,0 +1,85 @@
+/* The contents ladder (ADR-0011, scripts/rail.ts): one dash per section at the right edge. The native
+   scrollbar goes only where the rail really is: html.rail-on is set before first paint by the head
+   script (layouts/Base.astro) and only for a fine pointer without forced colours; the media query below
+   repeats both conditions, so forced colours bring the platform's bar back even if the class stays.
+   Without JavaScript, on touch and on phones nothing here applies. */
+@media (hover: hover) and (pointer: fine) and (forced-colors: none) {
+  html.rail-on { scrollbar-width: none; }
+  html.rail-on::-webkit-scrollbar { display: none; }
+  /* one source of truth on essays: where the rail is on, it is the contents list (the back link stays) */
+  html.rail-on .post-toc ol, html.rail-on .post-toc > .meta { display: none; }
+  html.rail-on .rail { display: block; }
+}
+
+:root {
+  --rail-idle: #6a665f;          /* the dashes ahead of you: 3.5:1 on the ground (1.4.11 asks 3:1) */
+  --rail-panel: rgba(13, 13, 15, 0.94);
+}
+
+.rail {
+  display: none;
+  position: fixed; z-index: 21; right: 0; top: 50%; translate: 0 -50%;
+  view-transition-name: rail;
+  /* closed, only the 44 px column of dashes is drawn and takes the pointer; open, the titles join it */
+  clip-path: inset(0 0 0 calc(100% - 44px) round 14px 0 0 14px);
+  transition: clip-path var(--d-3) var(--ease-out);
+}
+.rail[hidden] { display: none !important; }
+html.sheet-open .rail { visibility: hidden; }
+.rail.is-open, .rail:focus-within { clip-path: inset(0 0 0 0 round 14px 0 0 14px); }
+
+/* the panel behind the titles */
+.rail::before {
+  content: ""; position: absolute; inset: 0; border-radius: 14px 0 0 14px; pointer-events: none;
+  background: var(--rail-panel);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  box-shadow: inset 0 0 0 1px var(--rule), -24px 0 60px -24px #000;
+  opacity: 0; transition: opacity var(--d-2) var(--ease-out);
+}
+.rail.is-open::before, .rail:focus-within::before { opacity: 1; }
+
+.rail-list { position: relative; padding: 10px 0 4px; }
+.rail-i {
+  display: flex; align-items: center; justify-content: flex-end; gap: 16px;
+  height: 28px; padding: 0 12px 0 22px;
+  text-decoration: none; color: var(--ink-3);
+  font: 400 14px/1.2 var(--f-ui); letter-spacing: 0.002em; white-space: nowrap;
+  cursor: pointer; user-select: none; -webkit-user-drag: none;
+}
+.rail-t { max-width: 17em; overflow: hidden; text-overflow: ellipsis; opacity: 0; transition: opacity var(--d-2) var(--ease-out), color var(--d-1); }
+.rail.is-open .rail-t, .rail:focus-within .rail-t { opacity: 1; }
+.rail-i.done .rail-t { color: var(--ink-2); }
+.rail-i.on .rail-t, .rail-i:hover .rail-t, .rail-i:focus-visible .rail-t { color: var(--ink); }
+.rail-i:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: 8px; }
+
+/* the dash: its length is its section's share of the page (8–20 px); the current one is longest and fills
+   from the edge as you read; the ones behind you keep their section's light at a contrast-solved value */
+.rail-d { position: relative; flex: none; width: 28px; height: 2px; }
+.rail-d i {
+  position: absolute; right: 0; top: 0; height: 2px; width: var(--w, 12px); border-radius: 1px;
+  background: var(--rail-idle);
+  /* a hairline of ground around each dash, so it keeps its contrast over a photograph (About) */
+  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
+  transition: width var(--d-3) var(--ease-out), background-color var(--d-2);
+}
+.rail-i.done .rail-d i { background: var(--ar); }
+.rail-i.on .rail-d i {
+  width: 28px;
+  background: linear-gradient(to left, var(--a) calc(4px + var(--f, 0) * (100% - 4px)), var(--rail-idle) 0);
+}
+.rail-i:hover .rail-d i { background-color: var(--ink-2); }
+.rail-i.done:hover .rail-d i { background: var(--a); }
+
+.rail-foot { position: relative; padding: 2px 12px 12px 22px; text-align: right; white-space: nowrap; opacity: 0; transition: opacity var(--d-2) var(--ease-out); }
+.rail.is-open .rail-foot, .rail:focus-within .rail-foot { opacity: 1; }
+
+.rail.is-drag, html.rail-grab, html.rail-grab * { cursor: grabbing !important; }
+.rail.is-drag .rail-i:hover .rail-d i { background-color: var(--rail-idle); }
+.rail.is-drag .rail-i.done:hover .rail-d i { background: var(--ar); }
+.rail.is-drag .rail-i.on:hover .rail-d i { background: linear-gradient(to left, var(--a) calc(4px + var(--f, 0) * (100% - 4px)), var(--rail-idle) 0); }
+
+/* reduced motion: the panel and titles cross-fade; nothing grows, slides or reveals */
+@media (prefers-reduced-motion: reduce) {
+  .rail { transition: none; }
+  .rail-d i { transition: background-color var(--d-1); }
+}

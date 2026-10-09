@@ -14,8 +14,8 @@ const site = await getSite();
 const a = site.about;
 const li = site.links.linkedin;
 ---
-<Base title="About" tab="about" og="about" ogAlt={`${site.name} at the YTÜ gate.`} type="profile" pageClass="page-about">
-  <div class="about-hero">
+<Base title="About" tab="about" og="about" ogAlt={`${site.name} at the YTÜ gate.`} type="profile" pageClass="page-about" rail>
+  <div class="about-hero" id="intro" data-rail-sec={a.title}>
     <figure class="courtyard">
       <picture>
         <source type="image/avif" srcset={`${c750a} 750w, ${c1000a} 1000w, ${c1350a} 1350w`} sizes="(min-width: 900px) 60vw, 100vw" />
@@ -46,7 +46,7 @@ const li = site.links.linkedin;
       </dl>
     </div>
 
-    <section class="tracks" aria-labelledby="h-tracks">
+    <section class="tracks" id="tracks" aria-labelledby="h-tracks" data-rail-sec={a.tracks.title}>
       <div class="sec-head"><h2 id="h-tracks">{a.tracks.title}</h2></div>
       <div class="track-grid">
         {a.tracks.items.map((t) => (
@@ -61,7 +61,7 @@ const li = site.links.linkedin;
       <p class="both lede">{a.tracks.both}</p>
     </section>
 
-    <section class="colophon" id="colophon" aria-labelledby="h-colo">
+    <section class="colophon" id="colophon" aria-labelledby="h-colo" data-rail-sec="How this site is made">
       <div>
         <div class="sec-head"><h2 id="h-colo">How this site is made</h2></div>
         <div class="prose">{a.colophon.map(([b, t]) => <p><b>{b}</b> {t}</p>)}</div>

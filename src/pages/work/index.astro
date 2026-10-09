@@ -45,9 +45,9 @@ const facts = (p: Project): [string, string, string?][] => {
 const two = (n: number) => String(n).padStart(2, '0');
 let n = 0;
 ---
-<Base title="Work" tab="work" description={site.work.dek}>
+<Base title="Work" tab="work" description={site.work.dek} rail>
   <div class="inner work">
-    <header class="vhead w-intro">
+    <header class="vhead w-intro" data-rail-sec={site.work.title} data-rail-accent="var(--accent-neutral)">
       <p class="meta">{site.work.kicker}</p>
       <h1 class="vtitle" id="h-work">{site.work.title}</h1>
       <p class="vdek lede">{site.work.dek}</p>
@@ -67,7 +67,7 @@ let n = 0;
           const live = d.links.find((l) => l.kind === 'live');
           const rest = d.links.filter((l) => l !== live);
           return (
-            <article class:list={['w-proj', { flip: i % 2 === 1, light: g.id === 'by-hand' }]} id={p.id} data-p-sec={p.id} data-light={light(p)} style={vars(p)} aria-labelledby={`w-title-${p.id}`}>
+            <article class:list={['w-proj', { flip: i % 2 === 1, light: g.id === 'by-hand' }]} id={p.id} data-p-sec={p.id} data-light={light(p)} data-rail-sec={d.title} data-rail-accent={d.accent.color} style={vars(p)} aria-labelledby={`w-title-${p.id}`}>
               <div class="w-light" aria-hidden="true"></div>
               <Media obj={d.object} slot="work" class="w-obj" stage={i === 0} solo light={light(p)} sizes="(min-width: 900px) 640px, 84vw" priority={i === 0} />
               <div class="w-text">
