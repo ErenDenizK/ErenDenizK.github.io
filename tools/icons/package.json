@@ -1,0 +1,12 @@
+{
+  "name": "edk-icons",
+  "private": true,
+  "type": "module",
+  "description": "Builds the site's icon set from one set of rules (see README.md).",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "svgo": "4.1.0"
+  }
+}
