@@ -13,7 +13,7 @@ Scripts that build the hero objects for Prototype E (ADR-0005, `prototypes/e-dar
 | `edk.py` | glass "edk" wordmark (Inter Display Bold) | `e`, `d`, `k` |
 | `recto.py` | glass page stack, folded corner, steel clip | `page_1`, `page_2`, `page_3`, `fold`, `title`, `lines`, `clip` |
 | `englishprep.py` | sakura glass speech bubble with "Aa" | `bubble`, `A`, `a`, `reply`, `dots` |
-| `eatmap.py` | amber glass map pin over a ceramic plate | `pin`, `plate` |
+| `eatmap.py` | rose glass map pin over a ceramic plate | `pin`, `plate` |
 | `log.py` | glass studio microphone | `head`, `core`, `band`, `neck`, `stem`, `base`, `led` |
 | `about.py` | round gold-wire glasses | `rim_left`, `rim_right`, `bridge`, `temple_left`, `temple_right`, `lens_left`, `lens_right` |
 | `calib.py` | chrome, clay and glass balls (rig check only) | `chrome`, `clay`, `glass` |
