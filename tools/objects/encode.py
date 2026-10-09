@@ -21,6 +21,10 @@ libsvtav1, libx265 and libx264 (Ubuntu's ffmpeg 6.1 has all three).
    it under the object with mix-blend-mode: multiply, so ground * m + object reproduces the
    poster's floor.
 5. manifest.json: what the media stage reads (shape in README.md, "The manifest").
+6. For the live frame engine (ADR-0009), when frames.py's `normal` stage exists: the normal
+   maps at half size, one vertical strip per pitch row plus the rest pose alone, and the clip
+   as stills (half size strip, plus the state axis's peak at full size) with its own normals.
+   `--live-only` writes just these and adds `normals` and `states` to the existing manifest.
 
 Per-object settings that differ from the defaults (budgets, media research §7) are in OBJECT
 below, so a rerun reproduces the shipped files; command-line flags override them.
@@ -54,6 +58,9 @@ ap.add_argument("--droplet-fps", type=int, default=60)
 ap.add_argument("--videos", default="interact,droplet,idle",
                 help="videos to (re-)encode; the others are kept from the existing manifest")
 ap.add_argument("--skip-video", action="store_true", help="stills and manifest only (tests)")
+ap.add_argument("--live-only", action="store_true",
+                help="only the live engine's normals and state frames, merged into the existing manifest")
+ap.add_argument("--normal-q", type=int, default=45, help="AVIF quality of the normal strips (4:4:4)")
 A = ap.parse_args()
 
 # Defaults, then per-object overrides for an object that does not fit the desktop (~1.15 MB) or
@@ -284,6 +291,146 @@ def write_seq(arrs, d):
         write_png16(a, os.path.join(d, f"f_{i:03d}.png"))
 
 
+
+# ================================================================ 6. the live engine (ADR-0009)
+def read_normals(path):
+    """A normal master (frames.py stage `normal`): camera-space n (x, y, z) and coverage."""
+    im = read_rgba16(path)
+    return im[..., :3] * 2 - 1, im[..., 3]
+
+
+def half_normals(n, cov, w, h):
+    """Halve a normal map by averaging the normals weighted by coverage (a silhouette edge does
+    not pull its neighbours toward the ground's dummy normal), then renormalise. Coverage itself
+    is not shipped: a hard 0-to-1 step rings under any lossy codec (AVIF q45 4:4:4 decoded up to
+    125 levels on the ground beside edges), so the page gates light by the beauty frame instead,
+    whose ground is exact 0. B stays 0, which also makes the strip smaller (about -18 %)."""
+    def rs(a):
+        return np.asarray(Image.fromarray(a.astype(np.float32), "F").resize((w, h), Image.BOX))
+    c = np.clip(rs(cov), 0, 1)
+    v = np.stack([rs(n[..., i] * cov) for i in range(3)], -1)
+    v /= np.maximum(np.linalg.norm(v, axis=-1, keepdims=True), 1e-6)
+    out = np.dstack([v[..., 0] * 0.5 + 0.5, v[..., 1] * 0.5 + 0.5, np.zeros_like(c)])
+    out[c < 1e-3, :2] = 0.5
+    return out
+
+
+def save_strip(tiles, path, q, fmt="avif"):
+    """Frames stacked top to bottom, frame 0 at the top: the page uploads a strip into texture-array
+    layers in one call (UNPACK_IMAGE_HEIGHT = one frame's height)."""
+    img = to8(np.concatenate(tiles, 0))
+    if fmt == "avif":
+        img.save(path, "AVIF", quality=q, speed=4, subsampling="4:4:4")
+    else:
+        img.save(path, "WEBP", quality=q, method=6)
+    return {"src": rel(path), "type": f"image/{fmt}", "bytes": size(path)}
+
+
+def encode_live(prev, still_fmt):
+    nd = os.path.join(M, "normal")
+    if not os.path.isdir(os.path.join(nd, "grid")):
+        return {}
+    d = os.path.join(OUT, "live")
+    if os.path.isdir(d):
+        shutil.rmtree(d)
+    os.makedirs(d)
+    lean = prev["lean"]
+    cols, rows = lean["cols"], lean["rows"]
+    gcrop = json.load(open(os.path.join(nd, "grid", "crop.json")))
+    assert all(gcrop[k] == lean["crop"][k] for k in ("x", "y", "w", "h")), "normals and grid crops differ"
+    gfiles = sorted(f for f in os.listdir(os.path.join(nd, "grid")) if f.startswith("f_"))
+    assert len(gfiles) == cols * rows, f"normal grid incomplete: {len(gfiles)} of {cols * rows}"
+    hw, hh = round(lean["crop"]["w"] / 2), round(lean["crop"]["h"] / 2)
+    tiles = [half_normals(*read_normals(os.path.join(nd, "grid", f)), hw, hh) for f in gfiles]
+    rows_out = []
+    for j in range(rows):
+        rows_out.append({**save_strip(tiles[j * cols:(j + 1) * cols], os.path.join(d, f"normals-r{j}.avif"), A.normal_q),
+                         "row": j, "frames": cols})
+    c = lean["center"]
+    rest = save_strip([tiles[c["row"] * cols + c["col"]]], os.path.join(d, "normals-rest.avif"), A.normal_q)
+    dec = np.asarray(Image.open(os.path.join(OUT, rows_out[c["row"]]["src"])).convert("RGB")).astype(int)
+    src = np.round(np.concatenate(tiles[c["row"] * cols:(c["row"] + 1) * cols], 0) * 255).astype(int)
+    def n3(x):
+        xy = x[..., :2] / 255 * 2 - 1
+        return np.dstack([xy, np.sqrt(np.clip(1 - (xy ** 2).sum(-1), 0, 1))])
+    on = (np.abs(src[..., :2] - 128) > 1).any(-1)   # object pixels (the ground is 128, 128)
+    deg = np.degrees(np.arccos(np.clip((n3(src) * n3(dec)).sum(-1), -1, 1)))[on]
+    report["normals_check"] = {"angle_mean_deg": round(float(deg.mean()), 2), "angle_p95_deg": round(float(np.percentile(deg, 95)), 2)}
+    normals = {"scale": 0.5, "w": hw, "h": hh,
+               "encoding": "R, G = camera-space normal x (right), y (up) as n * 0.5 + 0.5; z = sqrt(1 - x^2 - y^2); B unused (0); "
+                           "the ground is (0.5, 0.5); gate light by the beauty frame",
+               "rows": rows_out, "rest": rest}
+    states = {}
+    cd = os.path.join(nd, "clip")
+    if os.path.isdir(cd) and os.path.isdir(os.path.join(M, "clip")):
+        ninfo = json.load(open(os.path.join(cd, "crop.json")))
+        cfiles, ccrop = frames_of("clip")
+        assert all(ninfo[k] == ccrop[k] for k in ("x", "y", "w", "h")), "clip normals and clip crops differ"
+        n = ninfo["frames"]
+        nfiles = sorted(f for f in os.listdir(cd) if f.startswith("f_"))[:n]
+        assert ninfo["axis"] != "state" or len(nfiles) == n, f"clip normals incomplete: {len(nfiles)} of {n}"
+        cw, ch = round(ccrop["w"] / 2), round(ccrop["h"] / 2)
+        beauty = [subtracted(f) for f in cfiles[:n]]
+        assert_lit(beauty, "clip")
+        if ninfo["axis"] == "state":
+            # a state axis can rest anywhere (a held hover keeps Recto fanned), so it gets its own
+            # normals; a time axis is over in a second and the page fades the light out during it
+            normals["clips"] = {"interact": {"crop": {k: ccrop[k] for k in ("x", "y", "w", "h")}, "w": cw, "h": ch, "frames": n,
+                                             **save_strip([half_normals(*read_normals(os.path.join(cd, f)), cw, ch) for f in nfiles],
+                                                          os.path.join(d, "clip-normals.avif"), A.normal_q)}}
+        half = [resize(b, cw, ch) for b in beauty]
+        q_half = A.avif_q_half if still_fmt == "avif" else A.webp_q - 8
+        st = {"axis": ninfo["axis"], "fps": ninfo["fps"], "frames": n, "crop": {k: ccrop[k] for k in ("x", "y", "w", "h")},
+              "half": {"w": cw, "h": ch, **save_strip(half, os.path.join(d, f"clip-half.{still_fmt}"), q_half, still_fmt)}}
+        if ninfo["axis"] == "state":
+            st["peak"] = ninfo["peak"]
+            st["values"] = ninfo["values"]
+            p = os.path.join(d, f"clip-peak.{still_fmt}")
+            save_still(to8(beauty[ninfo["peak"]]), p, still_fmt)
+            st["peakFull"] = {"w": ccrop["w"], "h": ccrop["h"], "src": rel(p), "type": f"image/{still_fmt}", "bytes": size(p)}
+        states["interact"] = st
+    return {"normals": normals, "states": states}
+
+
+def live_bytes(man):
+    """What each live tier fetches beyond what the page already has (README "The manifest")."""
+    nm, st = man.get("normals"), man.get("states", {}).get("interact")
+    if not nm:
+        return None
+    first = man["bytes"]["tiers"]["firstPaint"]
+    lean = man["lean"]
+    full = next(t for t in lean["tiers"] if t["name"] == "full")
+    c = lean["center"]
+    rest_full = size(os.path.join(OUT, full["frames"][c["row"] * lean["cols"] + c["col"]]))
+    clip_n = nm.get("clips", {}).get("interact", {}).get("bytes", 0)
+    st_b = (st["half"]["bytes"] + st.get("peakFull", {}).get("bytes", 0)) if st else 0
+    drop = sum(s["bytes"] for k in ("out", "in") for s in man["droplet"][k]["sources"] if s["codec"] == "av1") if man.get("droplet") else 0
+    return {"normalsGrid": sum(r["bytes"] for r in nm["rows"]), "normalsRest": nm["rest"]["bytes"],
+            "clipNormals": clip_n, "states": st_b, "restFull": rest_full,
+            "tiers": {"phoneLive": first + rest_full + nm["rest"]["bytes"],
+                      "desktopLite": first + man["bytes"]["leanHalf"] + nm["rest"]["bytes"] + st_b + drop,
+                      "desktopFull": first + man["bytes"]["leanHalf"] + rest_full + sum(r["bytes"] for r in nm["rows"])
+                      + clip_n + st_b + drop},
+            "note": "desktop tiers add full-size grid frames on demand at rest (lean/full, about 10 KB each)"}
+
+
+if A.live_only:
+    man = json.load(open(os.path.join(OUT, "manifest.json")))
+    fmt = next(t for t in man["lean"]["tiers"] if t["name"] == "full")["format"]
+    man.update(encode_live(man, fmt))
+    lb = live_bytes(man)
+    if lb:
+        man["bytes"]["live"] = lb
+    json.dump(man, open(os.path.join(OUT, "manifest.json"), "w"), indent=1)
+    rp = os.path.join(M, "encode-report.json")
+    old = json.load(open(rp)) if os.path.exists(rp) else {}
+    old.update({k: v for k, v in report.items() if k != "obj"})
+    old.setdefault("bytes", {})["live"] = lb
+    json.dump(old, open(rp, "w"), indent=1)
+    print(json.dumps({"normals_check": report.get("normals_check"), "live": lb}, indent=1))
+    raise SystemExit(0)
+
+
 # ================================================================ 1. the grid
 grid_files, gcrop = frames_of("grid")
 ginfo = gcrop
@@ -500,6 +647,9 @@ man["bytes"] = {
                         + vbytes("droplet-in", c) for c in CODECS},
     },
 }
+man.update(encode_live(man, FMT))
+if live_bytes(man):
+    man["bytes"]["live"] = live_bytes(man)
 json.dump(man, open(os.path.join(OUT, "manifest.json"), "w"), indent=1)
 report["bytes"] = man["bytes"]
 report["checks"] = {k: v.get("check") for k, v in videos.items() if v.get("check")}
