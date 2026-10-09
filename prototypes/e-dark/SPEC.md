@@ -31,14 +31,15 @@ products by directing AI agents); my university; what I'm working on. Tag every 
 Dark: ground about #0A0A0B, warm off-white text (not pure white), one light per view, grain on
 gradients, glass only where something is behind it. Typography in the spirit of D but tuned for
 dark. Project colours: Recto lime #bbed26, English Prep sakura #efb1cb with iris and lagoon,
-Eat Map warm amber (placeholder). Avoid the dark-template tells in the UX research §3.
+Eat Map rose #eb4f6b with pink #ec5794 and a burgundy ground (taken from the app, 2026-10-09).
+Avoid the dark-template tells in the UX research §3.
 
 ## Objects (A: one per tab, changing into the next)
 - Home: a glass extruded lowercase "edk".
 - Work: the project's own object, changing as you hover or open a tile:
   Recto: glass page stack with a folded corner and clip (fan out on hover);
   English Prep: a sakura glass speech bubble with "Aa" (gentle pop);
-  Eat Map: a warm glass map pin over a small plate (pin drops).
+  Eat Map: a rose glass map pin over a small plate (pin drops).
 - Log: a glass microphone (the log is dictated); a soft waveform pulse.
 - About: a pair of round glasses (the owner wears round glasses; ties to the lens photo);
   a light flare across the lenses.

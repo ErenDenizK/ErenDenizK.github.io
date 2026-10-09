@@ -1,5 +1,5 @@
-"""Eat Map: a warm amber glass map pin above a small ceramic plate (SPEC "Objects").
-Parts (root "eatmap"): pin (amber glass, a hole through its head), plate (glazed ceramic).
+"""Eat Map: a rose glass map pin above a small ceramic plate (SPEC "Objects").
+Parts (root "eatmap"): pin (rose glass, a hole through its head), plate (glazed ceramic).
 The pin drops onto the plate on hover; animate pin's position only.
 Run: <venv>/bin/python tools/objects/eatmap.py [--out DIR] [--samples N]"""
 import math
@@ -9,13 +9,14 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import common as C  # noqa: E402
 
-ACCENT = "#f2a33a"  # warm amber (placeholder accent, CONTENT.md asks for a warm one)
+ACCENT = "#eb4f6b"  # rose: the app's own accent (selected tab, compose button), sampled from
+#                    a simulator photo; redder and more saturated than English Prep's sakura
 
 args = C.parse_args()
 C.reset()
-amber = C.glass("glass_amber", "#ffbf5e", transmission=0.8, rough=0.08, ior=1.5, coat=0.8,
+rose = C.glass("glass_rose", "#ff94b0", transmission=0.8, rough=0.08, ior=1.5, coat=0.8,
                 thickness=0.36)
-glaze = C.ceramic("ceramic_plate", "#f1ece4", rough=0.22, coat=0.8)
+glaze = C.ceramic("ceramic_plate", "#f3ebe7", rough=0.22, coat=0.8)
 
 # Pin: a teardrop outline (circle + tangent lines to the tip) with a round hole.
 r, cy, tip_y = 0.56, 0.0, -1.02
@@ -25,7 +26,7 @@ a_right, a_left = -90 + alpha, -90 - alpha + 360
 outer = [(0.0, tip_y)] + C.arc(0, cy, r, a_right, a_left, step_deg=4)
 outer = C.fillet(outer, [0.2] + [0] * (len(outer) - 1))
 hole = list(reversed(C.arc(0, cy, 0.22, 0, 360, step_deg=6)[:-1]))
-pin = C.outline_solid("pin", [outer, hole], 0.38, 0.13, bevel_res=6, mat=amber)
+pin = C.outline_solid("pin", [outer, hole], 0.38, 0.13, bevel_res=6, mat=rose)
 pin.rotation_euler = (math.radians(90), 0, math.radians(-22))
 pin.location.z = 1.02 + 0.32
 
