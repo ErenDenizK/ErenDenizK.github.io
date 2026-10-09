@@ -164,3 +164,6 @@ log design are to be explored.
 - **Log:** the index is titled "The record"; notes show in full in the list; project threads
   sit beside the log and inside each project's view; figures are geometric with at most one
   hand-drawn mark.
+- **v0 decisions:** the droplet tab change is shortened and overlapped with navigation;
+  unwritten sections are hidden until written (no visible placeholders); LinkedIn:
+  `https://www.linkedin.com/in/eren-d-kuyucakl%C4%B1o%C4%9Flu-7037b433a`.
