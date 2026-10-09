@@ -217,3 +217,8 @@ log design are to be explored.
   which is the owner and which is a project. Idea: set each product's name in its own display
   face (e.g. Recto in pairing 4's face) so projects read as products. Recto will later get a
   professional logo; the owner asks what tools could make 2D logo work strong.
+- **Record object:** ship C2 (the simpler card file) to test; the owner leans to H2 (recorder
+  with the voice-to-writing line) and may switch after seeing C2 live.
+- **Home:** the product plate (variant A) and the wordmarks (Recto in Funnel Display, English
+  Prep's own `english prep.`, Eat Map in Nunito) are accepted.
+- **Recto logo:** a new search with Dengeli as one candidate, worked in Penpot together.
