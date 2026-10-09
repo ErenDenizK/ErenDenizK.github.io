@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>og card</title>
+<!-- build.mjs injects the @font-face rules (local @fontsource files) before rendering. -->
+<style>
+  :root {
+    --ground: #0a0a0b; --ink: #e9e5de; --ink-2: #b6b1a8; --ink-3: #8c877f;
+    --accent: #c9d4ff; --glow: var(--accent);
+    --pad-x: 80px; --pad-y: 64px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--ground); }
+  body { color: var(--ink); font-family: "Inter", sans-serif; font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; font-kerning: normal; }
+  .card { position: relative; width: 1200px; height: 630px; overflow: hidden; background: var(--ground); isolation: isolate; }
+
+  /* Type roles from the site (craft audit §3.2): Newsreader display for names and titles,
+     Inter for everything else. Sentence case, no mono, no caps, no italic. */
+  .display { font-family: "Newsreader", serif; font-weight: 400; font-variation-settings: "opsz" 72;
+    letter-spacing: -0.022em; line-height: 0.94; color: var(--ink); text-wrap: balance; }
+  .meta { font-size: 30px; line-height: 1.3; letter-spacing: -0.005em; color: var(--ink-3);
+    font-variant-numeric: tabular-nums; }
+  .meta .acc { color: var(--accent); }
+  .line { font-size: 32px; line-height: 1.28; letter-spacing: -0.012em; color: var(--ink-2); text-wrap: balance; }
+  .byline { position: absolute; left: var(--pad-x); bottom: var(--pad-y); font-size: 26px; color: var(--ink-3);
+    letter-spacing: -0.005em; }
+
+  .text { position: absolute; left: var(--pad-x); top: 0; bottom: 0; display: flex; flex-direction: column;
+    justify-content: center; z-index: 2; }
+
+  /* Object: the light around it is CSS (as on the site), the render is drawn on top. */
+  .glow { position: absolute; border-radius: 50%; z-index: 0; pointer-events: none;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--glow) 13%, transparent),
+      color-mix(in srgb, var(--glow) 5%, transparent) 55%, transparent 100%); }
+  .obj { position: absolute; z-index: 1; }
+  .obj.plus-lighter { mix-blend-mode: plus-lighter; }
+
+  /* About: the courtyard, graded into the ground. */
+  .photo { position: absolute; top: 0; right: 0; height: 630px; z-index: 0; overflow: hidden; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: brightness(0.62) saturate(0.82) contrast(1.04) sepia(0.06); }
+  .photo::after { content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, var(--ground) 0%, color-mix(in srgb, var(--ground) 72%, transparent) 18%, transparent 46%),
+      radial-gradient(120% 90% at 70% 50%, transparent 55%, color-mix(in srgb, var(--ground) 80%, transparent) 100%); }
+  .about-glow { position: absolute; width: 760px; height: 760px; left: -260px; top: -280px; border-radius: 50%; z-index: 0;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 7%, transparent), transparent); }
+
+  /* Grain: dithers the dark gradients so JPEG and WebP do not band (craft audit §5.3). */
+  .grain { position: absolute; inset: 0; z-index: 5; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay; }
+</style>
+</head>
+<body>
+<div class="card" id="card"></div>
+<script>
+'use strict';
+// Measures the lit part of a poster (anything brighter than the ground) so every object can
+// be fitted to the same box, whatever framing the render had.
+function bbox(img) {
+  const w = 300, h = Math.round(300 * img.naturalHeight / img.naturalWidth);
+  const c = new OffscreenCanvas(w, h), x = c.getContext('2d');
+  x.drawImage(img, 0, 0, w, h);
+  const d = x.getImageData(0, 0, w, h).data;
+  let x0 = w, y0 = h, x1 = -1, y1 = -1;
+  for (let y = 0; y < h; y++) for (let i = 0; i < w; i++) {
+    const p = (y * w + i) * 4;
+    if (d[p] + d[p + 1] + d[p + 2] > 3 * 26) { if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  }
+  const s = img.naturalWidth / w;
+  return { x: x0 * s, y: y0 * s, w: (x1 - x0 + 1) * s, h: (y1 - y0 + 1) * s };
+}
+
+function load(src) {
+  return new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = src; });
+}
+
+function el(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+}
+
+// Fits the lit part of a poster into box {cx, cy, w, h}, never upscaling past 1:1.
+async function placeObject(card, src, blend, box) {
+  const img = await load(src);
+  const b = bbox(img);
+  const s = Math.min(box.w / b.w, box.h / b.h, 1);
+  const o = el('img', 'obj ' + blend);
+  o.src = src;
+  o.style.width = img.naturalWidth * s + 'px';
+  o.style.left = (box.cx - (b.x + b.w / 2) * s) + 'px';
+  o.style.top = (box.cy - (b.y + b.h / 2) * s) + 'px';
+  card.append(o);
+  return { s, b };
+}
+
+function glow(card, cx, cy, d) {
+  const g = el('div', 'glow');
+  Object.assign(g.style, { width: d + 'px', height: d + 'px', left: cx - d / 2 + 'px', top: cy - d / 2 + 'px' });
+  card.append(g);
+}
+
+// Shrinks a display line until it fits maxW (titles vary from "Recto" to "English Prep").
+// Width is measured on the text itself (a Range), not on the box, which a flex column stretches.
+function textWidth(node) {
+  const r = document.createRange(); r.selectNodeContents(node);
+  return r.getBoundingClientRect().width;
+}
+function fit(node, maxW, max, min) {
+  let size = max;
+  node.style.fontSize = size + 'px';
+  while (size > min && textWidth(node) > maxW) { size -= 2; node.style.fontSize = size + 'px'; }
+  return size;
+}
+
+function grain(card) {
+  const c = document.createElement('canvas');
+  c.width = 1200; c.height = 630; c.className = 'grain';
+  const x = c.getContext('2d'), d = x.createImageData(1200, 630);
+  let seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  for (let i = 0; i < d.data.length; i += 4) { const v = rnd() * 255; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
+  x.putImageData(d, 0, 0);
+  card.append(c);
+}
+
+const layouts = {
+  async home(card, c, site, root) {
+    const t = el('div', 'text');
+    const name = el('h1', 'display');
+    c.name.forEach((part, i) => { if (i) name.append(el('br')); name.append(part); });
+    name.style.fontSize = '112px';
+    name.style.maxWidth = '640px';
+    const line = el('p', 'line', c.line);
+    line.style.marginTop = '34px'; line.style.maxWidth = '600px'; line.style.fontSize = '30px';
+    t.append(name, line);
+    card.append(t);
+    fit(name, 580, 112, 84);
+    glow(card, 965, 315, 560);
+    await placeObject(card, root + c.object, c.blend, { cx: 965, cy: 315, w: 330, h: 200 });
+  },
+
+  // Centred variant: everything inside the middle 630 × 630 square, so a square crop
+  // (small chat layouts) still shows the object and the whole name.
+  async center(card, c, site, root) {
+    glow(card, 600, 196, 520);
+    await placeObject(card, root + c.object, c.blend, { cx: 600, cy: 196, w: 300, h: 150 });
+    const name = el('h1', 'display');
+    c.name.forEach((part, i) => { if (i) name.append(el('br')); name.append(part); });
+    Object.assign(name.style, { position: 'absolute', left: '0', right: '0', top: '318px', textAlign: 'center', fontSize: '96px', zIndex: 2 });
+    card.append(name);
+    fit(name, 560, 96, 72);
+  },
+
+  async project(card, c, site, root) {
+    const t = el('div', 'text');
+    const status = el('p', 'meta'); status.append(el('span', 'acc', c.status));
+    const title = el('h1', 'display', c.title);
+    title.style.whiteSpace = 'nowrap'; title.style.marginTop = '22px';
+    const line = el('p', 'line', c.line);
+    line.style.marginTop = '30px'; line.style.maxWidth = '540px';
+    t.append(status, title, line);
+    t.style.paddingBottom = '40px';
+    card.append(t, el('p', 'byline', site.name));
+    fit(title, 560, 156, 96);
+    glow(card, 920, 315, 620);
+    await placeObject(card, root + c.object, c.blend, { cx: 920, cy: 315, w: 420, h: 440 });
+  },
+
+  async log(card, c, site, root) {
+    const t = el('div', 'text');
+    const meta = el('p', 'meta');
+    meta.append(el('span', 'acc', 'Log'), ' · ' + c.date + ' · ' + c.kind);
+    const title = el('h1', 'display', c.title);
+    title.style.maxWidth = '640px'; title.style.marginTop = '24px';
+    t.append(meta, title);
+    t.style.paddingBottom = '40px';
+    card.append(t, el('p', 'byline', site.name));
+    title.style.fontSize = '104px';
+    // Long titles step down to keep at most three lines.
+    for (let s = 104; s >= 68 && title.offsetHeight > 3 * s * 0.94 + 2; s -= 4) title.style.fontSize = s + 'px';
+    glow(card, 960, 315, 600);
+    await placeObject(card, root + c.object, c.blend, { cx: 960, cy: 315, w: 340, h: 440 });
+  },
+
+  async about(card, c, site, root) {
+    const ph = el('div', 'photo'); ph.style.width = '720px';
+    const img = el('img'); img.src = root + c.photo; img.style.objectPosition = '62% 58%';
+    ph.append(img);
+    card.append(el('div', 'about-glow'), ph);
+    await img.decode();
+    const t = el('div', 'text');
+    const meta = el('p', 'meta'); meta.append(el('span', 'acc', c.kicker));
+    const name = el('h1', 'display');
+    c.name.forEach((part, i) => { if (i) name.append(el('br')); name.append(part); });
+    name.style.fontSize = '104px'; name.style.marginTop = '22px';
+    const line = el('p', 'line', c.line); line.style.marginTop = '30px'; line.style.maxWidth = '640px';
+    t.append(meta, name, line);
+    card.append(t);
+  },
+};
+
+// Entry point called by build.mjs: render(card, site, root) where root is the repo URL.
+window.render = async (c, site, root) => {
+  const card = document.getElementById('card');
+  card.replaceChildren();
+  const r = document.documentElement.style;
+  r.setProperty('--accent', c.accent || '#c9d4ff');
+  r.setProperty('--glow', c.glow || c.accent || '#c9d4ff');
+  await document.fonts.ready;
+  await layouts[c.layout](card, c, site, root);
+  grain(card);
+  await document.fonts.ready;
+  await Promise.all([...card.querySelectorAll('img')].map((i) => i.decode()));
+  return true;
+};
+</script>
+</body>
+</html>

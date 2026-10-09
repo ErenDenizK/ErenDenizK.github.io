@@ -1,0 +1,141 @@
+{
+  "site": {
+    "name": "Eren Deniz Kuyucaklıoğlu",
+    "mark": "edk",
+    "host": "erendenizk.github.io",
+    "ground": "#0a0a0b",
+    "ink": "#e9e5de",
+    "ink2": "#b6b1a8",
+    "ink3": "#8c877f"
+  },
+  "cards": [
+    {
+      "id": "home",
+      "layout": "home",
+      "name": [
+        "Eren Deniz",
+        "Kuyucaklıoğlu"
+      ],
+      "line": "Computer Engineering, Yıldız Technical University",
+      "object": "media/objects/edk/poster-1200.webp",
+      "blend": "plus-lighter",
+      "accent": "#c9d4ff",
+      "og": {
+        "title": "Eren Deniz Kuyucaklıoğlu",
+        "description": "Computer Engineering at Yıldız Technical University. I build products by directing AI agents."
+      },
+      "sample": {
+        "postText": "My portfolio is up. It will grow over the next four years."
+      }
+    },
+    {
+      "id": "home-centered",
+      "layout": "center",
+      "name": [
+        "Eren Deniz",
+        "Kuyucaklıoğlu"
+      ],
+      "line": "Computer Engineering, Yıldız Technical University",
+      "object": "media/objects/edk/poster-1200.webp",
+      "blend": "plus-lighter",
+      "accent": "#c9d4ff",
+      "og": {
+        "title": "Eren Deniz Kuyucaklıoğlu",
+        "description": "Computer Engineering at Yıldız Technical University. I build products by directing AI agents."
+      },
+      "sample": {
+        "postText": "My portfolio is up. It will grow over the next four years."
+      },
+      "variant": true
+    },
+    {
+      "id": "recto",
+      "layout": "project",
+      "title": "Recto",
+      "status": "Public beta",
+      "line": "A PDF editor that runs entirely in your browser.",
+      "object": "media/objects/recto/poster-1200.webp",
+      "blend": "plus-lighter",
+      "accent": "#bbed26",
+      "glow": "#a6d873",
+      "og": {
+        "title": "Recto",
+        "description": "A PDF editor that runs entirely in your browser. Nothing is uploaded."
+      },
+      "sample": {
+        "postText": "Recto, a PDF editor that never uploads your files, is in public beta."
+      }
+    },
+    {
+      "id": "english-prep",
+      "layout": "project",
+      "title": "English Prep",
+      "status": "Version 0.75",
+      "line": "A study space for Turkish university English exams.",
+      "object": "media/objects/englishprep/poster-1200.webp",
+      "blend": "plus-lighter",
+      "accent": "#efb1cb",
+      "og": {
+        "title": "English Prep",
+        "description": "A study space for Turkish university English proficiency exams."
+      },
+      "sample": {
+        "postText": "English Prep 0.75 is out."
+      }
+    },
+    {
+      "id": "eatmap",
+      "layout": "project",
+      "title": "Eat Map",
+      "status": "In development",
+      "line": "An iOS app, built in Xcode.",
+      "object": "media/objects/eatmap/poster-1200.webp",
+      "blend": "plus-lighter",
+      "accent": "#eb4f6b",
+      "glow": "#ec5794",
+      "og": {
+        "title": "Eat Map",
+        "description": "An iOS app, built in Xcode. In development."
+      },
+      "sample": {
+        "postText": "Working on an iOS app."
+      }
+    },
+    {
+      "id": "log-starting-this-site",
+      "layout": "log",
+      "title": "Starting this site",
+      "date": "8 Oct 2026",
+      "kind": "Note",
+      "object": "prototypes/e-dark/objects/log-poster.webp",
+      "blend": "normal",
+      "accent": "#8fb8ff",
+      "og": {
+        "title": "Starting this site",
+        "description": "Why a portfolio that grows for four years."
+      },
+      "sample": {
+        "postText": "New log entry."
+      }
+    },
+    {
+      "id": "about",
+      "layout": "about",
+      "kicker": "About",
+      "name": [
+        "Eren Deniz",
+        "Kuyucaklıoğlu"
+      ],
+      "line": "First year, Computer Engineering, Istanbul",
+      "photo": "content/photos/park-through-lens.jpg",
+      "accent": "#f3b886",
+      "og": {
+        "title": "About Eren Deniz Kuyucaklıoğlu",
+        "description": "First-year Computer Engineering student in Istanbul."
+      },
+      "sample": {
+        "postText": "A little about me."
+      }
+    }
+  ]
+}

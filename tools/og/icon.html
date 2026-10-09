@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>edk icon</title>
+<!-- build.mjs injects the @font-face rules. The mark is set in type (brief §7, 2026-10-09). -->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: transparent; overflow: hidden; }
+  #tile { position: absolute; left: 0; top: 0; overflow: hidden; }
+  #mark { position: absolute; white-space: nowrap; line-height: 1; font-family: "Newsreader", serif;
+    font-optical-sizing: auto; -webkit-font-smoothing: antialiased; font-kerning: normal; }
+  #mark i { display: inline-block; width: 0; height: 0; }
+</style>
+</head>
+<body>
+<div id="tile"><span id="mark"></span></div>
+<script>
+'use strict';
+const GROUND = '#0a0a0b', INK = '#e9e5de', EDK = '#c9d4ff';
+// One entry per candidate: text, colours, and how much of the tile the ink fills.
+window.VARIANTS = {
+  wordmark: { text: 'edk', bg: GROUND, fg: INK, fill: 0.74 },
+  letter: { text: 'e', bg: GROUND, fg: INK, fill: 0.56, by: 'height' },
+  inverse: { text: 'edk', bg: INK, fg: GROUND, fill: 0.74 },
+  blue: { text: 'edk', bg: GROUND, fg: EDK, fill: 0.74 },
+};
+
+function ink(text, size, weight, spacing) {
+  const c = new OffscreenCanvas(8, 8).getContext('2d');
+  c.font = `${weight} ${size}px Newsreader`;
+  c.letterSpacing = spacing + 'px';
+  const m = c.measureText(text);
+  return { l: -m.actualBoundingBoxLeft, r: m.actualBoundingBoxRight, t: -m.actualBoundingBoxAscent, b: m.actualBoundingBoxDescent };
+}
+
+window.draw = async (name, s, kind) => {
+  const v = window.VARIANTS[name];
+  await document.fonts.load(`500 40px Newsreader`, v.text);
+  const tile = document.getElementById('tile'), mark = document.getElementById('mark');
+  Object.assign(tile.style, { width: s + 'px', height: s + 'px', background: v.bg,
+    borderRadius: kind === 'favicon' ? Math.round(s * 0.22) + 'px' : '0' });
+  // Small sizes: heavier and a little looser, like a text optical size.
+  const small = s <= 48;
+  const weight = small ? 500 : 420;
+  const track = small ? 0.03 : -0.01;
+  // Maskable: the ink must stay inside the 80% safe circle, so it fills less.
+  const fill = kind === 'maskable' ? v.fill * 0.78 : kind === 'favicon' ? Math.min(0.9, v.fill * 1.14) : v.fill;
+  const F0 = 100;
+  const k0 = ink(v.text, F0, weight, track * F0);
+  const F = v.by === 'height' ? F0 * (fill * s) / (k0.b - k0.t) : F0 * (fill * s) / (k0.r - k0.l);
+  const k = ink(v.text, F, weight, track * F);
+  mark.style.fontSize = F + 'px';
+  mark.style.fontWeight = weight;
+  mark.style.letterSpacing = track + 'em';
+  mark.style.color = v.fg;
+  mark.replaceChildren(v.text, document.createElement('i'));
+  const baseline = mark.querySelector('i').offsetTop;
+  // Centre the ink box; nudge 2% down so the x-height, not the ascenders, reads as centred.
+  mark.style.left = (s / 2 - (k.l + k.r) / 2) + 'px';
+  mark.style.top = (s / 2 - baseline - (k.t + k.b) / 2 + s * 0.02) + 'px';
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+};
+</script>
+</body>
+</html>
