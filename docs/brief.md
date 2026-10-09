@@ -120,10 +120,26 @@ log design are to be explored.
   edk.dev may follow.
 - **Links:** GitHub and LinkedIn only. No email.
 - **Photos:** the owner supplied two (`content/photos/`, metadata stripped): a selfie at the
-  YTÜ gate in the rain, and a park seen through a tinted lens. Use as placeholder, background
+  YTÜ gate in the rain, and the university's inner courtyard seen through a tinted lens. Use as placeholder, background
   or About material.
 - **Objects:** one object per tab that changes into the next (owner: "very good"); objects
   that react to what you read may be tried; the collectible idea needs a concrete proposal.
   Objects must look as good in the page as in the Blender render: lighting is the bar. Each
   object may have its own animation and interaction so every part feels original and
   surprising, without breaking the whole.
+
+### 2026-10-09 (after prototype E)
+
+- **Colours:** accepted. Recto lime, English Prep sakura, Eat Map rose `#eb4f6b` (from the
+  app), edk cool white-blue, Log blue, About gold.
+- **Type:** pairing 2 (a serif display face for the name and titles, a clean sans for the
+  interface). Pairing 4 was liked too, but is not right for this site.
+- **About:** the glasses object does not work. The courtyard photo should carry About instead.
+- **3D:** real-time 3D feels heavy. The owner wants it faked with very high-resolution
+  pre-rendered images and video: a still appears first and fast, the moving version loads
+  behind it, then plays at full resolution and quality without costing performance.
+- **Fixes:** page transitions and navigation are a little buggy; some icons render as emoji on
+  phones and break the design.
+- **Content:** descriptions and project texts will be discussed at length later; no rush.
+  Improving the presentation inside the projects themselves is much later; the portfolio
+  comes first.
