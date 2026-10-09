@@ -10,6 +10,7 @@ work; it is the owner's intent and every decision cites it.
 - `docs/adr/`: decisions. Proposed ones are not binding until the owner accepts.
 - `docs/research/`: dated research; it distinguishes verified facts from recollection.
   `2026-10-requirements.md` is what the site must contain and why.
+- `docs/family-kit/`: the shared origin all the owner's products may adopt (light, springs, mark, charter).
 - The site: `content/` (data), `src/` (Astro), `tests/`; how to run it and add content: `README.md`.
 
 ## Rules
