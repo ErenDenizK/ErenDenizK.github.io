@@ -91,6 +91,7 @@ a pivot at its bounds centre, and renders one stage per Blender process:
 | `grid` | the lean grid, 17 yaw × 3 pitch: yaw ±16° in 2° steps, pitch −4°/0°/+4° | 1040², 32 spp + OIDN |
 | `clip` | the object's micro-interaction, rest → rest, 30 fps (`CLIPS` in `frames.py`) | 30–45 frames |
 | `droplet` | rest → the shared glass droplet, ease-in cubic, uniform in time | 24 frames |
+| `shadow` | the rest pose's floor shadow alone: the object hidden from the camera, still casting | 600², 128 spp, whole square |
 
 Yaw turns the object about its vertical axis (positive faces right), as the page's lean did;
 pitch orbits the camera about the same centre (positive faces up), so the object stays on its
@@ -104,8 +105,9 @@ frame whose coverage collapses against the previous one. The
 interactions follow prototype E's `MICRO` code: edk's letters hop in sequence; Recto's back
 pages fan out on a spring and settle back; English Prep's bubble pops, A and a bob, the reply
 ducks and pops back in and its dots bounce; Eat Map's pin rises, drops onto the plate (the
-landing is ray-cast onto the glaze), squashes about its tip and lifts home; Log's LED goes on
-air while three soft accent rings ripple out round the head. Every clip starts and ends on the
+landing is ray-cast onto the glaze), squashes about its tip and lifts home; Log's LED, dim and
+blue at rest, goes on air (six times brighter) while three soft accent rings ripple out round
+the head, growing to 1.8 head radii so they stay inside the square. Every clip starts and ends on the
 grid's centre frame. The droplet is the bake-off's melt with a real glass sphere grown over the
 last 45 %; camera and backlight glide to canonical values, so every object's last frame is the
 same droplet and only the accent light differs.
@@ -118,11 +120,18 @@ subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact blac
   rectangle in the manifest. The format is chosen by a black test on three grid frames (bytes,
   object error, and whether ground far from the object decodes to exact 0), recorded in
   `$OBJECT_MASTERS/<name>/encode-report.json`;
+- `shadow.avif|webp`: the floor shadow as a 600² grayscale map, `m = composite / ground`
+  clamped to 1 and feathered to exactly 1 over the outer 12 % of the square (a key shadow can run
+  off it, and the page's ground does not stop there), meaning "multiply the ground by this";
 - `interact.*.mp4`, `droplet-out.*.mp4`, `droplet-in.*.mp4` (the same clip reversed, because
   browsers cannot play video backwards) and `idle.*.mp4` (a 6 s figure-of-eight through the
   grid, synthesised from the grid frames: no extra render). Each as `av1` (10-bit), `hevc`
   (Main 10, `hvc1`) and `h264` (High, 8-bit), BT.709 limited range, `+faststart`, no audio.
   Clips are padded to the full square so they sit exactly on the poster.
+
+Per-object settings that differ from the defaults go in `OBJECT` in `encode.py` (none at
+present; the place for, say, a full grid at AVIF q55 if an object outgrows its budget). `--videos interact,droplet,idle`
+picks which videos to re-encode; the others are kept from the existing manifest.
 
 ### The manifest
 
@@ -147,8 +156,10 @@ subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact blac
   droplet: { fps: 60, frames: 24, duration: 0.4, dropletFrame: 23, curve,
              out: { sources },                // rest → droplet: the leaving object, forward
              in:  { sources } },              // droplet → rest: the arriving object
-  bytes: { poster1200, leanHalf, leanFull, clips: {av1, hevc, h264}, idle: {…},
-           tiers: { firstPaint, phone: {…}, desktopLow, desktopFull: {…} } }
+  shadow: { blend: "multiply", pose: "rest", w: 600, h: 600, min,   // optional; covers the square
+            sources: [{ src, type: "image/avif"|"image/webp", bytes }] },
+  bytes: { shadow, poster1200, leanHalf, leanFull, clips: {av1, hevc, h264}, idle: {…},
+           tiers: { firstPaint, phone: {…}, desktopLow, desktopFull: {…} } }   // tiers include the shadow
 }
 // sources: [{ src, type: 'video/mp4; codecs="av01.0.08M.10"', codec: "av1"|"hevc"|"h264", bytes }]
 // in that order; take the first one canPlayType() accepts.
@@ -159,7 +170,12 @@ whose element paints `background: var(--ground)` itself, each drawn with
 `mix-blend-mode: plus-lighter`. The canvas covers `lean.crop` (as percentages of `size`) and
 draws the four nearest grid frames with weights summing to 1 using
 `globalCompositeOperation = "lighter"`, which is the exact bilinear blend; at rest, settle on
-an exact frame. Hide the poster once the canvas has drawn, and the canvas once a clip's first
+an exact frame. The optional `shadow` goes first in the square, covering all of it, with
+`mix-blend-mode: multiply` (not plus-lighter): ground × shadow + object reproduces the poster's
+floor, which ground subtraction had zeroed. It belongs to the rest pose, so the page fades it a
+little with lean (the check page: opacity 1 − 0.3 × lean, lean 0…1 to the grid's edge) and out
+with `droplet.out`, back in with `droplet.in`. On a #0A0A0B ground it can only darken by 10
+levels, which is all the Cycles poster's shadow does. Hide the poster once the canvas has drawn, and the canvas once a clip's first
 frame is up (`requestVideoFrameCallback`). A change plays the leaving object's `droplet.out`,
 cross-fades at `dropletFrame`, then plays the arriving object's `droplet.in`. The check page
 used during the build is in the session scratch (`pipe/check/check.html`), not committed.

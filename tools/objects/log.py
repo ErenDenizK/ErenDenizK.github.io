@@ -19,7 +19,10 @@ glass = C.glass("glass_clear", "#e4ecfb", transmission=0.94, rough=0.04, ior=1.5
 steel = C.metal("steel", "#e4e6ea", rough=0.16)
 gun = C.metal("gunmetal", "#5b6068", rough=0.32)
 grille = C.metal("steel_satin", "#c9ccd2", rough=0.28)
-led = C.emissive("led", ACCENT, strength=6.0)
+# The LED rests dim enough to keep its colour (at 6 it tone-mapped to a white dot and going on air
+# barely showed) and goes on air at LED_ON_AIR times that in the interaction (frames.clip_log).
+LED_REST, LED_ON_AIR = 1.2, 6.0
+led = C.emissive("led", ACCENT, strength=LED_REST)
 
 
 def capsule(r, z0, z1, cap0=1.0, cap1=1.0, n=10):
@@ -68,4 +71,5 @@ root = C.empty("log", parts)
 for p in parts:
     C.origin_to_center(p)
 root.rotation_euler = (0, 0, math.radians(-10))
+root["led_on_air"] = LED_ON_AIR
 C.finish("log", root, ACCENT, args, size=2.1, lift=0.0)

@@ -5,3 +5,7 @@ node_modules/
 .astro/
 dist/
 /*.png
+test-results/
+playwright-report/
+dist-fixtures/
+tests/shots/

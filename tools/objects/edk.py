@@ -10,6 +10,8 @@ import common as C  # noqa: E402
 
 ACCENT = "#c9d4ff"  # cool white rim for Home (placeholder until the owner picks a home colour)
 
+REST_TURN = -4.0
+
 args = C.parse_args()
 C.reset()
 font = C.load_font(("InterDisplay-Bold.otf",))
@@ -19,5 +21,8 @@ word = C.text_solid("edk", "edk", font, size=1.0, depth=0.34, bevel=0.03, bevel_
                     mat=glass, res_u=12, spacing=1.16)
 letters = C.separate_loose(word, ["e", "d", "k"])
 root = C.empty("edk", letters)
-root.rotation_euler = (math.radians(90), 0, math.radians(-12))
+# Rests turned -4 deg: the lean grid spans rest +-16 deg, and from a -12 deg rest its left end
+# (-28 deg) slid the e's side face over the d. -4 keeps a hint of the extrusion at rest, and the
+# two ends (-20 / +12 deg) come equally close to touching (previews, 2026-10-09).
+root.rotation_euler = (math.radians(90), 0, math.radians(REST_TURN))
 C.finish("edk", root, ACCENT, args, size=2.2)

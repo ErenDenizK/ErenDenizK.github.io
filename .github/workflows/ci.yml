@@ -1,0 +1,39 @@
+# Quality gates on every push to dev and every pull request (ADR-0001 item 6, ADR-0004).
+name: ci
+on:
+  push:
+    branches: [dev]
+  pull_request:
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+      - name: Types and content schemas
+        run: npm run check
+      - name: Build (site and log fixtures, under /Portfolio/ like Pages before the rename)
+        run: npm run build:test
+      - name: First-paint size budget
+        run: npm run budget
+      - name: Navigation, log, screenshots and axe
+        run: npx playwright test
+      - name: Screenshots and failures
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shots
+          path: |
+            tests/shots/
+            test-results/
+          retention-days: 14

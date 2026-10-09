@@ -150,7 +150,8 @@ test.describe('desktop', () => {
 
   test('S13 keyboard: a tab by Enter, then the skip link', async ({ page }) => {
     await page.goto(''); await settle(page);
-    await page.focus('.tabs a[data-tab="log"]'); await page.keyboard.press('Enter'); await settle(page);
+    await page.focus('.tabs a[data-tab="log"]');
+    await Promise.all([page.waitForURL(/\/log\/$/), page.keyboard.press('Enter')]); await settle(page);
     await check(page, 'Enter on the Log tab', (s) => (s.path === 'log' ? [] : ['expected /log']));
     await page.keyboard.press('Tab');
     expect(await page.evaluate(() => document.activeElement?.className)).toBe('skip');

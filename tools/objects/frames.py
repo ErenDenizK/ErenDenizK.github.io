@@ -6,6 +6,8 @@ Cycles, one stage per Blender process (the droplet stage rewrites the meshes):
   grid     the lean grid: --nyaw yaw columns x --npitch pitch rows (ADR-0006 §1, §4)
   clip     the object's micro-interaction, from rest back to rest (CLIPS below)
   droplet  rest -> the shared glass droplet (ADR-0006 §5; render bake-off "The morph")
+  shadow   the rest pose's floor shadow alone: the object hidden from the camera but still
+           casting, the whole square at --shadow-res (encode.py turns it into a multiply map)
 
   <venv>/bin/python tools/objects/frames.py edk                       # all four stages
   <venv>/bin/python tools/objects/frames.py recto --stage grid --res 1040 --masters DIR
@@ -32,7 +34,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OBJECTS = ("edk", "recto", "englishprep", "eatmap", "log")
-STAGES = ("poster", "grid", "clip", "droplet")
+STAGES = ("poster", "grid", "clip", "droplet", "shadow")
 
 
 def parse():
@@ -51,6 +53,8 @@ def parse():
     ap.add_argument("--pitch", type=float, default=4.0, help="grid half range, degrees")
     ap.add_argument("--npitch", type=int, default=3)
     ap.add_argument("--droplet-frames", type=int, default=24)
+    ap.add_argument("--shadow-res", type=int, default=600, help="the shadow is soft: half the poster")
+    ap.add_argument("--shadow-samples", type=int, default=128)
     ap.add_argument("--preview-res", type=int, default=260, help="crop-finding previews")
     ap.add_argument("--limit", type=int, default=0, help="render only the first N frames (tests)")
     return ap.parse_args(argv)
@@ -85,8 +89,8 @@ os.makedirs(OUT, exist_ok=True)
 
 # ---------------------------------------------------------------- build the object
 sys.path.insert(0, HERE)
-res = A.poster_res if STAGE == "poster" else A.res
-spp = A.poster_samples if STAGE == "poster" else A.samples
+res = {"poster": A.poster_res, "shadow": A.shadow_res}.get(STAGE, A.res)
+spp = {"poster": A.poster_samples, "shadow": A.shadow_samples}.get(STAGE, A.samples)
 sys.argv = [os.path.join(HERE, f"{A.obj}.py"), "--no-render", "--no-export", "--out", OUT,
             "--samples", str(spp), "--res", str(res)]
 runpy.run_path(os.path.join(HERE, f"{A.obj}.py"), run_name="__main__")
@@ -105,10 +109,10 @@ cy.denoiser = "OPENIMAGEDENOISE"
 cy.seed = 0
 cy.use_animated_seed = False   # neighbouring poses denoise alike (no flicker between frames)
 cy.use_adaptive_sampling = True
-cy.adaptive_threshold = 0.02 if STAGE != "poster" else 0.01
+cy.adaptive_threshold = 0.01 if STAGE in ("poster", "shadow") else 0.02
 cy.transmission_bounces = A.bounces
 cy.max_bounces = A.bounces
-cy.glossy_bounces = min(cy.glossy_bounces, 4) if STAGE != "poster" else cy.glossy_bounces
+cy.glossy_bounces = min(cy.glossy_bounces, 4) if STAGE not in ("poster", "shadow") else cy.glossy_bounces
 scn.render.resolution_x = scn.render.resolution_y = res
 scn.render.resolution_percentage = 100
 scn.render.use_persistent_data = True
@@ -490,10 +494,16 @@ def clip_eatmap():
     return n, [state(k) for k in range(n)]
 
 
+RING_GROW = 0.7   # the rings' radius grows from 1.06 to 1.06 * 1.7 head radii (see clip_log)
+
+
 def clip_log():
     """The LED goes on air and soft accent rings ripple out round the head (MICRO.log: three
-    camera-facing rings growing to 1 + 1.5 times the head's radius, opacity (1 - p)^2; the LED
-    brightens). Rings are flat discs with a soft radial profile, seen only by the camera."""
+    camera-facing rings, opacity (1 - p)^2; the LED brightens). MICRO grew them to 2.5 times
+    the head's radius, which left the 1040 square at the top; here they grow to RING_GROW
+    (1.8x), so even the last faint ring stays inside the frame. The LED rests dim (log.py
+    LED_REST) and goes on air at LED_ON_AIR times that. Rings are flat discs with a soft radial
+    profile, seen only by the camera."""
     n = 45
     led = part("led")
     head = part("head")
@@ -503,6 +513,7 @@ def clip_log():
     led_mat = led.data.materials[0]
     p_led = led_mat.node_tree.nodes["Principled BSDF"]
     base = p_led.inputs["Emission Strength"].default_value
+    on_air = float(root.get("led_on_air", 4.0))
     accent = root["accent"]
     rings = []
     for i in range(3):
@@ -586,14 +597,14 @@ def clip_log():
         on = smooth(t / 0.12) * (1 - smooth((t - 1.0) / 0.42))
 
         def h():
-            p_led.inputs["Emission Strength"].default_value = base * (1 + 3.0 * on)
+            p_led.inputs["Emission Strength"].default_value = base * (1 + (on_air - 1) * on)
             for (pl, R, op, widths), b in zip(rings, births):
                 p = (t - b) / life
                 if p <= 0 or p >= 1:
                     pl.hide_render = True
                     continue
                 pl.hide_render = False
-                rad = hr * 1.06 * (1 + p * 1.5)
+                rad = hr * 1.06 * (1 + p * RING_GROW)
                 ext = rad + hr * 0.25
                 pl.scale = (ext, ext, ext)
                 R.outputs[0].default_value = rad / ext
@@ -711,3 +722,15 @@ elif STAGE == "droplet":
     crop = stage_crop(states[::2] + [states[-1]], "droplet")
     run_frames(states, crop, {**info, "frames": N, "curve": "ease-in cubic, uniform in time",
                               "droplet": {"center": [0, 0.92, 0], "radius": canon_r}})
+
+elif STAGE == "shadow":
+    # The floor shadow of the rest pose on its own (encode.py: "multiply the ground by this"),
+    # because ground subtraction zeroes everything darker than the ground. The object stays in
+    # the scene for shadow, diffuse and glossy rays and leaves only the camera's, so the
+    # catcher records the same key and contact shadow as the poster, including the part the
+    # object covers (the page leans the object over it). One pose only: pitch moves the floor
+    # by a few pixels, and the page fades the shadow a little with lean instead.
+    pose(0, 0)
+    for o in parts:
+        o.visible_camera = False
+    run_frames([lambda: pose(0, 0)], (0, 0, res, res), {**info, "kind": "floor shadow, rest pose"})

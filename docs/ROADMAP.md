@@ -23,9 +23,11 @@ and a desktop.
 
 ## Level 2: the content site
 
-- [ ] Astro scaffold, CI gates, deploy to Pages
-- [ ] Home, About, projects with layered depth (teaser → overview → why/how/learned)
-- [ ] Log: collection, entry template, dictation-to-entry workflow, RSS
+- [x] Astro scaffold and CI gates (v0, 2026-10-09: `npm run verify`, `.github/workflows/ci.yml`)
+- [ ] Deploy to Pages (workflow ready in `.github/workflows/deploy.yml`; waits on the repo rename
+      and the owner's first merge into `main`)
+- [x] Home, About, projects with layered depth (teaser → overview → why/how/learned)
+- [x] Log: collection, entry template, dictation-to-entry workflow, Atom feed (`docs/design/log.md`)
 - [ ] First entries: Recto, English Prep, Eat Map, "why this site"
 
 ## Level 3: the world

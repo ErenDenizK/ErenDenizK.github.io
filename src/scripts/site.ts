@@ -9,6 +9,8 @@ import { initLog } from './log';
 const fine = () => root.classList.toggle('fine', mq.fine.matches);
 fine(); mq.fine.addEventListener?.('change', fine);
 
+let leavingAt = -1e9;
+let pendingNav: string | null = null;
 initMedia();
 initSheet();
 initLog();
@@ -45,12 +47,39 @@ if (workSlot) {
   }
 }
 
+/* Tab changes melt the object into the droplet first (ADR-0006 item 5): the click waits for the stage's
+   droplet.out (at most 900 ms), then the browser navigates. A second click while it melts goes at once:
+   the latest intent wins. Pages are prefetched on hover so the crossfade at the droplet follows quickly. */
+const TAB_PAGES = new Set(['', 'work', 'log', 'about']);
+addEventListener('pageshow', () => { pendingNav = null; });
+document.addEventListener('click', (e) => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = (e.target as Element).closest?.('a[href]') as HTMLAnchorElement | null;
+  if (!a || a.target || a.origin !== location.origin || a.pathname === location.pathname || a.closest('dialog')) return;
+  if (!TAB_PAGES.has(rel(a.pathname)) || root.classList.contains('sheet-open')) return;
+  const MediaStage = (window as any).MediaStage;
+  if (!MediaStage || !document.querySelector('.media.stage')) { try { sessionStorage.setItem('edk-droplet', String(Date.now())); } catch {} return; }
+  e.preventDefault();
+  leavingAt = performance.now();
+  const href = a.href;
+  if (pendingNav) { pendingNav = href; location.assign(href); return; }
+  pendingNav = href;
+  MediaStage.leave().then(() => { if (pendingNav === href) location.assign(href); });
+});
+const prefetched = new Set<string>();
+document.querySelectorAll<HTMLAnchorElement>('.tabs a, .mark').forEach((a) => a.addEventListener('pointerenter', () => {
+  if (prefetched.has(a.href) || a.pathname === location.pathname) return;
+  prefetched.add(a.href);
+  const l = document.createElement('link'); l.rel = 'prefetch'; l.href = a.href; document.head.appendChild(l);
+}));
+
 /* The tab you are on: back to its top instead of reloading the page. Unless another navigation was
    just started from this page: then this click is the latest intent and must win, so it navigates. */
-let leavingAt = -1e9;
 addEventListener('click', (e) => {
   const a = (e.target as Element).closest?.('a[href]') as HTMLAnchorElement | null;
-  if (a && !e.defaultPrevented && a.origin === location.origin && a.pathname !== location.pathname) leavingAt = performance.now();
+  if (!a || e.defaultPrevented || a.origin !== location.origin) return;
+  if (pendingNav) pendingNav = a.href;                  // a later click wins over a navigation still melting
+  if (a.pathname !== location.pathname) leavingAt = performance.now();
 });
 document.addEventListener('click', (e) => {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -124,3 +153,14 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) => {
     }).catch(() => {});
   });
 });
+
+/* Essay pages: the contents list follows the reading position. */
+{
+  const links = [...document.querySelectorAll('.post-toc ol a')];
+  const heads = links.map((a) => document.getElementById(decodeURIComponent((a.getAttribute('href') || '').slice(1)))).filter(Boolean) as HTMLElement[];
+  if (heads.length) addEventListener('scroll', () => {
+    let on = -1;
+    heads.forEach((h, i) => { if (h.getBoundingClientRect().top < 160) on = i; });
+    links.forEach((a, i) => a.classList.toggle('on', i === on));
+  }, { passive: true });
+}

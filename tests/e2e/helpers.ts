@@ -62,9 +62,21 @@ export async function settle(page: Page, ms = 900) {
   await page.waitForLoadState('load').catch(() => {});
   await page.waitForTimeout(ms);
 }
+/** The state must converge to the URL within 2.5 s (prototype F's stress rule: nothing is left wrong,
+    though a slow machine may take longer to get there). */
+const stateSafe = async (page: Page) => {
+  for (let i = 0; ; i++) {
+    try { return await state(page); } catch (e) { if (i >= 8) throw e; await page.waitForTimeout(250); }   // a navigation was in flight
+  }
+};
 export async function check(page: Page, label: string, extra?: (s: State) => string[]) {
-  const s = await state(page);
-  const errs = [...problems(s), ...(extra ? extra(s) : [])];
+  let s = await stateSafe(page);
+  let errs = [...problems(s), ...(extra ? extra(s) : [])];
+  for (let t = 0; errs.length && t < 10; t++) {
+    await page.waitForTimeout(250);
+    s = await stateSafe(page);
+    errs = [...problems(s), ...(extra ? extra(s) : [])];
+  }
   expect(errs, `${label} @ /${s.path}${s.hash}: ${errs.join('; ')}`).toEqual([]);
   return s;
 }
@@ -72,10 +84,20 @@ export async function check(page: Page, label: string, extra?: (s: State) => str
 export async function tab(page: Page, t: keyof typeof TABS, opts: { tap?: boolean; noWait?: boolean } = {}) {
   const sel = `.tabs a[data-tab="${t}"]`;
   if (opts.noWait) {
-    await page.evaluate((s) => (document.querySelector(s) as HTMLElement | null)?.click(), sel).catch(() => {});
+    /* a click that falls into the moment a document is swapped is lost; click again, as a person would */
+    for (let i = 0; i < 5; i++) {
+      const ok = await page.evaluate((s) => { const a = document.querySelector(s) as HTMLElement | null; a?.click(); return !!a; }, sel).catch(() => false);
+      if (ok) return;
+      await page.waitForTimeout(50);
+    }
     return;
   }
+  /* a tab change waits for the object's droplet first (ADR-0006 item 5): wait for the new page */
+  const target = await page.$eval(sel, (a) => (a as HTMLAnchorElement).href);
+  const leaves = new URL(target).pathname !== new URL(page.url()).pathname;
+  const nav = leaves ? page.waitForURL(target, { waitUntil: 'load' }) : Promise.resolve();
   if (opts.tap) await page.tap(sel); else await page.click(sel);
+  await nav;
 }
 export async function open(page: Page, slug: string, how: 'click' | 'tap' = 'click') {
   const sel = `#main a[data-p="${slug}"]`;

@@ -84,10 +84,10 @@ ins { text-decoration: none; color: var(--ink); }
 .post-toc { position: sticky; top: calc(var(--bar-h) + 40px); align-self: start; display: grid; gap: 4px; }
 .post-toc .meta { margin: 28px 0 6px; }
 .post-toc ol { display: grid; gap: 2px; }
-.post-toc a { display: block; text-decoration: none; padding: 6px 0 6px 14px; color: var(--ink-3); font: 400 var(--t-ui)/var(--lh-ui) var(--f-ui); border-left: 1px solid var(--rule); transition: color var(--d-1), border-color var(--d-1); }
-.post-toc a:hover { color: var(--ink); }
-.post-toc a.on { color: var(--ink); border-left-color: var(--log); }
-.post-toc a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+.post-toc ol a { display: block; text-decoration: none; padding: 6px 0 6px 14px; color: var(--ink-3); font: 400 var(--t-ui)/var(--lh-ui) var(--f-ui); border-left: 1px solid var(--rule); transition: color var(--d-1), border-color var(--d-1); }
+.post-toc ol a:hover { color: var(--ink); }
+.post-toc ol a.on { color: var(--ink); border-left-color: var(--log); }
+.post-toc ol a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
 .post-back { min-height: 40px; }
 .post-back .icon { color: var(--ink-3); }
 .post-back-sm { display: none; }
