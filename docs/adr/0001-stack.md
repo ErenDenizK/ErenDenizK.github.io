@@ -1,6 +1,6 @@
-# ADR-0001: Astro static site, vanilla Three.js island, GitHub Pages
+# ADR-0001: Astro static site on GitHub Pages
 
-**Status:** proposed 2026-10-08 · **Rests on:** brief §2.3, §3, §4.3, §5;
+**Status:** accepted 2026-10-09 (item 2 amended the same day after ADR-0006) · **Rests on:** brief §2.3, §3, §4.3, §5;
 `research/2026-10-stack.md`
 
 ## Context
@@ -14,8 +14,9 @@ locale, an ambitious 3D layer on desktop and a light one on phones, free static 
 1. **Astro** (7.x), static output. Log entries and project case studies are content
    collections (Markdown/MDX with typed frontmatter), so adding an entry never touches code.
    Built-in i18n (`/` English, `/tr/` later), RSS and sitemap.
-2. **Three.js** (vanilla, `WebGPURenderer` + TSL with WebGL 2 fallback) for the world, loaded
-   as a separate chunk after a capability gate. No React in the 3D layer.
+2. **Objects are media, not a renderer** (ADR-0006): pre-rendered Cycles stills and video
+   in a small media stage. No three.js and no framework runtime on the main path. Three.js
+   stays available for later experiments as a separate, capability-gated chunk.
 3. **Motion:** CSS, scroll-driven animations and View Transitions first; GSAP only where a
    timeline is needed. Everything collapses under reduced motion.
 4. **Assets in code:** procedural geometry, shaders, SVG components; headless Blender scripts
@@ -25,8 +26,13 @@ locale, an ambitious 3D layer on desktop and a light one on phones, free static 
 6. **Gates in CI:** typecheck, build, Playwright screenshots at desktop/tablet/phone,
    axe, Lighthouse, size budget, link check.
 
+7. **Release:** the site deploys from `main` only, which the owner merges by hand
+   (ADR-0004). An early v0 goes live once the content site works at prototype F's level; the
+   repo is renamed `ErenDenizK.github.io` just before that first release. Until then the
+   build takes its base path from configuration.
+
 ## Consequences
 
-Content pages ship near-zero JavaScript. The 3D world can be rewritten without touching
+Content pages ship near-zero JavaScript. The object layer can be rewritten without touching
 content, which matters if the site is rebuilt in year four. Astro majors arrive roughly
 twice a year; versions are pinned and upgraded deliberately.

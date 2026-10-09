@@ -150,3 +150,12 @@ log design are to be explored.
   are full resolution.
 - **Icons:** build them to the same quality bar as the objects, with a system or tool if one
   helps.
+
+### 2026-10-09 (planning answers)
+
+- **Release:** an early v0 at prototype F's level; video and the rest follow. `main` merges stay
+  the owner's call.
+- **Repo name:** rename to `ErenDenizK.github.io` just before the first release.
+- **Stack:** ADR-0001 accepted.
+- **Home object:** "edk" is good. Something more personal may be tried at any time, but not a
+  processor.
