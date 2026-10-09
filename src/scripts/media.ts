@@ -9,10 +9,14 @@
      interaction clip on a press.
    At most one video plays; offscreen slots pause; hidden documents pause everything. Everything is
    ground-subtracted and drawn with plus-lighter inside .m-stage.
-   Solo slots (data-solo; Work has one per project, ADR-0009): only the one the page focuses (focus())
+   Solo slots (data-solo; Work has one per project, ADR-0010): only the one the page focuses (focus())
    goes past its poster; the others keep the still, and a solo slot that loses focus or leaves the
-   screen gives back its videos and decoded frames at once. */
+   screen gives back its videos and decoded frames at once.
+   Behind the opt-in flag (live/flag.ts, ADR-0009 proposed), the Home object and the Home showcase are
+   handed to the live frame engine instead (live/engine.ts, loaded only then); the droplet change
+   between tabs stays here. Without the flag nothing below changes. */
 import { mq, reduce, motionOK, idle } from './env';
+import { liveOn, LIVE_SLOTS } from './live/flag';
 
 type Source = { src: string; type?: string };
 type Manifest = {
@@ -48,6 +52,9 @@ const benched = (el: Slot) => el.hasAttribute('data-solo') && el !== current;
 const moving = () => motionOK() && !refused;
 
 export const api = { changes: 0, visible, playing: () => playing, show, play, refresh, arrive, leave, focus, focused: () => current };
+const live = liveOn ? import('./live/engine') : null;
+live?.then((L) => L.init()).catch(() => {});
+const isLive = (el: Slot) => !!live && LIVE_SLOTS.has(el.dataset.slot || '');
 (window as any).MediaStage = api;
 
 function getManifest(url: string | null | undefined): Promise<Manifest | null> {
@@ -203,6 +210,13 @@ function wake(el: Slot) {
   if (!el._layer || document.hidden || !visible.has(el) || !el.offsetParent || benched(el)) return;
   const layer = el._layer;
   if (!enhancing || !moving() || layer.classList.contains('arriving')) return;
+  if (isLive(el)) {
+    getManifest(layer._manifest).then((m) => {
+      if (!m || el._layer !== layer || !visible.has(el) || document.hidden) return;
+      live!.then((L) => L.wake(el, layer, dirOf(layer._manifest!), m as any));
+    });
+    return;
+  }
   if (layer._idle) { start(layer._idle, () => {}).catch(() => {}); return; }
   getManifest(layer._manifest).then((m) => {
     if (!m || !layer.isConnected || el._layer !== layer || !visible.has(el) || benched(el) || layer.classList.contains('arriving')) return;
@@ -220,6 +234,7 @@ function wake(el: Slot) {
   });
 }
 function sleep(el: Slot) {
+  if (isLive(el)) live!.then((L) => L.sleep(el));
   if (el.hasAttribute('data-solo')) { shed(el); return; }
   const gone = !el.offsetParent;
   el.querySelectorAll<Layer>('.m-layer').forEach((layer) => {
@@ -352,6 +367,7 @@ function follow(seq: Lean) {
 /* ---- interaction clips (desktop tier): once over the idle state, then hand back ---- */
 function play(el: Slot, clip: string): boolean {
   const layer = el._layer;
+  if (isLive(el)) return false;            // the engine answers the pointer itself
   if (!layer || !moving() || !desktopTier() || layer._clip || layer._drop || !visible.has(el) || benched(el)) return false;
   getManifest(layer._manifest).then((m) => {
     const spec = m?.clips?.[clip];
@@ -455,6 +471,7 @@ addEventListener('pointermove', (e) => {
 function tick() {
   raf = 0;
   visible.forEach((el) => {
+    if (isLive(el)) return;
     const r = el.getBoundingClientRect();
     if (!r.width) return;
     const mx = Math.max(-1, Math.min(1, (px - (r.left + r.width / 2)) / (innerWidth / 2)));

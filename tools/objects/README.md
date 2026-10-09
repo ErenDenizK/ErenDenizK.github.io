@@ -92,6 +92,7 @@ a pivot at its bounds centre, and renders one stage per Blender process:
 | `clip` | the object's micro-interaction, rest → rest, 30 fps (`CLIPS` in `frames.py`) | 30–45 frames |
 | `droplet` | rest → the shared glass droplet, ease-in cubic, uniform in time | 24 frames |
 | `shadow` | the rest pose's floor shadow alone: the object hidden from the camera, still casting | 600², 128 spp, whole square |
+| `normal` | camera-space normals for every grid pose (and the state axis's frames), inside the grid's and clip's crops; needs `grid` and `clip` first | 1040², 8 spp, emission override, no bounces: about 0.3 s (edk) to 1.3 s (Recto) a frame |
 
 Yaw turns the object about its vertical axis (positive faces right), as the page's lean did;
 pitch orbits the camera about the same centre (positive faces up), so the object stays on its
@@ -129,6 +130,26 @@ subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact blac
   (Main 10, `hvc1`) and `h264` (High, 8-bit), BT.709 limited range, `+faststart`, no audio.
   Clips are padded to the full square so they sit exactly on the poster.
 
+- for the live frame engine (ADR-0009, behind `?live`), when the `normal` stage exists, in
+  `live/`: `normals-r<row>.avif`, the half-size normal maps of one pitch row as a vertical strip
+  (column 0 at the top; R, G = camera-space normal x, y as `n * 0.5 + 0.5`, z rebuilt, B unused),
+  `normals-rest.avif` (the rest pose alone, for phones and the lite tier), `clip-half.<ext>` (the
+  clip's frames at half size as a strip) and, for a state axis, `clip-peak.<ext>` (its peak at
+  full size) and `clip-normals.avif`. `encode.py <name> --live-only` writes only these and merges
+  `normals`, `states` and `bytes.live` into the existing manifest. Coverage is not shipped: a
+  hard 0-to-1 edge rings under AVIF (up to 125 levels on the ground beside edges at q45), so the
+  page gates all light by the beauty frame, whose ground is exact 0.
+
+```sh
+<venv>/bin/python tools/objects/frames.py edk --stage normal      # about a minute (Recto ~2)
+<venv>/bin/python tools/objects/encode.py edk --live-only         # about a minute
+```
+
+The `normal` stage renders a clip's normals only for a state axis (`AXES` in `frames.py`):
+Recto's fan, whose frames 0–11 rise monotonically from rest to the furthest fan, with each
+frame's fan amount stored as `values` so the page maps a spring's value to a frame. edk's hop
+stays a time axis (it plays forward in a second, with the light faded).
+
 Per-object settings that differ from the defaults are in `OBJECT` in `encode.py` (edk: full
 grid at AVIF q55 rather than 60, HEVC idle at CRF 32 rather than 30, to fit the budgets). Every
 master stage is checked before anything is written: an empty or near-empty frame stops the
@@ -161,8 +182,18 @@ picks which videos to re-encode; the others are kept from the existing manifest.
              in:  { sources } },              // droplet → rest: the arriving object
   shadow: { blend: "multiply", pose: "rest", w: 600, h: 600, min,   // optional; covers the square
             sources: [{ src, type: "image/avif"|"image/webp", bytes }] },
+  normals: { scale: 0.5, w, h, encoding,     // optional (frames.py stage `normal`); live engine only
+             rows: [{ src, type, bytes, row, frames }],   // one strip per pitch row, column 0 on top
+             rest: { src, type, bytes },                  // the rest pose alone
+             clips: { interact: { crop, w, h, frames, src, type, bytes } } },   // state axes only
+  states: { interact: { axis: "time"|"state", fps, frames, crop,   // optional; the clip as stills
+            half: { w, h, src, type, bytes },     // its frames at half size, a strip
+            peak, values,                         // state axis: the peak frame, each frame's 0..1 amount
+            peakFull: { w, h, src, type, bytes } } },             // state axis: the peak at full size
   bytes: { shadow, poster1200, leanHalf, leanFull, clips: {av1, hevc, h264}, idle: {…},
-           tiers: { firstPaint, phone: {…}, desktopLow, desktopFull: {…} } }   // tiers include the shadow
+           tiers: { firstPaint, phone: {…}, desktopLow, desktopFull: {…} },   // tiers include the shadow
+           live: { normalsGrid, normalsRest, clipNormals, states, restFull,
+                   tiers: { phoneLive, desktopLite, desktopFull } } }   // what each live tier fetches
 }
 // sources: [{ src, type: 'video/mp4; codecs="av01.0.08M.10"', codec: "av1"|"hevc"|"h264", bytes }]
 // in that order; take the first one canPlayType() accepts.

@@ -239,6 +239,17 @@ html[data-arrive] .media.stage .m-layer img { animation: hold-hidden 1.6s step-e
 @keyframes hold-hidden { from, to { opacity: 0; } }
 .media .m-layer.arriving > video.m-drop, .media .m-layer > video.m-drop.on { opacity: 1; transition: none; }
 .media .m-layer.dropping img, .media .m-layer.dropping > video.m-idle, .media .m-layer.dropping > .m-lean { opacity: 0; transition: none; }
+/* the live frame engine (behind ?live, ADR-0009 proposed; scripts/live/engine.ts): one canvas in a
+   full-square wrapper, like the lean, replacing poster, idle loop, lean and clip; its own light
+   replaces the CSS glint; the shadow follows its lean and float */
+.media .m-layer > .m-live { position: absolute; inset: 0; opacity: 0; mix-blend-mode: plus-lighter; transition: opacity 200ms linear;
+  -webkit-mask-image: radial-gradient(closest-side, #000 60%, rgba(0, 0, 0, 0.75) 80%, transparent 100%); mask-image: radial-gradient(closest-side, #000 60%, rgba(0, 0, 0, 0.75) 80%, transparent 100%); }
+.media .m-live > canvas { position: absolute; display: block; }
+.media .m-layer.live-on > .m-live { opacity: 1; }
+.media .m-layer.live-on img { opacity: 0; }
+.media .m-layer.dropping > .m-live, .media .m-layer.arriving > .m-live { opacity: 0; transition: none; }
+.media.live-on .m-glint { display: none; }
+.media.live-on .m-shadow { opacity: var(--live-shadow, 1); transition: none; }
 img.blend { mix-blend-mode: plus-lighter; }
 /* CSS-only life: a glint that follows the pointer, masked by the poster's own light, and one slow sweep on arrival */
 .media .m-glint { position: absolute; inset: 0; pointer-events: none; opacity: 0; mix-blend-mode: screen;
