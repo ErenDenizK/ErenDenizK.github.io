@@ -4,6 +4,7 @@
 import { defineCollection, reference } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { WORDMARK_FACES, WORDMARK_FACE_NAMES } from './lib/wordmarks';
 
 /** Text the owner has not written yet: rendered as a dashed "placeholder" tag, never as a claim. */
 const placeholder = z.object({ placeholder: z.string() });
@@ -27,6 +28,28 @@ const accent = z.object({
   p3: z.string().regex(/^#[0-9a-f]{6}$/i).optional(),
 });
 
+const hex = z.string().regex(/^#[0-9a-f]{6}$/i);
+
+/** The product's name in its own voice (components/Wordmark.astro, docs/research/2026-10-wordmarks.md).
+    face: one of lib/wordmarks.ts, in a weight its subset carries; tracking in em; text overrides the
+    title as drawn (the title stays the accessible name); color defaults to accent.color ("ink" = the
+    house ink); dot appends the signature dot in that colour; image names an SVG logo in
+    src/assets/wordmarks/ that replaces the type once a real logo exists. */
+const wordmark = z
+  .object({
+    face: z.enum(WORDMARK_FACE_NAMES),
+    weight: z.number().int(),
+    tracking: z.number().min(-0.12).max(0.2).default(0),
+    case: z.enum(['as-is', 'lower', 'upper']).default('as-is'),
+    text: z.string().optional(),
+    color: z.union([hex, z.literal('ink')]).optional(),
+    dot: hex.optional(),
+    image: z.string().regex(/^[a-z0-9-]+\.svg$/).optional(),
+  })
+  .refine((w) => (WORDMARK_FACES[w.face].weights as readonly number[]).includes(w.weight), {
+    message: 'this weight is not in the face\'s subset (lib/wordmarks.ts, tools/fonts/subset.py)',
+  });
+
 const projects = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './content/projects' }),
   schema: z.object({
@@ -46,6 +69,7 @@ const projects = defineCollection({
     runsOn: z.string(),
     stack: z.string().optional(),
     accent,
+    wordmark: wordmark.optional(),
     /** Name of the object in media/objects/<object>/ (ADR-0006). */
     object: z.string(),
     /** Link-preview card id in tools/og/out/<og>.jpg; defaults to the home card. */
@@ -110,7 +134,7 @@ const site = defineCollection({
     description: z.string(),
     links: z.object({ github: z.url(), linkedin: z.union([z.url(), placeholder]) }),
     now: z.object({ label: z.string(), text: z.string() }),
-    home: z.object({ showcase: z.object({ kicker: z.string(), cta: z.string(), also: z.string() }) }),
+    home: z.object({ showcase: z.object({ title: z.string(), all: z.string(), kicker: z.string(), cta: z.string(), also: z.string() }) }),
     work: z.object({
       kicker: z.string(), title: z.string(), dek: z.string(), byHand: z.string(),
       /** Catalog group headings; a group with no projects is left out. */
