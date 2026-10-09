@@ -6,9 +6,12 @@
      the idle loop, and the droplet change between tabs (droplet.out here, droplet.in on arrival);
    - desktop with a fine pointer, in addition: the lean grid (the four nearest half-size frames summed
      with "lighter", the exact bilinear blend; at rest it settles on an exact full-size frame) and the
-     interaction clip on a press or on hover intent over a Work row.
+     interaction clip on a press.
    At most one video plays; offscreen slots pause; hidden documents pause everything. Everything is
-   ground-subtracted and drawn with plus-lighter inside .m-stage. */
+   ground-subtracted and drawn with plus-lighter inside .m-stage.
+   Solo slots (data-solo; Work has one per project, ADR-0009): only the one the page focuses (focus())
+   goes past its poster; the others keep the still, and a solo slot that loses focus or leaves the
+   screen gives back its videos and decoded frames at once. */
 import { mq, reduce, motionOK, idle } from './env';
 
 type Source = { src: string; type?: string };
@@ -39,10 +42,12 @@ let playing: HTMLVideoElement | null = null;
 let enhancing = false;
 let refused = false;         // a play() was refused (Low Power Mode, policy): posters only from now on
 let index: Record<string, ObjInfo> = {};
+let current: Slot | null = null;   // the focused solo slot
 const desktopTier = () => mq.wide.matches && mq.fine.matches;
+const benched = (el: Slot) => el.hasAttribute('data-solo') && el !== current;
 const moving = () => motionOK() && !refused;
 
-export const api = { changes: 0, visible, playing: () => playing, show, play, refresh, arrive, leave };
+export const api = { changes: 0, visible, playing: () => playing, show, play, refresh, arrive, leave, focus, focused: () => current };
 (window as any).MediaStage = api;
 
 function getManifest(url: string | null | undefined): Promise<Manifest | null> {
@@ -127,7 +132,7 @@ function animateLayer(layer: Layer, frames: Keyframe[], o: KeyframeAnimationOpti
   return [...layer.querySelectorAll('img, video, .m-lean')].map((c) => c.animate(frames, o));
 }
 
-/** Change the object in a slot (Work's hover intent). Never restarts mid-change: a request inside the
+/** Change the object in a slot. Never restarts mid-change: a request inside the
     first half is held and applied when the change passes its midpoint. */
 function show(el: Slot, name: string, opts: { instant?: boolean; light?: string } = {}) {
   build(el);
@@ -195,12 +200,12 @@ function arrive(el: Slot) {
 
 /* ---- progressive enhancement of a visible slot ---- */
 function wake(el: Slot) {
-  if (!el._layer || document.hidden || !visible.has(el) || !el.offsetParent) return;
+  if (!el._layer || document.hidden || !visible.has(el) || !el.offsetParent || benched(el)) return;
   const layer = el._layer;
   if (!enhancing || !moving() || layer.classList.contains('arriving')) return;
   if (layer._idle) { start(layer._idle, () => {}).catch(() => {}); return; }
   getManifest(layer._manifest).then((m) => {
-    if (!m || !layer.isConnected || el._layer !== layer || !visible.has(el) || layer.classList.contains('arriving')) return;
+    if (!m || !layer.isConnected || el._layer !== layer || !visible.has(el) || benched(el) || layer.classList.contains('arriving')) return;
     const dir = dirOf(layer._manifest!);
     if (m.idle && !layer._idleFailed && !layer._idle) {
       const v = makeVideo(m.idle.sources, dir, true, 'm-idle');
@@ -215,6 +220,7 @@ function wake(el: Slot) {
   });
 }
 function sleep(el: Slot) {
+  if (el.hasAttribute('data-solo')) { shed(el); return; }
   const gone = !el.offsetParent;
   el.querySelectorAll<Layer>('.m-layer').forEach((layer) => {
     layer.querySelectorAll('video').forEach((v) => {
@@ -223,6 +229,32 @@ function sleep(el: Slot) {
       else { try { v.pause(); } catch {} if (playing === v) playing = null; }
     });
   });
+}
+
+/** Give back everything past the poster: videos (their decoders) and the lean's decoded frames. */
+function shed(el: Slot) {
+  el.querySelectorAll<Layer>('.m-layer').forEach((layer) => {
+    layer.querySelectorAll('video').forEach((v) => { if (!v.classList.contains('m-drop')) release(v); });
+    layer._idle = null; layer._clip = null;
+    layer.classList.remove('video-on', 'clip-on', 'seq-on');
+    const seq = layer._seq;
+    if (seq) {
+      cancelAnimationFrame(seq.raf);
+      seq.half.forEach((f) => { if ('close' in f) f.close(); });
+      seq.half = []; seq.full.clear(); seq.ok = false;
+      layer.querySelector('.m-lean')?.remove();
+      layer._seq = null;
+    }
+  });
+}
+/** Make one solo slot the one that moves (Work: the section in view). The one before gives back its
+    decoders; the new one goes past its poster when it is on screen and motion is welcome. */
+function focus(el: Slot | null) {
+  if (el === current) return;
+  const was = current;
+  current = el;
+  if (was) shed(was);
+  if (el) { build(el); wake(el); }
 }
 
 /* ---- lean ---- */
@@ -241,7 +273,7 @@ function loadLean(layer: Layer, m: Manifest, dir: string) {
   seq.cur = { u: ci, v: cj }; seq.target = { u: ci, v: cj };
   layer._seq = seq;
   Promise.all(tier.frames.map((u) => fetch(dir + u).then((r) => r.blob()).then((b) => createImageBitmap(b)))).then((frames) => {
-    if (!layer.isConnected) { frames.forEach((f) => f.close()); return; }
+    if (!layer.isConnected || layer._seq !== seq) { frames.forEach((f) => f.close()); return; }   // shed while loading
     seq.half = frames;
     /* a render can drop the object from a frame (tools/objects/README.md); such frames are left out of
        the blend instead of flashing black */
@@ -256,7 +288,7 @@ function loadLean(layer: Layer, m: Manifest, dir: string) {
     layer.appendChild(wrap);
     seq.ok = true;
     draw(seq);
-  }).catch(() => { layer._seq = null; });
+  }).catch(() => { if (layer._seq === seq) layer._seq = null; });
 }
 const cell = (seq: Lean, col: number, row: number) => row * seq.m.cols + col;
 /* The four nearest frames, weighted to sum to 1, added with "lighter" over black: the exact bilinear
@@ -320,10 +352,10 @@ function follow(seq: Lean) {
 /* ---- interaction clips (desktop tier): once over the idle state, then hand back ---- */
 function play(el: Slot, clip: string): boolean {
   const layer = el._layer;
-  if (!layer || !moving() || !desktopTier() || layer._clip || layer._drop || !visible.has(el)) return false;
+  if (!layer || !moving() || !desktopTier() || layer._clip || layer._drop || !visible.has(el) || benched(el)) return false;
   getManifest(layer._manifest).then((m) => {
     const spec = m?.clips?.[clip];
-    if (!spec || layer._clip || el._layer !== layer) return;
+    if (!spec || layer._clip || el._layer !== layer || benched(el)) return;
     const v = makeVideo(spec.sources, dirOf(layer._manifest!), false, 'm-clip');
     if (!v) return;
     layer._clip = v;
@@ -345,6 +377,16 @@ function play(el: Slot, clip: string): boolean {
    carries the rest, crossfading at the droplet (owner, 2026-10-09: barely felt, still readable).
    Arriving: the stage shows only its glow until droplet.in (droplet back to the object) has its first frame. */
 const DROP_KEY = 'edk-droplet';
+/** Where several solo slots share a page (Work), the stage, the object that melts and arrives and carries
+    the view-transition name (which must be unique), is the solo slot nearest the middle of the window. */
+function centreStage() {
+  const solos = [...document.querySelectorAll<Slot>('.media[data-solo]')].filter((x) => x.offsetParent);
+  if (solos.length < 2) return;
+  const mid = innerHeight / 2;
+  const d = (x: Slot) => { const r = x.getBoundingClientRect(); return r.top <= mid && r.bottom >= mid ? 0 : Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid)); };
+  const best = solos.reduce((a, b) => (d(b) < d(a) ? b : a));
+  solos.forEach((x) => x.classList.toggle('stage', x === best));
+}
 const MELT = 0.35;           // seconds
 let leaving: Promise<void> | null = null;
 function stageSlot(): Slot | null {
@@ -377,6 +419,7 @@ function arriveByDroplet() {
   let at = 0;
   try { at = +(sessionStorage.getItem(DROP_KEY) || 0); sessionStorage.removeItem(DROP_KEY); } catch {}
   const flag = document.documentElement;
+  centreStage();
   const el = document.querySelector<Slot>('.media.stage');
   if (!at || Date.now() - at > 4000 || !moving() || !el || !el.dataset.manifest) { delete flag.dataset.arrive; return; }
   build(el);

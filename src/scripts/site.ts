@@ -17,37 +17,41 @@ initSheet();
 initLog();
 initAccent();
 
-/* Work: the object in the catalog's head follows the row you dwell on (150 ms hover intent), focus, or read on touch. */
-const workSlot = document.querySelector<HTMLElement>('.media[data-slot="work"]');
-if (workSlot) {
+/* Work: one section per project (ADR-0009). The section crossing the middle of the window is the one
+   in view: its object becomes the page's stage (the one that moves, melts on a tab change and carries
+   the view-transition name) and the page accent takes its light (accent.ts). Above the first section
+   the accent stays Work's own. Scrolling is never taken over: this only reads the position. */
+const sections = [...document.querySelectorAll<HTMLElement>('.w-proj[data-p-sec]')];
+if (sections.length) {
   const MediaStage = (window as any).MediaStage;
-  const tiles = [...document.querySelectorAll<HTMLAnchorElement>('a.cat-row[data-obj]')];
-  const setProject = (t: HTMLAnchorElement) => {
-    tiles.forEach((x) => x.classList.toggle('is-current', x === t));
-    MediaStage.show(workSlot, t.dataset.obj!, { light: t.dataset.light });
-    setAccent(t.dataset.light ?? null);       // the tab's light and the dot follow the project (accent.ts)
+  let cur: HTMLElement | null = null, lit: string | null | undefined, raf = 0;
+  const pick = () => {
+    raf = 0;
+    if (root.classList.contains('sheet-open') || pendingNav) return;
+    const mid = innerHeight / 2;
+    let best = sections[0], bestD = Infinity, inside = false;
+    for (const s of sections) {
+      const r = s.getBoundingClientRect();
+      if (r.top <= mid && r.bottom > mid) { best = s; inside = true; break; }
+      const d = Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid));
+      if (d < bestD) { bestD = d; best = s; }
+    }
+    const light = inside ? best.dataset.light ?? null : null;
+    if (light !== lit) { lit = light; setAccent(light); }
+    if (best === cur) return;
+    cur?.classList.remove('is-current');
+    cur = best;
+    best.classList.add('is-current');
+    const m = best.querySelector<HTMLElement>('.media');
+    document.querySelectorAll('.w-proj .media.stage').forEach((x) => { if (x !== m) x.classList.remove('stage'); });
+    m?.classList.add('stage');
+    MediaStage?.focus(m);
   };
-  let hoverT = 0;
-  for (const t of tiles) {
-    t.addEventListener('pointerenter', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      clearTimeout(hoverT);
-      hoverT = window.setTimeout(() => { setProject(t); MediaStage.play(workSlot, 'interact'); }, 150);
-    });
-    t.addEventListener('pointerleave', () => clearTimeout(hoverT));
-    t.addEventListener('focus', () => { if (!root.classList.contains('sheet-open')) setProject(t); });
-  }
-  if ('IntersectionObserver' in window) {
-    const reading = new Map<Element, number>();
-    const rio = new IntersectionObserver((es) => {
-      es.forEach((e) => reading.set(e.target, e.intersectionRatio));
-      if (mq.fine.matches || root.classList.contains('sheet-open') || !workSlot.offsetParent) return;
-      let best: HTMLAnchorElement | null = null, bestR = 0;
-      reading.forEach((r, el) => { if (r > bestR) { bestR = r; best = el as HTMLAnchorElement; } });
-      if (best && bestR > 0.5) setProject(best);
-    }, { threshold: [0, 0.5, 0.75, 1], rootMargin: '-30% 0px -30% 0px' });
-    tiles.forEach((t) => rio.observe(t));
-  }
+  const soon = () => { if (!raf) raf = requestAnimationFrame(pick); };
+  addEventListener('scroll', soon, { passive: true });
+  addEventListener('resize', soon, { passive: true });
+  addEventListener('pageshow', soon);
+  pick();
 }
 
 /* Tab changes melt the object into the droplet (ADR-0006 item 5, ADR-0007): the click starts the stage's

@@ -1,7 +1,7 @@
 /* The page accent (brief §7, after v0: "the colour-changing dot in edk. and the lit, coloured tabs felt
    alive"). Every page sets --accent on <html> at build time (layouts/Base.astro); the dot in the mark
    and the light in the active tab take it, and glide to a new value (styles/global.css, "Chrome
-   accent"). Here it follows what is in front of the reader: on Work the project you dwell on, and over
+   accent"). Here it follows what is in front of the reader: on Work the project whose section is in view, and over
    any page the project open in the sheet. Closing the sheet gives the page its own accent back. */
 import { root } from './env';
 

@@ -31,7 +31,7 @@ function prefetch(href: string) { const u = new URL(href, location.href).pathnam
 
 export function initSheet() {
   if (!enabled || !('showModal' in HTMLDialogElement.prototype)) return;
-  /* every link that opens a project: Home's showcase and strip, Work's catalog rows */
+  /* every link that opens a project: Home's showcase and strip, the way in of each Work section */
   const projectLinks = () => [...document.querySelectorAll<HTMLAnchorElement>('a.p-open[data-p]')];
 
   /* ---- the dialog, built once ---- */
@@ -144,6 +144,7 @@ export function initSheet() {
       if (dlg.open) { S.ourCloses++; dlg.close(); }
       root.classList.remove('sheet-open');
       slot.querySelectorAll('video').forEach((v) => { try { v.pause(); v.removeAttribute('src'); v.load(); } catch {} });
+      Media.refresh();                             // the page's own objects may move again
       const target = key && document.querySelector<HTMLElement>(`#main [data-p="${key}"]`);
       const ae = document.activeElement;
       if (target && (!ae || ae === document.body || dlg.contains(ae))) target.focus({ preventScroll: true });
@@ -179,7 +180,9 @@ export function initSheet() {
   const siteName = baseTitle.includes(' · ') ? baseTitle.split(' · ').pop()! : baseTitle;
   function titleFor(slug: string) {
     const a = resolved.get(base + 'work/' + slug + '/');
-    const t = a?.dataset.title || document.querySelector(`[data-p="${slug}"] .t-title`)?.textContent || slug;
+    const link = document.querySelector<HTMLElement>(`[data-p="${slug}"]`);
+    const named = link?.dataset.ptitle ? document.getElementById(link.dataset.ptitle) : link?.querySelector('.t-title');
+    const t = a?.dataset.title || named?.textContent || slug;
     return `${t} · ${siteName}`;
   }
 
