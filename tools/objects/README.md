@@ -129,8 +129,11 @@ subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact blac
   (Main 10, `hvc1`) and `h264` (High, 8-bit), BT.709 limited range, `+faststart`, no audio.
   Clips are padded to the full square so they sit exactly on the poster.
 
-Per-object settings that differ from the defaults go in `OBJECT` in `encode.py` (none at
-present; the place for, say, a full grid at AVIF q55 if an object outgrows its budget). `--videos interact,droplet,idle`
+Per-object settings that differ from the defaults are in `OBJECT` in `encode.py` (edk: full
+grid at AVIF q55 rather than 60, HEVC idle at CRF 32 rather than 30, to fit the budgets). Every
+master stage is checked before anything is written: an empty or near-empty frame stops the
+encode (`assert_lit`), and `frames.py` re-renders a frame whose coverage or light collapses.
+`--videos interact,droplet,idle`
 picks which videos to re-encode; the others are kept from the existing manifest.
 
 ### The manifest
