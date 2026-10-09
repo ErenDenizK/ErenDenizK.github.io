@@ -243,9 +243,23 @@ def find_crop(states, tag):
     return (x0, y0, x1 - x0, y1 - y0)
 
 
-def coverage(path):
-    """Share of the frame the render covers (alpha > 0.5): a cheap sanity check."""
-    return float((read_rgba16(path)[..., 3] > 0.5).mean())
+def health(path):
+    """(coverage, light): the share of the frame the render covers (alpha > 0.5) and the mean of
+    max(RGB) x alpha. Both collapse when Cycles drops the object; only the light collapses when
+    it keeps the object's alpha but returns it black (edk grid frames 8-15, 2026-10-09)."""
+    im = read_rgba16(path)
+    return float((im[..., 3] > 0.5).mean()), float((im[..., :3].max(-1) * im[..., 3]).mean())
+
+
+def broken(h, prev):
+    """A frame to render again: black although it covers something, or either measure
+    collapsing against the previous frame."""
+    if STAGE == "shadow":   # the catcher's shadow is black with alpha by design
+        return False
+    cov, lit = h
+    if cov > 0.01 and lit < 0.002:
+        return True
+    return prev is not None and (cov < 0.35 * prev[0] or lit < 0.35 * prev[1])
 
 
 FLUSH_EVERY = 16   # frames between persistent-data flushes (see run_frames)
@@ -256,9 +270,10 @@ def run_frames(states, crop, extra=None):
 
     Persistent data is what makes a pose grid affordable (bake-off: 85 s -> 22 s a frame), but
     after about fifty re-renders in one session Cycles started returning frames with the
-    object missing (edk grid frames 48-50 here, the bake-off's edk grid from frame 49 on). So
-    the cache is flushed every FLUSH_EVERY frames, and a frame whose coverage collapses
-    against the previous one is rendered again from a fresh sync."""
+    object missing (edk grid frames 48-50 here, the bake-off's edk grid from frame 49 on), and
+    once frames with the object's alpha but black RGB (edk grid 8-15). So the cache is flushed
+    every FLUSH_EVERY frames, and a broken frame (see broken()) is rendered again from a fresh
+    sync, up to twice; one still broken stops the stage so that encode never sees it."""
     json.dump({"res": res, "x": crop[0], "y": crop[1], "w": crop[2], "h": crop[3],
                "samples": spp, "bounces": A.bounces, **(extra or {})},
               open(os.path.join(OUT, "crop.json"), "w"), indent=1)
@@ -279,16 +294,21 @@ def run_frames(states, crop, extra=None):
         dt = render(path)
         scn.render.use_persistent_data = True
         since += 1
-        cov = coverage(path)
-        if prev is not None and cov < 0.35 * prev:
-            print(f"RETRY {A.obj} {STAGE} {k + 1}: coverage {cov:.4f} after {prev:.4f}", flush=True)
+        h = health(path)
+        tries = 0
+        while broken(h, prev):
+            if tries == 2:
+                os.remove(path)
+                raise SystemExit(f"{A.obj} {STAGE} frame {k}: still broken {h} after two fresh renders")
+            print(f"RETRY {A.obj} {STAGE} {k + 1}: coverage/light {h} after {prev}", flush=True)
             scn.render.use_persistent_data = False
             dt += render(path)
             scn.render.use_persistent_data = True
             since = 1
-            cov = coverage(path)
+            tries += 1
+            h = health(path)
             log.setdefault("retries", []).append(k)
-        prev = cov
+        prev = h
         log["frames"][str(k)] = round(dt, 1)
         json.dump(log, open(logp, "w"), indent=1)
         print(f"FRAME {A.obj} {STAGE} {k + 1}/{len(states)} {dt:.1f}s", flush=True)
