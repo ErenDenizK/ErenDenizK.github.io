@@ -127,7 +127,11 @@
         "Kuyucaklıoğlu"
       ],
       "line": "First year, Computer Engineering, Istanbul",
-      "photo": "content/photos/park-through-lens.jpg",
+      "photo": "content/photos/eren-ytu-gate.jpg",
+      "photoWidth": 760,
+      "photoFit": { "focus": [0.68, 0.45], "at": [800, 300], "height": 740 },
+      "photoFilter": "brightness(0.7) saturate(0.82) contrast(1.06) sepia(0.06)",
+      "textWidth": 540,
       "accent": "#f3b886",
       "og": {
         "title": "About Eren Deniz Kuyucaklıoğlu",

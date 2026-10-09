@@ -63,11 +63,25 @@ skipped by `sheet.mjs` unless `--variants` is passed.
   size whatever its framing. Ground-subtracted posters are drawn with `plus-lighter` over
   `#0a0a0b`, exactly as the site composites them; the light around the object is a CSS radial in
   the project's accent at 13 %/5 %, as on the site.
-- The courtyard is graded in CSS (brightness 0.62, saturation 0.82, slight warm) and faded into
-  the ground to the left; the lens rim stays as the frame.
+- The About photo is graded in CSS (default brightness 0.62, saturation 0.82, slight warm;
+  `photoFilter` overrides it) and faded into the ground to the left and top, and to the right
+  where it does not reach the edge. `photoFit` places it by a focus point instead of
+  object-fit: `{ focus: [x, y] as fractions of the image, at: [x, y] in card px, height }`;
+  `photoWidth` sets the panel and `textWidth` the column the name is fitted to.
 - A fixed-seed grain at 5 % overlay dithers the dark gradients so JPEG and WebP do not band.
 - The mark is set in type: Newsreader "edk" (or "e"), heavier and looser at 48 px and below,
   ink box centred and nudged 2 % down so the x-height reads as centred.
+
+## Owner's choices (October 2026)
+
+- Home card: the split layout (`home`: name left, object right). `home-centered` stays only as a
+  variant for comparison.
+- Favicon: "e" at 16 and 32 px, "edk" from 48 px up.
+- Icon colour: warm off-white mark on black.
+- About card: the gate selfie (`content/photos/eren-ytu-gate.jpg`) on the right, graded into
+  `#0a0a0b`, with the face kept inside the centre 630 × 630 square so square crops still show
+  it; the name in Newsreader, a small "About" label and the line as before. It replaced the
+  courtyard photo so the preview carries a face.
 
 ## Known gaps
 
