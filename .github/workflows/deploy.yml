@@ -1,10 +1,11 @@
-# Deploys the site to GitHub Pages from main only; the owner merges releases by hand (ADR-0004).
+# Deploys the site to GitHub Pages. Since 2026-10-09 the owner publishes from dev during the
+# build-up (ADR-0004 amendment); main still only changes by the owner's hand.
 # Pages settings: Source = GitHub Actions. The base path follows the repository name
 # (astro.config.mjs): /Portfolio/ now, / once the repo is renamed ErenDenizK.github.io.
 name: deploy
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   workflow_dispatch:
 permissions:
   contents: read
