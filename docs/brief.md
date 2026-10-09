@@ -204,3 +204,7 @@ log design are to be explored.
 - **Family vision:** no rush. Open question: per-product typefaces may add character or break the
   shared origin; keep researching.
 - **Record object:** the microphone looks too simple; rethink it from every angle.
+- **Showcase:** the lead project is chosen by hand (`featured`, Recto now) and sold by a
+  separate Home-only pitch line the owner writes. The Work catalog table is disliked: Work should
+  be a page that grows downward, each project starting within its own screen height, with large
+  objects (small objects packed together looked bad).
