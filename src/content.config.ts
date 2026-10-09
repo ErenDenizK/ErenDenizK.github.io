@@ -32,6 +32,9 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     order: z.number(),
+    /** Home leads with this project (the first marked, by order); without one, the project with the
+        latest record entry leads, then the first by order. */
+    featured: z.boolean().default(false),
     group: z.enum(['directed', 'by-hand']).default('directed'),
     status: z.enum(['Live', 'Public beta', 'In development', 'Paused', 'Archived']),
     statusNote: z.string().optional(),
@@ -107,7 +110,12 @@ const site = defineCollection({
     description: z.string(),
     links: z.object({ github: z.url(), linkedin: z.union([z.url(), placeholder]) }),
     now: z.object({ label: z.string(), text: z.string() }),
-    work: z.object({ kicker: z.string(), title: z.string(), dek: z.string(), byHand: z.string() }),
+    home: z.object({ showcase: z.object({ kicker: z.string(), cta: z.string(), also: z.string() }) }),
+    work: z.object({
+      kicker: z.string(), title: z.string(), dek: z.string(), byHand: z.string(),
+      /** Catalog group headings; a group with no projects is left out. */
+      groups: z.object({ directed: z.string(), byHand: z.string() }),
+    }),
     log: z.object({ title: z.string(), dek: z.string(), writingNote: z.string(), empty: z.string() }),
     about: z.object({
       kicker: z.string(),

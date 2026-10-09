@@ -88,7 +88,7 @@ test.describe('desktop', () => {
     await check(page, 'Back after stepping closes the sheet', (s) => (s.path === 'work' ? [] : ['expected /work']));
   });
 
-  test('S7 double click on a tile', async ({ page }) => {
+  test('S7 double click on a row', async ({ page }) => {
     await page.goto('work/'); await settle(page);
     await page.dblclick('#main a[data-p="recto"]'); await settle(page);
     await check(page, 'dblclick opens and stays open', (s) => (s.open ? [] : ['sheet closed itself']));
@@ -123,7 +123,7 @@ test.describe('desktop', () => {
     await check(page, 'Back after that', (s) => (s.path === '' ? [] : ['expected /: duplicate history entry']));
   });
 
-  test('S10 teaser on Home opens and returns to Home', async ({ page }) => {
+  test('S10 showcase on Home opens and returns to Home', async ({ page }) => {
     await page.goto(''); await settle(page);
     await open(page, 'eat-map'); await settle(page);
     await check(page, 'opened from home', (s) => (s.open ? [] : ['no sheet over Home']));
@@ -134,11 +134,14 @@ test.describe('desktop', () => {
   test('S11 scroll position per tab', async ({ page }) => {
     await page.goto(''); await settle(page);
     await tab(page, 'work'); await settle(page);
-    await page.evaluate(() => scrollTo(0, 500)); await page.waitForTimeout(400);
+    /* as far down as Work goes, up to 500 px (the catalog may be shorter than that) */
+    const y0 = await page.evaluate(() => { scrollTo(0, Math.min(500, document.documentElement.scrollHeight - innerHeight)); return Math.round(scrollY); });
+    expect(y0, 'Work scrolls at all').toBeGreaterThan(100);
+    await page.waitForTimeout(400);
     await tab(page, 'log'); await settle(page);
     await check(page, 'new tab starts at top', (s) => (s.y === 0 ? [] : ['y=' + s.y]));
     await page.goBack(); await settle(page);
-    await check(page, 'Back restores Work scroll', (s) => (Math.abs(s.y - 500) <= 40 ? [] : [`y=${s.y}, expected 500`]));
+    await check(page, 'Back restores Work scroll', (s) => (Math.abs(s.y - y0) <= 40 ? [] : [`y=${s.y}, expected ${y0}`]));
   });
 
   test('S12 an anchored deep link leaks into nothing', async ({ page }) => {
@@ -174,10 +177,10 @@ test.describe('desktop', () => {
     await ctx.close();
   });
 
-  test('S16 hover sweep over tiles changes the object at most twice', async ({ page }) => {
+  test('S16 hover sweep over catalog rows changes the object at most twice', async ({ page }) => {
     await page.goto('work/'); await settle(page, 1200);
     const c0 = await page.evaluate(() => (window as any).MediaStage.changes);
-    const boxes = await page.evaluate(() => [...document.querySelectorAll('.tile')].map((t) => { const r = t.getBoundingClientRect(); return [r.left + 100, r.top + r.height / 2]; }));
+    const boxes = await page.evaluate(() => [...document.querySelectorAll('.cat-row')].map((t) => { const r = t.getBoundingClientRect(); return [r.left + 100, r.top + r.height / 2]; }));
     for (let k = 0; k < 2; k++) for (const [x, y] of k ? boxes.slice().reverse() : boxes) { await page.mouse.move(x, y, { steps: 3 }); await page.waitForTimeout(70); }
     await settle(page, 1200);
     const n = (await page.evaluate(() => (window as any).MediaStage.changes)) - c0;

@@ -59,13 +59,14 @@ Copy `content/projects/recto.md` to `content/projects/<slug>.md`; the file name 
 | Field | What |
 |---|---|
 | `title`, `order` | name, and position on Work and Home |
+| `featured` | `true` puts the project at the head of Home's showcase (the first marked one, by `order`); without one, the project with the latest record entry leads, then the first by `order` |
 | `group` | `directed` (built by directing agents, the default) or `by-hand` |
 | `status` | `Live`, `Public beta`, `In development`, `Paused` or `Archived` |
 | `version`, `started` (`YYYY-MM`), `role`, `runsOn`, `stack` | the facts row |
 | `accent` | `{ color, glow?, p2?, p3? }`: the project's light |
 | `object` | the object in `media/objects/<object>/`; until it is rendered, add a poster to `src/assets/objects/<object>-poster.webp` |
 | `og` | link-preview card in `tools/og/out/<og>.jpg` (defaults to the home card) |
-| `summary` | the one line on Home and Work |
+| `summary` | the one line on Home and Work (the pitch when it leads Home's showcase; `what.text` and `what.numbers` follow it there) |
 | `links` | `[{ label, href, kind: live \| code \| other }]` |
 | `what`, `why`, `how`, `learned`, `next` | each `{ text }`, `{ items: [...] }`, `{ quote }`, `{ numbers: [...] }` or `{ placeholder }` |
 | `draft` | `true` keeps it out of the build (it still shows in `npm run dev`) |

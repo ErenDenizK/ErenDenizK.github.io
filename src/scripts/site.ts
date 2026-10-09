@@ -15,11 +15,11 @@ initMedia();
 initSheet();
 initLog();
 
-/* Work: the object follows the project you dwell on (150 ms hover intent), focus, or read on touch. */
+/* Work: the object in the catalog's head follows the row you dwell on (150 ms hover intent), focus, or read on touch. */
 const workSlot = document.querySelector<HTMLElement>('.media[data-slot="work"]');
 if (workSlot) {
   const MediaStage = (window as any).MediaStage;
-  const tiles = [...document.querySelectorAll<HTMLAnchorElement>('.tile[data-obj]')];
+  const tiles = [...document.querySelectorAll<HTMLAnchorElement>('a.cat-row[data-obj]')];
   const setProject = (t: HTMLAnchorElement) => {
     tiles.forEach((x) => x.classList.toggle('is-current', x === t));
     MediaStage.show(workSlot, t.dataset.obj!, { light: t.dataset.light });

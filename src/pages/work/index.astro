@@ -1,64 +1,95 @@
 ---
+/* Work is the catalog, Home the showcase (owner, 2026-10-09: no duplication). Every project is one
+   index row with its facts and its object small; groups follow the two kinds of work (brief §7,
+   2026-10-08), and a group with nothing in it is left out (hidden until written). The object in the
+   head follows the row you dwell on (scripts/site.ts); a row opens the focus view (ADR-0007 item 4). */
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
 import Icon from '../../components/Icon.astro';
 import Thumb from '../../components/Thumb.astro';
 import Foot from '../../components/Foot.astro';
+import '../../styles/catalog.css';
 import { poster } from '../../lib/media';
-import { getSite, getProjects, url, projectPath, ym, isPlaceholder } from '../../lib/site';
+import { getSite, getProjects, getLog, url, projectPath, ym, iso, dayMonYear, isPlaceholder, entriesFor, threads, type Project } from '../../lib/site';
 const site = await getSite();
 const all = await getProjects();
-const directed = all.filter((p) => p.data.group === 'directed');
-const byHand = all.filter((p) => p.data.group === 'by-hand');
-const first = directed[0];
+const log = await getLog();
+const first = all[0];
+const threadOf = new Map(threads(log, all).rows.map((t) => [t.project.id, t]));
+/* the record column appears once any project has an entry */
+const withRecord = all.some((p) => entriesFor(p, log).length > 0);
+const groups = [
+  { id: 'directed', title: site.work.groups.directed, note: null, items: all.filter((p) => p.data.group === 'directed') },
+  { id: 'by-hand', title: site.work.groups.byHand, note: site.work.byHand, items: all.filter((p) => p.data.group === 'by-hand') },
+].filter((g) => g.items.length > 0);
 /* posters of every project's object, for the stage to change into without a request for markup */
-const mediaIndex = Object.fromEntries(directed.map((p) => {
+const mediaIndex = Object.fromEntries(all.map((p) => {
   const x = poster(p.data.object);
   return [x.name, { manifest: x.manifest, src: x.src, srcset: x.sources, shadow: x.shadow, light: p.data.accent.glow ?? p.data.accent.color }];
 }));
-/* "Public beta · 1.0.0-beta · since Sep 2026"; placeholders are left out of this short line. */
-function tileMeta(p: (typeof all)[number]) {
-  const d = p.data;
-  const bits: string[] = [d.status];
-  if (d.version && !isPlaceholder(d.version)) bits.push(d.version);
-  if (!isPlaceholder(d.started)) bits.push('since ' + ym(d.started));
-  if (d.linksNote) bits.push(d.linksNote.charAt(0).toLowerCase() + d.linksNote.slice(1));
-  return bits.join(' · ');
-}
+const light = (p: Project) => p.data.accent.glow ?? p.data.accent.color;
+const cols = [['name', 'Project'], ['status', 'Status'], ['ver', 'Version'], ['start', 'Started'], ['role', 'Role'], ['runs', 'Runs on'], ...(withRecord ? [['rec', 'In the record']] : [])];
 ---
 <Base title="Work" tab="work" description={site.work.dek}>
-  <div class="inner">
-    <div class="two">
-      <div>
-        <header class="vhead">
-          <p class="meta">{site.work.kicker}</p>
-          <h1 class="vtitle" id="h-work">{site.work.title}</h1>
-          <p class="vdek lede">{site.work.dek}</p>
-        </header>
-        <ol class="tiles">
-          {directed.map((p) => {
+  <div class:list={['inner', 'catalog', { 'has-record': withRecord }]}>
+    <div class="cat-head">
+      <header class="vhead">
+        <p class="meta">{site.work.kicker}</p>
+        <h1 class="vtitle" id="h-work">{site.work.title}</h1>
+        <p class="vdek lede">{site.work.dek}</p>
+      </header>
+      <div class="cat-stage" aria-hidden="true">
+        <Media obj={first.data.object} slot="work" stage light={light(first)} sizes="(min-width: 900px) 340px, 1px" priority />
+      </div>
+    </div>
+
+    {groups.map((g) => (
+      <section class="cat-group" data-group={g.id} aria-labelledby={`h-${g.id}`}>
+        <div class="cat-ghead">
+          <h2 id={`h-${g.id}`}>{g.title}</h2>
+          <span class="meta">{g.items.length} {g.items.length === 1 ? 'project' : 'projects'}</span>
+        </div>
+        {g.note && <p class="cat-gnote">{g.note}</p>}
+        <div class="cat-cols meta" aria-hidden="true"><span class="c-thumb"></span>{cols.map(([k, c]) => <span class={`h-${k}`}>{c}</span>)}<span class="c-go"></span></div>
+        <ol class="cat-list">
+          {g.items.map((p) => {
             const d = p.data;
+            const mine = entriesFor(p, log);
+            const t = threadOf.get(p.id);
             return (
-              <li><a class="tile" href={url(projectPath(p))} data-p={p.id} data-obj={d.object} data-light={d.accent.glow ?? d.accent.color} style={`--p: ${d.accent.color}`}>
-                <span class="tile-top meta">{tileMeta(p)}</span>
-                <span class="tile-name t-title">{d.title}</span>
-                <Thumb obj={d.object} size={88} class="tile-thumb" />
-                <span class="tile-teaser">{d.summary}</span>
-                {d.stack && <span class="tile-foot meta">{d.stack}</span>}
-                <span class="tile-open" aria-hidden="true"><Icon name="arrow-right" size={20} /></span>
+              <li><a class="cat-row p-open" href={url(projectPath(p))} data-p={p.id} data-obj={d.object} data-light={light(p)} style={`--p: ${light(p)}`}>
+                <Thumb obj={d.object} size={64} class="cat-thumb" />
+                <span class="c-name">
+                  <span class="t-title">{d.title}</span>
+                  <span class="c-sum">{d.summary}</span>
+                </span>
+                <span class="c-cell c-status"><span class="c-lab">Status</span><span class="c-state"><Icon name="dot" />{d.status}</span>{d.statusNote && <span class="meta">{d.statusNote}</span>}</span>
+                <span class="c-cell c-ver">{d.version && !isPlaceholder(d.version) && <><span class="c-lab">Version</span>{d.version}</>}</span>
+                <span class="c-cell c-start">{!isPlaceholder(d.started) && <><span class="c-lab">Started</span><time datetime={d.started}>{ym(d.started)}</time></>}</span>
+                <span class="c-cell c-role"><span class="c-lab">Role</span>{d.role}</span>
+                <span class="c-cell c-runs"><span class="c-lab">Runs on</span>{d.runsOn}</span>
+                {withRecord && (
+                  <span class="c-cell c-rec">
+                    {mine.length > 0 && <>
+                      <span class="c-lab">In the record</span><time datetime={iso(mine[0].data.date)}>{dayMonYear(mine[0].data.date)}</time>
+                      <span class="meta">{mine.length} {mine.length === 1 ? 'entry' : 'entries'}</span>
+                      {t && (
+                        <svg class="c-thread" aria-hidden="true" focusable="false" height="12">
+                          <line x1={`${t.line[0]}%`} x2={`${t.line[1]}%`} y1="6" y2="6" stroke="var(--p)" stroke-opacity="0.4" stroke-width="1" />
+                          {t.marks.map((m) => <circle cx={`${m.x}%`} cy="6" r={m.kind === 'note' ? 2 : 3} fill="var(--p)" />)}
+                          {t.ticks.map((k) => <rect x={`calc(${k.x}% - 1px)`} y={6 - k.h / 4} width="2" height={k.h / 2} rx="1" fill="var(--p)" />)}
+                        </svg>
+                      )}
+                    </>}
+                  </span>
+                )}
+                <span class="c-go" aria-hidden="true"><Icon name="arrow-right" size={20} /></span>
               </a></li>
             );
           })}
         </ol>
-      </div>
-      <aside class="stagecol work-stage" aria-hidden="true">
-        <div class="sticky"><Media obj={first.data.object} slot="work" stage light={first.data.accent.glow ?? first.data.accent.color} priority /></div>
-      </aside>
-    </div>
-    <section class="byhand" aria-labelledby="h-hand">
-      <div class="sec-head"><h2 id="h-hand">By hand</h2></div>
-      <p>{site.work.byHand}</p>
-    </section>
+      </section>
+    ))}
     <Foot />
   </div>
   <script type="application/json" id="media-index" set:html={JSON.stringify(mediaIndex)} />
