@@ -70,8 +70,9 @@ Copy `content/projects/recto.md` to `content/projects/<slug>.md`; the file name 
 | `what`, `why`, `how`, `learned`, `next` | each `{ text }`, `{ items: [...] }`, `{ quote }`, `{ numbers: [...] }` or `{ placeholder }` |
 | `draft` | `true` keeps it out of the build (it still shows in `npm run dev`) |
 
-Anything the owner has not written yet is `{ placeholder: "owner to write" }`: it renders as a
-dashed tag, never as a claim.
+Anything the owner has not written yet is `{ placeholder: "owner to write" }` (or
+`summaryPlaceholder`): it stays in the content and is left out of the site entirely; writing the
+text is all it takes for it to appear. A test fails the build if a placeholder ever shows.
 
 ### A log entry
 

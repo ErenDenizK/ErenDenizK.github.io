@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
-import Ph from '../components/Ph.astro';
 import Foot from '../components/Foot.astro';
 import { getSite, isPlaceholder } from '../lib/site';
 import c750a from '../assets/photos/courtyard-750.avif?url';
@@ -34,7 +33,7 @@ const li = site.links.linkedin;
         {a.ledes.map((l) => <p class="lede">{l}</p>)}
         <div class="links">
           <a class="btn" href={site.links.github} rel="me">GitHub <Icon name="arrow-up-right" weight="medium" /></a>
-          {isPlaceholder(li) ? <span class="qlink is-ph">LinkedIn <Ph text={li.placeholder} /></span> : <a class="qlink" href={li} rel="me">LinkedIn <Icon name="arrow-up-right" /></a>}
+          {!isPlaceholder(li) && <a class="qlink" href={li} rel="me">LinkedIn <Icon name="arrow-up-right" /></a>}
         </div>
       </div>
     </div>
@@ -52,7 +51,7 @@ const li = site.links.linkedin;
       <dl class="facts">
         {a.facts.map(([k, v]) => <><dt class="meta">{k}</dt><dd>{v}</dd></>)}
         <dt class="meta">Elsewhere</dt>
-        <dd><a href={site.links.github} rel="me">GitHub</a> · {isPlaceholder(li) ? <>LinkedIn <Ph text={li.placeholder} /></> : <a href={li} rel="me">LinkedIn</a>}</dd>
+        <dd><a href={site.links.github} rel="me">GitHub</a>{!isPlaceholder(li) && <> · <a href={li} rel="me">LinkedIn</a></>}</dd>
       </dl>
     </div>
 

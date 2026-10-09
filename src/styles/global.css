@@ -102,7 +102,7 @@ abbr { text-decoration: none; }
 .prose p + p { margin-top: 0.9em; }
 
 /* placeholders and samples look like what they are */
-.ph, .sample {
+.sample {
   display: inline-flex; align-items: center;
   font: 400 12px/1 var(--f-ui); letter-spacing: 0.01em; color: var(--ink-3); white-space: nowrap;
   padding: 4px 7px; border: 1px dashed rgba(233, 229, 222, 0.3); border-radius: 4px;
@@ -189,7 +189,7 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
 .qlink:hover { color: var(--ink); }
 .qlink .icon { color: var(--ink-3); transition: color var(--d-1), transform 200ms var(--ease-out); }
 .qlink:hover .icon { color: var(--ink); }
-.qlink.is-ph { color: var(--ink-3); gap: 10px; }
+.qlink.is-note { color: var(--ink-3); }
 
 /* ---------- media stage: poster first, moving media later (MEDIA manifest, SPEC.md) ----------
    Media is encoded with the ground subtracted and drawn with plus-lighter, so the ground is exact
@@ -201,7 +201,10 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
    makes .m-stage a stacking context; without this the group would cover the ground with black. */
 .media .m-stage { position: absolute; inset: 0; mix-blend-mode: plus-lighter; }
 /* hook for the contact shadow (manifest `shadow`): multiply onto the real ground, outside the additive group */
-.media .m-shadow { position: absolute; inset: 0; width: 100%; height: 100%; mix-blend-mode: multiply; pointer-events: none; }
+.media .m-shadow-pic { display: contents; }
+.media .m-shadow { position: absolute; inset: 0; width: 100%; height: 100%; mix-blend-mode: multiply; pointer-events: none; transition: opacity 200ms linear; }
+/* the shadow belongs to the object at rest: it leaves with the melt and returns with the object */
+.media:has(.m-layer.dropping) .m-shadow, .media:has(.m-layer.arriving) .m-shadow, html[data-arrive] .media.stage .m-shadow { opacity: 0; }
 .media .m-glow { position: absolute; inset: -34%; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--light, var(--edk)) 11%, transparent), color-mix(in srgb, var(--light, var(--edk)) 4%, transparent) 55%, transparent 100%);
   transition: background var(--d-4) var(--ease-move); }

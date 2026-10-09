@@ -2,7 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
 import Icon from '../../components/Icon.astro';
-import Ph from '../../components/Ph.astro';
 import Thumb from '../../components/Thumb.astro';
 import Foot from '../../components/Foot.astro';
 import { poster } from '../../lib/media';
@@ -15,7 +14,7 @@ const first = directed[0];
 /* posters of every project's object, for the stage to change into without a request for markup */
 const mediaIndex = Object.fromEntries(directed.map((p) => {
   const x = poster(p.data.object);
-  return [x.name, { manifest: x.manifest, src: x.src, srcset: x.sources, light: p.data.accent.glow ?? p.data.accent.color }];
+  return [x.name, { manifest: x.manifest, src: x.src, srcset: x.sources, shadow: x.shadow, light: p.data.accent.glow ?? p.data.accent.color }];
 }));
 /* "Public beta · 1.0.0-beta · since Sep 2026"; placeholders are left out of this short line. */
 function tileMeta(p: (typeof all)[number]) {
@@ -44,7 +43,7 @@ function tileMeta(p: (typeof all)[number]) {
                 <span class="tile-top meta">{tileMeta(p)}</span>
                 <span class="tile-name t-title">{d.title}</span>
                 <Thumb obj={d.object} size={88} class="tile-thumb" />
-                <span class="tile-teaser">{d.summary} {d.summaryPlaceholder && <Ph text={d.summaryPlaceholder} />}</span>
+                <span class="tile-teaser">{d.summary}</span>
                 {d.stack && <span class="tile-foot meta">{d.stack}</span>}
                 <span class="tile-open" aria-hidden="true"><Icon name="arrow-right" size={20} /></span>
               </a></li>
@@ -57,7 +56,7 @@ function tileMeta(p: (typeof all)[number]) {
       </aside>
     </div>
     <section class="byhand" aria-labelledby="h-hand">
-      <div class="sec-head"><h2 id="h-hand">By hand</h2>{byHand.length ? null : <Ph text="nothing yet" />}</div>
+      <div class="sec-head"><h2 id="h-hand">By hand</h2></div>
       <p>{site.work.byHand}</p>
     </section>
     <Foot />

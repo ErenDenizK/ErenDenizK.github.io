@@ -11,4 +11,4 @@ accepts it; a later ADR supersedes an earlier one instead of editing it.
 | [0004](0004-branches.md) | Work on dev; main holds only owner-approved releases | accepted |
 | [0005](0005-objects.md) | One object per tab, scripted in Blender, lit to the render's standard | proposed |
 | [0006](0006-pre-rendered-objects.md) | Objects are pre-rendered Cycles frames; real time is only glue | accepted |
-| [0007](0007-routing.md) | Every tab is a page; the browser navigates, and only the project sheet is scripted | proposed |
+| [0007](0007-routing.md) | Every tab is a page; the browser navigates, and only the project sheet is scripted (a short melt overlaps the navigation) | accepted |

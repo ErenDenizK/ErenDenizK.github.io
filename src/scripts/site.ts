@@ -47,9 +47,9 @@ if (workSlot) {
   }
 }
 
-/* Tab changes melt the object into the droplet first (ADR-0006 item 5): the click waits for the stage's
-   droplet.out (at most 900 ms), then the browser navigates. A second click while it melts goes at once:
-   the latest intent wins. Pages are prefetched on hover so the crossfade at the droplet follows quickly. */
+/* Tab changes melt the object into the droplet (ADR-0006 item 5, ADR-0007): the click starts the stage's
+   short droplet.out and navigates as soon as it is on screen (at most 120 ms later); the melt plays on
+   while the next page loads. A later click wins. Pages are prefetched on hover. */
 const TAB_PAGES = new Set(['', 'work', 'log', 'about']);
 addEventListener('pageshow', () => { pendingNav = null; });
 document.addEventListener('click', (e) => {
