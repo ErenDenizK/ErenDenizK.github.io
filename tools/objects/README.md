@@ -8,6 +8,9 @@ Scripts that build the hero objects for Prototype E (ADR-0005, `prototypes/e-dar
   for phones, reduced motion and no WebGL;
 - `compare-<name>.png`: the poster beside the GLB rendered in three.js with `rig.js`.
 
+Since ADR-0006 the site ships pre-rendered frames and clips instead (`frames.py`, `encode.py`,
+"Pre-rendered media" below); the GLBs stay as source and for experiments.
+
 | Script | Object | Parts (children of the root node of the same name) |
 |---|---|---|
 | `edk.py` | glass "edk" wordmark (Inter Display Bold) | `e`, `d`, `k` |
@@ -66,6 +69,100 @@ THREE_DIR=node_modules/three PLAYWRIGHT=<playwright package> \
 posters use Cycles on the CPU: about 5–10 minutes per poster at 1200² and 128 samples on four
 cores. Thickness values in the scripts are in modelling units (before `fit()` scales the root);
 gltf-transform keeps them consistent through quantisation.
+
+## Pre-rendered media (ADR-0006)
+
+The site does not ship three.js for objects: every pixel of an object at rest is a Cycles
+frame. Two scripts turn each object script into the media in `media/objects/<name>/`:
+
+```sh
+export OBJECT_MASTERS=/somewhere/outside/the/repo      # 16-bit masters, ~0.5 GB per object
+<venv>/bin/python tools/objects/frames.py edk          # poster, grid, clip, droplet (hours)
+<venv>/bin/python tools/objects/frames.py edk --stage grid   # one stage; reruns resume
+<venv>/bin/python tools/objects/encode.py edk          # media + manifest.json (minutes)
+```
+
+`frames.py` builds the object with its own script (`--no-render --no-export`), hangs it from
+a pivot at its bounds centre, and renders one stage per Blender process:
+
+| Stage | What | Defaults |
+|---|---|---|
+| `poster` | the centre pose, first paint | 1200², 128 spp |
+| `grid` | the lean grid, 17 yaw × 3 pitch: yaw ±16° in 2° steps, pitch −4°/0°/+4° | 1040², 32 spp + OIDN |
+| `clip` | the object's micro-interaction, rest → rest, 30 fps (`CLIPS` in `frames.py`) | 30–45 frames |
+| `droplet` | rest → the shared glass droplet, ease-in cubic, uniform in time | 24 frames |
+
+Yaw turns the object about its vertical axis (positive faces right), as the page's lean did;
+pitch orbits the camera about the same centre (positive faces up), so the object stays on its
+floor. Settings from the render bake-off: 12 transmission bounces, persistent data, a fixed
+seed (the denoiser does not flicker between poses), and a crop to what will survive ground
+subtraction, found from small previews of the extreme poses (`<stage>/crop.json`; a resumed
+run keeps it, so delete the stage's folder after changing an object). After about fifty
+re-renders in one session, persistent data started returning frames with the object missing
+(edk's grid, and the bake-off's): `frames.py` flushes it every 16 frames and re-renders any
+frame whose coverage collapses against the previous one. The
+interactions follow prototype E's `MICRO` code: edk's letters hop in sequence; Recto's back
+pages fan out on a spring and settle back; English Prep's bubble pops, A and a bob, the reply
+ducks and pops back in and its dots bounce; Eat Map's pin rises, drops onto the plate (the
+landing is ray-cast onto the glaze), squashes about its tip and lifts home; Log's LED goes on
+air while three soft accent rings ripple out round the head. Every clip starts and ends on the
+grid's centre frame. The droplet is the bake-off's melt with a real glass sphere grown over the
+last 45 %; camera and backlight glide to canonical values, so every object's last frame is the
+same droplet and only the accent light differs.
+
+`encode.py` composites each master on the ground exactly as `common.render_poster` does,
+subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact black) and writes:
+
+- `poster-600|1200.avif|webp`;
+- `lean/half/` and `lean/full/`: the grid as stills, `r<row>c<col>.<ext>`, cropped to the
+  rectangle in the manifest. The format is chosen by a black test on three grid frames (bytes,
+  object error, and whether ground far from the object decodes to exact 0), recorded in
+  `$OBJECT_MASTERS/<name>/encode-report.json`;
+- `interact.*.mp4`, `droplet-out.*.mp4`, `droplet-in.*.mp4` (the same clip reversed, because
+  browsers cannot play video backwards) and `idle.*.mp4` (a 6 s figure-of-eight through the
+  grid, synthesised from the grid frames: no extra render). Each as `av1` (10-bit), `hevc`
+  (Main 10, `hvc1`) and `h264` (High, 8-bit), BT.709 limited range, `+faststart`, no audio.
+  Clips are padded to the full square so they sit exactly on the poster.
+
+### The manifest
+
+`media/objects/<name>/manifest.json`; URLs are relative to it. All pixel coordinates are in the
+`size` square (the grid's frame); the poster and videos cover the whole square.
+
+```js
+{
+  version: 1, name: "edk", light: "#c9d4ff",          // accent: rim and backlight colour
+  ground: "#0a0a0b", groundSubtracted: true, blend: "plus-lighter",
+  size: 1040,
+  poster: { w: 1200, h: 1200, sources: [{ src, type: "image/avif", w: 600|1200, bytes }] },
+  lean: {
+    cols: 17, rows: 3, yaw: [-16 … 16], pitch: [-4, 0, 4],   // degrees per column / row
+    stepDeg: { yaw: 2, pitch: 4 }, center: { col: 8, row: 1 },
+    order: "row-major; row 0 is the lowest pitch (faces down), column 0 the lowest yaw (faces left)",
+    crop: { x, y, w, h },                    // where every grid frame sits in the square
+    tiers: [{ name: "half"|"full", scale, w, h, format, type, frames: [url × cols·rows], bytes }]
+  },
+  idle:  { fps: 30, frames: 180, duration: 6, loop: true, sources },
+  clips: { interact: { label: "hop", returnsToRest: true, fps, frames, duration, sources } },
+  droplet: { fps: 60, frames: 24, duration: 0.4, dropletFrame: 23, curve,
+             out: { sources },                // rest → droplet: the leaving object, forward
+             in:  { sources } },              // droplet → rest: the arriving object
+  bytes: { poster1200, leanHalf, leanFull, clips: {av1, hevc, h264}, idle: {…},
+           tiers: { firstPaint, phone: {…}, desktopLow, desktopFull: {…} } }
+}
+// sources: [{ src, type: 'video/mp4; codecs="av01.0.08M.10"', codec: "av1"|"hevc"|"h264", bytes }]
+// in that order; take the first one canPlayType() accepts.
+```
+
+Drawing it (ADR-0006 §2–4; media research §8): put poster, canvas and videos in one square
+whose element paints `background: var(--ground)` itself, each drawn with
+`mix-blend-mode: plus-lighter`. The canvas covers `lean.crop` (as percentages of `size`) and
+draws the four nearest grid frames with weights summing to 1 using
+`globalCompositeOperation = "lighter"`, which is the exact bilinear blend; at rest, settle on
+an exact frame. Hide the poster once the canvas has drawn, and the canvas once a clip's first
+frame is up (`requestVideoFrameCallback`). A change plays the leaving object's `droplet.out`,
+cross-fades at `dropletFrame`, then plays the arriving object's `droplet.in`. The check page
+used during the build is in the session scratch (`pipe/check/check.html`), not committed.
 
 ## Known gaps between poster and page
 

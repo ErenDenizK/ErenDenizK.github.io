@@ -239,8 +239,22 @@ def find_crop(states, tag):
     return (x0, y0, x1 - x0, y1 - y0)
 
 
+def coverage(path):
+    """Share of the frame the render covers (alpha > 0.5): a cheap sanity check."""
+    return float((read_rgba16(path)[..., 3] > 0.5).mean())
+
+
+FLUSH_EVERY = 16   # frames between persistent-data flushes (see run_frames)
+
+
 def run_frames(states, crop, extra=None):
-    """Render states (callables that set the scene) into OUT/f_###.png inside `crop`."""
+    """Render states (callables that set the scene) into OUT/f_###.png inside `crop`.
+
+    Persistent data is what makes a pose grid affordable (bake-off: 85 s -> 22 s a frame), but
+    after about fifty re-renders in one session Cycles started returning frames with the
+    object missing (edk grid frames 48-50 here, the bake-off's edk grid from frame 49 on). So
+    the cache is flushed every FLUSH_EVERY frames, and a frame whose coverage collapses
+    against the previous one is rendered again from a fresh sync."""
     json.dump({"res": res, "x": crop[0], "y": crop[1], "w": crop[2], "h": crop[3],
                "samples": spp, "bounces": A.bounces, **(extra or {})},
               open(os.path.join(OUT, "crop.json"), "w"), indent=1)
@@ -248,12 +262,29 @@ def run_frames(states, crop, extra=None):
     logp = os.path.join(OUT, "log.json")
     log = json.load(open(logp)) if os.path.exists(logp) else {"frames": {}}
     n = len(states) if not A.limit else min(A.limit, len(states))
+    since, prev = 0, None
     for k in range(n):
         path = os.path.join(OUT, f"f_{k:03d}.png")
         if os.path.exists(path):
+            prev = None
             continue
         states[k]()
+        if since >= FLUSH_EVERY:
+            scn.render.use_persistent_data = False
+            since = 0
         dt = render(path)
+        scn.render.use_persistent_data = True
+        since += 1
+        cov = coverage(path)
+        if prev is not None and cov < 0.35 * prev:
+            print(f"RETRY {A.obj} {STAGE} {k + 1}: coverage {cov:.4f} after {prev:.4f}", flush=True)
+            scn.render.use_persistent_data = False
+            dt += render(path)
+            scn.render.use_persistent_data = True
+            since = 1
+            cov = coverage(path)
+            log.setdefault("retries", []).append(k)
+        prev = cov
         log["frames"][str(k)] = round(dt, 1)
         json.dump(log, open(logp, "w"), indent=1)
         print(f"FRAME {A.obj} {STAGE} {k + 1}/{len(states)} {dt:.1f}s", flush=True)
@@ -262,6 +293,16 @@ def run_frames(states, crop, extra=None):
     log["mean_s"] = round(sum(ts) / max(1, len(ts)), 1)
     json.dump(log, open(logp, "w"), indent=1)
     print(f"TOTAL {A.obj} {STAGE} {log['total_s']}s", flush=True)
+
+
+def stage_crop(states, tag):
+    """The crop of an interrupted run is kept, so resumed frames line up with the earlier ones."""
+    p = os.path.join(OUT, "crop.json")
+    if os.path.exists(p):
+        c = json.load(open(p))
+        if c.get("res") == res:
+            return (c["x"], c["y"], c["w"], c["h"])
+    return find_crop(states, tag)
 
 
 # ---------------------------------------------------------------- micro-interactions
@@ -576,7 +617,7 @@ info = {"obj": A.obj, "stage": STAGE, "accent": root["accent"]}
 
 if STAGE == "poster":
     pose(0, 0)
-    crop = find_crop([lambda: pose(0, 0)], "poster")
+    crop = stage_crop([lambda: pose(0, 0)], "poster")
     run_frames([lambda: pose(0, 0)], crop, info)
 
 elif STAGE == "grid":
@@ -585,14 +626,14 @@ elif STAGE == "grid":
     states = [(lambda y=y, p=p: pose(y, p)) for p in pitches for y in yaws]
     ends = [(lambda y=y, p=p: pose(y, p)) for p in (pitches[0], 0.0, pitches[-1])
             for y in (yaws[0], 0.0, yaws[-1])]
-    crop = find_crop(ends, "grid")
+    crop = stage_crop(ends, "grid")
     run_frames(states, crop, {**info, "yaw": yaws, "pitch": pitches,
                               "order": "row-major: rows are pitch (first = lowest), columns yaw"})
 
 elif STAGE == "clip":
     pose(0, 0)
     n, states = CLIPS[A.obj]()
-    crop = find_crop(states[::3] + [states[-1]], "clip")
+    crop = stage_crop(states[::3] + [states[-1]], "clip")
     for o, M in REST0.items():
         REST[o] = M.copy()
     run_frames(states, crop, {**info, "frames": n, "fps": FPS})
@@ -667,6 +708,6 @@ elif STAGE == "droplet":
         return f
     states = [state(k) for k in range(N)]
     # crop finding re-runs the melt; positions are recomputed from `rest` each frame
-    crop = find_crop(states[::2] + [states[-1]], "droplet")
+    crop = stage_crop(states[::2] + [states[-1]], "droplet")
     run_frames(states, crop, {**info, "frames": N, "curve": "ease-in cubic, uniform in time",
                               "droplet": {"center": [0, 0.92, 0], "radius": canon_r}})

@@ -1,0 +1,13 @@
+{
+  "name": "edk-illustrations",
+  "private": true,
+  "type": "module",
+  "description": "Draws the log's illustrations from one set of rules (see README.md). Build-time only.",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "perfect-freehand": "1.2.3",
+    "svgo": "4.1.0"
+  }
+}

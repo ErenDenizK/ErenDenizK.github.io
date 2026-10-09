@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="358" height="360" aria-labelledby="levels-narrow-t levels-narrow-d" class="il" focusable="false" role="img" style="--il-accent:var(--log, #8fb8ff)" viewBox="0 0 358 360"><title id="levels-narrow-t">The site grows level by level</title><desc id="levels-narrow-d">A line from October 2026 to year five. Level 0, foundation, is done; Level 1, concept prototypes, is current and circled by hand; Level 2, the content site, and Level 3, the world, are still ahead, on a dotted line.</desc><style>.il{display:block;overflow:visible;font-family:var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);--il-accent:var(--log, #8fb8ff)}
+.il .il-hair{fill:none;stroke:var(--rule-2, rgba(233, 229, 222, 0.18));stroke-width:1}
+.il .il-line{fill:none;stroke:var(--ink-3, #8c877f);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.il .il-line.il-a{stroke:var(--il-accent)}
+.il .il-line.il-dash{stroke-dasharray:1 5;stroke:var(--ink-4, #5f5b55)}
+.il .il-box{fill:var(--wash, rgba(233, 229, 222, 0.06));stroke:var(--rule-2, rgba(233, 229, 222, 0.18));stroke-width:1}
+.il .il-box.il-a{fill:color-mix(in srgb,var(--il-accent) 9%,transparent);stroke:var(--il-accent);stroke-width:1.5}
+.il .il-box.il-dash{fill:none;stroke:var(--ink-4, #5f5b55);stroke-dasharray:3 4}
+.il .il-dot{fill:var(--il-accent)}
+.il .il-ring{fill:none;stroke:var(--il-accent);stroke-width:1.5}
+.il .il-dot.il-later{fill:var(--ground, #0a0a0b);stroke:var(--ink-4, #5f5b55);stroke-width:1.5}
+.il .il-bar{fill:var(--ink-4, #5f5b55)}
+.il .il-bar.il-a{fill:var(--il-accent)}
+.il .il-hand{fill:var(--il-accent)}
+.il .il-frame{fill:none;stroke:rgba(255,255,255,0.1);stroke-width:1}
+.il .il-label{font:400 13px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink-3, #8c877f);letter-spacing:0.005em}
+.il .il-name{font:500 15px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink, #e9e5de);letter-spacing:0}
+.il .il-note{font:400 15px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink-2, #b6b1a8);letter-spacing:0}
+.il .il-num{font:400 13px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink-2, #b6b1a8);font-variant-numeric:tabular-nums;letter-spacing:0.005em}
+.il .il-a-text{fill:var(--il-accent)}
+.il .il-knock{paint-order:stroke;stroke:var(--ground, #0a0a0b);stroke-width:6px;stroke-linejoin:round}
+.il.il-plate{pointer-events:none}</style><path d="M96 16v89.5" class="il-line"/><path d="M96 105.5V336" class="il-line il-dash"/><text x="80" y="20" class="il-label" text-anchor="end">Oct 2026</text><text x="80" y="340" class="il-label" text-anchor="end">Year five</text><circle cx="96" cy="16" r="4" class="il-dot"/><text x="120" y="21" class="il-name">Level 0</text><text x="120" y="43" class="il-label">Foundation</text><circle cx="96" cy="105.6" r="8" class="il-ring"/><circle cx="96" cy="105.6" r="4" class="il-dot"/><text x="120" y="110.6" class="il-name">Level 1</text><text x="120" y="132.6" class="il-label">Concept prototypes</text><circle cx="96" cy="188.8" r="4" class="il-dot il-later"/><text x="120" y="193.8" class="il-name">Level 2</text><text x="120" y="215.8" class="il-label">The content site</text><circle cx="96" cy="272" r="4" class="il-dot il-later"/><text x="120" y="277" class="il-name">Level 3</text><text x="120" y="299" class="il-label">The world</text><path d="m117.11 115.97 2.75.36q2.75.36 5.13.34 2.37-.01 4.66-.13t4.55-.25q2.26-.14 4.51-.2 2.25-.07 4.47-.23t4.49-.14q2.26.03 4.5.08 2.23.05 4.42-.18 2.18-.23 4.42-.41 2.24-.17 4.53-.02 2.28.15 4.47.06t5.78-.44q3.6-.35 3.71-.35.12.01.23.06.11.04.2.12.08.07.14.17.06.11.09.22.02.11.01.23-.02.12-.07.22-.05.11-.13.19-.08.09-.19.14-.1.05-.22.07-.11.02-.23 0-.11-.02-.21-.08-.11-.05-.19-.14-.08-.08-.12-.19-.05-.11-.06-.22-.02-.12.01-.24.03-.11.09-.21t.15-.17q.09-.08.2-.12t.23-.05q.11 0 .23.03.11.03.2.1.1.07.17.16t.11.21q.03.11.03.22 0 .12-.04.23t-.11.2q-.07.1-.17.16-.1.07-.21.1l-.11.03-3.64.35q-3.63.36-5.9.45t-4.45-.06q-2.17-.15-4.39.03-2.23.18-4.5.41-2.28.24-4.51.2-2.22-.04-4.42-.06t-4.45.16q-2.25.17-4.48.26-2.23.08-4.49.24-2.27.15-4.59.31-2.32.15-4.81.21t-5.25-.24-2.87-.33q-.12-.02-.22-.08-.1-.05-.19-.12-.08-.08-.15-.18-.06-.09-.1-.2-.04-.1-.06-.22-.01-.11 0-.23.01-.11.06-.22.04-.1.1-.2.07-.09.15-.17.09-.08.19-.13t.21-.08.23-.03z" class="il-hand"/></svg>
