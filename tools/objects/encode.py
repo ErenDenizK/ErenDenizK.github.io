@@ -56,13 +56,13 @@ ap.add_argument("--videos", default="interact,droplet,idle",
 ap.add_argument("--skip-video", action="store_true", help="stills and manifest only (tests)")
 A = ap.parse_args()
 
-# Defaults, then per-object overrides (e.g. {"edk": {"avif_q": 55}}) for an object that does not
-# fit the desktop (~1.15 MB) or phone (~450 KB AV1) budget. None needs one since edk's rest turn
-# went from -12 to -4 deg: its grid frames shrank by a quarter.
+# Defaults, then per-object overrides for an object that does not fit the desktop (~1.15 MB) or
+# phone (~450 KB) budget with them (media research §7). edk, thick clear glass three letters
+# wide, is the heaviest: its full grid goes to AVIF q55, and its HEVC idle loop one step further.
 DEFAULTS = {"webp_q": 82, "avif_q": 60, "avif_q_half": 50, "idle_seconds": 6.0}
-OBJECT = {}
+OBJECT = {"edk": {"avif_q": 55, "idle_crf": {"hevc": "32"}}}
 for k, v in {**DEFAULTS, **OBJECT.get(A.obj, {})}.items():
-    if getattr(A, k) is None:
+    if k != "idle_crf" and getattr(A, k) is None:
         setattr(A, k, v)
 
 M = os.path.join(A.masters, A.obj)
@@ -125,6 +125,20 @@ def frames_of(stage):
     fs = sorted(f for f in os.listdir(d) if f.startswith("f_") and f.endswith(".png"))
     crop = json.load(open(os.path.join(d, "crop.json")))
     return [os.path.join(d, f) for f in fs], crop
+
+
+def assert_lit(arrs, what, share=0.35):
+    """Stop before writing media from a broken master: every frame must show the object (more
+    than 0.2 % of its pixels above 8 levels and at least `share` of the stage's median). Cycles
+    once returned edk grid frames with the object's alpha but black RGB; they subtract to an
+    all-black frame that nothing downstream would notice."""
+    lit = [float((a.max(-1) > 8 / 255).mean()) for a in arrs]
+    med = float(np.median(lit))
+    bad = [k for k, v in enumerate(lit) if v < 0.002 or v < share * med]
+    if bad:
+        raise SystemExit(f"{A.obj} {what}: frames {bad} are empty or nearly (lit share "
+                         f"{[round(lit[k], 4) for k in bad]}, median {med:.4f}); re-render them")
+    return round(min(lit), 4)
 
 
 def edge_max(arr):
@@ -277,6 +291,7 @@ nyaw, npitch = len(ginfo["yaw"]), len(ginfo["pitch"])
 assert len(grid_files) == nyaw * npitch, f"grid incomplete: {len(grid_files)} of {nyaw * npitch}"
 SIZE = ginfo["res"]
 grid = [subtracted(f) for f in grid_files]
+report["grid_min_lit_share"] = assert_lit(grid, "grid")
 gh, gw = grid[0].shape[:2]
 ginfo["w"], ginfo["h"] = gw, gh
 report["grid_edge_max_levels"] = round(max(edge_max(a) for a in grid), 2)
@@ -313,6 +328,7 @@ for tier, scale in (("half", 0.5), ("full", 1.0)):
 # ================================================================ 2. the poster
 pfiles, pcrop = frames_of("poster")
 parr = pad(subtracted(pfiles[0]), pcrop, pcrop["res"])
+assert_lit([parr], "poster")
 report["poster_edge_max_levels"] = round(edge_max(subtracted(pfiles[0])), 2)
 poster = {"w": 1200, "h": 1200, "sources": []}
 for w in (600, 1200):
@@ -343,6 +359,7 @@ drop_n = prev["droplet"]["frames"] if prev.get("droplet") else 0
 if "interact" in WANT:
     cfiles, ccrop = frames_of("clip")
     clip = [pad(subtracted(f), ccrop, SIZE) for f in cfiles]
+    assert_lit(clip, "clip")
     report["clip_edge_max_levels"] = round(max(edge_max(subtracted(f)) for f in cfiles[::4]), 2)
     write_seq(clip, os.path.join(WORK, "clip"))
     srcs = encode_video(os.path.join(WORK, "clip"), "interact", ccrop["fps"])
@@ -354,6 +371,7 @@ if "droplet" in WANT:
     dfiles, dcrop = frames_of("droplet")
     drop_n = len(dfiles)
     drop = [pad(subtracted(f), dcrop, SIZE) for f in dfiles]
+    assert_lit(drop, "droplet", share=0)   # the object shrinks into the droplet on purpose
     report["droplet_edge_max_levels"] = round(max(edge_max(subtracted(f)) for f in dfiles[::4]), 2)
     write_seq(drop, os.path.join(WORK, "droplet"))
     write_seq(drop[::-1], os.path.join(WORK, "droplet_rev"))
@@ -379,7 +397,8 @@ if "idle" in WANT:
         row1 = (f(i0, j0 + 1) * (1 - tx) + f(i0 + 1, j0 + 1) * tx) if npitch > 1 else row0
         idle.append(row0 * (1 - ty) + row1 * ty)
     write_seq(idle, os.path.join(WORK, "idle"))
-    srcs = encode_video(os.path.join(WORK, "idle"), "idle", 30, IDLE_CRF)
+    srcs = encode_video(os.path.join(WORK, "idle"), "idle", 30,
+                        {**IDLE_CRF, **OBJECT.get(A.obj, {}).get("idle_crf", {})})
     videos["idle"] = {"fps": 30, "frames": n, "duration": round(n / 30, 3), "loop": True, "sources": srcs}
 
 # ================================================================ 4. the floor shadow

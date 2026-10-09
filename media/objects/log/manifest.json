@@ -14,25 +14,25 @@
     "src": "poster-600.avif",
     "type": "image/avif",
     "w": 600,
-    "bytes": 6371
+    "bytes": 6432
    },
    {
     "src": "poster-600.webp",
     "type": "image/webp",
     "w": 600,
-    "bytes": 9776
+    "bytes": 9792
    },
    {
     "src": "poster-1200.avif",
     "type": "image/avif",
     "w": 1200,
-    "bytes": 13812
+    "bytes": 13787
    },
    {
     "src": "poster-1200.webp",
     "type": "image/webp",
     "w": 1200,
-    "bytes": 22776
+    "bytes": 22764
    }
   ]
  },
@@ -139,7 +139,7 @@
      "lean/half/r2c15.avif",
      "lean/half/r2c16.avif"
     ],
-    "bytes": 193807
+    "bytes": 193712
    },
    {
     "name": "full",
@@ -201,7 +201,7 @@
      "lean/full/r2c15.avif",
      "lean/full/r2c16.avif"
     ],
-    "bytes": 538012
+    "bytes": 536130
    }
   ]
  },
@@ -215,19 +215,19 @@
     "src": "idle.av1.mp4",
     "type": "video/mp4; codecs=\"av01.0.08M.10\"",
     "codec": "av1",
-    "bytes": 106813
+    "bytes": 95241
    },
    {
     "src": "idle.hevc.mp4",
     "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
     "codec": "hevc",
-    "bytes": 162818
+    "bytes": 132835
    },
    {
     "src": "idle.h264.mp4",
     "type": "video/mp4; codecs=\"avc1.640028\"",
     "codec": "h264",
-    "bytes": 230157
+    "bytes": 179622
    }
   ]
  },
@@ -243,27 +243,27 @@
      "src": "interact.av1.mp4",
      "type": "video/mp4; codecs=\"av01.0.08M.10\"",
      "codec": "av1",
-     "bytes": 50928
+     "bytes": 42353
     },
     {
      "src": "interact.hevc.mp4",
      "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
      "codec": "hevc",
-     "bytes": 64295
+     "bytes": 49846
     },
     {
      "src": "interact.h264.mp4",
      "type": "video/mp4; codecs=\"avc1.640028\"",
      "codec": "h264",
-     "bytes": 92127
+     "bytes": 64099
     }
    ],
    "check": {
-    "ground_off_share": 0.003471,
-    "far_ground_px": 828990,
-    "far_ground_off": 32,
+    "ground_off_share": 0.006269,
+    "far_ground_px": 829001,
+    "far_ground_off": 619,
     "far_ground_max": 1,
-    "object_mae": 1.76
+    "object_mae": 1.74
    }
   }
  },
@@ -279,27 +279,27 @@
      "src": "droplet-out.av1.mp4",
      "type": "video/mp4; codecs=\"av01.0.08M.10\"",
      "codec": "av1",
-     "bytes": 52620
+     "bytes": 51779
     },
     {
      "src": "droplet-out.hevc.mp4",
      "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
      "codec": "hevc",
-     "bytes": 66759
+     "bytes": 66249
     },
     {
      "src": "droplet-out.h264.mp4",
      "type": "video/mp4; codecs=\"avc1.64002A\"",
      "codec": "h264",
-     "bytes": 63026
+     "bytes": 62388
     }
    ],
    "check": {
-    "ground_off_share": 0.00371,
-    "far_ground_px": 828961,
+    "ground_off_share": 0.004468,
+    "far_ground_px": 828916,
     "far_ground_off": 0,
     "far_ground_max": 0,
-    "object_mae": 1.95
+    "object_mae": 1.96
    }
   },
   "in": {
@@ -308,49 +308,69 @@
      "src": "droplet-in.av1.mp4",
      "type": "video/mp4; codecs=\"av01.0.08M.10\"",
      "codec": "av1",
-     "bytes": 50496
+     "bytes": 50163
     },
     {
      "src": "droplet-in.hevc.mp4",
      "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
      "codec": "hevc",
-     "bytes": 67961
+     "bytes": 67608
     },
     {
      "src": "droplet-in.h264.mp4",
      "type": "video/mp4; codecs=\"avc1.64002A\"",
      "codec": "h264",
-     "bytes": 64399
+     "bytes": 63761
     }
    ]
   }
  },
+ "shadow": {
+  "blend": "multiply",
+  "pose": "rest",
+  "w": 600,
+  "h": 600,
+  "min": 0.288,
+  "sources": [
+   {
+    "src": "shadow.avif",
+    "type": "image/avif",
+    "bytes": 1240
+   },
+   {
+    "src": "shadow.webp",
+    "type": "image/webp",
+    "bytes": 1694
+   }
+  ]
+ },
  "bytes": {
-  "poster1200": 13812,
-  "leanHalf": 193807,
-  "leanFull": 538012,
+  "shadow": 1240,
+  "poster1200": 13787,
+  "leanHalf": 193712,
+  "leanFull": 536130,
   "clips": {
-   "av1": 154044,
-   "hevc": 199015,
-   "h264": 219552
+   "av1": 144295,
+   "hevc": 183703,
+   "h264": 190248
   },
   "idle": {
-   "av1": 106813,
-   "hevc": 162818,
-   "h264": 230157
+   "av1": 95241,
+   "hevc": 132835,
+   "h264": 179622
   },
   "tiers": {
-   "firstPaint": 13812,
+   "firstPaint": 15027,
    "phone": {
-    "av1": 223741,
-    "hevc": 311350,
-    "h264": 371394
+    "av1": 212210,
+    "hevc": 281719,
+    "h264": 320798
    },
-   "desktopLow": 207619,
+   "desktopLow": 208739,
    "desktopFull": {
-    "av1": 899675,
-    "hevc": 944646,
-    "h264": 965183
+    "av1": 889164,
+    "hevc": 928572,
+    "h264": 935117
    }
   }
  }
