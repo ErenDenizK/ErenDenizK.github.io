@@ -1,68 +1,66 @@
-# Plan: the craft round (2026-10-09)
+# Plan: the character round (2026-10-09, evening)
 
-The lead's working plan for the round after prototype E. `ROADMAP.md` stays the level view;
-this file is the current round, its workstreams and who is on them. Update it as tracks land.
+The lead's working plan. The previous round (craft: type, objects, icons, v0) is archived in
+`plan-2026-10-craft-round.md`. `ROADMAP.md` stays the level view.
+
+## Where we are
+
+v0 is built (Astro, pre-rendered objects, tests, CI) and deploys from `dev`. The owner's verdict
+after seeing it: the craft is right but the site lost E's **life** on desktop, repeats projects
+on two pages, reads flat (every page black, the Record hard to read), and the apps, the
+portfolio and the objects do not yet feel like one maker's work (brief §7, latest amendment).
 
 ## Direction
 
-The owner's verdict on prototype E's objects: good, but in-page 3D does not yet look as good
-as the Blender render, and nothing on the site may feel cheap: fonts, motion or images
-(brief §7, 2026-10-09). So this round raises the craft bar before Level 2 builds on it.
-
-Three principles guide every track:
-
-1. **Art direction over raw rendering.** Premium 3D sites mostly win by controlling light,
-   framing and material, often by baking or pre-rendering, not by brute real-time power.
-   Our dark ground makes pre-rendered frames composite seamlessly; use that.
-2. **One system.** Type, motion, light and objects share tokens and one rhythm, so a new
-   object or project never looks bolted on.
-3. **Evidence before taste questions.** Each track ends with images or a page the owner can
-   judge, and an ADR for the technique chosen.
+1. **Life before polish.** Desktop must feel alive again: response to the pointer, light that
+   reacts, objects that move between states, no dead frames. The method is open (live 3D,
+   richer rendered animation, relighting, a mix); phones should gain from it too.
+2. **One origin, many characters.** Each app keeps its own UI, motion and colour; all meet at a
+   shared origin the portfolio makes visible. Never flatten Recto's or English Prep's UI.
+3. **Reading is a feature.** The Record must be easy and pleasant to read, through type,
+   structure, colour and writing craft, not decoration.
+4. **Controlled variety.** Each page gets its own light; any "separate world" idea is studied
+   and shown before anything is built.
 
 ## Workstreams
 
-| # | Track | Output | Status |
-|---|---|---|---|
-| 1 | 3D quality research: how live 3D sites look premium and stay consistent | `research/2026-10-3d-quality.md` | done |
-| 2 | 3D render bake-off: real-time vs pre-rendered sequence vs baked lighting, on edk and Recto | comparison images, sizes, a recommendation; ADR-0006 | done |
-| 3 | Craft audit: type, motion, visuals of prototype E; premium type pairings with licences | `research/2026-10-craft-audit.md`, type specimen shots | done |
-| 4 | Tools and skills for motion and drawing | `research/2026-10-tools.md` | done |
-| 5 | Eat Map identity: colour from the owner's screenshot, object and poster re-lit | updated object, poster, accent | done |
-| 6 | Synthesis: pick the 3D strategy, the type system and the motion system; prototype F | ADR-0006 accepted; prototype F published | done; video next |
-| 8 | Icon system: a reproducible tool that draws every icon from one set of rules | `tools/icons/`, `research/2026-10-icons.md` | done |
-| 9 | Media delivery research: still-to-video handoff, codecs, ground match, photos | `research/2026-10-media.md` | done |
-| 10 | Production renders: lean grids, interaction and droplet clips for five objects | `media/objects/`, `tools/objects/frames.py` | running |
-| 11 | Prototype F with video: wire the manifests into F's media stage | prototype F v2 | after 10 |
-| 7 | Level 2: Astro v0 (ADR-0001 accepted), CI, deploy from main, routing ADR-0007 | site at repo root | running |
-| 12 | Log system: information design, illustration kit, log-entry skill | `docs/design/log.md`, `tools/illustrations/`, prototype | running |
-| 13 | Link previews and icons | `tools/og/`, `research/2026-10-link-previews.md` | done; About card being redone |
+| # | Track | Kind | Output | Status |
+|---|---|---|---|---|
+| A | Readability research + Record redesign proposal | research | `research/2026-10-readability.md` | running |
+| B | Product-family research (how makers keep a shared origin) | research | `research/2026-10-product-family.md` | running |
+| C | Family audit: DNA of Recto, English Prep, Eat Map, portfolio, objects | research | `research/2026-10-family-audit.md` | running |
+| D | Liveliness: methods, constraints, proofs; recommendation to the owner | research + proofs | `research/2026-10-liveliness.md` | running |
+| E | Page worlds: what a controlled "separate world" means; concepts + mood boards | research | `research/2026-10-page-worlds.md` | running |
+| F | Custom scroll rail: research, 3–4 concepts, prototype page | design | `research/2026-10-scroll-rail.md` | running |
+| G | Chrome: Log → Record (`/record/`), coloured "edk." dot, lit animated tabs, sheet overflow bug | build (`wip/chrome`) | site | running |
+| H | Home showcase vs Work catalog | build (`wip/showcase`) | site | running |
+| I | About digital ID card + reusable postcard | build (`wip/idcard`) | site | running |
+| J | Object fixes: shadow layer, log LED and rings, edk lean, budgets | render | `media/objects/` | running |
+| K | Synthesis: family vision document (after B + C), panel review | design | `design/family.md` | after B, C |
+| L | Record redesign build (after A) | build | site | after A |
+| M | Liveliness build (after D and the owner's choice) | build | site, ADR | after D |
+| N | Rail build (after F and the owner's choice) | build | site | after F |
+| O | Page-world prototype, only if the owner approves (after E) | prototype | — | after E |
+| P | Phone pass | build | site | after desktop settles |
 
-## Owner decisions (2026-10-09)
+## How work flows
 
-Colours accepted; type pairing 2; About drops the glasses for the courtyard photo; objects
-become pre-rendered (still first, video behind it); fix transitions, navigation and emoji
-icons on phones. Content waits. See brief §7.
+- Research agents write only their report. Build agents work in their own worktree on a local
+  `wip/<topic>` branch; the lead reviews screenshots, runs `npm run verify`, merges into `dev`
+  and pushes (which deploys).
+- Taste goes to the owner as short option lists; technique is decided and recorded in ADRs.
+- Every report ends with what could not be verified (real Safari, real iPhone, GPU timings).
 
-## Open questions for the owner
+## Open questions for the owner (asked as options when the evidence is ready)
 
-- Eat Map: one line on what the app is, in their words; exact hex if it differs from `#eb4f6b`.
-
-## Done this round
-
-- Prototype E on the real Blender objects, rig lighting and Cycles posters (2026-10-09).
-- Research: 3D quality, motion and drawing tools, craft audit with type pairings.
-- Eat Map re-lit in the app's rose.
+- Liveliness architecture (after D).
+- Family vision: which shared-origin strategy (after K).
+- Page worlds: prototype one or not (after E).
+- Rail concept (after F).
+- Record redesign (after A and L's mock).
 
 ## Notes for later
 
-- Home object: "edk" stays; a more personal object may be tried later (never a processor).
-  Ask the owner for personal motifs first.
-
-- 2.5D About photo: two hand-cut layers (lens rim and fingers in front, courtyard behind)
-  moved with CSS, or a Depth Anything V2 depth map (runs offline here, soft edges, ~1%
-  parallax). Wait for a photo the owner picks for it (`research/2026-10-media.md`).
-- iPhone checks for the owner once F has video: ground seam in a dark room, Low Power Mode,
-  loop seam, every tab twice without a crash.
-- Render bake-off; ADR-0006 accepted (pre-rendered objects).
-- Icon generator (`tools/icons/`).
-- Prototype F: 13 navigation bugs from E fixed, including the Home blank page.
+- 2.5D About photo (two hand-cut layers or a depth map); wait for a photo the owner picks.
+- A more personal home object may be tried later (never a processor).
+- iPhone checks once phones are in scope: ground seam, Low Power Mode, loop seam, stability.
