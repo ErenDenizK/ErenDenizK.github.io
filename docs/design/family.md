@@ -268,7 +268,7 @@ goal is to be seen."* Answer: the portfolio is where being seen happens; it is t
 LinkedIn (brief §7). Inside a product, a visible maker's mark costs the product its own presence
 (the HIG, Muji). The endorsed position is deliberate: products carry the credits line at exits,
 the house carries the products at full volume. Owner question 2 offers a stronger option if they
-wants it.
+want it.
 
 **UX and retention.** *"The embassy makes the visitor cross four visual languages in one visit.
 A recruiter opening two projects in a row sees two different sites and loses the thread. And a
