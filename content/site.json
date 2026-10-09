@@ -1,0 +1,76 @@
+{
+  "name": "Eren Deniz Kuyucaklıoğlu",
+  "nameLines": ["Eren Deniz", "Kuyucaklıoğlu"],
+  "firstName": "Eren",
+  "mark": "edk",
+  "host": "erendenizk.github.io",
+  "kicker": { "study": "Computer Engineering", "school": "Yıldız Technical University", "schoolShort": "YTU", "year": "First year" },
+  "lede": "I study Computer Engineering in Istanbul and build products by directing AI agents. I'm drawn to the low level: processors, embedded systems, the machine's own language.",
+  "description": "Eren Deniz Kuyucaklıoğlu: Computer Engineering at Yıldız Technical University, Istanbul. Products built by directing AI agents, and a log of the work.",
+  "links": {
+    "github": "https://github.com/ErenDenizK",
+    "linkedin": { "placeholder": "no URL yet" }
+  },
+  "now": {
+    "label": "Now, October 2026",
+    "text": "First term of Computer Engineering at YTU. Recto is in public beta; English Prep is at 0.75."
+  },
+  "work": {
+    "kicker": "Three products, all in development",
+    "title": "Products I direct",
+    "dek": "I write the specs, make the decisions and review what AI agents build. Open one to see what it is, why it exists, how it is made and what comes next.",
+    "byHand": "Work I write myself, without agents: course problem sets, low-level experiments, contributions. It gets its own lighter format, and appears here as it happens."
+  },
+  "log": {
+    "title": "The record",
+    "dek": "What I did, why, and what I'm building. Some entries are a line, some are a few pages.",
+    "writingNote": "I dictate the notes, often in Turkish; an agent edits them into English and I read every draft before it goes up.",
+    "empty": "Nothing is published yet. Entries appear here as they are written, each with its date."
+  },
+  "about": {
+    "kicker": "About · Istanbul",
+    "title": "Hi, I'm Eren.",
+    "ledes": [
+      "I'm a first-year Computer Engineering student at Yıldız Technical University in Istanbul. I passed the English prep year with AA, full marks.",
+      "I like what sits closest to the machine, and I build products by directing AI agents."
+    ],
+    "courtyard": {
+      "alt": "The university's inner courtyard on a sunny afternoon, trees and a lawn, seen through a tinted lens held close to the camera.",
+      "caption": "The inner courtyard at YTU, through a tinted lens"
+    },
+    "selfie": {
+      "alt": "Eren in a black hoodie and round glasses, giving a thumbs-up at the YTU gate on a rainy day.",
+      "caption": "At the YTÜ gate, in the rain"
+    },
+    "facts": [
+      ["Study", "Computer Engineering, Yıldız Technical University"],
+      ["Year", "First"],
+      ["Prep", "English proficiency, AA (full marks)"],
+      ["Drawn to", "Processors, embedded systems, the low level"],
+      ["Based", "Istanbul, Türkiye"]
+    ],
+    "tracks": {
+      "title": "A two-track education",
+      "items": [
+        {
+          "label": "Track one, by hand",
+          "title": "The fundamentals",
+          "text": "School and courses, where I write the code myself. This is the engineering underneath everything else.",
+          "list": ["Computer Engineering at YTU", "CS50 and similar courses, camps", "Towards the low level: processors, embedded systems"]
+        },
+        {
+          "label": "Track two, directing agents",
+          "title": "The products",
+          "text": "Projects built by directing AI agents. They teach me project discipline and product sense: specs, decisions, review.",
+          "list": ["Recto, a browser-only PDF editor", "English Prep, a study app for proficiency exams", "Eat Map, an iOS app"]
+        }
+      ],
+      "both": "Both matter. I don't stay away from AI, and I don't let it stand in for the first track."
+    },
+    "colophon": [
+      ["The log", "starts as notes I dictate, often in Turkish. An AI agent edits them into English in my voice, keeps my facts as they are, and I read every draft before it goes up."],
+      ["The site", "is built the same way as my projects: I decide and review, agents write most of the code. The glass objects are modelled in Blender and rendered ahead of time; the page shows the renders."]
+    ],
+    "now": { "label": "Oct 2026", "text": "First term at YTU. Recto in public beta, English Prep at 0.75, Eat Map in Xcode." }
+  }
+}
