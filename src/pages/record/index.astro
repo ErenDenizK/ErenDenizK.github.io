@@ -9,7 +9,7 @@ import Media from '../../components/Media.astro';
 import Foot from '../../components/Foot.astro';
 import LogList from '../../components/LogList.astro';
 import YearStrip from '../../components/YearStrip.astro';
-import { getSite, getLog, getProjects, url, monYear, entriesFor, projectColor, PROJECT_LINKS_FROM } from '../../lib/site';
+import { getSite, getLog, getProjects, url, monYear, entriesFor, projectColor, entryYear, PROJECT_LINKS_FROM } from '../../lib/site';
 const site = await getSite();
 const entries = await getLog();
 const projects = await getProjects();
@@ -20,7 +20,7 @@ const count = entries.length
 const linked = entries.length >= PROJECT_LINKS_FROM ? projects.filter((p) => entriesFor(p, entries).length > 0) : [];
 const thisYear = String(new Date().getUTCFullYear());
 ---
-<Base title="The record" tab="record" description={site.log.dek} og="home">
+<Base title="The record" tab="record" description={site.log.dek} og="home" rail={new Set(entries.map(entryYear)).size > 1}>
   <div class="inner rec">
     <header class="rec-head">
       <div class="rec-text">

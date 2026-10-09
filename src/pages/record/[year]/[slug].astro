@@ -33,16 +33,16 @@ const jsonld = d.kind === 'note' ? [] : [{
   url: abs(entryPath(e)), author: { '@id': abs('#me') }, inLanguage: 'en',
 }];
 ---
-<Base title={title} tab="record" description={d.dek ?? title} type="article" published={d.date} modified={modified} og="home" jsonld={jsonld} accent={light} pageClass="page-post">
+<Base title={title} tab="record" description={d.dek ?? title} type="article" published={d.date} modified={modified} og="home" jsonld={jsonld} accent={light} pageClass="page-post" rail={toc.length > 0}>
   <div class="post-light" style={`--p: ${light}`} aria-hidden="true"></div>
   <div class:list={['inner post-wrap', { 'has-toc': toc.length > 0 }]}>
     <nav class="post-toc" aria-label="On this page">
       <a class="qlink post-back" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
       {toc.length > 0 && <><p class="meta">On this page</p><ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></>}
     </nav>
-    <article class:list={['post', `post-${d.kind}`, { 'post-release': release }]} data-slug={entrySlug(e)} style={`--p: ${light}`}>
+    <article class:list={['post', `post-${d.kind}`, { 'post-release': release }]} data-slug={entrySlug(e)} style={`--p: ${light}`} data-rail-heads={toc.length > 0 ? '' : undefined} data-rail-accent={light} data-rail-minutes={d.kind === 'essay' ? readingMinutes(e.body) : undefined}>
       <a class="qlink post-back post-back-sm" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
-      <header class="post-head">
+      <header class="post-head" data-rail-sec={title}>
         <p class="meta"><time datetime={iso(d.date)}>{longDate(d.date)}</time> · {meta.join(' · ')}{pj.map((p) => <> · <a class="pj" href={url(`work/${p.id}/`)} style={`--p: ${p.data.accent.glow ?? p.data.accent.color}`}>{p.data.title}</a></>)}</p>
         {release && release !== title && <p class="post-version">{release}</p>}
         {d.kind === 'note' ? <h1 class="vh">{title}</h1> : <h1 class:list={['post-title', { 'is-version': release === title }]}>{title}</h1>}
