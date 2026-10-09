@@ -1,8 +1,8 @@
 # Log: information design (2026-10-09)
 
 What the log is made of, how its index groups and scales, how entries are addressed and fed,
-how figures are drawn, and what never appears. **Status: proposal.** Taste questions for the
-owner are in §11; nothing here is binding until the owner accepts it (CLAUDE.md).
+how figures are drawn, and what never appears. **Status: accepted 2026-10-09.** Owner's answers to §11: title "The record"; notes in full in
+the list; threads beside the log and inside each project's view; at most one hand mark.
 
 Rests on: brief §2.2 (public record, evidence of steady work), §2.3 (four years, cheap to add
 to), §4.3 (dictated notes, open categories, figures drawn in code), §7 (English, dark,
