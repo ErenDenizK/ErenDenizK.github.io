@@ -77,3 +77,9 @@ Option 3, with one scripted exception.
   the way, with its costs.
 - The desktop bar stays live above the sheet through a routed click (the page under a modal dialog
   is inert), as in F.
+- While a cross-document transition plays, its overlay takes every press and the browser reports the
+  root element as the target, so a tab or the mark pressed as a page arrives did nothing (found under
+  load, 2026-10-09; a slow phone stretches the window). The head script ends that transition on the
+  press and hands the click to the element under it; the sheet's own same-document transition keeps
+  reading a press on the root as one on the backdrop. Scenario S18 holds a transition open and
+  presses through it.
