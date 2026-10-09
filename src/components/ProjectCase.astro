@@ -1,26 +1,48 @@
 ---
-/* A project's focus view (UX research §2; brief §4.1 layered depth): teaser, facts, then what, why,
-   how, learned, next, and the project's thread and entries from the log. The same article is the
-   standalone page /work/<slug>/ and, on wide screens with JavaScript, the sheet over Work or Home. */
+/* A project's focus view (UX research §2; brief §4.1 layered depth), built as the house and its embassy
+   (docs/design/family.md §3.1): the porch on the house ground (object, title, facts, the way in), a still
+   threshold into the product's ground, the embassy in the product's own world (its promise, real
+   captures, the signature clip, the case sections in the maker's voice), and the foot (credits).
+   The same article is the standalone page /work/<slug>/ and, on wide screens with JavaScript, the
+   sheet over Work or Home. A project without a world.json keeps the house ground throughout. */
 import Media from './Media.astro';
 import Icon from './Icon.astro';
 import Section from './Section.astro';
 import ThreadRow from './ThreadRow.astro';
 import LogRow from './LogRow.astro';
-import { url, projectPath, ym, isPlaceholder, threads, type Project, type LogEntry } from '../lib/site';
+import Capture from './Capture.astro';
+import Clip from './Clip.astro';
+import { url, projectPath, ym, isPlaceholder, threads, getSite, type Project, type LogEntry } from '../lib/site';
+import { getWorld, worldVars, field, shot, type Shot } from '../lib/world';
 interface Props { p: Project; prev: Project; next: Project; index: number; total: number; entries: LogEntry[]; allEntries: LogEntry[]; projects: Project[] }
 const { p, prev, next, index, total, entries, allEntries, projects } = Astro.props;
 const d = p.data;
 const a = d.accent;
-const vars = [`--p: ${a.color}`, a.glow && `--pg: ${a.glow}`, a.p2 && `--p2: ${a.p2}`, a.p3 && `--p3: ${a.p3}`].filter(Boolean).join('; ');
+const site = await getSite();
+const world = await getWorld(p.id);
+const vars = [`--p: ${a.color}`, a.glow && `--pg: ${a.glow}`, a.p2 && `--p2: ${a.p2}`, a.p3 && `--p3: ${a.p3}`, world && worldVars(world)].filter(Boolean).join('; ');
 const thread = threads(allEntries, projects).rows.find((t) => t.project.id === p.id);
 /* Text the owner has not written stays in content as a placeholder and is left out here, so writing
    it later is all it takes for it to appear (owner, 2026-10-09: no "to come" tags on the site). */
 const written = (s: { text?: string; items?: string[]; quote?: string; numbers?: unknown[] }) => !!(s.text || s.items?.length || s.quote || s.numbers?.length);
-const sections = ([
+const all = ([
   ['what', 'What it is', d.what], ['why', 'Why', d.why], ['how', 'How', d.how],
   ['learned', 'What I learned', d.learned], ['next', 'Next', d.next],
-] as const).filter(([, , s]) => written(s));
+] as const);
+const sections = all.filter(([, , s]) => written(s));
+/* Captures (family.md §3.2): the first opens the embassy, the rest stand with How unless placed. A capture
+   placed at a section that is not written yet still shows, without the heading. */
+const shots: Shot[] = world ? d.captures.map((c) => shot(p.id, world, c)) : [];
+const lead = shots[0] && !shots[0].at ? shots[0] : null;
+const placed = (key: string) => shots.filter((s) => s !== lead && (s.at ?? 'how') === key);
+const clip = world && d.clip ? shot(p.id, world, d.clip, 'signature') : null;
+const clipPhone = world && d.clip?.phone ? shot(p.id, world, { id: d.clip.phone }, 'signature') : null;
+/* consecutive phone captures share a row, as a phone-first product lays its screens side by side */
+const groups = (list: Shot[]) => list.reduce<Shot[][]>((g, s) => {
+  const last = g[g.length - 1];
+  if (last && s.frame === 'phone' && last[0].frame === 'phone') last.push(s); else g.push([s]);
+  return g;
+}, []);
 const facts = [
   ['Status', d.status],
   ['Version', d.version && !isPlaceholder(d.version) ? d.version : null],
@@ -30,8 +52,10 @@ const facts = [
 ].filter((f): f is [string, string] => !!f[1]);
 const toc = [...sections.map(([id, label]) => [id, label === 'What I learned' ? 'Learned' : label]), ...(entries.length ? [['in-the-record', 'In the record']] : [])];
 const statusLine = [d.status, d.version && !isPlaceholder(d.version) ? d.version : null, d.statusNote].filter(Boolean).join(' · ');
+const live = d.links[0]?.kind === 'live' ? d.links[0] : null;
+const light = world ? field(p.id, world) : null;
 ---
-<article class="case" data-case={p.id} data-index={index + 1} data-total={total} data-title={d.title} style={vars}>
+<article class:list={['case', { 'has-world': !!world }]} data-case={p.id} data-index={index + 1} data-total={total} data-title={d.title} style={vars}>
   <div class="case-top">
     <div>
       <p class="meta">{statusLine}</p>
@@ -39,7 +63,7 @@ const statusLine = [d.status, d.version && !isPlaceholder(d.version) ? d.version
       <p class="oneliner lede">{d.summary}</p>
       <div class="links">
         {d.links.map((l, i) => i === 0 && l.kind === 'live'
-          ? <a class="btn tint" href={l.href}>{l.label} <Icon name="arrow-up-right" weight="medium" /></a>
+          ? <a class="btn tint w-btn" href={l.href}>{l.label} <Icon name="arrow-up-right" weight="medium" /></a>
           : <a class="qlink" href={l.href}>{l.label} <Icon name="arrow-up-right" /></a>)}
         {d.linksNote && <span class="qlink is-note">{d.linksNote}</span>}
       </div>
@@ -49,30 +73,78 @@ const statusLine = [d.status, d.version && !isPlaceholder(d.version) ? d.version
   <dl class="case-facts">
     {facts.map(([k, v]) => <div><dt class="meta">{k}</dt><dd>{v}</dd></div>)}
   </dl>
-  <div class="case-body">
-    {toc.length > 0 ? (
-      <nav class="toc" aria-label="Sections">
-        {toc.map(([id, label], i) => <a href={`#${id}`} class:list={{ on: i === 0 }}>{label}</a>)}
-      </nav>
-    ) : <div />}
-    <div>
-      {sections.map(([id, label, s]) => (
-        <section class="case-sec" id={id} aria-labelledby={`${id}-h`}>
-          <h2 id={`${id}-h`}>{label}</h2>
-          <Section s={s} />
-        </section>
-      ))}
-      {entries.length > 0 && (
-        <section class="case-sec" id="in-the-record" aria-labelledby="in-the-record-h">
-          <h2 id="in-the-record-h">In the record</h2>
-          {thread && <div class="threads case-thread"><ThreadRow t={thread} /></div>}
-          <ol class="entries spine">{entries.map((e) => <LogRow e={e} projects={projects} compact />)}</ol>
-        </section>
+
+  <div class="emb" data-light={world?.light.behaviour ?? 'still'} data-world={world ? p.id : undefined}>
+    {world && <div class="emb-threshold" aria-hidden="true"></div>}
+    {light?.keyframes && <style is:inline set:html={light.keyframes} />}
+    {light && (
+      <div class="emb-sky" aria-hidden="true">
+        <div class="kl-field" data-kl-behaviour={light.behaviour} data-kl-position="contain" data-kl-still="false" data-kl-running="false"
+          data-event={light.event ? `${light.event.boost ?? 1.25},${light.event.settle ?? 4}` : undefined} style={`--kl-cap: ${light.cap}`}>
+          {light.sources.map((src) => (
+            <div class="kl-source" style={src.style}>
+              {src.pigments.map((pg) => <div class="kl-pigment" style={pg.style} data-kl-pigments={pg.n} data-kl-first={pg.first ? '' : undefined}></div>)}
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+    <div class="emb-body">
+      {world && (
+        <div class="emb-promise">
+          <p class="emb-line" lang={world.promise.lang}>{world.promise.text}</p>
+          {world.promise.gloss && <p class="meta emb-gloss">{world.promise.gloss}</p>}
+        </div>
       )}
-      <nav class="case-next" aria-label="Other projects">
-        <a href={url(projectPath(prev))} data-go={prev.id} rel="prev"><span class="meta"><Icon name="arrow-left" />Previous</span><b>{prev.data.title}</b></a>
-        <a href={url(projectPath(next))} data-go={next.id} rel="next"><span class="meta">Next<Icon name="arrow-right" /></span><b>{next.data.title}</b></a>
-      </nav>
+      {lead && <Capture s={lead} lead />}
+      <div class="case-body">
+        {toc.length > 0 ? (
+          <nav class="toc" aria-label="Sections">
+            {toc.map(([id, label], i) => <a href={`#${id}`} class:list={{ on: i === 0 }}>{label}</a>)}
+          </nav>
+        ) : <div />}
+        <div class="case-main">
+          {all.map(([id, label, s]) => {
+            const here = groups(placed(id));
+            /* the signature clip follows What it is: the product doing its one thing (family.md §3.1) */
+            const film = id === 'what' && clip ? [<Clip s={clip} phone={clipPhone} />] : [];
+            const shotsHere = [...film, ...here.map((g) => g.length > 1 || g[0].frame === 'phone'
+              ? <div class="shots-row">{g.map((x) => <Capture s={x} />)}</div>
+              : <Capture s={g[0]} />)];
+            return written(s) ? (
+              <section class="case-sec" id={id} aria-labelledby={`${id}-h`}>
+                <h2 id={`${id}-h`}>{label}</h2>
+                <Section s={s} />
+                {shotsHere}
+              </section>
+            ) : shotsHere.length > 0 && <div class="case-shots">{shotsHere}</div>;
+          })}
+          {entries.length > 0 && (
+            <section class="case-sec" id="in-the-record" aria-labelledby="in-the-record-h">
+              <h2 id="in-the-record-h">In the record</h2>
+              {thread && <div class="threads case-thread"><ThreadRow t={thread} /></div>}
+              <ol class="entries spine">{entries.map((e) => <LogRow e={e} projects={projects} compact />)}</ol>
+            </section>
+          )}
+        </div>
+      </div>
     </div>
   </div>
+
+  <footer class="emb-foot">
+    <div class="emb-credits">
+      <span class="emb-mark" aria-hidden="true">edk<span class="dot"></span></span>
+      <p class="meta"><span class="vh">edk. </span>{d.title} · {site.name} · {d.role}</p>
+      {(live || d.links.length > 0) && (
+        <div class="links">
+          {live && <a class="btn tint w-btn" href={live.href}>{live.label} <Icon name="arrow-up-right" weight="medium" /></a>}
+          {d.links.filter((l) => l !== live).map((l) => <a class="qlink" href={l.href}>{l.label} <Icon name="arrow-up-right" /></a>)}
+        </div>
+      )}
+    </div>
+    <nav class="case-next" aria-label="Other projects">
+      <a href={url(projectPath(prev))} data-go={prev.id} rel="prev"><span class="meta"><Icon name="arrow-left" />Previous</span><b>{prev.data.title}</b></a>
+      <a href={url(projectPath(next))} data-go={next.id} rel="next"><span class="meta">Next<Icon name="arrow-right" /></span><b>{next.data.title}</b></a>
+    </nav>
+  </footer>
 </article>

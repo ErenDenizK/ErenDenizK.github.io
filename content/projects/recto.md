@@ -17,6 +17,11 @@ summary: A PDF editor that runs entirely in your browser. Nothing is uploaded.
 links:
   - { label: Open Recto, href: "https://erendenizk.github.io/recto/", kind: live }
   - { label: Code, href: "https://github.com/ErenDenizK/recto", kind: code }
+captures:
+  - { id: library }
+  - { id: markup }
+  - { id: light-table }
+clip: { id: signature }
 what:
   text: Open many PDFs, arrange their pages on one light table, annotate, fill, redact, edit text, recognise scans, compare, sign.
 why:

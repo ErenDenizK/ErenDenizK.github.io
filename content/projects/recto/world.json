@@ -1,0 +1,228 @@
+{
+  "version": 1,
+  "slug": "recto",
+  "name": "Recto",
+  "source": {
+    "repo": "ErenDenizK/recto",
+    "commit": "5abb766e8e34c40ca7fb3df7a9a028623e460fab",
+    "version": "1.0.0-beta",
+    "files": [
+      "apps/web/src/styles/tokens.css",
+      "apps/web/src/styles/motion.css",
+      "apps/web/src/home/LibraryView.module.css",
+      "apps/web/messages/en.json"
+    ],
+    "date": "2026-10-09"
+  },
+  "ground": {
+    "base": "#08090c",
+    "frame": "#17191e",
+    "raised": "#1f2227"
+  },
+  "ink": {
+    "primary": "#e8e9ec",
+    "secondary": "#a1a5ab",
+    "link": "#e8e9ec"
+  },
+  "accent": {
+    "color": "#c8fb3d",
+    "ink": "#08090c",
+    "radius": 999,
+    "job": "The armed tool and the one primary action; it always touches ink and never touches the page.",
+    "light": "#bbed26"
+  },
+  "light": {
+    "behaviour": "event",
+    "theme": "dark",
+    "cap": 0.16,
+    "sources": [
+      {
+        "pigments": [
+          "#69eaa3"
+        ],
+        "at": [
+          -2,
+          40
+        ],
+        "size": [
+          76,
+          100
+        ]
+      },
+      {
+        "pigments": [
+          "#aaf976"
+        ],
+        "at": [
+          50,
+          6
+        ],
+        "size": [
+          84,
+          80
+        ]
+      },
+      {
+        "pigments": [
+          "#69eaa3"
+        ],
+        "at": [
+          75,
+          101
+        ],
+        "size": [
+          90,
+          90
+        ]
+      }
+    ],
+    "event": {
+      "boost": 1.25,
+      "settle": 4
+    },
+    "note": "The shipped light is the Library aura (LibraryView .aura): four lobes of the mark's mint, lime and yellow, dark peaks .17 / .15 / .05 / .10 on an eleven-stop bell, no animation. Here as three sources under one cap of .16; the faintest lobe (yellow, .05) is left out to keep to three. The WebGL aurora of ADR-0025 is not in the build yet; its arrival event is the one change the embassy plays. Tertiary ink (n9 #91949a) is not listed: over its light Recto steps quiet text up a level (tokens.css §1, text on glass), and n9 falls to 4.1:1 at the arrival's peak, so the embassy's quiet text is n10."
+  },
+  "fonts": {
+    "ui": {
+      "family": "Inter Recto",
+      "stack": "\"Inter\", \"Inter Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "weights": [
+        400,
+        500,
+        600
+      ],
+      "tracking": 0.01,
+      "size": 13,
+      "features": [
+        "tnum"
+      ]
+    },
+    "display": {
+      "family": "Inter Recto",
+      "stack": "\"Inter\", \"Inter Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "weights": [
+        600
+      ],
+      "tracking": -0.02,
+      "size": 28,
+      "lineHeight": 36
+    }
+  },
+  "motion": {
+    "press": {
+      "duration": 0.2,
+      "bounce": 0
+    },
+    "settle": {
+      "duration": 0.36,
+      "bounce": 0
+    },
+    "glide": {
+      "duration": 0.46,
+      "bounce": 0
+    },
+    "pop": {
+      "duration": 0.32,
+      "bounce": 0.25
+    },
+    "pressScale": {
+      "mouse": 0.97,
+      "touch": 0.94
+    }
+  },
+  "promise": {
+    "text": "Nothing leaves this device.",
+    "lang": "en",
+    "evidence": "https://erendenizk.github.io/recto/about/"
+  },
+  "links": {
+    "open": "https://erendenizk.github.io/recto/",
+    "code": "https://github.com/ErenDenizK/recto"
+  },
+  "captures": [
+    {
+      "id": "library",
+      "kind": "screen",
+      "files": [
+        "captures/recto-library-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "The Library, where every document starts.",
+      "alt": "Recto's Library: the drop card on the graphite canvas under the mint and lime aura, with Open PDFs, Try the sample, Combine files and Batch.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "document",
+      "kind": "screen",
+      "files": [
+        "captures/recto-document-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "The sample, open: the white page is the brightest thing.",
+      "alt": "The Recto sample document open on the canvas: Welcome to Recto. on the white page, the capsule dock with Pages, Markup, Fill & sign and More below it.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "markup",
+      "kind": "screen",
+      "files": [
+        "captures/recto-markup-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "Markup: the capsule becomes the palette.",
+      "alt": "The Recto sample in Markup: the white page, and the capsule palette below it with pen colours, shapes, Sign, fields, Edit text and Redact.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "light-table",
+      "kind": "screen",
+      "files": [
+        "captures/recto-light-table-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "Pages: the document's pages on one light table.",
+      "alt": "The Pages view: the sample's four pages as thumbnails on the dark canvas, with Done, 4 pages and Select all in the capsule.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "signature",
+      "kind": "signature",
+      "files": [
+        "captures/recto-signature-1440x900@1x-poster.png",
+        "captures/recto-signature-1440x900@1x.av1.mp4",
+        "captures/recto-signature-1440x900@1x.hevc.mp4",
+        "captures/recto-signature-1440x900@1x.h264.mp4"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 1,
+      "theme": "dark",
+      "durationSeconds": 8,
+      "caption": "The capsule changes shape: dock, Markup palette, Pages bar.",
+      "alt": "The Recto sample open: the capsule dock widens into the Markup palette, closes again, and becomes the Pages bar as the pages spread onto the light table.",
+      "shot": "2026-10-09"
+    }
+  ]
+}

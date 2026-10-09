@@ -1,0 +1,156 @@
+/* The embassy (docs/design/family.md §3.1): below the porch, a project view enters the product's own
+   world inside the portfolio's frame. Bands: porch (house ground, global.css .case-top and facts),
+   threshold (a still gradient from the house ground into the product's), embassy (the product's ground,
+   its light, its captures, the maker's text in the product's ink), foot (credits).
+   Every value comes from the product's world.json through the --w-* properties (lib/world.ts); inside
+   the bands the house names (--ink, --read, --rule ...) are re-pointed at them, so the sections, the
+   table of contents, the record rows and the links take the product's colours with no rules of their own.
+   Type (family.md §2.5): Newsreader is the maker's voice (section heads, prose, the title, credits); the
+   product's face carries the product's words (its promise line, captions quoting its UI, its button).
+   Isolation (media research §3.1): the porch's blended object is above all of this and untouched. */
+
+.case { --case-pad: 56px; --threshold: 200px; --cap-r: 10px; --house-ground: var(--ground); }
+.case.has-world { padding-bottom: 0; display: flex; flex-direction: column; }
+.case.has-world > .emb { flex: 1 0 auto; }
+/* in the sheet, a short world (Eat Map until its captures exist) still fills the sheet with its ground */
+dialog.focus .case.has-world { min-height: calc(100cqh - 64px); }
+@media (max-width: 899.98px) { dialog.focus .case.has-world { min-height: calc(100cqh - 56px); } }
+
+/* ---- the bands share the product's tokens ---- */
+.case.has-world :is(.emb, .emb-foot) {
+  --ground: var(--w-ground);
+  --ink: var(--w-ink);
+  --read: var(--w-ink);
+  --ink-2: var(--w-ink2);
+  --ink-3: var(--w-ink3);
+  --ink-4: color-mix(in srgb, var(--w-ink3) 55%, transparent);
+  --rule: var(--w-hair);
+  --rule-2: color-mix(in srgb, var(--w-ink) 20%, transparent);
+  --focus: var(--w-ink);
+  --p: var(--w-accent-light);
+  color: var(--ink);
+  background: var(--w-ground);
+}
+
+.emb { position: relative; margin: 0 calc(-1 * var(--case-pad)); padding: var(--threshold) var(--case-pad) 24px; overflow: clip; }
+/* the world is at least one view tall, so its light is whole even while it holds little (Eat Map today) */
+.case.has-world .emb { min-height: 100cqh; }
+@supports not (height: 1cqh) { .case.has-world .emb { min-height: 100svh; } }
+.case:not(.has-world) .emb { padding-top: 0; }
+
+/* 2 Threshold: a still gradient, house ground to transparent over the product's ground and light, so the
+   light begins inside it (Alexander's entrance transition). Eased stops, so it has no visible edge. */
+.emb-threshold {
+  position: absolute; z-index: 1; left: 0; right: 0; top: 0; height: var(--threshold); pointer-events: none;
+  background: linear-gradient(180deg in oklab,
+    var(--house-ground, #0a0a0b) 0%,
+    color-mix(in oklab, var(--house-ground, #0a0a0b) 92%, transparent) 18%,
+    color-mix(in oklab, var(--house-ground, #0a0a0b) 70%, transparent) 40%,
+    color-mix(in oklab, var(--house-ground, #0a0a0b) 38%, transparent) 64%,
+    color-mix(in oklab, var(--house-ground, #0a0a0b) 12%, transparent) 86%,
+    transparent 100%);
+}
+
+/* 3 The product's light: the kit's field (docs/family-kit/light.css) in a window-sized layer that stays
+   behind the reading position while the band scrolls, as the product's own light stays behind its view.
+   Its height is the sheet's (the dialog's sheet is a size container) or the window's on the page. */
+.emb-sky {
+  position: sticky; top: 0; z-index: 0;
+  /* it starts at the band's top, under the threshold, and takes no room in the flow */
+  height: 100cqh; margin: calc(-1 * var(--threshold)) calc(-1 * var(--case-pad)) calc(var(--threshold) - 100cqh);
+  container-type: size; pointer-events: none;
+}
+@supports not (height: 1cqh) { .emb-sky { height: 100svh; margin-bottom: calc(var(--threshold) - 100svh); } }
+.emb-sky .kl-field { inset: 0; }
+dialog.focus .sheet { container-type: size; }
+
+.emb-body { position: relative; z-index: 2; }
+.case-main { min-width: 0; }   /* a row of phone captures scrolls inside itself, it never widens the column */
+
+/* the product's promise, in its own face and size (F2: its one promise line) */
+.emb-promise { padding: 8px 0 44px; max-width: 30em; }
+.emb-line {
+  font: var(--w-display-w) var(--w-display-s)/var(--w-display-lh) var(--w-display);
+  letter-spacing: var(--w-display-t); color: var(--ink); text-wrap: balance;
+}
+.emb-gloss { margin-top: 10px; color: var(--ink-3); }
+
+/* ---- captures (family.md §3.2): the product's own corners, a 1 px hairline, nothing else ---- */
+.cap { margin: 0; }
+.cap-frame { position: relative; border-radius: var(--cap-r); overflow: hidden; background: var(--w-frame);
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.75); }
+.cap-frame::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); pointer-events: none; }
+.cap-frame img { display: block; width: 100%; height: auto; }
+.cap figcaption { margin-top: 12px; font-family: var(--w-face); letter-spacing: var(--w-ui-t); color: var(--ink-3); text-wrap: pretty; }
+.cap-lead { margin-bottom: 64px; }
+.case-sec .cap, .case-shots .cap { margin-top: 36px; }
+.cap-phone .cap-frame { border-radius: calc(var(--cap-r) * 2); }
+.shots-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: 36px; align-items: start; }
+.shots-row .cap { margin-top: 0; }
+.shots-row:has(> :nth-child(2):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 66%; }
+
+/* the signature clip: the poster is the frame; the video lies over it once it has a painted frame */
+.case-sec .clip, .case-shots .clip { margin-top: 36px; }
+.clip-frame { aspect-ratio: var(--clip-ar); }
+.clip-frame picture, .clip-frame .clip-poster { display: block; width: 100%; height: 100%; object-fit: cover; }
+.clip-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 200ms var(--ease-out); }
+.clip.is-playing .clip-video { opacity: 1; }
+
+/* ---- the maker's text, in the product's ink (readability T1: reading at 21 px) ---- */
+.case.has-world .emb .prose { font-size: 21px; line-height: 1.55; }
+.case.has-world .emb .decisions li { font: 400 19px/1.5 var(--f-read); color: var(--read); }
+.case.has-world .emb .case-sec blockquote { color: var(--ink); }
+/* numbers are the product's own facts: its face */
+.case.has-world .emb .numbers b { font: var(--w-display-w) 44px/1 var(--w-display); letter-spacing: var(--w-display-t); }
+.case.has-world .emb .numbers .meta { font-family: var(--w-face); }
+.case.has-world .emb a:not(.btn):not(.toc a) { color: var(--w-link); }
+
+/* ---- the product's one primary button (V2: the accent's one job), its label in the product's face,
+   its press the product's press (motion: press-in, then the settle spring) ---- */
+.case.has-world .w-btn {
+  background: var(--w-accent-fill); color: var(--w-accent-ink); border-radius: var(--w-radius);
+  font-family: var(--w-face); font-weight: var(--w-btn-w, 500); letter-spacing: var(--w-ui-t);
+  transition: transform var(--w-settle-d) var(--w-settle-e), filter var(--d-1);
+}
+.case.has-world .w-btn:hover { background: var(--w-accent-fill); filter: brightness(1.05); }
+.case.has-world .w-btn:active { transform: scale(var(--w-press)); transition: transform var(--w-press-d) var(--w-press-e); }
+@media (pointer: coarse) { .case.has-world .w-btn:active { transform: scale(var(--w-press-touch)); } }
+
+/* 4 Foot: credits on the product's ground (family.md §3.1) */
+.case.has-world .emb-foot { position: relative; z-index: 2; margin: 0 calc(-1 * var(--case-pad)); padding: 44px var(--case-pad) 48px; border-top: 1px solid var(--rule); }
+.emb-credits { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px 20px; }
+.emb-credits .links { margin: 0; }
+.emb-mark { font: 500 26px/1 var(--f-display); letter-spacing: -0.01em; color: var(--ink); }
+.emb-mark .dot { display: inline-block; width: 0.22em; height: 0.22em; margin-left: 0.07em; border-radius: 50%; background: var(--w-accent-light); }
+.emb-credits .meta { color: var(--ink-3); text-wrap: pretty; }
+.case.has-world .emb-foot .case-next { margin-top: 28px; }
+.case:not(.has-world) .emb-foot .emb-credits { display: none; }
+
+/* the page (no sheet): the foot closes the sheet's rounded shape */
+@media (min-width: 900px) { .sheet-page .case.has-world .emb-foot { border-radius: 0 0 22px 22px; } }
+
+@media (max-width: 1240px) { .case { --case-pad: 40px; } }
+@media (max-width: 899.98px) {
+  .case { --case-pad: 18px; --threshold: 120px; --cap-r: 8px; }
+  .emb-promise { padding-bottom: 32px; }
+  .emb-line { font-size: calc(var(--w-display-s) * 0.86); }
+  .cap-lead { margin-bottom: 44px; }
+  .clip-cut .clip-frame { aspect-ratio: var(--clip-ar-phone, var(--clip-ar)); max-width: 72vw; margin-inline: auto; border-radius: calc(var(--cap-r) * 2); }
+  /* phone captures: a row that scrolls inside itself; the page never scrolls sideways */
+  .shots-row, .shots-row:has(> :nth-child(2):last-child) {
+    display: grid; grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 68vw; max-width: none;
+    gap: 14px; margin-inline: calc(-1 * var(--case-pad)); padding: 0 var(--case-pad) 6px;
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+  }
+  .shots-row .cap { scroll-snap-align: center; }
+  .case.has-world .emb .prose { font-size: 19px; }
+  .case.has-world .emb .numbers b { font-size: 36px; }
+  .emb-credits { grid-template-columns: auto minmax(0, 1fr); }
+  .emb-credits .links { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case.has-world .w-btn:active { transform: none; }
+  .clip-video { transition-duration: 1ms; }
+}
+@media (forced-colors: active) { .emb-sky { display: none; } }

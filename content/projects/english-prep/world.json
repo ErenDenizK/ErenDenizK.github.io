@@ -1,0 +1,455 @@
+{
+  "version": 1,
+  "slug": "english-prep",
+  "name": "English Prep",
+  "source": {
+    "repo": "ErenDenizK/english-prep",
+    "commit": "3b8b26181f7ddb12f76bf2882a7f824ce976408c",
+    "version": "0.75",
+    "files": [
+      "css/editorial.css",
+      "css/interactions.css",
+      "js/interactions.js",
+      "about/index.html",
+      "docs/family/world.json"
+    ],
+    "date": "2026-10-09"
+  },
+  "ground": {
+    "base": "#141216",
+    "frame": "#1d1a20",
+    "raised": "#28242c",
+    "hairline": "#39313d"
+  },
+  "ink": {
+    "primary": "#eee9ed",
+    "secondary": "#d2c9d3",
+    "tertiary": "#d2c9d3",
+    "link": "#eee9ed"
+  },
+  "accent": {
+    "color": "#ed96b4",
+    "gradient": {
+      "stops": [
+        "#ed96b4",
+        "#dca2d8"
+      ],
+      "angle": 120
+    },
+    "ink": "#301b27",
+    "radius": 8,
+    "job": "The one primary action, and a correct answer (always with the check mark and the word Doğru).",
+    "light": "#efb1cb"
+  },
+  "light": {
+    "behaviour": "drift",
+    "theme": "dark",
+    "cap": 0.42,
+    "sources": [
+      {
+        "pigments": [
+          "#a04278",
+          "#6350a5",
+          "#28798a"
+        ],
+        "at": [
+          6,
+          5
+        ],
+        "size": [
+          72,
+          78
+        ],
+        "drift": {
+          "period": 9.75,
+          "phase": -2.5,
+          "path": [
+            [
+              0,
+              "translate(-3cqw, -3cqh) rotate(-18deg) scale(.96)"
+            ],
+            [
+              42,
+              "translate(14cqw, 15cqh) rotate(12deg) scale(1.1)"
+            ],
+            [
+              100,
+              "translate(3cqw, 5cqh) rotate(-8deg) scale(1.02)"
+            ]
+          ]
+        },
+        "cycle": {
+          "period": 13.5,
+          "phase": -2.25
+        }
+      },
+      {
+        "pigments": [
+          "#6350a5",
+          "#28798a",
+          "#a04278"
+        ],
+        "at": [
+          94,
+          41
+        ],
+        "size": [
+          72,
+          78
+        ],
+        "drift": {
+          "period": 11.75,
+          "phase": -6.25,
+          "path": [
+            [
+              0,
+              "translate(8cqw, -8cqh) rotate(12deg) scale(1)"
+            ],
+            [
+              48,
+              "translate(-18cqw, 9cqh) rotate(-16deg) scale(1.12)"
+            ],
+            [
+              100,
+              "translate(-1cqw, -3cqh) rotate(4deg) scale(.96)"
+            ]
+          ]
+        },
+        "cycle": {
+          "period": 15.75,
+          "phase": -7.875
+        }
+      },
+      {
+        "pigments": [
+          "#28798a",
+          "#a04278",
+          "#6350a5"
+        ],
+        "at": [
+          24,
+          100
+        ],
+        "size": [
+          72,
+          78
+        ],
+        "drift": {
+          "period": 13.75,
+          "phase": -8.75,
+          "path": [
+            [
+              0,
+              "translate(-10cqw, 4cqh) rotate(-8deg) scale(1.06)"
+            ],
+            [
+              54,
+              "translate(15cqw, -18cqh) rotate(14deg) scale(1)"
+            ],
+            [
+              100,
+              "translate(-3cqw, -4cqh) rotate(-14deg) scale(1.12)"
+            ]
+          ]
+        },
+        "cycle": {
+          "period": 18,
+          "phase": -13.5
+        }
+      }
+    ],
+    "note": "css/editorial.css .ambient: three fields of max(72vw, 470px) by max(78vh, 520px), each cross-fading cherry, iris and lagoon under one parent opacity of .42. drift.path is the app's own @keyframes aura-north/east/south, with vw/vh read as the embassy field's cqw/cqh; the embassy plays it instead of the kit's generic drift. Reduced motion: three still pools, each source in its first pigment."
+  },
+  "fonts": {
+    "ui": {
+      "family": "Inter",
+      "stack": "\"Inter\", \"Inter Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "weights": [
+        400,
+        600
+      ],
+      "tracking": -0.005,
+      "size": 16,
+      "lineHeight": 28
+    },
+    "display": {
+      "family": "Inter",
+      "stack": "\"Inter\", \"Inter Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "weights": [
+        600
+      ],
+      "tracking": -0.035,
+      "size": 30,
+      "lineHeight": 36
+    },
+    "reading": {
+      "family": "Inter",
+      "stack": "\"Inter\", \"Inter Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "weights": [
+        400
+      ],
+      "size": 18,
+      "lineHeight": 30
+    }
+  },
+  "motion": {
+    "press": {
+      "duration": 0.048,
+      "bounce": 0
+    },
+    "settle": {
+      "duration": 0.182,
+      "bounce": 0
+    },
+    "glide": {
+      "duration": 0.172,
+      "bounce": 0
+    },
+    "pop": {
+      "duration": 0.105,
+      "bounce": 0
+    },
+    "pressScale": {
+      "mouse": 0.945,
+      "touch": 0.945
+    },
+    "ease": "cubic-bezier(0.22, 1, 0.36, 1)",
+    "note": "English Prep moves on one ease today: the inner face compresses to .945 in 120 ms and releases continuously over 380 ms (.945 to 1.035 to 1). The springs are the kit's fitted equivalents of that ease (motion.md §3.2); the embassy's button presses on them."
+  },
+  "promise": {
+    "text": "Ücretsiz. Hesapsız. İlerlemen kendi tarayıcında.",
+    "lang": "tr",
+    "gloss": "Free. No account. Your progress stays in your browser.",
+    "evidence": "https://erendenizk.github.io/english-prep/about/"
+  },
+  "links": {
+    "open": "https://erendenizk.github.io/english-prep/",
+    "code": "https://github.com/ErenDenizK/english-prep",
+    "about": "https://erendenizk.github.io/english-prep/about/"
+  },
+  "captures": [
+    {
+      "id": "home",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-home-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "Eğitim: where you left off, beside every lesson.",
+      "alt": "Eğitim on a wide screen: Bildiğin İngilizceyi netleştir., the reading position at 42 % with Devam et, and the lesson list beside it under the plum aurora.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "lesson",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-lesson-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "A lesson is one contrast: Present Perfect vs Past Simple.",
+      "alt": "The lesson Present Perfect vs Past Simple: a Turkish explanation, then Aradaki fark with Past Simple and Present Perfect and an English example under each.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "question",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-question-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "caption": "An answered question: Doğru, the reason, the rule.",
+      "alt": "A Modals question answered: can't marked with a check, Doğru, the explanation in Turkish and the rule, then Sonraki soru.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "results",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-results-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "alt": "Results of a Modals test: 4 / 5, the review of every question and the breakdown by category.",
+      "caption": "Results: 4 of 5, and what each mistake was.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "about",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-about-1440x900@2x.png"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 2,
+      "theme": "dark",
+      "alt": "English Prep's About: Bildiğin İngilizce. Daha net ayrımlar., Çalışmaya başla, and the folio of its three steps.",
+      "caption": "About, with the folio of its three steps.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "home-phone",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-home-390x844@2x.png"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "caption": "Eğitim on a phone.",
+      "alt": "Eğitim on a phone: Bildiğin İngilizceyi netleştir., Devam et, and 10 topics, 60 lessons, 241 questions.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "lesson-phone",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-lesson-390x844@2x.png"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "caption": "The same lesson, read on a phone.",
+      "alt": "The lesson Present Perfect vs Past Simple on a phone, its Turkish explanation in a single reading column.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "question-phone",
+      "kind": "screen",
+      "files": [
+        "captures/english-prep-question-390x844@2x.png"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "caption": "Doğru, with the reason under it.",
+      "alt": "A Modals question answered on a phone: can't with a check, Doğru and the explanation, Sonraki soru at the foot.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "results-phone",
+      "kind": "screen",
+      "caption": "Results: 4 of 5, and what each mistake was.",
+      "files": [
+        "captures/english-prep-results-390x844@2x.png"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "alt": "Results on a phone: 4 / 5 and the breakdown by category, with Ana sayfa and Yeni test.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "about-phone",
+      "kind": "screen",
+      "caption": "About on a phone.",
+      "files": [
+        "captures/english-prep-about-390x844@2x.png"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "alt": "English Prep's About on a phone: the headline, Çalışmaya başla and the promise line.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "folio-phone",
+      "kind": "screen",
+      "caption": "The folio: Oku, Uygula, Geri dön.",
+      "files": [
+        "captures/english-prep-folio-390x844@2x.png"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 2,
+      "touch": true,
+      "theme": "dark",
+      "alt": "The About folio on a phone: three leaves, Oku, Uygula and Geri dön, with the lesson page on top.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "signature",
+      "kind": "signature",
+      "files": [
+        "captures/english-prep-signature-1440x900@1x-poster.png",
+        "captures/english-prep-signature-1440x900@1x.av1.mp4",
+        "captures/english-prep-signature-1440x900@1x.hevc.mp4",
+        "captures/english-prep-signature-1440x900@1x.h264.mp4"
+      ],
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 1,
+      "theme": "dark",
+      "durationSeconds": 6.2,
+      "caption": "An answer: the press, the release, Doğru.",
+      "alt": "A question is answered: can't is pressed, released, and turns Sakura with a check mark while Doğru and the explanation appear.",
+      "shot": "2026-10-09"
+    },
+    {
+      "id": "signature-phone",
+      "kind": "signature",
+      "files": [
+        "captures/english-prep-signature-390x844@1x-poster.png",
+        "captures/english-prep-signature-390x844@1x.av1.mp4",
+        "captures/english-prep-signature-390x844@1x.hevc.mp4",
+        "captures/english-prep-signature-390x844@1x.h264.mp4"
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 1,
+      "touch": true,
+      "theme": "dark",
+      "durationSeconds": 6.1,
+      "caption": "An answer: the press, the release, Doğru.",
+      "alt": "On a phone, can't is tapped and released, and Doğru appears with its explanation.",
+      "shot": "2026-10-09"
+    }
+  ]
+}

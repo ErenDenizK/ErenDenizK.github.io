@@ -6,6 +6,7 @@
    the URL is the source of truth (popstate renders it). */
 import { root, mq, reduce, rel, base } from './env';
 import { api as Media, initMedia } from './media';
+import { initEmbassy } from './embassy';
 
 type St = { sheet?: 1; base?: string; k?: number };
 const isProject = (path: string) => /^work\/[^/]+$/.test(rel(path));
@@ -54,7 +55,9 @@ export function initSheet() {
   let pendingBack = false, pendingBackT = 0;
   let queued: (() => void) | null = null;
 
+  let embassyOff: (() => void) | null = null;
   function fill(article: HTMLElement) {
+    embassyOff?.(); embassyOff = null;
     const c = article.cloneNode(true) as HTMLElement;
     /* the page's title is an h1; inside the sheet it is the dialog's heading, an h2 */
     const h1 = c.querySelector('h1.case-title');
@@ -65,6 +68,7 @@ export function initSheet() {
     initMedia(c);
     Media.refresh();
     scroller.scrollTop = 0;
+    embassyOff = initEmbassy(c);
     return c;
   }
   function stopMotion() {
@@ -143,6 +147,7 @@ export function initSheet() {
       S.phase = 'closed';
       if (dlg.open) { S.ourCloses++; dlg.close(); }
       root.classList.remove('sheet-open');
+      embassyOff?.(); embassyOff = null;
       slot.querySelectorAll('video').forEach((v) => { try { v.pause(); v.removeAttribute('src'); v.load(); } catch {} });
       Media.refresh();                             // the page's own objects may move again
       const target = key && document.querySelector<HTMLElement>(`#main [data-p="${key}"]`);
