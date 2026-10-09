@@ -51,7 +51,11 @@ const desktopTier = () => mq.wide.matches && mq.fine.matches;
 const benched = (el: Slot) => el.hasAttribute('data-solo') && el !== current;
 const moving = () => motionOK() && !refused;
 
-export const api = { changes: 0, visible, playing: () => playing, show, play, refresh, arrive, leave, focus, focused: () => current };
+/* The embassy's signature clip (scripts/embassy.ts) shares the one-video rule: claiming pauses whatever
+   plays here; a stage that starts again pauses the clip in turn (start() above). */
+function claimVideo(v: HTMLVideoElement) { if (playing && playing !== v) { try { playing.pause(); } catch {} } playing = v; }
+function yieldVideo(v: HTMLVideoElement) { if (playing === v) playing = null; }
+export const api = { changes: 0, visible, playing: () => playing, show, play, refresh, arrive, leave, focus, focused: () => current, claimVideo, yieldVideo, refused: () => refused };
 const live = liveOn ? import('./live/engine') : null;
 live?.then((L) => L.init()).catch(() => {});
 const isLive = (el: Slot) => !!live && LIVE_SLOTS.has(el.dataset.slot || '');

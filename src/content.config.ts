@@ -50,6 +50,15 @@ const wordmark = z
     message: 'this weight is not in the face\'s subset (lib/wordmarks.ts, tools/fonts/subset.py)',
   });
 
+/** One of the product's captures (its world.json `captures`, by id) chosen for the embassy
+    (docs/design/family.md §3.2). `at` places it beside a section (default: the first opens the
+    embassy, the rest stand with How); `caption` replaces world.json's caption in the maker's words. */
+const pick = z.object({
+  id: z.string().regex(/^[a-z0-9-]+$/),
+  at: z.enum(['what', 'why', 'how', 'learned', 'next']).optional(),
+  caption: z.string().optional(),
+});
+
 const projects = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './content/projects' }),
   schema: z.object({
@@ -78,6 +87,12 @@ const projects = defineCollection({
     summaryPlaceholder: z.string().optional(),
     links: z.array(z.object({ label: z.string(), href: z.url(), kind: z.enum(['live', 'code', 'other']) })).default([]),
     linksNote: z.string().optional(),
+    /** Real screens from world.json, laid out in the embassy as the product lays them out
+        (family.md §3.1); none listed, none shown. */
+    captures: z.array(pick).default([]),
+    /** The one signature clip (world.json kind "signature"), with an optional phone-sized cut of the
+        same gesture for windows under 900 px. One video element either way. */
+    clip: z.object({ id: z.string(), phone: z.string().optional(), caption: z.string().optional() }).optional(),
     what: section,
     why: section,
     how: section,
@@ -138,6 +153,59 @@ const log = defineCollection({
     .refine((e) => e.kind !== 'note' || (!e.version && !e.key && !e.image), 'a note has no version, key line or image (log.md §3.1)'),
 });
 
+/* Each product's world inside its embassy (docs/design/family.md §3.1): content/projects/<slug>/world.json,
+   the family kit's contract (docs/family-kit/presentation.md, world.schema.json; tests/worlds.mjs
+   validates every file against that schema and light.js checkField()). Values are copied from the
+   product's own token files, never redrawn; a new project's world is data, never code (ADR-0002).
+   This schema names only what the embassy reads; the entry id is the project's slug. */
+const hexRe = /^#[0-9a-f]{6}$/;
+const springOrNull = z.union([z.object({ duration: z.number(), bounce: z.number().optional() }), z.object({ stiffness: z.number(), damping: z.number() }), z.null()]);
+const face = z.object({ family: z.string(), stack: z.string().regex(/^[^;{}<>]*$/), weights: z.array(z.number()).optional(), tracking: z.number().optional(), size: z.number().optional(), lineHeight: z.number().optional() });
+const worlds = defineCollection({
+  loader: glob({ pattern: '*/world.json', base: './content/projects', generateId: ({ entry }) => entry.split('/')[0] }),
+  schema: z.object({
+    version: z.literal(1),
+    slug: z.string(),
+    name: z.string(),
+    source: z.object({ repo: z.string(), commit: z.string(), files: z.array(z.string()), date: z.string(), estimated: z.array(z.string()).optional() }),
+    ground: z.object({ base: z.string().regex(hexRe), frame: z.string().regex(hexRe).optional(), raised: z.string().regex(hexRe).optional(), hairline: z.string().regex(hexRe).optional() }),
+    ink: z.object({ primary: z.string().regex(hexRe), secondary: z.string().regex(hexRe), tertiary: z.string().regex(hexRe).optional(), link: z.string().regex(hexRe).optional() }),
+    accent: z.object({
+      color: z.string().regex(hexRe), ink: z.string().regex(hexRe), job: z.string(), radius: z.number().optional(), light: z.string().regex(hexRe).optional(),
+      gradient: z.object({ stops: z.array(z.string().regex(hexRe)).min(2), angle: z.number() }).optional(),
+    }),
+    light: z.object({
+      behaviour: z.enum(['still', 'event', 'drift']),
+      theme: z.enum(['dark', 'light']),
+      cap: z.number(),
+      sources: z.array(z.object({
+        pigments: z.array(z.string().regex(hexRe)).min(1).max(3),
+        at: z.tuple([z.number(), z.number()]).optional(),
+        size: z.tuple([z.number(), z.number()]).optional(),
+        /** path: the product's own keyframes (percent, transform), an embassy extension the kit's drift allows */
+        drift: z.object({ period: z.number(), phase: z.number().optional(), path: z.array(z.tuple([z.number(), z.string().regex(/^[^;{}<>]*$/)])).optional() }).passthrough().optional(),
+        cycle: z.object({ period: z.number(), phase: z.number().optional() }).passthrough().optional(),
+      })),
+      event: z.object({ boost: z.number().optional(), settle: z.number().optional() }).optional(),
+      note: z.string().optional(),
+    }),
+    fonts: z.object({ ui: face, display: face.optional(), reading: face.optional() }),
+    motion: z.object({
+      press: springOrNull, settle: springOrNull, glide: springOrNull, pop: springOrNull,
+      pressScale: z.object({ mouse: z.number().optional(), touch: z.number().optional() }).optional(),
+      ease: z.string().regex(/^[^;{}<>]*$/).optional(),
+      note: z.string().optional(),
+    }),
+    promise: z.object({ text: z.string(), lang: z.string(), gloss: z.string().optional(), evidence: z.string() }),
+    links: z.object({ open: z.string().optional(), code: z.string().optional(), about: z.string().optional() }).optional(),
+    captures: z.array(z.object({
+      id: z.string(), kind: z.enum(['screen', 'signature']), files: z.array(z.string()).min(1),
+      viewport: z.tuple([z.number(), z.number()]), dpr: z.number(), touch: z.boolean().optional(), theme: z.enum(['dark', 'light']).optional(),
+      caption: z.string(), alt: z.string().optional(), durationSeconds: z.number().optional(), shot: z.string(),
+    })),
+  }),
+});
+
 const site = defineCollection({
   loader: file('./content/site.json', { parser: (text) => ({ site: JSON.parse(text) }) }),
   schema: z.object({
@@ -185,4 +253,4 @@ const site = defineCollection({
   }),
 });
 
-export const collections = { projects, log, site };
+export const collections = { projects, worlds, log, site };
