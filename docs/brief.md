@@ -167,3 +167,30 @@ log design are to be explored.
 - **v0 decisions:** the droplet tab change is shortened and overlapped with navigation;
   unwritten sections are hidden until written (no visible placeholders); LinkedIn:
   `https://www.linkedin.com/in/eren-d-kuyucakl%C4%B1o%C4%9Flu-7037b433a`.
+
+### 2026-10-09 (after seeing v0 and the prototypes again)
+
+- **Publishing:** the owner publishes from `dev` during the build-up (ADR-0004 amendment).
+- **Desktop first:** the owner tests desktop until it is right, then phones.
+- **Liveliness:** the owner misses prototype E's live, interactive animation on desktop; it gave
+  character. The goal is liveliness and interactivity, not 3D for its own sake: the best method
+  wins (live 3D, rendered animation that phones can also play, or a mix). Analyse constraints
+  and methods over several rounds and report back before deciding.
+- **E's details were better:** the colour-changing dot in "edk." and the lit, coloured,
+  animated tabs felt alive (the light's position was not elegant, but having it is good).
+- **Home vs Work:** no duplication. Home is a showcase; Work is the full catalog.
+- **Page character:** light atmosphere per page, yes. "Separate worlds" per page only in a
+  controlled way that keeps the whole; think it through, present findings, prototype only if
+  the owner approves, and only for a big change.
+- **About photo:** both a digital ID card (like event badges) on About and postcards (from E's
+  framed photo; hover, flip) for photo entries later.
+- **Scrollbar:** a custom thin rail, newly designed (not a copy of English Prep's, which did not
+  turn out as the owner imagined). The focus view must not scroll sideways.
+- **Record:** the nav says "Record", not "Log". The record page has too many controls, the thread
+  toggles feel odd, and plain black-and-white reading is neither fun nor easy.
+- **Readability:** research how to make text easier to read on screens today, given short
+  attention: technique, style, engineering and writing craft.
+- **Family vision:** the apps (Recto, English Prep, Eat Map), the portfolio and the objects feel
+  mismatched. Write a design vision first: each keeps its own character (UI, motion, colour,
+  structure) but all meet at a shared origin. Research how developers and companies do this.
+  The owner worked hard on Recto's and English Prep's UIs; do not flatten them.
