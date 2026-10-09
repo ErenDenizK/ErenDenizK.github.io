@@ -1,6 +1,8 @@
 # Family vision: Kept light
 
-**Status:** proposal, 2026-10-09, not binding until the owner accepts (then an ADR records it) ·
+**Status:** accepted in part 2026-10-09 (§0 lists what the owner answered and what stays open;
+an ADR records it when the rest is answered) · **Kit:** `docs/family-kit/` turns the accepted
+parts into portable files and a prompt per app ·
 **Rests on:** brief §7 (2026-10-09, *Family vision*, *Page character*, *Liveliness*);
 `research/2026-10-product-family.md` (cases, strategies A–I), `research/2026-10-family-audit.md`
 (DNA, rhymes C1–C10 clashes, untouchables), `research/2026-10-page-worlds.md` (concept D,
@@ -21,6 +23,25 @@ to match anything; the portfolio adapts first, and the apps only ever opt in.
 
 ---
 
+## 0. The owner's answers (2026-10-09, late; brief §7 *boost and the family kit*)
+
+| Question | Answer | What it changes here |
+|---|---|---|
+| §6.1 Q1: what reads first as "the same maker" | **Light is the visible constant**: near-black grounds of each product's own temperature, colour arriving as light. The dot *maybe*. | V1 leads; V3 is demoted from a seen constant to an endorsement until its wider role is decided |
+| §6.1 Q2: where `edk.` may appear outside the portfolio | **Only at exits** (About or credits, press and social assets), never in working UI | V3, §4.1 stand as written |
+| §6.1 Q5: type | **Each product keeps its own faces** | §2.5 stands; option d (the drawn mark in app credits) is not yet chosen, so credits default to the product's type |
+| §6.1 Q4: texture | **Grain stays in the portfolio.** It is not a family rule either way: no product must add it, none must remove it | §2.1, §3.4: the grain removal is withdrawn |
+| Recto's "grain ban" (Q-1) | **A misrecording.** The owner had asked to fix the glass object's wrong render and its banding, not to ban grain | §2.3's Recto row no longer cites it; Recto's own record is corrected in Recto by the owner's session for that repo, not from here |
+| Family kit | **First**: shared design files and a ready prompt per app, so each app's work runs in its own session | `docs/family-kit/` |
+
+**Still open:** the dot's wider role (whether it ever becomes a seen constant, and whether
+`recto` or Eat Map's mark takes one; only each mark's designer decides that), and Recto's object
+(§6.1 Q3). The ink half of Q4 was not asked again: the house keeps its warm ink and embassies use
+each product's ink, the recommended default, until the owner says otherwise. Eat Map's real values
+are still to be read from Xcode.
+
+---
+
 ## 1. Thesis
 
 Eren's products already share a hand they were never told to share: each sits on a dark ground of
@@ -28,7 +49,7 @@ its own temperature, lets its one colour arrive as **light** rather than paint, 
 quiet promise that what is yours stays with you (*Nothing leaves this device. · İlerlemen kendi
 tarayıcında. · Nothing is public.*). The family is that hand made explicit, not a kit laid over
 four products. We share **few, bold, visible constants** (a dark ground with its own warmth, one
-light per product, one accent with one job, and the maker's dot) and **a method you feel rather
+light per product, one accent with one job; the maker's dot only at exits, §0) and **a method you feel rather
 than see** (one spring grammar played at each product's tempo, one voice, one quality charter);
 everything else (hue, material, type, structure, signature interaction, language) stays each
 product's own and is listed as untouchable. The portfolio is the **house** where they meet; each
@@ -61,7 +82,7 @@ shown four screens side by side, they should guess "same maker" (the origin is r
 |---|---|---|---|
 | V1 | **Dark ground, own temperature; colour arrives as light** | Ground is near-black (OKLCH L ≤ 0.20) and tinted toward the product's own hue, never pure `#000`, never a mid-tone. Each product has exactly **one light field** (aurora, glow, pool) in its own pigments, behind content, never on it; it has a still twin and pauses when hidden. Large surfaces are never painted in the accent. | True in all four today (audit §3.1); the owner named it first (brief §5). |
 | V2 | **One accent, one job** | Each product has one accent and gives it one job, stated in a sentence. Other colours may exist (English Prep's iris, lagoon, apricot) but have named roles below the accent. | Already true (audit §3.2); keeps colour meaningful. |
-| V3 | **The maker's dot** | A lowercase name may end in a period set in the product's colour (`edk.`, `ep.`). In the house, the dot of `edk.` takes the light of the room you are in. The endorsement anywhere outside the house is `edk.` with its dot in the host's colour, at entry and exit points only (About, credits, press kit), never inside working UI. | The owner liked it twice (E's dot, `ep.`); one typographic gesture, cheap, unmistakable. |
+| V3 | **The maker's dot** *(endorsement at exits only, §0; its wider role is open)* | A lowercase name may end in a period set in the product's colour (`edk.`, `ep.`). In the house, the dot of `edk.` takes the light of the room you are in. The endorsement anywhere outside the house is `edk.` with its dot in the host's colour, at entry and exit points only (About, credits, press kit), never inside working UI. | The owner liked it twice (E's dot, `ep.`); one typographic gesture, cheap, unmistakable. |
 | F1 | **One spring grammar, own tempo** | Four named springs: **press, settle, glide, pop**, all from one spring function (mass 1, stiffness k, damping c), exported as `linear()`. Each product sets its own k and c and decides whether it uses pop at all. Rest is still; motion answers an action or a change of place; ambient light is the only thing allowed to drift, ≥ 9 s cycles, paused when hidden. | Recto and English Prep already derive springs (research §6); Mastercard's one melody in many arrangements. |
 | F2 | **One voice, one promise line** | Plain, specific, first person or direct address, no hype, sentence case. Each product carries **one promise line** about what stays with the user, written in its own language and register, never translated from another. | Shared value in all three products (audit §3.6); survives every redesign. |
 | F3 | **One quality charter** | §2.4. Already practised in all three repos; written once. | The origin people trust (Rams, Ghibli, Supergiant). |
@@ -69,7 +90,8 @@ shown four screens side by side, they should guess "same maker" (the origin is r
 Rejected as constants (and why): **glass** (English Prep removed it by decision, C6), **one
 typeface** (§2.5: type stays each product's own; the house's serif becomes the maker's voice), **one motion
 curve or duration** (C7), **one icon style**, **one navigation pattern** (all are capsules today
-by coincidence; nothing requires it), **grain** (Recto bans it, C5).
+by coincidence; nothing requires it), **grain** (owner, §0: it stays in the portfolio and is not a
+family rule either way; C5 rested on a misrecording).
 
 ### 2.2 The four products across the constants
 
@@ -95,7 +117,7 @@ idea loses.
 
 | Product | Untouchable (never changed for the family) |
 |---|---|
-| **Recto** | One lime `#c8fb3d`, touching ink, one fill per view, never on the page · the white page as the brightest thing · the morphing glass capsule (dock ⇄ palette ⇄ pages ⇄ compare ⇄ locked) · glass M1–M5 and its rules · the lime aurora, still at rest · zero-bounce springs, idle frames = 0 · the "Dengeli" R and its mint `#69EAA3` → lime `#CBFF5F` → yellow-lime `#EDFA6D` gradient at 46.75°, and the brand doc's usage rules · Inter Recto, sentence case, Phosphor outline → fill · no grain, no noise, no raster texture (Q-1) · A-1…A-24 |
+| **Recto** | One lime `#c8fb3d`, touching ink, one fill per view, never on the page · the white page as the brightest thing · the morphing glass capsule (dock ⇄ palette ⇄ pages ⇄ compare ⇄ locked) · glass M1–M5 and its rules · the lime aurora, still at rest · zero-bounce springs, idle frames = 0 · the "Dengeli" R and its mint `#69EAA3` → lime `#CBFF5F` → yellow-lime `#EDFA6D` gradient at 46.75°, and the brand doc's usage rules · Inter Recto, sentence case, Phosphor outline → fill · clean glass renders without banding (Q-1 as the owner meant it; its "no grain" wording is a misrecording, §0) · A-1…A-24 |
 | **English Prep** | Plum ground and Sakura / periwinkle answer semantics with words and marks · the living three-cluster aurora under one parent cap · no glass, opaque cards · Inter reading 18/30 in a ~600 px column · `ep.` with the Sakura dot · the 120 ms press and 380 ms release · v0.72 route choreography (ADR 013) · the folio About · the rail · Turkish *sen* voice · settled navigation (two peers in the capsule, Profil in the header) · no build step, no `innerHTML` |
 | **Eat Map** | Native SwiftUI and iOS conventions · Liquid Glass capsule tab bar with the avatar pill and the round compose button · rose `#eb4f6b` on wine · the "Circle" privacy voice |
 | **Portfolio** | Black ground · Newsreader for the name and titles (pairing 2) · per-world colours accepted 2026-10-09 · pre-rendered Cycles objects (ADR-0006), one rig, one droplet · every tab a page (ADR-0007) |
@@ -288,7 +310,7 @@ values). Until a new object ships, the old one stays; nothing goes blank.
 
 | Change | From → to | Why |
 |---|---|---|
-| **Grain** | full-page tile → **removed**. If a light pool bands on a measured screen, a 2 % blue-noise dither *inside that pool only*, invisible at 1× | Recto's Q-1 and the owner's "grainy" verdict (C5); the house must not carry the one texture a member rejected |
+| **Grain** | full-page tile → **stays** (owner, §0). *Withdrawn proposal:* remove it because of Recto's Q-1; Q-1's grain wording was a misrecording | The house's own texture; not a family rule either way |
 | **Motion** | `--d-1…5` + cubic eases → the four springs of §2.2 as `linear()`, durations derived. Crossfades for opacity stay eased ≤ 160 ms | F1; the portfolio is the one member without springs (research §6) |
 | **Recto colour** | one `--recto` `#bbed26` for everything → `--recto-light` `#bbed26` (glow, spine mark) and `--recto-action` `#c8fb3d` with `#08090c` label (buttons) | C4: lime touches ink, as in Recto |
 | **Ink temperature** | warm `#e9e5de` → keep in the house; embassies switch to the product's ink (owner question 4 offers a neutral nudge) | C2: a warm house is character; the clash only shows when a product sits inside it, which the embassy solves |
@@ -400,20 +422,25 @@ with a safer twin and their sign-off first.
    a. The objects: one glass language, each built from its product's own mark *(recommended)*.
    b. The light: the same still-at-rest coloured light on every product's dark ground.
    c. The dot: `edk.` and its coloured period, everywhere the maker appears.
+   **Answered 2026-10-09: b, the light** ("light, certainly; the dot maybe").
 2. **Where may `edk.` appear outside the portfolio?**
    a. Only at exits: a credits line in each app's About, press kits, social cards *(recommended)*.
    b. Nowhere in the apps; the portfolio alone shows the family.
    c. Also a small mark inside each app's main UI (not recommended: logo-slapping).
+   **Answered 2026-10-09: a, only at exits.**
 3. **Recto's object.**
    a. The "Dengeli" R in glass, its gradient as light inside, the leg turning like a page; you
       approve a still first *(recommended)*.
    b. A white page on a glass capsule with lime under-light (leaves your mark untouched).
    c. Keep a document object, re-made in clear glass with lime as light.
+   **Open.**
 4. **The house's texture and ink.**
    a. Remove the grain; keep the warm ink in the house; embassies use each product's ink
       *(recommended)*.
    b. Remove the grain and nudge the ink to neutral (`#e7e5e1`) so products sit closer to it.
    c. Keep both as they are.
+   **Answered 2026-10-09 for the grain: it stays** (so neither a nor b as written). The ink was not
+   asked again; the warm house ink stays, as a recommended.
 5. **Type inside the family** (embassies themselves are approved; this is their voice).
    a. Each product keeps its faces; Newsreader is the maker's voice in embassies: title, section
       heads, narrative, credits *(recommended)*.
@@ -422,6 +449,8 @@ with a safer twin and their sign-off first.
    c. One face for all: the portfolio drops Newsreader for Inter (undoes pairing 2; not
       recommended).
    d. As a, and the `edk.` mark, drawn from Newsreader, may appear as a logo in app credits.
+   **Answered 2026-10-09: each product keeps its own faces (a).** Whether d is added is part of
+   the dot's open role; the outlined mark exists (`docs/family-kit/mark/`) so either answer is ready.
 
 Also needed, not taste: Eat Map's real ground, light and accent values, its mark (if any) and
 whether it has a light theme, read from the Xcode project.
@@ -431,7 +460,7 @@ whether it has a light theme, read from the Xcode project.
 | Phase | What | Where | Gate |
 |---|---|---|---|
 | 0 | The owner answers §6.1; an ADR ("family: Kept light") records the constants, the untouchables and the charter | docs | owner |
-| 1 | House changes that need no new media: grain removed, springs, `--recto-action`, the dot taking the room's light, charter page, credits line | portfolio | `npm run verify`, three screenshot sizes |
+| 1 | House changes that need no new media: springs (`docs/family-kit/springs.js`), `--recto-action`, the dot taking the room's light, charter page, credits line; grain stays | portfolio | `npm run verify`, three screenshot sizes |
 | 2 | Objects re-made one at a time (Recto, English Prep, edk dot, Eat Map), each shown as a still first, then rendered; old objects stay until replaced | `tools/objects`, `media/objects` | owner sees each still; thumbnail test; seam check |
 | 3 | Embassies (approved in principle): `world.json` per project, captures and one clip each, porch / threshold / embassy, type per §2.5; Recto first; full content when project texts are written (brief §7) | portfolio project views | contrast per embassy; reduced motion; phone pass |
 | 4 | Apps, opt-in, one move at a time from §4.2, each a separate yes from the owner and done in that app's repo under its own rules | Recto, English Prep, Eat Map | owner, per move |
@@ -455,7 +484,12 @@ whether it has a light theme, read from the Xcode project.
   hiç benzemiyor). Newsreader "yapanın sesi": elçilikte başlık, bölüm başlıkları, anlatı ve imza.
 - **Nesneler** üründen türer: camda "Dengeli" R (önce senin onayın), Sakura boncuklu folio, gül
   boncuklu şarap rengi cam harita. Aynı ışık düzeni, aynı damla.
-- **Portföyde:** gren kalkar, hareket yaylara geçer, Recto düğmesi `#c8fb3d` olur. Uygulamalara
+- **Kararların (2026-10-09):** görünen ortak sabit ışık; nokta yalnızca çıkışlarda (About, künye,
+  basın) bir imza, daha geniş rolü açık; her ürün kendi yazı tiplerini korur; gren portföyde kalır
+  ve aileye kural değildir; Recto'daki "gren yasağı" yanlış kayıt, Recto'nun kendi oturumunda
+  düzeltilecek. Açık kalanlar: noktanın geniş rolü ve Recto'nun nesnesi. Ortak dosyalar:
+  `docs/family-kit/`.
+- **Portföyde:** gren kalır, hareket yaylara geçer, Recto düğmesi `#c8fb3d` olur. Uygulamalara
   sonra, tek tek ve onayınla yalnızca "Made by edk." gibi küçük imzalar.
-- **Kararların:** ilk ne fark edilsin; `edk.` nerede; Recto nesnesi; gren ve mürekkep; yazı tipinin
+- **Önceki sorular (§6.1):** ilk ne fark edilsin; `edk.` nerede; Recto nesnesi; gren ve mürekkep; yazı tipinin
   rolü. Eat Map'in gerçek renk değerleri Xcode'dan gerekiyor.
