@@ -1,0 +1,30 @@
+---
+/* A product's name in the product's own voice (family.md §2.5; docs/research/2026-10-wordmarks.md).
+   Driven by the project's `wordmark` field: face, weight, tracking, case, optional display text
+   (English Prep's lowercase "english prep"), letter colour, the signature dot, and later an SVG
+   logo (`image`, a file in src/assets/wordmarks/) that replaces the type. Without the field the
+   name is set in the house UI face. Size comes from the caller (font-size on the element or its
+   parent), so Home, Work and the sheet each pick theirs.
+   The text node stays the plain title, so it is what is read aloud and what scripts read
+   (sheet.ts takes a title from `.t-title`): case is CSS text-transform and the dot is drawn by
+   ::after with empty alt text. Only `text` changes the words themselves. */
+import '../styles/wordmarks.css';
+import { WORDMARK_FACES } from '../lib/wordmarks';
+import type { Project } from '../lib/site';
+interface Props { project: Project; id?: string; class?: string }
+const { project, id, class: cls = '' } = Astro.props;
+const { title, accent, wordmark: w } = project.data;
+const logos = import.meta.glob<string>('../assets/wordmarks/*.svg', { eager: true, query: '?url', import: 'default' });
+const logo = w?.image ? logos[`../assets/wordmarks/${w.image}`] : undefined;
+if (w?.image && !logo) throw new Error(`wordmark image src/assets/wordmarks/${w.image} not found (${project.id})`);
+const face = WORDMARK_FACES[w?.face ?? 'Inter'];
+const text = w?.text ?? title;
+const style = [
+  `--wm-f: ${face.stack}`,
+  `--wm-w: ${w?.weight ?? 600}`,
+  `--wm-t: ${w?.tracking ?? -0.02}em`,
+  `--wm-c: ${w?.color === 'ink' ? 'var(--ink)' : (w?.color ?? accent.color)}`,
+  w?.dot && `--wm-dot: ${w.dot}`,
+].filter(Boolean).join('; ');
+---
+<span class:list={['wm', 't-title', cls, w?.case && w.case !== 'as-is' && `wm-${w.case}`, { 'wm-dot': !!w?.dot && !logo }]} id={id} style={style} lang="en" data-wordmark={project.id}>{logo ? <img src={logo} alt={title} /> : text}</span>

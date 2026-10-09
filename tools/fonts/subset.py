@@ -1,4 +1,4 @@
-"""Subset the two site faces to what the site uses (craft audit §3.5).
+"""Subset the site faces to what the site uses (craft audit §3.5).
 
 Inputs: the Fontsource variable files in node_modules (build inputs only, OFL-1.1).
 Outputs: src/fonts/*.woff2, committed; the site never loads fonts from a third party.
@@ -9,6 +9,9 @@ Outputs: src/fonts/*.woff2, committed; the site never loads fonts from a third p
 Axes are narrowed to the range the type system uses, and Latin is cut to Basic Latin,
 Latin-1 and the punctuation the copy uses; the Turkish letters outside Latin-1 go in a
 second, tiny file (unicode-range picks it up only when the page contains them).
+
+The wordmark faces (docs/research/2026-10-wordmarks.md) set product names only, in the weights the
+content's `wordmark` fields use; they are never preloaded and load only on a page that shows one.
 """
 import io
 import os
@@ -24,12 +27,15 @@ LATIN = 'U+0020-007E,U+00A0-00FF,U+0131,U+2010-2014,U+2018-201A,U+201C-201E,U+20
 TR = 'U+011E-011F,U+0130,U+015E-015F'
 
 FACES = {
-    'inter': {'axes': {'wght': (400, 600), 'opsz': (14, 32)}},
-    'newsreader': {'axes': {'wght': (400, 500), 'opsz': (16, 72)}},
+    'inter': {'axes': {'wght': (400, 600), 'opsz': (14, 32)}, 'file': 'opsz'},
+    'newsreader': {'axes': {'wght': (400, 500), 'opsz': (16, 72)}, 'file': 'opsz'},
+    # wordmarks, one static weight each (src/lib/wordmarks.ts lists it): Recto, Eat Map
+    'funnel-display': {'axes': {'wght': 600}, 'file': 'wght'},
+    'nunito': {'axes': {'wght': 800}, 'file': 'wght'},
 }
 
 def build(face, sub, unicodes, out_name):
-    src = os.path.join(NM, face, 'files', f'{face}-{sub}-opsz-normal.woff2')
+    src = os.path.join(NM, face, 'files', f'{face}-{sub}-{FACES[face]["file"]}-normal.woff2')
     f = TTFont(src)
     opts = subset.Options()
     opts.flavor = 'woff2'
