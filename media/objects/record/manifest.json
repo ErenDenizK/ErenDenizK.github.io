@@ -1,0 +1,482 @@
+{
+ "version": 1,
+ "name": "record",
+ "light": "#8fb8ff",
+ "ground": "#0a0a0b",
+ "groundSubtracted": true,
+ "blend": "plus-lighter",
+ "size": 1040,
+ "poster": {
+  "w": 1200,
+  "h": 1200,
+  "sources": [
+   {
+    "src": "poster-600.avif",
+    "type": "image/avif",
+    "w": 600,
+    "bytes": 9280
+   },
+   {
+    "src": "poster-600.webp",
+    "type": "image/webp",
+    "w": 600,
+    "bytes": 15014
+   },
+   {
+    "src": "poster-1200.avif",
+    "type": "image/avif",
+    "w": 1200,
+    "bytes": 21440
+   },
+   {
+    "src": "poster-1200.webp",
+    "type": "image/webp",
+    "w": 1200,
+    "bytes": 36254
+   }
+  ]
+ },
+ "lean": {
+  "cols": 17,
+  "rows": 3,
+  "yaw": [
+   -16.0,
+   -14.0,
+   -12.0,
+   -10.0,
+   -8.0,
+   -6.0,
+   -4.0,
+   -2.0,
+   0.0,
+   2.0,
+   4.0,
+   6.0,
+   8.0,
+   10.0,
+   12.0,
+   14.0,
+   16.0
+  ],
+  "pitch": [
+   -4.0,
+   0.0,
+   4.0
+  ],
+  "stepDeg": {
+   "yaw": 2.0,
+   "pitch": 4.0
+  },
+  "center": {
+   "col": 8,
+   "row": 1
+  },
+  "order": "row-major; row 0 is the lowest pitch (faces down), column 0 the lowest yaw (faces left)",
+  "crop": {
+   "x": 130,
+   "y": 174,
+   "w": 776,
+   "h": 756
+  },
+  "tiers": [
+   {
+    "name": "half",
+    "scale": 0.5,
+    "w": 388,
+    "h": 378,
+    "format": "avif",
+    "type": "image/avif",
+    "frames": [
+     "lean/half/r0c00.avif",
+     "lean/half/r0c01.avif",
+     "lean/half/r0c02.avif",
+     "lean/half/r0c03.avif",
+     "lean/half/r0c04.avif",
+     "lean/half/r0c05.avif",
+     "lean/half/r0c06.avif",
+     "lean/half/r0c07.avif",
+     "lean/half/r0c08.avif",
+     "lean/half/r0c09.avif",
+     "lean/half/r0c10.avif",
+     "lean/half/r0c11.avif",
+     "lean/half/r0c12.avif",
+     "lean/half/r0c13.avif",
+     "lean/half/r0c14.avif",
+     "lean/half/r0c15.avif",
+     "lean/half/r0c16.avif",
+     "lean/half/r1c00.avif",
+     "lean/half/r1c01.avif",
+     "lean/half/r1c02.avif",
+     "lean/half/r1c03.avif",
+     "lean/half/r1c04.avif",
+     "lean/half/r1c05.avif",
+     "lean/half/r1c06.avif",
+     "lean/half/r1c07.avif",
+     "lean/half/r1c08.avif",
+     "lean/half/r1c09.avif",
+     "lean/half/r1c10.avif",
+     "lean/half/r1c11.avif",
+     "lean/half/r1c12.avif",
+     "lean/half/r1c13.avif",
+     "lean/half/r1c14.avif",
+     "lean/half/r1c15.avif",
+     "lean/half/r1c16.avif",
+     "lean/half/r2c00.avif",
+     "lean/half/r2c01.avif",
+     "lean/half/r2c02.avif",
+     "lean/half/r2c03.avif",
+     "lean/half/r2c04.avif",
+     "lean/half/r2c05.avif",
+     "lean/half/r2c06.avif",
+     "lean/half/r2c07.avif",
+     "lean/half/r2c08.avif",
+     "lean/half/r2c09.avif",
+     "lean/half/r2c10.avif",
+     "lean/half/r2c11.avif",
+     "lean/half/r2c12.avif",
+     "lean/half/r2c13.avif",
+     "lean/half/r2c14.avif",
+     "lean/half/r2c15.avif",
+     "lean/half/r2c16.avif"
+    ],
+    "bytes": 269764
+   },
+   {
+    "name": "full",
+    "scale": 1.0,
+    "w": 776,
+    "h": 756,
+    "format": "avif",
+    "type": "image/avif",
+    "frames": [
+     "lean/full/r0c00.avif",
+     "lean/full/r0c01.avif",
+     "lean/full/r0c02.avif",
+     "lean/full/r0c03.avif",
+     "lean/full/r0c04.avif",
+     "lean/full/r0c05.avif",
+     "lean/full/r0c06.avif",
+     "lean/full/r0c07.avif",
+     "lean/full/r0c08.avif",
+     "lean/full/r0c09.avif",
+     "lean/full/r0c10.avif",
+     "lean/full/r0c11.avif",
+     "lean/full/r0c12.avif",
+     "lean/full/r0c13.avif",
+     "lean/full/r0c14.avif",
+     "lean/full/r0c15.avif",
+     "lean/full/r0c16.avif",
+     "lean/full/r1c00.avif",
+     "lean/full/r1c01.avif",
+     "lean/full/r1c02.avif",
+     "lean/full/r1c03.avif",
+     "lean/full/r1c04.avif",
+     "lean/full/r1c05.avif",
+     "lean/full/r1c06.avif",
+     "lean/full/r1c07.avif",
+     "lean/full/r1c08.avif",
+     "lean/full/r1c09.avif",
+     "lean/full/r1c10.avif",
+     "lean/full/r1c11.avif",
+     "lean/full/r1c12.avif",
+     "lean/full/r1c13.avif",
+     "lean/full/r1c14.avif",
+     "lean/full/r1c15.avif",
+     "lean/full/r1c16.avif",
+     "lean/full/r2c00.avif",
+     "lean/full/r2c01.avif",
+     "lean/full/r2c02.avif",
+     "lean/full/r2c03.avif",
+     "lean/full/r2c04.avif",
+     "lean/full/r2c05.avif",
+     "lean/full/r2c06.avif",
+     "lean/full/r2c07.avif",
+     "lean/full/r2c08.avif",
+     "lean/full/r2c09.avif",
+     "lean/full/r2c10.avif",
+     "lean/full/r2c11.avif",
+     "lean/full/r2c12.avif",
+     "lean/full/r2c13.avif",
+     "lean/full/r2c14.avif",
+     "lean/full/r2c15.avif",
+     "lean/full/r2c16.avif"
+    ],
+    "bytes": 799368
+   }
+  ]
+ },
+ "idle": {
+  "fps": 30,
+  "frames": 180,
+  "duration": 6.0,
+  "loop": true,
+  "sources": [
+   {
+    "src": "idle.av1.mp4",
+    "type": "video/mp4; codecs=\"av01.0.08M.10\"",
+    "codec": "av1",
+    "bytes": 254985
+   },
+   {
+    "src": "idle.hevc.mp4",
+    "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
+    "codec": "hevc",
+    "bytes": 311195
+   },
+   {
+    "src": "idle.h264.mp4",
+    "type": "video/mp4; codecs=\"avc1.640028\"",
+    "codec": "h264",
+    "bytes": 321094
+   }
+  ]
+ },
+ "clips": {
+  "interact": {
+   "label": "lift",
+   "returnsToRest": true,
+   "fps": 30,
+   "frames": 42,
+   "duration": 1.4,
+   "sources": [
+    {
+     "src": "interact.av1.mp4",
+     "type": "video/mp4; codecs=\"av01.0.08M.10\"",
+     "codec": "av1",
+     "bytes": 94785
+    },
+    {
+     "src": "interact.hevc.mp4",
+     "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
+     "codec": "hevc",
+     "bytes": 157225
+    },
+    {
+     "src": "interact.h264.mp4",
+     "type": "video/mp4; codecs=\"avc1.640028\"",
+     "codec": "h264",
+     "bytes": 147884
+    }
+   ],
+   "check": {
+    "ground_off_share": 0.003962,
+    "far_ground_px": 674380,
+    "far_ground_off": 12,
+    "far_ground_max": 1,
+    "object_mae": 1.86
+   }
+  }
+ },
+ "droplet": {
+  "fps": 60,
+  "frames": 24,
+  "duration": 0.4,
+  "dropletFrame": 23,
+  "curve": "ease-in cubic, uniform in time",
+  "out": {
+   "sources": [
+    {
+     "src": "droplet-out.av1.mp4",
+     "type": "video/mp4; codecs=\"av01.0.08M.10\"",
+     "codec": "av1",
+     "bytes": 91859
+    },
+    {
+     "src": "droplet-out.hevc.mp4",
+     "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
+     "codec": "hevc",
+     "bytes": 108743
+    },
+    {
+     "src": "droplet-out.h264.mp4",
+     "type": "video/mp4; codecs=\"avc1.64002A\"",
+     "codec": "h264",
+     "bytes": 100129
+    }
+   ],
+   "check": {
+    "ground_off_share": 0.007055,
+    "far_ground_px": 675475,
+    "far_ground_off": 1252,
+    "far_ground_max": 1,
+    "object_mae": 1.91
+   }
+  },
+  "in": {
+   "sources": [
+    {
+     "src": "droplet-in.av1.mp4",
+     "type": "video/mp4; codecs=\"av01.0.08M.10\"",
+     "codec": "av1",
+     "bytes": 89709
+    },
+    {
+     "src": "droplet-in.hevc.mp4",
+     "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
+     "codec": "hevc",
+     "bytes": 108726
+    },
+    {
+     "src": "droplet-in.h264.mp4",
+     "type": "video/mp4; codecs=\"avc1.64002A\"",
+     "codec": "h264",
+     "bytes": 102184
+    }
+   ]
+  }
+ },
+ "shadow": {
+  "blend": "multiply",
+  "pose": "rest",
+  "w": 600,
+  "h": 600,
+  "min": 0.34,
+  "sources": [
+   {
+    "src": "shadow.avif",
+    "type": "image/avif",
+    "bytes": 1230
+   },
+   {
+    "src": "shadow.webp",
+    "type": "image/webp",
+    "bytes": 1798
+   }
+  ]
+ },
+ "bytes": {
+  "shadow": 1230,
+  "poster1200": 21440,
+  "leanHalf": 269764,
+  "leanFull": 799368,
+  "clips": {
+   "av1": 276353,
+   "hevc": 374694,
+   "h264": 350197
+  },
+  "idle": {
+   "av1": 254985,
+   "hevc": 311195,
+   "h264": 321094
+  },
+  "tiers": {
+   "firstPaint": 22670,
+   "phone": {
+    "av1": 459223,
+    "hevc": 551334,
+    "h264": 546077
+   },
+   "desktopLow": 292434,
+   "desktopFull": {
+    "av1": 1368155,
+    "hevc": 1466496,
+    "h264": 1441999
+   }
+  },
+  "live": {
+   "normalsGrid": 180438,
+   "normalsRest": 3910,
+   "clipNormals": 46327,
+   "states": 80687,
+   "restFull": 15914,
+   "tiers": {
+    "phoneLive": 42494,
+    "desktopLite": 558599,
+    "desktopFull": 797368
+   },
+   "note": "desktop tiers add full-size grid frames on demand at rest (lean/full, about 10 KB each)"
+  }
+ },
+ "normals": {
+  "scale": 0.5,
+  "w": 388,
+  "h": 378,
+  "encoding": "R, G = camera-space normal x (right), y (up) as n * 0.5 + 0.5; z = sqrt(1 - x^2 - y^2); B unused (0); the ground is (0.5, 0.5); gate light by the beauty frame",
+  "rows": [
+   {
+    "src": "live/normals-r0.avif",
+    "type": "image/avif",
+    "bytes": 63608,
+    "row": 0,
+    "frames": 17
+   },
+   {
+    "src": "live/normals-r1.avif",
+    "type": "image/avif",
+    "bytes": 60399,
+    "row": 1,
+    "frames": 17
+   },
+   {
+    "src": "live/normals-r2.avif",
+    "type": "image/avif",
+    "bytes": 56431,
+    "row": 2,
+    "frames": 17
+   }
+  ],
+  "rest": {
+   "src": "live/normals-rest.avif",
+   "type": "image/avif",
+   "bytes": 3910
+  },
+  "clips": {
+   "interact": {
+    "crop": {
+     "x": 138,
+     "y": 74,
+     "w": 740,
+     "h": 832
+    },
+    "w": 370,
+    "h": 416,
+    "frames": 12,
+    "src": "live/clip-normals.avif",
+    "type": "image/avif",
+    "bytes": 46327
+   }
+  }
+ },
+ "states": {
+  "interact": {
+   "axis": "state",
+   "fps": 30,
+   "frames": 12,
+   "crop": {
+    "x": 138,
+    "y": 74,
+    "w": 740,
+    "h": 832
+   },
+   "half": {
+    "w": 370,
+    "h": 416,
+    "src": "live/clip-half.avif",
+    "type": "image/avif",
+    "bytes": 63496
+   },
+   "peak": 11,
+   "values": [
+    0.0,
+    0.0514,
+    0.1711,
+    0.323,
+    0.4807,
+    0.6264,
+    0.75,
+    0.8471,
+    0.9175,
+    0.9637,
+    0.9896,
+    1.0
+   ],
+   "peakFull": {
+    "w": 740,
+    "h": 832,
+    "src": "live/clip-peak.avif",
+    "type": "image/avif",
+    "bytes": 17191
+   }
+  }
+ }
+}

@@ -37,7 +37,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OBJECTS = ("edk", "recto", "englishprep", "eatmap", "log")
+OBJECTS = ("edk", "recto", "englishprep", "eatmap", "log", "record")
 STAGES = ("poster", "grid", "clip", "droplet", "shadow", "normal")
 # The live engine plays a clip either as a time axis (forward from rest, back to rest) or, where
 # its first frames rise monotonically from rest to one extreme, as a reversible state axis: a
@@ -45,6 +45,7 @@ STAGES = ("poster", "grid", "clip", "droplet", "shadow", "normal")
 # Recto's fan is spring(120, 13) toward 1: its frames 0..11 run from rest to the furthest fan
 # (the overshoot peak at 0.37 s), so they are the axis; frames after it are the way back.
 AXES = {"recto": {"axis": "state", "frames": 12, "peak": 11}}
+# Record's lift is one too; clip_record() adds its entry, because its peak frame comes from its spring.
 
 
 def parse():
@@ -651,8 +652,55 @@ def clip_log():
     return n, [state(k) for k in range(n)]
 
 
+RECORD_LIFT = 0.28   # the full lift, in card heights: the card's foot clears the stack's top
+RECORD_TIP = 11.0    # degrees the card tips toward the viewer at the top of the lift
+
+
+def clip_record():
+    """The drawn card lifts all the way out of the file, tips toward the viewer about its foot and
+    settles back (research "Round 2": a note lifts a little, an essay all the way; the shipped
+    clip is one full lift). Lift is spring(110, 13) toward 1, let go at 0.62 s, so it rises,
+    overshoots a little, hangs and drops back with a small settle into the stack; the tip follows
+    on a softer spring(80, 11), a beat later, so the card leans out as it arrives. Frames 0..peak
+    rise monotonically, so the lift is also a state axis (AXES) the live engine could stop
+    anywhere: a short entry a little, an essay all the way."""
+    n = 42
+    lift = spring_track(n, 110, 13, [(0.0, {"to": 1.0}), (0.62, {"to": 0.0})])
+    tip = spring_track(n, 80, 11, [(0.07, {"to": 1.0}), (0.66, {"to": 0.0})])
+    card = part("card")
+    M0 = REST[card.name]
+    R3 = M0.to_3x3()
+    width, up = R3.col[0].normalized(), R3.col[2].normalized()
+    dg = bpy.context.evaluated_depsgraph_get()
+    ev = card.evaluated_get(dg)
+    vs = [ev.matrix_world @ v.co for v in ev.data.vertices]
+    c0 = M0.translation
+    hs = [(v - c0).dot(up) for v in vs]
+    foot = c0 + up * min(hs)                 # the middle of the card's bottom edge
+    height = max(hs) - min(hs)
+    top = c0 + up * max(hs)
+    # tip toward the camera: the sign that brings the card's top closer to it
+    to_cam = (cam.matrix_world.translation - foot).normalized()
+    sign = 1.0 if (Quaternion(width, 0.1) @ (top - foot)).dot(to_cam) > (top - foot).dot(to_cam) else -1.0
+    vals = [lift[k] * taper(n, k) for k in range(n)]
+    peak = max(range(n // 2), key=lambda k: vals[k])
+    clip_record.values = vals
+    AXES["record"] = {"axis": "state", "frames": peak + 1, "peak": peak}
+
+    def state(k):
+        w = taper(n, k)
+        lk, tk = vals[k], tip[k] * w
+
+        def g():
+            place(card, off=UP * (lk * RECORD_LIFT * height),
+                  rot=Quaternion(width, sign * math.radians(RECORD_TIP) * tk), about=foot)
+            bpy.context.view_layer.update()
+        return g
+    return n, [state(k) for k in range(n)]
+
+
 CLIPS = {"edk": clip_edk, "recto": clip_recto, "englishprep": clip_englishprep,
-         "eatmap": clip_eatmap, "log": clip_log}
+         "eatmap": clip_eatmap, "log": clip_log, "record": clip_record}
 
 # ---------------------------------------------------------------- stages
 REST0 = {k: v.copy() for k, v in REST.items()}
