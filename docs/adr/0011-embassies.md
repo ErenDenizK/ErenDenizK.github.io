@@ -54,6 +54,10 @@ world.schema.json, light.md, motion.md), ADR-0002, ADR-0006, ADR-0007, ADR-0010,
   and Home), about 3 KB gzipped per page.
 - A short world (Eat Map today) is at least one view tall, so its light is whole.
 - The first build encodes every capture (minutes); Astro's asset cache makes later builds fast.
-- Recto's shipped light is the Library aura (four lobes); the kit allows three sources, so its
-  faintest lobe is left out and its arrival event is the embassy's (the WebGL aurora of Recto's
-  ADR-0025 is not in its build yet). Both are said in its `light.note`.
+- Worlds made by an app's own session are taken as handed over and only adjusted where the embassy must:
+  Recto's copy gives its WebGL aurora one pigment per source at the kit's recorded positions (checkField),
+  sets the house Inter as the stack (Inter Recto is not on the site), leaves out its tertiary ink and
+  uses a cap of .16 (its shipped Library aura's peak; the kit's .42 put body text under 4:1 over the
+  lime core). Each change is written in the world's own `light.note`.
+- A gradient is the button's fill only when it starts at the accent (English Prep's Sakura pair);
+  Recto's gradient is its mark's, so its button keeps the one lime.

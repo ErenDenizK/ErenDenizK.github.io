@@ -85,11 +85,12 @@ for (const slug of slugs) {
 
   for (const c of w.captures ?? []) for (const f of c.files) if (!fs.existsSync(path.join(DIR, slug, f))) fail(`capture ${c.id}: ${f} is missing`);
   /* the codec levels src/lib/world.ts declares for a clip of this size (when ffprobe is here) */
-  const LEVEL = { wide: { av1: 8, hevc: 120, h264: 40 }, phone: { av1: 4, hevc: 90, h264: 30 } };
+  const LEVEL = { phone: { av1: 4, hevc: 90, h264: 30 }, wide: { av1: 8, hevc: 120, h264: 40 }, hi: { av1: 13, hevc: 153, h264: 52 } };
+  const bucket = (px) => (px < 600 ? 'phone' : px <= 1920 ? 'wide' : 'hi');
   for (const c of (w.captures ?? []).filter((c) => c.kind === 'signature')) for (const f of c.files.filter((f) => f.endsWith('.mp4'))) {
     let level;
     try { level = +execFileSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=level', '-of', 'csv=p=0', path.join(DIR, slug, f)]).toString().trim(); } catch { continue; }
-    const want = LEVEL[c.viewport[0] < 600 ? 'phone' : 'wide'][f.split('.').at(-2)];
+    const want = LEVEL[bucket(c.viewport[0] * c.dpr)][f.split('.').at(-2)];
     if (level !== want) fail(`${f}: codec level ${level}, src/lib/world.ts declares ${want}`);
   }
   const md = fs.readFileSync(path.join(DIR, `${slug}.md`), 'utf8').split('\n---')[0];
@@ -112,7 +113,9 @@ for (const slug of slugs) {
     const line = `${name.padEnd(15)} ${ink} ${r.toFixed(2)}:1 (>= ${need}) on ${worst}`;
     if (r < need) fail(line); else console.log('  ok', line);
   }
-  for (const stop of w.accent.gradient?.stops ?? [w.accent.color]) {
+  /* the button's fill: the gradient when it starts at the accent (src/lib/world.ts fills), else the accent */
+  const fill = w.accent.gradient && w.accent.gradient.stops[0] === w.accent.color ? w.accent.gradient.stops : [w.accent.color];
+  for (const stop of fill) {
     const r = contrast(w.accent.ink, stop);
     const line = `${'button label'.padEnd(15)} ${w.accent.ink} on ${stop} ${r.toFixed(2)}:1 (>= 4.5)`;
     if (r < 4.5) fail(line); else console.log('  ok', line);

@@ -19,9 +19,9 @@ links:
   - { label: Code, href: "https://github.com/ErenDenizK/recto", kind: code }
 captures:
   - { id: library }
-  - { id: markup }
+  - { id: markup-palette }
   - { id: light-table }
-clip: { id: signature }
+clip: { id: capsule-morph }
 what:
   text: Open many PDFs, arrange their pages on one light table, annotate, fill, redact, edit text, recognise scans, compare, sign.
 why:
