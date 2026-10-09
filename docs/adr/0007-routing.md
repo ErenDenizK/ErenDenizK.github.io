@@ -1,6 +1,6 @@
 # ADR-0007: Every tab is a page; the browser navigates, and only the project sheet is scripted
 
-**Status:** proposed 2026-10-09 · **Rests on:** brief §4.1, §7 (2026-10-09: "page transitions and
+**Status:** accepted 2026-10-09 by the owner, with a shorter melt that overlaps the navigation (item 3) · **Rests on:** brief §4.1, §7 (2026-10-09: "page transitions and
 navigation are a little buggy", "the top navigation is troublesome, especially clicking Home");
 ADR-0002 (content is HTML), ADR-0005 item 1 (one object per tab, changing into the next), ADR-0006
 item 5 (the droplet change); `research/2026-10-ux-patterns.md` §1–2; `prototypes/f/SPEC.md`
@@ -44,9 +44,10 @@ Option 3, with one scripted exception.
    direction (320 ms); the indicator slides on the ui spring; a project or entry page arrives from
    below. Direction comes from a `pagereveal` handler in the head (tab order, depth). Reduced
    motion turns cross-page animation off.
-3. **The object changes through the droplet** (ADR-0006 item 5): a tab click first plays the stage's
-   `droplet.out` (at most 900 ms), then navigates; the view transition crossfades at the shared
-   droplet and morphs its position; the new page shows only the glow until its `droplet.in` has a
+3. **The object changes through the droplet** (ADR-0006 item 5): a tab click starts the stage's
+   `droplet.out`, sped up to about 350 ms, and navigates as soon as its first frame is on screen (at
+   most 120 ms later), so the melt overlaps the page load (owner, 2026-10-09: barely felt, still
+   readable); the view transition crossfades at the shared droplet and morphs its position; the new page shows only the glow until its `droplet.in` has a
    first frame (the poster comes back by itself after 1.6 s if it never does). The stage is a
    `plus-lighter` group, and so is its transition group, so the ground stays exact during the morph
    (media research §3.1). Back and Forward skip the melt (they do not go through a click) and
@@ -69,9 +70,8 @@ Option 3, with one scripted exception.
 - Every page is complete HTML; the script is about 9 KB gzipped and only enhances.
 - Firefox (no cross-document view transitions yet) gets instant, correct navigation and no object
   morph across tabs; the droplet still melts before leaving.
-- A tab change costs up to 0.9 s of melt before the next page is requested. If the owner finds that
-  slow, the melt can start at the same time as the navigation (shorter, but the droplet may not be
-  complete when the old page is captured) or be dropped for a plain crossfade.
+- A tab change waits at most 120 ms for the melt to start. On a fast load the old page may be captured
+  before the droplet is complete; the crossfade at the droplet covers the difference.
 - The live stage does not persist across tabs, so a continuous droplet sequence (one video melting
   and re-forming across the navigation) is not possible here. If the owner wants it, option 1 is
   the way, with its costs.

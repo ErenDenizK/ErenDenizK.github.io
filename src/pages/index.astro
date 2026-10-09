@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
 import Icon from '../components/Icon.astro';
-import Ph from '../components/Ph.astro';
 import Foot from '../components/Foot.astro';
 import ProjectTeaser from '../components/ProjectTeaser.astro';
 import { getSite, getProjects, getLog, url, entryPath, entryTitle, dayMonYear, isPlaceholder } from '../lib/site';
@@ -21,9 +20,7 @@ const k = site.kicker;
         <div class="links">
           <a class="btn" href={url('work/')}>See the work <Icon name="arrow-right" weight="medium" /></a>
           <a class="qlink" href={site.links.github} rel="me">GitHub <Icon name="arrow-up-right" /></a>
-          {isPlaceholder(site.links.linkedin)
-            ? <span class="qlink is-ph">LinkedIn <Ph text={site.links.linkedin.placeholder} /></span>
-            : <a class="qlink" href={site.links.linkedin} rel="me">LinkedIn <Icon name="arrow-up-right" /></a>}
+          {!isPlaceholder(site.links.linkedin) && <a class="qlink" href={site.links.linkedin} rel="me">LinkedIn <Icon name="arrow-up-right" /></a>}
         </div>
       </div>
       <Media obj="edk" slot="home" stage priority />

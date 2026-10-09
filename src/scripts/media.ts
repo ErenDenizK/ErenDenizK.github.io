@@ -27,12 +27,13 @@ type Layer = HTMLElement & {
 };
 type Lean = {
   m: NonNullable<Manifest['lean']>; dir: string; half: (ImageBitmap | HTMLImageElement)[]; canvas: HTMLCanvasElement; ok: boolean;
-  full: Map<number, HTMLImageElement>; cur: { u: number; v: number }; target: { u: number; v: number }; raf: number; restKey: number;
+  full: Map<number, HTMLImageElement>; empty: Set<number>; cur: { u: number; v: number }; target: { u: number; v: number }; raf: number; restKey: number;
 };
-export type ObjInfo = { manifest: string | null; src: string; srcset?: { type: string; srcset: string }[]; light: string };
+export type ObjInfo = { manifest: string | null; src: string; srcset?: { type: string; srcset: string }[]; shadow?: { src: string; sources: { type: string; src: string }[] } | null; light: string };
 
 const MID = 360;             // a change is committed once it passes its midpoint (craft audit §4.2)
 const manifests = new Map<string, Promise<Manifest | null>>();
+const manifestNow = new Map<string, Manifest>();
 const visible = new Set<Slot>();
 let playing: HTMLVideoElement | null = null;
 let enhancing = false;
@@ -46,7 +47,7 @@ export const api = { changes: 0, visible, playing: () => playing, show, play, re
 
 function getManifest(url: string | null | undefined): Promise<Manifest | null> {
   if (!url) return Promise.resolve(null);
-  if (!manifests.has(url)) manifests.set(url, fetch(url).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+  if (!manifests.has(url)) manifests.set(url, fetch(url).then((r) => (r.ok ? r.json() : null)).then((m) => { if (m) manifestNow.set(url, m); return m; }).catch(() => null));
   return manifests.get(url)!;
 }
 const dirOf = (url: string) => url.slice(0, url.lastIndexOf('/') + 1);
@@ -148,6 +149,15 @@ function apply(el: Slot, name: string, opts: { instant?: boolean; light?: string
   el.dataset.obj = name;
   el.style.setProperty('--light', opts.light || index[name]?.light || '');
   el.querySelectorAll<Layer>('.m-layer.leaving').forEach(kill);
+  /* the contact shadow follows the object */
+  el.querySelector('.m-shadow-pic')?.remove();
+  const sh = index[name]?.shadow;
+  if (sh) {
+    const pic = document.createElement('picture'); pic.className = 'm-shadow-pic';
+    for (const s of sh.sources) { const so = document.createElement('source'); so.type = s.type; so.srcset = s.src; pic.appendChild(so); }
+    const img = new Image(); img.className = 'm-shadow'; img.alt = ''; img.src = sh.src; pic.appendChild(img);
+    el.insertBefore(pic, el.querySelector('.m-stage'));
+  }
   const neo = layerFor(name);
   const glint = el.querySelector('.m-glint')!;
   glint.parentNode!.insertBefore(neo, glint);
@@ -226,13 +236,23 @@ function loadLean(layer: Layer, m: Manifest, dir: string) {
   const k = 100 / m.size;
   Object.assign(c.style, { left: lean.crop.x * k + '%', top: lean.crop.y * k + '%', width: lean.crop.w * k + '%', height: lean.crop.h * k + '%' });
   wrap.appendChild(c);
-  const seq: Lean = { m: lean, dir, half: [], canvas: c, ok: false, full: new Map(), cur: { u: 0.5, v: 0.5 }, target: { u: 0.5, v: 0.5 }, raf: 0, restKey: -1 };
+  const seq: Lean = { m: lean, dir, half: [], canvas: c, ok: false, full: new Map(), empty: new Set(), cur: { u: 0.5, v: 0.5 }, target: { u: 0.5, v: 0.5 }, raf: 0, restKey: -1 };
   const ci = lean.center.col / (lean.cols - 1), cj = lean.center.row / Math.max(1, lean.rows - 1);
   seq.cur = { u: ci, v: cj }; seq.target = { u: ci, v: cj };
   layer._seq = seq;
   Promise.all(tier.frames.map((u) => fetch(dir + u).then((r) => r.blob()).then((b) => createImageBitmap(b)))).then((frames) => {
     if (!layer.isConnected) { frames.forEach((f) => f.close()); return; }
     seq.half = frames;
+    /* a render can drop the object from a frame (tools/objects/README.md); such frames are left out of
+       the blend instead of flashing black */
+    const probe = document.createElement('canvas'); probe.width = probe.height = 16;
+    const pc = probe.getContext('2d', { willReadFrequently: true })!;
+    frames.forEach((f, i) => {
+      pc.clearRect(0, 0, 16, 16); pc.drawImage(f, 0, 0, 16, 16);
+      const d = pc.getImageData(0, 0, 16, 16).data;
+      let sum = 0; for (let k = 0; k < d.length; k += 4) sum += d[k] + d[k + 1] + d[k + 2];
+      if (sum < 16 * 16 * 3) seq.empty.add(i);
+    });
     layer.appendChild(wrap);
     seq.ok = true;
     draw(seq);
@@ -252,17 +272,21 @@ function draw(seq: Lean) {
   const at = cell(seq, Math.round(fx), Math.round(fy));
   ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
   ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
-  if (exact) {
+  if (exact && !seq.empty.has(at)) {
     const f = seq.full.get(at);
     if (f) { ctx.drawImage(f, 0, 0, W, H); return; }
     loadFull(seq, at);
   }
   ctx.globalCompositeOperation = 'lighter';
-  const w = [[i0, j0, (1 - tx) * (1 - ty)], [i0 + 1, j0, tx * (1 - ty)], [i0, j0 + 1, (1 - tx) * ty], [i0 + 1, j0 + 1, tx * ty]];
-  for (const [i, j, a] of w) {
-    const img = seq.half[cell(seq, i, Math.min(rows - 1, j))];
-    if (a > 0.002 && img) { ctx.globalAlpha = a; ctx.drawImage(img, 0, 0, W, H); }
+  let w = [[i0, j0, (1 - tx) * (1 - ty)], [i0 + 1, j0, tx * (1 - ty)], [i0, j0 + 1, (1 - tx) * ty], [i0 + 1, j0 + 1, tx * ty]]
+    .map(([i, j, a]) => [cell(seq, i, Math.min(rows - 1, j)), a])
+    .filter(([k, a]) => a > 0.002 && seq.half[k] && !seq.empty.has(k));
+  if (!w.length) {   // every neighbour is a dropped frame: use the middle row at this angle
+    const mid = Math.floor(rows / 2);
+    w = [[cell(seq, i0, mid), 1 - tx], [cell(seq, i0 + 1, mid), tx]].filter(([k, a]) => a > 0.002 && !seq.empty.has(k));
   }
+  const total = w.reduce((n, [, a]) => n + a, 0) || 1;
+  for (const [k, a] of w) { ctx.globalAlpha = a / total; ctx.drawImage(seq.half[k], 0, 0, W, H); }
 }
 function loadFull(seq: Lean, i: number) {
   if (seq.full.has(i) || seq.restKey === i) return;
@@ -315,35 +339,38 @@ function play(el: Slot, clip: string): boolean {
   return true;
 }
 
-/* ---- the droplet change between tabs (ADR-0006 item 5) ----
-   Leaving: the stage plays its droplet.out (the object melts into the shared glass droplet), then the
-   page navigates; the cross-document view transition crossfades at the droplet (ADR-0007). Arriving:
-   the stage shows only its glow until droplet.in (droplet back to the object) has its first frame. */
+/* ---- the droplet change between tabs (ADR-0006 item 5, ADR-0007) ----
+   Leaving: the stage starts its droplet.out, sped up to about 350 ms, and the page navigates at the same
+   moment; the old page keeps melting until the new one is ready, and the cross-document view transition
+   carries the rest, crossfading at the droplet (owner, 2026-10-09: barely felt, still readable).
+   Arriving: the stage shows only its glow until droplet.in (droplet back to the object) has its first frame. */
 const DROP_KEY = 'edk-droplet';
+const MELT = 0.35;           // seconds
 let leaving: Promise<void> | null = null;
 function stageSlot(): Slot | null {
   const el = document.querySelector<Slot>('.media.stage');
   return el && el.offsetParent && visible.has(el) ? el : null;
 }
-/** Resolves when the page may navigate: after droplet.out, or at once if it cannot play. */
+/** Resolves when the page should navigate: as soon as the melt is on screen (or at once, or after
+    120 ms if it cannot start). The melt then plays on while the next page loads. */
 function leave(): Promise<void> {
-  if (leaving) return Promise.resolve();       // a second click while melting: go now, the latest wins
+  if (leaving) return Promise.resolve();
   try { sessionStorage.setItem(DROP_KEY, String(Date.now())); } catch {}
   const el = stageSlot();
   const layer = el?._layer;
   if (!el || !layer || !enhancing || !moving() || !layer._manifest) return Promise.resolve();
-  leaving = getManifest(layer._manifest).then((m) => new Promise<void>((resolve) => {
-    const spec = m?.droplet?.out;
-    const v = spec && makeVideo(spec.sources, dirOf(layer._manifest!), false, 'm-drop');
-    if (!v) return resolve();
+  const m = manifestNow.get(layer._manifest);
+  const spec = m?.droplet?.out;
+  const v = spec && makeVideo(spec.sources, dirOf(layer._manifest), false, 'm-drop');
+  if (!v) return Promise.resolve();
+  leaving = new Promise<void>((resolve) => {
+    const t = window.setTimeout(resolve, 120);
     layer._drop = v;
+    v.defaultPlaybackRate = v.playbackRate = (m!.droplet!.duration || 0.4) / MELT;
     layer.appendChild(v);
-    const done = () => { clearTimeout(t); resolve(); };
-    const t = window.setTimeout(done, 900);   // never hold a navigation longer than this
-    start(v, () => { v.classList.add('on'); layer.classList.add('dropping'); })
-      .then(() => v.addEventListener('ended', done, { once: true }))
-      .catch(done);
-  }));
+    start(v, () => { v.classList.add('on'); layer.classList.add('dropping'); clearTimeout(t); resolve(); })
+      .catch(() => { clearTimeout(t); resolve(); });
+  });
   return leaving;
 }
 function arriveByDroplet() {

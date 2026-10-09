@@ -11,7 +11,12 @@ const { obj, slot, stage = false, class: cls = '', sizes = '(min-width: 900px) 4
 const p = poster(obj);
 ---
 <div class:list={['media', cls, { stage }]} data-slot={slot} data-obj={obj} data-manifest={p.manifest} style={`--light: ${light || p.light}`} aria-hidden="true">
-  {p.shadow && <img class="m-shadow" src={p.shadow.src} srcset={p.shadow.srcset} sizes={sizes} alt="" decoding="async" />}
+  {p.shadow && (
+    <picture class="m-shadow-pic">
+      {p.shadow.sources.map((s) => <source type={s.type} srcset={s.src} />)}
+      <img class="m-shadow" src={p.shadow.src} alt="" decoding="async" loading="lazy" />
+    </picture>
+  )}
   <div class="m-stage">
     <div class="m-glow"></div>
     <div class="m-layer" data-obj={obj}>

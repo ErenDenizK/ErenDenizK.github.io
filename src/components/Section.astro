@@ -1,5 +1,5 @@
 ---
-import Ph from './Ph.astro';
+/* A written section. Placeholders never render (ProjectCase leaves unwritten sections out). */
 interface Props { s: { text?: string; items?: string[]; quote?: string; numbers?: { value: string; label: string }[]; placeholder?: string } }
 const { s } = Astro.props;
 ---
@@ -7,4 +7,3 @@ const { s } = Astro.props;
 {s.quote && <blockquote>“{s.quote}”</blockquote>}
 {s.items && <ul class="decisions">{s.items.map((i) => <li>{i}</li>)}</ul>}
 {s.numbers && <div class="numbers">{s.numbers.map((n) => <div><b>{n.value}</b><span class="meta">{n.label}</span></div>)}</div>}
-{s.placeholder && <p><Ph text={s.placeholder} /></p>}
