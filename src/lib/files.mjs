@@ -1,5 +1,8 @@
 /* Files the site serves straight from the repo, without copying them into public/:
    - media/objects/<name>/**   the pre-rendered objects (ADR-0006), written by tools/objects
+   - content/projects/<slug>/captures/*.mp4   each product's signature clip (family-kit
+                                presentation.md §3), published as media/captures/<slug>/<file>; its
+                                screens and poster are PNG masters the build turns into AVIF and WebP
    - tools/og/out/<id>.jpg      link-preview cards, published under a content-hashed name so
                                 platform caches always see a new URL (link-preview research §1.5)
    - tools/og/out/icons/*       favicon and home-screen icons
@@ -10,6 +13,7 @@ import crypto from 'node:crypto';
 
 export const ROOT = process.cwd();
 export const MEDIA_DIR = path.join(ROOT, 'media/objects');
+export const PROJECTS_DIR = path.join(ROOT, 'content/projects');
 export const OG_DIR = path.join(ROOT, 'tools/og/out');
 
 /** Icon choice (owner, 2026-10-09): "e" at 16 and 32 px, "edk" from 48 px and on home screens,
@@ -30,6 +34,7 @@ function usedCards() {
   const ids = new Set(['home', 'about']);
   const dir = path.join(ROOT, 'content/projects');
   if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) {
+    if (!/\.mdx?$/.test(f)) continue;                     // a project's folder holds its world.json
     const m = /^og:\s*([\w-]+)/m.exec(fs.readFileSync(path.join(dir, f), 'utf8'));
     if (m) ids.add(m[1]);
   }
@@ -48,6 +53,10 @@ export function publishedFiles() {
       }
     };
     walk(MEDIA_DIR);
+  }
+  if (fs.existsSync(PROJECTS_DIR)) for (const slug of fs.readdirSync(PROJECTS_DIR)) {
+    const dir = path.join(PROJECTS_DIR, slug, 'captures');
+    if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) if (f.endsWith('.mp4')) out.push([`media/captures/${slug}/${f}`, path.join(dir, f)]);
   }
   for (const id of usedCards()) {
     const p = ogPath(id);

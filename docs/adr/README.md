@@ -16,3 +16,4 @@ accepts it; a later ADR supersedes an earlier one instead of editing it.
 | [0009](0009-live-frames.md) | Live frames: one frame engine and one light, behind `?live` (amends 0006 items 4, 6) | proposed |
 | [0010](0010-work-sections.md) | Work is one screen-tall section per project; one stage each, only the one in view moves | proposed (look); technique decided |
 | [0011](0011-scroll-rail.md) | The contents ladder replaces the native scrollbar where a page has sections | proposed (look: concept B chosen); technique decided |
+| [0012](0012-embassies.md) | Embassies: the project view enters the product's world through world.json, the kit's light and real captures | proposed (look); technique decided |

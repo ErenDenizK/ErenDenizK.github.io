@@ -16,6 +16,13 @@ summary: A study space for Turkish university English proficiency exams.
 links:
   - { label: Open English Prep, href: "https://erendenizk.github.io/english-prep/", kind: live }
   - { label: Code, href: "https://github.com/ErenDenizK/english-prep", kind: code }
+captures:
+  - { id: home }
+  - { id: lesson-phone }
+  - { id: question-phone }
+  - { id: results-phone }
+  - { id: about }
+clip: { id: signature, phone: signature-phone }
 what:
   text: Article-led lessons, each a contrast (“Present Perfect vs Past Simple”), then paragraph-cloze tests with explained feedback. Built for learners who already speak English and lack the labels.
   numbers:

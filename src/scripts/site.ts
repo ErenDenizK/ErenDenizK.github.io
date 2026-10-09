@@ -7,6 +7,7 @@ import { initSheet } from './sheet';
 import { initLog } from './log';
 import { initAccent, setAccent } from './accent';
 import { initRail } from './rail';
+import { initEmbassy } from './embassy';
 
 const fine = () => root.classList.toggle('fine', mq.fine.matches);
 fine(); mq.fine.addEventListener?.('change', fine);
@@ -18,6 +19,9 @@ initSheet();
 initLog();
 initAccent();
 initRail();
+/* a project's own page: its embassy (the sheet starts its own copy, sheet.ts) */
+const ownCase = document.querySelector('#main article.case');
+if (ownCase) initEmbassy(ownCase);
 
 /* Work: one section per project (ADR-0009). The section crossing the middle of the window is the one
    in view: its object becomes the page's stage (the one that moves, melts on a tab change and carries
