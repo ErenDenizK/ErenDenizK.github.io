@@ -6,7 +6,10 @@
 (DNA, rhymes C1–C10 clashes, untouchables), `research/2026-10-page-worlds.md` (concept D,
 "embassies"; the lightness window and the single rig), `research/2026-10-readability.md`,
 `research/2026-10-craft-audit.md` §4–5, ADR-0003, 0005, 0006, 0007 · **Not yet read:**
-`research/2026-10-liveliness.md` (in progress); §3.5 below names what it may change.
+`research/2026-10-liveliness.md` (in progress); §3.5 below names what it may change ·
+**Revised** the same evening after owner input: embassies approved in principle (§3.1 now
+specifies them); type researched as its own question (§2.5); "one house, four rooms" (page
+worlds, concept A) is referenced but nothing here depends on it.
 
 The owner, in their words: instead of trapping every product in one design and breaking its variety,
 each keeps its own UI, motion, colour, structure and details, and they meet at a shared place.
@@ -64,7 +67,7 @@ shown four screens side by side, they should guess "same maker" (the origin is r
 | F3 | **One quality charter** | §2.4. Already practised in all three repos; written once. | The origin people trust (Rams, Ghibli, Supergiant). |
 
 Rejected as constants (and why): **glass** (English Prep removed it by decision, C6), **one
-typeface** (Recto's Inter Recto and the portfolio's Newsreader are character, C1), **one motion
+typeface** (§2.5: type stays each product's own; the house's serif becomes the maker's voice), **one motion
 curve or duration** (C7), **one icon style**, **one navigation pattern** (all are capsules today
 by coincidence; nothing requires it), **grain** (Recto bans it, C5).
 
@@ -115,43 +118,125 @@ each app's About. Every rule is already practised somewhere in the family:
 7. **Seen before shipped**: screenshots at 1440×900, 1180×820 touch and 390×844 for every UI change.
 8. **The promise is proven**: every privacy line links to its evidence.
 
+### 2.5 Type: does differing type break the shared origin?
+
+The owner's question: should each product keep its own faces (Recto: Inter Recto; English Prep:
+Inter; Eat Map: SF Pro; portfolio: Newsreader + Inter), or does differing type break the origin?
+**Answer: keep them. Type is a variable, not a constant. The portfolio's serif becomes the maker's
+signature voice: inside an embassy it sets only what Eren says (title, section heads, his
+narrative, credits), never what the product says.**
+
+**The family's own evidence (M).** Recto and English Prep already use the *same* face, Inter, and
+look nothing alike (contact sheet, audit §1): Recto is 600 at moderate tracking with optical
+sizes and sentence case; English Prep is 600 at very tight tracking (the mark at −0.065 em) with
+18/30 reading. Most of a type voice lives in size, weight, tracking, measure and colour, so "same
+face" was never what made them a family, and "different face" will not unmake one.
+
+**Cases** (grades as in the research files: E primary source opened, P press or practitioner, F
+secondary or aggregated):
+
+| Case | Shared or varied | Lesson for us | Grade |
+|---|---|---|---|
+| Apple HIG | Shared system faces for reading; Branding: "It can work well to use a custom font for headlines and subheadings while using system fonts for body copy and captions." Typography: "Minimize the number of typefaces you use, even in a highly customized interface." | A family can share the reading layer and free the display layer, and each member keeps few faces | E (HIG Branding, Typography, read 2026-10-09) |
+| Google | Google Sans across products (now open, with Sans Flex, 2025); YouTube keeps its own YouTube Sans (Saffron, 2017) | Even a branded house lets its member with the strongest identity keep its own face | P |
+| Microsoft | Segoe UI Variable for Windows, Aptos for Office; both by Steve Matteson | One hand across different faces: a family by maker, not by font | P |
+| Airbnb (Cereal), Spotify (Circular) | One face for logo, site and app | Single-product branded houses; the wrong model for four independent products | P |
+| Nothing | Ndot *is* the identity; when OS 3 used it less, users wrote that the phone "lost its identity" | If a face is your signature, ration it, never drop it: the case for keeping Newsreader as a rationed signature rather than spreading it or removing it | P (forum, Android Authority) |
+| Teenage Engineering | No single confirmed house face; the family is carried by material, pictograms and naming | A strong family does not need shared type | F |
+| Panic | No documented house face; each app its own icon character, tied by craft touches (Iconfactory) | The hand shows in craft, not in a font | P |
+| Supergiant | Each game's lettering made for that game (Hades' wordmark and UI lettering); no shared studio face found | Works by one hand need not share type | F |
+| Annapurna Interactive | The label's site has its own face (Name Sans), picked to put the games "center stage"; the label's still logo opens each game; every game keeps its own type | The closest analogue: the house has its own voice, the works keep theirs, the mark sits at the threshold | P |
+| Condé Nast | Each title its own masthead and faces (Vogue's Didone masthead and Vogue AG; The New Yorker's Irvin with Caslon) under one publisher | Titles share a publisher, not a face; the publisher lives in the colophon | P/F |
+
+**Why keep them.** (1) Changing a product's face is the most expensive flattening there is: it
+touches every screen, English Prep's per-size contrast pairs (`tools/palette.mjs`) and Recto's
+A-gates; the brief forbids it. (2) The origin is carried by V1–V3 and the objects; readable type
+differences are exactly the variety the research asks for. (3) Newsreader is the only serif in
+the family and the house's most distinctive asset (pairing 2, accepted), so it can mark *where
+the maker speaks*, as Annapurna's face marks the label.
+
+**The rule: Newsreader is the maker's voice; the product's face is the product's voice.**
+
+| Where | Newsreader (maker) | Product's face | Inter (house UI) |
+|---|---|---|---|
+| Porch | product name, title | the quoted promise line, the primary button label | facts, meta |
+| Embassy | section heads, narrative prose (21 px, readability T1) | captions that quote UI words, any reproduced label | meta |
+| Credits | the `edk.` mark | — | the line itself |
+| Inside an app | never as running text; at most the `edk.` mark as a drawn logo (§6.1 Q5 d) | everything | — |
+
+**Engineering.** Embassies load no new font bytes. Recto and English Prep are both Inter: the
+house's Inter subset is set with each product's sizes, weights, tracking and `tnum`, which is
+visually Inter Recto within subset differences. SF Pro is licensed for Apple platforms only and
+cannot be embedded on the web: Eat Map's embassy uses `system-ui` (SF on Apple devices) with Inter
+as fallback; its captures carry the true SF. Recto Signature (Inter italic 300) is never used:
+it exists only for typed signatures.
+
+*Type sources:* Apple HIG Branding and Typography (developer.apple.com JSON, opened); search
+extracts: Google Design (Google Sans Flex, YouTube Sans), microsoft.design and learn.microsoft.com
+(Aptos, Segoe UI Variable), nothing.community and Android Authority (OS 3), fontsinuse.com and
+avid.wiki (Annapurna), madegooddesigns.com (Vogue, Hades, Airbnb, Spotify), Iconfactory portfolio
+(Panic). No source confirmed TE's or Supergiant's faces; those rows are inference.
+
 ---
 
 ## 3. How the portfolio expresses the family
 
-### 3.1 The house and its embassies
+### 3.1 The house and its embassies (approved in principle, 2026-10-09)
 
-The house (Home, Work, Record, About) speaks the portfolio's own language: neutral black, warm
-ink, Newsreader titles, glass objects, the droplet. Rooms vary within the page-worlds variance
-budget. **Only the project view hands over.** It becomes the product's embassy in three bands:
+The owner approved the direction: a project view enters the app's own world (Recto graphite and
+lime, English Prep aurora and Sakura, Eat Map wine and rose) inside the portfolio's frame and
+title. The house (Home, Work, Record, About) keeps its own language: black, warm ink, Newsreader,
+glass objects, the droplet. **Rooms** (page worlds concept A, to be prototyped later) may vary the
+house's pages; embassies do not depend on them: the porch stands on the house ground with the
+project's light, which holds with or without rooms. If rooms ship, Work's room is simply where
+embassies are opened from.
 
-1. **The porch (house ground).** Object poster and clip, product name in Newsreader, one-line
-   promise, facts (status, platform, started, last moved) in Inter meta, the primary button. The
-   object stays on the house ground because its frames are ground-subtracted for `#0a0a0b`
-   (page worlds §3); no re-render is needed.
-2. **The threshold (≈ 160 px).** The ground crossfades from the house to the product's own ground
-   token as you scroll (a static gradient, not a scroll animation; Alexander's entrance
-   transition). The product's light field appears here: Recto's still mint-lime aurora, English
-   Prep's three pools (static in the embassy, its own reduced-motion twin), Eat Map's rose glow.
-3. **The embassy (product ground).** Real captures, one signature-interaction clip, the case study
-   (what, why, how, learned, next) and the project's Record thread. Ink and accent switch to the
-   product's tokens, **copied from the product's own token file, never redrawn** (a generated
-   `content/projects/<slug>/tokens.json` checked against the source repo in CI where reachable).
+**Anatomy.** Desktop: the sheet of ADR-0007 (≥ 900 px, native `<dialog>`, URL `/work/<slug>/`).
+Phone and direct links: the same order as a page of its own.
 
-What the house keeps around every embassy: the sheet frame and close control, the bar, Newsreader
-for the product name and section heads, Inter for meta, the case-study order, the sheet's glide.
-The visitor always knows they are on Eren's site looking into another house.
+| Band | Ground | Holds | Type | Motion |
+|---|---|---|---|---|
+| Frame (always) | — | sheet edge, close control, the live bar above, `edk.` whose dot takes the product's colour | house | sheet opens on the house glide, closes in 320 ms |
+| 1 Porch | house `#0a0a0b` + the project's light pool | object (poster, then clip), title, the promise line, facts (status, platform, started, last moved), primary and secondary buttons | §2.5 | only the object's clip, at the product's tempo |
+| 2 Threshold | 200 px static gradient, house ground → product ground (120 px on phones) | nothing but the product's light beginning | — | none; scrolling reveals it (Alexander's entrance transition) |
+| 3 Embassy | product ground and light | What it is (hero capture) · Signature (clip) · Why · How (captures) · What I learned · Next · In the record (the project thread) | Newsreader heads and prose in the product's ink; product face for UI words | the product's own light behaviour; captures still; the clip plays once in view, then rests on its poster |
+| 4 Foot | product ground | credits "Kept light · how these are made", Open the app, Code, Back | house | — |
+
+**Rules inside an embassy:**
+
+- **Tokens are copied, never redrawn.** Each project carries `content/projects/<slug>/world.json`:
+  ground, raised, ink 1–3, hairline, accent, accent ink, accent radius, the accent's job sentence,
+  light layers (colours, positions, behaviour: still, event or drift with timings), font stack,
+  press and settle. Generated from Recto's `tokens.css` and English Prep's `css/style.css` /
+  `tools/palette.mjs`; Eat Map's by hand from Xcode with source references. A new project's world
+  is data, never code (ADR-0002).
+- **The accent keeps its job.** It appears on the primary button and as light, nothing else.
+  Links in prose underline in the product's ink: rose on wine is 4.93:1, below the 7:1 prose target.
+- **The product's motion is its truth.** Recto's aurora is still and answers one event: on arriving
+  at the embassy band it brightens slightly and settles within 5 s. English Prep's clusters drift
+  at their own timings under the .42 cap, paused when the band is off screen or the tab hidden.
+  Eat Map's glow is static. Buttons press with the product's press (Recto: .97 on its 300 ms
+  spring; English Prep: 120 ms compression, 380 ms release). Reduced motion: every light still
+  (English Prep's three still pools), clips as posters.
+- **Contrast is measured per world (M):** Recto ink 16.4:1, secondary 8.1:1; English Prep 15.5:1,
+  supporting 11.6:1; Eat Map white on wine 14.7:1. Every pair runs through the house's checks.
+- **The lightness window holds:** the object only ever stands on the porch; captures are images.
+- **Leaving is calm:** close or Back fades the dialog; no ground flashes, nothing slides.
+- **Later, opt-in:** "a live taste". English Prep is same-origin (`/english-prep/`), so one real
+  question from its data could be answered inside its embassy with its own feedback; Recto links
+  to its sample document. Not in the first embassies.
 
 **Per embassy:**
 
 | | Recto | English Prep | Eat Map |
 |---|---|---|---|
 | Ground → ink | `#08090c` → `#e8e9ec` | `#141216` → `#eee9ed` | wine → white *(est.)* |
-| Light | mint → lime, still | cherry / iris / lagoon pools, still | rose glow |
-| Primary button | "Open Recto" in `#c8fb3d` with `#08090c` label, radius 999 | "Open English Prep" in the Sakura pair with `#301b27` ink, radius 8 | "Coming to the App Store" or none; rose ring |
-| Captures | Library, Markup with the capsule palette, Pages grid; 1440×900 and 1180×820 | Eğitim, an answered question, the folio; 1440×900 and 390×844 (mobile first) | the simulator screens at 3× phone, from Xcode, not a photo |
+| Light | teal → mint → lime, still, one arrival event | cherry / iris / lagoon, drifting, cap .42 | rose glow, static |
+| Primary button | "Open Recto" `#c8fb3d`, label `#08090c`, radius 999 | "Open English Prep", Sakura pair, ink `#301b27`, radius 8 | "Coming to iOS", rose ring, or none |
+| Product face | house Inter with Recto's sizes and 600 titles | house Inter with English Prep's tracking | `system-ui`, Inter fallback |
+| Captures | Library, Markup with the capsule palette, Pages grid; 1440×900, 1180×820 | Eğitim, an answered question, the folio; 1440×900, 390×844 | simulator screens at 3×, from Xcode, not a photo |
 | Signature clip (≤ 8 s, poster first) | the capsule morphing dock → palette → pages | an answer: press, release, Sakura *Doğru* | the Liquid Glass tab moving to the avatar pill, then compose |
-| Promise line shown as | the product's own English line | the product's own Turkish line, with an English gloss in meta | the product's own line |
+| Promise line | its own English line | its own Turkish line, English gloss in meta | its own line |
 
 ### 3.2 Real captures are first-class content
 
@@ -231,12 +316,11 @@ the working UI (HIG: "resist the temptation to display your logo throughout your
 
 - **The credits line.** One line at the foot of the product's About: "Made by `edk.`" (or
   "`edk.` tarafından yapıldı"), the dot in the product's accent, linking to the portfolio's
-  project view. Product's own type; the house's serif never enters an app.
+  project view, in the product's own type (the `edk.` mark itself only if §6.1 Q5 d is chosen).
 - **Presentation assets in one format.** Social card 1200×630 on the product's ground with its own
   mark left and `edk.` small bottom right; captures at the family sizes (§3.2); a press folder
   with the mark files, captures and the promise line.
-- **The charter link.** "How this is made" in About points to the charter plus the product's own
-  quality bar (Recto Q-1…Q-14, English Prep's `npm run color`).
+- **The charter link.** "How this is made" in About: the charter plus the product's own bar.
 
 ### 4.2 Per app: the smallest, highest-value moves
 
@@ -251,16 +335,14 @@ the working UI (HIG: "resist the temptation to display your logo throughout your
 
 ## 5. Panel critique of this draft
 
-Six lenses read the first draft. Each objection is the strongest one that lens raised; the answer
+Seven lenses read the draft. Each objection is the strongest one that lens raised; the answer
 is what changed or why it stands.
 
 **Art director.** *"'Dark ground plus coloured light' is what every dark-mode product on earth
 does. It is not an origin; it is a genre. Your visible constants are too generic to be anyone's."*
-Answer: true of V1 alone, which is why it is never alone. The origin is the combination: a ground
-tinted to each product's own temperature (not neutral dark mode), light that is *still at rest*
-and answers events, and the coloured dot. The **objects** carry the rest of the burden: one rig,
-one droplet, colour as internal light, each derived from the product's own mark. That is
-something only this maker has. Added the thumbnail test so "generic" is checked, not argued.
+Answer: true of V1 alone, so it is never alone: grounds tinted to each product, light still at
+rest, the coloured dot, and above all the **objects** (one rig, one droplet, colour as inner
+light, each from the product's own mark). The thumbnail test checks "generic" instead of arguing.
 
 **Brand strategist.** *"The endorsement is too weak. If `edk.` only appears in About pages, no one
 using Recto will ever know Eren made it; you've built a house of brands for someone whose whole
@@ -272,13 +354,10 @@ want it.
 
 **UX and retention.** *"The embassy makes the visitor cross four visual languages in one visit.
 A recruiter opening two projects in a row sees two different sites and loses the thread. And a
-sheet that changes ground halfway may feel like a bug."* Answer: only one embassy is ever on
-screen; the porch and the frame (close control, bar, Newsreader title, case-study order) are
-identical in all of them, so the thread is the frame. The threshold is a static gradient tied to
-scroll position, never a timed animation, and it starts below the porch's facts, so the first
-screen of every project view is the house. Retention comes from the captures: a visitor meets the
-product the owner worked on, not a symbol (C8). Delight comes from the signature clip, which is
-the product's own best moment.
+sheet that changes ground halfway may feel like a bug."* Answer: one embassy is on screen
+at a time, and the frame (close, bar, Newsreader title, case-study order) is identical in all, so
+the thread is the frame. The threshold is static and sits below the porch, so every project view
+opens in the house. Retention comes from captures of the real product (C8); delight from its clip.
 
 **Motion designer.** *"Four named springs with per-product values is a naming convention, not a
 grammar. Recto's press at 300 ms and English Prep's at 120 ms have nothing in common but a
@@ -296,8 +375,15 @@ from each product's own token file and checked against the source in CI where th
 reachable, and every embassy ink/ground pair goes through the house's contrast check (WCAG 2 ≥ 7:1
 for prose, APCA supplementary). The dot passes are dot-only crops (a few hundred KB, desktop only;
 phones get the poster with a CSS-lit dot). Banding is measured, not assumed: the dither is a
-fallback inside a pool, never a page layer. Every embassy band has a still twin: the light is
-static there even for English Prep.
+fallback inside a pool, never a page layer. English Prep's drifting light in its embassy pauses
+off screen and has its own still pools; embassies add no font bytes (§2.5).
+
+**Typographer.** *"Four type voices on one site (Newsreader, Inter as Recto, Inter as English
+Prep, SF) is a font salad; and putting the house serif over app screenshots makes every embassy
+look like a magazine wrapped around a product."* Answer: only two voices are ever on screen: the
+maker's serif and one product's face, each with a fixed job (§2.5 table). The serif never touches
+a capture or a UI word, so it reads as the narrator, not as decoration. Recto and English Prep
+share Inter already; their difference is size, weight and tracking, which the embassy reproduces.
 
 **Product owner's ear (the owner's own words as a lens).** *"Will this flatten Recto?"* Answer:
 §2.3 outranks the document, §4 is opt-in per move, and no constant requires Recto to change a
@@ -328,11 +414,14 @@ with a safer twin and their sign-off first.
       *(recommended)*.
    b. Remove the grain and nudge the ink to neutral (`#e7e5e1`) so products sit closer to it.
    c. Keep both as they are.
-5. **How far does a project view hand over to the product?**
-   a. Porch, threshold, embassy: the house's head, then the product's own ground, light,
-      captures and clip *(recommended)*.
-   b. The whole sheet in the product's world from the first pixel.
-   c. The house's look throughout, with real captures only.
+5. **Type inside the family** (embassies themselves are approved; this is their voice).
+   a. Each product keeps its faces; Newsreader is the maker's voice in embassies: title, section
+      heads, narrative, credits *(recommended)*.
+   b. Each keeps its faces; embassies set everything in the product's face, Newsreader only on the
+      porch title.
+   c. One face for all: the portfolio drops Newsreader for Inter (undoes pairing 2; not
+      recommended).
+   d. As a, and the `edk.` mark, drawn from Newsreader, may appear as a logo in app credits.
 
 Also needed, not taste: Eat Map's real ground, light and accent values, its mark (if any) and
 whether it has a light theme, read from the Xcode project.
@@ -344,7 +433,7 @@ whether it has a light theme, read from the Xcode project.
 | 0 | The owner answers §6.1; an ADR ("family: Kept light") records the constants, the untouchables and the charter | docs | owner |
 | 1 | House changes that need no new media: grain removed, springs, `--recto-action`, the dot taking the room's light, charter page, credits line | portfolio | `npm run verify`, three screenshot sizes |
 | 2 | Objects re-made one at a time (Recto, English Prep, edk dot, Eat Map), each shown as a still first, then rendered; old objects stay until replaced | `tools/objects`, `media/objects` | owner sees each still; thumbnail test; seam check |
-| 3 | Embassies: token import, captures and one clip per product, porch/threshold/embassy; starts when project texts are written (brief §7) | portfolio project views | contrast per embassy; reduced motion; phone pass |
+| 3 | Embassies (approved in principle): `world.json` per project, captures and one clip each, porch / threshold / embassy, type per §2.5; Recto first; full content when project texts are written (brief §7) | portfolio project views | contrast per embassy; reduced motion; phone pass |
 | 4 | Apps, opt-in, one move at a time from §4.2, each a separate yes from the owner and done in that app's repo under its own rules | Recto, English Prep, Eat Map | owner, per move |
 | 5 | Yearly review of this document against the four-year arc (brief §2.3): a new product joins by filling one column of §2.2 and one row of §2.3 | docs | — |
 
@@ -352,27 +441,21 @@ whether it has a light theme, read from the Xcode project.
 
 ## Türkçe özet (sahip için)
 
-- **Tez:** Ürünlerin zaten ortak bir eli var: her biri kendi sıcaklığında koyu bir zeminde duruyor,
-  rengini boya olarak değil ışık olarak getiriyor ve aynı sözü veriyor: senin olan sende kalır.
-  Aile bu eli görünür kılmak; dört ürünün üstüne tek bir tasarım giydirmek değil.
-- **Ortak kaynağın adı: "Kept light" (saklanan ışık).** Işık: her üründe renk karanlıkta ışık olarak
-  geliyor. Saklanan: her ürün kullanıcının şeyini kendinde tutuyor ve verilen sözler kanıtla tutuluyor.
-- **Görünen üç sabit:** kendi sıcaklığında koyu zemin ve tek bir ışık alanı; tek vurgu rengi, tek
-  görev; `edk.` noktası (bulunduğun yerin rengini alır, `ep.` ile kafiyeli).
-- **Hissedilen üç sabit:** aynı dört yay (press, settle, glide, pop) ama her ürün kendi temposunda;
-  tek ses ve her ürünün kendi dilinde tek bir söz cümlesi; tek kalite tüzüğü.
-- **Dokunulmazlar:** Recto'nun limonu, kapsülü, camı, R işareti ve sıfır sekmeli hareketi; English
-  Prep'in mürdüm zemini, Sakura cevapları, yaşayan aurorası, camsızlığı ve *sen* sesi; Eat Map'in
-  yerel iOS camı ve gülü. Bu liste belgedeki her şeyden önce gelir.
-- **Portföy ev, proje görünümleri elçilik:** önce evin zemininde nesne ve bilgiler, sonra zemin
-  ürünün kendi rengine geçer; orada gerçek ekran görüntüleri ve ürünün imza hareketinin kısa videosu.
-- **Nesneler:** oyuncak gibi genel semboller yerine ürünün kendisinden türer: Recto için "Dengeli" R
-  camda ve içinde gradyan ışığı (önce senin onayın), English Prep için üç yapraklı folio ve Sakura
-  boncuk, Eat Map için şarap rengi cam harita ve gül boncuk. Aynı ışık düzeni, aynı damla.
-- **Portföyde değişecekler:** gren kalkar (Recto'da yasak), hareket yaylara geçer, Recto düğmesi
-  gerçek `#c8fb3d` olur, nokta her sayfanın ışığını alır.
-- **Uygulamalar:** sonra, tek tek ve yalnızca senin onayınla: About sonunda "Made by edk." satırı,
-  ortak biçimde tanıtım görselleri. Uygulamaların çalışan arayüzüne hiçbir işaret girmez.
-- **Senin kararların:** ilk ne fark edilsin; `edk.` uygulamalarda nerede görünsün; Recto nesnesi;
-  gren ve mürekkep; proje görünümü ürüne ne kadar devredilsin. Eat Map'in gerçek renk değerleri de
-  Xcode'dan gerekiyor.
+- **Tez ve ad:** Ürünlerin zaten ortak bir eli var: kendi sıcaklığında koyu zemin, boya değil ışık
+  olarak gelen renk ve "senin olan sende kalır" sözü. Adı **Kept light** (saklanan ışık).
+- **Görünen üç sabit:** kendi tonunda koyu zemin ve tek ışık alanı; tek vurgu rengi, tek görev;
+  `edk.` noktası (bulunduğun yerin rengini alır). **Hissedilen üç:** aynı dört yay (press, settle,
+  glide, pop) her ürünün kendi temposunda; her ürünün kendi dilinde tek söz cümlesi; tek kalite tüzüğü.
+- **Dokunulmazlar her şeyden önce gelir:** Recto'nun limonu, kapsülü, camı, R'si, sıfır sekmesi;
+  English Prep'in mürdümü, Sakura cevapları, aurorası, camsızlığı, *sen* sesi; Eat Map'in iOS camı ve gülü.
+- **Elçilikler (onaylandı):** proje görünümü önce evin zemininde nesne, başlık ve bilgilerle açılır,
+  sonra ürünün dünyasına geçer: kendi zemini, ışığı, hareketi, gerçek ekran görüntüleri, imza videosu.
+  Renkler ürünün kendi dosyalarından kopyalanır.
+- **Yazı tipi:** her ürün kendi yazı tipini korur; kaynağı bozmaz (Recto ve English Prep aynı Inter'le
+  hiç benzemiyor). Newsreader "yapanın sesi": elçilikte başlık, bölüm başlıkları, anlatı ve imza.
+- **Nesneler** üründen türer: camda "Dengeli" R (önce senin onayın), Sakura boncuklu folio, gül
+  boncuklu şarap rengi cam harita. Aynı ışık düzeni, aynı damla.
+- **Portföyde:** gren kalkar, hareket yaylara geçer, Recto düğmesi `#c8fb3d` olur. Uygulamalara
+  sonra, tek tek ve onayınla yalnızca "Made by edk." gibi küçük imzalar.
+- **Kararların:** ilk ne fark edilsin; `edk.` nerede; Recto nesnesi; gren ve mürekkep; yazı tipinin
+  rolü. Eat Map'in gerçek renk değerleri Xcode'dan gerekiyor.
