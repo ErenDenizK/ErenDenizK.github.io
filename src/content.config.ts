@@ -113,6 +113,8 @@ const site = defineCollection({
     home: z.object({ showcase: z.object({ kicker: z.string(), cta: z.string(), also: z.string() }) }),
     work: z.object({
       kicker: z.string(), title: z.string(), dek: z.string(), byHand: z.string(),
+      /** The one way into a project's focus view from its section. */
+      cta: z.string(),
       /** Catalog group headings; a group with no projects is left out. */
       groups: z.object({ directed: z.string(), byHand: z.string() }),
     }),
