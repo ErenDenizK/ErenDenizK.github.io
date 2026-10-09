@@ -10,6 +10,7 @@ Axes are narrowed to the range the type system uses, and Latin is cut to Basic L
 Latin-1 and the punctuation the copy uses; the Turkish letters outside Latin-1 go in a
 second, tiny file (unicode-range picks it up only when the page contains them).
 """
+import io
 import os
 from fontTools.ttLib import TTFont
 from fontTools.varLib import instancer
@@ -30,7 +31,6 @@ FACES = {
 def build(face, sub, unicodes, out_name):
     src = os.path.join(NM, face, 'files', f'{face}-{sub}-opsz-normal.woff2')
     f = TTFont(src)
-    f = instancer.instantiateVariableFont(f, FACES[face]['axes'])
     opts = subset.Options()
     opts.flavor = 'woff2'
     opts.layout_features = ['kern', 'liga', 'calt', 'locl', 'tnum', 'lnum', 'pnum', 'case', 'ccmp', 'mark', 'mkmk']
@@ -39,6 +39,11 @@ def build(face, sub, unicodes, out_name):
     sub_ = subset.Subsetter(opts)
     sub_.populate(unicodes=subset.parse_unicodes(unicodes))
     sub_.subset(f)
+    buf = io.BytesIO()
+    f.flavor = None
+    f.save(buf)
+    buf.seek(0)
+    f = instancer.instantiateVariableFont(TTFont(buf), FACES[face]['axes'])
     path = os.path.join(OUT, out_name)
     f.flavor = 'woff2'
     f.save(path)
