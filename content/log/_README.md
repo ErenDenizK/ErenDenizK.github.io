@@ -17,7 +17,14 @@ updated: []                 # appended: [{ date: 2026-11-02, note: "Added the re
 corrections: []             # appended: [{ date, was, now }]
 figures: []                 # names from tools/illustrations/out/drawings.json
 lead: entry-flow            # essay only: the figure whose plate shows in the index
+version: 1.0.0-beta         # optional: a version shipped; the row takes the release look
+key: "300 pages, no freeze" # optional: one pull-out line, only a number or fact the owner said
+image: ./recto-worker.webp  # optional: path relative to this file; opens the page, thumbnail of essays and releases
+imageAlt: What the image shows   # required with image
+caption: One sentence on what to see in it.   # optional
+next: Annotations are next. # optional: the owner's own next step, the page's closing line
 help: edit                  # edit | more (the agent did more than edit; add helpNote)
 ---
-Body in Markdown. In an .mdx essay a figure is <Figure name="entry-flow" />.
+Body in Markdown. In an .mdx essay a figure is <Figure name="entry-flow" />. A release keeps its
+shipped items as the body's first list; the record shows the first three.
 ```

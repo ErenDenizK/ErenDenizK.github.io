@@ -81,9 +81,11 @@ text is all it takes for it to appear. A test fails the build if a placeholder e
 The owner dictates; an agent drafts; nothing is published without the owner's OK on the exact
 draft. The workflow is the `log-entry` skill (`.claude/skills/log-entry/SKILL.md`); the design is
 [docs/design/log.md](docs/design/log.md). The file is `content/log/<year>/<slug>.md` and its page is `/record/<year>/<slug>/`; the fields are
-in `content/log/_README.md`. Three kinds: `note` (one to three sentences, no title), `entry` (a few
-paragraphs, opens in place), `essay` (long, its own page; use `.mdx` and `<Figure name="..." />`
-for drawings from `tools/illustrations`). The slug never changes once published.
+in `content/log/_README.md`. Three kinds: `note` (one to three sentences, no title, read whole in the
+list), `entry` (a few paragraphs, its own page), `essay` (long, with figures; use `.mdx` and
+`<Figure name="..." />` for drawings from `tools/illustrations`). An entry with a `version` takes the
+release look; `key`, `image` (with `imageAlt`, `caption`) and `next` are optional and only carry what
+the owner said. The slug never changes once published.
 
 ### Photos, icons, previews
 

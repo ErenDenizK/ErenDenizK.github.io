@@ -144,3 +144,69 @@ export function statusLine(p: Project): string {
   if (!isPlaceholder(d.started)) bits.push('since ' + ym(d.started));
   return bits.join(' · ');
 }
+
+/* ---------- the record's own helpers (docs/design/log.md §4–§5, amended 2026-10-09) ---------- */
+
+/** The colour a project shows on black: its glow where lime would go olive, otherwise its accent. */
+export const projectColor = (p: Project) => p.data.accent.glow ?? p.data.accent.color;
+/** The Record's own light, for entries about no project (readability research C2). */
+export const LOG_BLUE = 'var(--log)';
+
+/** An entry's projects, in the order the entry lists them. */
+export const entryProjects = (e: LogEntry, projects: Project[]) =>
+  e.data.projects.map((r) => projects.find((p) => p.id === r.id)).filter((p): p is Project => !!p);
+
+/** The colours of an entry's spine mark: one per project (at most three), or Log blue. */
+export const entryColors = (e: LogEntry, projects: Project[]) => {
+  const c = entryProjects(e, projects).map(projectColor).slice(0, 3);
+  return c.length ? c : [LOG_BLUE];
+};
+
+/** A mark's fill: one colour, or hard-edged slices for an entry about two or three projects. */
+export function markFill(colors: string[]): string {
+  if (colors.length === 1) return colors[0];
+  const step = 100 / colors.length;
+  return `conic-gradient(from 90deg, ${colors.map((c, i) => `${c} ${(i * step).toFixed(1)}% ${((i + 1) * step).toFixed(1)}%`).join(', ')})`;
+}
+
+/** The row shape (log.md §4): a note, an entry, a release (an entry or essay with a version) or an essay. */
+export type RowShape = 'note' | 'entry' | 'release' | 'essay';
+export const rowShape = (e: LogEntry): RowShape => (e.data.kind === 'note' ? 'note' : e.data.version ? 'release' : e.data.kind);
+
+/** "Recto 1.0.0-beta": the release headline, as the product writes it. */
+export const releaseName = (e: LogEntry, projects: Project[]) => {
+  const p = entryProjects(e, projects)[0];
+  return [p?.data.title, e.data.version].filter(Boolean).join(' ');
+};
+
+/** Up to three items of a release, the body's first Markdown list, inline marks stripped (log.md §4). */
+export function releaseItems(body = '', max = 3): string[] {
+  const out: string[] = [];
+  for (const line of body.split('\n')) {
+    const m = /^\s{0,3}[-*+]\s+(.+)$/.exec(line);
+    if (m) out.push(m[1].replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/[*_`]/g, '').trim());
+    else if (out.length && line.trim()) break;
+    if (out.length === max) break;
+  }
+  return out;
+}
+
+/** The year strip (log.md §5.4, amended): twelve months, a tick per entry in its project's colour,
+    stacked when a month is busy. Drawn at build; each month with entries links to its top row in the list. */
+export type StripMonth = { label: string; long: string; ticks: { color: string; shape: RowShape }[]; first: string | null };
+export function yearStrip(year: string, entries: LogEntry[], projects: Project[]): StripMonth[] {
+  const mine = entries.filter((e) => entryYear(e) === year);
+  return MON.map((label, m) => {
+    const inMonth = mine.filter((e) => e.data.date.getUTCMonth() === m);   // newest first, as the list
+    const oldestFirst = [...inMonth].reverse();
+    return {
+      label,
+      long: MONTH[m],
+      ticks: oldestFirst.map((e) => ({ color: entryColors(e, projects)[0], shape: rowShape(e) })),
+      first: inMonth.length ? entrySlug(inMonth[0]) : null,   // the month's top row in the newest-first list
+    };
+  });
+}
+
+/** One row of project links appears above the list from this many entries (readability research §8). */
+export const PROJECT_LINKS_FROM = 40;

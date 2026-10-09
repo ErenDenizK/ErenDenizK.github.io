@@ -1,0 +1,26 @@
+---
+/* The year strip (log.md §5.4, amended 2026-10-09): twelve months of one year, a short tick per entry
+   in its project's colour, stacked when a month is busy. A picture, not a control: a month with
+   entries is a plain link to its top row; an empty month is a gap, shown honestly and never counted.
+   Drawn at build in HTML and CSS; no script. */
+import { yearStrip, type LogEntry, type Project } from '../lib/site';
+interface Props { year: string; entries: LogEntry[]; projects: Project[] }
+const { year, entries, projects } = Astro.props;
+const months = yearStrip(year, entries, projects);
+const MAX = 6;   // ticks drawn per month; a busier month shows six and a small "+n"
+---
+<div class="ystrip" role="group" aria-label={`${year}, month by month`}>
+  {months.map((m) => {
+    const shown = m.ticks.slice(0, MAX);
+    const more = m.ticks.length - shown.length;
+    const body = (
+      <>
+        <span class="ym-ticks">{shown.map((t) => <i class={`t-${t.shape}`} style={`--c: ${t.color}`} />)}{more > 0 && <b class="ym-more">+{more}</b>}</span>
+        <span class="ym-l">{m.label}</span>
+      </>
+    );
+    return m.first
+      ? <a class="ym on" href={`#${m.first}`} aria-label={`${m.long} ${year}: ${m.ticks.length} ${m.ticks.length === 1 ? 'entry' : 'entries'}`}>{body}</a>
+      : <span class="ym" aria-hidden="true">{body}</span>;
+  })}
+</div>

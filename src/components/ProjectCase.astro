@@ -66,7 +66,7 @@ const statusLine = [d.status, d.version && !isPlaceholder(d.version) ? d.version
         <section class="case-sec" id="in-the-record" aria-labelledby="in-the-record-h">
           <h2 id="in-the-record-h">In the record</h2>
           {thread && <div class="threads case-thread"><ThreadRow t={thread} /></div>}
-          <ol class="entries">{entries.map((e) => <LogRow e={e} projects={projects} compact />)}</ol>
+          <ol class="entries spine">{entries.map((e) => <LogRow e={e} projects={projects} compact />)}</ol>
         </section>
       )}
       <nav class="case-next" aria-label="Other projects">

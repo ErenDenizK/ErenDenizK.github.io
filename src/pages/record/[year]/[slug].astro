@@ -1,12 +1,15 @@
 ---
-/* One entry of any kind at its frozen address /record/<year>/<slug>/ (log.md §6.1). Essays get the long
-   layout with a contents list from 1240 px; entries and notes the same page without it. */
+/* One entry of any kind at its frozen address /record/<year>/<slug>/ (log.md §6.1, §9 as amended
+   2026-10-09): a faint light in the project's colour at the top (Log blue without one), the reading
+   column at 21 px with ~70-character lines, an optional pull-out key line, the image at figure width,
+   and a closing "Next:" line from the owner's notes. Essays add a contents list from 1240 px. */
 import Base from '../../../layouts/Base.astro';
 import Icon from '../../../components/Icon.astro';
 import Figure from '../../../components/Figure.astro';
+import { Picture } from 'astro:assets';
 import Foot from '../../../components/Foot.astro';
 import { render } from 'astro:content';
-import { getLog, getProjects, getSite, url, abs, entryPath, entrySlug, entryYear, entryTitle, iso, longDate, dayMonYear, categoryLabel, readingMinutes, type LogEntry } from '../../../lib/site';
+import { getLog, getProjects, getSite, url, abs, entryPath, entrySlug, entryYear, entryTitle, iso, longDate, dayMonYear, categoryLabel, readingMinutes, entryProjects, projectColor, rowShape, releaseName, LOG_BLUE, type LogEntry } from '../../../lib/site';
 
 export async function getStaticPaths() {
   const all = await getLog();
@@ -18,33 +21,49 @@ const d = e.data;
 const site = await getSite();
 const projects = await getProjects();
 const { Content, headings } = await render(e);
-const pj = d.projects.map((r) => projects.find((p) => p.id === r.id)).filter((p): p is NonNullable<typeof p> => !!p);
+const pj = entryProjects(e, projects);
+const light = pj.length ? projectColor(pj[0]) : LOG_BLUE;
+const release = rowShape(e) === 'release' ? releaseName(e, projects) : '';
 const modified = [d.date, ...d.updated.map((u) => u.date), ...d.corrections.map((c) => c.date)].sort((a, b) => b.getTime() - a.getTime())[0];
 const title = entryTitle(e);
-const meta = [d.kind === 'note' ? 'Note' : d.kind === 'entry' ? 'Entry' : `Essay · ${readingMinutes(e.body)} min read`, categoryLabel(d.category)];
+const meta = [d.kind === 'note' ? 'Note' : release ? 'Release' : d.kind === 'entry' ? 'Entry' : `Essay · ${readingMinutes(e.body)} min read`, categoryLabel(d.category)];
 const toc = d.kind === 'essay' ? headings.filter((h) => h.depth === 2) : [];
 const jsonld = d.kind === 'note' ? [] : [{
   '@type': 'BlogPosting', headline: title, description: d.dek, datePublished: iso(d.date), dateModified: iso(modified),
   url: abs(entryPath(e)), author: { '@id': abs('#me') }, inLanguage: 'en',
 }];
 ---
-<Base title={title} tab="record" description={d.dek ?? title} type="article" published={d.date} modified={modified} og="home" jsonld={jsonld}>
+<Base title={title} tab="record" description={d.dek ?? title} type="article" published={d.date} modified={modified} og="home" jsonld={jsonld} accent={light} pageClass="page-post">
+  <div class="post-light" style={`--p: ${light}`} aria-hidden="true"></div>
   <div class:list={['inner post-wrap', { 'has-toc': toc.length > 0 }]}>
     <nav class="post-toc" aria-label="On this page">
       <a class="qlink post-back" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
       {toc.length > 0 && <><p class="meta">On this page</p><ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></>}
     </nav>
-    <article class:list={['post', `post-${d.kind}`]} data-slug={entrySlug(e)}>
+    <article class:list={['post', `post-${d.kind}`, { 'post-release': release }]} data-slug={entrySlug(e)} style={`--p: ${light}`}>
       <a class="qlink post-back post-back-sm" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
       <header class="post-head">
         <p class="meta"><time datetime={iso(d.date)}>{longDate(d.date)}</time> · {meta.join(' · ')}{pj.map((p) => <> · <a class="pj" href={url(`work/${p.id}/`)} style={`--p: ${p.data.accent.glow ?? p.data.accent.color}`}>{p.data.title}</a></>)}</p>
-        {d.kind === 'note' ? <h1 class="vh">{title}</h1> : <h1 class="post-title">{title}</h1>}
+        {release && release !== title && <p class="post-version">{release}</p>}
+        {d.kind === 'note' ? <h1 class="vh">{title}</h1> : <h1 class:list={['post-title', { 'is-version': release === title }]}>{title}</h1>}
         {d.dek && <p class="lede post-dek">{d.dek}</p>}
       </header>
-      <div class:list={['prose post-body', { 'note-body': d.kind === 'note' }]}>
-        {d.help === 'more' && <p class="help-note meta">Written with more help than usual{d.helpNote ? `: ${d.helpNote}` : '.'}</p>}
-        <Content components={{ Figure }} />
+      {/* The key line and the image follow the body's first paragraph on screen (CSS order in
+          .post-flow), so the first sentence stays on the first screen (readability research L2). */}
+      <div class="post-flow">
+        {d.key && <p class="post-key">{d.key}</p>}
+        {d.image && (
+          <figure class="fig post-fig">
+            <Picture src={d.image} alt={d.imageAlt ?? ''} widths={[720, 1440]} sizes="(max-width: 760px) calc(100vw - 32px), 720px" formats={['avif', 'webp']} loading="eager" decoding="async" />
+            {d.caption && <figcaption class="meta">{d.caption}</figcaption>}
+          </figure>
+        )}
+        <div class:list={['prose read post-body', { 'note-body': d.kind === 'note' }]}>
+          {d.help === 'more' && <div class="help-note meta">Written with more help than usual{d.helpNote ? `: ${d.helpNote}` : '.'}</div>}
+          <Content components={{ Figure }} />
+        </div>
       </div>
+      {d.next && <p class="post-next"><b>Next:</b> {d.next}</p>}
       <footer class="post-foot">
         <div class="post-meta-row">
           <p class="meta">Published {dayMonYear(d.date)}{modified > d.date && <> · Updated {dayMonYear(modified)}</>} · <a href={url('about/#colophon')}>How this is written</a></p>
