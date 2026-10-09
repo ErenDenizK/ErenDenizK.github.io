@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="358" height="166" aria-labelledby="sample-frame-narrow-t sample-frame-narrow-d" class="il" focusable="false" role="img" style="--il-accent:var(--log, #8fb8ff)" viewBox="0 0 358 166"><title id="sample-frame-narrow-t">Annotated screenshot of the log index</title><desc id="sample-frame-narrow-d">A crop of prototype F&apos;s log page with three notes: the date gutter, the entry kind, and the sample tag.</desc><style>.il{display:block;overflow:visible;font-family:var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);--il-accent:var(--log, #8fb8ff)}
+.il .il-hair{fill:none;stroke:var(--rule-2, rgba(233, 229, 222, 0.18));stroke-width:1}
+.il .il-line{fill:none;stroke:var(--ink-3, #8c877f);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.il .il-line.il-a{stroke:var(--il-accent)}
+.il .il-line.il-dash{stroke-dasharray:1 5;stroke:var(--ink-4, #5f5b55)}
+.il .il-box{fill:var(--wash, rgba(233, 229, 222, 0.06));stroke:var(--rule-2, rgba(233, 229, 222, 0.18));stroke-width:1}
+.il .il-box.il-a{fill:color-mix(in srgb,var(--il-accent) 9%,transparent);stroke:var(--il-accent);stroke-width:1.5}
+.il .il-box.il-dash{fill:none;stroke:var(--ink-4, #5f5b55);stroke-dasharray:3 4}
+.il .il-dot{fill:var(--il-accent)}
+.il .il-ring{fill:none;stroke:var(--il-accent);stroke-width:1.5}
+.il .il-dot.il-later{fill:var(--ground, #0a0a0b);stroke:var(--ink-4, #5f5b55);stroke-width:1.5}
+.il .il-bar{fill:var(--ink-4, #5f5b55)}
+.il .il-bar.il-a{fill:var(--il-accent)}
+.il .il-hand{fill:var(--il-accent)}
+.il .il-frame{fill:none;stroke:rgba(255,255,255,0.1);stroke-width:1}
+.il .il-label{font:400 13px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink-3, #8c877f);letter-spacing:0.005em}
+.il .il-name{font:500 15px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink, #e9e5de);letter-spacing:0}
+.il .il-note{font:400 15px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink-2, #b6b1a8);letter-spacing:0}
+.il .il-num{font:400 13px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink-2, #b6b1a8);font-variant-numeric:tabular-nums;letter-spacing:0.005em}
+.il .il-a-text{fill:var(--il-accent)}
+.il .il-knock{paint-order:stroke;stroke:var(--ground, #0a0a0b);stroke-width:6px;stroke-linejoin:round}
+.il.il-plate{pointer-events:none}</style><clipPath id="sf-n-clip"><rect width="240" height="150" x="0" y="8" rx="8"/></clipPath><image width="240" height="150" x="0" y="8" clip-path="url(#sf-n-clip)" href="../../../prototypes/f/shots/desktop-log.png" preserveAspectRatio="xMidYMin slice"/><rect width="239" height="149" x=".5" y="8.5" class="il-frame" rx="8"/><path d="M64.32 85H256" class="il-hair" style="stroke:var(--ink-3, #8c877f)"/><circle cx="64.32" cy="84.95" r="4" class="il-dot"/><text x="264" y="88.95" class="il-note">Sample</text><path d="M124.8 98H248l8 11" class="il-hair" style="stroke:var(--ink-3, #8c877f)"/><circle cx="124.8" cy="98" r="4" class="il-dot"/><text x="264" y="112.95" class="il-note">Kind</text></svg>

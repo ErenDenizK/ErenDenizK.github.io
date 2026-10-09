@@ -4,13 +4,13 @@
   python3 tools/objects/encode.py edk [--masters DIR] [--out media/objects]
 
 Needs numpy, Pillow with WebP and AVIF (the Blender venv has both) and an ffmpeg with
-libsvtav1, libx265, libx264 and libaom-av1 (Ubuntu's ffmpeg 6.1 has all four).
+libsvtav1, libx265 and libx264 (Ubuntu's ffmpeg 6.1 has all three).
 
 1. Every master is composited on the ground exactly as common.render_poster does, then the
    ground is subtracted in sRGB code values: v = max(0, px - ground). Pure black survives every
    codec; the page draws the media with mix-blend-mode: plus-lighter and adds its own ground
    back. Pixels the render had darker than the ground (the contact shadow) become 0.
-2. Stills: the lean grid in two tiers (full = the rendered crop, half = half of it) and the
+2. Stills: the lean grid in two tiers (full = the rendered crop, half = half of it, at a lower quality) and the
    poster at 600 and 1200, each in the still format chosen by the black test (report.json).
 3. Video: the interaction clip, the droplet clip forward and reversed (the arriving object plays
    it backward; browsers cannot play video in reverse) and an idle loop synthesised from the
@@ -41,7 +41,8 @@ ap.add_argument("--out", default=os.path.join(REPO, "media", "objects"))
 ap.add_argument("--still", choices=("auto", "webp", "avif"), default="auto")
 ap.add_argument("--webp-q", type=int, default=82)
 ap.add_argument("--avif-q", type=int, default=60)
-ap.add_argument("--idle-seconds", type=float, default=8.0)
+ap.add_argument("--avif-q-half", type=int, default=50, help="the half tier only stands in until the full one arrives")
+ap.add_argument("--idle-seconds", type=float, default=6.0)
 ap.add_argument("--droplet-fps", type=int, default=60)
 ap.add_argument("--skip-video", action="store_true", help="stills and manifest only (tests)")
 A = ap.parse_args()
@@ -121,7 +122,7 @@ def size(p):
     return os.path.getsize(p)
 
 
-def far_ground(src, r=8):
+def far_ground(src, r=16):
     """Ground pixels (exact 0) more than r px from anything lit: where a codec offset would show
     as a visible rectangle. Codec error right at the object's edge is ordinary ringing."""
     lit = src.max(-1) > 0
@@ -146,11 +147,11 @@ def ground_stats(src, dec):
 
 
 # ---------------------------------------------------------------- still codec: the black test
-def save_still(img8, path, fmt):
+def save_still(img8, path, fmt, half=False):
     if fmt == "webp":
-        img8.save(path, "WEBP", quality=A.webp_q, method=6)
+        img8.save(path, "WEBP", quality=A.webp_q - (8 if half else 0), method=6)
     else:
-        img8.save(path, "AVIF", quality=A.avif_q, speed=4, subsampling="4:4:4")
+        img8.save(path, "AVIF", quality=A.avif_q_half if half else A.avif_q, speed=4, subsampling="4:4:4")
 
 
 def black_test(samples):
@@ -179,23 +180,6 @@ def black_test(samples):
             obj = src.max(-1) > 6
             maes.append(float(np.abs(dec[obj] - src[obj]).mean()) if obj.any() else 0.0)
         res[fmt] = {"bytes": tot, **merge(stats), "object_mae": round(float(np.mean(maes)), 2)}
-    # 10-bit 4:4:4 AVIF through libaom (ffmpeg), decoded back by ffmpeg, for comparison
-    tot, stats = 0, []
-    for i, arr in enumerate(samples):
-        h, w = arr.shape[:2]
-        p16 = os.path.join(tmp, f"s{i}.png")
-        write_png16(arr, p16)
-        p = os.path.join(tmp, f"s{i}_10.avif")
-        sh(["ffmpeg", "-v", "error", "-y", "-i", p16, "-vf",
-            "scale=out_color_matrix=bt709:out_range=tv,format=yuv444p10le", "-c:v", "libaom-av1",
-            "-still-picture", "1", "-crf", "30", "-cpu-used", "4", "-colorspace", "bt709",
-            "-color_primaries", "bt709", "-color_trc", "iec61966-2-1", "-color_range", "tv", p])
-        tot += size(p)
-        raw = sh(["ffmpeg", "-v", "error", "-i", p, "-vf", "scale=in_color_matrix=bt709:in_range=tv,format=rgb24",
-                  "-f", "rawvideo", "-"]).stdout
-        dec = np.frombuffer(raw, np.uint8).reshape(h, w, 3).astype(int)
-        stats.append(ground_stats(np.round(np.clip(arr, 0, 1) * 255).astype(np.uint8), dec))
-    res["avif10_libaom"] = {"bytes": tot, **merge(stats)}
     shutil.rmtree(tmp, ignore_errors=True)
     return res
 
@@ -230,10 +214,17 @@ def codec_string(path, kind):
     return f"av01.0.{lvl:02d}M.10"
 
 
-def encode_video(seq_dir, name, fps):
-    """seq_dir holds f_%03d.png (16-bit, subtracted, full square). Returns sources + checks."""
+# the idle loop is made of blended grid frames (soft, always moving): it takes a higher CRF
+IDLE_CRF = {"av1": "34", "hevc": "28", "h264": "25"}
+
+
+def encode_video(seq_dir, name, fps, crf=None):
+    """seq_dir holds f_%03d.png (16-bit, subtracted, full square). Returns the sources."""
     sources = []
     for kind, (args, pixfmt) in CODECS.items():
+        if crf:
+            args = list(args)
+            args[args.index("-crf") + 1] = crf[kind]
         p = os.path.join(OUT, f"{name}.{kind}.mp4")
         sh(["ffmpeg", "-v", "error", "-y", "-framerate", str(fps), "-i", os.path.join(seq_dir, "f_%03d.png"),
             "-vf", f"scale=out_color_matrix=bt709:out_range=tv,format={pixfmt}", *args, *COLOR, p])
@@ -295,7 +286,7 @@ for tier, scale in (("half", 0.5), ("full", 1.0)):
         r, c = divmod(k, nyaw)
         p = os.path.join(d, f"r{r}c{c:02d}.{FMT}")
         img = arr if scale == 1 else resize(arr, tw, th)
-        save_still(to8(img), p, FMT)
+        save_still(to8(img), p, FMT, half=scale != 1)
         urls.append(rel(p))
         tot += size(p)
     tiers.append({"name": tier, "scale": scale, "w": tw, "h": th, "format": FMT,
@@ -356,7 +347,7 @@ if not A.skip_video:
         row1 = (f(i0, j0 + 1) * (1 - tx) + f(i0 + 1, j0 + 1) * tx) if npitch > 1 else row0
         idle.append(row0 * (1 - ty) + row1 * ty)
     write_seq(idle, os.path.join(WORK, "idle"))
-    srcs = encode_video(os.path.join(WORK, "idle"), "idle", 30)
+    srcs = encode_video(os.path.join(WORK, "idle"), "idle", 30, IDLE_CRF)
     videos["idle"] = {"fps": 30, "frames": n, "duration": round(n / 30, 3), "loop": True, "sources": srcs}
 
 # ================================================================ 4. manifest

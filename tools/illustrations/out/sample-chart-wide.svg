@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="200" aria-labelledby="sample-chart-wide-t sample-chart-wide-d" class="il" focusable="false" role="img" style="--il-accent:var(--recto-glow, #a6d873)" viewBox="0 0 720 200"><title id="sample-chart-wide-t">Sample chart: entries per month</title><desc id="sample-chart-wide-d">Sample data. Six bars, May to October; October, the highest at 5, is in the accent.</desc><style>.il{display:block;overflow:visible;font-family:var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);--il-accent:var(--log, #8fb8ff)}
+.il .il-hair{fill:none;stroke:var(--rule-2, rgba(233, 229, 222, 0.18));stroke-width:1}
+.il .il-line{fill:none;stroke:var(--ink-3, #8c877f);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.il .il-line.il-a{stroke:var(--il-accent)}
+.il .il-line.il-dash{stroke-dasharray:1 5;stroke:var(--ink-4, #5f5b55)}
+.il .il-box{fill:var(--wash, rgba(233, 229, 222, 0.06));stroke:var(--rule-2, rgba(233, 229, 222, 0.18));stroke-width:1}
+.il .il-box.il-a{fill:color-mix(in srgb,var(--il-accent) 9%,transparent);stroke:var(--il-accent);stroke-width:1.5}
+.il .il-box.il-dash{fill:none;stroke:var(--ink-4, #5f5b55);stroke-dasharray:3 4}
+.il .il-dot{fill:var(--il-accent)}
+.il .il-ring{fill:none;stroke:var(--il-accent);stroke-width:1.5}
+.il .il-dot.il-later{fill:var(--ground, #0a0a0b);stroke:var(--ink-4, #5f5b55);stroke-width:1.5}
+.il .il-bar{fill:var(--ink-4, #5f5b55)}
+.il .il-bar.il-a{fill:var(--il-accent)}
+.il .il-hand{fill:var(--il-accent)}
+.il .il-frame{fill:none;stroke:rgba(255,255,255,0.1);stroke-width:1}
+.il .il-label{font:400 13px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink-3, #8c877f);letter-spacing:0.005em}
+.il .il-name{font:500 15px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink, #e9e5de);letter-spacing:0}
+.il .il-note{font:400 15px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink-2, #b6b1a8);letter-spacing:0}
+.il .il-num{font:400 13px/1 var(--f-ui, &quot;Inter&quot;, &quot;Inter Fallback&quot;, system-ui, sans-serif);fill:var(--ink-2, #b6b1a8);font-variant-numeric:tabular-nums;letter-spacing:0.005em}
+.il .il-a-text{fill:var(--il-accent)}
+.il .il-knock{paint-order:stroke;stroke:var(--ground, #0a0a0b);stroke-width:6px;stroke-linejoin:round}
+.il.il-plate{pointer-events:none}</style><path d="M8 168h464" class="il-hair"/><rect width="32" height="54.4" x="27.33" y="113.6" class="il-bar" rx="2"/><text x="43.33" y="105.6" class="il-num" text-anchor="middle">2</text><text x="43.33" y="188" class="il-label" text-anchor="middle">May</text><rect width="32" height="81.6" x="106" y="86.4" class="il-bar" rx="2"/><text x="122" y="78.4" class="il-num" text-anchor="middle">3</text><text x="122" y="188" class="il-label" text-anchor="middle">Jun</text><rect width="32" height="27.2" x="184.67" y="140.8" class="il-bar" rx="2"/><text x="200.67" y="132.8" class="il-num" text-anchor="middle">1</text><text x="200.67" y="188" class="il-label" text-anchor="middle">Jul</text><rect width="32" height="108.8" x="263.33" y="59.2" class="il-bar" rx="2"/><text x="279.33" y="51.2" class="il-num" text-anchor="middle">4</text><text x="279.33" y="188" class="il-label" text-anchor="middle">Aug</text><rect width="32" height="81.6" x="342" y="86.4" class="il-bar" rx="2"/><text x="358" y="78.4" class="il-num" text-anchor="middle">3</text><text x="358" y="188" class="il-label" text-anchor="middle">Sep</text><rect width="32" height="136" x="420.67" y="32" class="il-bar il-a" rx="2"/><text x="436.67" y="24" class="il-num" text-anchor="middle">5</text><text x="436.67" y="188" class="il-label" text-anchor="middle">Oct</text></svg>
