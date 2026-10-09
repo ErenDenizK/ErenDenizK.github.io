@@ -26,21 +26,25 @@ portfolio and the objects do not yet feel like one maker's work (brief §7, late
 
 | # | Track | Kind | Output | Status |
 |---|---|---|---|---|
-| A | Readability research + Record redesign proposal | research | `research/2026-10-readability.md` | running |
-| B | Product-family research (how makers keep a shared origin) | research | `research/2026-10-product-family.md` | running |
-| C | Family audit: DNA of Recto, English Prep, Eat Map, portfolio, objects | research | `research/2026-10-family-audit.md` | running |
-| D | Liveliness: methods, constraints, proofs; recommendation to the owner | research + proofs | `research/2026-10-liveliness.md` | running |
-| E | Page worlds: what a controlled "separate world" means; concepts + mood boards | research | `research/2026-10-page-worlds.md` | running |
-| F | Custom scroll rail: research, 3–4 concepts, prototype page | design | `research/2026-10-scroll-rail.md` | running |
-| G | Chrome: Log → Record (`/record/`), coloured "edk." dot, lit animated tabs, sheet overflow bug | build (`wip/chrome`) | site | running |
-| H | Home showcase vs Work catalog | build (`wip/showcase`) | site | running |
-| I | About digital ID card + reusable postcard | build (`wip/idcard`) | site | running |
-| J | Object fixes: shadow layer, log LED and rings, edk lean, budgets | render | `media/objects/` | running |
-| K | Synthesis: family vision document (after B + C), panel review | design | `design/family.md` | after B, C |
-| L | Record redesign build (after A) | build | site | after A |
-| M | Liveliness build (after D and the owner's choice) | build | site, ADR | after D |
+| A | Readability research + Record redesign proposal | research | `research/2026-10-readability.md` | done |
+| B | Product-family research (how makers keep a shared origin) | research | `research/2026-10-product-family.md` | done |
+| C | Family audit: DNA of Recto, English Prep, Eat Map, portfolio, objects | research | `research/2026-10-family-audit.md` | done |
+| D | Liveliness: methods, constraints, proofs; recommendation to the owner | research + proofs | `research/2026-10-liveliness.md` | done |
+| E | Page worlds: what a controlled "separate world" means; concepts + mood boards | research | `research/2026-10-page-worlds.md` | done |
+| F | Custom scroll rail: research, 3–4 concepts, prototype page | design | `research/2026-10-scroll-rail.md` | done |
+| G | Chrome: Log → Record (`/record/`), coloured "edk." dot, lit animated tabs, sheet overflow bug | build (`wip/chrome`) | site | done |
+| H | Home showcase vs Work catalog | build (`wip/showcase`) | site | done |
+| I | About digital ID card + reusable postcard | build (`wip/idcard`) | site | done |
+| J | Object fixes: shadow layer, log LED and rings, edk lean, budgets | render | `media/objects/` | done |
+| K | Synthesis: family vision document (after B + C), panel review | design | `design/family.md` | done |
+| L | Record redesign build | build | site | done |
+| M | Live frame engine behind `?live` (ADR-0009 proposed) | build | site | done; owner A/B |
 | N | Rail build (after F and the owner's choice) | build | site | after F |
 | O | Page-world prototype, only if the owner approves (after E) | prototype | — | after E |
+| Q | Work as one tall section per project (ADR-0010) | build | site | done |
+| R | Home product plate + wordmarks | build | site | done |
+| S | Record object: C2 to production (H2 as alternative) | render | `media/objects/record/` | running |
+| T | Recto logo: new search in Penpot, Dengeli as a candidate | design | — | needs owner references |
 | P | Phone pass | build | site | after desktop settles |
 
 ## How work flows
