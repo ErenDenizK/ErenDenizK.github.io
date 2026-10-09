@@ -113,3 +113,17 @@ log design are to be explored.
   findability); spelling to confirm.
 - **Address:** keep the repo name only if the root address works without renaming; otherwise
   rename. No hurry.
+
+### 2026-10-09
+
+- **Name:** Eren Deniz Kuyucaklıoğlu, in full. The mark is "edk" (no logo); a domain such as
+  edk.dev may follow.
+- **Links:** GitHub and LinkedIn only. No email.
+- **Photos:** the owner supplied two (`content/photos/`, metadata stripped): a selfie at the
+  YTÜ gate in the rain, and a park seen through a tinted lens. Use as placeholder, background
+  or About material.
+- **Objects:** one object per tab that changes into the next (owner: "very good"); objects
+  that react to what you read may be tried; the collectible idea needs a concrete proposal.
+  Objects must look as good in the page as in the Blender render: lighting is the bar. Each
+  object may have its own animation and interaction so every part feels original and
+  surprising, without breaking the whole.
