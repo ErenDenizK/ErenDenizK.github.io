@@ -198,3 +198,9 @@ log design are to be explored.
   and a year strip instead of thread toggles (per-project threads move into project views); a
   release look for entries with a version; a faint project-coloured light on reading pages;
   reading text at 21 px with lines of about 70 characters.
+- **Page worlds:** "one house, four rooms" is approved for a prototype later, after a few more
+  rounds. Embassies (project views enter each app's own world inside the portfolio's frame) go
+  into the family vision.
+- **Family vision:** no rush. Open question: per-product typefaces may add character or break the
+  shared origin; keep researching.
+- **Record object:** the microphone looks too simple; rethink it from every angle.
