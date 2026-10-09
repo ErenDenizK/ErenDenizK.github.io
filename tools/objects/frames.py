@@ -8,6 +8,10 @@ Cycles, one stage per Blender process (the droplet stage rewrites the meshes):
   droplet  rest -> the shared glass droplet (ADR-0006 §5; render bake-off "The morph")
   shadow   the rest pose's floor shadow alone: the object hidden from the camera but still
            casting, the whole square at --shadow-res (encode.py turns it into a multiply map)
+  normal   camera-space normals and coverage for every grid pose and every frame of the state
+           axis or clip, inside the grid's and the clip's own crops (needs those stages first),
+           for the live frame engine's pointer light (ADR-0009; liveliness research §3 d).
+           An emission override, no bounces, 8 spp: about a second a frame, not minutes
 
   <venv>/bin/python tools/objects/frames.py edk                       # all four stages
   <venv>/bin/python tools/objects/frames.py recto --stage grid --res 1040 --masters DIR
@@ -34,7 +38,13 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OBJECTS = ("edk", "recto", "englishprep", "eatmap", "log")
-STAGES = ("poster", "grid", "clip", "droplet", "shadow")
+STAGES = ("poster", "grid", "clip", "droplet", "shadow", "normal")
+# The live engine plays a clip either as a time axis (forward from rest, back to rest) or, where
+# its first frames rise monotonically from rest to one extreme, as a reversible state axis: a
+# spring picks the frame, so it can stop, reverse and overshoot (liveliness research §3 d).
+# Recto's fan is spring(120, 13) toward 1: its frames 0..11 run from rest to the furthest fan
+# (the overshoot peak at 0.37 s), so they are the axis; frames after it are the way back.
+AXES = {"recto": {"axis": "state", "frames": 12, "peak": 11}}
 
 
 def parse():
@@ -57,6 +67,7 @@ def parse():
     ap.add_argument("--shadow-samples", type=int, default=128)
     ap.add_argument("--preview-res", type=int, default=260, help="crop-finding previews")
     ap.add_argument("--limit", type=int, default=0, help="render only the first N frames (tests)")
+    ap.add_argument("--normal-samples", type=int, default=8, help="normal stage: no denoise, no bounces")
     return ap.parse_args(argv)
 
 
@@ -90,7 +101,7 @@ os.makedirs(OUT, exist_ok=True)
 # ---------------------------------------------------------------- build the object
 sys.path.insert(0, HERE)
 res = {"poster": A.poster_res, "shadow": A.shadow_res}.get(STAGE, A.res)
-spp = {"poster": A.poster_samples, "shadow": A.shadow_samples}.get(STAGE, A.samples)
+spp = {"poster": A.poster_samples, "shadow": A.shadow_samples, "normal": A.normal_samples}.get(STAGE, A.samples)
 sys.argv = [os.path.join(HERE, f"{A.obj}.py"), "--no-render", "--no-export", "--out", OUT,
             "--samples", str(spp), "--res", str(res)]
 runpy.run_path(os.path.join(HERE, f"{A.obj}.py"), run_name="__main__")
@@ -406,6 +417,7 @@ def clip_recto():
     (MICRO.recto: spring(120, 13), arrive() fans out and closes after 0.9 s)."""
     n = 45
     fan = spring_track(n, 120, 13, [(0.0, {"to": 1.0}), (0.75, {"to": 0.0})])
+    clip_recto.values = [fan[k] * taper(n, k) for k in range(n)]   # the fan amount per frame
     p2, p3 = part("page_2"), part("page_3")
 
     def state(k):
@@ -754,3 +766,106 @@ elif STAGE == "shadow":
     for o in parts:
         o.visible_camera = False
     run_frames([lambda: pose(0, 0)], (0, 0, res, res), {**info, "kind": "floor shadow, rest pose"})
+
+elif STAGE == "normal":
+    # Camera-space normals of the first surface the camera sees, for the same poses and inside
+    # the same crops as the grid and clip masters, so every normal pixel sits under its beauty
+    # pixel (checked by overlay in the liveliness research). Every material is overridden with
+    # an emission of the world normal; nothing else is seen by the camera (floor, backlight, the
+    # log clip's rings); no bounces, no denoise. Written as 16-bit RGBA PNGs: RGB = n * 0.5 + 0.5
+    # with +x right, +y up, +z toward the viewer; A = coverage. encode.py packs them small.
+    def need(stage):
+        p = os.path.join(A.masters, A.obj, stage, "crop.json")
+        if not os.path.exists(p):
+            raise SystemExit(f"{A.obj} normal: render the {stage} stage first ({p} is missing)")
+        return json.load(open(p))
+
+    gcrop, ccrop = need("grid"), need("clip")
+    assert gcrop["res"] == res and ccrop["res"] == res, "normal: --res must match the grid and clip"
+    mat = bpy.data.materials.new("normal_override")
+    mat.use_nodes = True
+    nt = mat.node_tree
+    nt.nodes.clear()
+    geo = nt.nodes.new("ShaderNodeNewGeometry")
+    ma = nt.nodes.new("ShaderNodeVectorMath")
+    ma.operation = "MULTIPLY_ADD"
+    ma.inputs[1].default_value = (0.5, 0.5, 0.5)
+    ma.inputs[2].default_value = (0.5, 0.5, 0.5)
+    em = nt.nodes.new("ShaderNodeEmission")
+    mo = nt.nodes.new("ShaderNodeOutputMaterial")
+    nt.links.new(geo.outputs["Normal"], ma.inputs[0])
+    nt.links.new(ma.outputs[0], em.inputs["Color"])
+    nt.links.new(em.outputs[0], mo.inputs["Surface"])
+    bpy.context.view_layer.material_override = mat
+    cy.use_denoising = False
+    cy.use_adaptive_sampling = False
+    cy.max_bounces = cy.transparent_max_bounces = 0
+    scn.render.film_transparent = True
+    vs = scn.view_settings
+    vs.view_transform, vs.look, vs.exposure, vs.gamma = "Standard", "None", 0.0, 1.0
+    scn.render.image_settings.file_format = "OPEN_EXR"
+    scn.render.image_settings.color_depth = "32"
+
+    def hide_rest():
+        for o in scn.objects:
+            if o.type in ("MESH", "CURVE", "FONT") and o not in parts:
+                o.visible_camera = False
+
+    def normal_frames(states, crop, sub, extra):
+        d = os.path.join(OUT, sub)
+        os.makedirs(d, exist_ok=True)
+        json.dump({**{k: crop[k] for k in ("res", "x", "y", "w", "h")}, "samples": spp, **info,
+                   "kind": "camera-space normal * 0.5 + 0.5 (+x right, +y up, +z to viewer); A coverage",
+                   **extra}, open(os.path.join(d, "crop.json"), "w"), indent=1)
+        set_border((crop["x"], crop["y"], crop["w"], crop["h"]))
+        tmp = os.path.join(d, "tmp.exr")
+        n = len(states) if not A.limit else min(A.limit, len(states))
+        tot = 0.0
+        for k in range(n):
+            path = os.path.join(d, f"f_{k:03d}.png")
+            if os.path.exists(path):
+                continue
+            states[k]()
+            dt = render(tmp)
+            im = bpy.data.images.load(tmp)
+            a = np.empty(len(im.pixels), np.float32)
+            im.pixels.foreach_get(a)
+            a = a.reshape(im.size[1], im.size[0], 4)[::-1]   # top row first
+            bpy.data.images.remove(im)
+            al = a[..., 3:4]
+            nw = np.where(al > 1e-4, a[..., :3] / np.maximum(al, 1e-4), 0.5) * 2 - 1
+            nc = nw @ np.array(cam.matrix_world.to_3x3())   # world -> camera axes
+            nc /= np.maximum(np.linalg.norm(nc, axis=-1, keepdims=True), 1e-6)
+            out = np.dstack([nc * 0.5 + 0.5, np.clip(al, 0, 1)])
+            out[al[..., 0] <= 1e-4, :3] = 0.5
+            h, w = out.shape[:2]
+            raw = np.round(np.clip(out, 0, 1) * 65535).astype("<u2").tobytes()
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba64le",
+                            "-s", f"{w}x{h}", "-i", "-", path], input=raw, check=True)
+            tot += dt
+            print(f"FRAME {A.obj} normal/{sub} {k + 1}/{len(states)} {dt:.1f}s", flush=True)
+        if os.path.exists(tmp):
+            os.remove(tmp)
+        print(f"TOTAL {A.obj} normal/{sub} {tot:.1f}s", flush=True)
+
+    hide_rest()
+    yaws, pitches = gcrop["yaw"], gcrop["pitch"]
+    normal_frames([(lambda y=y, p=p: pose(y, p)) for p in pitches for y in yaws], gcrop, "grid",
+                  {"yaw": yaws, "pitch": pitches, "order": gcrop.get("order")})
+    pose(0, 0)
+    n, states = CLIPS[A.obj]()
+    for o, M in REST0.items():
+        REST[o] = M.copy()
+    hide_rest()   # the clip may add camera-only helpers (log's rings)
+    ax = dict(AXES.get(A.obj, {"axis": "time", "frames": n}))
+    vals = getattr(CLIPS[A.obj], "values", None)
+    if ax["axis"] == "state" and vals:
+        # the axis value of each frame, 0 at rest and 1 at the peak: the page maps a spring's value
+        # to a frame through these, so the fan's amount, not the clip's clock, follows the spring
+        top = vals[ax["peak"]]
+        assert all(vals[i] < vals[i + 1] for i in range(ax["peak"])), "state frames must rise"
+        ax["values"] = [round(v / top, 4) for v in vals[:ax["frames"]]]
+    # a time axis plays in a second with the light faded; only a state axis, which can rest
+    # anywhere, needs its own normals (the crop.json is still written: encode reads the axis there)
+    normal_frames(states[:ax["frames"]] if ax["axis"] == "state" else [], ccrop, "clip",
+                  {"fps": FPS, "clipFrames": n, **ax})

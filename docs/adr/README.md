@@ -13,3 +13,4 @@ accepts it; a later ADR supersedes an earlier one instead of editing it.
 | [0006](0006-pre-rendered-objects.md) | Objects are pre-rendered Cycles frames; real time is only glue | accepted |
 | [0007](0007-routing.md) | Every tab is a page; the browser navigates, and only the project sheet is scripted (a short melt overlaps the navigation) | accepted |
 | [0008](0008-id-card-and-postcard.md) | The About ID card and the postcard are CSS 3D objects with a small spring loop | proposed (look); technique decided |
+| [0009](0009-live-frames.md) | Live frames: one frame engine and one light, behind `?live` (amends 0006 items 4, 6) | proposed |
