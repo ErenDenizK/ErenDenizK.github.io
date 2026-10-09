@@ -1,0 +1,14 @@
+{
+  "name": "edk-og",
+  "private": true,
+  "type": "module",
+  "description": "Link-preview cards and icon candidates for the portfolio. Dev tooling only; nothing here ships.",
+  "scripts": {
+    "build": "node build.mjs",
+    "sheet": "node sheet.mjs --variants"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "5.3.0",
+    "@fontsource-variable/newsreader": "5.3.0"
+  }
+}
