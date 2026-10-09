@@ -1,4 +1,4 @@
-# ADR-0009: Work is one screen-tall section per project, with one stage each and only the one in view moving
+# ADR-0010: Work is one screen-tall section per project, with one stage each and only the one in view moving
 
 **Status:** technique decided by the agent (CLAUDE.md: "decide technique yourself and record it");
 the look is proposed until the owner has seen it · **Rests on:** brief §7 (2026-10-09 after v0:
