@@ -215,19 +215,19 @@
     "src": "idle.av1.mp4",
     "type": "video/mp4; codecs=\"av01.0.08M.10\"",
     "codec": "av1",
-    "bytes": 102557
+    "bytes": 93101
    },
    {
     "src": "idle.hevc.mp4",
     "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
     "codec": "hevc",
-    "bytes": 145858
+    "bytes": 119927
    },
    {
     "src": "idle.h264.mp4",
     "type": "video/mp4; codecs=\"avc1.640028\"",
     "codec": "h264",
-    "bytes": 177949
+    "bytes": 140935
    }
   ]
  },
@@ -325,7 +325,27 @@
    ]
   }
  },
+ "shadow": {
+  "blend": "multiply",
+  "pose": "rest",
+  "w": 600,
+  "h": 600,
+  "min": 0.378,
+  "sources": [
+   {
+    "src": "shadow.avif",
+    "type": "image/avif",
+    "bytes": 1042
+   },
+   {
+    "src": "shadow.webp",
+    "type": "image/webp",
+    "bytes": 1516
+   }
+  ]
+ },
  "bytes": {
+  "shadow": 1042,
   "poster1200": 10537,
   "leanHalf": 169151,
   "leanFull": 412855,
@@ -335,22 +355,22 @@
    "h264": 181005
   },
   "idle": {
-   "av1": 102557,
-   "hevc": 145858,
-   "h264": 177949
+   "av1": 93101,
+   "hevc": 119927,
+   "h264": 140935
   },
   "tiers": {
-   "firstPaint": 10537,
+   "firstPaint": 11579,
    "phone": {
-    "av1": 188095,
-    "hevc": 258466,
-    "h264": 293308
+    "av1": 179681,
+    "hevc": 233577,
+    "h264": 257336
    },
-   "desktopLow": 179688,
+   "desktopLow": 180730,
    "desktopFull": {
-    "av1": 702911,
-    "hevc": 765954,
-    "h264": 773548
+    "av1": 703953,
+    "hevc": 766996,
+    "h264": 774590
    }
   }
  }
