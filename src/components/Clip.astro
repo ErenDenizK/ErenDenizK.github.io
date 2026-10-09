@@ -1,0 +1,41 @@
+---
+/* The product's one signature clip (family.md §3.1; presentation.md §3; media research §2, §8). The poster
+   is the content and is complete on its own. scripts/embassy.ts gives the video its sources only while
+   it is in view, motion is welcome and the tab is visible, plays it once (taking the page's one video
+   slot from the object stage) and lets it rest on its poster. Reduced motion, Save-Data, a refused
+   play() and no JavaScript keep the poster. A phone cut of the same gesture, when the world has one,
+   is chosen below 900 px by the sources' media queries: one video element either way. */
+import { getImage } from 'astro:assets';
+import type { Shot } from '../lib/world';
+interface Props { s: Shot; phone?: Shot | null }
+const { s, phone } = Astro.props;
+const WIDE = '(min-width: 900px)', NARROW = '(max-width: 899.98px)';
+const enc = async (x: Shot, widths: number[], format: 'avif' | 'webp') => {
+  const fit = widths.filter((w) => w <= x.img.width);
+  const list = await Promise.all(fit.map((w) => getImage({ src: x.img, width: w, format, quality: 70 })));
+  return list.map((r, i) => `${r.src} ${fit[i]}w`).join(', ');
+};
+const ws = [720, 1080, 1440, 2048, 2880], wp = [390, 600, 780];
+const fallback = await getImage({ src: s.img, width: Math.min(1440, s.img.width), format: 'webp', quality: 70 });
+const posters = [
+  ...(phone ? [{ media: NARROW, avif: await enc(phone, wp, 'avif'), webp: await enc(phone, wp, 'webp') }] : []),
+  { media: phone ? WIDE : undefined, avif: await enc(s, ws, 'avif'), webp: await enc(s, ws, 'webp') },
+];
+const sizes = '(min-width: 1240px) 1010px, 92vw';
+---
+<figure class:list={['cap', 'clip', 'cap-wide', { 'clip-cut': !!phone }]} data-clip style={`--clip-ar: ${s.img.width} / ${s.img.height}${phone ? `; --clip-ar-phone: ${phone.img.width} / ${phone.img.height}` : ''}`}>
+  <div class="cap-frame clip-frame">
+    <picture>
+      {posters.map((p) => [
+        <source type="image/avif" srcset={p.avif} sizes={p.media === NARROW ? '72vw' : sizes} media={p.media} />,
+        <source type="image/webp" srcset={p.webp} sizes={p.media === NARROW ? '72vw' : sizes} media={p.media} />,
+      ])}
+      <img class="clip-poster" src={fallback.src} alt={s.alt} width={s.img.width} height={s.img.height} loading="lazy" decoding="async" />
+    </picture>
+    <video class="clip-video" muted playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1">
+      {phone?.video?.map((v) => <source data-src={v.src} type={v.type} media={NARROW} />)}
+      {s.video?.map((v) => <source data-src={v.src} type={v.type} media={phone ? WIDE : undefined} />)}
+    </video>
+  </div>
+  {s.caption && <figcaption class="meta">{s.caption}</figcaption>}
+</figure>

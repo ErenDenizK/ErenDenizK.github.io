@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "slug": "eat-map",
+  "name": "Eat Map",
+  "source": {
+    "repo": "ErenDenizK/eatmap",
+    "commit": "unread",
+    "files": ["one simulator photo (docs/research/2026-10-family-audit.md §1.3)", "docs/design/family.md §2.2, §3.1", "docs/family-kit/light.js PRODUCTS['eat-map']"],
+    "date": "2026-10-09",
+    "estimated": ["/ground/base", "/ground/frame", "/ground/raised", "/ground/hairline", "/ink/secondary", "/ink/tertiary", "/accent/ink", "/light", "/fonts", "/motion"]
+  },
+  "ground": { "base": "#1a090e", "frame": "#261116", "raised": "#33181f", "hairline": "#47242c" },
+  "ink": { "primary": "#ffffff", "secondary": "#e2d6d9", "tertiary": "#b3a6a9", "link": "#ffffff" },
+  "accent": {
+    "color": "#eb4f6b",
+    "ink": "#1a090e",
+    "radius": 999,
+    "job": "Where you are and what you add: the selected tab and compose.",
+    "light": "#ec5794"
+  },
+  "light": {
+    "behaviour": "still",
+    "theme": "dark",
+    "cap": 0.34,
+    "sources": [
+      { "pigments": ["#4a1626"], "at": [40, 2], "size": [150, 110] },
+      { "pigments": ["#ec5794"], "at": [70, 78], "size": [80, 76] }
+    ],
+    "note": "Estimated until read from Xcode. The photo's warm wine field (#4a1626, the portfolio's estimate) is treated as light over a near-black ground of the same temperature (the kit's ladder at hue 5, chroma .03, L .17), with the pinker rose glow low and to the right. Static."
+  },
+  "fonts": {
+    "ui": { "family": "SF Pro", "stack": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Inter\", \"Inter Fallback\", sans-serif", "weights": [400, 600], "tracking": 0 },
+    "display": { "family": "SF Pro", "stack": "-apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"Inter\", \"Inter Fallback\", sans-serif", "weights": [600], "tracking": -0.015, "size": 28, "lineHeight": 34 }
+  },
+  "motion": {
+    "press": null,
+    "settle": { "duration": 0.5, "bounce": 0 },
+    "glide": null,
+    "pop": { "duration": 0.5, "bounce": 0.3 },
+    "pressScale": { "mouse": 0.97, "touch": 0.97 },
+    "note": "iOS system springs (motion.md §3.3), estimated: press is the system highlight, glide the NavigationStack push."
+  },
+  "promise": {
+    "text": "Only the people here see your log, and only you see theirs. Nothing is public.",
+    "lang": "en",
+    "evidence": "Eat Map's Circle screen (simulator photo, 2026-10-09); the code is not public yet"
+  },
+  "captures": []
+}

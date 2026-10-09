@@ -1,0 +1,19 @@
+---
+/* One real screen of a product (docs/design/family.md §3.2): its own corner radius, a 1 px hairline,
+   no bezel, no tilt, no hover lift. The build derives AVIF and WebP widths from the PNG master
+   (docs/family-kit/presentation.md §3); every capture is lazy and never counts toward first paint
+   (media research §7). */
+import { Picture } from 'astro:assets';
+import type { Shot } from '../lib/world';
+interface Props { s: Shot; lead?: boolean }
+const { s, lead = false } = Astro.props;
+/* wide: the embassy column (about 1010 px in the sheet, the window below 900 px); phone: a third of it */
+const sizes = s.frame === 'phone' ? '(min-width: 900px) 300px, 72vw' : lead ? '(min-width: 1240px) 1010px, (min-width: 900px) 86vw, 92vw' : '(min-width: 1240px) 790px, (min-width: 900px) 66vw, 92vw';
+const widths = (s.frame === 'phone' ? [390, 600, 780] : [720, 1080, 1440, 2048, 2880]).filter((w) => w <= s.img.width);
+---
+<figure class:list={['cap', `cap-${s.frame}`, { 'cap-lead': lead }]}>
+  <div class="cap-frame">
+    <Picture src={s.img} alt={s.alt} widths={widths} sizes={sizes} formats={['avif', 'webp']} quality={s.frame === 'phone' ? 70 : 62} loading="lazy" decoding="async" />
+  </div>
+  {s.caption && <figcaption class="meta">{s.caption}</figcaption>}
+</figure>

@@ -70,8 +70,19 @@ Copy `content/projects/recto.md` to `content/projects/<slug>.md`; the file name 
 | `og` | link-preview card in `tools/og/out/<og>.jpg` (defaults to the home card) |
 | `summary` | the one line on Home and Work (the pitch when it leads Home's showcase; `what.text` and `what.numbers` follow it there) |
 | `links` | `[{ label, href, kind: live \| code \| other }]` |
+| `captures` | `[{ id, at?, caption? }]`: real screens from the product's `world.json`, in order; the first opens the embassy, the rest stand with How unless `at` names a section |
+| `clip` | `{ id, phone? }`: the product's signature clip from `world.json` (and a phone cut of the same gesture) |
 | `what`, `why`, `how`, `learned`, `next` | each `{ text }`, `{ items: [...] }`, `{ quote }`, `{ numbers: [...] }` or `{ placeholder }` |
 | `draft` | `true` keeps it out of the build (it still shows in `npm run dev`) |
+
+**The product's world** (the embassy under the porch, `docs/design/family.md` §3.1) is
+`content/projects/<slug>/world.json`, the family kit's contract (`docs/family-kit/presentation.md`,
+`world.schema.json`): ground, inks, accent, light, faces, motion, the promise line and the list of
+captures, copied from the product's own token files. Its `captures/` folder holds the PNG masters
+(the build makes AVIF and WebP) and the signature clip, encoded with
+`npm run clip -- <slug> <recording> <w>x<h> <dpr> [--to <s>] [--hold <s>]`. `npm run worlds` checks
+every world against the schema, the kit's light rules and contrast through the light; a project
+without a world keeps the house ground. Swapping a capture is a file and a line, never code.
 
 Anything the owner has not written yet is `{ placeholder: "owner to write" }` (or
 `summaryPlaceholder`): it stays in the content and is left out of the site entirely; writing the
