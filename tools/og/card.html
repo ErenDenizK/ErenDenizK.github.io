@@ -37,12 +37,14 @@
   .obj { position: absolute; z-index: 1; }
   .obj.plus-lighter { mix-blend-mode: plus-lighter; }
 
-  /* About: the courtyard, graded into the ground. */
+  /* About: the photo, graded into the ground. */
   .photo { position: absolute; top: 0; right: 0; height: 630px; z-index: 0; overflow: hidden; }
   .photo img { width: 100%; height: 100%; object-fit: cover; display: block;
     filter: brightness(0.62) saturate(0.82) contrast(1.04) sepia(0.06); }
   .photo::after { content: ""; position: absolute; inset: 0;
     background:
+      var(--fade-r, linear-gradient(transparent, transparent)),
+      linear-gradient(180deg, color-mix(in srgb, var(--ground) 55%, transparent) 0%, transparent 34%),
       linear-gradient(90deg, var(--ground) 0%, color-mix(in srgb, var(--ground) 72%, transparent) 18%, transparent 46%),
       radial-gradient(120% 90% at 70% 50%, transparent 55%, color-mix(in srgb, var(--ground) 80%, transparent) 100%); }
   .about-glow { position: absolute; width: 760px; height: 760px; left: -260px; top: -280px; border-radius: 50%; z-index: 0;
@@ -186,20 +188,38 @@ const layouts = {
     await placeObject(card, root + c.object, c.blend, { cx: 960, cy: 315, w: 340, h: 440 });
   },
 
+  // About: a photo on the right, graded into the ground. With `photoFit` the photo is placed
+  // by a focus point (fractions of the image) landing at a card position, at a given rendered
+  // height, so a face can be kept inside the centre square; without it, object-fit cover.
   async about(card, c, site, root) {
-    const ph = el('div', 'photo'); ph.style.width = '720px';
-    const img = el('img'); img.src = root + c.photo; img.style.objectPosition = '62% 58%';
+    const w = c.photoWidth || 720;
+    const ph = el('div', 'photo'); ph.style.width = w + 'px';
+    const img = el('img'); img.src = root + c.photo;
+    if (c.photoFilter) img.style.filter = c.photoFilter;
     ph.append(img);
     card.append(el('div', 'about-glow'), ph);
     await img.decode();
+    if (c.photoFit) {
+      const { focus: [fx, fy], at: [ax, ay], height: h } = c.photoFit;
+      const iw = h * img.naturalWidth / img.naturalHeight, left0 = 1200 - w;
+      // The left edge always reaches under the text fade; if the right edge falls short of the
+      // card, it fades into the ground instead of being stretched to cover.
+      const left = Math.min(0, ax - left0 - fx * iw);
+      const top = Math.min(0, Math.max(630 - h, ay - fy * h));
+      Object.assign(img.style, { position: 'absolute', width: iw + 'px', height: h + 'px', left: left + 'px', top: top + 'px', objectFit: 'fill' });
+      const gap = w - (left + iw);
+      if (gap > 0) ph.style.setProperty('--fade-r', `linear-gradient(270deg, var(--ground) ${gap}px, transparent ${gap + 140}px)`);
+    } else img.style.objectPosition = c.photoPosition || '62% 58%';
     const t = el('div', 'text');
     const meta = el('p', 'meta'); meta.append(el('span', 'acc', c.kicker));
     const name = el('h1', 'display');
     c.name.forEach((part, i) => { if (i) name.append(el('br')); name.append(part); });
     name.style.fontSize = '104px'; name.style.marginTop = '22px';
-    const line = el('p', 'line', c.line); line.style.marginTop = '30px'; line.style.maxWidth = '640px';
+    const tw = c.textWidth || 640;
+    const line = el('p', 'line', c.line); line.style.marginTop = '30px'; line.style.maxWidth = tw + 'px';
     t.append(meta, name, line);
     card.append(t);
+    fit(name, tw, 104, 84);
   },
 };
 
