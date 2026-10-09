@@ -59,6 +59,17 @@ fs.mkdirSync(OUT, { recursive: true });
   }
 }
 
+// The same selfie, square, for the ID card on About (ADR-0008): face and thumb both inside the frame.
+{
+  const base = sharp(path.join(SRC, 'eren-ytu-gate.jpg')).extract({ left: 680, top: 290, width: 1150, height: 1150 })
+    .modulate({ brightness: 0.95, saturation: 0.9 });
+  const buf = await base.png().toBuffer();
+  for (const w of [360, 640]) {
+    await sharp(buf).resize(w).avif({ quality: 52, effort: 6 }).toFile(path.join(OUT, `gate-card-${w}.avif`));
+    await sharp(buf).resize(w).webp({ quality: 74, smartSubsample: true }).toFile(path.join(OUT, `gate-card-${w}.webp`));
+  }
+}
+
 // Static page grain: a 128 px tile, light noise at low alpha (about +-2 levels on the ground).
 {
   const n = 128, gb = Buffer.alloc(n * n * 4);
