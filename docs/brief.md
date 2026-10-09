@@ -159,3 +159,5 @@ log design are to be explored.
 - **Stack:** ADR-0001 accepted.
 - **Home object:** "edk" is good. Something more personal may be tried at any time, but not a
   processor.
+- **Link previews:** home card split (name left, edk right) everywhere; About card shows the
+  gate selfie. Favicon "e" at 16/32 px, "edk" from 48 px; warm off-white on black.
