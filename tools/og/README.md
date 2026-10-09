@@ -87,8 +87,6 @@ skipped by `sheet.mjs` unless `--variants` is passed.
 
 - No SVG favicon yet: it needs the glyphs as outlines (fontTools or opentype.js); the sandbox
   had neither. The ICO plus PNGs cover every browser.
-- The log card uses the E-dark log poster (rendered on `#0a0a0a`, normal blend) until the
-  production log render lands in `media/objects/log/`.
 - The mock frames are generic; real-device checks (LinkedIn Post Inspector, WhatsApp to self,
   iMessage, Slack) need the site to be live.
 - Sample text: the log entry and every `sample.postText` are placeholders, as in

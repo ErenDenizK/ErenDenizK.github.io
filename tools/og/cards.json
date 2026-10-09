@@ -107,8 +107,8 @@
       "title": "Starting this site",
       "date": "8 Oct 2026",
       "kind": "Note",
-      "object": "prototypes/e-dark/objects/log-poster.webp",
-      "blend": "normal",
+      "object": "media/objects/record/poster-1200.webp",
+      "blend": "plus-lighter",
       "accent": "#8fb8ff",
       "og": {
         "title": "Starting this site",

@@ -589,7 +589,7 @@ if os.path.isdir(sdir) and any(f.startswith("f_") for f in os.listdir(sdir)):
 # ================================================================ 5. manifest
 cinfo = json.load(open(os.path.join(M, "clip", "crop.json"))) if os.path.exists(os.path.join(M, "clip", "crop.json")) else {}
 dinfo = json.load(open(os.path.join(M, "droplet", "crop.json"))) if os.path.exists(os.path.join(M, "droplet", "crop.json")) else {}
-CLIP_NAME = {"edk": "hop", "recto": "fan", "englishprep": "pop", "eatmap": "drop", "log": "on-air"}
+CLIP_NAME = {"edk": "hop", "recto": "fan", "englishprep": "pop", "eatmap": "drop", "log": "on-air", "record": "lift"}
 yaws, pitches = ginfo["yaw"], ginfo["pitch"]
 
 
