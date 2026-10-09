@@ -208,3 +208,12 @@ log design are to be explored.
   separate Home-only pitch line the owner writes. The Work catalog table is disliked: Work should
   be a page that grows downward, each project starting within its own screen height, with large
   objects (small objects packed together looked bad).
+- **Record object, round 2:** "detailed" meant looking better to the eye, not fine engineering
+  detail. A (valve microphone) is too much and does not fit the others. C (card catalogue) looks
+  very good. B (tape deck) makes sense but its design is a little empty; another round.
+- **Liveliness:** go ahead with the frame engine behind `?live`; the object floats gently when
+  untouched.
+- **Home hierarchy:** the showcase project is larger than "edk", so at first glance it is unclear
+  which is the owner and which is a project. Idea: set each product's name in its own display
+  face (e.g. Recto in pairing 4's face) so projects read as products. Recto will later get a
+  professional logo; the owner asks what tools could make 2D logo work strong.
