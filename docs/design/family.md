@@ -123,7 +123,7 @@ each app's About. Every rule is already practised somewhere in the family:
 The owner's question: should each product keep its own faces (Recto: Inter Recto; English Prep:
 Inter; Eat Map: SF Pro; portfolio: Newsreader + Inter), or does differing type break the origin?
 **Answer: keep them. Type is a variable, not a constant. The portfolio's serif becomes the maker's
-signature voice: inside an embassy it sets only what Eren says (title, section heads, his
+signature voice: inside an embassy it sets only what Eren says (title, section heads, their
 narrative, credits), never what the product says.**
 
 **The family's own evidence (M).** Recto and English Prep already use the *same* face, Inter, and
