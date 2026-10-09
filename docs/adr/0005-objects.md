@@ -1,6 +1,6 @@
 # ADR-0005: One object per tab, scripted in Blender, lit to the render's standard
 
-**Status:** proposed 2026-10-09 · **Rests on:** brief §7 (2026-10-09);
+**Status:** proposed 2026-10-09; items 2–3 amended by ADR-0006 · **Rests on:** brief §7 (2026-10-09);
 `research/2026-10-3d-objects.md`, `research/2026-10-ux-patterns.md` §4
 
 ## Decision
