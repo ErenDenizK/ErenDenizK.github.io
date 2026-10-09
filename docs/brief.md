@@ -194,3 +194,7 @@ log design are to be explored.
   mismatched. Write a design vision first: each keeps its own character (UI, motion, colour,
   structure) but all meet at a shared origin. Research how developers and companies do this.
   The owner worked hard on Recto's and English Prep's UIs; do not flatten them.
+- **Record redesign (from the readability research):** a date spine with project-coloured marks
+  and a year strip instead of thread toggles (per-project threads move into project views); a
+  release look for entries with a version; a faint project-coloured light on reading pages;
+  reading text at 21 px with lines of about 70 characters.
