@@ -5,7 +5,7 @@ import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone, settle } from './helpers';
 
 const OUT = 'tests/shots/';
-const PAGES: [string, string][] = [['home', ''], ['work', 'work/'], ['log', 'log/'], ['about', 'about/'], ['recto', 'work/recto/'], ['eat-map', 'work/eat-map/'], ['404', 'nope/']];
+const PAGES: [string, string][] = [['home', ''], ['work', 'work/'], ['record', 'record/'], ['about', 'about/'], ['recto', 'work/recto/'], ['eat-map', 'work/eat-map/'], ['404', 'nope/']];
 
 async function shoot(page: Page, name: string, errors: string[]) {
   await page.screenshot({ path: `${OUT}${name}.png` });

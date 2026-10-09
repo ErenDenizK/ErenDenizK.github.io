@@ -4,7 +4,7 @@
    the log's templates. Locally, Playwright's Chromium comes from PLAYWRIGHT_BROWSERS_PATH. */
 import { defineConfig } from '@playwright/test';
 
-const PORT = 4329, FIX = 4330;
+const PORT = +(process.env.E2E_PORT ?? 4329), FIX = PORT + 1;
 export const BASE = process.env.BASE_PATH ?? '/Portfolio/';
 
 export default defineConfig({

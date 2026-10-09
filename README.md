@@ -30,14 +30,14 @@ Pages and runs the navigation suite, the log templates, axe, and the screenshot 
 
 ```
 content/               everything a visitor reads: data, not code (ADR-0002)
-  site.json            name, links, the lines on Home, Work, Log and About
+  site.json            name, links, the lines on Home, Work, Record and About
   projects/<slug>.md   one file per project
-  log/<year>/<slug>.md one file per log entry (none published yet)
+  log/<year>/<slug>.md one file per entry of the record, served under /record/ (none published yet)
   photos/              the owner's originals
 media/objects/<name>/  pre-rendered objects and their manifest.json (tools/objects, ADR-0006)
 src/
   content.config.ts    the schemas: a bad field fails the build
-  pages/               routes: /, /work/, /work/<slug>/, /log/, /log/<year>/<slug>/, /about/, 404, feed
+  pages/               routes: /, /work/, /work/<slug>/, /record/, /record/<year>/<slug>/, /about/, 404, feed
   components/          Media (the object stage), ProjectCase, LogRow, Figure, Icon, ...
   scripts/             media.ts (stage), sheet.ts (project sheet), log.ts, site.ts
   styles/              global.css (tokens and layout), log.css, transitions.css
@@ -78,7 +78,7 @@ text is all it takes for it to appear. A test fails the build if a placeholder e
 
 The owner dictates; an agent drafts; nothing is published without the owner's OK on the exact
 draft. The workflow is the `log-entry` skill (`.claude/skills/log-entry/SKILL.md`); the design is
-[docs/design/log.md](docs/design/log.md). The file is `content/log/<year>/<slug>.md`; the fields are
+[docs/design/log.md](docs/design/log.md). The file is `content/log/<year>/<slug>.md` and its page is `/record/<year>/<slug>/`; the fields are
 in `content/log/_README.md`. Three kinds: `note` (one to three sentences, no title), `entry` (a few
 paragraphs, opens in place), `essay` (long, its own page; use `.mdx` and `<Figure name="..." />`
 for drawings from `tools/illustrations`). The slug never changes once published.

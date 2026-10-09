@@ -28,7 +28,7 @@ const facts = [
   ['Started', isPlaceholder(d.started) ? null : ym(d.started, true)],
   ['Runs on', d.runsOn],
 ].filter((f): f is [string, string] => !!f[1]);
-const toc = [...sections.map(([id, label]) => [id, label === 'What I learned' ? 'Learned' : label]), ...(entries.length ? [['in-the-log', 'In the log']] : [])];
+const toc = [...sections.map(([id, label]) => [id, label === 'What I learned' ? 'Learned' : label]), ...(entries.length ? [['in-the-record', 'In the record']] : [])];
 const statusLine = [d.status, d.version && !isPlaceholder(d.version) ? d.version : null, d.statusNote].filter(Boolean).join(' · ');
 ---
 <article class="case" data-case={p.id} data-index={index + 1} data-total={total} data-title={d.title} style={vars}>
@@ -63,8 +63,8 @@ const statusLine = [d.status, d.version && !isPlaceholder(d.version) ? d.version
         </section>
       ))}
       {entries.length > 0 && (
-        <section class="case-sec" id="in-the-log" aria-labelledby="in-the-log-h">
-          <h2 id="in-the-log-h">In the log</h2>
+        <section class="case-sec" id="in-the-record" aria-labelledby="in-the-record-h">
+          <h2 id="in-the-record-h">In the record</h2>
           {thread && <div class="threads case-thread"><ThreadRow t={thread} /></div>}
           <ol class="entries">{entries.map((e) => <LogRow e={e} projects={projects} compact />)}</ol>
         </section>

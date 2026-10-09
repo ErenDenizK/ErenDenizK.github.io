@@ -175,7 +175,7 @@ const layouts = {
   async log(card, c, site, root) {
     const t = el('div', 'text');
     const meta = el('p', 'meta');
-    meta.append(el('span', 'acc', 'Log'), ' · ' + c.date + ' · ' + c.kind);
+    meta.append(el('span', 'acc', 'Record'), ' · ' + c.date + ' · ' + c.kind);
     const title = el('h1', 'display', c.title);
     title.style.maxWidth = '640px'; title.style.marginTop = '24px';
     t.append(meta, title);

@@ -48,7 +48,7 @@ updates, corrections, figures, what never appears) before the first entry of a s
    entry states. Captions are one sentence; alt text describes content.
 7. **Run the checks** below. Fix what fails.
 8. **Show the draft.** Paste the whole entry as it will read (title, dek, meta line, body,
-   figure captions), the slug and URL it will get (`/log/<year>/<slug>/`), and a short list:
+   figure captions), the slug and URL it will get (`/record/<year>/<slug>/`), and a short list:
    what you changed from the notes, what you left out and why (privacy, uncertainty), and any
    open question. For a figure, attach a screenshot of it.
 9. **Revise** until the owner says to publish. Each revision is shown in full again or as a
