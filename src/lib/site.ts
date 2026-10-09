@@ -120,3 +120,27 @@ export function threads(entries: LogEntry[], projects: Project[]) {
   for (let y = first.getUTCFullYear() + 1; y <= last.getUTCFullYear(); y++) years.push({ x: X(Date.UTC(y, 0, 1)), label: String(y) });
   return { rows, axis: { start: monYear(first), end: monYear(last), years } };
 }
+
+/** Entries about one project, newest first (the log is already sorted). */
+export const entriesFor = (p: Project, log: LogEntry[]) => log.filter((e) => e.data.projects.some((r) => r.id === p.id));
+
+/** The project Home's showcase leads with (data, not code): the first marked `featured`; without
+    one, the project of the latest record entry; without entries, the first by order. */
+export function leadProject(projects: Project[], log: LogEntry[]): Project {
+  const marked = projects.find((p) => p.data.featured);
+  if (marked) return marked;
+  for (const e of log) {
+    const p = projects.find((x) => e.data.projects.some((r) => r.id === x.id));
+    if (p) return p;
+  }
+  return projects[0];
+}
+
+/** "Public beta · 1.0.0-beta · since Sep 2026": the short status line; unwritten facts are left out. */
+export function statusLine(p: Project): string {
+  const d = p.data;
+  const bits: string[] = [d.status];
+  if (d.version && !isPlaceholder(d.version)) bits.push(d.version);
+  if (!isPlaceholder(d.started)) bits.push('since ' + ym(d.started));
+  return bits.join(' · ');
+}
