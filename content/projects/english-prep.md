@@ -9,6 +9,7 @@ started: 2026-09
 runsOn: The web, phone first
 stack: Web · No build step · 241 questions
 accent: { color: "#efb1cb", p2: "#9a9cf0", p3: "#6fc9cf" }
+wordmark: { face: Inter, weight: 600, tracking: -0.055, case: lower, color: "#eee9ed", dot: "#efb1cb" }
 object: englishprep
 og: english-prep
 summary: A study space for Turkish university English proficiency exams.

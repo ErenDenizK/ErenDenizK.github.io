@@ -10,6 +10,7 @@ started: { placeholder: to confirm }
 runsOn: iOS, built in Xcode
 stack: iOS · Xcode · Private
 accent: { color: "#eb4f6b", p2: "#4a1626", p3: "#ec5794" }
+wordmark: { face: Nunito, weight: 800, tracking: -0.025 }
 object: eatmap
 og: eatmap
 summary: An iOS app, built in Xcode.

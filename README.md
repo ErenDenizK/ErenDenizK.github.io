@@ -65,6 +65,7 @@ Copy `content/projects/recto.md` to `content/projects/<slug>.md`; the file name 
 | `status` | `Live`, `Public beta`, `In development`, `Paused` or `Archived` |
 | `version`, `started` (`YYYY-MM`), `role`, `runsOn`, `stack` | the facts row |
 | `accent` | `{ color, glow?, p2?, p3? }`: the project's light |
+| `wordmark` | optional `{ face, weight, tracking?, case?, text?, color?, dot?, image? }`: the name in the product's own face (`src/lib/wordmarks.ts` lists the faces and weights; `docs/research/2026-10-wordmarks.md`) |
 | `object` | the object in `media/objects/<object>/`; until it is rendered, add a poster to `src/assets/objects/<object>-poster.webp` |
 | `og` | link-preview card in `tools/og/out/<og>.jpg` (defaults to the home card) |
 | `summary` | the one line on Home and Work (the pitch when it leads Home's showcase; `what.text` and `what.numbers` follow it there) |
