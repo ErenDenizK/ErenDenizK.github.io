@@ -123,6 +123,13 @@ const site = defineCollection({
       ledes: z.array(z.string()),
       courtyard: z.object({ alt: z.string(), caption: z.string() }),
       selfie: z.object({ alt: z.string(), caption: z.string() }),
+      /** The ID card on About (brief §7, 2026-10-09: "a digital ID card like event badges"). */
+      card: z.object({
+        label: z.string(),
+        issued: z.string(),
+        back: z.string(),
+        hint: z.object({ drag: z.string(), click: z.string(), tap: z.string() }),
+      }),
       facts: z.array(z.tuple([z.string(), z.string()])),
       tracks: z.object({
         title: z.string(),

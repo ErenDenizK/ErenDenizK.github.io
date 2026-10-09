@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Foot from '../components/Foot.astro';
+import IdCard from '../components/IdCard.astro';
 import { getSite, isPlaceholder } from '../lib/site';
 import c750a from '../assets/photos/courtyard-750.avif?url';
 import c1000a from '../assets/photos/courtyard-1000.avif?url';
@@ -9,10 +10,6 @@ import c1350a from '../assets/photos/courtyard-1350.avif?url';
 import c750w from '../assets/photos/courtyard-750.webp?url';
 import c1000w from '../assets/photos/courtyard-1000.webp?url';
 import c1350w from '../assets/photos/courtyard-1350.webp?url';
-import g480a from '../assets/photos/gate-480.avif?url';
-import g760a from '../assets/photos/gate-760.avif?url';
-import g480w from '../assets/photos/gate-480.webp?url';
-import g760w from '../assets/photos/gate-760.webp?url';
 const site = await getSite();
 const a = site.about;
 const li = site.links.linkedin;
@@ -37,17 +34,11 @@ const li = site.links.linkedin;
         </div>
       </div>
     </div>
+    <div class="about-badge"><IdCard /></div>
   </div>
 
   <div class="about-wrap"><div class="inner">
     <div class="about-body">
-      <figure class="selfie">
-        <picture>
-          <source type="image/avif" srcset={`${g480a} 480w, ${g760a} 760w`} sizes="(min-width: 900px) 380px, 300px" />
-          <img src={g760w} srcset={`${g480w} 480w, ${g760w} 760w`} sizes="(min-width: 900px) 380px, 300px" alt={a.selfie.alt} width="760" height="950" loading="lazy" decoding="async" />
-        </picture>
-        <figcaption class="meta">{a.selfie.caption}</figcaption>
-      </figure>
       <dl class="facts">
         {a.facts.map(([k, v]) => <><dt class="meta">{k}</dt><dd>{v}</dd></>)}
         <dt class="meta">Elsewhere</dt>
@@ -83,3 +74,26 @@ const li = site.links.linkedin;
     <Foot />
   </div></div>
 </Base>
+
+<style>
+  /* The ID card hangs over the courtyard (brief §7: the courtyard carries About; the card is composed
+     with it, ADR-0008). Wide screens: in the photo's half, clear of the text column, its lanyard running
+     up under the bar. Phones: below the introduction, in the page's flow. */
+  .about-badge { position: relative; z-index: 1; }
+  @media (min-width: 900px) {
+    .about-badge {
+      position: absolute; top: 0; bottom: 0; right: 0; left: max(40%, calc(var(--gut) + 34rem + 40px));
+      display: flex; justify-content: center; align-items: flex-start; padding-top: clamp(64px, 11svh, 120px);
+      pointer-events: none;
+    }
+    .about-badge > :global(.idc) {
+      pointer-events: auto;
+      --w: clamp(236px, min(22vw, calc((100svh - 300px) * 0.56)), 318px);
+      --strap: calc(var(--bar-h) + clamp(64px, 11svh, 120px) + 56px);
+    }
+  }
+  @media (max-width: 899.98px) {
+    .about-badge { display: flex; justify-content: center; padding: 104px var(--gut) 8px; overflow: hidden; }
+    .about-badge > :global(.idc) { --w: min(74vw, 300px); --strap: 104px; }
+  }
+</style>

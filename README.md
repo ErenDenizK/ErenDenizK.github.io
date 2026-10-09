@@ -37,9 +37,10 @@ content/               everything a visitor reads: data, not code (ADR-0002)
 media/objects/<name>/  pre-rendered objects and their manifest.json (tools/objects, ADR-0006)
 src/
   content.config.ts    the schemas: a bad field fails the build
-  pages/               routes: /, /work/, /work/<slug>/, /record/, /record/<year>/<slug>/, /about/, 404, feed
-  components/          Media (the object stage), ProjectCase, LogRow, Figure, Icon, ...
-  scripts/             media.ts (stage), sheet.ts (project sheet), log.ts, site.ts
+  pages/               routes: /, /work/, /work/<slug>/, /record/, /record/<year>/<slug>/, /about/, 404, feed;
+                       lab/ holds hidden component workbenches (noindex, not in the sitemap)
+  components/          Media (the object stage), ProjectCase, LogRow, Figure, Icon, IdCard, Postcard, ...
+  scripts/             media.ts (stage), sheet.ts (project sheet), log.ts, card3d.ts (cards), site.ts
   styles/              global.css (tokens and layout), log.css, transitions.css
   fonts/               subset Newsreader and Inter (tools/fonts/subset.py)
   assets/photos/       graded photos (tools/photos/grade.mjs)

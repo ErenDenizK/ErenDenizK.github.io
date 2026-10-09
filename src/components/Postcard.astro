@@ -1,0 +1,168 @@
+---
+/* A postcard for photo entries in the record (brief §7, 2026-10-09 after v0: "postcards (from E's framed
+   photo; hover, flip) for photo entries later"; ADR-0008). Not used on a public page yet; see
+   /lab/postcard/ (noindex, outside the sitemap).
+
+   Front: the photograph on a narrow card-stock border. Back: a short note, a stamp cut from the same
+   photograph, a postmark with the place and the date, and the place and date written out again for
+   readers who cannot see the postmark. Hover tilts it toward the pointer under a moving light; click,
+   Enter or Space turns it over (scripts/card3d.ts, data-card="tilt").
+
+   <Postcard src={webp} avif={avifSrcset} srcset={webpSrcset} width={1000} height={750}
+             alt="..." note="..." place="Istanbul" date={new Date('2026-10-09')} /> */
+import { getSite, dayMonYear } from '../lib/site';
+
+interface Props {
+  src: string;
+  srcset?: string;
+  avif?: string;
+  sizes?: string;
+  width: number;
+  height: number;
+  alt: string;
+  note: string;
+  place: string;
+  date: Date | string;
+  /** signature under the note; the owner's first name by default */
+  from?: string;
+  /** ink of the stamp and postmark; the About gold by default */
+  accent?: string;
+  class?: string;
+}
+const site = await getSite();
+const { src, srcset, avif, sizes = '(min-width: 900px) 560px, 92vw', width, height, alt, note, place, date, from = site.firstName, accent, class: cls } = Astro.props;
+const when = typeof date === 'string' ? date : dayMonYear(date);
+const tall = height > width;
+/* a stable id for the postmark's text path (same input, same markup) */
+let h = 0;
+for (const ch of `${src}|${place}|${when}|${note}`) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+const pid = `pc-ring-${h.toString(36)}`;
+/* the postmark's ring: place and date repeated until they go round once */
+const unit = `${place} · ${when} · `;
+const ring = unit.repeat(Math.max(1, Math.ceil(44 / unit.length)));
+const style = [`--pc-ratio: ${width} / ${height}`, accent ? `--pc-ink: ${accent}` : ''].filter(Boolean).join('; ');
+---
+<div class:list={['pc', tall && 'pc--tall', cls]} data-card="tilt" role="group" aria-roledescription="postcard" aria-label={`Postcard from ${place}, ${when}`} style={style}>
+  <div class="pc-card" data-card-body>
+    <div class="pc-face pc-front" data-face>
+      <button class="pc-turn" type="button" data-turn aria-label="Turn the postcard over"></button>
+      <picture class="pc-photo">
+        {avif && <source type="image/avif" srcset={avif} sizes={sizes} />}
+        <img src={src} srcset={srcset} sizes={srcset ? sizes : undefined} alt={alt} width={width} height={height} loading="lazy" decoding="async" draggable="false" />
+      </picture>
+      <span class="pc-glare" aria-hidden="true"></span>
+    </div>
+    <div class="pc-face pc-back" data-face>
+      <button class="pc-turn" type="button" data-turn aria-label="Turn the postcard back to the photograph"></button>
+      <div class="pc-msg">
+        <p class="pc-note">{note}</p>
+        <p class="pc-from">{from}</p>
+      </div>
+      <div class="pc-side">
+        <div class="pc-stamp" aria-hidden="true">
+          <span class="pc-stamp-img" style={`background-image: url("${src}")`}></span>
+          <span class="pc-stamp-mark">{site.mark}</span>
+        </div>
+        <svg class="pc-postmark" viewBox="0 0 160 100" aria-hidden="true" focusable="false">
+          <defs><path id={pid} d="M 50 50 m -31 0 a 31 31 0 1 1 62 0 a 31 31 0 1 1 -62 0" /></defs>
+          <circle cx="50" cy="50" r="40" />
+          <circle cx="50" cy="50" r="23" />
+          <text textLength="192" lengthAdjust="spacing"><textPath href={`#${pid}`} startOffset="0" textLength="192" lengthAdjust="spacing">{ring}</textPath></text>
+          <path d="M 96 34 q 8 -5 16 0 t 16 0 t 16 0 t 16 0" />
+          <path d="M 96 46 q 8 -5 16 0 t 16 0 t 16 0 t 16 0" />
+          <path d="M 96 58 q 8 -5 16 0 t 16 0 t 16 0 t 16 0" />
+          <path d="M 96 70 q 8 -5 16 0 t 16 0 t 16 0 t 16 0" />
+        </svg>
+        <dl class="pc-addr">
+          <div><dt>Place</dt><dd>{place}</dd></div>
+          <div><dt>Date</dt><dd>{when}</dd></div>
+        </dl>
+      </div>
+      <span class="pc-glare" aria-hidden="true"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { initCards } from '../scripts/card3d';
+  initCards();
+</script>
+
+<style>
+  /* Sizes are fractions of the card's width (container units). Landscape by default; a portrait photo
+     makes a portrait card and the back stacks. */
+  .pc { --pc-ink: var(--about); position: relative; width: 100%; container-type: inline-size; perspective: 1400px; user-select: none; -webkit-user-select: none; }
+  .pc-card { position: relative; display: grid; transform-style: preserve-3d; --gx: 50%; --gy: 26%; --glare: 0.3; --fa: 150deg; }
+  .pc-face {
+    grid-area: 1 / 1; position: relative; aspect-ratio: var(--pc-ratio, 3 / 2);
+    border-radius: 1.4cqi; overflow: hidden;
+    background: linear-gradient(165deg, #1a1815, #0f0e0c 75%);
+    box-shadow: inset 0 0 0 1px rgba(255, 245, 232, 0.08), 0 2.4cqi 5cqi -2cqi rgba(0, 0, 0, 0.7);
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  }
+  .pc-back { transform: rotateY(180deg); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 5cqi 5cqi 4.4cqi; gap: 0 5cqi; }
+  .pc-back::before { content: ""; position: absolute; left: 50%; top: 8%; bottom: 8%; width: 1px; background: var(--rule); }
+  .pc-face[inert] { pointer-events: none; }
+
+  .pc-turn { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; padding: 0; border: 0; border-radius: inherit; background: transparent; cursor: pointer; }
+  .pc-turn:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+
+  /* front: the print on a narrow border of card stock */
+  .pc-photo { position: absolute; inset: 2.2cqi; display: block; }
+  .pc-photo img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 0.6cqi; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); }
+
+  .pc-glare { position: absolute; inset: 0; pointer-events: none; opacity: var(--glare); mix-blend-mode: screen;
+    background: radial-gradient(circle at var(--gx) var(--gy), rgba(255, 244, 230, 0.2), rgba(255, 244, 230, 0.05) 30%, transparent 56%); }
+
+  /* back */
+  .pc-msg { display: flex; flex-direction: column; justify-content: center; gap: 3cqi; padding-right: 1cqi; }
+  .pc-note { font: 400 max(13px, 3.4cqi)/1.45 var(--f-read); color: var(--read); text-wrap: pretty; }
+  .pc-from { font: 400 max(13px, 3.4cqi)/1 var(--f-display); color: var(--ink-2); }
+  .pc-side { position: relative; display: flex; flex-direction: column; }
+  .pc-stamp {
+    --r: 0.55cqi;
+    align-self: flex-end; width: 15cqi; aspect-ratio: 4 / 5; padding: var(--r); background: #e6ddcf;
+    -webkit-mask: radial-gradient(var(--r) at var(--r) var(--r), #0000 97%, #000) calc(-1 * var(--r)) calc(-1 * var(--r)) / calc(2 * var(--r)) calc(2 * var(--r)) round, linear-gradient(#000 0 0) content-box;
+    mask: radial-gradient(var(--r) at var(--r) var(--r), #0000 97%, #000) calc(-1 * var(--r)) calc(-1 * var(--r)) / calc(2 * var(--r)) calc(2 * var(--r)) round, linear-gradient(#000 0 0) content-box;
+    display: grid; grid-template-rows: 1fr auto; gap: 0.6cqi;
+    rotate: 1.5deg;
+  }
+  .pc-stamp-img { display: block; margin: 0.9cqi 0.9cqi 0; background-size: cover; background-position: 50% 40%; filter: saturate(0.75) contrast(1.05); }
+  .pc-stamp-mark { padding: 0 0.9cqi 0.7cqi; font: 400 2.2cqi/1 var(--f-display); color: color-mix(in srgb, var(--pc-ink) 70%, #2a2420); }
+  .pc-postmark { position: absolute; right: 7cqi; top: 9cqi; width: 26cqi; overflow: visible; rotate: -9deg; pointer-events: none;
+    fill: none; stroke: color-mix(in srgb, var(--pc-ink) 62%, transparent); stroke-width: 1.3; }
+  .pc-postmark text { fill: color-mix(in srgb, var(--pc-ink) 72%, transparent); stroke: none; font: 500 7.4px/1 var(--f-ui); letter-spacing: 0.04em; }
+  .pc-addr { margin-top: auto; display: grid; gap: 0; }
+  .pc-addr div { display: flex; align-items: baseline; gap: 2cqi; padding: 1.6cqi 0 1cqi; border-bottom: 1px solid var(--rule-2); }
+  .pc-addr dt { font: 400 2.3cqi/1 var(--f-ui); color: var(--ink-3); min-width: 7cqi; }
+  .pc-addr dd { font: 400 3.2cqi/1.1 var(--f-display); color: var(--ink); }
+
+  /* portrait card: the back stacks, stamp and postmark above the note */
+  .pc--tall .pc-back { grid-template-columns: 1fr; grid-template-rows: auto 1fr; padding: 7cqi; gap: 8cqi; }
+  .pc--tall .pc-back::before { display: none; }
+  .pc--tall .pc-side { order: -1; min-height: 34cqi; }
+  .pc--tall .pc-stamp { width: 24cqi; --r: 0.9cqi; }
+  .pc--tall .pc-stamp-mark { font-size: 3.4cqi; }
+  .pc--tall .pc-postmark { width: 42cqi; right: 12cqi; top: 10cqi; }
+  .pc--tall .pc-addr { margin-top: 30cqi; }
+  .pc--tall .pc-addr dt { font-size: 3.6cqi; min-width: 11cqi; }
+  .pc--tall .pc-addr dd { font-size: 5cqi; }
+  .pc--tall .pc-addr div { padding: 2.4cqi 0 1.6cqi; }
+  .pc--tall .pc-msg { justify-content: flex-end; }
+  .pc--tall .pc-note { font-size: 5.4cqi; }
+  .pc--tall .pc-from { font-size: 5.4cqi; }
+
+  /* without JavaScript: both sides, one under the other */
+  :global(html:not(.js)) .pc-card { gap: 16px; }
+  :global(html:not(.js)) .pc-face { grid-area: auto; backface-visibility: visible; }
+  :global(html:not(.js)) .pc-back { transform: none; }
+  :global(html:not(.js)) .pc-turn { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pc-card { transform: none !important; }
+    .pc-face { backface-visibility: visible; transition: opacity 150ms linear; }
+    .pc-back { transform: none; opacity: 0; }
+    .is-flipped .pc-back { opacity: 1; }
+    .is-flipped .pc-front { opacity: 0; }
+  }
+</style>

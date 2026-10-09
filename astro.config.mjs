@@ -25,7 +25,8 @@ export default defineConfig({
   devToolbar: { enabled: false },
   integrations: [
     mdx(),
-    sitemap({ filter: (page) => !/\/404\/?$/.test(page) }),
+    /* /lab/ holds hidden component workbenches (ADR-0008): never in the sitemap */
+    sitemap({ filter: (page) => !/\/404\/?$/.test(page) && !/\/lab\//.test(page) }),
     siteAssets(),
   ],
 });

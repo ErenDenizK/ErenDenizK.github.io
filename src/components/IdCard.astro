@@ -1,0 +1,234 @@
+---
+/* The ID card on About (brief §7, 2026-10-09 after v0: "a digital ID card like event badges"; ADR-0008).
+   Every field comes from content/site.json. It hangs from a lanyard; on wide screens with a mouse it
+   leans toward the pointer and can be pulled and let go; click, Enter or Space turns it over. The
+   front keeps both links, so nothing needs the turn. Behaviour: scripts/card3d.ts. */
+import Icon from './Icon.astro';
+import { getSite, isPlaceholder } from '../lib/site';
+import p360a from '../assets/photos/gate-card-360.avif?url';
+import p640a from '../assets/photos/gate-card-640.avif?url';
+import p360w from '../assets/photos/gate-card-360.webp?url';
+import p640w from '../assets/photos/gate-card-640.webp?url';
+
+const site = await getSite();
+const card = site.about.card;
+const k = site.kicker;
+const li = isPlaceholder(site.links.linkedin) ? null : site.links.linkedin;
+const gh = site.links.github;
+const ghHandle = new URL(gh).pathname.replace(/^\/+|\/+$/g, '');
+const links = [
+  { name: 'GitHub', icon: 'github', href: gh, note: ghHandle },
+  ...(li ? [{ name: 'LinkedIn', icon: 'linkedin', href: li, note: '' }] : []),
+];
+const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
+---
+<div class="idc" data-card="hang" role="group" aria-roledescription={card.label} aria-label={`${card.label}: ${site.name}`}>
+  <span class="idc-anchor" data-card-anchor aria-hidden="true"></span>
+  <div class="idc-swing" data-card-swing>
+    <div class="idc-strap" aria-hidden="true"><span>{strapText}</span></div>
+    <div class="idc-hold">
+      <div class="idc-shadow" aria-hidden="true"></div>
+      <div class="idc-card" data-card-body>
+        <div class="idc-face idc-front" data-face>
+          <button class="idc-turn" type="button" data-turn aria-label="Turn the card over"></button>
+          <div class="idc-head">
+            <span class="idc-mark">{site.mark}</span>
+            <span class="idc-issued">{card.issued}</span>
+          </div>
+          <picture class="idc-photo">
+            <source type="image/avif" srcset={`${p360a} 360w, ${p640a} 640w`} sizes="(min-width: 900px) 280px, 260px" />
+            <img src={p640w} srcset={`${p360w} 360w, ${p640w} 640w`} sizes="(min-width: 900px) 280px, 260px" alt={site.about.selfie.alt} width="640" height="640" decoding="async" draggable="false" />
+          </picture>
+          <p class="idc-name">{site.nameLines.map((l) => <span>{l}</span>)}</p>
+          <p class="idc-role"><span>{k.study} · {k.year}</span><span>{k.school}</span></p>
+          <div class="idc-foot">
+            {links.map((l) => <a class="idc-link" href={l.href} rel="me">{l.name}<Icon name="arrow-up-right" /></a>)}
+            <span class="idc-seal" aria-hidden="true"></span>
+          </div>
+          <span class="idc-glare" aria-hidden="true"></span>
+        </div>
+        <div class="idc-face idc-back" data-face>
+          <button class="idc-turn" type="button" data-turn aria-label="Turn the card back to the front"></button>
+          <div class="idc-head">
+            <span class="idc-issued">{card.label}</span>
+            <span class="idc-issued">{site.host}</span>
+          </div>
+          <span class="idc-emboss" aria-hidden="true">{site.mark}</span>
+          <p class="idc-line">{card.back}</p>
+          <ul class="idc-links">
+            {links.map((l) => (
+              <li><a href={l.href} rel="me"><Icon name={l.icon} size={24} /><span class="idc-ln">{l.name}</span>{l.note && <span class="idc-note">{l.note}</span>}<Icon name="arrow-up-right" /></a></li>
+            ))}
+          </ul>
+          <p class="idc-cap">{site.about.selfie.caption}</p>
+          <span class="idc-glare" aria-hidden="true"></span>
+        </div>
+      </div>
+      <svg class="idc-clip" viewBox="0 0 40 56" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="idc-metal" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#6f6a63" /><stop offset="0.35" stop-color="#d9d3ca" /><stop offset="0.6" stop-color="#9c968d" /><stop offset="1" stop-color="#57534d" />
+          </linearGradient>
+        </defs>
+        <rect x="9" y="1" width="22" height="13" rx="3" fill="url(#idc-metal)" />
+        <rect x="12" y="4.5" width="16" height="1.2" rx="0.6" fill="#2a2724" opacity="0.5" />
+        <circle cx="20" cy="22" r="7" fill="none" stroke="url(#idc-metal)" stroke-width="2.6" />
+        <path d="M14.5 29.5 C 13 36, 13 44, 16 49 L 24 49 C 27 44, 27 36, 25.5 29.5" fill="none" stroke="url(#idc-metal)" stroke-width="2.6" stroke-linecap="round" />
+      </svg>
+    </div>
+  </div>
+  <p class="idc-hint">
+    <span class="h-drag">{card.hint.drag}</span><span class="h-click">{card.hint.click}</span><span class="h-tap">{card.hint.tap}</span>
+  </p>
+</div>
+
+<script>
+  import { initCards } from '../scripts/card3d';
+  initCards();
+</script>
+
+<style>
+  /* Sizes are fractions of the card's width (container units), so the card is one drawing at any size.
+     The card is 5:8, close to an event badge. */
+  .idc {
+    --w: 300px;
+    --strap: 160px;
+    --stretch: 0px;
+    --about-foil: conic-gradient(from var(--fa, 150deg), #f3b886, #f6dcc4, #c9d4ff, #efb1cb, #f3b886);
+    position: relative; width: var(--w); container-type: inline-size;
+    user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+  }
+  .idc-anchor { position: absolute; left: 50%; top: calc(-1 * var(--strap)); width: 0; height: 0; }
+  .idc-swing { position: relative; transform-origin: 50% calc(-1 * var(--strap)); will-change: transform; }
+
+  /* the lanyard: a woven band running up out of the page, its mark repeated along it */
+  .idc-strap {
+    position: absolute; left: 50%; top: calc(-1 * var(--strap)); width: 6.6cqi; height: calc(var(--strap) - 9.4cqi + var(--stretch));
+    translate: -50% 0; overflow: hidden;
+    background: linear-gradient(90deg, #15130f, #221e19 50%, #15130f);
+    box-shadow: inset 1px 0 0 color-mix(in srgb, var(--about) 26%, transparent), inset -1px 0 0 color-mix(in srgb, var(--about) 26%, transparent);
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 min(60%, 140px)); mask-image: linear-gradient(180deg, transparent, #000 min(60%, 140px));
+    display: flex; justify-content: center; align-items: flex-end;
+  }
+  .idc-strap span {
+    writing-mode: vertical-rl; white-space: nowrap; padding-bottom: 6cqi;
+    font: 400 3.9cqi/1 var(--f-display); letter-spacing: 0.32em; color: color-mix(in srgb, var(--about) 46%, #5f5b55);
+  }
+
+  .idc-hold { position: relative; translate: 0 var(--stretch); perspective: 1100px; }
+  .idc-shadow {
+    position: absolute; left: 6%; right: 6%; top: 10%; bottom: -3%; border-radius: 8cqi;
+    background: rgba(0, 0, 0, 0.62); filter: blur(22px); pointer-events: none;
+  }
+  .idc-clip { position: absolute; z-index: 2; left: 50%; top: -9.8cqi; width: 12cqi; translate: -50% 0; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5)); }
+
+  .idc-card { position: relative; display: grid; transform-style: preserve-3d; --gx: 50%; --gy: 26%; --glare: 0.3; }
+  .idc-face {
+    grid-area: 1 / 1; position: relative; aspect-ratio: 5 / 8; padding: 6.5cqi 7cqi 6cqi;
+    display: flex; flex-direction: column;
+    border-radius: 5cqi; color: var(--ink);
+    background:
+      radial-gradient(120% 70% at 100% 0%, color-mix(in srgb, var(--about) 9%, transparent), transparent 60%),
+      linear-gradient(165deg, #1a1815, #0f0e0c 70%);
+    box-shadow: inset 0 0 0 1px rgba(255, 245, 232, 0.07), inset 0 1px 0 rgba(255, 245, 232, 0.08);
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    /* the slot the clip goes through, punched out of the card */
+    -webkit-mask: linear-gradient(#000 0 0), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='10'%3E%3Crect width='48' height='10' rx='5'/%3E%3C/svg%3E") 50% 3.4cqi / 15cqi 3.2cqi no-repeat;
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='10'%3E%3Crect width='48' height='10' rx='5'/%3E%3C/svg%3E") 50% 3.4cqi / 15cqi 3.2cqi no-repeat exclude;
+  }
+  /* foil edge: a hairline in the About gold that shifts hue as the card turns in the light */
+  .idc-face::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: var(--about-foil); opacity: 0.5;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .idc-back { transform: rotateY(180deg); }
+
+  /* the light: a soft specular glare, and a faint rainbow of the laminate only where the light falls */
+  .idc-glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: var(--glare); mix-blend-mode: screen; }
+  .idc-glare::before, .idc-glare::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+  .idc-glare::before { background: radial-gradient(circle at var(--gx) var(--gy), rgba(255, 244, 230, 0.2), rgba(255, 244, 230, 0.05) 32%, transparent 58%); }
+  .idc-glare::after {
+    opacity: 0.16;
+    background: repeating-linear-gradient(115deg, #f3b886 0, #efb1cb 6%, #c9d4ff 12%, #9fe0d0 18%, #f3b886 24%);
+    background-size: 220% 220%; background-position: var(--gx) var(--gy);
+    -webkit-mask: radial-gradient(circle at var(--gx) var(--gy), #000, transparent 42%); mask: radial-gradient(circle at var(--gx) var(--gy), #000, transparent 42%);
+  }
+
+  .idc-turn {
+    position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; padding: 0; margin: 0; border: 0; border-radius: inherit;
+    background: transparent; cursor: pointer;
+  }
+  .idc-turn:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+  .is-held .idc-turn { cursor: grabbing; }
+
+  .idc-head { display: flex; justify-content: space-between; align-items: baseline; pointer-events: none; }
+  .idc-mark { font: 400 7.4cqi/1 var(--f-display); letter-spacing: -0.01em; color: var(--ink); }
+  .idc-issued { font: 400 4cqi/1 var(--f-ui); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+  .idc-photo { display: block; margin-top: 4.4cqi; pointer-events: none; }
+  .idc-photo img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 2.4cqi; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); }
+
+  .idc-name { margin-top: 5.4cqi; font: 400 9.4cqi/0.98 var(--f-display); letter-spacing: -0.018em; pointer-events: none; }
+  .idc-name span, .idc-role span { display: block; }
+  .idc-role { margin-top: 3cqi; margin-bottom: 4cqi; font: 400 4.3cqi/1.4 var(--f-ui); color: var(--ink-2); pointer-events: none; }
+
+  .idc-foot { margin-top: auto; padding-top: 3cqi; display: flex; align-items: center; gap: 1.4cqi; border-top: 1px solid var(--rule); }
+  .idc-link, .idc-links a { position: relative; z-index: 2; }
+  .idc-link {
+    display: inline-flex; align-items: center; gap: 1.8cqi; min-height: 32px; padding: 0 2cqi; margin-left: -2cqi;
+    font: 400 4.3cqi/1 var(--f-ui); color: var(--ink-2); text-decoration: none; border-radius: 6px;
+  }
+  .idc-link + .idc-link { margin-left: 0; }
+  .idc-link:hover { color: var(--ink); }
+  .idc-link .icon { color: var(--ink-3); }
+  /* the security foil: a small hologram whose rings catch the light as the card turns */
+  .idc-seal {
+    margin-left: auto; width: 8.4cqi; height: 8.4cqi; border-radius: 50%; pointer-events: none;
+    background: repeating-radial-gradient(circle at 50% 50%, rgba(10, 9, 8, 0.55) 0 0.5px, transparent 0.6px 2.4px), var(--about-foil);
+    opacity: 0.72; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+  }
+
+  /* the mark, pressed into the card stock: no colour, only light and shade */
+  .idc-emboss {
+    margin-top: 12cqi; font: 400 34cqi/0.8 var(--f-display); letter-spacing: -0.03em; pointer-events: none;
+    color: rgba(233, 229, 222, 0.045);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 245, 232, 0.07);
+  }
+  .idc-line { margin-top: 9cqi; font: 400 8cqi/1.12 var(--f-display); letter-spacing: -0.015em; text-wrap: balance; pointer-events: none; }
+  .idc-links { margin-top: auto; }
+  .idc-links li { border-top: 1px solid var(--rule); }
+  .idc-links li:last-child { border-bottom: 1px solid var(--rule); }
+  .idc-links a { display: flex; align-items: center; gap: 2.4cqi; min-height: 44px; font: 400 4.6cqi/1 var(--f-ui); color: var(--ink); text-decoration: none; border-radius: 6px; }
+  .idc-links .idc-ln { margin-right: auto; }
+  .idc-links .idc-note { color: var(--ink-3); font-size: 4cqi; }
+  .idc-links a:hover .idc-note { color: var(--ink-2); }
+  .idc-links .icon:last-child { color: var(--ink-3); }
+  .idc-cap { margin-top: 4.5cqi; font: 400 4cqi/1.35 var(--f-ui); color: var(--ink-3); pointer-events: none; }
+
+  .idc-hint { margin-top: 18px; text-align: center; font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); color: var(--ink-3); }
+  .idc-hint span { display: none; }
+  :global(.fine) .idc-hint .h-drag { display: inline; }
+  :global(html:not(.fine)) .idc-hint .h-tap { display: inline; }
+
+  /* without JavaScript the card cannot turn: the front stands alone (it carries the name, the school and
+     both links; the back's line repeats the two tracks further down the page) */
+  :global(html:not(.js)) .idc-back, :global(html:not(.js)) .idc-turn, :global(html:not(.js)) .idc-hint { display: none; }
+
+  /* hidden face: never hit, never focused (it is also inert) */
+  .idc-face[inert] { pointer-events: none; }
+
+  /* reduced motion: the card hangs still, and the turn is a short crossfade (audit §4.4) */
+  @media (prefers-reduced-motion: reduce) {
+    .idc-card { transform: none !important; }
+    .idc-swing { transform: none !important; }
+    .idc-face { backface-visibility: visible; transition: opacity 150ms linear; }
+    .idc-back { transform: none; opacity: 0; }
+    .is-flipped .idc-back { opacity: 1; }
+    .is-flipped .idc-front { opacity: 0; }
+    :global(.fine) .idc-hint .h-drag { display: none; }
+    :global(.fine) .idc-hint .h-click { display: inline; }
+  }
+</style>

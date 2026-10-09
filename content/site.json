@@ -46,6 +46,12 @@
       "alt": "Eren in a black hoodie and round glasses, giving a thumbs-up at the YTU gate on a rainy day.",
       "caption": "At the YTÜ gate, in the rain"
     },
+    "card": {
+      "label": "ID card",
+      "issued": "Issued Oct 2026",
+      "back": "Fundamentals by hand, products by directing agents.",
+      "hint": { "drag": "Drag it, or click to turn it over", "click": "Click to turn it over", "tap": "Tap to turn it over" }
+    },
     "facts": [
       ["Study", "Computer Engineering, Yıldız Technical University"],
       ["Year", "First"],
