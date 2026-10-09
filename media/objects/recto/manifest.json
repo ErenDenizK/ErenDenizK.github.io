@@ -372,6 +372,111 @@
     "hevc": 1179664,
     "h264": 1223981
    }
+  },
+  "live": {
+   "normalsGrid": 174742,
+   "normalsRest": 3802,
+   "clipNormals": 41213,
+   "states": 67561,
+   "restFull": 13113,
+   "tiers": {
+    "phoneLive": 34943,
+    "desktopLite": 439779,
+    "desktopFull": 665045
+   },
+   "note": "desktop tiers add full-size grid frames on demand at rest (lean/full, about 10 KB each)"
+  }
+ },
+ "normals": {
+  "scale": 0.5,
+  "w": 330,
+  "h": 402,
+  "encoding": "R, G = camera-space normal x (right), y (up) as n * 0.5 + 0.5; z = sqrt(1 - x^2 - y^2); B unused (0); the ground is (0.5, 0.5); gate light by the beauty frame",
+  "rows": [
+   {
+    "src": "live/normals-r0.avif",
+    "type": "image/avif",
+    "bytes": 58574,
+    "row": 0,
+    "frames": 17
+   },
+   {
+    "src": "live/normals-r1.avif",
+    "type": "image/avif",
+    "bytes": 58044,
+    "row": 1,
+    "frames": 17
+   },
+   {
+    "src": "live/normals-r2.avif",
+    "type": "image/avif",
+    "bytes": 58124,
+    "row": 2,
+    "frames": 17
+   }
+  ],
+  "rest": {
+   "src": "live/normals-rest.avif",
+   "type": "image/avif",
+   "bytes": 3802
+  },
+  "clips": {
+   "interact": {
+    "crop": {
+     "x": 166,
+     "y": 134,
+     "w": 684,
+     "h": 788
+    },
+    "w": 342,
+    "h": 394,
+    "frames": 12,
+    "src": "live/clip-normals.avif",
+    "type": "image/avif",
+    "bytes": 41213
+   }
+  }
+ },
+ "states": {
+  "interact": {
+   "axis": "state",
+   "fps": 30,
+   "frames": 12,
+   "crop": {
+    "x": 166,
+    "y": 134,
+    "w": 684,
+    "h": 788
+   },
+   "half": {
+    "w": 342,
+    "h": 394,
+    "src": "live/clip-half.avif",
+    "type": "image/avif",
+    "bytes": 52974
+   },
+   "peak": 11,
+   "values": [
+    0.0,
+    0.0553,
+    0.1835,
+    0.3448,
+    0.5103,
+    0.6604,
+    0.7845,
+    0.8784,
+    0.9426,
+    0.9808,
+    0.9981,
+    1.0
+   ],
+   "peakFull": {
+    "w": 684,
+    "h": 788,
+    "src": "live/clip-peak.avif",
+    "type": "image/avif",
+    "bytes": 14587
+   }
   }
  }
 }
