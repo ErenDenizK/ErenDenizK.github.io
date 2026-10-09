@@ -222,3 +222,15 @@ log design are to be explored.
 - **Home:** the product plate (variant A) and the wordmarks (Recto in Funnel Display, English
   Prep's own `english prep.`, Eat Map in Nunito) are accepted.
 - **Recto logo:** a new search with Dengeli as one candidate, worked in Penpot together.
+
+### 2026-10-09 (late: boost and the family kit)
+
+- **Boost:** unlimited use until 05:00 Istanbul on 10 October; after that, a safe, minimal mode
+  until the owner widens it again.
+- **Fonts:** each app keeps its own faces (family vision §2.5).
+- **Family kit first:** prepare the shared design files and a ready prompt per app, so the owner
+  can run each app's work in its own session.
+- **Shared origin:** light, certainly; the dot maybe. `edk.` appears in apps only at exits.
+- **Grain stays** in the portfolio. Recto's "grain ban" is a misrecording: the owner had asked to
+  fix the glass object's wrong render and its banding, not to ban grain.
+- **Scroll rail:** concept B, the contents ladder.
