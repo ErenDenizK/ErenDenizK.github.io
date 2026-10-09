@@ -21,6 +21,8 @@ export type Poster = {
   src: string;
   sources: { type: string; srcset: string }[];
   manifest: string | null;
+  /** Optional contact shadow (manifest `shadow`), drawn with multiply under the additive object. */
+  shadow: { src: string; srcset: string } | null;
 };
 
 export function poster(name: string): Poster {
@@ -40,9 +42,12 @@ export function poster(name: string): Poster {
       src: dir + (webp || m.poster.sources[0]).src,
       sources: [...byType].map(([type, l]) => ({ type, srcset: l.join(', ') })),
       manifest: dir + 'manifest.json',
+      shadow: m.shadow?.sources?.length
+        ? { src: dir + m.shadow.sources[m.shadow.sources.length - 1].src, srcset: m.shadow.sources.map((x: { src: string; w: number }) => `${dir}${x.src} ${x.w}w`).join(', ') }
+        : null,
     };
   }
   const f = fallbacks[`../assets/objects/${name}-poster.webp`];
   if (!f) throw new Error(`no poster for object "${name}": render media/objects/${name}/ or add src/assets/objects/${name}-poster.webp`);
-  return { name, light, w: 1200, h: 1200, src: f, sources: [], manifest: null };
+  return { name, light, w: 1200, h: 1200, src: f, sources: [], manifest: null, shadow: null };
 }

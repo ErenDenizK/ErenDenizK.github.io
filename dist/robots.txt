@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://erendenizk.github.io/Portfolio/sitemap-index.xml

@@ -2,7 +2,7 @@
 /* One project drawn over time (log.md §5.4), at build time. Marks are placed in percent so the row
    fits any width without redrawing; notes small, entries larger, essays ringed. */
 import type { Thread } from '../lib/site';
-import { monYear, url, projectPath } from '../lib/site';
+import { monYear, url } from '../lib/site';
 interface Props { t: Thread; link?: boolean }
 const { t, link = false } = Astro.props;
 const p = t.project;

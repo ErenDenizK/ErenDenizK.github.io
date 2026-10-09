@@ -85,6 +85,11 @@ const graph = [
     (function () {
       var d = document.documentElement;
       d.classList.add('js');
+      /* arriving through the droplet (scripts/media.ts): hide the poster from the first paint */
+      try {
+        var at = +sessionStorage.getItem('edk-droplet');
+        if (at && Date.now() - at < 4000 && !matchMedia('(prefers-reduced-motion: reduce)').matches && !/[?&]still/.test(location.search)) d.dataset.arrive = '1';
+      } catch (e) {}
       var base = d.dataset.base || '/';
       function where(path) {
         var p = String(path || '').replace(/^https?:\/\/[^/]+/, '');

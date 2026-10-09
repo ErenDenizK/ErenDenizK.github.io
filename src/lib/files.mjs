@@ -25,6 +25,17 @@ export function ogPath(id) {
   return `og/${id}.${hash(file)}.jpg`;
 }
 
+/** Cards the pages use: home, about and each project's `og` (variants and samples stay in tools/og). */
+function usedCards() {
+  const ids = new Set(['home', 'about']);
+  const dir = path.join(ROOT, 'content/projects');
+  if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) {
+    const m = /^og:\s*([\w-]+)/m.exec(fs.readFileSync(path.join(dir, f), 'utf8'));
+    if (m) ids.add(m[1]);
+  }
+  return ids;
+}
+
 /** Every file to publish: [published path, source path]. */
 export function publishedFiles() {
   const out = [];
@@ -38,12 +49,9 @@ export function publishedFiles() {
     };
     walk(MEDIA_DIR);
   }
-  if (fs.existsSync(OG_DIR)) {
-    for (const f of fs.readdirSync(OG_DIR)) {
-      if (!f.endsWith('.jpg')) continue;
-      const id = f.slice(0, -4);
-      out.push([ogPath(id), path.join(OG_DIR, f)]);
-    }
+  for (const id of usedCards()) {
+    const p = ogPath(id);
+    if (p) out.push([p, path.join(OG_DIR, id + '.jpg')]);
   }
   const I = path.join(OG_DIR, 'icons');
   const icon = (variant, name) => path.join(I, `${variant}-${name}`);

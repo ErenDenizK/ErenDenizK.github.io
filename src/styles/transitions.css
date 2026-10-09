@@ -6,9 +6,9 @@
 @media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
 
 .bar { view-transition-name: bar; }
-.media.stage { view-transition-name: stage; }
+.media.stage .m-stage { view-transition-name: stage; }
 /* the sheet's own same-document transition morphs only the project title (craft audit P2.6) */
-html.vt-sheet .bar, html.vt-sheet .media.stage, html.vt-sheet .tabs .ind { view-transition-name: none; }
+html.vt-sheet .bar, html.vt-sheet .media.stage .m-stage, html.vt-sheet .tabs .ind { view-transition-name: none; }
 
 /* the page: the outgoing page fades in place, the incoming one rises 12 px and moves 24 px toward the tab direction */
 html:not(.vt-sheet)::view-transition-old(root) { animation: vt-out 160ms var(--ease-in) both; }

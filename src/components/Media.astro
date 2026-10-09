@@ -1,19 +1,25 @@
 ---
 /* The object stage (ADR-0006, media research §8): the poster paints first and is complete on its own.
-   The client (scripts/media.ts) reads data-manifest after load and idle, and only then adds the
-   idle loop, the lean grid and the interaction clip, when motion is welcome. */
+   The client (scripts/media.ts) reads data-manifest after load and idle, and only then adds the idle
+   loop, the lean grid, the interaction clip and the droplet change, when motion is welcome.
+   Structure: .media sizes the slot; .m-shadow (optional, multiply) darkens the real ground under the
+   object; .m-stage is one additive group (glow + ground-subtracted media, plus-lighter) and is what
+   morphs between pages (ADR-0007). */
 import { poster } from '../lib/media';
 interface Props { obj: string; slot: string; stage?: boolean; class?: string; sizes?: string; priority?: boolean; light?: string }
 const { obj, slot, stage = false, class: cls = '', sizes = '(min-width: 900px) 470px, 60vw', priority = false, light } = Astro.props;
 const p = poster(obj);
 ---
 <div class:list={['media', cls, { stage }]} data-slot={slot} data-obj={obj} data-manifest={p.manifest} style={`--light: ${light || p.light}`} aria-hidden="true">
-  <div class="m-glow"></div>
-  <div class="m-layer" data-obj={obj}>
-    <picture>
-      {p.sources.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} />)}
-      <img class="m-poster" src={p.src} alt="" width={p.w} height={p.h} decoding="async" fetchpriority={priority ? 'high' : undefined} loading={priority ? undefined : 'lazy'} />
-    </picture>
+  {p.shadow && <img class="m-shadow" src={p.shadow.src} srcset={p.shadow.srcset} sizes={sizes} alt="" decoding="async" />}
+  <div class="m-stage">
+    <div class="m-glow"></div>
+    <div class="m-layer" data-obj={obj}>
+      <picture>
+        {p.sources.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} />)}
+        <img class="m-poster" src={p.src} alt="" width={p.w} height={p.h} decoding="async" fetchpriority={priority ? 'high' : undefined} loading={priority ? undefined : 'lazy'} />
+      </picture>
+    </div>
+    <div class="m-glint"></div>
   </div>
-  <div class="m-glint"></div>
 </div>

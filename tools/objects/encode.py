@@ -16,7 +16,14 @@ libsvtav1, libx265 and libx264 (Ubuntu's ffmpeg 6.1 has all three).
    it backward; browsers cannot play video in reverse) and an idle loop synthesised from the
    grid, each as AV1 10-bit, HEVC Main 10 (hvc1) and H.264 High, BT.709 limited range tagged,
    +faststart, no audio. Clips are padded back to the full square so they sit on the poster.
-4. manifest.json: what the media stage reads (shape in README.md, "The manifest").
+4. The floor shadow (frames.py stage `shadow`), which step 1 zeroes: a small grayscale map
+   m = composite / ground, clamped to 1, meaning "multiply the ground by this". The page draws
+   it under the object with mix-blend-mode: multiply, so ground * m + object reproduces the
+   poster's floor.
+5. manifest.json: what the media stage reads (shape in README.md, "The manifest").
+
+Per-object settings that differ from the defaults (budgets, media research §7) are in OBJECT
+below, so a rerun reproduces the shipped files; command-line flags override them.
 """
 import argparse
 import json
@@ -39,13 +46,24 @@ ap.add_argument("obj")
 ap.add_argument("--masters", default=os.environ.get("OBJECT_MASTERS", "/tmp/object-masters"))
 ap.add_argument("--out", default=os.path.join(REPO, "media", "objects"))
 ap.add_argument("--still", choices=("auto", "webp", "avif"), default="auto")
-ap.add_argument("--webp-q", type=int, default=82)
-ap.add_argument("--avif-q", type=int, default=60)
-ap.add_argument("--avif-q-half", type=int, default=50, help="the half tier only stands in until the full one arrives")
-ap.add_argument("--idle-seconds", type=float, default=6.0)
+ap.add_argument("--webp-q", type=int)
+ap.add_argument("--avif-q", type=int, help="full grid tier (default 60)")
+ap.add_argument("--avif-q-half", type=int, help="the half tier only stands in until the full one arrives (default 50)")
+ap.add_argument("--idle-seconds", type=float)
 ap.add_argument("--droplet-fps", type=int, default=60)
+ap.add_argument("--videos", default="interact,droplet,idle",
+                help="videos to (re-)encode; the others are kept from the existing manifest")
 ap.add_argument("--skip-video", action="store_true", help="stills and manifest only (tests)")
 A = ap.parse_args()
+
+# Defaults, then per-object overrides (e.g. {"edk": {"avif_q": 55}}) for an object that does not
+# fit the desktop (~1.15 MB) or phone (~450 KB AV1) budget. None needs one since edk's rest turn
+# went from -12 to -4 deg: its grid frames shrank by a quarter.
+DEFAULTS = {"webp_q": 82, "avif_q": 60, "avif_q_half": 50, "idle_seconds": 6.0}
+OBJECT = {}
+for k, v in {**DEFAULTS, **OBJECT.get(A.obj, {})}.items():
+    if getattr(A, k) is None:
+        setattr(A, k, v)
 
 M = os.path.join(A.masters, A.obj)
 OUT = os.path.join(A.out, A.obj)
@@ -215,7 +233,7 @@ def codec_string(path, kind):
 
 
 # the idle loop is made of blended grid frames (soft, always moving): it takes a higher CRF
-IDLE_CRF = {"av1": "34", "hevc": "28", "h264": "25"}
+IDLE_CRF = {"av1": "36", "hevc": "30", "h264": "27"}
 
 
 def encode_video(seq_dir, name, fps, crf=None):
@@ -310,8 +328,19 @@ for w in (600, 1200):
 
 # ================================================================ 3. video
 videos = {}
-if not A.skip_video:
-    # the interaction clip
+WANT = set() if A.skip_video else {v.strip() for v in A.videos.split(",") if v.strip()}
+prev_path = os.path.join(OUT, "manifest.json")
+prev = json.load(open(prev_path)) if os.path.exists(prev_path) else {}
+# kept videos: their files are already in OUT, their entries come from the previous manifest
+if "interact" not in WANT and prev.get("clips", {}).get("interact"):
+    videos["interact"] = {k: v for k, v in prev["clips"]["interact"].items() if k not in ("label", "returnsToRest")}
+if "droplet" not in WANT and prev.get("droplet"):
+    videos["droplet-out"], videos["droplet-in"] = prev["droplet"]["out"], prev["droplet"]["in"]
+if "idle" not in WANT and prev.get("idle"):
+    videos["idle"] = prev["idle"]
+drop_n = prev["droplet"]["frames"] if prev.get("droplet") else 0
+
+if "interact" in WANT:
     cfiles, ccrop = frames_of("clip")
     clip = [pad(subtracted(f), ccrop, SIZE) for f in cfiles]
     report["clip_edge_max_levels"] = round(max(edge_max(subtracted(f)) for f in cfiles[::4]), 2)
@@ -320,8 +349,10 @@ if not A.skip_video:
     videos["interact"] = {"fps": ccrop["fps"], "frames": len(clip), "duration": round(len(clip) / ccrop["fps"], 3),
                           "sources": srcs, "check": check_video(os.path.join(OUT, srcs[0]["src"]), clip[0])}
 
+if "droplet" in WANT:
     # the droplet, forward and reversed
     dfiles, dcrop = frames_of("droplet")
+    drop_n = len(dfiles)
     drop = [pad(subtracted(f), dcrop, SIZE) for f in dfiles]
     report["droplet_edge_max_levels"] = round(max(edge_max(subtracted(f)) for f in dfiles[::4]), 2)
     write_seq(drop, os.path.join(WORK, "droplet"))
@@ -331,6 +362,7 @@ if not A.skip_video:
         videos[f"droplet-{key}"] = {"sources": srcs}
     videos["droplet-out"]["check"] = check_video(os.path.join(OUT, videos["droplet-out"]["sources"][0]["src"]), drop[0])
 
+if "idle" in WANT:
     # the idle loop: a slow figure-of-eight through the grid, from the grid itself
     n = round(A.idle_seconds * 30)
     full = [pad(a, gcrop, SIZE) for a in grid]
@@ -350,7 +382,45 @@ if not A.skip_video:
     srcs = encode_video(os.path.join(WORK, "idle"), "idle", 30, IDLE_CRF)
     videos["idle"] = {"fps": 30, "frames": n, "duration": round(n / 30, 3), "loop": True, "sources": srcs}
 
-# ================================================================ 4. manifest
+# ================================================================ 4. the floor shadow
+shadow = None
+sdir = os.path.join(M, "shadow")
+if os.path.isdir(sdir) and any(f.startswith("f_") for f in os.listdir(sdir)):
+    sfiles, scrop = frames_of("shadow")
+    im = read_rgba16(sfiles[0])
+    a = im[..., 3:4]
+    comp = im[..., :3] * a + G * (1 - a)              # as common.render_poster, in code values
+    m = np.clip(comp.mean(-1) / G.mean(), 0, 1)        # grey: the ground is neutral to 1 level
+    # a 1 px blur takes the catcher's sampling grain out; the shadow is soft anyway
+    k = np.exp(-0.5 * np.arange(-3, 4) ** 2)
+    k /= k.sum()
+    for ax in (0, 1):
+        m = np.apply_along_axis(lambda r: np.convolve(np.pad(r, 3, mode="edge"), k, "valid"), ax, m)
+    m = np.clip(m, 0, 1)
+    # The key shadow can run off the square (Recto's does); the page's ground continues past
+    # the square, so the shadow fades out over the outer 12 % instead of ending on a straight edge
+    hh, ww = m.shape
+    d = np.minimum.outer(np.minimum(np.arange(hh), hh - 1 - np.arange(hh)),
+                         np.minimum(np.arange(ww), ww - 1 - np.arange(ww))) / (0.12 * min(hh, ww))
+    d = np.clip(d, 0, 1)
+    m = 1 - (1 - m) * d * d * (3 - 2 * d)
+    m[m > 0.995] = 1.0                                 # far floor: exactly "no change"
+    sw = m.shape[1]
+    im8 = Image.fromarray(np.round(m * 255).astype(np.uint8), "L")
+    shadow = {"blend": "multiply", "pose": "rest", "w": sw, "h": m.shape[0], "min": round(float(m.min()), 3),
+              "sources": []}
+    for fmt in ("avif", "webp"):
+        p = os.path.join(OUT, f"shadow.{fmt}")
+        if fmt == "avif":
+            im8.save(p, "AVIF", quality=70, speed=4)
+        else:
+            im8.save(p, "WEBP", quality=80, method=6)
+        dec = np.asarray(Image.open(p).convert("L")).astype(int)
+        report[f"shadow_{fmt}"] = {"bytes": size(p), "max_err_levels": int(np.abs(dec - np.round(m * 255)).max()),
+                                   "white_off": int((dec[m == 1] != 255).sum())}
+        shadow["sources"].append({"src": rel(p), "type": f"image/{fmt}", "bytes": size(p)})
+
+# ================================================================ 5. manifest
 cinfo = json.load(open(os.path.join(M, "clip", "crop.json"))) if os.path.exists(os.path.join(M, "clip", "crop.json")) else {}
 dinfo = json.load(open(os.path.join(M, "droplet", "crop.json"))) if os.path.exists(os.path.join(M, "droplet", "crop.json")) else {}
 CLIP_NAME = {"edk": "hop", "recto": "fan", "englishprep": "pop", "eatmap": "drop", "log": "on-air"}
@@ -385,15 +455,20 @@ man = {
     "idle": videos.get("idle"),
     "clips": ({"interact": {"label": CLIP_NAME.get(A.obj), "returnsToRest": True, **videos["interact"]}}
               if "interact" in videos else {}),
-    "droplet": ({"fps": A.droplet_fps, "frames": len(dfiles), "duration": round(len(dfiles) / A.droplet_fps, 3),
-                 "dropletFrame": len(dfiles) - 1, "curve": dinfo.get("curve"),
+    "droplet": ({"fps": A.droplet_fps, "frames": drop_n, "duration": round(drop_n / A.droplet_fps, 3),
+                 "dropletFrame": drop_n - 1, "curve": dinfo.get("curve"),
                  "out": videos["droplet-out"], "in": videos["droplet-in"]} if "droplet-out" in videos else None),
 }
+if shadow:
+    man["shadow"] = shadow
 p1200 = min(s["bytes"] for s in poster["sources"] if s["w"] == 1200)
 half_b = tiers[0]["bytes"]
 full_b = tiers[1]["bytes"]
+sh_b = min(s["bytes"] for s in shadow["sources"]) if shadow else 0
+p1200 += sh_b   # the shadow ships with the poster: every tier below includes it
 man["bytes"] = {
-    "poster1200": p1200,
+    "shadow": sh_b,
+    "poster1200": p1200 - sh_b,
     "leanHalf": half_b,
     "leanFull": full_b,
     "clips": {c: vbytes("interact", c) + vbytes("droplet-out", c) + vbytes("droplet-in", c) for c in CODECS},

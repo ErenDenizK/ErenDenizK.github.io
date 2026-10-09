@@ -42,7 +42,8 @@ fs.mkdirSync(OUT, { recursive: true });
   }
   const png = await sharp(out, { raw: { width: W, height: H, channels: 3 } }).png().toBuffer();
   for (const w of [750, 1000, 1350]) {
-    await sharp(png).resize(w).avif({ quality: 50, effort: 6 }).toFile(path.join(OUT, `courtyard-${w}.avif`));
+    await sharp(png).resize(w).avif({ quality: w > 1000 ? 46 : 50, effort: 6 })   // 1350w within the photo budget (media research §7: <= 180 KB)
+    .toFile(path.join(OUT, `courtyard-${w}.avif`));
     await sharp(png).resize(w).webp({ quality: 74, effort: 6, smartSubsample: true }).toFile(path.join(OUT, `courtyard-${w}.webp`));
   }
 }
@@ -62,7 +63,7 @@ fs.mkdirSync(OUT, { recursive: true });
 {
   const n = 128, gb = Buffer.alloc(n * n * 4);
   for (let i = 0; i < n * n; i++) { const v = Math.round(rnd() * 90); gb[i * 4] = gb[i * 4 + 1] = gb[i * 4 + 2] = v; gb[i * 4 + 3] = 12; }
-  await sharp(gb, { raw: { width: n, height: n, channels: 4 } }).png({ compressionLevel: 9 }).toFile(path.join(OUT, 'grain.png'));
+  await sharp(gb, { raw: { width: n, height: n, channels: 4 } }).png({ palette: true, colours: 16, compressionLevel: 9 }).toFile(path.join(OUT, 'grain.png'));   // 5 KB
 }
 
 for (const f of fs.readdirSync(OUT).sort()) console.log(f.padEnd(24), (fs.statSync(path.join(OUT, f)).size / 1024).toFixed(1), 'KB');
