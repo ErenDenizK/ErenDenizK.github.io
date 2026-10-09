@@ -1,0 +1,12 @@
+---
+/* A figure from tools/illustrations (log.md §7): two drawings, one per width, never a scaled-down
+   wide one. Use in an MDX entry: <Figure name="entry-flow" />. */
+import drawings from '../../tools/illustrations/out/drawings.json';
+interface Props { name: string; caption?: string }
+const d = (drawings as any)[Astro.props.name];
+if (!d) throw new Error(`unknown drawing "${Astro.props.name}" (tools/illustrations/out/drawings.json)`);
+---
+<figure class="fig" id={`fig-${Astro.props.name}`}>
+  <div class="fig-art"><div class="fig-w" set:html={d.wide} /><div class="fig-n" set:html={d.narrow} /></div>
+  <figcaption class="meta">{Astro.props.caption ?? d.caption}</figcaption>
+</figure>

@@ -1,0 +1,72 @@
+---
+/* A project's focus view (UX research §2; brief §4.1 layered depth): teaser, facts, then what, why,
+   how, learned, next, and the project's thread and entries from the log. The same article is the
+   standalone page /work/<slug>/ and, on wide screens with JavaScript, the sheet over Work or Home. */
+import Media from './Media.astro';
+import Icon from './Icon.astro';
+import Ph from './Ph.astro';
+import Text from './Text.astro';
+import Section from './Section.astro';
+import ThreadRow from './ThreadRow.astro';
+import LogRow from './LogRow.astro';
+import { url, projectPath, ym, isPlaceholder, threads, type Project, type LogEntry } from '../lib/site';
+interface Props { p: Project; prev: Project; next: Project; index: number; total: number; entries: LogEntry[]; allEntries: LogEntry[]; projects: Project[] }
+const { p, prev, next, index, total, entries, allEntries, projects } = Astro.props;
+const d = p.data;
+const a = d.accent;
+const vars = [`--p: ${a.color}`, a.glow && `--pg: ${a.glow}`, a.p2 && `--p2: ${a.p2}`, a.p3 && `--p3: ${a.p3}`].filter(Boolean).join('; ');
+const thread = threads(allEntries, projects).rows.find((t) => t.project.id === p.id);
+const sections = [
+  ['what', 'What it is', d.what], ['why', 'Why', d.why], ['how', 'How', d.how],
+  ['learned', 'What I learned', d.learned], ['next', 'Next', d.next],
+] as const;
+const toc = [...sections.map(([id, label]) => [id, label === 'What I learned' ? 'Learned' : label]), ...(entries.length ? [['in-the-log', 'In the log']] : [])];
+const statusLine = [d.status, d.version && !isPlaceholder(d.version) ? d.version : null, d.statusNote].filter(Boolean).join(' · ');
+---
+<article class="case" data-case={p.id} data-index={index + 1} data-total={total} data-title={d.title} style={vars}>
+  <div class="case-top">
+    <div>
+      <p class="meta">{statusLine}</p>
+      <h1 class="case-title" id="focus-title" tabindex="-1">{d.title}</h1>
+      <p class="oneliner lede">{d.summary} {d.summaryPlaceholder && <Ph text={d.summaryPlaceholder} />}</p>
+      <div class="links">
+        {d.links.map((l, i) => i === 0 && l.kind === 'live'
+          ? <a class="btn tint" href={l.href}>{l.label} <Icon name="arrow-up-right" weight="medium" /></a>
+          : <a class="qlink" href={l.href}>{l.label} <Icon name="arrow-up-right" /></a>)}
+        {d.linksNote && <span class="qlink is-ph">{d.linksNote}</span>}
+      </div>
+    </div>
+    <Media obj={d.object} slot="sheet" light={a.glow ?? a.color} sizes="(min-width: 900px) 420px, 78vw" priority />
+  </div>
+  <dl class="case-facts">
+    <div><dt class="meta">Status</dt><dd>{d.status}</dd></div>
+    <div><dt class="meta">Version</dt><dd><Text value={d.version ?? { placeholder: 'to come' }} /></dd></div>
+    <div><dt class="meta">Role</dt><dd>{d.role}</dd></div>
+    <div><dt class="meta">Started</dt><dd>{isPlaceholder(d.started) ? <Ph text={d.started.placeholder} /> : ym(d.started, true)}</dd></div>
+    <div><dt class="meta">Runs on</dt><dd>{d.runsOn}</dd></div>
+  </dl>
+  <div class="case-body">
+    <nav class="toc" aria-label="Sections">
+      {toc.map(([id, label], i) => <a href={`#${id}`} class:list={{ on: i === 0 }}>{label}</a>)}
+    </nav>
+    <div>
+      {sections.map(([id, label, s]) => (
+        <section class="case-sec" id={id} aria-labelledby={`${id}-h`}>
+          <h2 id={`${id}-h`}>{label}</h2>
+          <Section s={s} />
+        </section>
+      ))}
+      {entries.length > 0 && (
+        <section class="case-sec" id="in-the-log" aria-labelledby="in-the-log-h">
+          <h2 id="in-the-log-h">In the log</h2>
+          {thread && <div class="threads case-thread"><ThreadRow t={thread} /></div>}
+          <ol class="entries">{entries.map((e) => <LogRow e={e} projects={projects} compact />)}</ol>
+        </section>
+      )}
+      <nav class="case-next" aria-label="Other projects">
+        <a href={url(projectPath(prev))} data-go={prev.id} rel="prev"><span class="meta"><Icon name="arrow-left" />Previous</span><b>{prev.data.title}</b></a>
+        <a href={url(projectPath(next))} data-go={next.id} rel="next"><span class="meta">Next<Icon name="arrow-right" /></span><b>{next.data.title}</b></a>
+      </nav>
+    </div>
+  </div>
+</article>

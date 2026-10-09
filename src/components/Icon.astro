@@ -1,0 +1,15 @@
+---
+/* Inline SVG from the generated set (tools/icons/out/icons.json). Never write arrows or symbols as
+   characters: on iOS they fall back to emoji (icons research §1). */
+import icons from '../../tools/icons/out/icons.json';
+interface Props { name: string; size?: 16 | 20 | 24; weight?: 'regular' | 'medium' }
+const { name, size = 16, weight = 'regular' } = Astro.props;
+const set = (icons as any).icons as Record<string, any>;
+const meta = set[name];
+if (!meta) throw new Error(`unknown icon "${name}"`);
+const svg: string = meta.sizes[String(size)][weight].svg;
+const cls = 'icon' + (size === 16 ? '' : ' icon--' + size);
+const attrs = ` class="${cls}" data-name="${name}" data-align="${meta.align ?? 'cap'}" data-animate="${meta.animate ?? 'none'}" data-size="${size}" focusable="false" aria-hidden="true"`;
+const html = svg.replace('<svg ', '<svg' + attrs + ' ').replace(' xmlns="http://www.w3.org/2000/svg"', '');
+---
+<Fragment set:html={html} />

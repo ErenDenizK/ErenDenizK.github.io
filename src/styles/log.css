@@ -1,0 +1,171 @@
+/* ---------- log index (docs/design/log.md §4–§5) ---------- */
+.pj { color: color-mix(in srgb, var(--p) 72%, var(--ink)); text-decoration: none; }
+a.pj:hover { text-decoration: underline; text-decoration-color: currentColor; }
+.e-tags { display: block; margin-top: 8px; }
+.e-tags .sep { color: var(--ink-4); padding: 0 0.35em; }
+.e-kind { color: var(--ink-3); }
+.entry[hidden], .ygroup[hidden] { display: none; }
+
+/* notes: no title; the text itself is the row, in the reading face (§4.1) */
+.n-row { display: grid; grid-template-columns: 5rem minmax(0, 1fr) auto; gap: 6px 20px; align-items: baseline; padding: 22px 0; }
+.n-date { text-decoration: none; color: var(--ink-3); }
+.n-date:hover { color: var(--ink); }
+.n-text { font: 400 var(--t-read)/1.5 var(--f-read); color: var(--read); max-width: 32em; text-wrap: pretty; }
+.n-row .e-kind { grid-column: 3; grid-row: 1; }
+.entry:target .n-text, .entry.flash .n-text { color: var(--ink); }
+
+/* essays: a link to their own page, with a plate of the lead figure */
+a.e-row.e-link { text-decoration: none; color: inherit; }
+.e-link .e-meta .icon { transition: transform 200ms var(--ease-out), color var(--d-1); }
+.e-plate { grid-column: 3; grid-row: 2 / span 2; justify-self: end; align-self: start; margin-top: 4px; width: 96px; height: 56px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--rule); }
+.e-plate svg { display: block; }
+.e-link:hover .e-title { color: #fff8ec; }
+
+/* corrections and updates inside an entry (§3.5, §3.6) */
+.correction, .update { font: 400 var(--t-ui)/var(--lh-ui) var(--f-ui); color: var(--ink-2); padding: 12px 0 12px 16px; border-left: 1px solid var(--rule-2); max-width: 34em; }
+.correction { margin-bottom: 1.1em; }
+.update { margin-top: 1.1em; }
+.correction b, .update b { font-weight: 500; color: var(--ink); }
+del { color: var(--ink-3); text-decoration-thickness: 1px; }
+ins { text-decoration: none; color: var(--ink); }
+
+/* year groups */
+.ygroup + .ygroup { margin-top: 72px; }
+.year .meta b { font-weight: 400; color: var(--ink-2); }
+.ygroup.collapsed .entry:nth-child(n+4) { display: none; }
+.y-more { text-decoration: none; box-sizing: border-box; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: 8px; font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-2); }
+.y-more:hover { color: var(--ink); }
+.y-more:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+
+/* filters: only from 20 entries (§5.3) */
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin: 0 0 36px; }
+.seg { display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--rule-2); }
+.seg button, .chips button { all: unset; box-sizing: border-box; cursor: pointer; min-height: 38px; padding: 0 14px; border-radius: 999px; font: 500 14px/1 var(--f-ui); color: var(--ink-3); display: inline-flex; align-items: center; gap: 6px; transition: color var(--d-1), background var(--d-1); }
+.seg button:hover, .chips button:hover { color: var(--ink); }
+.seg button[aria-pressed="true"] { background: rgba(255, 255, 255, 0.075); color: var(--ink); }
+.seg .n { font-weight: 400; color: var(--ink-4); font-variant-numeric: tabular-nums; }
+.seg button[aria-pressed="true"] .n { color: var(--ink-3); }
+.chips { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.chips button { box-shadow: inset 0 0 0 1px var(--rule-2); }
+.chips button[aria-pressed="true"] { box-shadow: inset 0 0 0 1px var(--ink-3); color: var(--ink); background: rgba(255, 255, 255, 0.04); }
+.seg button:focus-visible, .chips button:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.filter-state { display: flex; align-items: center; gap: 12px; min-height: 0; margin: -20px 0 28px; }
+.filter-state:empty { display: none; }
+.filter-state button { all: unset; cursor: pointer; color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--ink-4); text-underline-offset: 0.22em; min-height: 32px; display: inline-flex; align-items: center; }
+.filter-state button:hover { color: var(--ink); }
+.years-inline { display: none; }
+
+/* aside: object, threads, years */
+.log-two { --side-gap: 64px; }
+.log-media { width: min(100%, 240px); margin: 0 auto 8px; }
+.side-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--rule-2); }
+.side-head h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: -0.012em; }
+.threads { margin-top: 8px; }
+.thread { box-sizing: border-box; text-decoration: none; color: inherit; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; width: 100%; padding: 14px 0 10px; border-bottom: 1px solid var(--rule); }
+.thread .t-n { font: 500 var(--t-ui)/1.2 var(--f-ui); }
+.thread .t-c { font: 400 var(--t-meta)/1.2 var(--f-ui); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.thread svg { grid-column: 1 / -1; display: block; width: 100%; height: 24px; overflow: visible; }
+.thread:is(a):hover .t-n, .thread[aria-current="true"] .t-n { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
+.thread.dim { opacity: 0.45; }
+.thread:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.t-axis { display: block; width: 100%; height: 22px; margin-top: 6px; overflow: visible; }
+.t-axis text { font: 400 12px/1 var(--f-ui); fill: var(--ink-3); font-variant-numeric: tabular-nums; }
+.threads-note { margin-top: 12px; max-width: 26em; }
+.years { margin-top: 40px; }
+.years ol { margin-top: 4px; }
+.years a { box-sizing: border-box; text-decoration: none; width: 100%; display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; border-bottom: 1px solid var(--rule); font: 400 var(--t-ui)/1.2 var(--f-ui); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.years a:hover { color: var(--ink); }
+.years a .meta { color: var(--ink-3); }
+.years a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+/* no overflow here: it would clip the object's glow into a visible box */
+
+/* ---------- one essay on its own page (§3.3, §7) ---------- */
+.post-wrap { display: grid; grid-template-columns: 180px minmax(0, 680px) 180px; justify-content: center; gap: 0 56px; padding-top: 40px; }
+.post-toc { position: sticky; top: calc(var(--bar-h) + 40px); align-self: start; display: grid; gap: 4px; }
+.post-toc .meta { margin: 28px 0 6px; }
+.post-toc ol { display: grid; gap: 2px; }
+.post-toc a { display: block; text-decoration: none; padding: 6px 0 6px 14px; color: var(--ink-3); font: 400 var(--t-ui)/var(--lh-ui) var(--f-ui); border-left: 1px solid var(--rule); transition: color var(--d-1), border-color var(--d-1); }
+.post-toc a:hover { color: var(--ink); }
+.post-toc a.on { color: var(--ink); border-left-color: var(--log); }
+.post-toc a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+.post-back { min-height: 40px; }
+.post-back .icon { color: var(--ink-3); }
+.post-back-sm { display: none; }
+.post-head { padding-top: 4px; }
+.post-title { font: 400 var(--t-title)/var(--lh-title) var(--f-display); letter-spacing: -0.02em; margin: 16px 0 0 -0.03em; text-wrap: balance; }
+.post-dek { margin-top: 24px; color: var(--ink-2); max-width: 28em; }
+.post-body { margin-top: 56px; max-width: none; }
+.post-body h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: -0.012em; color: var(--ink); margin: 1.9em 0 0.6em; scroll-margin-top: calc(var(--bar-h) + 24px); }
+.post-body .post-update { margin-top: 2.4em; }
+.post-update { font: 400 var(--t-ui)/var(--lh-ui) var(--f-ui); color: var(--ink-2); padding: 14px 0 14px 16px; border-left: 1px solid var(--rule-2); }
+.post-update b { font-weight: 500; color: var(--ink); }
+
+/* figures: two drawings, one per width; never a scaled-down wide one (tools/illustrations) */
+.fig { --fw: min(720px, calc(100vw - 2 * var(--gut))); width: var(--fw); margin: 2.4em calc((100% - var(--fw)) / 2); container-type: inline-size; }
+.fig-w { display: none; }
+.fig-n svg { margin: 0 auto; }
+@container (min-width: 720px) { .fig-w { display: block; } .fig-n { display: none; } }
+.fig figcaption { margin-top: 18px; max-width: 40em; }
+.post-foot { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--rule-2); }
+.post-meta-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; }
+.copy-link { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-2); }
+.copy-link:hover { color: var(--ink); }
+.copy-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+.post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+.pn { display: grid; gap: 6px; padding: 14px 0; text-decoration: none; color: inherit; }
+.pn:last-child { text-align: right; justify-items: end; }
+.pn .meta { display: inline-flex; align-items: center; gap: 6px; }
+.pn b { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); transition: color var(--d-1); }
+a.pn:hover b { color: #fff8ec; }
+.pn b.none { color: var(--ink-4); }
+
+@media (max-width: 1240px) {
+  .post-wrap { grid-template-columns: minmax(0, 680px); }
+  .post-toc { display: none; }
+  .post-back-sm { display: inline-flex; margin-bottom: 20px; }
+}
+
+/* ---------- v0 additions ---------- */
+.e-row .e-tags { grid-column: 2; }
+.n-text p + p { margin-top: 0.6em; }
+.e-body .prose > p + p { margin-top: 0.9em; }
+/* without JavaScript an entry's title is a link to its page; with it, the entry opens in place */
+html:not(.js) .e-body { display: none; }
+.js .e-row:not(.e-link) .e-meta .icon { transition: transform var(--d-3) var(--ease-out); }
+html:not(.js) .e-row .e-meta .icon { display: none; }
+[data-js-only] { display: none; }
+.js [data-js-only] { display: flex; }
+
+/* the empty record: what the log will hold, stated plainly (log.md §0, §3.1) */
+.log-empty-text { padding: 24px 0 8px; max-width: 30em; color: var(--ink-2); }
+.kinds { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 28px; margin-top: 28px; }
+.kinds li { padding-top: 14px; border-top: 1px solid var(--rule); }
+.kinds .meta { display: block; margin-bottom: 8px; }
+.kinds p { font-size: var(--t-ui); line-height: var(--lh-ui); color: var(--ink-2); max-width: 18em; }
+.threads-note { margin-top: 12px; }
+
+/* entry pages: notes and entries share the essay page without the contents list */
+.post-wrap:not(.has-toc) .post-toc ol, .post-wrap:not(.has-toc) .post-toc .meta { display: none; }
+.note-body { font-size: var(--t-lede); line-height: 1.45; color: var(--ink); margin-top: 24px; }
+.post-body > * + * { margin-top: 0.9em; }
+.post-body h2 + p { margin-top: 0; }
+.help-note { margin-bottom: 1.4em; }
+.icon-swap .icon + .icon { display: none; }
+.copied .icon-swap .icon:first-child { display: none; }
+.copied .icon-swap .icon + .icon { display: inline-block; }
+
+@media (max-width: 899.98px) {
+  .kinds { grid-template-columns: 1fr; gap: 0; }
+  .kinds li { padding: 14px 0 16px; }
+  .log-side { display: block; }
+  .log-side .log-media { display: none; }
+  .log-side .sticky { position: static; max-height: none; }
+  .threads { margin-top: 56px; }
+  .n-row { grid-template-columns: 1fr auto; gap: 6px 12px; padding: 20px 0; }
+  .n-row .n-date { grid-column: 1; grid-row: 1; }
+  .n-row .e-kind { grid-column: 2; grid-row: 1; }
+  .n-row .n-body { grid-column: 1 / -1; }
+  .e-plate { display: none; }
+  .e-row .e-tags { grid-column: 1 / -1; }
+  .post-wrap { padding-top: 16px; }
+}

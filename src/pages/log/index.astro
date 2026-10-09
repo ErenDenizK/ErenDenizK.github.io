@@ -1,0 +1,88 @@
+---
+/* The record (docs/design/log.md, accepted 2026-10-09). With no entries it shows what the log will
+   hold and how it is written; nothing is invented to fill it. */
+import Base from '../../layouts/Base.astro';
+import Media from '../../components/Media.astro';
+import Thumb from '../../components/Thumb.astro';
+import Foot from '../../components/Foot.astro';
+import LogList from '../../components/LogList.astro';
+import ThreadRow from '../../components/ThreadRow.astro';
+import { getSite, getLog, getProjects, threads, url, entryYear, monYear, categoryLabel } from '../../lib/site';
+const site = await getSite();
+const entries = await getLog();
+const projects = await getProjects();
+const th = threads(entries, projects);
+const years = [...new Set(entries.map(entryYear))].map((y) => [y, entries.filter((e) => entryYear(e) === y).length] as const);
+const first = entries.length ? entries[entries.length - 1].data.date : null;
+const count = entries.length
+  ? `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'} since ${monYear(first!)}`
+  : 'No entries yet';
+const kinds = (['note', 'entry', 'essay'] as const).map((k) => [k, entries.filter((e) => e.data.kind === k).length] as const);
+const cats = [...new Set(entries.map((e) => e.data.category))].filter((c) => entries.filter((e) => e.data.category === c).length >= 3);
+const showFilters = entries.length >= 20;
+---
+<Base title="Log" tab="log" description={site.log.dek} og="home">
+  <div class="inner">
+    <div class="two log-two">
+      <div class="log-main">
+        <header class="vhead log-head">
+          <p class="meta" id="log-count">{count}</p>
+          <h1 class="vtitle" id="h-log">{site.log.title}</h1>
+          <p class="vdek lede">{site.log.dek}</p>
+          <p class="writing-note meta">{site.log.writingNote} <a href={url('about/#colophon')}>How this site is made</a> · <a href={url('log/feed.xml')}>Atom feed</a></p>
+          <Thumb obj="log" size={104} class="log-mini" />
+        </header>
+
+        {showFilters && (
+          <div class="filters" id="filters" data-js-only>
+            <div class="seg" role="group" aria-label="Kind">
+              <button type="button" data-kind="all" aria-pressed="true">All <span class="n">{entries.length}</span></button>
+              {kinds.map(([k, n]) => <button type="button" data-kind={k} aria-pressed="false">{k === 'note' ? 'Notes' : k === 'entry' ? 'Entries' : 'Essays'} <span class="n">{n}</span></button>)}
+            </div>
+            {cats.length > 0 && <div class="chips" role="group" aria-label="Category">{cats.map((c) => <button type="button" data-cat={c} aria-pressed="false">{categoryLabel(c)}</button>)}</div>}
+            <p class="filter-state meta" id="filter-state" aria-live="polite"></p>
+          </div>
+        )}
+
+        {entries.length ? <LogList entries={entries} projects={projects} /> : (
+          <section class="log-empty" aria-labelledby="h-empty">
+            <div class="year"><h2 id="h-empty">{new Date().getUTCFullYear()}</h2></div>
+            <p class="log-empty-text">{site.log.empty}</p>
+            <ul class="kinds">
+              <li><span class="meta">Note</span><p>One to three sentences from the week, read here in full.</p></li>
+              <li><span class="meta">Entry</span><p>A few paragraphs with a title: what I did, why, what comes next.</p></li>
+              <li><span class="meta">Essay</span><p>A longer piece with figures, on a page of its own.</p></li>
+            </ul>
+          </section>
+        )}
+      </div>
+
+      <aside class="stagecol log-side" aria-labelledby="h-threads">
+        <div class="sticky">
+          <Media obj="log" slot="log" stage class="log-media" sizes="240px" priority />
+          <section class="threads" id="threads">
+            <div class="side-head"><h2 id="h-threads">Threads</h2><span class="meta">a project over time</span></div>
+            {th.rows.length ? (
+              <>
+                {th.rows.map((t) => <ThreadRow t={t} link />)}
+                <svg class="t-axis" aria-hidden="true" focusable="false" height="22">
+                  <line x1="2%" x2="98%" y1="0.5" y2="0.5" stroke="var(--rule-2)" stroke-width="1" />
+                  <text x="2%" y="16" text-anchor="start">{th.axis!.start}</text>
+                  <text x="98%" y="16" text-anchor="end">{th.axis!.end}</text>
+                  {th.axis!.years.map((y) => <><line x1={`${y.x}%`} x2={`${y.x}%`} y1="0" y2="5" stroke="var(--rule-2)" />{y.x > 20 && y.x < 80 && <text x={`${y.x}%`} y="16" text-anchor="middle">{y.label}</text>}</>)}
+                </svg>
+              </>
+            ) : <p class="meta threads-note">A thread appears once a project has three entries in two different months.</p>}
+          </section>
+          {years.length >= 2 && (
+            <nav class="years" aria-label="Years">
+              <div class="side-head"><h2>Years</h2></div>
+              <ol>{years.map(([y, n]) => <li><a href={`#year-${y}`}><span>{y}</span><span class="meta">{n} {n === 1 ? 'entry' : 'entries'}</span></a></li>)}</ol>
+            </nav>
+          )}
+        </div>
+      </aside>
+    </div>
+    <Foot />
+  </div>
+</Base>

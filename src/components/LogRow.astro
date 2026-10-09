@@ -1,0 +1,60 @@
+---
+/* One row of the record (log.md §4): a note is read whole in the list and its date is its link;
+   an entry's title links to its page and, with JavaScript, opens in place; an essay links to its page. */
+import Icon from './Icon.astro';
+import { url, entryPath, entrySlug, dayMon, iso, kindLabel, categoryLabel, readingMinutes, type LogEntry, type Project } from '../lib/site';
+import drawings from '../../tools/illustrations/out/drawings.json';
+import { render } from 'astro:content';
+interface Props { e: LogEntry; projects: Project[]; compact?: boolean }
+const { e, projects, compact = false } = Astro.props;
+const d = e.data;
+const href = url(entryPath(e));
+const slug = entrySlug(e);
+const pj = d.projects.map((r) => projects.find((p) => p.id === r.id)).filter(Boolean) as Project[];
+const lastUpdate = d.updated.length ? d.updated[d.updated.length - 1].date : null;
+const plate = d.kind === 'essay' && d.lead ? (drawings as any)[d.lead]?.plate ?? '' : '';
+const { Content } = d.kind === 'essay' ? { Content: null } : await render(e);
+const mins = d.kind === 'essay' ? readingMinutes(e.body) : 0;
+const tags = (link: boolean) => [
+  ...pj.map((p) => ({ label: p.data.title, href: link ? url(`work/${p.id}/`) : null, color: p.data.accent.glow ?? p.data.accent.color })),
+  { label: categoryLabel(d.category), href: null, color: null },
+  ...(lastUpdate ? [{ label: 'Updated ' + dayMon(lastUpdate), href: null, color: null }] : []),
+];
+---
+<li class="entry" id={compact ? undefined : slug} data-slug={slug} data-kind={d.kind} data-date={iso(d.date)} data-projects={pj.map((p) => p.id).join(' ')} data-cat={d.category}>
+  {d.kind === 'note' && (
+    <div class="n-row">
+      <a class="n-date meta" href={href}><time class="meta" datetime={iso(d.date)}>{dayMon(d.date)}</time></a>
+      <div class="n-body">
+        <div class="n-text">{Content && <Content />}</div>
+        <span class="e-tags meta">{tags(true).map((t, i) => <>{i > 0 && <span class="sep">·</span>}{t.href ? <a class="pj" href={t.href} style={`--p: ${t.color}`}>{t.label}</a> : <span>{t.label}</span>}</>)}</span>
+      </div>
+      <span class="e-kind meta">Note</span>
+    </div>
+  )}
+  {d.kind === 'entry' && (
+    <>
+      <h3><a class="e-row" href={href} aria-expanded="false" aria-controls={`b-${slug}`}>
+        <time class="meta" datetime={iso(d.date)}>{dayMon(d.date)}</time>
+        <span class="e-title">{d.title}</span>
+        <span class="e-dek">{d.dek}</span>
+        <span class="e-tags meta">{tags(false).map((t, i) => <>{i > 0 && <span class="sep">·</span>}<span class={t.color ? 'pj' : undefined} style={t.color ? `--p: ${t.color}` : undefined}>{t.label}</span></>)}</span>
+        <span class="e-meta meta">{kindLabel.entry}<Icon name="chevron-down" /></span>
+      </a></h3>
+      <div class="e-body" id={`b-${slug}`}><div><div class="prose">
+        {Content && <Content />}
+        <a class="perma" href={href}>Link to this entry</a>
+      </div></div></div>
+    </>
+  )}
+  {d.kind === 'essay' && (
+    <h3><a class="e-row e-link" href={href}>
+      <time class="meta" datetime={iso(d.date)}>{dayMon(d.date)}</time>
+      <span class="e-title">{d.title}</span>
+      <span class="e-dek">{d.dek}</span>
+      <span class="e-tags meta">{tags(false).map((t, i) => <>{i > 0 && <span class="sep">·</span>}<span class={t.color ? 'pj' : undefined} style={t.color ? `--p: ${t.color}` : undefined}>{t.label}</span></>)}</span>
+      <span class="e-meta meta"><span>Essay · {mins} min</span><Icon name="arrow-right" /></span>
+      {plate && <span class="e-plate" aria-hidden="true" set:html={plate} />}
+    </a></h3>
+  )}
+</li>

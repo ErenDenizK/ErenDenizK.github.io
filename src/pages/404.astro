@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Foot from '../components/Foot.astro';
+import { url } from '../lib/site';
+---
+<Base title="Not found" tab={null} description="This address does not exist on the site." noindex>
+  <div class="inner">
+    <header class="vhead nf">
+      <p class="meta">404</p>
+      <h1 class="vtitle">Nothing here</h1>
+      <p class="vdek lede">This address does not exist, or it moved. Everything on the site is one of these four:</p>
+      <div class="links">
+        <a class="btn" href={url()}>Home <Icon name="arrow-right" weight="medium" /></a>
+        <a class="qlink" href={url('work/')}>Work</a>
+        <a class="qlink" href={url('log/')}>Log</a>
+        <a class="qlink" href={url('about/')}>About</a>
+      </div>
+    </header>
+    <Foot />
+  </div>
+</Base>

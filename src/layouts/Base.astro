@@ -1,0 +1,126 @@
+---
+/* Every page: head (link-preview research §3), the bar, the page, the footer, one script.
+   Pages are complete without JavaScript (ADR-0002); the script only enhances. */
+import '../styles/global.css';
+import '../../tools/icons/out/icons.css';
+import '../styles/log.css';
+import '../styles/transitions.css';
+import '../../tools/illustrations/out/illustrations.css';
+import Bar from '../components/Bar.astro';
+import Icon from '../components/Icon.astro';
+import interLatin from '../fonts/inter-latin.woff2?url';
+import newsLatin from '../fonts/newsreader-latin.woff2?url';
+import newsTr from '../fonts/newsreader-tr.woff2?url';
+import { getSite, url, abs } from '../lib/site';
+import { ogPath } from '../lib/files.mjs';
+
+interface Props {
+  title?: string;            // page title without the site name; omitted on Home
+  description?: string;
+  tab: 'home' | 'work' | 'log' | 'about' | null;
+  og?: string;               // card id in tools/og/out
+  ogAlt?: string;
+  type?: 'website' | 'article' | 'profile';
+  published?: Date;
+  modified?: Date;
+  jsonld?: object[];
+  pageClass?: string;
+  noindex?: boolean;
+}
+const site = await getSite();
+const { title, description = site.description, tab, og = 'home', ogAlt, type = 'website', published, modified, jsonld = [], pageClass = '', noindex = false } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : site.name;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogFile = ogPath(og) ?? ogPath('home');
+const ogImage = ogFile ? abs(ogFile) : null;
+const github = site.links.github;
+const linkedin = typeof site.links.linkedin === 'string' ? site.links.linkedin : null;
+const person = {
+  '@type': 'Person', '@id': abs('#me'), name: site.name, alternateName: site.mark, url: abs(),
+  affiliation: { '@type': 'CollegeOrUniversity', name: site.kicker.school },
+  sameAs: [github, linkedin].filter(Boolean),
+};
+const graph = [
+  { '@type': 'WebSite', '@id': abs('#site'), url: abs(), name: site.name, alternateName: site.mark },
+  ...(tab === 'home' || tab === 'about' ? [{ '@type': 'ProfilePage', url: canonical, isPartOf: { '@id': abs('#site') }, mainEntity: person }] : [{ ...person }]),
+  ...jsonld,
+];
+---
+<!doctype html>
+<html lang="en" data-base={url()}>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{fullTitle}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonical}>
+  {noindex && <meta name="robots" content="noindex">}
+  <meta name="theme-color" content="#0a0a0b">
+  <meta name="color-scheme" content="dark">
+  <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href={newsLatin} as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href={newsTr} as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href={url('favicon.ico')} sizes="16x16 32x32 48x48">
+  <link rel="icon" type="image/png" sizes="32x32" href={url('favicon-32.png')}>
+  <link rel="apple-touch-icon" href={url('apple-touch-icon.png')}>
+  <link rel="manifest" href={url('manifest.webmanifest')}>
+  <link rel="alternate" type="application/atom+xml" title={`Log · ${site.name}`} href={url('log/feed.xml')}>
+  <link rel="sitemap" href={url('sitemap-index.xml')}>
+  <meta property="og:type" content={type}>
+  <meta property="og:site_name" content={site.name}>
+  <meta property="og:title" content={title ?? site.name}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  {ogImage && <meta property="og:image" content={ogImage}>}
+  {ogImage && <meta property="og:image:width" content="1200">}
+  {ogImage && <meta property="og:image:height" content="630">}
+  {ogImage && <meta property="og:image:alt" content={ogAlt ?? `${title ?? site.name}. ${site.name}.`}>}
+  {published && <meta property="article:published_time" content={published.toISOString()}>}
+  {modified && <meta property="article:modified_time" content={modified.toISOString()}>}
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />
+  <script is:inline>
+    /* Before first paint: mark JS, and name the cross-document view transition (ADR-0007).
+       Types: tab order gives the slide direction; a project or entry page is "deeper". */
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      var base = d.dataset.base || '/';
+      function where(path) {
+        var p = String(path || '').replace(/^https?:\/\/[^/]+/, '');
+        if (p.indexOf(base) === 0) p = p.slice(base.length);
+        var m = p.split(/[?#]/)[0].split('/').filter(Boolean);
+        var tabs = ['', 'work', 'log', 'about'];
+        var t = tabs.indexOf(m[0] || '');
+        return { tab: t < 0 ? -1 : t, depth: m.length > 1 ? 1 : 0 };
+      }
+      addEventListener('pageswap', function () { try { sessionStorage.setItem('vt-from', location.pathname); } catch (e) {} });
+      addEventListener('pagereveal', function (e) {
+        if (!e.viewTransition) return;
+        var from = null;
+        try { from = navigation.activation && navigation.activation.from && navigation.activation.from.url; } catch (x) {}
+        if (!from) try { from = sessionStorage.getItem('vt-from'); } catch (x) {}
+        if (!from) return;
+        var a = where(from), b = where(location.pathname), t;
+        if (b.depth > a.depth) t = 'deeper';
+        else if (b.depth < a.depth) t = 'shallower';
+        else t = b.tab >= a.tab ? 'to-right' : 'to-left';
+        try { e.viewTransition.types.add(t); } catch (x) { d.dataset.vt = t; e.viewTransition.finished.finally(function () { delete d.dataset.vt; }); }
+      });
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="grain" aria-hidden="true"></div>
+  <div id="app">
+    <Bar current={tab} github={github} mark={site.mark} />
+    <main id="main" class:list={['page', pageClass]} tabindex="-1">
+      <slot />
+    </main>
+  </div>
+  <template id="tpl-close"><Icon name="close" size={20} /></template>
+  <slot name="after" />
+  <script>import '../scripts/site';</script>
+</body>
+</html>

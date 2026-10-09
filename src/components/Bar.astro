@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+import { url } from '../lib/site';
+interface Props { current: 'home' | 'work' | 'log' | 'about' | null; github: string; mark: string }
+const { current, github, mark } = Astro.props;
+const tabs = [['home', 'Home', ''], ['work', 'Work', 'work/'], ['log', 'Log', 'log/'], ['about', 'About', 'about/']] as const;
+---
+<header class="bar" id="bar">
+  <a class="mark" href={url()} aria-label={`${mark}, home`}>{mark}</a>
+  <nav class="tabs" aria-label="Primary">
+    {tabs.map(([key, label, path]) => (
+      <a href={url(path)} data-tab={key} aria-current={current === key ? 'page' : undefined}>
+        {current === key && <span class="ind" aria-hidden="true"></span>}{label}
+      </a>
+    ))}
+  </nav>
+  <div class="bar-end"><a href={github} rel="me"><Icon name="github" />GitHub</a></div>
+</header>

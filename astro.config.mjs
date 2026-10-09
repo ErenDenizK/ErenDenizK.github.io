@@ -19,6 +19,7 @@ export default defineConfig({
   site: process.env.SITE_URL || 'https://erendenizk.github.io',
   base,
   trailingSlash: 'always',
+  outDir: process.env.OUT_DIR || './dist',
   build: { format: 'directory', inlineStylesheets: 'always' },
   prefetch: false,
   devToolbar: { enabled: false },

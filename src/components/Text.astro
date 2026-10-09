@@ -1,0 +1,8 @@
+---
+/* A value that may still be a placeholder: { placeholder: "..." } renders as a dashed tag. */
+import Ph from './Ph.astro';
+import { isPlaceholder } from '../lib/site';
+interface Props { value: unknown }
+const { value } = Astro.props;
+---
+{isPlaceholder(value) ? <Ph text={value.placeholder} /> : value != null ? String(value) : null}

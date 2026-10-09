@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/Base.astro';
+import Media from '../../components/Media.astro';
+import Icon from '../../components/Icon.astro';
+import Ph from '../../components/Ph.astro';
+import Thumb from '../../components/Thumb.astro';
+import Foot from '../../components/Foot.astro';
+import { poster } from '../../lib/media';
+import { getSite, getProjects, url, projectPath, ym, isPlaceholder } from '../../lib/site';
+const site = await getSite();
+const all = await getProjects();
+const directed = all.filter((p) => p.data.group === 'directed');
+const byHand = all.filter((p) => p.data.group === 'by-hand');
+const first = directed[0];
+/* posters of every project's object, for the stage to change into without a request for markup */
+const mediaIndex = Object.fromEntries(directed.map((p) => {
+  const x = poster(p.data.object);
+  return [x.name, { manifest: x.manifest, src: x.src, srcset: x.sources, light: p.data.accent.glow ?? p.data.accent.color }];
+}));
+/* "Public beta · 1.0.0-beta · since Sep 2026"; placeholders are left out of this short line. */
+function tileMeta(p: (typeof all)[number]) {
+  const d = p.data;
+  const bits: string[] = [d.status];
+  if (d.version && !isPlaceholder(d.version)) bits.push(d.version);
+  if (!isPlaceholder(d.started)) bits.push('since ' + ym(d.started));
+  if (d.linksNote) bits.push(d.linksNote.charAt(0).toLowerCase() + d.linksNote.slice(1));
+  return bits.join(' · ');
+}
+---
+<Base title="Work" tab="work" description={site.work.dek}>
+  <div class="inner">
+    <div class="two">
+      <div>
+        <header class="vhead">
+          <p class="meta">{site.work.kicker}</p>
+          <h1 class="vtitle" id="h-work">{site.work.title}</h1>
+          <p class="vdek lede">{site.work.dek}</p>
+        </header>
+        <ol class="tiles">
+          {directed.map((p) => {
+            const d = p.data;
+            return (
+              <li><a class="tile" href={url(projectPath(p))} data-p={p.id} data-obj={d.object} data-light={d.accent.glow ?? d.accent.color} style={`--p: ${d.accent.color}`}>
+                <span class="tile-top meta">{tileMeta(p)}</span>
+                <span class="tile-name t-title">{d.title}</span>
+                <Thumb obj={d.object} size={88} class="tile-thumb" />
+                <span class="tile-teaser">{d.summary} {d.summaryPlaceholder && <Ph text={d.summaryPlaceholder} />}</span>
+                {d.stack && <span class="tile-foot meta">{d.stack}</span>}
+                <span class="tile-open" aria-hidden="true"><Icon name="arrow-right" size={20} /></span>
+              </a></li>
+            );
+          })}
+        </ol>
+      </div>
+      <aside class="stagecol work-stage" aria-hidden="true">
+        <div class="sticky"><Media obj={first.data.object} slot="work" stage light={first.data.accent.glow ?? first.data.accent.color} priority /></div>
+      </aside>
+    </div>
+    <section class="byhand" aria-labelledby="h-hand">
+      <div class="sec-head"><h2 id="h-hand">By hand</h2>{byHand.length ? null : <Ph text="nothing yet" />}</div>
+      <p>{site.work.byHand}</p>
+    </section>
+    <Foot />
+  </div>
+  <script type="application/json" id="media-index" set:html={JSON.stringify(mediaIndex)} />
+</Base>
