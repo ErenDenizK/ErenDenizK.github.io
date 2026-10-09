@@ -2,3 +2,6 @@ prototypes/*/shots/
 __pycache__/
 node_modules/
 *.whl
+.astro/
+dist/
+/*.png
