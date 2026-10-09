@@ -21,7 +21,7 @@ const log = await getLog();
 const entries = log.filter((e) => e.data.projects.some((r) => r.id === p.id));
 const d = p.data;
 ---
-<Base title={d.title} tab="work" description={d.summary} og={d.og ?? 'home'} ogAlt={`${d.title}: ${d.summary}`} pageClass="page-project">
+<Base title={d.title} tab="work" description={d.summary} og={d.og ?? 'home'} ogAlt={`${d.title}: ${d.summary}`} pageClass="page-project" accent={d.accent.glow ?? d.accent.color}>
   <div class="sheet-page" style={`--p: ${d.accent.color}; ${d.accent.glow ? `--pg: ${d.accent.glow};` : ''} ${d.accent.p2 ? `--p2: ${d.accent.p2};` : ''} ${d.accent.p3 ? `--p3: ${d.accent.p3};` : ''}`}>
     <div class="backlight" aria-hidden="true"></div>
     <div class="sheet" id="sheet">

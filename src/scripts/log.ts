@@ -1,5 +1,5 @@
 /* The record (docs/design/log.md): entries open in place (their title is a link to their page, so
-   the page works without JavaScript), a deep link to /log/#<slug> opens that entry, and from 20
+   the page works without JavaScript), a deep link to /record/#<slug> opens that entry, and from 20
    entries the list filters by kind, category and project, carried in the URL (§5.3). */
 import { reduce, mq } from './env';
 

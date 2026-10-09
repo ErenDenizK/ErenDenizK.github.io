@@ -5,6 +5,7 @@ import { root, mq, reduce, rel } from './env';
 import { initMedia } from './media';
 import { initSheet } from './sheet';
 import { initLog } from './log';
+import { initAccent, setAccent } from './accent';
 
 const fine = () => root.classList.toggle('fine', mq.fine.matches);
 fine(); mq.fine.addEventListener?.('change', fine);
@@ -14,6 +15,7 @@ let pendingNav: string | null = null;
 initMedia();
 initSheet();
 initLog();
+initAccent();
 
 /* Work: the object in the catalog's head follows the row you dwell on (150 ms hover intent), focus, or read on touch. */
 const workSlot = document.querySelector<HTMLElement>('.media[data-slot="work"]');
@@ -23,6 +25,7 @@ if (workSlot) {
   const setProject = (t: HTMLAnchorElement) => {
     tiles.forEach((x) => x.classList.toggle('is-current', x === t));
     MediaStage.show(workSlot, t.dataset.obj!, { light: t.dataset.light });
+    setAccent(t.dataset.light ?? null);       // the tab's light and the dot follow the project (accent.ts)
   };
   let hoverT = 0;
   for (const t of tiles) {
@@ -50,7 +53,7 @@ if (workSlot) {
 /* Tab changes melt the object into the droplet (ADR-0006 item 5, ADR-0007): the click starts the stage's
    short droplet.out and navigates as soon as it is on screen (at most 120 ms later); the melt plays on
    while the next page loads. A later click wins. Pages are prefetched on hover. */
-const TAB_PAGES = new Set(['', 'work', 'log', 'about']);
+const TAB_PAGES = new Set(['', 'work', 'record', 'about']);
 addEventListener('pageshow', () => { pendingNav = null; });
 document.addEventListener('click', (e) => {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;

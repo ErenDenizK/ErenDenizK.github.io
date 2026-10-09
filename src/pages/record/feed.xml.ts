@@ -17,7 +17,7 @@ export const GET: APIRoute = async () => {
     html = html.replace(/<figure class="fig"[\s\S]*?<figcaption[^>]*>([\s\S]*?)<\/figcaption><\/figure>/g, (_m, cap) => `<p>[Figure: ${cap}] <a href="${link}">See it on the site.</a></p>`);
     if (!html) html = `<p>${esc(e.data.dek ?? '')} <a href="${link}">Read it on the site.</a></p>`;
     return `  <entry>
-    <id>tag:erendenizk.github.io,${iso(e.data.date)}:log/${entrySlug(e)}</id>
+    <id>tag:erendenizk.github.io,${iso(e.data.date)}:record/${entrySlug(e)}</id>
     <title>${esc(entryTitle(e))}</title>
     <link rel="alternate" type="text/html" href="${link}"/>
     <published>${e.data.date.toISOString()}</published>
@@ -29,11 +29,11 @@ export const GET: APIRoute = async () => {
   });
   const xml = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
-  <id>tag:erendenizk.github.io,2026-10-09:log</id>
+  <id>tag:erendenizk.github.io,2026-10-09:record</id>
   <title>${esc(site.log.title)} · ${esc(site.name)}</title>
   <subtitle>${esc(site.log.dek)}</subtitle>
-  <link rel="alternate" type="text/html" href="${abs('log/')}"/>
-  <link rel="self" type="application/atom+xml" href="${abs('log/feed.xml')}"/>
+  <link rel="alternate" type="text/html" href="${abs('record/')}"/>
+  <link rel="self" type="application/atom+xml" href="${abs('record/feed.xml')}"/>
   <updated>${feedUpdated.toISOString()}</updated>
   <author><name>${esc(site.name)}</name><uri>${abs()}</uri></author>
   <icon>${abs('icon-192.png')}</icon>

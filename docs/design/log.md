@@ -4,6 +4,11 @@ What the log is made of, how its index groups and scales, how entries are addres
 how figures are drawn, and what never appears. **Status: accepted 2026-10-09.** Owner's answers to §11: title "The record"; notes in full in
 the list; threads beside the log and inside each project's view; at most one hand mark.
 
+**Name on the site (brief §7, 2026-10-09, after v0):** visitors see the log as the Record: the
+nav tab says "Record", the index is "The record" and every address lives under `/record/`
+(index, year archives, entries, `/record/feed.xml`). "Log" remains the internal name: the
+content collection, `content/log/`, this document and the code that renders it.
+
 Rests on: brief §2.2 (public record, evidence of steady work), §2.3 (four years, cheap to add
 to), §4.3 (dictated notes, open categories, figures drawn in code), §7 (English, dark,
 brand-led; first entries); requirements §15–18 (abandonment, shape, AI disclosure, voice);
@@ -26,7 +31,7 @@ Workflow: `.claude/skills/log-entry/SKILL.md` (§9).
    a year list at two years, older years fold at 100.
 5. **Append-only in public.** Published text is not silently rewritten: additions are dated
    "Updated" notes, changed facts are marked "Correction". Typos are fixed quietly.
-6. **Stable addresses**: `/log/<year>/<slug>/` for every kind, the slug frozen at publish;
+6. **Stable addresses**: `/record/<year>/<slug>/` for every kind, the slug frozen at publish;
    one Atom feed with full content and permanent ids.
 7. **Figures are drawn by one kit** in F's language (icon strokes, the site's type, one
    accent), at two widths so text never shrinks, still by default.
@@ -165,7 +170,7 @@ does not clutter the index. Categories are not tags: there is no tag cloud.
 
 `projects` lists the projects an entry is about. They show in the entry's meta line in the
 project's colour (text only, no dots or glows, audit P1.4), feed the threads (§5.4), and make
-the project's focus view list its entries under "In the log" (newest first, the same rows).
+the project's focus view list its entries under "In the record" (newest first, the same rows).
 
 ### 3.9 Disclosure
 
@@ -207,7 +212,7 @@ gap.
 |---|---|
 | 1–19 | The header, one or two year groups, every row. No filters, no year list. Threads appear for any project that qualifies (§5.4); otherwise one line says when they will. |
 | 20–99 | Filters appear above the list (§5.3). With two or more years, a year list in the aside (desktop) or a row of year chips (phone). |
-| 100 and more | The two most recent years stay open. Older years show their first three rows and "All 96 entries from 2027"; each year also has its own archive page, `/log/2027/`. Threads switch from one mark per entry to one tick per month when they span more than 18 months. |
+| 100 and more | The two most recent years stay open. Older years show their first three rows and "All 96 entries from 2027"; each year also has its own archive page, `/record/2027/`. Threads switch from one mark per entry to one tick per month when they span more than 18 months. |
 
 The prototype's "preview the index at 8 / 40 / 400" control demonstrates all three with
 simulated rows (§10).
@@ -219,7 +224,7 @@ simulated rows (§10).
 - **Project**: the threads are the project filter (press a thread; press again to clear).
 - A live line states the result in words, "Showing 15 essays in Recto", with "Show
   everything".
-- On the real site, filters are query parameters (`/log/?kind=essay&project=recto`) applied
+- On the real site, filters are query parameters (`/record/?kind=essay&project=recto`) applied
   by a small script over the complete list; without JavaScript the full list shows.
 
 ### 5.4 Threads
@@ -237,7 +242,7 @@ later?" (brief §2.2).
 - A thread appears once a project has **three entries in at least two different months**;
   until then the row would be a dot, not a thread.
 - Pressing a thread filters the list to that project. The project's focus view repeats its
-  thread above "In the log".
+  thread above "In the record".
 - Desktop: in the sticky aside under the Log object. Phone: after the list.
 - On the real site threads are drawn at build with the kit (`timeline`-style marks), with a
   small script only for the filter; the prototype draws them at runtime because its preview
@@ -259,7 +264,7 @@ hidden.
 
 ### 6.1 Addresses
 
-- `/log/` the index; `/log/<year>/` an archive page per year; `/log/<year>/<slug>/` every
+- `/record/` the index; `/record/<year>/` an archive page per year; `/record/<year>/<slug>/` every
   entry of every kind.
 - The slug is frozen at first publish. Editing a title never changes it. If an address must
   ever move, the old one redirects (a `redirects` list in the content; on GitHub Pages a
@@ -270,16 +275,16 @@ hidden.
 
 ### 6.2 Feeds
 
-- One Atom feed, `/log/feed.xml`, every kind, newest 50 entries, **full content** (figures as
+- One Atom feed, `/record/feed.xml`, every kind, newest 50 entries, **full content** (figures as
   inline SVG are replaced by their alt text and a link, since feed readers strip SVG).
-- Linked from the Log header ("Atom feed") and every page's `<head>`
+- Linked from the record header ("Atom feed") and every page's `<head>`
   (`<link rel="alternate" type="application/atom+xml">`).
 - Later, when a project has a thread: `/work/<slug>/feed.xml` with only its entries.
 
 ### 6.3 Feed identity
 
 - `atom:id` is a tag URI fixed at publish, never derived from the current URL:
-  `tag:erendenizk.github.io,2026-10-08:log/why-this-site`. A domain change (edk.dev, brief §7)
+  `tag:erendenizk.github.io,2026-10-08:record/why-this-site`. A domain change (edk.dev, brief §7)
   then does not make every reader see the whole log as new.
 - `atom:published` is `date`; `atom:updated` is the latest of `updated[]` and
   `corrections[]`, or `date`.

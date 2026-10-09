@@ -84,13 +84,13 @@ const leadVars = [`--p: ${la.color}`, `--pg: ${la.glow ?? la.color}`, la.p2 && `
       <div>
         {latest ? (
           <>
-            <span class="meta">Latest in the log · <time datetime={latest.data.date.toISOString().slice(0, 10)}>{dayMonYear(latest.data.date)}</time></span>
+            <span class="meta">Latest in the record · <time datetime={latest.data.date.toISOString().slice(0, 10)}>{dayMonYear(latest.data.date)}</time></span>
             <a class="latest" href={url(entryPath(latest))}><b>{entryTitle(latest)}</b>{latest.data.dek && <span>{latest.data.dek}</span>}</a>
           </>
         ) : (
           <>
             <span class="meta">The log</span>
-            <p class="log-empty-line">{site.log.empty} <a href={url('log/')}>The record</a></p>
+            <p class="log-empty-line">{site.log.empty} <a href={url('record/')}>The record</a></p>
           </>
         )}
       </div>

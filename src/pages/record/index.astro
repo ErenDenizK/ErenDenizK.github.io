@@ -21,7 +21,7 @@ const kinds = (['note', 'entry', 'essay'] as const).map((k) => [k, entries.filte
 const cats = [...new Set(entries.map((e) => e.data.category))].filter((c) => entries.filter((e) => e.data.category === c).length >= 3);
 const showFilters = entries.length >= 20;
 ---
-<Base title="Log" tab="log" description={site.log.dek} og="home">
+<Base title="The record" tab="record" description={site.log.dek} og="home">
   <div class="inner">
     <div class="two log-two">
       <div class="log-main">
@@ -29,7 +29,7 @@ const showFilters = entries.length >= 20;
           <p class="meta" id="log-count">{count}</p>
           <h1 class="vtitle" id="h-log">{site.log.title}</h1>
           <p class="vdek lede">{site.log.dek}</p>
-          <p class="writing-note meta">{site.log.writingNote} <a href={url('about/#colophon')}>How this site is made</a> · <a href={url('log/feed.xml')}>Atom feed</a></p>
+          <p class="writing-note meta">{site.log.writingNote} <a href={url('about/#colophon')}>How this site is made</a> · <a href={url('record/feed.xml')}>Atom feed</a></p>
           <Thumb obj="log" size={104} class="log-mini" />
         </header>
 

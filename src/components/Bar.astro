@@ -1,12 +1,12 @@
 ---
 import Icon from './Icon.astro';
 import { url } from '../lib/site';
-interface Props { current: 'home' | 'work' | 'log' | 'about' | null; github: string; mark: string }
+interface Props { current: 'home' | 'work' | 'record' | 'about' | null; github: string; mark: string }
 const { current, github, mark } = Astro.props;
-const tabs = [['home', 'Home', ''], ['work', 'Work', 'work/'], ['log', 'Log', 'log/'], ['about', 'About', 'about/']] as const;
+const tabs = [['home', 'Home', ''], ['work', 'Work', 'work/'], ['record', 'Record', 'record/'], ['about', 'About', 'about/']] as const;
 ---
 <header class="bar" id="bar">
-  <a class="mark" href={url()} aria-label={`${mark}, home`}>{mark}</a>
+  <a class="mark" href={url()} aria-label={`${mark}, home`}>{mark}<i class="dot" aria-hidden="true"></i></a>
   <nav class="tabs" aria-label="Primary">
     {tabs.map(([key, label, path]) => (
       <a href={url(path)} data-tab={key} aria-current={current === key ? 'page' : undefined}>

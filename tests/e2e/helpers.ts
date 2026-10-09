@@ -4,7 +4,7 @@ export const desktop = { viewport: { width: 1440, height: 900 } };
 export const tablet = { viewport: { width: 1180, height: 820 }, hasTouch: true };
 export const phone = { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true };
 export const PROJECTS = ['recto', 'english-prep', 'eat-map'];
-export const TABS = { home: '', work: 'work', log: 'log', about: 'about' } as const;
+export const TABS = { home: '', work: 'work', record: 'record', about: 'about' } as const;
 
 /** What is on screen, read in the page. */
 export async function state(page: Page) {
@@ -39,7 +39,7 @@ export function problems(s: State): string[] {
   const e: string[] = [];
   const parts = s.path.split('/').filter(Boolean);
   const tab = parts[0] ?? '';
-  const known = ['', 'work', 'log', 'about'];
+  const known = ['', 'work', 'record', 'about'];
   if (parts[0] === 'work' && parts[1]) {
     const slug = parts[1];
     if (!PROJECTS.includes(slug)) { if (s.h1 !== 'Nothing here') e.push('unknown project not a 404'); return e; }
@@ -48,7 +48,7 @@ export function problems(s: State): string[] {
     if (s.open !== s.sheetCls) e.push('html.sheet-open out of step with the dialog');
     return e;
   }
-  if (!known.includes(tab) || parts.length > (tab === 'log' ? 3 : 1)) { if (s.h1 !== 'Nothing here') e.push('unknown route not a 404: ' + s.path); return e; }
+  if (!known.includes(tab) || parts.length > (tab === 'record' ? 3 : 1)) { if (s.h1 !== 'Nothing here') e.push('unknown route not a 404: ' + s.path); return e; }
   if (s.open) e.push('sheet open but URL is ' + s.path);
   if (s.sheetCls) e.push('html.sheet-open left behind');
   const want = tab === '' ? 'home' : tab;
