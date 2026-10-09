@@ -161,3 +161,6 @@ log design are to be explored.
   processor.
 - **Link previews:** home card split (name left, edk right) everywhere; About card shows the
   gate selfie. Favicon "e" at 16/32 px, "edk" from 48 px; warm off-white on black.
+- **Log:** the index is titled "The record"; notes show in full in the list; project threads
+  sit beside the log and inside each project's view; figures are geometric with at most one
+  hand-drawn mark.
