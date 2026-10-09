@@ -4,7 +4,7 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { desktop, phone } from './helpers';
 
-const ROUTES = ['', 'work/', 'work/recto/', 'log/', 'about/', 'nope/'];
+const ROUTES = ['', 'work/', 'work/recto/', 'record/', 'about/', 'nope/'];
 for (const [size, opts] of [['desktop', desktop], ['phone', phone]] as const) {
   test.describe(size, () => {
     test.use(opts);

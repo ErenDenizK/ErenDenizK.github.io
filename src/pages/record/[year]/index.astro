@@ -14,10 +14,10 @@ const { year } = Astro.params;
 const site = await getSite();
 const projects = await getProjects();
 ---
-<Base title={`Log, ${year}`} tab="log" description={`${site.log.title}: ${entries.length} entries from ${year}.`}>
+<Base title={`The record, ${year}`} tab="record" description={`${site.log.title}: ${entries.length} entries from ${year}.`}>
   <div class="inner">
     <header class="vhead">
-      <a class="qlink" href={url('log/')}><Icon name="arrow-left" />{site.log.title}</a>
+      <a class="qlink" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
       <h1 class="vtitle">{year}</h1>
     </header>
     <LogList entries={entries} projects={projects} foldOld={false} />

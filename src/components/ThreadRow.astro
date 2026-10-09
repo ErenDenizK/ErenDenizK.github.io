@@ -10,7 +10,7 @@ const col = p.data.accent.glow ?? p.data.accent.color;
 const label = `${p.data.title}: ${t.count} entries since ${monYear(t.since)}.`;
 const Tag = link ? 'a' : 'div';
 ---
-<Tag class="thread" href={link ? url('log/') + '?project=' + p.id : undefined} data-p={p.id} style={`--p: ${col}`} aria-label={label}>
+<Tag class="thread" href={link ? url('record/') + '?project=' + p.id : undefined} data-p={p.id} style={`--p: ${col}`} aria-label={label}>
   <span class="pj t-n">{p.data.title}</span>
   <span class="t-c">{t.count} since {monYear(t.since)}</span>
   <svg aria-hidden="true" focusable="false" height="24">

@@ -9,7 +9,7 @@ test.describe('desktop', () => {
 
   test('S1 rapid tab switching (60 ms apart)', async ({ page }) => {
     await page.goto(''); await settle(page);
-    for (const t of ['work', 'log', 'about', 'home', 'work', 'log'] as const) { await tab(page, t, { noWait: true }); await page.waitForTimeout(60); }
+    for (const t of ['work', 'record', 'about', 'home', 'work', 'record'] as const) { await tab(page, t, { noWait: true }); await page.waitForTimeout(60); }
     await settle(page, 1500);
     await check(page, 'after 6 fast tab clicks');
   });
@@ -19,15 +19,15 @@ test.describe('desktop', () => {
     for (const gap of [40, 120, 200, 300]) {
       await tab(page, 'work', { noWait: true }); await page.waitForTimeout(gap); await tab(page, 'home', { noWait: true }); await settle(page, 1200);
       await check(page, `work then home after ${gap} ms`);
-      await tab(page, 'log', { noWait: true }); await page.waitForTimeout(gap); await tab(page, 'work', { noWait: true }); await page.waitForTimeout(gap); await tab(page, 'log', { noWait: true }); await settle(page, 1200);
-      await check(page, `log-work-log, ${gap} ms gaps`);
+      await tab(page, 'record', { noWait: true }); await page.waitForTimeout(gap); await tab(page, 'work', { noWait: true }); await page.waitForTimeout(gap); await tab(page, 'record', { noWait: true }); await settle(page, 1200);
+      await check(page, `record-work-record, ${gap} ms gaps`);
     }
   });
 
   test('S3 back/forward through tabs', async ({ page }) => {
     await page.goto(''); await settle(page);
-    for (const t of ['work', 'log', 'about'] as const) { await tab(page, t); await settle(page, 700); }
-    const want = ['log', 'work', ''];
+    for (const t of ['work', 'record', 'about'] as const) { await tab(page, t); await settle(page, 700); }
+    const want = ['record', 'work', ''];
     for (let i = 0; i < 3; i++) { await page.goBack(); await settle(page, 700); await check(page, `back ${i + 1}`, (s) => (s.path === want[i] ? [] : [`expected /${want[i]}`])); }
     for (let i = 0; i < 2; i++) { await page.goForward(); await settle(page, 700); await check(page, `forward ${i + 1}`); }
     await page.evaluate(() => { history.back(); setTimeout(() => history.back(), 50); });
@@ -38,7 +38,7 @@ test.describe('desktop', () => {
   test('S4 deep links', async ({ page }) => {
     for (const [path, extra] of [
       ['work/recto/', null], ['work/eat-map/', null], ['about/#colophon', (s: any) => (s.y < 300 ? ['not scrolled to colophon'] : [])],
-      ['work/', null], ['log/', null], ['nope/', (s: any) => (s.h1 === 'Nothing here' ? [] : ['not a 404'])],
+      ['work/', null], ['record/', null], ['nope/', (s: any) => (s.h1 === 'Nothing here' ? [] : ['not a 404'])],
       ['work/nope/', (s: any) => (s.h1 === 'Nothing here' ? [] : ['not a 404'])], ['', null],
     ] as const) {
       const r = await page.goto(path); await settle(page, 600);
@@ -135,7 +135,7 @@ test.describe('desktop', () => {
     await page.goto(''); await settle(page);
     await tab(page, 'work'); await settle(page);
     await page.evaluate(() => scrollTo(0, 500)); await page.waitForTimeout(400);
-    await tab(page, 'log'); await settle(page);
+    await tab(page, 'record'); await settle(page);
     await check(page, 'new tab starts at top', (s) => (s.y === 0 ? [] : ['y=' + s.y]));
     await page.goBack(); await settle(page);
     await check(page, 'Back restores Work scroll', (s) => (Math.abs(s.y - 500) <= 40 ? [] : [`y=${s.y}, expected 500`]));
@@ -150,9 +150,9 @@ test.describe('desktop', () => {
 
   test('S13 keyboard: a tab by Enter, then the skip link', async ({ page }) => {
     await page.goto(''); await settle(page);
-    await page.focus('.tabs a[data-tab="log"]');
-    await Promise.all([page.waitForURL(/\/log\/$/), page.keyboard.press('Enter')]); await settle(page);
-    await check(page, 'Enter on the Log tab', (s) => (s.path === 'log' ? [] : ['expected /log']));
+    await page.focus('.tabs a[data-tab="record"]');
+    await Promise.all([page.waitForURL(/\/record\/$/), page.keyboard.press('Enter')]); await settle(page);
+    await check(page, 'Enter on the Record tab', (s) => (s.path === 'record' ? [] : ['expected /record']));
     await page.keyboard.press('Tab');
     expect(await page.evaluate(() => document.activeElement?.className)).toBe('skip');
     await page.keyboard.press('Enter');
@@ -163,7 +163,7 @@ test.describe('desktop', () => {
     const ctx = await browser.newContext({ ...desktop, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
     const page = await ctx.newPage();
     await page.goto(''); await settle(page);
-    for (const t of ['work', 'home', 'log', 'about'] as const) { await tab(page, t, { noWait: true }); await page.waitForTimeout(40); }
+    for (const t of ['work', 'home', 'record', 'about'] as const) { await tab(page, t, { noWait: true }); await page.waitForTimeout(40); }
     await settle(page);
     await check(page, 'fast tabs, reduced motion');
     await tab(page, 'work'); await settle(page, 500);
@@ -190,7 +190,7 @@ test.describe('phone', () => {
 
   test('S14 phone: pill nav and project pages', async ({ page }) => {
     await page.goto(''); await settle(page);
-    for (const t of ['work', 'log', 'about', 'home'] as const) { await tab(page, t, { tap: true }); await settle(page, 700); await check(page, 'tap ' + t); }
+    for (const t of ['work', 'record', 'about', 'home'] as const) { await tab(page, t, { tap: true }); await settle(page, 700); await check(page, 'tap ' + t); }
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
     await tab(page, 'work', { tap: true }); await settle(page);
     await page.evaluate(() => scrollTo(0, 400)); await page.waitForTimeout(500);
@@ -212,13 +212,13 @@ for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
     test.use(size);
     test(`S17 the Home tab (${label})`, async ({ page }) => {
       const isPhone = label === 'phone';
-      const go = async (t: 'home' | 'work' | 'log' | 'about') => {
+      const go = async (t: 'home' | 'work' | 'record' | 'about') => {
         if (isPhone && (await page.evaluate(() => scrollY > 0))) { await page.evaluate(() => scrollBy(0, -60)); await page.waitForTimeout(450); }
         await tab(page, t, { tap: isPhone });
       };
       await page.goto(''); await settle(page);
-      for (const t of ['work', 'log', 'about'] as const) { await go(t); await settle(page, 700); await go('home'); await settle(page, 700); await check(page, 'Home from ' + t); }
-      for (const t of ['work', 'log', 'about', 'work'] as const) { await go(t); await settle(page, 600); }
+      for (const t of ['work', 'record', 'about'] as const) { await go(t); await settle(page, 700); await go('home'); await settle(page, 700); await check(page, 'Home from ' + t); }
+      for (const t of ['work', 'record', 'about', 'work'] as const) { await go(t); await settle(page, 600); }
       await go('home'); await settle(page, 700);
       await check(page, 'Home after visiting four tabs');
       for (let i = 0; i < 5; i++) { await tab(page, i % 2 ? 'home' : 'work', { noWait: true }); await page.waitForTimeout(90); }
@@ -228,7 +228,7 @@ for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
       if (!isPhone) { await page.hover('#main a[data-p="eat-map"]'); await page.waitForTimeout(300); }
       await go('home'); await settle(page, 700);
       await check(page, 'Home during an object change');
-      await go('log'); await settle(page, 600);
+      await go('record'); await settle(page, 600);
       await page.evaluate(() => scrollTo(0, 900)); await page.waitForTimeout(300);
       await go('home'); await settle(page, 700);
       await check(page, 'Home after scrolling Log', (s) => (s.y === 0 ? [] : ['y=' + s.y]));
