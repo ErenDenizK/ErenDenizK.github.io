@@ -68,9 +68,10 @@ const projects = defineCollection({
 const dated = z.object({ date: z.coerce.date(), note: z.string() });
 const log = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: process.env.LOG_DIR || './content/log' }),
-  schema: z
+  schema: ({ image }) => z
     .object({
-      /** note: 1-3 sentences, no title · entry: a few paragraphs, opens in place · essay: its own page (§3.1). */
+      /** note: 1-3 sentences, no title, read whole in the list · entry: a few paragraphs, its own page ·
+          essay: long, with figures (§3.1). Every kind has its own page. */
       kind: z.enum(['note', 'entry', 'essay']),
       title: z.string().max(80).optional(),
       dek: z.string().optional(),
@@ -88,13 +89,29 @@ const log = defineCollection({
       figures: z.array(z.string()).default([]),
       /** Essay only: the figure whose plate shows in the index. */
       lead: z.string().optional(),
+      /** A version shipped (§3.2a): the row takes the release look, "Recto 1.0.0-beta" in the project's
+          colour, with the body's first three list items under it. Written as the product writes it. */
+      version: z.string().max(32).optional(),
+      /** One pull-out line on the entry page, only a number or fact the owner stated ("300 pages, no freeze"). */
+      key: z.string().max(60).optional(),
+      /** One real image (screenshot, kit render or photo), a path relative to the entry file. It opens the
+          entry page at figure width, and is the thumbnail of an essay or a release in the list. */
+      image: image().optional(),
+      /** What the image shows, for screen readers; required with an image. */
+      imageAlt: z.string().optional(),
+      /** One sentence under the image saying what to see in it (§7.3). */
+      caption: z.string().optional(),
+      /** The owner's own next step; closes the entry page as "Next: ..." (omitted if they gave none). */
+      next: z.string().optional(),
       /** "more" when the agent did more than edit (§3.9). */
       help: z.enum(['edit', 'more']).default('edit'),
       helpNote: z.string().optional(),
       draft: z.boolean().default(false),
     })
     .refine((e) => e.kind === 'note' || (e.title && e.dek), 'entries and essays need a title and a dek')
-    .refine((e) => e.kind !== 'note' || !e.title, 'notes have no title (log.md §3.1)'),
+    .refine((e) => e.kind !== 'note' || !e.title, 'notes have no title (log.md §3.1)')
+    .refine((e) => !e.image || e.imageAlt, 'an image needs imageAlt (log.md §7.3)')
+    .refine((e) => e.kind !== 'note' || (!e.version && !e.key && !e.image), 'a note has no version, key line or image (log.md §3.1)'),
 });
 
 const site = defineCollection({

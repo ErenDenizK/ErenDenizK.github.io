@@ -3,6 +3,11 @@
 What the log is made of, how its index groups and scales, how entries are addressed and fed,
 how figures are drawn, and what never appears. **Status: accepted 2026-10-09.** Owner's answers to §11: title "The record"; notes in full in
 the list; threads beside the log and inside each project's view; at most one hand mark.
+**Amended 2026-10-09 (Record redesign), accepted by the owner:** the readability research
+(`research/2026-10-readability.md` §8–§11) replaces the threads beside the log with a date spine and
+a year strip, adds a release look, a project light on entry pages and 21 px reading text, and cuts the
+controls to at most one row of links. The changed sections are marked "amended 2026-10-09"; §12 lists
+them in one place.
 
 **Name on the site (brief §7, 2026-10-09, after v0):** visitors see the log as the Record: the
 nav tab says "Record", the index is "The record" and every address lives under `/record/`
@@ -18,17 +23,19 @@ Workflow: `.claude/skills/log-entry/SKILL.md` (§9).
 
 ## 0. Decisions in brief
 
-1. **Three kinds**, chosen by length: a **note** (one to three sentences, no title), an
-   **entry** (a few paragraphs, titled, opens in place in the index) and an **essay** (long,
-   with figures, its own page). The kind is honest about the effort; a busy month still
-   yields a note.
+1. **Three kinds**, chosen by length: a **note** (one to three sentences, no title, read whole
+   in the index), an **entry** (a few paragraphs, titled, its own page) and an **essay** (long,
+   with figures, its own page). An entry with a `version` is a **release** and looks like one.
+   The kind is honest about the effort; a busy month still yields a note. *(amended 2026-10-09:
+   entries no longer open in place.)*
 2. **Time lives in the structure**, never in counters: year groups, a date gutter, a quiet
    "updated". No streaks, no cadence promise, no "latest post" hero, no view counts.
-3. **Every entry links to the projects it is about.** Those links draw **threads**: each
-   project as a line of marks on one shared time axis, the evidence that a project moved over
-   months (brief §2.2).
-4. **The index stays one page** that reads at 4 entries and at 400: filters appear at 20,
-   a year list at two years, older years fold at 100.
+3. **Every entry links to the projects it is about.** On the Record each row hangs a mark in its
+   project's colour on one **date spine**, under a **year strip** of the months; reading down
+   the spine shows which project moved when (brief §2.2). A project's own **thread** lives in its
+   view. *(amended 2026-10-09.)*
+4. **The index stays one page** that reads at 4 entries and at 400: no controls until about 40
+   entries, then one row of project links; older years fold at 100. *(amended 2026-10-09.)*
 5. **Append-only in public.** Published text is not silently rewritten: additions are dated
    "Updated" notes, changed facts are marked "Correction". Typos are fixed quietly.
 6. **Stable addresses**: `/record/<year>/<slug>/` for every kind, the slug frozen at publish;
@@ -89,9 +96,9 @@ repository; repos can lag the live site).
 | Title | none (page and feed title: "Note, 6 Oct 2026") | required | required |
 | Dek (one-line summary) | none | required | required |
 | Section headings | never | never | allowed, sentence case |
-| Figures | at most one image, no caption | at most one figure | any, from the kit (§7) |
+| Figures | none (amended 2026-10-09; photo entries come later as postcards) | at most one figure or one `image` | any, from the kit (§7), and one `image` |
 | Reading time | no | no | yes, rounded minutes at 230 words per minute |
-| Where it is read | in the index, whole | opens in place in the index | its own page |
+| Where it is read | in the index, whole | its own page (amended 2026-10-09; it no longer opens in place) | its own page |
 | Own URL | yes | yes | yes |
 
 The agent proposes the kind from the dictated notes and the owner can change it. A note that
@@ -113,10 +120,19 @@ category: school            # one, open vocabulary (§3.6)
 projects: []                # 0..n project slugs: recto | englishprep | eatmap | ...
 figures: []                 # names from tools/illustrations/drawings, or image files
 lead: entry-flow            # essay only: the figure whose plate shows in the index
+version: 1.0.0-beta         # optional: a version shipped; the row takes the release look (§4)
+key: "300 pages, no freeze" # optional: one pull-out line, a number or fact the owner said
+image: ./recto-worker.webp  # optional: one real image, relative to the file; alt in imageAlt
+imageAlt: The worker settings panel.  # required with image
+caption: One sentence on what to see. # optional
+next: Annotations are next. # optional: the owner's own next step, the page's last line
 help: edit                  # edit (default) | more: the agent did more than edit (§3.9)
 ---
 Body in Markdown.
 ```
+
+`version`, `key`, `image` and `next` were added on 2026-10-09 (readability research §10); a note
+takes none of them. An empty slot is dropped, never invented.
 
 The slug is derived from the title at first publish (`two-tracks`), or `n-<yyyy>-<mm>-<dd>`
 for a note, then frozen (§6.1).
@@ -169,84 +185,85 @@ does not clutter the index. Categories are not tags: there is no tag cloud.
 ### 3.8 Project links
 
 `projects` lists the projects an entry is about. They show in the entry's meta line in the
-project's colour (text only, no dots or glows, audit P1.4), feed the threads (§5.4), and make
-the project's focus view list its entries under "In the record" (newest first, the same rows).
+project's colour as links to the project (text, no glows, audit P1.4), colour the row's mark on the
+date spine and its tick in the year strip (§5.4), and make the project's focus view list its entries
+under "In the record" (newest first, the same rows, on a spine), below that project's thread.
+*(amended 2026-10-09.)*
 
 ### 3.9 Disclosure
 
-One site-wide note, already in F's Log header and colophon: "I dictate the notes, often in
+One site-wide note, at the foot of the Record (amended 2026-10-09: it moved from the header) and
+in the colophon: "I dictate the notes, often in
 Turkish; an agent edits them into English and I read every draft before it goes up." A
 per-entry line appears only when the agent did more than edit (`help: more`, e.g. it
 researched facts or wrote a section from scratch): "Written with more help than usual: …"
 (requirements §18).
 
-## 4. How the kinds look different
+## 4. How the kinds look different (amended 2026-10-09)
 
-All three share the row grid F already has: a 5rem date gutter, the content column, and a
-right column for the kind. They differ in type and weight, so a reader scanning 400 rows sees
-the shape of the record.
+Rows differ by shape and image, never by badge (readability research S2, §8). They share one grid: a
+64 px date gutter, the spine with the row's mark, the content column (≤ 680 px), and on essays and
+releases a 16:10 thumbnail column.
 
-| | Note | Entry | Essay |
-|---|---|---|---|
-| Row | the text itself, Newsreader 19/1.5 (`--t-read`), `--read` colour, ≤32em | title Newsreader 25 (`--t-h3`), dek Inter 15 `--ink-2` | as entry, plus a 96 × 56 plate of its lead figure on desktop |
-| Meta line | projects · category | projects · category · Updated | projects · category |
-| Right column | "Note" | "Entry" + chevron (opens in place) | "Essay · 2 min" + arrow (goes to its page) |
-| Permalink | the date is the link | "Link to this entry" inside the open body | the row is the link |
-| Page | the note alone, date as title | title, dek, body, updates | title at `--t-title`, dek as lede, body with figures breaking out to 720 px, contents list beside it from 1240 px, foot with published/updated, copy link, older/newer |
+| | Note | Entry | Release (entry with `version`) | Essay |
+|---|---|---|---|---|
+| Row | the text itself in full, Newsreader 21/1.5 at 430, ≤ 28em | title Newsreader 25 (`--t-h3`), dek Inter 17 `--ink-2` | "Recto 1.0.0-beta" in Newsreader 34 in the project's colour, the dek, the body's first three list items | as entry, plus a 16:10 thumbnail (the `image`, else the lead figure's plate) to the right; above the text on phones |
+| Meta line | projects (in colour, linked) · category | projects · category · Updated | projects · category | projects · category · "6 min read" |
+| Mark on the spine | small dot | dot | ringed dot | ring |
+| Link | the date is the permalink | the title's link covers the row; project names link to the project | as entry | as entry |
+| Page | the note alone at 27 px, date as title | title (`--t-h2`), dek, key line, image, body, Next, foot | as entry, the title in the project's colour | title at `--t-title`, contents list beside it from 1240 px |
 
-A note reads as a sentence, an entry as a headline, an essay as a headline with a picture.
-No kind gets a badge, an icon or a colour of its own.
+A note reads as a sentence, an entry as a headline, a release as a version, an essay as a headline
+with a picture. Every titled kind has its own page; nothing opens in place. Hovering a row brightens
+its mark; nothing moves text.
 
 ## 5. The index: grouping and scale
 
 ### 5.1 Order and year groups
 
-Newest first. One group per year: the year in Newsreader at `--t-h2`, the count beside it in
-meta ("8 entries"). Rows inside a group are separated by hairlines. No month headings: the date
-gutter already carries the month, and month headings over a sparse month would advertise the
-gap.
+Newest first. One group per year: the year in Newsreader at `--t-h3` in the gutter with its count
+("8 entries"), and the year's strip (§5.4) over the content column. Rows hang on the date spine and
+are separated by hairlines. No month headings: the date gutter and the strip carry the month.
+*(amended 2026-10-09.)*
 
 ### 5.2 At 4, 40 and 400 entries
 
 | Entries | What the reader gets |
 |---|---|
-| 1–19 | The header, one or two year groups, every row. No filters, no year list. Threads appear for any project that qualifies (§5.4); otherwise one line says when they will. |
-| 20–99 | Filters appear above the list (§5.3). With two or more years, a year list in the aside (desktop) or a row of year chips (phone). |
-| 100 and more | The two most recent years stay open. Older years show their first three rows and "All 96 entries from 2027"; each year also has its own archive page, `/record/2027/`. Threads switch from one mark per entry to one tick per month when they span more than 18 months. |
+| 1–39 | The header, the year groups with their strips, every row on the spine. No controls. |
+| 40–99 | One row of project links above the list (§5.3). Each year keeps its strip; the strips are the year list. |
+| 100 and more | The two most recent years stay open. Older years show their first three rows and "All 96 entries from 2027"; each year also has its own archive page, `/record/2027/`. A month with more than six entries shows six ticks and "+n". |
+
+*(amended 2026-10-09: the filters at 20 and the aside's year list are gone.)*
 
 The prototype's "preview the index at 8 / 40 / 400" control demonstrates all three with
 simulated rows (§10).
 
-### 5.3 Filters
+### 5.3 Controls (amended 2026-10-09)
 
-- **Kind**: All · Notes · Entries · Essays, with counts, as one segmented control.
-- **Category**: one chip per category with three or more entries; one at a time.
-- **Project**: the threads are the project filter (press a thread; press again to clear).
-- A live line states the result in words, "Showing 15 essays in Recto", with "Show
-  everything".
-- On the real site, filters are query parameters (`/record/?kind=essay&project=recto`) applied
-  by a small script over the complete list; without JavaScript the full list shows.
+Zero controls until about forty entries (`PROJECT_LINKS_FROM` in `src/lib/site.ts`), then one:
 
-### 5.4 Threads
+- **Project links**: one line of project names in their colours and "Everything", each a plain link
+  to `/record/?project=<slug>` (no toggling; "Everything" clears). A small script hides the other
+  rows; without JavaScript the full list shows.
+- Removed: the kind filter with counts, category chips, "Show everything" and the live filter line,
+  threads as a filter, the aside's year list, opening entries in place. Kinds are visible by shape;
+  categories stay as text in the meta line.
 
-A thread is a project drawn over time, the one view that answers "did this move on months
-later?" (brief §2.2).
+### 5.4 Date spine, year strip and threads (amended 2026-10-09)
 
-- One row per project: its name in its colour, "111 since Sep 2026", and a line on an axis
-  shared by all threads, from the first entry of the log to the latest.
-- Up to 18 months of span: one mark per entry, small for a note, larger for an entry, a ring
-  for an essay. Longer: one tick per month, taller for busier months (up to four steps).
-- The line runs from the project's first entry to its latest, and stops there. Nothing is
-  drawn after it: a pause shows as a gap between marks, honestly, but the design never labels
-  a project "inactive" or counts days since.
-- A thread appears once a project has **three entries in at least two different months**;
-  until then the row would be a dot, not a thread.
-- Pressing a thread filters the list to that project. The project's focus view repeats its
-  thread above "In the record".
-- Desktop: in the sticky aside under the Log object. Phone: after the list.
-- On the real site threads are drawn at build with the kit (`timeline`-style marks), with a
-  small script only for the filter; the prototype draws them at runtime because its preview
-  rows are simulated.
+- **Date spine**: one hairline down the list; each row's mark sits on it in its project's colour
+  (Log blue `--log` without one; an entry about two or three projects shares the mark in hard-edged
+  slices). Mark shapes follow §4. No glow.
+- **Year strip**: at the head of each year, twelve month columns on a hairline; each entry is a
+  short tick in its project's colour, stacked when a month is busy (a note's tick is half width, a
+  release's thicker). Month labels in meta. It is a picture, not a control: a month with entries is
+  a plain anchor to its top row; an empty month is a gap, shown honestly and never counted (§2.3).
+- Both are drawn at build in HTML and CSS (`YearStrip.astro`, `LogRow.astro`); no script.
+- **Threads** leave the Record. A project's view repeats its thread above "In the record", read, not
+  pressed: one row with its name, "5 since Sep 2026", and marks on the project's own time axis
+  (notes small, entries larger, essays ringed; one tick per month past 18 months). It appears once
+  the project has three entries in at least two months (`threads()` in `src/lib/site.ts`).
 
 ### 5.5 Home
 
@@ -255,10 +272,10 @@ It stays a link, never a hero, and never says how long ago (requirements §16).
 
 ### 5.6 Phone
 
-The same list in one column: date and kind on one line, then the title or note text full
-width, then the meta line. The Log object shrinks to F's small poster beside the title.
-Filters wrap; the kind control spans the width. Threads follow the list. Essay plates are
-hidden.
+The same list in one column: the spine at the left edge, the date above each row, then the
+thumbnail (essays and releases, full width), then the title or note text and the meta line. The
+year strip spans the width. The Log object is small beside the title. Reading text drops to 19 px.
+*(amended 2026-10-09: essay plates now show on phones.)*
 
 ## 6. Permalinks, feeds and machine-readable data
 
@@ -277,7 +294,7 @@ hidden.
 
 - One Atom feed, `/record/feed.xml`, every kind, newest 50 entries, **full content** (figures as
   inline SVG are replaced by their alt text and a link, since feed readers strip SVG).
-- Linked from the record header ("Atom feed") and every page's `<head>`
+- Linked from the record's foot ("Atom feed") and every page's `<head>`
   (`<link rel="alternate" type="application/atom+xml">`).
 - Later, when a project has a thread: `/work/<slug>/feed.xml` with only its entries.
 
@@ -331,6 +348,10 @@ Never: AI-generated images, stock photos, emoji, rough.js sketch style (taste qu
   13 px label is never scaled to 7 px.
 - **Colour**: the project the entry belongs to, or the Log's blue; everything else in the
   page's inks.
+- **Project light** *(amended 2026-10-09)*: an entry's page opens under a faint light in its
+  project's colour (Log blue without one): a radial wash of at most 14% mix at the top, gone by
+  ~400–600 px, still under reduced motion. The page accent (the mark's dot, the tab light) takes the
+  same colour. Prose links are Log blue on every entry page.
 - **Motion**: none. Figures are still; no draw-on-scroll, no fade-up (audit §4.3). A future
   enhancement may highlight a labelled part on hover, with a still twin.
 - **Budget**: each inline SVG under 8 KB after svgo (the prototype's are 1.8 to 2.5 KB);
@@ -350,7 +371,7 @@ The kit's rules, primitives and build are in `tools/illustrations/README.md`.
 | Share-button rows, newsletter pop-ups | Template signals; one "Copy link" on essays is enough. |
 | Tag clouds, word counts, reading-progress bars | Noise; reading time on essays only. |
 | Growth stages, certainty or "epistemic status" labels | A research-archive register; brief §7 asks for brand-led. |
-| Kind badges, coloured category pills, glowing dots | Audit P1.4; the kinds differ by type and weight. |
+| Kind badges, coloured category pills, glowing dots | Audit P1.4; the kinds differ by shape. The spine marks are flat project colour, never glowing. |
 | Names, faces or places of private people | CLAUDE.md, requirements §9. |
 | AI tells in the prose: dense em dashes, "it's not X, it's Y", reflexive triplets, "delve", "journey", uplifting endings, uniform paragraphs, headings on a note | Requirements §18. |
 
@@ -403,3 +424,52 @@ the threads sit far below the list (a "Threads" chip beside the years could jump
 4. **Hand marks in figures.** (a) one perfect-freehand underline or circle allowed, as in the
    levels figure; (b) none, everything geometric; (c) a rough.js sketch style for whole
    diagrams.
+
+## 12. Amendments of 2026-10-09 (Record redesign)
+
+Accepted by the owner on 2026-10-09 (brief §7, "Record redesign"), from
+`research/2026-10-readability.md` §8–§11 and its answers to §13: (1) spine and year strip,
+threads only in project views; (2) every entry opens its own page; (3) a release look; (4) a faint
+project light on entry pages; (5) 21 px reading text.
+
+| Section | Change |
+|---|---|
+| §0, §3.1 | Entries open their own page; a release is an entry with a `version`. |
+| §3.2 | New optional fields `version`, `key`, `image` (+ `imageAlt`, `caption`), `next`. |
+| §3.8, §3.9 | Project names link to projects and colour the marks; the writing note moves to the foot. |
+| §4 | Rows by shape: note, entry, release, essay with a 16:10 thumbnail (also on phones). |
+| §5.1–§5.4, §5.6 | Date spine and year strips; no controls until ~40 entries, then one row of project links; threads only in project views. |
+| §7.3 | Project light at the top of entry pages; links in Log blue. |
+| Header | "The record" at `--t-h2`, a one-line dek and a count, the Log object small beside it: at most ~220 px, so the first entry shows on the first screen at 1440×900. |
+
+### 12.1 Reading type
+
+- Entry pages and notes in the list: Newsreader **21 px / 1.55** (notes in the list 1.5),
+  `max-width: 28em` (≈ 588 px, about 70 characters), **19 px on phones** with `hyphens: auto`.
+  Paragraphs 1em apart, ragged right, `text-wrap: pretty`, `hanging-punctuation`. Scoped to the
+  Record (`.read`, `.n-text`); `--t-read` and `.prose` elsewhere are unchanged.
+- **Weight 430**, chosen by eye from 400, 430 and 450 side by side on `--ground` at 1x and 2x
+  (readability research §12.1; `research/assets/2026-10-readability-weights-{1x,2x}.webp`). 400 looks
+  thin on black at 1x, the halation the research warns about; 450 starts to read as bold beside the
+  Inter interface and blurs the difference from `<strong>` (500); 430 holds the strokes without
+  changing the face's colour.
+- Open check (§12.2 of the research): the self-hosted Newsreader subset keeps `liga`, `pnum` and
+  `tnum` but not `onum`, so prose figures stay lining. Re-subsetting with `onum` is a follow-up in
+  `tools/fonts`.
+
+### 12.2 Entry page
+
+Back link; meta (date · kind · category · projects in colour); for a release whose title is not
+the version, the version line in colour; title (`--t-h2` for entries and releases, `--t-title` for
+essays; a release titled as its version is set in the project's colour); dek as lede. Then the
+reading flow: the body's first paragraph, the **key line** (display face, project colour, a 2 px
+rule at its left; at most one), the **image** at 720 px with a one-sentence caption, the rest of the
+body, and **"Next:"** in the UI face. The key line and the image follow the first paragraph on screen
+(CSS `order`), so the first sentence stays on the first screen; in the document they come before the
+body. Foot unchanged.
+
+### 12.3 Empty record
+
+With no entries the page keeps its frame: the header ("No entries yet"), this year's strip with
+nothing on it, a dashed spine, the line from `site.json` at reading size, the four marks with what
+each will mean, and the project colours named. Nothing is invented to fill it.
