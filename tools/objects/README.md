@@ -17,7 +17,8 @@ Since ADR-0006 the site ships pre-rendered frames and clips instead (`frames.py`
 | `recto.py` | glass page stack, folded corner, steel clip | `page_1`, `page_2`, `page_3`, `fold`, `title`, `lines`, `clip` |
 | `englishprep.py` | sakura glass speech bubble with "Aa" | `bubble`, `A`, `a`, `reply`, `dots` |
 | `eatmap.py` | rose glass map pin over a ceramic plate | `pin`, `plate` |
-| `log.py` | glass studio microphone | `head`, `core`, `band`, `neck`, `stem`, `base`, `led` |
+| `record.py` | the Record: a glass card file, blue year dividers, one card drawn from the back | `tray`, `glow`, `cards`, `dividers`, `card` |
+| `log.py` | glass studio microphone (the Record's first object; see below) | `head`, `core`, `band`, `neck`, `stem`, `base`, `led` |
 | `about.py` | round gold-wire glasses | `rim_left`, `rim_right`, `bridge`, `temple_left`, `temple_right`, `lens_left`, `lens_right` |
 | `calib.py` | chrome, clay and glass balls (rig check only) | `chrome`, `clay`, `glass` |
 
@@ -108,7 +109,11 @@ pages fan out on a spring and settle back; English Prep's bubble pops, A and a b
 ducks and pops back in and its dots bounce; Eat Map's pin rises, drops onto the plate (the
 landing is ray-cast onto the glaze), squashes about its tip and lifts home; Log's LED, dim and
 blue at rest, goes on air (six times brighter) while three soft accent rings ripple out round
-the head, growing to 1.8 head radii so they stay inside the square. Every clip starts and ends on the
+the head, growing to 1.8 head radii so they stay inside the square. Record's drawn card lifts all
+the way out of the file (spring(110, 13), let go at 0.62 s), tips 11° toward the viewer about
+its foot on a softer spring a beat later, and drops back with a small settle into the stack: 42
+frames. Its rising frames are a state axis too, like Recto's fan, so the live engine could stop
+the lift anywhere (a note a little, an essay all the way). Every clip starts and ends on the
 grid's centre frame. The droplet is the bake-off's melt with a real glass sphere grown over the
 last 45 %; camera and backlight glide to canonical values, so every object's last frame is the
 same droplet and only the accent light differs.
@@ -147,7 +152,9 @@ subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact blac
 
 The `normal` stage renders a clip's normals only for a state axis (`AXES` in `frames.py`):
 Recto's fan, whose frames 0–11 rise monotonically from rest to the furthest fan, with each
-frame's fan amount stored as `values` so the page maps a spring's value to a frame. edk's hop
+frame's fan amount stored as `values` so the page maps a spring's value to a frame. Record's
+lift is the other state axis (its peak frame comes from its spring, so `clip_record()` adds the
+`AXES` entry itself). edk's hop
 stays a time axis (it plays forward in a second, with the light faded).
 
 Per-object settings that differ from the defaults are in `OBJECT` in `encode.py` (edk: full
@@ -221,6 +228,13 @@ three.js transmission is screen-space: it sees opaque things behind glass but no
 and it has no internal reflections, so thick clear glass (the edk letters) looks smoother and
 brighter than in Cycles. Shadows in the page are approximations of the catcher's. The
 `compare-*.png` files show where each object stands.
+
+`record.py` is `record_c2.py` (docs/research/2026-10-record-object.md, round 2) with the chosen
+defaults fixed; `record_a.py`, `record_b.py`, `record_b2.py`, `record_c.py`, `record_c2.py`,
+`record_h2.py` and `record_kit.py` are that research's concepts, kept so its variants can be
+re-rendered. The Record page shows `record`; `media/objects/log/` (the microphone) stays in place
+but nothing on the site uses it any more, so swapping in another Record object (B2 or H2) later is
+only another object folder and the one `obj` on `src/pages/record/index.astro`.
 
 `make_recto.py` and `turntable.py` are the 2026-10-08 research test (`docs/research/
 2026-10-3d-objects.md`), kept for reference; `recto.py` replaces the object.
