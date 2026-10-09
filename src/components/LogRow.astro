@@ -1,8 +1,12 @@
 ---
-/* One row of the record (log.md §4): a note is read whole in the list and its date is its link;
-   an entry's title links to its page and, with JavaScript, opens in place; an essay links to its page. */
-import Icon from './Icon.astro';
-import { url, entryPath, entrySlug, dayMon, iso, kindLabel, categoryLabel, readingMinutes, type LogEntry, type Project } from '../lib/site';
+/* One row of the record (log.md §4, amended 2026-10-09). Rows differ by shape, never by badge:
+   a note is read whole and its date is its link; an entry is a title, a dek and its projects in their
+   colours; a release (an entry with a version) sets the version large in the project's colour with up
+   to three items; an essay adds a 16:10 plate of its image or lead figure. Every titled row links to
+   its own page (no opening in place); project names link to the project. The row's mark on the date
+   spine takes its project's colour, Log blue when it has none (readability research C1–C2). */
+import { Picture } from 'astro:assets';
+import { url, entryPath, entrySlug, dayMon, iso, categoryLabel, readingMinutes, entryProjects, entryColors, projectColor, markFill, rowShape, releaseName, releaseItems, type LogEntry, type Project } from '../lib/site';
 import drawings from '../../tools/illustrations/out/drawings.json';
 import { render } from 'astro:content';
 interface Props { e: LogEntry; projects: Project[]; compact?: boolean }
@@ -10,51 +14,47 @@ const { e, projects, compact = false } = Astro.props;
 const d = e.data;
 const href = url(entryPath(e));
 const slug = entrySlug(e);
-const pj = d.projects.map((r) => projects.find((p) => p.id === r.id)).filter(Boolean) as Project[];
+const shape = rowShape(e);
+const pj = entryProjects(e, projects);
+const colors = entryColors(e, projects);
 const lastUpdate = d.updated.length ? d.updated[d.updated.length - 1].date : null;
-const plate = d.kind === 'essay' && d.lead ? (drawings as any)[d.lead]?.plate ?? '' : '';
-const { Content } = d.kind === 'essay' ? { Content: null } : await render(e);
-const mins = d.kind === 'essay' ? readingMinutes(e.body) : 0;
-const tags = (link: boolean) => [
-  ...pj.map((p) => ({ label: p.data.title, href: link ? url(`work/${p.id}/`) : null, color: p.data.accent.glow ?? p.data.accent.color })),
-  { label: categoryLabel(d.category), href: null, color: null },
-  ...(lastUpdate ? [{ label: 'Updated ' + dayMon(lastUpdate), href: null, color: null }] : []),
+const { Content } = shape === 'note' ? await render(e) : { Content: null };
+const plate = !d.image && d.kind === 'essay' && d.lead ? (drawings as Record<string, { plate?: string }>)[d.lead]?.plate ?? '' : '';
+const thumb = (shape === 'essay' || shape === 'release') && (d.image || plate);
+const name = shape === 'release' ? releaseName(e, projects) : '';
+const items = shape === 'release' ? releaseItems(e.body) : [];
+const extra = [
+  categoryLabel(d.category),
+  ...(d.kind === 'essay' ? [`${readingMinutes(e.body)} min read`] : []),
+  ...(lastUpdate ? ['Updated ' + dayMon(lastUpdate)] : []),
 ];
 ---
-<li class="entry" id={compact ? undefined : slug} data-slug={slug} data-kind={d.kind} data-date={iso(d.date)} data-projects={pj.map((p) => p.id).join(' ')} data-cat={d.category}>
-  {d.kind === 'note' && (
-    <div class="n-row">
-      <a class="n-date meta" href={href}><time class="meta" datetime={iso(d.date)}>{dayMon(d.date)}</time></a>
-      <div class="n-body">
-        <div class="n-text">{Content && <Content />}</div>
-        <span class="e-tags meta">{tags(true).map((t, i) => <>{i > 0 && <span class="sep">·</span>}{t.href ? <a class="pj" href={t.href} style={`--p: ${t.color}`}>{t.label}</a> : <span>{t.label}</span>}</>)}</span>
-      </div>
-      <span class="e-kind meta">Note</span>
-    </div>
-  )}
-  {d.kind === 'entry' && (
-    <>
-      <h3><a class="e-row" href={href} aria-expanded="false" aria-controls={`b-${slug}`}>
-        <time class="meta" datetime={iso(d.date)}>{dayMon(d.date)}</time>
-        <span class="e-title">{d.title}</span>
-        <span class="e-dek">{d.dek}</span>
-        <span class="e-tags meta">{tags(false).map((t, i) => <>{i > 0 && <span class="sep">·</span>}<span class={t.color ? 'pj' : undefined} style={t.color ? `--p: ${t.color}` : undefined}>{t.label}</span></>)}</span>
-        <span class="e-meta meta">{kindLabel.entry}<Icon name="chevron-down" /></span>
-      </a></h3>
-      <div class="e-body" id={`b-${slug}`}><div><div class="prose">
-        {Content && <Content />}
-        <a class="perma" href={href}>Link to this entry</a>
-      </div></div></div>
-    </>
-  )}
-  {d.kind === 'essay' && (
-    <h3><a class="e-row e-link" href={href}>
-      <time class="meta" datetime={iso(d.date)}>{dayMon(d.date)}</time>
-      <span class="e-title">{d.title}</span>
-      <span class="e-dek">{d.dek}</span>
-      <span class="e-tags meta">{tags(false).map((t, i) => <>{i > 0 && <span class="sep">·</span>}<span class={t.color ? 'pj' : undefined} style={t.color ? `--p: ${t.color}` : undefined}>{t.label}</span></>)}</span>
-      <span class="e-meta meta"><span>Essay · {mins} min</span><Icon name="arrow-right" /></span>
-      {plate && <span class="e-plate" aria-hidden="true" set:html={plate} />}
-    </a></h3>
+<li class:list={['entry', `s-${shape}`, { 'has-thumb': thumb }]} id={compact ? undefined : slug} data-slug={slug} data-kind={d.kind} data-shape={shape} data-date={iso(d.date)} data-projects={pj.map((p) => p.id).join(' ')} style={`--p: ${colors[0]}; --m: ${markFill(colors)}`}>
+  <span class="e-mark" aria-hidden="true"></span>
+  {shape === 'note'
+    ? <a class="e-date meta" href={href}><time datetime={iso(d.date)}>{dayMon(d.date)}</time><span class="vh">, note</span></a>
+    : <time class="e-date meta" datetime={iso(d.date)}>{dayMon(d.date)}</time>}
+  <div class="e-main">
+    {shape === 'note' && <div class="n-text">{Content && <Content />}</div>}
+    {shape === 'release' && (
+      <>
+        <h3 class="r-name"><a class="e-link" href={href}>{name}</a></h3>
+        {d.title && d.title !== name && <p class="r-title">{d.title}</p>}
+      </>
+    )}
+    {(shape === 'entry' || shape === 'essay') && <h3 class="e-title"><a class="e-link" href={href}>{d.title}</a></h3>}
+    {d.dek && <p class="e-dek">{d.dek}</p>}
+    {items.length > 0 && <ul class="r-items">{items.map((t) => <li>{t}</li>)}</ul>}
+    <p class="e-meta meta">
+      {pj.map((p, i) => <>{i > 0 && <span class="sep">·</span>}<a class="pj" href={url(`work/${p.id}/`)} style={`--p: ${projectColor(p)}`}>{p.data.title}</a></>)}
+      {extra.map((t, i) => <>{(pj.length > 0 || i > 0) && <span class="sep">·</span>}<span>{t}</span></>)}
+    </p>
+  </div>
+  {thumb && (
+    <span class="e-thumb" aria-hidden="true">
+      {d.image
+        ? <Picture src={d.image} alt="" widths={[260, 520]} sizes="(max-width: 899.98px) calc(100vw - 32px), 260px" formats={['avif', 'webp']} loading="lazy" decoding="async" />
+        : <span class="e-plate" set:html={plate} />}
+    </span>
   )}
 </li>

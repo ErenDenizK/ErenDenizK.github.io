@@ -38,9 +38,14 @@ updates, corrections, figures, what never appears) before the first entry of a s
    Propose it; the owner can change it.
 4. **Fill the fields** (log.md §3.2): `kind`, `title` and `dek` (not for notes), `date` (the
    day of publishing unless the owner gives another), `category` (one: personal, work, school,
-   or a new one the owner names), `projects` (slugs of the projects the entry is about),
-   `figures`, `help` (`more` only if you did more than edit, e.g. researched facts or wrote a
-   section the owner only sketched).
+   or a new one the owner names), `projects` (slugs of the projects the entry is about; they
+   colour the row's mark on the Record's spine), `figures`, `help` (`more` only if you did more
+   than edit, e.g. researched facts or wrote a section the owner only sketched). Optional slots,
+   filled only from the owner's notes and dropped when empty (log.md §12): `version` (a version
+   shipped: the row takes the release look, and the body keeps the shipped items as its first
+   list, at most three shown), `key` (one pull-out number or fact the owner stated), `image` with
+   `imageAlt` and `caption` (a real screenshot, kit render or photo the text refers to), `next`
+   (the owner's own next step, the page's last line). Notes take none of these.
 5. **Write the body in the owner's voice** (rules below).
 6. **Figures, only if they earn it** (log.md §7.1): a flow, a structure, a change over time,
    a real number, a real screenshot. Draw with `tools/illustrations` (add a module in
@@ -89,11 +94,37 @@ updates, corrections, figures, what never appears) before the first entry of a s
   leave the "Removed on <date>" page. This is the one exception to append-only.
 - Never change a published slug or date.
 
+## Readability checks
+
+From `docs/research/2026-10-readability.md` Part D. Run them on every draft, after the facts and
+privacy checks below.
+
+- [ ] **Title** says what happened, front-loaded, ≤ 60 characters, sentence case.
+- [ ] **Dek** gives the result, reason or number, in one sentence; it is the entry's summary.
+- [ ] **First sentence** names the subject in its first few words and says what changed.
+- [ ] **One idea per paragraph**, 1–4 sentences each; paragraph lengths vary.
+- [ ] **Sentences** average ~15–18 words; none over ~30 without a reason.
+- [ ] **Plain words**: the everyday word over the formal one; terms glossed once if an outside
+      engineer might not know them.
+- [ ] **At least one concrete thing** from the owner's notes: a number, a named feature, a
+      before/after, a screenshot. If there is none, ask; never invent.
+- [ ] **Order**: what happened, why, how or what was hard, (learned), next.
+- [ ] **Next line** (`next`) only if the owner gave a next step.
+- [ ] **Key line** (`key`) only for a number or fact the owner stated.
+- [ ] **Image** only if it shows something the text refers to; caption says what to see.
+- [ ] **Release**: if a version shipped, set `version` and keep the list to three items.
+- [ ] **Voice**: one of the owner's own sentences kept; their dead ends and jokes kept; no
+      added humour, moral or uplift.
+- [ ] **Read aloud once**; cut any sentence that only restates the one before.
+- [ ] **Scan test**: reading only title, dek and first sentence tells an outsider what
+      happened.
+
 ## Checks before showing a draft
 
 - [ ] Every fact, number, name and date appears in the owner's notes or their answers.
 - [ ] No private person's name, face or place; no real-time location.
 - [ ] Kind, title, dek, category and projects set; slug is new and matches the title.
+- [ ] `version`, `key`, `image` and `next` set only from the owner's words; `imageAlt` with any image.
 - [ ] Length fits the kind; no headings unless it is an essay.
 - [ ] None of the tells above; read it aloud once for rhythm.
 - [ ] Figures: from the kit, both widths looked at, caption and alt text written, no new claim.
