@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Ph from '../components/Ph.astro';
+import Foot from '../components/Foot.astro';
+import { getSite, isPlaceholder } from '../lib/site';
+import c750a from '../assets/photos/courtyard-750.avif?url';
+import c1000a from '../assets/photos/courtyard-1000.avif?url';
+import c1350a from '../assets/photos/courtyard-1350.avif?url';
+import c750w from '../assets/photos/courtyard-750.webp?url';
+import c1000w from '../assets/photos/courtyard-1000.webp?url';
+import c1350w from '../assets/photos/courtyard-1350.webp?url';
+import g480a from '../assets/photos/gate-480.avif?url';
+import g760a from '../assets/photos/gate-760.avif?url';
+import g480w from '../assets/photos/gate-480.webp?url';
+import g760w from '../assets/photos/gate-760.webp?url';
+const site = await getSite();
+const a = site.about;
+const li = site.links.linkedin;
+---
+<Base title="About" tab="about" og="about" ogAlt={`${site.name} at the YTÜ gate.`} type="profile" pageClass="page-about">
+  <div class="about-hero">
+    <figure class="courtyard">
+      <picture>
+        <source type="image/avif" srcset={`${c750a} 750w, ${c1000a} 1000w, ${c1350a} 1350w`} sizes="(min-width: 900px) 60vw, 100vw" />
+        <img src={c1000w} srcset={`${c750w} 750w, ${c1000w} 1000w, ${c1350w} 1350w`} sizes="(min-width: 900px) 60vw, 100vw" alt={a.courtyard.alt} width="1000" height="1481" decoding="async" fetchpriority="high" />
+      </picture>
+      <figcaption class="meta">{a.courtyard.caption}</figcaption>
+    </figure>
+    <div class="inner">
+      <div class="about-text">
+        <p class="meta">{a.kicker}</p>
+        <h1 class="vtitle" id="h-about">{a.title}</h1>
+        {a.ledes.map((l) => <p class="lede">{l}</p>)}
+        <div class="links">
+          <a class="btn" href={site.links.github} rel="me">GitHub <Icon name="arrow-up-right" weight="medium" /></a>
+          {isPlaceholder(li) ? <span class="qlink is-ph">LinkedIn <Ph text={li.placeholder} /></span> : <a class="qlink" href={li} rel="me">LinkedIn <Icon name="arrow-up-right" /></a>}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-wrap"><div class="inner">
+    <div class="about-body">
+      <figure class="selfie">
+        <picture>
+          <source type="image/avif" srcset={`${g480a} 480w, ${g760a} 760w`} sizes="(min-width: 900px) 380px, 300px" />
+          <img src={g760w} srcset={`${g480w} 480w, ${g760w} 760w`} sizes="(min-width: 900px) 380px, 300px" alt={a.selfie.alt} width="760" height="950" loading="lazy" decoding="async" />
+        </picture>
+        <figcaption class="meta">{a.selfie.caption}</figcaption>
+      </figure>
+      <dl class="facts">
+        {a.facts.map(([k, v]) => <><dt class="meta">{k}</dt><dd>{v}</dd></>)}
+        <dt class="meta">Elsewhere</dt>
+        <dd><a href={site.links.github} rel="me">GitHub</a> · {isPlaceholder(li) ? <>LinkedIn <Ph text={li.placeholder} /></> : <a href={li} rel="me">LinkedIn</a>}</dd>
+      </dl>
+    </div>
+
+    <section class="tracks" aria-labelledby="h-tracks">
+      <div class="sec-head"><h2 id="h-tracks">{a.tracks.title}</h2></div>
+      <div class="track-grid">
+        {a.tracks.items.map((t) => (
+          <div class="track">
+            <span class="meta">{t.label}</span>
+            <h3>{t.title}</h3>
+            <p>{t.text}</p>
+            <ul>{t.list.map((x) => <li>{x}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+      <p class="both lede">{a.tracks.both}</p>
+    </section>
+
+    <section class="colophon" id="colophon" aria-labelledby="h-colo">
+      <div>
+        <div class="sec-head"><h2 id="h-colo">How this site is made</h2></div>
+        <div class="prose">{a.colophon.map(([b, t]) => <p><b>{b}</b> {t}</p>)}</div>
+      </div>
+      <div class="now-box">
+        <div class="sec-head"><h2>Now</h2><span class="meta">{a.now.label}</span></div>
+        <p>{a.now.text}</p>
+      </div>
+    </section>
+    <Foot />
+  </div></div>
+</Base>

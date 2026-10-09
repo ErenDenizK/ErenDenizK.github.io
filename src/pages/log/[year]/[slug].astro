@@ -1,0 +1,61 @@
+---
+/* One entry of any kind at its frozen address /log/<year>/<slug>/ (log.md §6.1). Essays get the long
+   layout with a contents list from 1240 px; entries and notes the same page without it. */
+import Base from '../../../layouts/Base.astro';
+import Icon from '../../../components/Icon.astro';
+import Figure from '../../../components/Figure.astro';
+import Foot from '../../../components/Foot.astro';
+import { render } from 'astro:content';
+import { getLog, getProjects, getSite, url, abs, entryPath, entrySlug, entryYear, entryTitle, iso, longDate, dayMonYear, categoryLabel, readingMinutes, type LogEntry } from '../../../lib/site';
+
+export async function getStaticPaths() {
+  const all = await getLog();
+  return all.map((e, i) => ({ params: { year: entryYear(e), slug: entrySlug(e) }, props: { e, newer: all[i - 1] ?? null, older: all[i + 1] ?? null } }));
+}
+interface Props { e: LogEntry; newer: LogEntry | null; older: LogEntry | null }
+const { e, newer, older } = Astro.props;
+const d = e.data;
+const site = await getSite();
+const projects = await getProjects();
+const { Content, headings } = await render(e);
+const pj = d.projects.map((r) => projects.find((p) => p.id === r.id)).filter((p): p is NonNullable<typeof p> => !!p);
+const modified = [d.date, ...d.updated.map((u) => u.date), ...d.corrections.map((c) => c.date)].sort((a, b) => b.getTime() - a.getTime())[0];
+const title = entryTitle(e);
+const meta = [d.kind === 'note' ? 'Note' : d.kind === 'entry' ? 'Entry' : `Essay · ${readingMinutes(e.body)} min read`, categoryLabel(d.category)];
+const toc = d.kind === 'essay' ? headings.filter((h) => h.depth === 2) : [];
+const jsonld = d.kind === 'note' ? [] : [{
+  '@type': 'BlogPosting', headline: title, description: d.dek, datePublished: iso(d.date), dateModified: iso(modified),
+  url: abs(entryPath(e)), author: { '@id': abs('#me') }, inLanguage: 'en',
+}];
+---
+<Base title={title} tab="log" description={d.dek ?? title} type="article" published={d.date} modified={modified} og="home" jsonld={jsonld}>
+  <div class:list={['inner post-wrap', { 'has-toc': toc.length > 0 }]}>
+    <nav class="post-toc" aria-label="On this page">
+      <a class="qlink post-back" href={url('log/')}><Icon name="arrow-left" />{site.log.title}</a>
+      {toc.length > 0 && <><p class="meta">On this page</p><ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></>}
+    </nav>
+    <article class:list={['post', `post-${d.kind}`]} data-slug={entrySlug(e)}>
+      <a class="qlink post-back post-back-sm" href={url('log/')}><Icon name="arrow-left" />{site.log.title}</a>
+      <header class="post-head">
+        <p class="meta"><time datetime={iso(d.date)}>{longDate(d.date)}</time> · {meta.join(' · ')}{pj.map((p) => <> · <a class="pj" href={url(`work/${p.id}/`)} style={`--p: ${p.data.accent.glow ?? p.data.accent.color}`}>{p.data.title}</a></>)}</p>
+        {d.kind === 'note' ? <h1 class="vh">{title}</h1> : <h1 class="post-title">{title}</h1>}
+        {d.dek && <p class="lede post-dek">{d.dek}</p>}
+      </header>
+      <div class:list={['prose post-body', { 'note-body': d.kind === 'note' }]}>
+        {d.help === 'more' && <p class="help-note meta">Written with more help than usual{d.helpNote ? `: ${d.helpNote}` : '.'}</p>}
+        <Content components={{ Figure }} />
+      </div>
+      <footer class="post-foot">
+        <div class="post-meta-row">
+          <p class="meta">Published {dayMonYear(d.date)}{modified > d.date && <> · Updated {dayMonYear(modified)}</>} · <a href={url('about/#colophon')}>How this is written</a></p>
+          <button type="button" class="qlink copy-link" data-copy={abs(entryPath(e))} hidden><span class="icon-swap"><Icon name="copy" /><Icon name="check" /></span><span class="copy-l">Copy link</span></button>
+        </div>
+        <nav class="post-nav" aria-label="Older and newer">
+          {older ? <a href={url(entryPath(older))} class="pn" rel="prev"><span class="meta"><Icon name="arrow-left" />Older</span><b>{entryTitle(older)}</b></a> : <span class="pn"><span class="meta">Older</span><b class="none">This is the first entry</b></span>}
+          {newer ? <a href={url(entryPath(newer))} class="pn" rel="next"><span class="meta">Newer<Icon name="arrow-right" /></span><b>{entryTitle(newer)}</b></a> : <span class="pn"><span class="meta">Newer</span><b class="none">Nothing newer yet</b></span>}
+        </nav>
+      </footer>
+    </article>
+  </div>
+  <div class="inner"><Foot /></div>
+</Base>

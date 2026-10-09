@@ -1,0 +1,24 @@
+---
+/* Year groups, newest first (log.md §5.1); at 100 entries and more, years older than the two most
+   recent show their first three rows and a link to their archive page (§5.2). */
+import LogRow from './LogRow.astro';
+import Icon from './Icon.astro';
+import { entryYear, url, type LogEntry, type Project } from '../lib/site';
+interface Props { entries: LogEntry[]; projects: Project[]; foldOld?: boolean }
+const { entries, projects, foldOld = true } = Astro.props;
+const years = [...new Set(entries.map(entryYear))];
+const fold = foldOld && entries.length >= 100;
+---
+<div class="log-list" id="log-list">
+  {years.map((y, i) => {
+    const mine = entries.filter((e) => entryYear(e) === y);
+    const collapsed = fold && i >= 2;
+    return (
+      <section class:list={['ygroup', { collapsed }]} data-year={y} id={`year-${y}`} aria-labelledby={`yh-${y}`}>
+        <div class="year"><h2 id={`yh-${y}`}>{y}</h2><span class="meta y-count">{mine.length} {mine.length === 1 ? 'entry' : 'entries'}</span></div>
+        <ol class="entries">{mine.map((e) => <LogRow e={e} projects={projects} />)}</ol>
+        {collapsed && <a class="y-more" href={url(`log/${y}/`)}>All {mine.length} entries from {y}<Icon name="arrow-right" /></a>}
+      </section>
+    );
+  })}
+</div>

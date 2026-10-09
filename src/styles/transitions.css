@@ -1,0 +1,38 @@
+/* Cross-document view transitions (ADR-0007): every tab is its own page, and the browser animates
+   between them where it can (Chrome 126+, Safari 18.2+); elsewhere navigation is instant and complete.
+   One event, one duration family (craft audit §4.2): out 160 ms, in 320 ms, indicator on the ui
+   spring, the object 720 ms. Reduced motion: no cross-page animation at all. */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+
+.bar { view-transition-name: bar; }
+.media.stage { view-transition-name: stage; }
+/* the sheet's own same-document transition morphs only the project title (craft audit P2.6) */
+html.vt-sheet .bar, html.vt-sheet .media.stage, html.vt-sheet .tabs .ind { view-transition-name: none; }
+
+/* the page: the outgoing page fades in place, the incoming one rises 12 px and moves 24 px toward the tab direction */
+html:not(.vt-sheet)::view-transition-old(root) { animation: vt-out 160ms var(--ease-in) both; }
+html:not(.vt-sheet)::view-transition-new(root) { animation: vt-in 320ms var(--ease-out) both; }
+html:active-view-transition-type(to-right)::view-transition-new(root), html[data-vt="to-right"]::view-transition-new(root) { animation-name: vt-in-right; }
+html:active-view-transition-type(to-left)::view-transition-new(root), html[data-vt="to-left"]::view-transition-new(root) { animation-name: vt-in-left; }
+html:active-view-transition-type(deeper)::view-transition-new(root), html[data-vt="deeper"]::view-transition-new(root) { animation: vt-deeper 420ms var(--ease-out) both; }
+html:active-view-transition-type(shallower)::view-transition-old(root), html[data-vt="shallower"]::view-transition-old(root) { animation: vt-shallower 240ms var(--ease-in) both; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes vt-in-right { from { opacity: 0; transform: translate(24px, 12px); } }
+@keyframes vt-in-left { from { opacity: 0; transform: translate(-24px, 12px); } }
+@keyframes vt-deeper { from { opacity: 0; transform: translateY(24px); } }
+@keyframes vt-shallower { to { opacity: 0; transform: translateY(16px); } }
+
+/* the bar does not move; the indicator slides to the new tab on the ui spring */
+::view-transition-group(bar) { animation-duration: 320ms; }
+::view-transition-group(tab-ind) { animation-duration: 450ms; animation-timing-function: var(--spring-ui); }
+
+/* The object: one changes into the next (ADR-0005 item 1). Media is ground-subtracted and drawn with
+   plus-lighter (media research §3.1); the snapshot is composited the same way, so the ground stays exact
+   through the change. The old object leaves in 360 ms, the new one arrives in 480 ms from 240 ms. */
+::view-transition-group(stage) { animation-duration: 720ms; animation-timing-function: var(--ease-move); mix-blend-mode: plus-lighter; }
+::view-transition-old(stage) { animation: vt-obj-out 360ms var(--ease-in) both; }
+::view-transition-new(stage) { animation: vt-obj-in 480ms var(--ease-out) 240ms both; }
+@keyframes vt-obj-out { to { opacity: 0; transform: scale(0.97); } }
+@keyframes vt-obj-in { from { opacity: 0; transform: scale(1.03); } }

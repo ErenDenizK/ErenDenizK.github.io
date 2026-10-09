@@ -10,11 +10,17 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "build:test": "BASE_PATH=/Portfolio/ astro build && BASE_PATH=/Portfolio/ OUT_DIR=./dist-fixtures LOG_DIR=./tests/fixtures/log astro build",
+    "test": "playwright test",
+    "test:nav": "playwright test nav",
+    "budget": "node tests/budget.mjs dist",
+    "fonts": "python3 tools/fonts/subset.py",
+    "photos": "node tools/photos/grade.mjs",
+    "verify": "npm run check && npm run build:test && npm run budget -- dist && npm test"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.3",
-    "@astrojs/rss": "4.0.19",
     "@astrojs/sitemap": "3.7.4",
     "astro": "7.3.8"
   },

@@ -1,0 +1,11 @@
+---
+/* A small poster (phone tiles, the log header): ground-subtracted, drawn with plus-lighter. */
+import { poster } from '../lib/media';
+interface Props { obj: string; size: number; class: string }
+const { obj, size, class: cls } = Astro.props;
+const p = poster(obj);
+---
+<picture class={cls + '-pic'}>
+  {p.sources.map((s) => <source type={s.type} srcset={s.srcset} sizes={`${size}px`} />)}
+  <img class={cls + ' blend'} src={p.src} alt="" width={size} height={size} loading="lazy" decoding="async" />
+</picture>

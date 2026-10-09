@@ -60,21 +60,38 @@ const projects = defineCollection({
   }),
 });
 
+/* The log (docs/design/log.md, accepted 2026-10-09). One file per entry,
+   content/log/<year>/<slug>.md|mdx; the file name is the slug and is frozen at publish (§6.1). */
+const dated = z.object({ date: z.coerce.date(), note: z.string() });
 const log = defineCollection({
   loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: process.env.LOG_DIR || './content/log' }),
-  schema: z.object({
-    title: z.string(),
-    date: z.coerce.date(),
-    /** note: a line or two · entry: a few paragraphs · essay: a long piece with figures (requirements §17). */
-    kind: z.enum(['note', 'entry', 'essay']).default('entry'),
-    dek: z.string().optional(),
-    category: z.enum(['personal', 'work', 'school']).optional(),
-    project: reference('projects').optional(),
-    /** A per-entry note, only when AI did more than edit (requirements §18). */
-    aiNote: z.string().optional(),
-    sample: z.boolean().default(false),
-    draft: z.boolean().default(false),
-  }),
+  schema: z
+    .object({
+      /** note: 1-3 sentences, no title · entry: a few paragraphs, opens in place · essay: its own page (§3.1). */
+      kind: z.enum(['note', 'entry', 'essay']),
+      title: z.string().max(80).optional(),
+      dek: z.string().optional(),
+      /** Publication date; never changes. */
+      date: z.coerce.date(),
+      /** Appended after publishing (§3.5); the body carries the dated block too. */
+      updated: z.array(dated).default([]),
+      /** Changed facts (§3.6). */
+      corrections: z.array(z.object({ date: z.coerce.date(), was: z.string(), now: z.string() })).default([]),
+      /** One category, open vocabulary: personal, work, school, ... (§3.7). */
+      category: z.string().regex(/^[a-z][a-z-]*$/),
+      /** Projects the entry is about (§3.8); they draw the threads. */
+      projects: z.array(reference('projects')).default([]),
+      /** Drawings from tools/illustrations used in the body (MDX: <Figure name="..." />). */
+      figures: z.array(z.string()).default([]),
+      /** Essay only: the figure whose plate shows in the index. */
+      lead: z.string().optional(),
+      /** "more" when the agent did more than edit (§3.9). */
+      help: z.enum(['edit', 'more']).default('edit'),
+      helpNote: z.string().optional(),
+      draft: z.boolean().default(false),
+    })
+    .refine((e) => e.kind === 'note' || (e.title && e.dek), 'entries and essays need a title and a dek')
+    .refine((e) => e.kind !== 'note' || !e.title, 'notes have no title (log.md §3.1)'),
 });
 
 const site = defineCollection({

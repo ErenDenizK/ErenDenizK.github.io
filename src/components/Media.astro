@@ -1,0 +1,19 @@
+---
+/* The object stage (ADR-0006, media research §8): the poster paints first and is complete on its own.
+   The client (scripts/media.ts) reads data-manifest after load and idle, and only then adds the
+   idle loop, the lean grid and the interaction clip, when motion is welcome. */
+import { poster } from '../lib/media';
+interface Props { obj: string; slot: string; stage?: boolean; class?: string; sizes?: string; priority?: boolean; light?: string }
+const { obj, slot, stage = false, class: cls = '', sizes = '(min-width: 900px) 470px, 60vw', priority = false, light } = Astro.props;
+const p = poster(obj);
+---
+<div class:list={['media', cls, { stage }]} data-slot={slot} data-obj={obj} data-manifest={p.manifest} style={`--light: ${light || p.light}`} aria-hidden="true">
+  <div class="m-glow"></div>
+  <div class="m-layer" data-obj={obj}>
+    <picture>
+      {p.sources.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} />)}
+      <img class="m-poster" src={p.src} alt="" width={p.w} height={p.h} decoding="async" fetchpriority={priority ? 'high' : undefined} loading={priority ? undefined : 'lazy'} />
+    </picture>
+  </div>
+  <div class="m-glint"></div>
+</div>

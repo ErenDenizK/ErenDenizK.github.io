@@ -1,0 +1,13 @@
+---
+import Icon from './Icon.astro';
+import Ph from './Ph.astro';
+import { url, projectPath, type Project } from '../lib/site';
+interface Props { p: Project }
+const { p } = Astro.props;
+const d = p.data;
+---
+<a class="teaser" href={url(projectPath(p))} data-p={p.id} style={`--p: ${d.accent.color}`}>
+  <span class="meta">{d.teaserMeta ?? d.status}</span>
+  <span class="t-name on-serif"><span class="t-title">{d.title}</span><Icon name="arrow-right" size={20} /></span>
+  <span class="t-text">{d.summary} {d.summaryPlaceholder && <Ph text={d.summaryPlaceholder} />}</span>
+</a>

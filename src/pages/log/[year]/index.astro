@@ -1,0 +1,26 @@
+---
+/* A year's archive (log.md §6.1): every entry of that year, in the index's rows. */
+import Base from '../../../layouts/Base.astro';
+import Icon from '../../../components/Icon.astro';
+import Foot from '../../../components/Foot.astro';
+import LogList from '../../../components/LogList.astro';
+import { getLog, getProjects, getSite, entryYear, url } from '../../../lib/site';
+export async function getStaticPaths() {
+  const all = await getLog();
+  return [...new Set(all.map(entryYear))].map((year) => ({ params: { year }, props: { entries: all.filter((e) => entryYear(e) === year) } }));
+}
+const { entries } = Astro.props as { entries: Awaited<ReturnType<typeof getLog>> };
+const { year } = Astro.params;
+const site = await getSite();
+const projects = await getProjects();
+---
+<Base title={`Log, ${year}`} tab="log" description={`${site.log.title}: ${entries.length} entries from ${year}.`}>
+  <div class="inner">
+    <header class="vhead">
+      <a class="qlink" href={url('log/')}><Icon name="arrow-left" />{site.log.title}</a>
+      <h1 class="vtitle">{year}</h1>
+    </header>
+    <LogList entries={entries} projects={projects} foldOld={false} />
+    <Foot />
+  </div>
+</Base>

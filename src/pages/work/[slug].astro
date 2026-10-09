@@ -1,0 +1,36 @@
+---
+/* A project's own page (UX research §2): complete without JavaScript and shaped like the sheet it
+   becomes over Work on wide screens. On phones it is the project view (owner, 2026-10-09: a page of
+   its own, not a drawer), with a labelled Back. */
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import ProjectCase from '../../components/ProjectCase.astro';
+import { getProjects, getLog, url, type Project } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const all = await getProjects();
+  return all.map((p, i) => ({
+    params: { slug: p.id },
+    props: { p, prev: all[(i - 1 + all.length) % all.length], next: all[(i + 1) % all.length], index: i, total: all.length },
+  }));
+}
+interface Props { p: Project; prev: Project; next: Project; index: number; total: number }
+const { p, prev, next, index, total } = Astro.props;
+const projects = await getProjects();
+const log = await getLog();
+const entries = log.filter((e) => e.data.projects.some((r) => r.id === p.id));
+const d = p.data;
+---
+<Base title={d.title} tab="work" description={d.summary} og={d.og ?? 'home'} ogAlt={`${d.title}: ${d.summary}`} pageClass="page-project">
+  <div class="sheet-page" style={`--p: ${d.accent.color}; ${d.accent.glow ? `--pg: ${d.accent.glow};` : ''} ${d.accent.p2 ? `--p2: ${d.accent.p2};` : ''} ${d.accent.p3 ? `--p3: ${d.accent.p3};` : ''}`}>
+    <div class="backlight" aria-hidden="true"></div>
+    <div class="sheet" id="sheet">
+      <div class="sheet-bar">
+        <a class="back" href={url('work/')} data-back><Icon name="back" size={20} /><span class="back-l">Work</span></a>
+        <p class="crumb meta"><span class="crumb-w">Work · </span><b>{index + 1} of {total}</b></p>
+        <a class="icon-btn close" href={url('work/')} aria-label="Close" data-back><Icon name="close" size={20} /></a>
+      </div>
+      <ProjectCase p={p} prev={prev} next={next} index={index} total={total} entries={entries} allEntries={log} projects={projects} />
+    </div>
+  </div>
+</Base>

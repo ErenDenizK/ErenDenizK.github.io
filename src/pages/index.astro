@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import Media from '../components/Media.astro';
+import Icon from '../components/Icon.astro';
+import Ph from '../components/Ph.astro';
+import Foot from '../components/Foot.astro';
+import ProjectTeaser from '../components/ProjectTeaser.astro';
+import { getSite, getProjects, getLog, url, entryPath, entryTitle, dayMonYear, isPlaceholder } from '../lib/site';
+const site = await getSite();
+const projects = (await getProjects()).filter((p) => p.data.group === 'directed');
+const latest = (await getLog())[0];
+const k = site.kicker;
+---
+<Base tab="home" og="home" ogAlt={`${site.name}, with the edk glass object.`} type="profile">
+  <div class="inner">
+    <div class="hero">
+      <div>
+        <p class="meta">{k.study} · <span class="lg">{k.school}</span><abbr class="sm" title={k.school}>{k.schoolShort}</abbr> · {k.year}</p>
+        <h1 id="h-home">{site.nameLines.map((l) => <span>{l}</span>)}</h1>
+        <p class="lede">{site.lede}</p>
+        <div class="links">
+          <a class="btn" href={url('work/')}>See the work <Icon name="arrow-right" weight="medium" /></a>
+          <a class="qlink" href={site.links.github} rel="me">GitHub <Icon name="arrow-up-right" /></a>
+          {isPlaceholder(site.links.linkedin)
+            ? <span class="qlink is-ph">LinkedIn <Ph text={site.links.linkedin.placeholder} /></span>
+            : <a class="qlink" href={site.links.linkedin} rel="me">LinkedIn <Icon name="arrow-up-right" /></a>}
+        </div>
+      </div>
+      <Media obj="edk" slot="home" stage priority />
+    </div>
+
+    <section class="teasers" aria-labelledby="h-sel">
+      <div class="sec-head"><h2 id="h-sel">Work in progress</h2><a class="more" href={url('work/')}>All work <Icon name="arrow-right" /></a></div>
+      <div class="teaser-list">
+        {projects.map((p) => <ProjectTeaser p={p} />)}
+      </div>
+    </section>
+
+    <div class="now-grid">
+      <div>
+        <span class="meta">{site.now.label}</span>
+        <p>{site.now.text}</p>
+      </div>
+      <div>
+        {latest ? (
+          <>
+            <span class="meta">Latest in the log · <time datetime={latest.data.date.toISOString().slice(0, 10)}>{dayMonYear(latest.data.date)}</time></span>
+            <a class="latest" href={url(entryPath(latest))}><b>{entryTitle(latest)}</b>{latest.data.dek && <span>{latest.data.dek}</span>}</a>
+          </>
+        ) : (
+          <>
+            <span class="meta">The log</span>
+            <p class="log-empty-line">{site.log.empty} <a href={url('log/')}>The record</a></p>
+          </>
+        )}
+      </div>
+    </div>
+    <Foot />
+  </div>
+</Base>

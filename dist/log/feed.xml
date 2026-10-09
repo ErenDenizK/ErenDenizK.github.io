@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+  <id>tag:erendenizk.github.io,2026-10-09:log</id>
+  <title>The record · Eren Deniz Kuyucaklıoğlu</title>
+  <subtitle>What I did, why, and what I'm building. Some entries are a line, some are a few pages.</subtitle>
+  <link rel="alternate" type="text/html" href="https://erendenizk.github.io/Portfolio/log/"/>
+  <link rel="self" type="application/atom+xml" href="https://erendenizk.github.io/Portfolio/log/feed.xml"/>
+  <updated>2026-10-09T13:43:11.000Z</updated>
+  <author><name>Eren Deniz Kuyucaklıoğlu</name><uri>https://erendenizk.github.io/Portfolio/</uri></author>
+  <icon>https://erendenizk.github.io/Portfolio/icon-192.png</icon>
+
+</feed>

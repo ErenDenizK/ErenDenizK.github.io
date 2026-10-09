@@ -1,0 +1,23 @@
+---
+/* One project drawn over time (log.md §5.4), at build time. Marks are placed in percent so the row
+   fits any width without redrawing; notes small, entries larger, essays ringed. */
+import type { Thread } from '../lib/site';
+import { monYear, url, projectPath } from '../lib/site';
+interface Props { t: Thread; link?: boolean }
+const { t, link = false } = Astro.props;
+const p = t.project;
+const col = p.data.accent.glow ?? p.data.accent.color;
+const label = `${p.data.title}: ${t.count} entries since ${monYear(t.since)}.`;
+const Tag = link ? 'a' : 'div';
+---
+<Tag class="thread" href={link ? url('log/') + '?project=' + p.id : undefined} data-p={p.id} style={`--p: ${col}`} aria-label={label}>
+  <span class="pj t-n">{p.data.title}</span>
+  <span class="t-c">{t.count} since {monYear(t.since)}</span>
+  <svg aria-hidden="true" focusable="false" height="24">
+    <line x1={`${t.line[0]}%`} x2={`${t.line[1]}%`} y1="12" y2="12" stroke={col} stroke-opacity="0.4" stroke-width="1" />
+    {t.marks.map((m) => m.kind === 'essay'
+      ? <circle cx={`${m.x}%`} cy="12" r="4.5" fill="var(--ground)" stroke={col} stroke-width="1.5" />
+      : <circle cx={`${m.x}%`} cy="12" r={m.kind === 'note' ? 2.5 : 3.5} fill={col} />)}
+    {t.ticks.map((k) => <rect x={`calc(${k.x}% - 1px)`} y={12 - k.h / 2} width="2" height={k.h} rx="1" fill={col} />)}
+  </svg>
+</Tag>
