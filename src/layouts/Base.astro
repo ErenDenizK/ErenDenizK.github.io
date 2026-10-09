@@ -5,6 +5,7 @@ import '../styles/global.css';
 import '../../tools/icons/out/icons.css';
 import '../styles/log.css';
 import '../styles/transitions.css';
+import '../styles/rail.css';
 import '../../tools/illustrations/out/illustrations.css';
 import Bar from '../components/Bar.astro';
 import Icon from '../components/Icon.astro';
@@ -27,9 +28,10 @@ interface Props {
   pageClass?: string;
   noindex?: boolean;
   accent?: string;           // the page's light (a project's colour); otherwise the tab's token
+  rail?: boolean;            // the contents ladder (ADR-0011): the page marks its sections with data-rail-sec
 }
 const site = await getSite();
-const { title, description = site.description, tab, og = 'home', ogAlt, type = 'website', published, modified, jsonld = [], pageClass = '', noindex = false, accent } = Astro.props;
+const { title, description = site.description, tab, og = 'home', ogAlt, type = 'website', published, modified, jsonld = [], pageClass = '', noindex = false, accent, rail = false } = Astro.props;
 /* The page accent (brief §7, after v0): the dot in the mark and the light in the active tab take it.
    Work starts neutral and follows the project section in view (scripts/accent.ts). */
 const tabAccent = { home: 'var(--edk)', work: 'var(--accent-neutral)', record: 'var(--log)', about: 'var(--about)' } as const;
@@ -52,7 +54,7 @@ const graph = [
 ];
 ---
 <!doctype html>
-<html lang="en" data-base={url()} style={`--accent: ${pageAccent}`}>
+<html lang="en" data-base={url()} data-rail={rail ? '' : undefined} style={`--accent: ${pageAccent}`}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -90,6 +92,9 @@ const graph = [
     (function () {
       var d = document.documentElement;
       d.classList.add('js');
+      /* the contents ladder replaces the native scrollbar only where it will be drawn (ADR-0011): a page
+         that has one, a fine pointer, no forced colours. Set now, so the page never shifts sideways. */
+      if (d.hasAttribute('data-rail') && matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(forced-colors: active)').matches) d.classList.add('rail-on');
       /* arriving through the droplet (scripts/media.ts): hide the poster from the first paint */
       try {
         var at = +sessionStorage.getItem('edk-droplet');

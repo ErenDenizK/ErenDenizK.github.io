@@ -39,7 +39,7 @@ portfolio and the objects do not yet feel like one maker's work (brief §7, late
 | K | Synthesis: family vision document (after B + C), panel review | design | `design/family.md` | done |
 | L | Record redesign build | build | site | done |
 | M | Live frame engine behind `?live` (ADR-0009 proposed) | build | site | done; owner A/B |
-| N | Rail build (after F and the owner's choice) | build | site | after F |
+| N | Rail build: concept B, the contents ladder (ADR-0011) | build (`wip/rail`) | site | done |
 | O | Page-world prototype, only if the owner approves (after E) | prototype | — | after E |
 | Q | Work as one tall section per project (ADR-0010) | build | site | done |
 | R | Home product plate + wordmarks | build | site | done |

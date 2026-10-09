@@ -137,3 +137,30 @@ test.describe('record on a phone', () => {
     expect((await essay.locator('.e-thumb').boundingBox())!.y).toBeLessThan((await essay.locator('.e-title').boundingBox())!.y);
   });
 });
+
+/* The contents ladder on an essay (ADR-0011): one source of truth. Where the rail is on it is the
+   contents list, and the page's own list steps aside; without JavaScript the page's list is back. */
+test.describe('essay rail', () => {
+  test.use(desktop);
+  test('the rail replaces the contents list and says how much is left', async ({ page }) => {
+    await page.goto('record/2026/fixture-essay/?still');
+    await expect(page.locator('.rail .rail-t')).toHaveText(['Fixture essay', 'A figure in the flow', 'A second section']);
+    await expect(page.locator('.post-toc ol')).toBeHidden();
+    await expect(page.locator('.post-toc .post-back')).toBeVisible();
+    await expect(page.locator('.rail-foot')).toHaveText('About 1 min left');
+    await page.keyboard.press('End'); await page.waitForTimeout(600);
+    await expect(page.locator('.rail-foot')).toHaveText('At the end');
+    await expect(page.locator('.rail-i.done')).toHaveCount(2);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  });
+  test('without JavaScript the page keeps its own list and the native bar', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...desktop, javaScriptEnabled: false, baseURL: test.info().project.use.baseURL });
+    const page = await ctx.newPage();
+    await page.goto('record/2026/fixture-essay/');
+    await expect(page.locator('.post-toc ol a')).toHaveCount(2);
+    await expect(page.locator('.post-toc ol')).toBeVisible();
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollbarWidth)).toBe('auto');
+    await expect(page.locator('.rail')).toHaveCount(0);
+    await ctx.close();
+  });
+});
