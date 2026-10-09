@@ -33,7 +33,9 @@ Three principles guide every track:
 | 9 | Media delivery research: still-to-video handoff, codecs, ground match, photos | `research/2026-10-media.md` | done |
 | 10 | Production renders: lean grids, interaction and droplet clips for five objects | `media/objects/`, `tools/objects/frames.py` | running |
 | 11 | Prototype F with video: wire the manifests into F's media stage | prototype F v2 | after 10 |
-| 7 | Level 2 prep: repo rename, ADR acceptances, Astro scaffold | — | waiting on owner |
+| 7 | Level 2: Astro v0 (ADR-0001 accepted), CI, deploy from main, routing ADR-0007 | site at repo root | running |
+| 12 | Log system: information design, illustration kit, log-entry skill | `docs/design/log.md`, `tools/illustrations/`, prototype | running |
+| 13 | Link previews and icons | `tools/og/`, `research/2026-10-link-previews.md` | done; About card being redone |
 
 ## Owner decisions (2026-10-09)
 
@@ -52,6 +54,9 @@ icons on phones. Content waits. See brief §7.
 - Eat Map re-lit in the app's rose.
 
 ## Notes for later
+
+- Home object: "edk" stays; a more personal object may be tried later (never a processor).
+  Ask the owner for personal motifs first.
 
 - 2.5D About photo: two hand-cut layers (lens rim and fingers in front, courtyard behind)
   moved with CSS, or a Depth Anything V2 depth map (runs offline here, soft edges, ~1%
