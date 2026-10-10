@@ -1,7 +1,9 @@
 # Research: the Record's object (2026-10-09)
 
 **Status:** superseded 2026-10-10. C2 shipped, then the owner rejected the design; next: H2 again or
-a tape/cassette player (`docs/PLAN.md` track 8).
+a tape/cassette player (`docs/PLAN.md` track 8). **Decided 2026-10-10 (evening):** round 4's
+concept 2, the pocket cassette recorder (owner: "a tape / voice recorder, different from the
+earlier ones"), shipped the same day as `tools/objects/recorder.py` (see "Round 4" at the end).
 
 **Why:** brief §7 (2026-10-09, after seeing v0): "the microphone looks too simple; rethink it
 from every angle." The family audit (C3) adds that the objects read as glossy, toy-like generic
@@ -217,3 +219,36 @@ with H2's front-edge caption.
 **Before it ships** (unchanged from round 1, plus): the owner sees C2 as a still first; the
 interaction (the drawn card lifts further, tips toward the viewer and settles; a note lifts a
 little, an essay all the way) goes into `frames.py`; full 1200² at 128 samples.
+
+## Round 4 (2026-10-10): tape and recorder concepts, and the one that shipped
+
+**Why:** the owner, after seeing C2 on the site: "try H2 again, or a tape / cassette player".
+Standing notes: not round 1's level of fine detail, C very nice, tape a bit empty.
+
+**Method:** as round 2 (shared rig, Cycles 1200², 64 samples, denoised, judged at 480, 360 and
+120 px beside the shipped C2). Concept scripts in the session scratch (`recobj/r4/`), not
+committed; the chosen one was promoted to `tools/objects/recorder.py`.
+
+![C2 beside the three round-4 concepts, at full size, 360 px and 120 px](assets/2026-10-record-object-r4.webp)
+
+1. **H2 revisited, the recorder that writes:** the reels and C2's waveform-into-handwriting along
+   the front edge. Best story, widest outline (about 1.5:1), a faint face at some angles.
+2. **Pocket cassette recorder:** a cassette visibly loaded behind a clear door, three chunky keys
+   with the record key in Record blue, a thumb wheel, a lit Record-blue lamp. Best silhouette
+   (aspect about 1.1), reads at 120 px; the busiest of the three.
+3. **The glass cassette:** the tape itself with a written label stripe. Calmest and brightest,
+   but wide and a common icon.
+
+**Chosen (owner, 2026-10-10 evening):** "a tape / voice recorder, different from the earlier
+ones": concept 2.
+
+**What changed for production** (`recorder.py`, so it keeps its outline at 120 px): the thin tape
+run between the packs is gone (a faint trapezoid at small sizes that added a mouth to the two
+discs); the lamp is a quarter larger; the plain keys are paler and nearly neutral, so the record
+key is the one blue key; the hubs have three teeth, so the reels' turn shows in the clip. The
+interaction (`frames.clip_recorder`, 36 frames, 1.2 s): the record key goes down, the lamp
+brightens to three times its resting glow and the reels turn, then the key comes up and the lamp
+settles. It is a time axis, not a state axis like C2's lift. Rendered with the house pipeline at
+its standing settings (poster 1200² at 128 samples, grid, clip and droplet at 1040² and 32 samples
+with OIDN); the measured times and bytes are in ADR-0006's note of the same date.
+

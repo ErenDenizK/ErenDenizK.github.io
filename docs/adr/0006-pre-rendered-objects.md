@@ -84,6 +84,23 @@ by the agent, the look of the float is the owner's to judge.
   stepping, only while the hand moves); halving it costs a night of Blender renders and doubles the
   grid bytes per object. Left for the owner's eye on a real screen first.
 
+## Note 2026-10-10 (evening): the Record's object is the pocket cassette recorder
+
+The owner chose a tape / voice recorder (`research/2026-10-record-object.md`, round 4, concept 2).
+It shipped through this pipeline unchanged in shape: `tools/objects/recorder.py`, media in
+`media/objects/recorder/`, the Record page's one `obj` switched; the card file (`record`) stays on
+disk unused, as the microphone did. What the slot needs under the amendment above: poster, shadow,
+lean grid (both tiers), the interaction clip and both droplet clips; the idle loop is encoded and in
+the manifest but unfetched (the float replaces it); no spin loop, since only edk has one on phones
+(`SPINS` keeps a swing proposal, unrendered); the live engine's normals and clip stills as for every
+object. Standing settings (poster 1200² at 128 spp; grid, clip and droplet 1040² at 32 spp + OIDN;
+17 × 3 grid at 2°; `--nyaw 33` re-renders it at 1°). Render: 3 h 02 min on four shared cores
+(poster 13 min, grid 1 h 51 min, clip 37 min, droplet 19 min, shadow and normals 1.4 min), slowed
+about 2x in the first hour by another object's render. Bytes (full grid at AVIF q50, as `record`):
+first paint 21.6 KB; desktop full 1.08 / 1.11 / 1.13 MB (AV1 / HEVC / H.264) against about 1.15 MB;
+phone 361 / 391 / 444 KB against about 450 KB. The clip is 36 frames (record key down, lamp up, reels
+turn); far ground decodes exact in the clip and the droplet.
+
 ## Consequences
 
 - Objects are as good as the render, and the page gets lighter (no WebGL on the main path).
