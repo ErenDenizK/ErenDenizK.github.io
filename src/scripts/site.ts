@@ -8,6 +8,7 @@ import { initLog } from './log';
 import { initAccent, setAccent } from './accent';
 import { initRail } from './rail';
 import { initEmbassy } from './embassy';
+import { initClock } from './clock';
 
 const fine = () => root.classList.toggle('fine', mq.fine.matches);
 fine(); mq.fine.addEventListener?.('change', fine);
@@ -19,6 +20,7 @@ initSheet();
 initLog();
 initAccent();
 initRail();
+initClock();
 /* a project's own page: its embassy (the sheet starts its own copy, sheet.ts) */
 const ownCase = document.querySelector('#main article.case');
 if (ownCase) initEmbassy(ownCase);
@@ -142,6 +144,14 @@ if (rel(location.pathname).startsWith('work/')) {
     secs.forEach((s, i) => { if (s.getBoundingClientRect().top < 160) on = i; });
     links.forEach((b, i) => b.classList.toggle('on', i === on));
   }, { passive: true });
+}
+
+/* The quiet band under the bar shows once the page has moved (styles/global.css, .bar::after). */
+{
+  const moved = () => root.classList.toggle('scrolled', scrollY > 4);
+  moved();
+  addEventListener('scroll', moved, { passive: true });
+  addEventListener('pageshow', moved);
 }
 
 /* Phones: the bar tucks away while you scroll down and returns when you scroll up. */

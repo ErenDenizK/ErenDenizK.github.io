@@ -7,6 +7,7 @@
 import { root, mq, reduce, rel, base } from './env';
 import { api as Media, initMedia } from './media';
 import { initEmbassy } from './embassy';
+import { createRail, type Rail } from './rail';
 
 type St = { sheet?: 1; base?: string; k?: number };
 const isProject = (path: string) => /^work\/[^/]+$/.test(rel(path));
@@ -56,8 +57,12 @@ export function initSheet() {
   let queued: (() => void) | null = null;
 
   let embassyOff: (() => void) | null = null;
+  /* the sheet's own rail, bound to its scroller; the case's sections are its rungs (ADR-0013 item 3) */
+  let rail: Rail | null = null;
+  const sheetBarH = () => (dlg.querySelector<HTMLElement>('.sheet-bar')?.offsetHeight ?? 64) + 16;
   function fill(article: HTMLElement) {
     embassyOff?.(); embassyOff = null;
+    rail?.destroy(); rail = null;
     const c = article.cloneNode(true) as HTMLElement;
     /* the page's title is an h1; inside the sheet it is the dialog's heading, an h2 */
     const h1 = c.querySelector('h1.case-title');
@@ -69,6 +74,10 @@ export function initSheet() {
     Media.refresh();
     scroller.scrollTop = 0;
     embassyOff = initEmbassy(c);
+    rail = createRail({
+      scroller, host: sheetEl, sections: [...c.querySelectorAll<HTMLElement>('[data-rail-sec]')], content: c,
+      flat: sheetEl, id: 'sheet-rail', offset: sheetBarH, extraClass: 'in-sheet',
+    });
     return c;
   }
   function stopMotion() {
@@ -100,6 +109,7 @@ export function initSheet() {
       if (!dlg.open) dlg.showModal();
       scroller.scrollTop = 0;
       root.classList.add('sheet-open');
+      rail?.measure();
       h.focus({ preventScroll: true });
     };
     S.openedAt = performance.now();
@@ -148,6 +158,7 @@ export function initSheet() {
       if (dlg.open) { S.ourCloses++; dlg.close(); }
       root.classList.remove('sheet-open');
       embassyOff?.(); embassyOff = null;
+      rail?.destroy(); rail = null;
       slot.querySelectorAll('video').forEach((v) => { try { v.pause(); v.removeAttribute('src'); v.load(); } catch {} });
       Media.refresh();                             // the page's own objects may move again
       const target = key && document.querySelector<HTMLElement>(`#main [data-p="${key}"]`);
