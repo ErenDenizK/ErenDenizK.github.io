@@ -21,7 +21,8 @@ Premium 3D sites mostly pay for the look offline and keep real time thin.
    - one clip per micro-interaction (30–45 frames);
    - one clip melting into the shared glass droplet (24 frames).
 2. **Formats.** Grids are stills (fast to decode, exact to scrub). Linear clips are video:
-   AV1 10-bit, then HEVC Main 10 (`hvc1`), then H.264, BT.709 limited range tagged, no audio,
+   AV1 10-bit, then HEVC Main 10 (`hvc1`), then H.264, BT.709 matrix and primaries, limited range,
+   the sRGB transfer tagged (`iec61966-2-1`, since 2026-10-10; see Consequences), no audio,
    `+faststart`. Frames are rendered on the exact ground, the ground is subtracted, and media is
    drawn with `mix-blend-mode: plus-lighter`, so the page's own ground shows through exactly.
    Anything that fades or moves around blended media paints the ground itself.
@@ -32,7 +33,8 @@ Premium 3D sites mostly pay for the look offline and keep real time thin.
    colour live in CSS, not in the media.
 5. **Tab change.** The old object's droplet clip plays forward, a short crossfade at the shared
    droplet, the new object's clip plays backward: one clip per object, not one per pair.
-6. **Tiers.** Desktop: everything. Phone: poster, idle loop and droplet clips. Reduced motion,
+6. **Tiers.** Desktop: everything. Phone: poster, idle loop (the object's spin loop instead where its
+   manifest has one, 2026-10-10: `research/2026-10-phone-motion.md`) and droplet clips. Reduced motion,
    Save-Data, or a rejected `play()` (Low Power Mode): poster only, no play button.
 7. **Real-time GLBs** stay in `tools/objects/` as the source and for later experiments, but the
    site does not ship three.js for objects.
@@ -45,7 +47,13 @@ Premium 3D sites mostly pay for the look offline and keep real time thin.
 - The still-to-video handoff is a crossfade both ways (2026-10-10, after the owner saw objects
   flash while scrolling on a phone): `media.ts` hands a slot back to its poster by fading the video out
   under it before releasing the decoder, and Work gives an object its video only after its section has
-  held the middle for 300 ms. Still unverified on WebKit: whether Safari draws the BT.709-tagged clips
-  brighter than the sRGB stills (media research §4: retag `-color_trc iec61966-2-1` if it does).
+  held the middle for 300 ms. The clips were tagged with the BT.709 transfer, which Apple's decoders
+  draw through a different curve than the sRGB stills (brighter in the shadows), a suspected cause of
+  the light at the handoff on the iPhone. Since 2026-10-10 every clip carries the sRGB transfer
+  (`iec61966-2-1`, code 13) in both places a decoder may read it, the stream (VUI or AV1 sequence
+  header) and the MP4 `colr` box, retagged without re-encoding (`encode.py --retag`, pixels checked
+  identical by md5) and written that way by every new encode (phone motion research §1). Chrome draws
+  both tags alike and Firefox ignores them; whether the handoff is now invisible on Safari is still
+  for the owner's iPhone to confirm.
 - To check on the owner's iPhone: ground seam in a dark room, `plus-lighter` over video, Low
   Power Mode, loop seam, every tab twice without a crash, a 206 Range response on Pages.

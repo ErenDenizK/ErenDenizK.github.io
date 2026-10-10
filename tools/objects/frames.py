@@ -12,6 +12,11 @@ Cycles, one stage per Blender process (the droplet stage rewrites the meshes):
            axis or clip, inside the grid's and the clip's own crops (needs those stages first),
            for the live frame engine's pointer light (ADR-0009; liveliness research §3 d).
            An emission override, no bounces, 8 spp: about a second a frame, not minutes
+  spin     a seamless idle loop for phones (phone motion research): edk's letters each turn a
+           full 360 degrees about their own vertical axis in a staggered wave and come to rest;
+           other objects swing about the pivot (SPINS below). Starts and ends on the rest pose;
+           frames after the motion are the rest pose again and are not rendered (crop.json
+           `loopFrames`: encode.py repeats frame 0 to fill the loop)
 
   <venv>/bin/python tools/objects/frames.py edk                       # all four stages
   <venv>/bin/python tools/objects/frames.py recto --stage grid --res 1040 --masters DIR
@@ -38,7 +43,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OBJECTS = ("edk", "recto", "englishprep", "eatmap", "log", "record")
-STAGES = ("poster", "grid", "clip", "droplet", "shadow", "normal")
+STAGES = ("poster", "grid", "clip", "droplet", "shadow", "normal", "spin")
 # The live engine plays a clip either as a time axis (forward from rest, back to rest) or, where
 # its first frames rise monotonically from rest to one extreme, as a reversible state axis: a
 # spring picks the frame, so it can stop, reverse and overshoot (liveliness research §3 d).
@@ -46,6 +51,19 @@ STAGES = ("poster", "grid", "clip", "droplet", "shadow", "normal")
 # (the overshoot peak at 0.37 s), so they are the axis; frames after it are the way back.
 AXES = {"recto": {"axis": "state", "frames": 12, "peak": 11}}
 # Record's lift is one too; clip_record() adds its entry, because its peak frame comes from its spring.
+# The spin stage (docs/research/2026-10-phone-motion.md): "letters" turns each named part a full
+# `turn` about its own vertical axis, part i starting `stagger` s after part i-1 and taking `each` s
+# (smoothstep), then holds the rest pose until `seconds`; "swing" turns the whole object
+# yaw = amp * sin(2 pi t / seconds) about the pivot (an object that only reads from the front).
+# `--stage all` skips it (opt-in per object): name it with --stage spin. Only edk's is rendered;
+# the others are the research's proposals, unrendered.
+SPINS = {
+    "edk": {"kind": "letters", "parts": "edk", "turn": 360.0, "each": 2.0, "stagger": 0.3, "seconds": 4.0},
+    "recto": {"kind": "swing", "amp": 35.0, "seconds": 6.0},
+    "record": {"kind": "swing", "amp": 30.0, "seconds": 6.0},
+    "englishprep": {"kind": "swing", "amp": 40.0, "seconds": 6.0},
+    "eatmap": {"kind": "letters", "parts": ["pin"], "turn": 360.0, "each": 2.4, "stagger": 0.0, "seconds": 4.0},
+}
 
 
 def parse():
@@ -73,7 +91,7 @@ def parse():
 
 
 A = parse()
-stages = STAGES if A.stage == "all" else tuple(s.strip() for s in A.stage.split(","))
+stages = tuple(x for x in STAGES if x != "spin") if A.stage == "all" else tuple(s.strip() for s in A.stage.split(","))
 if len(stages) > 1:
     # one process per stage: the droplet stage bakes and moves vertices, and a fresh scene keeps
     # every stage independent of the others' state
@@ -814,6 +832,39 @@ elif STAGE == "shadow":
     for o in parts:
         o.visible_camera = False
     run_frames([lambda: pose(0, 0)], (0, 0, res, res), {**info, "kind": "floor shadow, rest pose"})
+
+elif STAGE == "spin":
+    sp = SPINS.get(A.obj)
+    if not sp:
+        raise SystemExit(f"{A.obj}: no spin in SPINS")
+    pose(0, 0)
+    n = round(sp["seconds"] * FPS)
+    if sp["kind"] == "letters":
+        L = [part(c) for c in sp["parts"]]
+        end = sp["stagger"] * (len(L) - 1) + sp["each"]
+        moving = min(n, math.ceil(end * FPS))        # frames from here on are the rest pose
+
+        def state(k):
+            t = k / FPS
+
+            def f():
+                for i, P in enumerate(L):
+                    a = math.radians(sp["turn"]) * smooth((t - i * sp["stagger"]) / sp["each"])
+                    place(P, rot=Quaternion(UP, a))
+                bpy.context.view_layer.update()
+            return f
+    else:
+        moving = n
+
+        def state(k):
+            return lambda: pose(sp["amp"] * math.sin(2 * math.pi * k / n), 0)
+    states = [state(k) for k in range(moving)]
+    # the crop: every eighth of the motion, which holds each letter's widest (diagonal) angle
+    crop = stage_crop(states[::4] + [states[-1]], "spin")
+    for o, M in REST0.items():
+        REST[o] = M.copy()
+    run_frames(states, crop, {**info, **sp, "fps": FPS, "loopFrames": n, "rendered": moving,
+                              "hold": "frames from `rendered` to `loopFrames` - 1 are frame 0 (the rest pose)"})
 
 elif STAGE == "normal":
     # Camera-space normals of the first surface the camera sees, for the same poses and inside
