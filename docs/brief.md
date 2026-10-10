@@ -273,3 +273,7 @@ log design are to be explored.
   presentation, story and design, thought through in detail.
 - **Radical per-page systems:** all three proposals were ugly and broke the site's unity. Shelved
   for now.
+- **English Prep decisions (2026-10-10):** the glass ban is lifted (measure readability, never
+  harm the UI, experiment in a separate setup first); no grain; `app1-final.md` is history and a
+  new roadmap follows; adopt the handover drafts all at once; About may be redesigned from
+  scratch when English Prep is reworked.
