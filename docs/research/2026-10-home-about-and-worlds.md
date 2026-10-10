@@ -2,7 +2,7 @@
 
 Two owner problems (brief §7, 2026-10-10):
 
-1. **Home vs About.** About introduces the owner better than Home (education, how he works) and
+1. **Home vs About.** About introduces the owner better than Home (education, how they work) and
    feels like the real front page; Home looks dull beside it. Re-evaluate the two as a flow, or
    make Home far more striking.
 2. **Page worlds, more radical.** Each page should differ in *system and setup*, not only in light
@@ -37,7 +37,7 @@ Home only has the name and an abstract mark, and the mark repeats the `edk.` in 
 the same as the brief's own note of the same day: Home "has nothing visual of the owner".
 
 The three readers (requirements §A) want the same three things from the *first* screen: who (face,
-name, school), what he builds (products), and why to keep reading (the two-track thesis is the
+name, school), what they build (products), and why to keep reading (the two-track thesis is the
 one idea nobody else's page has). Today Home covers one and a half of them, and About covers all three.
 
 ## 2. How strong personal sites split Home and About
@@ -97,7 +97,7 @@ first screen of Home. About can still exist, but as the *long* version, not the 
 - Home becomes one full-bleed screen: a photo (the metro platform in the mock) behind the name set
   very large, the three products along the bottom, no scroll. About stays exactly as it is.
 - **Why:** the most immediate "wow" for the least change.
-- **Risk:** the photo is a place, not the person, so About still introduces him better; strangers
+- **Risk:** the photo is a place, not the person, so About still introduces them better; strangers
   appear in the metro photo (blurred, from behind; README says crop before any close use); text over
   a photo breaks the house rule "photos never under text" (ux-patterns §3). It treats the symptom.
 
@@ -234,7 +234,7 @@ the page's system comes from what you do there.**
    1180×820 and 390×844.
 2. Record as the card drawer: the biggest reading change and the accepted object. Paper contrast,
    21 px reading size, the object kept on the dark ground.
-3. About as the line: needs the owner's captions and his choice of stops.
+3. About as the line: needs the owner's captions and their choice of stops.
 4. Work as the turntable: needs turning renders; until then, the plinth with the still posters and
    previous/next buttons.
 
