@@ -1,15 +1,23 @@
 /* The media stage (ADR-0006; media research §8; the loader contract in prototypes/f/SPEC.md and the
    manifest in tools/objects/README.md).
-   Tiers (ADR-0006 item 6):
+   Tiers (ADR-0006 item 6, amended 2026-10-10):
    - every visitor: the poster, in the HTML, complete on its own;
-   - motion welcome (no reduced motion, no Save-Data, play() not refused), phones and desktops:
-     the idle loop, and the droplet change between tabs (droplet.out here, droplet.in on arrival);
-   - phones and tablets, when the manifest has the optional `spin` loop: that loop instead of the idle
-     (edk's letters turning; phone motion research, docs/research/2026-10-phone-motion.md); `?spin=0`
-     keeps the idle loop for comparison;
-   - desktop with a fine pointer, in addition: the lean grid (the four nearest half-size frames summed
-     with "lighter", the exact bilinear blend; at rest it settles on an exact full-size frame) and the
-     interaction clip on a press.
+   - motion welcome (no reduced motion, no Save-Data), phones and desktops: the float, the exact
+     poster (or lean frame) moved as a whole on three slow sines, transform only (CSS, global.css);
+     and the droplet change between tabs (droplet.out here, droplet.in on arrival). The float replaced
+     the idle loop, which was built from crossfaded 2° stills and pulsed in sharpness four times a
+     second, with a seam every 6 s (site audit 2026-10-10 §3; real-time 3D study §1.2); `?idle=blend`
+     brings that loop back for comparison;
+   - phones and tablets, when the manifest has the optional `spin` loop: that loop (edk's letters
+     turning, rendered frame by frame in Cycles; phone motion research,
+     docs/research/2026-10-phone-motion.md); `?spin=0` leaves the float alone;
+   - desktop with a fine pointer, in addition: the lean grid and the interaction clip on a press. The
+     lean answers a pointer near the object only (lean.ts), returns to rest when the pointer leaves,
+     moves on a spring, blends the four nearest frames with "lighter" (the exact bilinear blend), and
+     comes to rest on an exact frame as the tail of the hand's own movement. Where the canvas shows more
+     pixels than the half-size frames have, it blends full-size frames decoded at the canvas's own size
+     around the current pose, so moving and resting are equally sharp. A press while leaning glides
+     to the rest pose first (the clip was rendered there) and hops from it.
    At most one video plays; offscreen slots pause; hidden documents pause everything. Everything is
    ground-subtracted and drawn with plus-lighter inside .m-stage.
    Solo slots (data-solo; Work has one per project, ADR-0010): only the one the page focuses (focus())
@@ -20,6 +28,7 @@
    between tabs stays here. Without the flag nothing below changes. */
 import { mq, reduce, motionOK, idle } from './env';
 import { liveOn, LIVE_SLOTS } from './live/flag';
+import { aim, cellFor, REST_MS } from './lean';
 
 type Source = { src: string; type?: string };
 type Manifest = {
@@ -32,13 +41,22 @@ type Manifest = {
   droplet?: { duration?: number; out?: { sources: Source[] }; in?: { sources: Source[] } };
 };
 type Slot = HTMLElement & { _layer?: Layer; _t0?: number; _timer?: number; _pending?: string | null; _sweepT?: number };
+type Frame = ImageBitmap | HTMLImageElement;
 type Layer = HTMLElement & {
   _idle?: HTMLVideoElement | null; _idleFailed?: boolean; _clip?: HTMLVideoElement | null; _drop?: HTMLVideoElement | null;
   _seq?: Lean | null; _anims?: Animation[]; _manifest?: string | null;
 };
 type Lean = {
-  m: NonNullable<Manifest['lean']>; dir: string; half: (ImageBitmap | HTMLImageElement)[]; canvas: HTMLCanvasElement; ok: boolean;
-  full: Map<number, HTMLImageElement>; empty: Set<number>; cur: { u: number; v: number }; target: { u: number; v: number }; raf: number; restKey: number;
+  m: NonNullable<Manifest['lean']>; S: number; dir: string; half: Frame[]; canvas: HTMLCanvasElement; ok: boolean; slot: Slot;
+  /** full-size frames: the fetched files, and an LRU of frames decoded at the canvas's size */
+  blobs: Map<number, Promise<Blob | null>>; full: Map<number, ImageBitmap>; decoding: Set<number>; cap: number;
+  /** blend full-size frames: the canvas shows more pixels than the half-size frames have */
+  useFull: boolean; dw: number; dh: number;
+  empty: Set<number>; cur: { u: number; v: number }; vel: { u: number; v: number }; target: { u: number; v: number }; raf: number;
+  /** gliding to the rest pose for the interaction clip; resolves once there */
+  hop: boolean; centred: (() => void) | null;
+  /** what the last draw showed (tests and the HUD-less measurements read it) */
+  drawn: { exact: boolean; full: boolean; u: number; v: number };
 };
 export type ObjInfo = { manifest: string | null; src: string; srcset?: { type: string; srcset: string }[]; shadow?: { src: string; sources: { type: string; src: string }[] } | null; light: string };
 
@@ -55,8 +73,26 @@ const desktopTier = () => mq.wide.matches && mq.fine.matches;
 const benched = (el: Slot) => el.hasAttribute('data-solo') && el !== current;
 const moving = () => motionOK() && !refused;
 const spinOff = /[?&]spin=0\b/.test(location.search);
-/** The loop a slot plays when nothing else does: the spin on phones and tablets where there is one. */
-const loopOf = (m: Manifest) => (!desktopTier() && !spinOff && m.spin) || m.idle;
+const idleBlend = /[?&]idle=blend\b/.test(location.search);
+/** The loop a slot plays: the real-rendered spin on phones and tablets where there is one; the blended
+    idle only for the ?idle=blend comparison. Otherwise there is no loop: the poster floats. */
+const loopOf = (m: Manifest) => (!desktopTier() && !spinOff && m.spin) || (idleBlend ? m.idle : undefined);
+
+/* ---- the float (global.css .floating): every floating layer shares one phase, counted from the first
+   float on the page, so a layer that replaces another (a change of object) floats on in step and the
+   first float starts from rest ---- */
+let floatT0 = -1;
+function floatPhase(layer: HTMLElement) {
+  if (floatT0 < 0) floatT0 = performance.now();
+  layer.style.animationDelay = `${(-(performance.now() - floatT0) / 1000).toFixed(3)}s`;
+}
+function float(el: Slot, on: boolean) {
+  if (!on) { el.classList.add('float-off'); return; }
+  el.classList.remove('float-off');
+  if (el.classList.contains('floating') || isLive(el) || !moving()) return;
+  el.querySelectorAll<HTMLElement>('.m-layer').forEach(floatPhase);
+  el.classList.add('floating');
+}
 
 /* The embassy's signature clip (scripts/embassy.ts) shares the one-video rule: claiming pauses whatever
    plays here; a stage that starts again pauses the clip in turn (start() above). */
@@ -81,6 +117,7 @@ const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => {
     if (e.isIntersecting) { visible.add(el); wake(el); } else { visible.delete(el); sleep(el); }
   }
   arbitrate();
+  aimSoon();   // a slot back in view looks where the pointer is now, not where it was (audit §4)
 }, { rootMargin: '80px' }) : null;
 
 /* Where two slots are visible at once (a phone's Home shows the pinned object and, below it, the
@@ -206,6 +243,7 @@ function apply(el: Slot, name: string, opts: { instant?: boolean; light?: string
     el.insertBefore(pic, el.querySelector('.m-stage'));
   }
   const neo = layerFor(name);
+  if (el.classList.contains('floating')) floatPhase(neo);
   const glint = el.querySelector('.m-glint')!;
   glint.parentNode!.insertBefore(neo, glint);
   el._layer = neo;
@@ -229,7 +267,7 @@ function apply(el: Slot, name: string, opts: { instant?: boolean; light?: string
 function kill(l: Layer) {
   (l._anims || []).forEach((a) => { try { a.cancel(); } catch {} });
   l.querySelectorAll('video').forEach(release);
-  if (l._seq) cancelAnimationFrame(l._seq.raf);
+  if (l._seq) dropLean(l._seq);
   l.remove();
 }
 /** One slow sweep of light across the object when it arrives. */
@@ -245,6 +283,7 @@ function wake(el: Slot) {
   if (!el._layer || document.hidden || !visible.has(el) || !el.offsetParent || benched(el)) return;
   const layer = el._layer;
   if (!enhancing || !moving() || layer.classList.contains('arriving')) return;
+  float(el, true);
   if (isLive(el)) {
     getManifest(layer._manifest).then((m) => {
       if (!m || el._layer !== layer || !visible.has(el) || document.hidden) return;
@@ -272,6 +311,7 @@ function wake(el: Slot) {
   });
 }
 function sleep(el: Slot) {
+  float(el, false);
   if (isLive(el)) live!.then((L) => L.sleep(el));
   if (el.hasAttribute('data-solo')) { shed(el); return; }
   const gone = !el.offsetParent;
@@ -303,7 +343,7 @@ function shed(el: Slot) {
     if (wrap) wrap.classList.add('m-shed');
     window.setTimeout(() => {
       vids.forEach(release);
-      if (seq) { seq.half.forEach((f) => { if ('close' in f) f.close(); }); seq.half = []; seq.full.clear(); }
+      if (seq) dropLean(seq);
       wrap?.remove();
     }, reduce() ? 0 : FADE);
   });
@@ -319,20 +359,21 @@ function focus(el: Slot | null) {
 }
 
 /* ---- lean ---- */
+const FULL_BYTES = 40 << 20;   // decoded full-size frames per object (ADR-0006 item 3, amended 2026-10-10)
 function loadLean(layer: Layer, m: Manifest, dir: string) {
   const lean = m.lean!;
   const tier = lean.tiers.find((t) => t.name === 'half') || lean.tiers[0];
-  const full = lean.tiers.find((t) => t.name === 'full') || tier;
   const wrap = document.createElement('div'); wrap.className = 'm-lean';
   const c = document.createElement('canvas');
-  c.width = full.w; c.height = full.h;
   const k = 100 / m.size;
   Object.assign(c.style, { left: lean.crop.x * k + '%', top: lean.crop.y * k + '%', width: lean.crop.w * k + '%', height: lean.crop.h * k + '%' });
   wrap.appendChild(c);
-  const seq: Lean = { m: lean, dir, half: [], canvas: c, ok: false, full: new Map(), empty: new Set(), cur: { u: 0.5, v: 0.5 }, target: { u: 0.5, v: 0.5 }, raf: 0, restKey: -1 };
+  const slot = layer.closest<Slot>('.media')!;
   const ci = lean.center.col / (lean.cols - 1), cj = lean.center.row / Math.max(1, lean.rows - 1);
-  seq.cur = { u: ci, v: cj }; seq.target = { u: ci, v: cj };
+  const seq: Lean = { m: lean, S: m.size, dir, half: [], canvas: c, ok: false, slot, blobs: new Map(), full: new Map(), decoding: new Set(), cap: 0, useFull: false, dw: 0, dh: 0,
+    empty: new Set(), cur: { u: ci, v: cj }, vel: { u: 0, v: 0 }, target: { u: ci, v: cj }, raf: 0, hop: false, centred: null, drawn: { exact: true, full: false, u: ci, v: cj } };
   layer._seq = seq;
+  size(seq);
   Promise.all(tier.frames.map((u) => fetch(dir + u).then((r) => r.blob()).then((b) => createImageBitmap(b)))).then((frames) => {
     if (!layer.isConnected || layer._seq !== seq) { frames.forEach((f) => f.close()); return; }   // shed while loading
     seq.half = frames;
@@ -349,11 +390,62 @@ function loadLean(layer: Layer, m: Manifest, dir: string) {
     layer.appendChild(wrap);
     seq.ok = true;
     draw(seq);
+    aimSoon();
+    /* the full-size files follow in the background, so the sharp frames are at hand before they are needed */
+    if (seq.useFull) idle(() => { if (seq.ok) fullTier(seq)?.frames.forEach((_, i) => blob(seq, i)); });
   }).catch(() => { if (layer._seq === seq) layer._seq = null; });
 }
+const fullTier = (seq: Lean) => seq.m.tiers.find((t) => t.name === 'full');
+/** The canvas holds exactly the device pixels it covers (up to the full-size frame), and full-size
+    frames are blended only where they add detail: a half-size frame drawn more than 1.1x enlarged
+    looks soft, and a soft frame in motion that turns sharp at rest is the pop the audit saw (§3.2). */
+function size(seq: Lean) {
+  const half = seq.m.tiers.find((t) => t.name === 'half') || seq.m.tiers[0], full = fullTier(seq) || half;
+  const css = seq.slot.getBoundingClientRect().width * (seq.m.crop.w / seq.S);
+  const px = css * (devicePixelRatio || 1);
+  const dw = Math.max(2, Math.min(full.w, Math.round(px || full.w))), dh = Math.max(2, Math.round((dw * full.h) / full.w));
+  const useFull = !!fullTier(seq) && px > half.w * 1.1;
+  if (dw === seq.dw && useFull === seq.useFull) return;
+  if (seq.dw && dw !== seq.dw) { seq.full.forEach((f) => f.close()); seq.full.clear(); }   // decoded at the old size
+  seq.dw = dw; seq.dh = dh; seq.useFull = useFull;
+  seq.canvas.width = dw; seq.canvas.height = dh;
+  seq.cap = Math.max(8, Math.min(30, Math.floor(FULL_BYTES / (dw * dh * 4))));
+  if (seq.ok) draw(seq);
+}
+function dropLean(seq: Lean) {
+  cancelAnimationFrame(seq.raf);
+  seq.ok = false;
+  seq.half.forEach((f) => { if ('close' in f) f.close(); }); seq.half = [];
+  seq.full.forEach((f) => f.close()); seq.full.clear(); seq.blobs.clear();
+}
 const cell = (seq: Lean, col: number, row: number) => row * seq.m.cols + col;
+function blob(seq: Lean, i: number): Promise<Blob | null> {
+  let b = seq.blobs.get(i);
+  if (!b) {
+    const t = fullTier(seq);
+    b = t ? fetch(seq.dir + t.frames[i]).then((r) => (r.ok ? r.blob() : null)).catch(() => null) : Promise.resolve(null);
+    seq.blobs.set(i, b);
+  }
+  return b;
+}
+/** Decode one full-size frame at the canvas's size into the LRU; redraw if it was wanted now. */
+function decodeFull(seq: Lean, i: number) {
+  if (seq.full.has(i)) { const f = seq.full.get(i)!; seq.full.delete(i); seq.full.set(i, f); return; }   // most recent last
+  if (seq.decoding.has(i) || seq.empty.has(i)) return;
+  seq.decoding.add(i);
+  const dw = seq.dw, dh = seq.dh;
+  blob(seq, i).then((b) => (b ? createImageBitmap(b, { resizeWidth: dw, resizeHeight: dh, resizeQuality: 'high' }) : null)).then((f) => {
+    seq.decoding.delete(i);
+    if (!f) return;
+    if (!seq.ok || dw !== seq.dw) { f.close(); return; }
+    seq.full.set(i, f);
+    while (seq.full.size > seq.cap) { const [k, old] = seq.full.entries().next().value!; old.close(); seq.full.delete(k); }
+    if (!seq.raf) draw(seq);   // a resting pose waiting for its sharp frame
+  }).catch(() => seq.decoding.delete(i));
+}
 /* The four nearest frames, weighted to sum to 1, added with "lighter" over black: the exact bilinear
-   blend (tools/objects/README.md). On an exact cell with its full-size frame decoded, that frame alone. */
+   blend (tools/objects/README.md). Full-size frames when every frame of the blend is decoded, else
+   half-size ones, never a mix (a mix sharpens one ghost and not the other). */
 function draw(seq: Lean) {
   const { cols, rows } = seq.m;
   const fx = seq.cur.u * (cols - 1), fy = seq.cur.v * (rows - 1);
@@ -361,16 +453,6 @@ function draw(seq: Lean) {
   const tx = fx - i0, ty = rows > 1 ? fy - j0 : 0;
   const ctx = seq.canvas.getContext('2d')!;
   const W = seq.canvas.width, H = seq.canvas.height;
-  const exact = Math.abs(fx - Math.round(fx)) < 1e-3 && Math.abs(fy - Math.round(fy)) < 1e-3;
-  const at = cell(seq, Math.round(fx), Math.round(fy));
-  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
-  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
-  if (exact && !seq.empty.has(at)) {
-    const f = seq.full.get(at);
-    if (f) { ctx.drawImage(f, 0, 0, W, H); return; }
-    loadFull(seq, at);
-  }
-  ctx.globalCompositeOperation = 'lighter';
   let w = [[i0, j0, (1 - tx) * (1 - ty)], [i0 + 1, j0, tx * (1 - ty)], [i0, j0 + 1, (1 - tx) * ty], [i0 + 1, j0 + 1, tx * ty]]
     .map(([i, j, a]) => [cell(seq, i, Math.min(rows - 1, j)), a])
     .filter(([k, a]) => a > 0.002 && seq.half[k] && !seq.empty.has(k));
@@ -378,52 +460,81 @@ function draw(seq: Lean) {
     const mid = Math.floor(rows / 2);
     w = [[cell(seq, i0, mid), 1 - tx], [cell(seq, i0 + 1, mid), tx]].filter(([k, a]) => a > 0.002 && !seq.empty.has(k));
   }
+  let full = false;
+  if (seq.useFull) {
+    w.forEach(([k]) => decodeFull(seq, k));
+    full = w.every(([k]) => seq.full.has(k));
+    /* the neighbourhood the pose is heading into, so moving stays sharp */
+    const ahead = seq.vel.u >= 0 ? 1 : -1;
+    for (let d = -2; d <= 3; d++) {
+      const i = i0 + (d * ahead) + (ahead < 0 ? 1 : 0);
+      if (i < 0 || i >= cols) continue;
+      for (let j = j0; j <= Math.min(rows - 1, j0 + 1); j++) decodeFull(seq, cell(seq, i, j));
+    }
+  }
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+  ctx.globalCompositeOperation = 'lighter';
   const total = w.reduce((n, [, a]) => n + a, 0) || 1;
-  for (const [k, a] of w) { ctx.globalAlpha = a / total; ctx.drawImage(seq.half[k], 0, 0, W, H); }
+  for (const [k, a] of w) { ctx.globalAlpha = a / total; ctx.drawImage(full ? seq.full.get(k)! : seq.half[k], 0, 0, W, H); }
+  seq.drawn = { exact: w.length === 1, full, u: seq.cur.u, v: seq.cur.v };
 }
-function loadFull(seq: Lean, i: number) {
-  if (seq.full.has(i) || seq.restKey === i) return;
-  seq.restKey = i;
-  const tier = seq.m.tiers.find((t) => t.name === 'full');
-  if (!tier) return;
-  const img = new Image(); img.decoding = 'async'; img.src = seq.dir + tier.frames[i];
-  img.decode().then(() => {
-    seq.full.set(i, img);
-    while (seq.full.size > 30) seq.full.delete(seq.full.keys().next().value!);   // keep 25-40 decoded frames (ADR-0006 item 3)
-    if (seq.restKey === i) draw(seq);
-  }).catch(() => {});
-}
-/* Critically damped follow, about 120 ms (media research §5). */
+/* A spring (ζ 0.9, about 300 ms to arrive), so the pose never changes speed in a step: when the hand
+   stops and the target moves to an exact cell, the motion bends toward it instead of starting a second
+   movement. A glide to the rest pose for the clip is stiffer and critically damped. */
 function follow(seq: Lean) {
-  cancelAnimationFrame(seq.raf);
+  if (seq.raf) return;
   let last = performance.now();
   const tick = (now: number) => {
-    const dt = Math.min(0.05, (now - last) / 1000); last = now;
-    const k = 1 - Math.exp(-dt * 8);
-    seq.cur.u += (seq.target.u - seq.cur.u) * k;
-    seq.cur.v += (seq.target.v - seq.cur.v) * k;
-    if (Math.abs(seq.cur.u - seq.target.u) < 1e-3) seq.cur.u = seq.target.u;
-    if (Math.abs(seq.cur.v - seq.target.v) < 1e-3) seq.cur.v = seq.target.v;
+    seq.raf = 0;
+    if (!seq.ok) return;
+    const dt = Math.min(0.05, Math.max(0, (now - last) / 1000)); last = now;
+    const w = seq.hop ? 28 : 16, c = 2 * w * (seq.hop ? 1 : 0.9);
+    for (let t = dt; t > 1e-6; t -= 1 / 240) {
+      const h = Math.min(1 / 240, t);
+      for (const a of ['u', 'v'] as const) {
+        seq.vel[a] += (w * w * (seq.target[a] - seq.cur[a]) - c * seq.vel[a]) * h;
+        seq.cur[a] += seq.vel[a] * h;
+      }
+    }
+    let still = true;
+    for (const a of ['u', 'v'] as const) {
+      if (Math.abs(seq.cur[a] - seq.target[a]) < 4e-4 && Math.abs(seq.vel[a]) < 6e-3) { seq.cur[a] = seq.target[a]; seq.vel[a] = 0; }
+      else still = false;
+    }
+    if (seq.centred && Math.abs(seq.cur.u - seq.target.u) * (seq.m.cols - 1) < 0.25 && Math.abs(seq.cur.v - seq.target.v) * (seq.m.rows - 1) < 0.25) { const f = seq.centred; seq.centred = null; f(); }
     draw(seq);
-    if (seq.cur.u !== seq.target.u || seq.cur.v !== seq.target.v) seq.raf = requestAnimationFrame(tick);
+    if (!still) seq.raf = requestAnimationFrame(tick);
   };
   seq.raf = requestAnimationFrame(tick);
 }
+const centreOf = (seq: Lean) => ({ u: seq.m.center.col / (seq.m.cols - 1), v: seq.m.center.row / Math.max(1, seq.m.rows - 1) });
 
-/* ---- interaction clips (desktop tier): once over the idle state, then hand back ---- */
+/* ---- interaction clips (desktop tier): once over the rest pose, then back to the lean ---- */
 function play(el: Slot, clip: string): boolean {
   const layer = el._layer;
   if (isLive(el)) return false;            // the engine answers the pointer itself
   if (!layer || !moving() || !desktopTier() || layer._clip || layer._drop || !visible.has(el) || benched(el)) return false;
+  /* the clip was rendered at the rest pose: a leaning object glides there first, and hops from it */
+  const seq = layer._seq && layer._seq.ok && layer.classList.contains('seq-on') ? layer._seq : null;
+  const centred = seq ? new Promise<void>((res) => { seq.hop = true; seq.target = centreOf(seq); seq.centred = res; follow(seq); }) : Promise.resolve();
+  const done = () => { if (seq) { seq.hop = false; seq.centred = null; aimSoon(); } };
   getManifest(layer._manifest).then((m) => {
     const spec = m?.clips?.[clip];
-    if (!spec || layer._clip || el._layer !== layer || benched(el)) return;
+    if (!spec || layer._clip || el._layer !== layer || benched(el)) { done(); return; }
     const v = makeVideo(spec.sources, dirOf(layer._manifest!), false, 'm-clip');
-    if (!v) return;
+    if (!v) { done(); return; }
     layer._clip = v;
     layer.appendChild(v);
-    const back = () => { if (layer._idle) start(layer._idle, () => {}).catch(() => {}); };
-    start(v, () => { layer.classList.add('clip-on'); }).then(() => {
+    v.src = v.dataset.src!;
+    const back = () => { done(); if (layer._idle) start(layer._idle, () => {}).catch(() => {}); };
+    /* the clip starts once the pose is home and the clip can play; a clip that cannot gives up */
+    const ready = new Promise<void>((res, rej) => {
+      if (v.readyState >= 3) res();
+      else { v.addEventListener('canplay', () => res(), { once: true }); v.addEventListener('error', () => rej(), { once: true }); }
+      setTimeout(() => rej(), 2500);
+    });
+    Promise.all([centred, ready]).then(() => start(v, () => { layer.classList.add('clip-on'); })).then(() => {
       v.addEventListener('ended', () => {
         layer.classList.remove('clip-on');
         setTimeout(() => { release(v); layer._clip = null; back(); }, 220);
@@ -434,8 +545,9 @@ function play(el: Slot, clip: string): boolean {
 }
 
 /* ---- the droplet change between tabs (ADR-0006 item 5, ADR-0007) ----
-   Leaving: the stage starts its droplet.out, sped up to about 350 ms, and the page navigates at the same
-   moment; the old page keeps melting until the new one is ready, and the cross-document view transition
+   Leaving: the stage starts its droplet.out (24 frames at 60 fps, 400 ms, played at its own rate: a
+   1.143x speed-up dropped about one frame in seven on a 60 Hz screen, site audit B10), and the page
+   navigates at the same moment; the old page keeps melting until the new one is ready, and the cross-document view transition
    carries the rest, crossfading at the droplet (owner, 2026-10-09: barely felt, still readable).
    Arriving: the stage shows only its glow until droplet.in (droplet back to the object) has its first frame. */
 const DROP_KEY = 'edk-droplet';
@@ -449,7 +561,6 @@ function centreStage() {
   const best = solos.reduce((a, b) => (d(b) < d(a) ? b : a));
   solos.forEach((x) => x.classList.toggle('stage', x === best));
 }
-const MELT = 0.35;           // seconds
 let leaving: Promise<void> | null = null;
 function stageSlot(): Slot | null {
   const el = document.querySelector<Slot>('.media.stage');
@@ -470,7 +581,6 @@ function leave(): Promise<void> {
   leaving = new Promise<void>((resolve) => {
     const t = window.setTimeout(resolve, 120);
     layer._drop = v;
-    v.defaultPlaybackRate = v.playbackRate = (m!.droplet!.duration || 0.4) / MELT;
     layer.appendChild(v);
     start(v, () => { v.classList.add('on'); layer.classList.add('dropping'); clearTimeout(t); resolve(); })
       .catch(() => { clearTimeout(t); resolve(); });
@@ -507,49 +617,68 @@ function arriveByDroplet() {
   });
 }
 
-/* ---- pointer (fine pointer only): the lean, or a small parallax, and a glint that follows the hand ---- */
-let px = 0, py = 0, raf = 0, at = -1e9, settleT = 0;
+/* ---- pointer (fine pointer only): the lean, or a small parallax, and a glint that follows the hand ----
+   The pointer counts only while it is in the window; the page moving under a resting pointer (a wheel
+   scroll) re-aims too, so an object scrolled back into view never shows a stale lean (audit §4). */
+let px = 0, py = 0, ptrIn = false, raf = 0, at = -1e9, restT = 0;
 addEventListener('pointermove', (e) => {
   if (e.pointerType !== 'mouse' || reduce()) return;
-  px = e.clientX; py = e.clientY; at = performance.now();
-  if (!raf) raf = requestAnimationFrame(tick);
+  px = e.clientX; py = e.clientY; at = performance.now(); ptrIn = true;
+  aimSoon();
 }, { passive: true });
-function tick() {
+const away = () => { if (!ptrIn) return; ptrIn = false; aimSoon(); };
+document.documentElement.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') away(); });
+document.addEventListener('mouseleave', away);
+addEventListener('blur', away);
+addEventListener('scroll', () => { if (ptrIn) aimSoon(); }, { passive: true });
+function aimSoon() { if (!raf) raf = requestAnimationFrame(aimAll); }
+function aimAll() {
   raf = 0;
   visible.forEach((el) => {
     if (isLive(el)) return;
     const r = el.getBoundingClientRect();
     if (!r.width) return;
-    const mx = Math.max(-1, Math.min(1, (px - (r.left + r.width / 2)) / (innerWidth / 2)));
-    const my = Math.max(-1, Math.min(1, (py - (r.top + r.height / 2)) / (innerHeight / 2)));
+    const { mx, my } = ptrIn ? aim(r, px, py) : { mx: 0, my: 0 };
     el.style.setProperty('--gx', (50 + mx * 28).toFixed(1) + '%');
     el.style.setProperty('--gy', (40 + my * 24).toFixed(1) + '%');
     const layer = el._layer, seq = layer?._seq;
-    if (seq && seq.ok && !layer!._clip && !layer!._drop) {
+    if (seq && seq.ok && !layer!._drop) {
       /* the object turns toward the pointer: yaw +-16 degrees, pitch +-4 (the grid's arc) */
-      seq.target = { u: Math.min(1, Math.max(0, 0.5 + mx * 0.7)), v: Math.min(1, Math.max(0, 0.5 - my * 0.7)) };
-      layer!.classList.add('seq-on');
+      if (!seq.hop && !layer!._clip) {
+        const c = centreOf(seq);
+        seq.target = { u: Math.min(1, Math.max(0, c.u + mx * 0.7)), v: Math.min(1, Math.max(0, c.v - my * 0.7)) };
+        if (mx || my) layer!.classList.add('seq-on');
+        follow(seq);
+      }
       el.style.setProperty('--mx', '0'); el.style.setProperty('--my', '0');
-      follow(seq);
     } else {
       el.style.setProperty('--mx', mx.toFixed(3));
       el.style.setProperty('--my', my.toFixed(3));
     }
   });
-  /* when the pointer rests, settle on the nearest exact frame; after a longer rest, back to the idle loop */
-  clearTimeout(settleT);
-  settleT = window.setTimeout(() => visible.forEach((el) => {
+  clearTimeout(restT);
+  restT = window.setTimeout(rest, REST_MS);
+}
+/** The pointer rests: each lean settles on an exact cell, as the tail of the movement (lean.ts). */
+function rest() {
+  visible.forEach((el) => {
     const layer = el._layer, seq = layer?._seq;
-    if (!seq || !seq.ok) return;
+    if (!seq || !seq.ok || seq.hop) return;
     const { cols, rows } = seq.m;
-    seq.target = { u: Math.round(seq.target.u * (cols - 1)) / (cols - 1), v: Math.round(seq.target.v * (rows - 1)) / Math.max(1, rows - 1) };
+    seq.target = {
+      u: cellFor(seq.target.u * (cols - 1), seq.cur.u * (cols - 1)) / (cols - 1),
+      v: rows > 1 ? cellFor(seq.target.v * (rows - 1), seq.cur.v * (rows - 1)) / (rows - 1) : 0,
+    };
     follow(seq);
-    setTimeout(() => {
+    /* the ?idle=blend comparison hands back to its loop after a longer rest, as before */
+    if (layer!._idle) setTimeout(() => {
       if (performance.now() - at < 4000 || !layer!._idle) return;
       layer!.classList.remove('seq-on');
     }, 4200);
-  }), 300);
+  });
 }
+let rsz = 0;
+addEventListener('resize', () => { clearTimeout(rsz); rsz = window.setTimeout(() => document.querySelectorAll<Slot>('.media').forEach((el) => { const seq = el._layer?._seq; if (seq?.ok) size(seq); }), 150); });
 
 document.addEventListener('visibilitychange', () => visible.forEach((el) => (document.hidden ? sleep(el) : wake(el))));
 /** Re-check slots after something was shown or hidden (IO does not fire for display changes everywhere). */

@@ -25,6 +25,7 @@ import { spring, step, settle, retune, type Spring } from './spring';
 import { program, texArray, upload, type Tex, type U } from './gl';
 import { type Tier, ORDER, stillReason, ceiling, softwareRenderer, bench, fromBench, Watchdog, renderer, force, override } from './tier';
 import { liveOff } from './flag';
+import { aim, cellFor, REST_MS } from '../lean';
 
 type Img = { src: string; type: string; bytes: number };
 type Rect = { x: number; y: number; w: number; h: number };
@@ -128,6 +129,8 @@ export class LiveSlot {
   private ro: ResizeObserver | null = null;
   readonly stats = { bench: 0, bytes: 0, memory: 0, frames: 0, draw: [] as number[], steps: [] as string[], renderer: '', firstDrawMs: 0, gridMs: 0, readyMs: 0 };
   private c: { col: number; row: number };
+  /** the exact cell a resting pointer settles on, chosen once per rest (lean.ts cellFor) */
+  private restAim: { key: string; y: number; p: number } | null = null;
 
   constructor(readonly el: HTMLElement, readonly layer: HTMLElement, readonly m: Manifest, readonly dir: string) {
     this.name = el.dataset.slot || m.name;
@@ -416,16 +419,20 @@ export class LiveSlot {
     const r = this.el.getBoundingClientRect();
     const touchRecent = now - ptr.touch < 2500;
     const mouseRecent = now - ptr.t < 2500 && ptr.in;
-    /* lean: the pointer anywhere in the window turns the object (yaw +-70 % of the grid's arc, as
-       the current stage); resting, it settles on the nearest exact frame */
+    /* lean: a pointer near the object turns it (yaw +-70 % of the grid's arc), faded out with distance
+       (lean.ts, shared with the media stage); resting, it settles on an exact cell, chosen once, ahead
+       in the direction of travel */
     let yT = c.col, pT = c.row;
     const lean = this.have.grid && this.tier !== 'phone';
     if (lean && ptr.in && r.width) {
-      const mx = clamp((ptr.x - (r.left + r.width / 2)) / (innerWidth / 2), -1, 1);
-      const my = clamp((ptr.y - (r.top + r.height / 2)) / (innerHeight / 2), -1, 1);
+      const { mx, my } = aim(r, ptr.x, ptr.y);
       yT = c.col + mx * 0.7 * c.col;
       pT = c.row - my * 0.7 * c.row;
-      if (now - ptr.t > 250) { yT = Math.round(yT); pT = Math.round(pT); }
+      if (now - ptr.t > REST_MS) {
+        const key = `${ptr.t}|${yT.toFixed(4)}|${pT.toFixed(4)}`;
+        if (this.restAim?.key !== key) this.restAim = { key, y: cellFor(yT, this.yaw.x), p: cellFor(pT, this.pitch.x) };
+        yT = this.restAim.y; pT = this.restAim.p;
+      }
     }
     const interacting = this.hop !== 'idle' || this.want > 0 || this.st.x > 1e-3;
     if (interacting) { yT = c.col; pT = c.row; }

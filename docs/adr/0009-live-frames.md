@@ -32,7 +32,7 @@ Build it in the site, opt-in, for the Home object (edk) and the Home showcase (R
    - **float**: E's bob (0.7 % of the square), sway and a 0.26° roll on incommensurate sines, applied
      to the whole frame as a 2D move. A floating object is a Cycles frame moved by a sub-pixel
      offset, never a blend of frames. `?float=0` turns it off (then rest is pixel-exact);
-   - **lean**: the pointer anywhere in the window turns the object (yaw ±70 % of the grid's arc, as
+   - **lean**: a pointer near the object (amended 2026-10-10, `lean.ts`) turns the object (yaw ±70 % of the grid's arc, as
      now) through the four nearest half-size frames, on an underdamped spring (k 70, ζ 0.72: 90 % in
      322 ms, a little overshoot). 250 ms after the pointer rests, the target snaps to the nearest grid
      cell, the spring settles there and the full-size frame replaces the blend. The float never stops
@@ -83,6 +83,23 @@ Build it in the site, opt-in, for the Home object (edk) and the Home showcase (R
 7. **Overrides for the A/B and tests:** `?live=force` skips the renderer and benchmark gates (headless
    Chromium renders on SwiftShader), `?tier=still|phone|lite|full`, `?watchdog=0`, `?hud` (a readout),
    and the shader constants (`kSpec`, `kSharp`, `kPool`, ...) as query parameters.
+
+## Amendment 2026-10-10: not the desktop default yet
+
+The stutter work (ADR-0006 amendment of 2026-10-10) weighed making the engine the desktop default
+(real-time 3D study, option a item 1) and kept it behind `?live`:
+
+- it covers two slots (Home and the showcase); Work, the sheet and the Record would keep the media
+  stage, so the stutter had to be fixed there anyway, and was;
+- its benchmark and watchdog thresholds come from the research, not from a real GPU, and on a
+  software renderer it falls back to the poster with no motion at all, a step down from the float;
+- the fixes that mattered most for the default path are now shared or matched: the float of an
+  exact frame (the engine's own idea), no idle video, the lean zone and the rest rule (`lean.ts`,
+  imported by the engine: a pointer far away no longer turns it, and its rest cell is chosen once,
+  ahead in the direction of travel, 90 ms after the pointer rests instead of rounding at 250 ms).
+
+It becomes the default only after the owner's A/B on their own machine and a real-device frame-time
+and battery check (still open, as below).
 
 ## Consequences
 
