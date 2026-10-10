@@ -1,7 +1,7 @@
 /* The contents ladder (ADR-0011): sections from the page, the native bar hidden without a shift only
    where the rail is drawn, keyboard reach and a visible focus ring, drag mapped section by section,
-   contrast of every dash, and the platform's own scrollbar back for touch, forced colours and no
-   JavaScript. The essay's rail (replacing its contents list) is checked in fixtures.spec.ts. */
+   contrast of every dash, the platform's own scrollbar back for forced colours and no JavaScript, and
+   the touch ladder (native indicator kept, a sheet on tap). The essay's rail (replacing its contents list) is checked in fixtures.spec.ts. */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone, settle } from './helpers';
 
@@ -168,16 +168,71 @@ test.describe('the platform scrollbar stays', () => {
     expect(r.gutter).toBeGreaterThan(0);
     await ctx.close();
   });
+  test('touch with forced colours or no JavaScript: no ladder, native indicator', async ({ browser }) => {
+    for (const extra of [{ forcedColors: 'active' as const }, { javaScriptEnabled: false }]) {
+      const ctx = await browser.newContext({ ...phone, ...extra });
+      const page = await ctx.newPage();
+      await page.goto('work/?still'); await settle(page, 300);
+      expect(await rail(page), JSON.stringify(extra)).toMatchObject({ on: false, drawn: false, bar: 'auto' });
+      expect(await page.evaluate(() => document.documentElement.classList.contains('rail-touch'))).toBe(false);
+      await ctx.close();
+    }
+  });
+});
+
+/* Touch (ADR-0011 item 12): the native indicator and native scrolling stay; a slim ladder sits inside the
+   right gutter as one 44 px button; a tap opens the titles as a small sheet, a title goes there and closes it. */
+test.describe('touch: the slim ladder', () => {
   for (const [size, opts] of [['tablet', tablet], ['phone', phone]] as const) {
-    test(`touch (${size}): no rail, native indicator, nothing sideways`, async ({ browser }) => {
+    test(`touch (${size}): native indicator, a ladder in the gutter, a sheet on tap`, async ({ browser }) => {
       const ctx = await browser.newContext(opts);
       const page = await ctx.newPage();
       for (const path of ['work/', 'about/']) {
         await page.goto(path + '?still'); await settle(page, 300);
         const r = await rail(page);
-        expect(r, `/${path}`).toMatchObject({ on: false, drawn: false, bar: 'auto' });
+        expect(r, `/${path}`).toMatchObject({ on: false, drawn: true, bar: 'auto' });
         expect(r.over).toBeLessThanOrEqual(0);
+        const g = await page.evaluate(() => {
+          const b = document.querySelector<HTMLElement>('.rail-btn')!.getBoundingClientRect();
+          const marks = [...document.querySelectorAll<HTMLElement>('.rail-m')].map((m) => m.getBoundingClientRect());
+          const W = document.documentElement.clientWidth;   // a classic bar (tablet here) stays: the ladder sits beside it
+          const gut = parseFloat(getComputedStyle(document.querySelector('.page')!).paddingRight) || 16;
+          return { w: b.width, h: b.height, right: W - b.right, inGutter: marks.every((m) => m.left >= W - gut), sheet: getComputedStyle(document.querySelector('.rail-sheet')!).display };
+        });
+        expect(g.w, 'a 44 px target').toBeGreaterThanOrEqual(44);
+        expect(g.h).toBeGreaterThanOrEqual(44);
+        expect(g.right).toBeLessThanOrEqual(1);
+        expect(g.inGutter, 'the dashes stay out of the reading column').toBe(true);
+        expect(g.sheet, 'closed until tapped').toBe('none');
       }
+      /* scrolling stays native and the ladder follows it */
+      await page.goto('work/?still'); await settle(page, 300);
+      const n = await page.locator('.rail-m').count();
+      await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+      await page.waitForTimeout(200);
+      await expect(page.locator('.rail-m').nth(n - 1)).toHaveClass(/\bon\b/);
+      await expect(page.locator('.rail-btn')).toHaveAttribute('aria-label', new RegExp(`${n} of ${n}`));
+      /* tap: the sheet opens with 44 px rows; a title goes to its section and closes the sheet */
+      await page.tap('.rail-btn');
+      await expect(page.locator('.rail-btn')).toHaveAttribute('aria-expanded', 'true');
+      await expect(page.locator('.rail-sheet')).toBeVisible();
+      await page.waitForTimeout(500);   // and it stays open after the finger lifts
+      await expect(page.locator('.rail-sheet')).toBeVisible();
+      const rows = await page.locator('.rail-i').evaluateAll((as) => as.map((a) => a.getBoundingClientRect().height));
+      expect(Math.min(...rows)).toBeGreaterThanOrEqual(44);
+      const sheetBox = await page.locator('.rail-sheet').boundingBox();
+      expect(sheetBox!.x).toBeGreaterThanOrEqual(0);
+      await page.locator('.rail-i').nth(1).tap();
+      await expect(page.locator('.rail-btn')).toHaveAttribute('aria-expanded', 'false');
+      await expect.poll(() => page.evaluate(() => {
+        const id = document.querySelectorAll<HTMLAnchorElement>('.rail-i')[1].hash.slice(1);
+        return Math.round(document.getElementById(id)!.getBoundingClientRect().top);
+      }), { timeout: 3000 }).toBeLessThan(200);
+      /* a tap outside closes it */
+      await page.tap('.rail-btn');
+      await expect(page.locator('.rail-sheet')).toBeVisible();
+      await page.touchscreen.tap(40, 420);
+      await expect(page.locator('.rail-sheet')).toBeHidden();
       await ctx.close();
     });
   }
