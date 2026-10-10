@@ -3,7 +3,7 @@
    Tiers (ADR-0006 item 6, amended 2026-10-10):
    - every visitor: the poster, in the HTML, complete on its own;
    - motion welcome (no reduced motion, no Save-Data), phones and desktops: the float, the exact
-     poster (or lean frame) moved as a whole on three slow sines, transform only (CSS, global.css);
+     poster (or lean frame) bobbing as a whole in whole device pixels, transform only (WAAPI, below);
      and the droplet change between tabs (droplet.out here, droplet.in on arrival). The float replaced
      the idle loop, which was built from crossfaded 2° stills and pulsed in sharpness four times a
      second, with a seam every 6 s (site audit 2026-10-10 §3; real-time 3D study §1.2); `?idle=blend`
@@ -13,10 +13,10 @@
      docs/research/2026-10-phone-motion.md); `?spin=0` leaves the float alone;
    - desktop with a fine pointer, in addition: the lean grid and the interaction clip on a press. The
      lean answers a pointer near the object only (lean.ts), returns to rest when the pointer leaves,
-     moves on a spring, blends the four nearest frames with "lighter" (the exact bilinear blend), and
-     comes to rest on an exact frame as the tail of the hand's own movement. Where the canvas shows more
-     pixels than the half-size frames have, it blends full-size frames decoded at the canvas's own size
-     around the current pose, so moving and resting are equally sharp. A press while leaning glides
+     moves on a spring, shows one exact frame for most poses with a short dissolve to the next (snapT),
+     and comes to rest on an exact frame as the tail of the hand's own movement. It draws full-size
+     frames decoded at the canvas's own size around the current pose, on a canvas that covers whole
+     device pixels, so moving and resting are as sharp as the poster. A press while leaning glides
      to the rest pose first (the clip was rendered there) and hops from it.
    At most one video plays; offscreen slots pause; hidden documents pause everything. Everything is
    ground-subtracted and drawn with plus-lighter inside .m-stage.
@@ -33,7 +33,7 @@ import { aim, cellFor, REST_MS } from './lean';
 type Source = { src: string; type?: string };
 type Manifest = {
   size: number;
-  lean?: { cols: number; rows: number; center: { col: number; row: number }; crop: { x: number; y: number; w: number; h: number };
+  lean?: { cols: number; rows: number; center: { col: number; row: number }; crop: { x: number; y: number; w: number; h: number }; stepDeg?: { yaw: number; pitch: number };
     tiers: { name: string; w: number; h: number; frames: string[] }[] };
   idle?: { sources: Source[] };
   spin?: { sources: Source[] };
@@ -52,6 +52,8 @@ type Lean = {
   blobs: Map<number, Promise<Blob | null>>; full: Map<number, ImageBitmap>; decoding: Set<number>; cap: number;
   /** blend full-size frames: the canvas shows more pixels than the half-size frames have */
   useFull: boolean; dw: number; dh: number;
+  /** where the frame sits in the canvas, in device pixels (the canvas box is snapped, the frame is not moved) */
+  ox: number; oy: number; pw: number; ph: number;
   empty: Set<number>; cur: { u: number; v: number }; vel: { u: number; v: number }; target: { u: number; v: number }; raf: number;
   /** gliding to the rest pose for the interaction clip; resolves once there */
   hop: boolean; centred: (() => void) | null;
@@ -78,19 +80,44 @@ const idleBlend = /[?&]idle=blend\b/.test(location.search);
     idle only for the ?idle=blend comparison. Otherwise there is no loop: the poster floats. */
 const loopOf = (m: Manifest) => (!desktopTier() && !spinOff && m.spin) || (idleBlend ? m.idle : undefined);
 
-/* ---- the float (global.css .floating): every floating layer shares one phase, counted from the first
-   float on the page, so a layer that replaces another (a change of object) floats on in step and the
-   first float starts from rest ---- */
-let floatT0 = -1;
-function floatPhase(layer: HTMLElement) {
-  if (floatT0 < 0) floatT0 = performance.now();
-  layer.style.animationDelay = `${(-(performance.now() - floatT0) / 1000).toFixed(3)}s`;
+/* ---- the float: the layer showing the exact poster (or lean frame, or clip) bobs as a whole, in whole
+   device pixels (ADR-0006 amendment of 2026-10-10, evening). A bitmap moved by a fraction of a pixel, or
+   turned by any angle, is resampled by the compositor: the float's sway and roll had the object at 0.48-0.58
+   of its still sharpness most of the time, and a photograph of a 3D object turning in its own plane reads
+   as a card. So only the bob is kept, as a sine of BOB of the slot quantised to device pixels: each step
+   holds an exact, crisp position (measured as sharp as the still at DPR 1, 1.5 and 2). Every floating
+   layer shares one phase, counted from the first float on the page, so a layer that replaces another (a
+   change of object) floats on in step; offscreen it pauses. ---- */
+const BOB = 0.0055, BOB_MS = 6980;
+let floatT0: number | null = null;
+type Floater = HTMLElement & { _float?: Animation | null };
+/** The bob as step keyframes: -A sin(2 pi t) rounded to whole device pixels, a keyframe at each change. */
+function bobFrames(el: HTMLElement): Keyframe[] {
+  const dpr = devicePixelRatio || 1;
+  const A = Math.max(1, Math.round(BOB * el.getBoundingClientRect().width * dpr));
+  const ks: Keyframe[] = [];
+  let last = NaN;
+  for (let i = 0, N = 2048; i <= N; i++) {
+    const n = Math.round(-A * Math.sin((2 * Math.PI * i) / N)) || 0;
+    if (n !== last || i === N) { ks.push({ offset: i / N, translate: `0 ${n / dpr}px`, easing: 'steps(1, end)' }); last = n; }
+  }
+  return ks;
+}
+function floatLayer(layer: Floater, el: Slot) {
+  if (!moving() || reduce() || !('animate' in layer)) return;
+  layer._float?.cancel();
+  const a = layer.animate(bobFrames(el), { duration: BOB_MS, iterations: Infinity });
+  if (floatT0 === null) floatT0 = (document.timeline.currentTime as number) ?? 0;
+  a.startTime = floatT0;
+  layer._float = a;
 }
 function float(el: Slot, on: boolean) {
-  if (!on) { el.classList.add('float-off'); return; }
+  const layers = [...el.querySelectorAll<Floater>('.m-layer')];
+  if (!on) { el.classList.add('float-off'); layers.forEach((l) => l._float?.pause()); return; }
   el.classList.remove('float-off');
-  if (el.classList.contains('floating') || isLive(el) || !moving()) return;
-  el.querySelectorAll<HTMLElement>('.m-layer').forEach(floatPhase);
+  if (el.classList.contains('floating')) { layers.forEach((l) => { if (l._float && floatT0 !== null) l._float.startTime = floatT0; }); return; }
+  if (isLive(el) || !moving()) return;
+  layers.forEach((l) => floatLayer(l, el));
   el.classList.add('floating');
 }
 
@@ -175,8 +202,23 @@ function start(v: HTMLVideoElement, onFrame: () => void): Promise<void> {
 }
 
 /* ---- slots and layers ---- */
+/** Put the stage (and the contact shadow) on whole device pixels of the document: grid() for its origin
+    and its size, the nearest such box, at most half a grid step away (2 CSS px at DPR 1.25). A slot laid
+    out at x 878.31 and 470 px wide is 587.5 device pixels at x 1097.9 at DPR 1.25, and the poster drawn
+    there was resampled twice: 0.54 of the same file drawn on whole pixels (ADR-0006 amendment of
+    2026-10-10, evening). Without the script the stage simply fills the slot. */
+function fit(el: Slot) {
+  const parts = [el.querySelector<HTMLElement>('.m-stage'), el.querySelector<HTMLElement>('.m-shadow')].filter(Boolean) as HTMLElement[];
+  const r = el.getBoundingClientRect();
+  if (!r.width) return;
+  const dpr = devicePixelRatio || 1, g = grid(dpr), x0 = r.left + scrollX, y0 = r.top + scrollY;
+  const gx = Math.round(x0 / g) * g, gy = Math.round(y0 / g) * g, gw = Math.max(g, Math.round(r.width / g) * g), gh = Math.max(g, Math.round(r.height / g) * g);
+  const box = { inset: 'auto', left: `${gx - x0}px`, top: `${gy - y0}px`, width: `${gw}px`, height: `${gh}px` };
+  parts.forEach((p) => Object.assign(p.style, box));
+}
 function build(el: Slot) {
-  if (el._layer) return;
+  if (el._layer) { fit(el); return; }
+  fit(el);
   el._layer = el.querySelector('.m-layer') as Layer;
   el._layer._manifest = el.dataset.manifest || null;
   setGlint(el);
@@ -190,7 +232,8 @@ function setGlint(el: Slot) {
   const set = () => { const u = `url("${img.currentSrc || img.src}")`; g.style.setProperty('-webkit-mask-image', u); g.style.maskImage = u; };
   if (img.complete) set(); else img.addEventListener('load', set, { once: true });
 }
-function layerFor(name: string): Layer {
+/** A layer for another object; `sizes` is the slot's own, so the poster comes at the slot's width (encode.py poster_widths). */
+function layerFor(name: string, sizes = '470px'): Layer {
   const info = index[name];
   const layer = document.createElement('div') as Layer;
   layer.className = 'm-layer';
@@ -198,7 +241,7 @@ function layerFor(name: string): Layer {
   layer._manifest = info?.manifest ?? null;
   if (info) {
     const pic = document.createElement('picture');
-    for (const s of info.srcset || []) { const so = document.createElement('source'); so.type = s.type; so.srcset = s.srcset; so.sizes = '470px'; pic.appendChild(so); }
+    for (const s of info.srcset || []) { const so = document.createElement('source'); so.type = s.type; so.srcset = s.srcset; so.sizes = sizes; pic.appendChild(so); }
     const img = new Image();
     img.className = 'm-poster'; img.alt = ''; img.decoding = 'async'; img.width = 1200; img.height = 1200;
     img.src = info.src;
@@ -242,8 +285,8 @@ function apply(el: Slot, name: string, opts: { instant?: boolean; light?: string
     const img = new Image(); img.className = 'm-shadow'; img.alt = ''; img.src = sh.src; pic.appendChild(img);
     el.insertBefore(pic, el.querySelector('.m-stage'));
   }
-  const neo = layerFor(name);
-  if (el.classList.contains('floating')) floatPhase(neo);
+  const neo = layerFor(name, old.querySelector('source')?.getAttribute('sizes') || undefined);
+  if (el.classList.contains('floating')) floatLayer(neo, el);
   const glint = el.querySelector('.m-glint')!;
   glint.parentNode!.insertBefore(neo, glint);
   el._layer = neo;
@@ -262,6 +305,7 @@ function apply(el: Slot, name: string, opts: { instant?: boolean; light?: string
     animateLayer(neo, rm ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: 'scale(1.03)' }, { opacity: 1, transform: 'none' }],
       { duration: rm ? 150 : 480, delay: rm ? 0 : 240, easing: 'cubic-bezier(0.2, 0.7, 0.1, 1)', fill: 'backwards' });
   }
+  fit(el);   // the new contact shadow
   if (visible.has(el)) { if (!opts.instant) arrive(el); wake(el); }
 }
 function kill(l: Layer) {
@@ -282,6 +326,7 @@ function arrive(el: Slot) {
 function wake(el: Slot) {
   if (!el._layer || document.hidden || !visible.has(el) || !el.offsetParent || benched(el)) return;
   const layer = el._layer;
+  fit(el);
   if (!enhancing || !moving() || layer.classList.contains('arriving')) return;
   float(el, true);
   if (isLive(el)) {
@@ -365,12 +410,14 @@ function loadLean(layer: Layer, m: Manifest, dir: string) {
   const tier = lean.tiers.find((t) => t.name === 'half') || lean.tiers[0];
   const wrap = document.createElement('div'); wrap.className = 'm-lean';
   const c = document.createElement('canvas');
-  const k = 100 / m.size;
-  Object.assign(c.style, { left: lean.crop.x * k + '%', top: lean.crop.y * k + '%', width: lean.crop.w * k + '%', height: lean.crop.h * k + '%' });
+  /* a CPU canvas: it is painted into the layer like an image, on the device-pixel grid. A GPU canvas
+     (Chrome makes one from about 256 x 256 up) is a layer of its own that the compositor placed at the
+     slot's fractional offset (x .625 at DPR 2) and resampled: 0.46 of the poster's sharpness at rest */
+  c.getContext('2d', { willReadFrequently: true });
   wrap.appendChild(c);
   const slot = layer.closest<Slot>('.media')!;
   const ci = lean.center.col / (lean.cols - 1), cj = lean.center.row / Math.max(1, lean.rows - 1);
-  const seq: Lean = { m: lean, S: m.size, dir, half: [], canvas: c, ok: false, slot, blobs: new Map(), full: new Map(), decoding: new Set(), cap: 0, useFull: false, dw: 0, dh: 0,
+  const seq: Lean = { m: lean, S: m.size, dir, half: [], canvas: c, ok: false, slot, blobs: new Map(), full: new Map(), decoding: new Set(), cap: 0, useFull: false, dw: 0, dh: 0, ox: 0, oy: 0, pw: 0, ph: 0,
     empty: new Set(), cur: { u: ci, v: cj }, vel: { u: 0, v: 0 }, target: { u: ci, v: cj }, raf: 0, hop: false, centred: null, drawn: { exact: true, full: false, u: ci, v: cj } };
   layer._seq = seq;
   size(seq);
@@ -389,6 +436,7 @@ function loadLean(layer: Layer, m: Manifest, dir: string) {
     });
     layer.appendChild(wrap);
     seq.ok = true;
+    size(seq);   // now inside the stage, measured from it
     draw(seq);
     aimSoon();
     /* the full-size files follow in the background, so the sharp frames are at hand before they are needed */
@@ -396,21 +444,73 @@ function loadLean(layer: Layer, m: Manifest, dir: string) {
   }).catch(() => { if (layer._seq === seq) layer._seq = null; });
 }
 const fullTier = (seq: Lean) => seq.m.tiers.find((t) => t.name === 'full');
-/** The canvas holds exactly the device pixels it covers (up to the full-size frame), and full-size
-    frames are blended only where they add detail: a half-size frame drawn more than 1.1x enlarged
-    looks soft, and a soft frame in motion that turns sharp at rest is the pop the audit saw (§3.2). */
+/** The smallest whole CSS length that is also a whole number of device pixels: 1 px at DPR 1 and 2, 2 at
+    1.5, 4 at 1.25. Chrome draws a canvas whose box is not on this grid resampled as a whole: a box a
+    fraction of a CSS pixel wide (365.5 px at DPR 2, odd device widths) lost three quarters of a 1-px
+    checkerboard's contrast, a box between device pixels (DPR 1.5) half its detail. */
+function grid(dpr: number) {
+  for (let k = 1; k <= 16; k++) if (Math.abs(k * dpr - Math.round(k * dpr)) < 1e-6) return k;
+  return 1;
+}
+/** Where the lean canvas sits and what it holds (ADR-0006 amendment of 2026-10-10, evening).
+    - Full-size frames wherever the half-size ones would be drawn at more than 0.75 of their size: a
+      half-size frame reduced only to 0.9 (DPR 1) kept 0.78-0.89 of the full frame's detail, and a soft
+      frame in motion that turns sharp at rest is the pop the audit saw (§3.2).
+    - Decoded at exactly the device size, Lanczos-filtered in a worker (lean-resize.worker.ts), up to
+      1.5x the file's own size (Work at DPR 2) and enlarged by the canvas only beyond that.
+    - The canvas holds exactly the device pixels it covers: its box is snapped outward to grid() in
+      document space and the frame drawn inside at its own place, rounded to a device pixel. Before,
+      548 px of backing store over a 365.33 px box at x 929.64 (DPR 1.5) were resampled as a whole: 0.45
+      of an <img> of the same frame. */
 function size(seq: Lean) {
-  const half = seq.m.tiers.find((t) => t.name === 'half') || seq.m.tiers[0], full = fullTier(seq) || half;
-  const css = seq.slot.getBoundingClientRect().width * (seq.m.crop.w / seq.S);
-  const px = css * (devicePixelRatio || 1);
-  const dw = Math.max(2, Math.min(full.w, Math.round(px || full.w))), dh = Math.max(2, Math.round((dw * full.h) / full.w));
-  const useFull = !!fullTier(seq) && px > half.w * 1.1;
-  if (dw === seq.dw && useFull === seq.useFull) return;
-  if (seq.dw && dw !== seq.dw) { seq.full.forEach((f) => f.close()); seq.full.clear(); }   // decoded at the old size
-  seq.dw = dw; seq.dh = dh; seq.useFull = useFull;
-  seq.canvas.width = dw; seq.canvas.height = dh;
-  seq.cap = Math.max(8, Math.min(30, Math.floor(FULL_BYTES / (dw * dh * 4))));
+  const half = seq.m.tiers.find((t) => t.name === 'half') || seq.m.tiers[0], full = fullTier(seq) || half, crop = seq.m.crop;
+  const stage = seq.canvas.closest<HTMLElement>('.m-stage') || seq.slot;   // fitted to whole pixels (fit)
+  const dpr = devicePixelRatio || 1, r = stage.getBoundingClientRect(), k = r.width / seq.S;
+  const px = crop.w * k * dpr;
+  const useFull = !!fullTier(seq) && px > half.w * 0.75;
+  const dw = Math.max(2, Math.min(Math.round(full.w * (resizer() ? 1.5 : 1)), Math.round(px || full.w)));
+  const dh = Math.max(2, Math.round((dw * full.h) / full.w));
+  /* drawn at its decoded size, or enlarged to the crop where the screen asks for more than that */
+  const pw = Math.max(dw, Math.round(px)), ph = pw === dw ? dh : Math.round((pw * full.h) / full.w);   // never stretched by a pixel
+  /* the crop in document CSS px (scrolling moves the page by whole device pixels), snapped outward */
+  const g = grid(dpr), sx = r.left + scrollX, sy = r.top + scrollY, x0 = sx + crop.x * k, y0 = sy + crop.y * k;
+  const gx = Math.floor(x0 / g + 1e-6) * g, gy = Math.floor(y0 / g + 1e-6) * g;
+  const gw = Math.ceil((x0 + pw / dpr - gx) / g - 1e-6) * g, gh = Math.ceil((y0 + ph / dpr - gy) / g - 1e-6) * g;
+  const cw = Math.round(gw * dpr), ch = Math.round(gh * dpr);
+  const ox = Math.round((x0 - gx) * dpr), oy = Math.round((y0 - gy) * dpr);
+  Object.assign(seq.canvas.style, { left: gx - sx + 'px', top: gy - sy + 'px', width: gw + 'px', height: gh + 'px' });
+  const resized = seq.canvas.width !== cw || seq.canvas.height !== ch;
+  if (resized) { seq.canvas.width = cw; seq.canvas.height = ch; }
+  const moved = resized || ox !== seq.ox || oy !== seq.oy || pw !== seq.pw || ph !== seq.ph;
+  Object.assign(seq, { ox, oy, pw, ph });
+  if (dw !== seq.dw || useFull !== seq.useFull) {
+    if (seq.dw && dw !== seq.dw) { seq.full.forEach((f) => f.close()); seq.full.clear(); }   // decoded at the old size
+    seq.dw = dw; seq.dh = dh; seq.useFull = useFull;
+    seq.cap = Math.max(8, Math.min(30, Math.floor(FULL_BYTES / (dw * dh * 4))));
+  } else if (!moved) return;
   if (seq.ok) draw(seq);
+}
+/* One worker for every lean on the page: frames decoded and Lanczos-reduced to the canvas's size. Where
+   there is no worker or no OffscreenCanvas, or the worker fails, the browser's own resize stands in. */
+let worker: Worker | null | undefined;
+const jobs = new Map<number, (b: ImageBitmap | null) => void>();
+let jobId = 0;
+function resizer(): Worker | null {
+  if (worker !== undefined) return worker;
+  try {
+    if (!('OffscreenCanvas' in window)) throw 0;
+    worker = new Worker(new URL('./lean-resize.worker.ts', import.meta.url), { type: 'module' });
+    worker.onmessage = (e: MessageEvent<{ id: number; bitmap: ImageBitmap | null }>) => { jobs.get(e.data.id)?.(e.data.bitmap); jobs.delete(e.data.id); };
+    worker.onerror = () => { worker = null; jobs.forEach((f) => f(null)); jobs.clear(); };
+  } catch { worker = null; }
+  return worker;
+}
+function decodeTo(b: Blob, w: number, h: number): Promise<ImageBitmap | null> {
+  const wk = resizer();
+  const fallback = () => createImageBitmap(b, { resizeWidth: w, resizeHeight: h, resizeQuality: 'high' });
+  if (!wk) return fallback();
+  return new Promise<ImageBitmap | null>((res) => { const id = ++jobId; jobs.set(id, res); wk.postMessage({ id, blob: b, w, h }); })
+    .then((bm) => bm || fallback());
 }
 function dropLean(seq: Lean) {
   cancelAnimationFrame(seq.raf);
@@ -434,7 +534,7 @@ function decodeFull(seq: Lean, i: number) {
   if (seq.decoding.has(i) || seq.empty.has(i)) return;
   seq.decoding.add(i);
   const dw = seq.dw, dh = seq.dh;
-  blob(seq, i).then((b) => (b ? createImageBitmap(b, { resizeWidth: dw, resizeHeight: dh, resizeQuality: 'high' }) : null)).then((f) => {
+  blob(seq, i).then((b) => (b ? decodeTo(b, dw, dh) : null)).then((f) => {
     seq.decoding.delete(i);
     if (!f) return;
     if (!seq.ok || dw !== seq.dw) { f.close(); return; }
@@ -443,14 +543,24 @@ function decodeFull(seq: Lean, i: number) {
     if (!seq.raf) draw(seq);   // a resting pose waiting for its sharp frame
   }).catch(() => seq.decoding.delete(i));
 }
-/* The four nearest frames, weighted to sum to 1, added with "lighter" over black: the exact bilinear
-   blend (tools/objects/README.md). Full-size frames when every frame of the blend is decoded, else
-   half-size ones, never a mix (a mix sharpens one ghost and not the other). */
+/** How much of the next frame shows at a fraction t of the way between two cells: none for the first
+    (1 - SNAP) / 2 of the way, all of it for the last, and a smoothstep across the SNAP in the middle.
+    Two renders a step apart added together are a double image, the cardboard "2.5D" of a slow sweep
+    (ADR-0006 amendment of 2026-10-10, evening: a 50/50 mix of neighbours keeps 0.49 of a frame's
+    sharpness); a linear crossfade showed such a mix in nearly every pose of a moving hand. Now most
+    poses are one exact frame and the change to the next is a short dissolve, still tied to the pose
+    (so it never runs on after the hand stops). */
+const SNAP = 0.24;
+const snapT = (t: number) => { const x = Math.min(1, Math.max(0, (t - (1 - SNAP) / 2) / SNAP)); return x * x * (3 - 2 * x); };
+/* The nearest frames, weighted to sum to 1, added with "lighter" over black: an exact frame for most
+   poses, a short dissolve between neighbours (snapT) for the rest (tools/objects/README.md). Full-size
+   frames when every frame of the blend is decoded, else half-size ones, never a mix (a mix sharpens one
+   ghost and not the other). */
 function draw(seq: Lean) {
   const { cols, rows } = seq.m;
   const fx = seq.cur.u * (cols - 1), fy = seq.cur.v * (rows - 1);
   const i0 = Math.min(Math.floor(fx), cols - 2), j0 = Math.max(0, Math.min(Math.floor(fy), rows - 2));
-  const tx = fx - i0, ty = rows > 1 ? fy - j0 : 0;
+  const tx = snapT(fx - i0), ty = rows > 1 ? snapT(fy - j0) : 0;
   const ctx = seq.canvas.getContext('2d')!;
   const W = seq.canvas.width, H = seq.canvas.height;
   let w = [[i0, j0, (1 - tx) * (1 - ty)], [i0 + 1, j0, tx * (1 - ty)], [i0, j0 + 1, (1 - tx) * ty], [i0 + 1, j0 + 1, tx * ty]]
@@ -464,19 +574,21 @@ function draw(seq: Lean) {
   if (seq.useFull) {
     w.forEach(([k]) => decodeFull(seq, k));
     full = w.every(([k]) => seq.full.has(k));
-    /* the neighbourhood the pose is heading into, so moving stays sharp */
-    const ahead = seq.vel.u >= 0 ? 1 : -1;
-    for (let d = -2; d <= 3; d++) {
+    /* the neighbourhood the pose is heading into, so moving stays sharp: 4° behind, 6° ahead, whatever
+       the grid's step (2°, or 1° for edk since 2026-10-10) */
+    const ahead = seq.vel.u >= 0 ? 1 : -1, per = 2 / (seq.m.stepDeg?.yaw || 2);
+    for (let d = -2 * per; d <= 3 * per; d++) {
       const i = i0 + (d * ahead) + (ahead < 0 ? 1 : 0);
       if (i < 0 || i >= cols) continue;
       for (let j = j0; j <= Math.min(rows - 1, j0 + 1); j++) decodeFull(seq, cell(seq, i, j));
     }
   }
   ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';   // a half-size frame standing in
   ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
   ctx.globalCompositeOperation = 'lighter';
   const total = w.reduce((n, [, a]) => n + a, 0) || 1;
-  for (const [k, a] of w) { ctx.globalAlpha = a / total; ctx.drawImage(full ? seq.full.get(k)! : seq.half[k], 0, 0, W, H); }
+  for (const [k, a] of w) { ctx.globalAlpha = a / total; ctx.drawImage(full ? seq.full.get(k)! : seq.half[k], seq.ox, seq.oy, seq.pw, seq.ph); }
   seq.drawn = { exact: w.length === 1, full, u: seq.cur.u, v: seq.cur.v };
 }
 /* A spring (ζ 0.9, about 300 ms to arrive), so the pose never changes speed in a step: when the hand
@@ -484,6 +596,7 @@ function draw(seq: Lean) {
    movement. A glide to the rest pose for the clip is stiffer and critically damped. */
 function follow(seq: Lean) {
   if (seq.raf) return;
+  size(seq);   // the page may have moved under the slot since (fonts, a scrollbar): stay on whole pixels
   let last = performance.now();
   const tick = (now: number) => {
     seq.raf = 0;
@@ -617,7 +730,7 @@ function arriveByDroplet() {
   });
 }
 
-/* ---- pointer (fine pointer only): the lean, or a small parallax, and a glint that follows the hand ----
+/* ---- pointer (fine pointer only): the lean and a glint that follows the hand ----
    The pointer counts only while it is in the window; the page moving under a resting pointer (a wheel
    scroll) re-aims too, so an object scrolled back into view never shows a stale lean (audit §4). */
 let px = 0, py = 0, ptrIn = false, raf = 0, at = -1e9, restT = 0;
@@ -650,10 +763,6 @@ function aimAll() {
         if (mx || my) layer!.classList.add('seq-on');
         follow(seq);
       }
-      el.style.setProperty('--mx', '0'); el.style.setProperty('--my', '0');
-    } else {
-      el.style.setProperty('--mx', mx.toFixed(3));
-      el.style.setProperty('--my', my.toFixed(3));
     }
   });
   clearTimeout(restT);
@@ -678,7 +787,11 @@ function rest() {
   });
 }
 let rsz = 0;
-addEventListener('resize', () => { clearTimeout(rsz); rsz = window.setTimeout(() => document.querySelectorAll<Slot>('.media').forEach((el) => { const seq = el._layer?._seq; if (seq?.ok) size(seq); }), 150); });
+addEventListener('resize', () => { clearTimeout(rsz); rsz = window.setTimeout(() => document.querySelectorAll<Slot>('.media').forEach((el) => {
+  fit(el);
+  const seq = el._layer?._seq; if (seq?.ok) size(seq);
+  el.querySelectorAll<Floater>('.m-layer').forEach((l) => (l._float?.effect as KeyframeEffect | null)?.setKeyframes(bobFrames(el)));   // a new size or screen density
+}), 150); });
 
 document.addEventListener('visibilitychange', () => visible.forEach((el) => (document.hidden ? sleep(el) : wake(el))));
 /** Re-check slots after something was shown or hidden (IO does not fire for display changes everywhere). */
