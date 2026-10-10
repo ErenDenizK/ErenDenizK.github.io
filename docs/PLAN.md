@@ -19,8 +19,8 @@ Every track below is reviewed for its purpose, its reason and a designer's disci
 |---|---|---|---|
 | 1 | Home as brand and vision | keep the simple layout; present a product, an identity, a brand, the vision; flashier, not busier | open |
 | 2 | About as a mini CV | the ID card with written descriptions under it; detailed, CV-style; quieter than now | open |
-| 3 | One scrollbar everywhere | one custom scrollbar on every page and in the project sheet; no native bar left (ADR-0011 revision first) | open |
-| 4 | Istanbul + clock | bring the detail back (`content/site.json` already has `about.kicker` "About · Istanbul") | open |
+| 3 | One scrollbar everywhere | one custom scrollbar on every page and in the project sheet; no native bar left (ADR-0011 revision first) | built 2026-10-10 (ADR-0013), in review |
+| 4 | Istanbul + clock | bring the detail back (`content/site.json` already has `about.kicker` "About · Istanbul") | built 2026-10-10 ("Istanbul HH:MM" in the bar, desktop; ADR-0013 item 9), in review |
 | 5 | ID card calmer | keep it playable; damp extreme input so it no longer goes wild | open |
 | 6 | edk object bug | find and fix where it glitches and looks unclean | open |
 | 7 | Object stutter and real-time 3D | measure the pre-rendered stutter vs a real-time desktop tier; report the performance difference to the owner, who decides (ADR-0006 under review) | open: study first |
