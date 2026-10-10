@@ -1,0 +1,29 @@
+{
+  "bostanci-rain-dusk": {
+    "width": 1932,
+    "height": 2576,
+    "widths": [
+      480,
+      760,
+      1080
+    ]
+  },
+  "cat-sunset-silhouette": {
+    "width": 1932,
+    "height": 2576,
+    "widths": [
+      480,
+      760,
+      1080
+    ]
+  },
+  "park-through-lens": {
+    "width": 1500,
+    "height": 2000,
+    "widths": [
+      480,
+      760,
+      1080
+    ]
+  }
+}
