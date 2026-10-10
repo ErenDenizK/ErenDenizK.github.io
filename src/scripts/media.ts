@@ -4,6 +4,9 @@
    - every visitor: the poster, in the HTML, complete on its own;
    - motion welcome (no reduced motion, no Save-Data, play() not refused), phones and desktops:
      the idle loop, and the droplet change between tabs (droplet.out here, droplet.in on arrival);
+   - phones and tablets, when the manifest has the optional `spin` loop: that loop instead of the idle
+     (edk's letters turning; phone motion research, docs/research/2026-10-phone-motion.md); `?spin=0`
+     keeps the idle loop for comparison;
    - desktop with a fine pointer, in addition: the lean grid (the four nearest half-size frames summed
      with "lighter", the exact bilinear blend; at rest it settles on an exact full-size frame) and the
      interaction clip on a press.
@@ -24,6 +27,7 @@ type Manifest = {
   lean?: { cols: number; rows: number; center: { col: number; row: number }; crop: { x: number; y: number; w: number; h: number };
     tiers: { name: string; w: number; h: number; frames: string[] }[] };
   idle?: { sources: Source[] };
+  spin?: { sources: Source[] };
   clips?: Record<string, { sources: Source[] }>;
   droplet?: { duration?: number; out?: { sources: Source[] }; in?: { sources: Source[] } };
 };
@@ -50,6 +54,9 @@ let current: Slot | null = null;   // the focused solo slot
 const desktopTier = () => mq.wide.matches && mq.fine.matches;
 const benched = (el: Slot) => el.hasAttribute('data-solo') && el !== current;
 const moving = () => motionOK() && !refused;
+const spinOff = /[?&]spin=0\b/.test(location.search);
+/** The loop a slot plays when nothing else does: the spin on phones and tablets where there is one. */
+const loopOf = (m: Manifest) => (!desktopTier() && !spinOff && m.spin) || m.idle;
 
 /* The embassy's signature clip (scripts/embassy.ts) shares the one-video rule: claiming pauses whatever
    plays here; a stage that starts again pauses the clip in turn (start() above). */
@@ -73,7 +80,31 @@ const io = 'IntersectionObserver' in window ? new IntersectionObserver((es) => {
     const el = e.target as Slot;
     if (e.isIntersecting) { visible.add(el); wake(el); } else { visible.delete(el); sleep(el); }
   }
+  arbitrate();
 }, { rootMargin: '80px' }) : null;
+
+/* Where two slots are visible at once (a phone's Home shows the pinned object and, below it, the
+   showcase), the loop belongs to the slot whose centre is nearest the middle of the window, and it moves
+   as the page scrolls. Before, the second slot to wake paused the first mid-play(), whose play()
+   rejected with AbortError, and the first slot gave up its loop for the rest of the visit: a phone's
+   Home object never moved (phone motion research §4). */
+const off = (el: Slot) => { const r = el.getBoundingClientRect(); return Math.abs(r.top + r.height / 2 - innerHeight / 2); };
+const owner = () => (playing?.classList.contains('m-idle') ? playing.closest<Slot>('.media') : null);
+/** Another visible slot's loop is playing and that slot is nearer the middle than this one. */
+function outranked(el: Slot) {
+  const o = owner();
+  return !!o && o !== el && visible.has(o) && off(o) <= off(el);
+}
+function arbitrate() {
+  const o = owner();
+  if (!o || visible.size < 2) return;
+  let best: Slot = o;
+  visible.forEach((el) => { if (off(el) < off(best) - 24) best = el; });   // 24 px: no flicker at the tie
+  if (best !== o) wake(best);
+}
+let arb = 0;
+addEventListener('scroll', () => { if (!arb) arb = requestAnimationFrame(() => { arb = 0; arbitrate(); }); }, { passive: true });
+const showVideo = (layer: Layer) => () => { if (layer.isConnected) layer.classList.add('video-on'); };
 
 /* ---- video ---- */
 function makeVideo(list: Source[], dir: string, loop: boolean, cls: string): HTMLVideoElement | null {
@@ -221,17 +252,20 @@ function wake(el: Slot) {
     });
     return;
   }
-  if (layer._idle) { start(layer._idle, () => {}).catch(() => {}); return; }
+  if (layer._idle) { if (!outranked(el)) start(layer._idle, showVideo(layer)).catch(() => {}); return; }
   getManifest(layer._manifest).then((m) => {
     if (!m || !layer.isConnected || el._layer !== layer || !visible.has(el) || benched(el) || layer.classList.contains('arriving')) return;
     const dir = dirOf(layer._manifest!);
-    if (m.idle && !layer._idleFailed && !layer._idle) {
-      const v = makeVideo(m.idle.sources, dir, true, 'm-idle');
+    const loop = loopOf(m);
+    if (loop && !layer._idleFailed && !layer._idle) {
+      const v = makeVideo(loop.sources, dir, true, 'm-idle');
       if (v) {
         layer._idle = v;
         layer.appendChild(v);
-        start(v, () => { if (layer.isConnected) layer.classList.add('video-on'); })
-          .catch(() => { release(v); layer._idle = null; layer._idleFailed = true; });
+        /* an interrupted play() (another slot took the loop) is not a failure: the element stays, paused,
+           and plays when this slot is the one most in view again */
+        if (!outranked(el)) start(v, showVideo(layer))
+          .catch((err) => { if (err?.name === 'AbortError') return; release(v); layer._idle = null; layer._idleFailed = true; });
       }
     }
     if (m.lean && desktopTier() && !layer._seq) loadLean(layer, m, dir);
