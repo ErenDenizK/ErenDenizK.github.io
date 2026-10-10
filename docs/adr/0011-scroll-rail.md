@@ -7,6 +7,11 @@ owner's request (brief §7, "phone check": "bring the ladder to phones too") · 
 `docs/research/2026-10-scroll-rail.md` (§2 rules, §4 B and its weaknesses, §5 checks), ADR-0002
 (content is data; pages complete without JavaScript)
 
+**Note 2026-10-10:** the owner wants one consistent custom scrollbar on every page, including the
+project sheet; some pages still show the native bar (brief, "Look, motion and objects"). That
+contradicts this ADR's no-rail cases (pages without sections, short pages, the sheet, year pages).
+A revision follows (`docs/PLAN.md` track 3); until it lands, this ADR describes what is built.
+
 ## Decision
 
 1. **What it is.** One dash per section, stacked 28 px apart at mid-height on the right edge. The

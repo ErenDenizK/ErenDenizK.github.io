@@ -1,5 +1,8 @@
 # Research: family audit of Recto, English Prep, Eat Map and the portfolio (2026-10-09)
 
+**Status:** history. Input to the family vision, which the Family chat now owns. Paths under
+`scratchpad/` cited here were session scratch, not kept.
+
 **Why:** brief §7 (2026-10-09, after seeing v0): the apps, the portfolio and the objects feel
 mismatched. Each should keep its own character (UI, motion, colour, structure) and all should
 meet at a shared origin; the owner worked hard on Recto's and English Prep's UIs, so do not

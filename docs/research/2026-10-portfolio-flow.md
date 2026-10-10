@@ -1,5 +1,11 @@
 # Research: the portfolio's story, flow and presentation (2026-10-10)
 
+**Status:** superseded in its forks, 2026-10-10. Forks 1 and 3 were decided otherwise: the ID card
+stays on About, and About is a mini CV, not a long letter; Home stays simple and presents the brand
+and vision. Fork 2 (the edk letters leave Home) rested on fork 1 A and falls with it. §1 (the story)
+and §3.3 (Home's order) remain input. Paths under `scratchpad/` cited here were session scratch, not
+kept.
+
 Brief §7 (2026-10-10): About introduces the owner better than Home, so Home feels dull. Round 1
 (`2026-10-home-about-and-worlds.md`) was judged: F1's Home is good, its About (the line through
 Istanbul) is bad, F3 is "not bad", and the three radical per-page systems were ugly and broke the

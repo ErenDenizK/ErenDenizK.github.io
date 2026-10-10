@@ -1,5 +1,8 @@
 # Research: phone motion, turning pre-rendered objects (2026-10-10)
 
+**Status:** current. Built (the edk spin loop, the colour tag). Paths under `scratchpad/` cited here
+were session scratch, not kept.
+
 Brief §7 (2026-10-10, phone check): "objects flash a white light while scrolling (the
 still-to-video switch); phone objects are not lively enough; the owner wants turning, moving
 pre-rendered objects like prototype A's spinning letters." This file covers the colour tag behind

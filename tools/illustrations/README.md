@@ -116,6 +116,6 @@ export default {
 | Name | Use | Real or sample |
 |---|---|---|
 | `entry-flow` | How a log entry is made (dictation, draft, review, published, a loop for changes); has a plate | real (CLAUDE.md "Log entries") |
-| `levels` | The site's levels on a four-year line, Level 1 underlined by hand | real (docs/ROADMAP.md, brief §2.3); only the start is dated |
+| `levels` | The site's levels on a four-year line, Level 1 underlined by hand | real (docs/history/roadmap-2026-10-08.md, brief §2.3); only the start is dated |
 | `sample-chart` | The bar primitive | sample data |
 | `sample-frame` | The frame primitive on a capture of prototype F's log | real capture, contact sheet only |

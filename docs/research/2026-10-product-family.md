@@ -1,5 +1,7 @@
 # Research: a family of distinct products with one origin (2026-10-09)
 
+**Status:** history. Input to the family vision, which the Family chat now owns.
+
 The question (brief §7, 2026-10-09, *Family vision*): Recto, English Prep, Eat Map, the portfolio
 and its objects feel mismatched. The owner wants each to keep its own UI, motion, colour and
 structure, and all of them to "meet at a shared place": *they all come from the same place, yet

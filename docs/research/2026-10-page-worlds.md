@@ -1,5 +1,8 @@
 # Research: page worlds, a character for each page that keeps the site one (2026-10-09)
 
+**Status:** superseded 2026-10-10. "One house, four rooms" was never prototyped; the owner shelved
+radical per-page worlds. Paths under `scratchpad/` cited here were session scratch, not kept.
+
 The owner's request (brief §7, 2026-10-09, after seeing v0): every page is black and they all feel
 alike; give each page its own character so the site feels richer. Light atmosphere per page is
 already decided (each tab lit in its object's colour). "Separate worlds" per page is allowed only
