@@ -89,7 +89,7 @@ a pivot at its bounds centre, and renders one stage per Blender process:
 | Stage | What | Defaults |
 |---|---|---|
 | `poster` | the centre pose, first paint | 1200², 128 spp |
-| `grid` | the lean grid, 17 yaw × 3 pitch: yaw ±16° in 2° steps, pitch −4°/0°/+4° | 1040², 32 spp + OIDN |
+| `grid` | the lean grid, 17 yaw × 3 pitch: yaw ±16° in 2° steps, pitch −4°/0°/+4°; edk 33 × 3 at 1° (`--nyaw 33`; copy the 2° frames to the even indices first and only the odd columns render) | 1040², 32 spp + OIDN |
 | `clip` | the object's micro-interaction, rest → rest, 30 fps (`CLIPS` in `frames.py`) | 30–45 frames |
 | `droplet` | rest → the shared glass droplet, ease-in cubic, uniform in time | 24 frames |
 | `shadow` | the rest pose's floor shadow alone: the object hidden from the camera, still casting | 600², 128 spp, whole square |
@@ -122,7 +122,7 @@ same droplet and only the accent light differs.
 `encode.py` composites each master on the ground exactly as `common.render_poster` does,
 subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact black) and writes:
 
-- `poster-600|1200.avif|webp`;
+- `poster-<w>.avif|webp`: 600, 1200 and the exact device width of each desktop slot the object fills at DPR 1-2 (`encode.py` `SLOTS`, `--poster-only` rewrites just these), so the page draws the poster 1:1;
 - `lean/half/` and `lean/full/`: the grid as stills, `r<row>c<col>.<ext>`, cropped to the
   rectangle in the manifest. The format is chosen by a black test on three grid frames (bytes,
   object error, and whether ground far from the object decodes to exact 0), recorded in
@@ -180,7 +180,7 @@ picks which videos to re-encode; the others are kept from the existing manifest.
   version: 1, name: "edk", light: "#c9d4ff",          // accent: rim and backlight colour
   ground: "#0a0a0b", groundSubtracted: true, blend: "plus-lighter",
   size: 1040,
-  poster: { w: 1200, h: 1200, sources: [{ src, type: "image/avif", w: 600|1200, bytes }] },
+  poster: { w: 1200, h: 1200, sources: [{ src, type: "image/avif", w: 600|1200|slot widths, bytes }] },
   lean: {
     cols: 17, rows: 3, yaw: [-16 … 16], pitch: [-4, 0, 4],   // degrees per column / row
     stepDeg: { yaw: 2, pitch: 4 }, center: { col: 8, row: 1 },
