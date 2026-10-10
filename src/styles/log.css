@@ -16,7 +16,10 @@ a.pj:hover { text-decoration: underline; text-decoration-color: currentColor; }
 .rec-title { font: 400 var(--t-h2)/var(--lh-h2) var(--f-display); letter-spacing: -0.02em; margin-left: -0.03em; }
 .rec-dek { margin-top: 14px; max-width: 34em; color: var(--ink-2); font-size: var(--t-body); line-height: 1.5; text-wrap: pretty; }
 .rec-head .meta { margin-top: 10px; }
-.rec-media { width: 150px; margin: -24px 0 -28px; }
+/* the object at the scale of the other tabs' objects (brief §7 2026-10-10: "the object looks too small");
+   its box is mostly glow and empty ground, so negative margins keep the header, and the first entry, where
+   they were */
+.rec-media { width: 320px; margin: -84px 24px -92px 0; }
 
 /* one row of project links, only from ~40 entries (§5.3, amended) */
 .rec-projects { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; margin: 4px 0 8px calc(var(--gutter) + var(--spine-w)); font: 500 var(--t-ui)/1 var(--f-ui); }
@@ -277,8 +280,12 @@ a.pn:hover b { color: #fff8ec; }
 /* ---------- phones: the same content, less chrome (L5) ---------- */
 @media (max-width: 899.98px) {
   .rec { --gutter: 0px; --spine-w: 22px; }
-  .rec-head { padding: 18px 0 8px; gap: 8px; }
-  .rec-media { width: 96px; margin: -8px -10px -12px 0; }
+  /* the title and the object share the first row; the dek and the count run the full width below */
+  .rec-head { padding: 18px 0 8px; gap: 0 8px; grid-template-columns: minmax(0, 1fr) auto; }
+  .rec-text { display: contents; }
+  .rec-title { grid-column: 1; grid-row: 1; align-self: center; }
+  .rec-media { grid-column: 2; grid-row: 1; width: min(42vw, 176px); margin: -34px -18px -38px 0; }
+  .rec-dek, .rec-head .meta { grid-column: 1 / -1; }
   .rec-dek { font-size: 16px; }
   .y-head { grid-template-columns: 1fr; gap: 14px; padding-top: 12px; }
   .y-label { display: flex; align-items: baseline; gap: 12px; padding: 0; }

@@ -2,7 +2,8 @@
    scrollbar goes only where the rail really is: html.rail-on is set before first paint by the head
    script (layouts/Base.astro) and only for a fine pointer without forced colours; the media query below
    repeats both conditions, so forced colours bring the platform's bar back even if the class stays.
-   Without JavaScript, on touch and on phones nothing here applies. */
+   Without JavaScript nothing here applies. Touch (html.rail-touch, ADR-0011 item 12) keeps the native
+   indicator and draws its own slim ladder, at the end of this file. */
 @media (hover: hover) and (pointer: fine) and (forced-colors: none) {
   html.rail-on { scrollbar-width: none; }
   html.rail-on::-webkit-scrollbar { display: none; }
@@ -25,6 +26,7 @@
   transition: clip-path var(--d-3) var(--ease-out);
 }
 .rail[hidden] { display: none !important; }
+.rail-btn { display: none; }
 html.sheet-open .rail { visibility: hidden; }
 .rail.is-open, .rail:focus-within { clip-path: inset(0 0 0 0 round 14px 0 0 14px); }
 
@@ -82,4 +84,48 @@ html.sheet-open .rail { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .rail { transition: none; }
   .rail-d i { transition: background-color var(--d-1); }
+}
+
+/* ---------- touch: phones and tablets (ADR-0011 item 12) ----------
+   The native indicator and native scrolling stay. Closed, the ladder is one 44 px button at mid-height on
+   the right edge whose dashes (4–10 px, the current one 12 px and filling) sit inside the page gutter, so
+   nothing covers the reading column; vertical swipes over it still scroll the page (touch-action). Open, the
+   titles show as a small sheet beside it, one 44 px row each. Safe areas: it keeps clear of the notch side
+   in landscape. Forced colours: nothing here (the class is never set). */
+@media (forced-colors: none) {
+  html.rail-touch .rail {
+    display: flex; align-items: center;
+    right: env(safe-area-inset-right, 0px);
+    clip-path: none; transition: none;
+  }
+  html.rail-touch .rail::before { opacity: 0; }
+  html.rail-touch .rail.is-open::before { opacity: 1; right: 44px; border-radius: 14px; background: rgba(13, 13, 15, 0.98); }
+  html.rail-touch .rail-btn {
+    display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 8px;
+    width: 44px; min-height: 44px; padding: 14px 4px 14px 0; margin: 0;
+    background: none; border: 0; border-radius: 12px 0 0 12px; color: inherit; cursor: pointer;
+    touch-action: pan-y; -webkit-tap-highlight-color: transparent;
+  }
+  html.rail-touch .rail-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .rail-m {
+    display: block; height: 2px; width: var(--w, 6px); border-radius: 1px;
+    background: var(--rail-idle); box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
+    transition: width var(--d-3) var(--ease-out), background-color var(--d-2);
+  }
+  .rail-m.done { background: var(--ar); }
+  .rail-m.on { width: 12px; background: linear-gradient(to left, var(--a) calc(3px + var(--f, 0) * (100% - 3px)), var(--rail-idle) 0); }
+  html.rail-touch .rail-sheet { display: none; }
+  html.rail-touch .rail.is-open .rail-sheet {
+    display: block; position: relative; margin-right: 8px;
+    max-width: calc(100vw - 44px - 8px - 16px - env(safe-area-inset-right, 0px));
+  }
+  html.rail-touch .rail-list { padding: 6px 0 0; }
+  html.rail-touch .rail-i { height: 44px; padding: 0 16px; justify-content: flex-start; font-size: 15px; }
+  html.rail-touch .rail-i .rail-d { display: none; }
+  html.rail-touch .rail-t { opacity: 1; max-width: none; min-width: 0; }
+  html.rail-touch .rail-i.on { box-shadow: inset 3px 0 0 var(--a); }
+  html.rail-touch .rail-foot { opacity: 1; text-align: left; padding: 2px 16px 12px; }
+}
+@media (forced-colors: none) and (prefers-reduced-motion: reduce) {
+  .rail-m { transition: background-color var(--d-1); }
 }

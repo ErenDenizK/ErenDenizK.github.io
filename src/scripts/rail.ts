@@ -7,8 +7,13 @@
 
    Scrolling is never taken over: the rail reads scrollY and writes it only while dragged. The page opts
    in at build time (<html data-rail>, layouts/Base.astro) and the head script hides the native bar
-   before first paint only for a fine pointer without forced colours (html.rail-on); without JavaScript,
-   on touch and in forced colours the platform's own scrollbar stays. Sections are data in the markup:
+   before first paint only for a fine pointer without forced colours (html.rail-on); without JavaScript
+   and in forced colours the platform's own scrollbar stays.
+   Touch (phones and tablets, brief §7 2026-10-10 "bring the ladder to phones too"; ADR-0011 item 12):
+   html.rail-touch. The native indicator stays and so does native scrolling; the ladder is a slim column
+   of short dashes inside the right gutter, drawn by one 44 px button. A tap opens the titles as a small
+   sheet beside it (44 px rows); a title goes there and closes it, as do a tap outside, Escape and the
+   button again. No hover and no drag on touch. Sections are data in the markup:
    [data-rail-sec] (the label, or the element's text) and the h2s with ids inside [data-rail-heads];
    [data-rail-accent] gives the colour. A page with fewer than two sections or under a quarter screen of
    overflow gets no rail, and the native bar comes back. */
@@ -16,6 +21,7 @@ import { root, reduce, mq } from './env';
 
 const READ = 0.3;          // the reading line: a section is current once its top passes 30% of the window
 const ROW = 28;            // one dash per 28 px row; each row is a link at least 24 px tall (WCAG 2.5.8)
+const TROW = 44;           // touch: one 44 px row per title in the open sheet
 const DRAG = 4;            // pointer travel before a press becomes a scrub
 const GROUND: RGB = [10, 10, 11];
 const PAST = 4.5;          // contrast the lit dashes behind you keep against the ground (≥ 3:1, 1.4.11)
@@ -38,7 +44,17 @@ export function initRail() {
   const foot = document.createElement('p');
   foot.className = 'rail-foot meta';
   foot.setAttribute('aria-hidden', 'true');
-  nav.append(list, foot);
+  /* touch: the ladder is one button (its dashes are drawn, the titles wait in the sheet) */
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'rail-btn';
+  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-controls', 'rail-sheet');
+  const sheet = document.createElement('div');
+  sheet.className = 'rail-sheet';
+  sheet.id = 'rail-sheet';
+  sheet.append(list, foot);
+  nav.append(sheet, btn);
   main.before(nav);
 
   const pageAccent = getComputedStyle(root).getPropertyValue('--accent').trim() || '#ddd6cb';
@@ -67,8 +83,14 @@ export function initRail() {
     a.append(t, d);
     li.append(a);
     list.append(li);
+    const m = document.createElement('i');
+    m.className = 'rail-m';
+    m.style.setProperty('--a', s.a);
+    m.style.setProperty('--ar', s.ar);
+    btn.append(m);
     return a;
   });
+  const marks = [...btn.querySelectorAll<HTMLElement>('.rail-m')];
 
   let vh = 0, max = 0, cur = -1, raf = 0, shown = false;
 
@@ -76,7 +98,7 @@ export function initRail() {
     vh = innerHeight;
     const sh = document.documentElement.scrollHeight;
     max = Math.max(0, sh - vh);
-    const fits = max > vh * 0.25 && secs.length * ROW + 160 < vh;
+    const fits = max > vh * 0.25 && secs.length * (touch() ? TROW : ROW) + 160 < vh;
     if (!fits || !qualifies()) { hide(); return; }
     show();
     const y = scrollY;
@@ -94,7 +116,11 @@ export function initRail() {
     /* a dash's length is its section's share of the page: the ladder keeps "how much there is" */
     const len = secs.map((s, i) => (i + 1 < secs.length ? secs[i + 1].top : sh) - s.top);
     const most = Math.max(1, ...len);
-    secs.forEach((s, i) => { s.w = Math.round(8 + 12 * Math.max(0, len[i]) / most); links[i].style.setProperty('--w', s.w + 'px'); });
+    secs.forEach((s, i) => {
+      s.w = Math.round(8 + 12 * Math.max(0, len[i]) / most);
+      links[i].style.setProperty('--w', s.w + 'px');
+      marks[i].style.setProperty('--w', Math.round(s.w / 2) + 'px');   // touch: 4–10 px, inside the gutter
+    });
     cur = -1;
     update();
   }
@@ -114,9 +140,13 @@ export function initRail() {
         a.classList.toggle('on', j === i);
         a.classList.toggle('done', j < i);
         if (j === i) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+        marks[j].classList.toggle('on', j === i);
+        marks[j].classList.toggle('done', j < i);
       });
+      btn.setAttribute('aria-label', `On this page: ${secs[i].label}, ${i + 1} of ${secs.length}`);
     }
     links[i].style.setProperty('--f', f.toFixed(3));
+    marks[i].style.setProperty('--f', f.toFixed(3));
     const p = max ? y / max : 1;
     foot.textContent = minutes
       ? (p >= 0.99 ? 'At the end' : `About ${Math.max(1, Math.ceil(minutes * (1 - p)))} min left`)
@@ -124,8 +154,13 @@ export function initRail() {
   }
   const schedule = () => { if (!raf) raf = requestAnimationFrame(update); };
 
-  function show() { if (shown) return; shown = true; nav.hidden = false; root.classList.add('rail-on'); }
-  function hide() { shown = false; nav.hidden = true; off(); }
+  function show() {
+    root.classList.toggle('rail-on', !touch());
+    root.classList.toggle('rail-touch', touch());
+    if (shown) return;
+    shown = true; nav.hidden = false;
+  }
+  function hide() { shown = false; nav.hidden = true; setOpen(false); off(); }
 
   /* going to a section: smooth, or instant under reduced motion; a keyboard press also moves focus there */
   function go(i: number, keyboard: boolean) {
@@ -150,13 +185,14 @@ export function initRail() {
 
   /* ---------- hover: the titles open after a short intent delay and close a little after leaving ---------- */
   let openT = 0, closeT = 0;
-  const setOpen = (v: boolean) => nav.classList.toggle('is-open', v);
+  function setOpen(v: boolean) { nav.classList.toggle('is-open', v); btn.setAttribute('aria-expanded', String(v)); }
   nav.addEventListener('pointerenter', (e) => {
     if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
     clearTimeout(closeT);
     openT = window.setTimeout(() => setOpen(true), 120);
   });
-  nav.addEventListener('pointerleave', () => {
+  nav.addEventListener('pointerleave', (e) => {
+    if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;   // a lifted finger leaves too: touch closes by tap only
     clearTimeout(openT);
     if (drag) return;
     closeT = window.setTimeout(() => setOpen(false), 280);
@@ -209,6 +245,19 @@ export function initRail() {
     if (!a || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
     go(+a.dataset.i!, e.detail === 0);
+    if (touch()) setOpen(false);
+  });
+  /* touch: the button opens and closes the sheet; a tap outside or Escape closes it */
+  btn.addEventListener('click', () => {
+    const v = !nav.classList.contains('is-open');
+    setOpen(v);
+    if (v && btn.matches(':focus-visible')) links[Math.max(0, cur)].focus();
+  });
+  document.addEventListener('pointerdown', (e) => {
+    if (nav.classList.contains('is-open') && touch() && !nav.contains(e.target as Node)) setOpen(false);
+  }, { passive: true });
+  addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && touch() && nav.classList.contains('is-open')) { setOpen(false); btn.focus(); }
   });
   nav.addEventListener('keydown', (e) => {
     const i = links.indexOf(document.activeElement as HTMLAnchorElement);
@@ -224,15 +273,16 @@ export function initRail() {
   addEventListener('load', measure);
   document.fonts?.ready.then(measure);
   if ('ResizeObserver' in window) new ResizeObserver(() => measure()).observe(main);
-  const recheck = () => { if (qualifies()) { root.classList.add('rail-on'); measure(); } else hide(); };
+  const recheck = () => { setOpen(false); if (qualifies()) measure(); else hide(); };
   mq.fine.addEventListener?.('change', recheck);
   forced.addEventListener?.('change', recheck);
   measure();
 }
 
 const forced = matchMedia('(forced-colors: active)');
-const qualifies = () => mq.fine.matches && !forced.matches;
-function off() { root.classList.remove('rail-on'); }
+const qualifies = () => !forced.matches;
+const touch = () => !mq.fine.matches;
+function off() { root.classList.remove('rail-on', 'rail-touch'); }
 
 /* ---------- colour: every lit dash keeps ≥ 3:1 on the ground (research §5: Eat Map rose at a fixed
    rest opacity fell to 2.4:1). The dashes behind you keep each accent's hue and chroma and lower only its

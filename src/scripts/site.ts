@@ -30,7 +30,8 @@ if (ownCase) initEmbassy(ownCase);
 const sections = [...document.querySelectorAll<HTMLElement>('.w-proj[data-p-sec]')];
 if (sections.length) {
   const MediaStage = (window as any).MediaStage;
-  let cur: HTMLElement | null = null, lit: string | null | undefined, raf = 0;
+  let cur: HTMLElement | null = null, lit: string | null | undefined, raf = 0, focusT = 0, first = true;
+  const HOLD = 300;
   const pick = () => {
     raf = 0;
     if (root.classList.contains('sheet-open') || pendingNav) return;
@@ -51,7 +52,11 @@ if (sections.length) {
     const m = best.querySelector<HTMLElement>('.media');
     document.querySelectorAll('.w-proj .media.stage').forEach((x) => { if (x !== m) x.classList.remove('stage'); });
     m?.classList.add('stage');
-    MediaStage?.focus(m);
+    /* The section must hold the middle for a moment before its object goes past the poster: a fling
+       through the page starts no video and hands none back, so no crossfade runs mid-scroll. */
+    clearTimeout(focusT);
+    if (first) { first = false; MediaStage?.focus(m); }
+    else focusT = window.setTimeout(() => { if (cur === best) MediaStage?.focus(m); }, HOLD);
   };
   const soon = () => { if (!raf) raf = requestAnimationFrame(pick); };
   addEventListener('scroll', soon, { passive: true });

@@ -250,20 +250,28 @@ function sleep(el: Slot) {
   });
 }
 
-/** Give back everything past the poster: videos (their decoders) and the lean's decoded frames. */
+/** Give back everything past the poster: videos (their decoders) and the lean's decoded frames.
+    The poster comes back as a crossfade, never a cut: the classes go first, so the poster fades in while
+    the video or the lean fades out (both 200 ms linear, so the additive sum stays at one), and only after
+    the fade are the elements released. Releasing first left nothing under the fading poster: the object
+    vanished and faded back each time a Work section lost focus while scrolling (measured on a phone
+    emulation, 2026-10-10). */
+const FADE = 260;            // the 200 ms layer crossfade (global.css) and a frame or two of slack
 function shed(el: Slot) {
   el.querySelectorAll<Layer>('.m-layer').forEach((layer) => {
-    layer.querySelectorAll('video').forEach((v) => { if (!v.classList.contains('m-drop')) release(v); });
+    const vids = [...layer.querySelectorAll('video')].filter((v) => !v.classList.contains('m-drop'));
+    vids.forEach((v) => { try { v.pause(); } catch {} if (playing === v) playing = null; v.classList.remove('m-idle', 'm-clip'); });   // falls to the base opacity 0
     layer._idle = null; layer._clip = null;
     layer.classList.remove('video-on', 'clip-on', 'seq-on');
     const seq = layer._seq;
-    if (seq) {
-      cancelAnimationFrame(seq.raf);
-      seq.half.forEach((f) => { if ('close' in f) f.close(); });
-      seq.half = []; seq.full.clear(); seq.ok = false;
-      layer.querySelector('.m-lean')?.remove();
-      layer._seq = null;
-    }
+    if (seq) { cancelAnimationFrame(seq.raf); seq.ok = false; layer._seq = null; }
+    const wrap = seq ? layer.querySelector('.m-lean') : null;
+    if (wrap) wrap.classList.add('m-shed');
+    window.setTimeout(() => {
+      vids.forEach(release);
+      if (seq) { seq.half.forEach((f) => { if ('close' in f) f.close(); }); seq.half = []; seq.full.clear(); }
+      wrap?.remove();
+    }, reduce() ? 0 : FADE);
   });
 }
 /** Make one solo slot the one that moves (Work: the section in view). The one before gives back its
