@@ -70,10 +70,11 @@ Copy `content/projects/recto.md` to `content/projects/<slug>.md`; the file name 
 | `wordmark` | optional `{ face, weight, tracking?, case?, text?, color?, dot?, image? }`: the name in the product's own face (`src/lib/wordmarks.ts` lists the faces and weights; `docs/research/2026-10-wordmarks.md`) |
 | `object` | the object in `media/objects/<object>/`; until it is rendered, add a poster to `src/assets/objects/<object>-poster.webp` |
 | `og` | link-preview card in `tools/og/out/<og>.jpg` (defaults to the home card) |
-| `summary` | the one line on Home and Work (the pitch when it leads Home's showcase; `what.text` and `what.numbers` follow it there) |
+| `summary` | the one line on Home and Work (and Work's line-up) (the pitch when it leads Home's showcase; `what.text` and `what.numbers` follow it there) |
 | `links` | `[{ label, href, kind: live \| code \| other }]` |
 | `captures` | `[{ id, at?, caption? }]`: real screens from the product's `world.json`, in order; the first opens the embassy, the rest stand with How unless `at` names a section |
 | `clip` | `{ id, phone? }`: the product's signature clip from `world.json` (and a phone cut of the same gesture) |
+| `reel` | optional, up to four `[{ id, phone?, caption? }]`: the screens Work shows in the project's chapter (ADR-0014), a wide screen or the signature clip in a browser frame, with an optional phone screen beside it; left out, the first three wide `captures`; with no captures at all, the object is the picture |
 | `what`, `why`, `how`, `learned`, `next` | each `{ text }`, `{ items: [...] }`, `{ quote }`, `{ numbers: [...] }` or `{ placeholder }` |
 | `draft` | `true` keeps it out of the build (it still shows in `npm run dev`) |
 

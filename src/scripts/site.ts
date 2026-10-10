@@ -9,6 +9,7 @@ import { initAccent, setAccent } from './accent';
 import { initRail } from './rail';
 import { initEmbassy } from './embassy';
 import { initClock } from './clock';
+import { initReels } from './reel';
 
 const fine = () => root.classList.toggle('fine', mq.fine.matches);
 fine(); mq.fine.addEventListener?.('change', fine);
@@ -21,6 +22,7 @@ initLog();
 initAccent();
 initRail();
 initClock();
+initReels();
 /* a project's own page: its embassy (the sheet starts its own copy, sheet.ts) */
 const ownCase = document.querySelector('#main article.case');
 if (ownCase) initEmbassy(ownCase);

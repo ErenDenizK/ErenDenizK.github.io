@@ -93,6 +93,16 @@ const projects = defineCollection({
     /** The one signature clip (world.json kind "signature"), with an optional phone-sized cut of the
         same gesture for windows under 900 px. One video element either way. */
     clip: z.object({ id: z.string(), phone: z.string().optional(), caption: z.string().optional() }).optional(),
+    /** Work's capture reel (ADR-0014): two to four steps shown in one platform frame, stepped by the
+        reading position. id: a wide screen or the signature clip in world.json; phone: a phone screen
+        shown beside it in a phone frame (a phone-first product); caption replaces world.json's. Left
+        out, the reel is the project's first three wide captures; with no captures, the object is the
+        picture. */
+    reel: z.array(z.object({
+      id: z.string().regex(/^[a-z0-9-]+$/),
+      phone: z.string().regex(/^[a-z0-9-]+$/).optional(),
+      caption: z.string().optional(),
+    })).max(4).optional(),
     what: section,
     why: section,
     how: section,
