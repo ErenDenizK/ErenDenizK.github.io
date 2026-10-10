@@ -1,6 +1,6 @@
 # ADR-0001: Astro static site on GitHub Pages
 
-**Status:** accepted 2026-10-09 (item 2 amended the same day after ADR-0006) · **Rests on:** brief §2.3, §3, §4.3, §5;
+**Status:** accepted 2026-10-09 (item 2 amended the same day after ADR-0006; items 6 and 7 amended 2026-10-10) · **Rests on:** brief §2.3, §3, §4.3, §5;
 `research/2026-10-stack.md`
 
 ## Context
@@ -25,11 +25,17 @@ locale, an ambitious 3D layer on desktop and a light one on phones, free static 
    `ErenDenizK.github.io` and a public repo or a paid plan).
 6. **Gates in CI:** typecheck, build, Playwright screenshots at desktop/tablet/phone,
    axe, Lighthouse, size budget, link check.
+   *Amended 2026-10-10:* CI (`.github/workflows/ci.yml`) runs the type and schema check, the test
+   builds, the size budget and Playwright (navigation, axe, screenshots). Lighthouse and the link
+   check are not built.
 
 7. **Release:** the site deploys from `main` only, which the owner merges by hand
    (ADR-0004). An early v0 goes live once the content site works at prototype F's level; the
    repo is renamed `ErenDenizK.github.io` just before that first release. Until then the
    build takes its base path from configuration.
+   *Amended 2026-10-10:* superseded by the ADR-0004 amendment: the owner publishes from `dev`
+   during the build-up, and `main` is still the initial commit. The repo is already renamed
+   `ErenDenizK.github.io` and public, so the live base path is `/`.
 
 ## Consequences
 

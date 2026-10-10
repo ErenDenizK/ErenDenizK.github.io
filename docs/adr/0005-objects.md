@@ -1,6 +1,8 @@
 # ADR-0005: One object per tab, scripted in Blender, lit to the render's standard
 
-**Status:** proposed 2026-10-09; items 2–3 amended by ADR-0006 · **Rests on:** brief §7 (2026-10-09);
+**Status:** item 1 accepted by practice through ADR-0006 and ADR-0007 (one object per tab, droplet
+clips in every manifest); items 2–3 superseded by ADR-0006. The GLB path may return if real-time 3D
+comes back on desktop (brief, 2026-10-10) · **Rests on:** brief §7 (2026-10-09);
 `research/2026-10-3d-objects.md`, `research/2026-10-ux-patterns.md` §4
 
 ## Decision
