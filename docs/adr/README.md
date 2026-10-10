@@ -16,6 +16,6 @@ and note lines inside an ADR record facts that moved (2026-10-10 tidy).
 | [0008](0008-id-card-and-postcard.md) | The About ID card and the postcard are CSS 3D objects with a small spring loop | accepted 2026-10-10; item 7 (composition) open |
 | [0009](0009-live-frames.md) | Live frames: one frame engine and one light, behind `?live` (amends 0006 items 4, 6) | proposed; parked until the real-time 3D decision |
 | [0010](0010-work-sections.md) | Work is one screen-tall section per project; one stage each, only the one in view moves | proposed (look); technique decided |
-| [0011](0011-scroll-rail.md) | The contents ladder replaces the native scrollbar where a page has sections | look chosen (concept B); items 3, 5, 7, 11 superseded by 0013 |
+| [0011](0011-scroll-rail.md) | The contents ladder replaces the native scrollbar where a page has sections | look chosen (concept B); items 3, 5, 7, 11 superseded by 0013; the dash look by its 2026-10-10 amendment |
 | [0012](0012-embassies.md) | Embassies: the project view enters the product's world through world.json, the kit's light and real captures | proposed (look); technique decided |
-| [0013](0013-one-rail-everywhere.md) | One rail on every page and in the project sheet; the bar never moves; Istanbul's time in the bar | asked for by the owner 2026-10-10; technique decided; plain variant's look proposed |
+| [0013](0013-one-rail-everywhere.md) | One rail on every page and in the project sheet; the bar never moves; Istanbul's time in the bar | asked for by the owner 2026-10-10; technique decided; one-bar look (amended 2026-10-10: sections are marks on the same track) proposed |

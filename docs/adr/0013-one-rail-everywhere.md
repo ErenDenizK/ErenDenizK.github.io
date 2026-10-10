@@ -8,6 +8,41 @@ owner has seen it · **Supersedes** ADR-0011 items 3 (the project-page exception
 `docs/research/2026-10-site-audit.md` §2 (scrollbar map, B6, B7, B8, B11, B12, B13), §7 (the clock),
 `docs/PLAN.md` tracks 3 and 4, ADR-0007 (the sheet; cross-document view transitions)
 
+**Amendment 2026-10-10 (later): one look, not two.** The owner on a phone: "Does each page have its own
+different scrollbar? One is a line, another is a ladder?" Verified at 390 × 844: Home and the Record drew
+the plain variant (a vertical line with a thumb) and About the ladder (three short floating dashes at a
+different place). Item 2's "two variants of one rail" were two different objects; the owner wants one fixed,
+consistent scrollbar everywhere. Revised (technique decided by the agent; the look is proposed until the
+owner has seen it):
+
+- **One bar.** Every scroller that overflows draws the same thing on desktop, tablet and phone, on the page
+  and in the sheet: a 2 px track, 6 px from the right edge (of the window, or of the sheet), `--rail-h` =
+  `min(44vh, 320px)` tall at mid-height, quiet (`--rail-idle` at 45 %), with a thumb on it that is the share
+  in view (at least 24 px), in the accent. On touch the 6 px place sits inside the 16 px gutter (inset by
+  the safe area). The ladder's own column of dashes, its stacking 28 px apart and its per-section dash
+  lengths (ADR-0011 items 1 and 2, the dash parts) are gone.
+- **Sections add marks, never another object.** A tick on the track's left side per section (5 px; the
+  current one 8 px; 2 px tall), placed where the thumb's top is when that section begins, so the thumb
+  reaches a mark as its section starts. The ticks behind you keep their section's light at the solved
+  rest value (ADR-0011 item 10), the current one is its full accent, the ones ahead `--rail-idle`, and the
+  thumb takes the current section's accent. On desktop, hover (120 ms) or focus opens the titles in a
+  panel beside the track, each row level with its mark (pushed apart to 28 px where marks crowd, at most
+  half a row past the track's ends), with the same last line; a title goes to its section; the nav, its
+  links, `aria-current` and the arrow keys are ADR-0011 item 9 unchanged. On touch the bar with marks is
+  one 44 px button over the track and a tap opens the titles as the small sheet of ADR-0011 item 12.
+- **One behaviour.** With or without marks, a press on the thumb holds it where it was taken and a drag
+  follows the pointer in proportion, a press on the track goes there (smooth, instant under reduced
+  motion), Escape during a drag puts the page back. The ladder's section-by-section scrub is replaced by
+  this proportional drag; a drag that starts on a title scrubs the same way.
+- **When titles show.** A scroller with two or more sections shows marks and titles when they fit beside
+  the track (sections × 28 px ≤ `--rail-h`, on touch sections × 8 px) and more than a quarter of a window
+  scrolls; otherwise it draws the bar alone and its own contents list comes back (`.rail-flat`), as before.
+- The touch button now covers a 44 × `--rail-h` strip of the right edge at mid-height (it was
+  44 × (sections × 10 + 28) px): a link reaching into that strip there is the known cost, as in ADR-0011
+  item 12. Reduced motion: the thumb and the current mark do not grow, only brighten.
+  `tests/e2e/rail.spec.ts` asserts the same track size, place, colour and thumb on About, Home and in the
+  sheet, at 1440 × 900 and 390 × 844.
+
 ## Context
 
 ADR-0011 put the contents ladder only on pages with sections and kept the native bar everywhere else
