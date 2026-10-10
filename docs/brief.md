@@ -268,3 +268,8 @@ log design are to be explored.
   English Prep probably needs larger app-level improvements.
 - **Family frame accepted** (six shared things; fonts, glass, structure and signature
   interactions stay each app's own). **Credits line:** "Made by edk." / "Yapan: edk.".
+- **Home/About round 1 rejected (2026-10-10):** F1's Home is good but its About is bad; F3 is
+  not bad. Needs much better design work: a comprehensive study of the portfolio's whole flow,
+  presentation, story and design, thought through in detail.
+- **Radical per-page systems:** all three proposals were ugly and broke the site's unity. Shelved
+  for now.
