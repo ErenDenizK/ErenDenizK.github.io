@@ -45,7 +45,7 @@ src/
   styles/              global.css (tokens and layout), log.css, transitions.css, rail.css, showcase.css,
                        work.css, embassy.css, wordmarks.css
   fonts/               subset Newsreader and Inter (tools/fonts/subset.py)
-  assets/photos/       graded photos (tools/photos/grade.mjs)
+  assets/photos/       graded photos (tools/photos/grade.mjs) and About's postcards (tools/photos/postcards.mjs)
 tools/                 generators: icons, link-preview cards and favicons, objects, illustrations, fonts
 tests/                 Playwright suites, the Pages-like server, the size budget, log fixtures
 ```
@@ -106,6 +106,10 @@ the owner said. The slug never changes once published.
 
 - Photos: put the original in `content/photos/`, add it to `tools/photos/grade.mjs`, run
   `npm run photos`.
+- About's chapters and postcards: `about.chapters` in `content/site.json` (`{ id, title, text: [...],
+  list?: products | links, photos?: [{ photo, alt, note, place, date? }] }`); `photo` is the file stem in
+  `content/photos/`. One photo stands in the chapter's margin, two or three form a row. Run
+  `npm run photos`: `tools/photos/postcards.mjs` resizes the originals to the widths shown (never up).
 - Icons: `tools/icons` (inlined at build by `src/components/Icon.astro`).
 - Link previews and favicons: `tools/og` writes `tools/og/out/`; the build publishes the cards under
   content-hashed names and packs `favicon.ico`. The favicon choice is `ICONS` in `src/lib/files.mjs`.

@@ -1,99 +1,224 @@
 ---
+/* About: an "about me" article (brief, About, 2026-10-10 evening: "who I am, where I study, how I work,
+   what I do at school, my software side; more photos in the postcard style; the ID card keeps the
+   current photo"). The ID card opens the page beside a short opening (desktop) or in the first screen
+   (phones); the chapters follow in the Record's reading style (21 px Newsreader, about 70 characters a
+   line) and are the rail's rungs (ADR-0013). Photographs stand beside the chapters they belong to as
+   postcards (ADR-0008). Every word and every photo comes from content/site.json (ADR-0002); the photo
+   files are made by tools/photos/postcards.mjs at the sizes they are shown. */
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Foot from '../components/Foot.astro';
 import IdCard from '../components/IdCard.astro';
-import { getSite, isPlaceholder } from '../lib/site';
-import c750a from '../assets/photos/courtyard-750.avif?url';
-import c1000a from '../assets/photos/courtyard-1000.avif?url';
-import c1350a from '../assets/photos/courtyard-1350.avif?url';
-import c750w from '../assets/photos/courtyard-750.webp?url';
-import c1000w from '../assets/photos/courtyard-1000.webp?url';
-import c1350w from '../assets/photos/courtyard-1350.webp?url';
+import Postcard from '../components/Postcard.astro';
+import Wordmark from '../components/Wordmark.astro';
+import { getSite, getProjects, isPlaceholder, projectPath, url } from '../lib/site';
+import postcards from '../assets/photos/postcards.json';
+
 const site = await getSite();
 const a = site.about;
-const li = site.links.linkedin;
+const projects = (await getProjects()).filter((p) => p.data.group === 'directed');
+const li = isPlaceholder(site.links.linkedin) ? null : site.links.linkedin;
+const ghHandle = new URL(site.links.github).pathname.replace(/^\/+|\/+$/g, '');
+const links = [
+  { name: 'GitHub', icon: 'github', href: site.links.github, note: `github.com/${ghHandle}` },
+  ...(li ? [{ name: 'LinkedIn', icon: 'linkedin', href: li, note: '' }] : []),
+];
+
+/* the postcard files, by the photo's stem: pc-<stem>-<width>.<avif|webp> */
+const files = import.meta.glob<string>('../assets/photos/pc-*.{avif,webp}', { eager: true, query: '?url', import: 'default' });
+const manifest = postcards as Record<string, { width: number; height: number; widths: number[] }>;
+/* what each placement is drawn at (the styles below): sizes never promise less than the box */
+const SIZES = {
+  side: '(min-width: 1241px) 340px, (min-width: 900px) 300px, min(calc(100vw - 32px), 420px)',
+  row: '(min-width: 1241px) 400px, (min-width: 900px) 340px, min(calc(84vw - 26px), 380px)',
+};
+function photo(stem: string, place: keyof typeof SIZES) {
+  const m = manifest[stem];
+  if (!m) throw new Error(`no postcard files for "${stem}": run npm run photos`);
+  const set = (ext: string) => m.widths.map((w) => {
+    const f = files[`../assets/photos/pc-${stem}-${w}.${ext}`];
+    if (!f) throw new Error(`missing pc-${stem}-${w}.${ext}: run npm run photos`);
+    return `${f} ${w}w`;
+  }).join(', ');
+  return {
+    src: files[`../assets/photos/pc-${stem}-${m.widths[0]}.webp`],
+    srcset: set('webp'), avif: set('avif'), sizes: SIZES[place],
+    width: m.width, height: m.height,
+  };
+}
+const num = (i: number) => String(i + 1).padStart(2, '0');
 ---
 <Base title="About" tab="about" og="about" ogAlt={`${site.name} at the YTÜ gate.`} type="profile" pageClass="page-about">
-  <div class="about-hero" id="intro" data-rail-sec={a.title}>
-    <figure class="courtyard">
-      <picture>
-        <source type="image/avif" srcset={`${c750a} 750w, ${c1000a} 1000w, ${c1350a} 1350w`} sizes="(min-width: 900px) 60vw, 100vw" />
-        <img src={c1000w} srcset={`${c750w} 750w, ${c1000w} 1000w, ${c1350w} 1350w`} sizes="(min-width: 900px) 60vw, 100vw" alt={a.courtyard.alt} width="1000" height="1481" decoding="async" fetchpriority="high" data-budget="photo" />
-      </picture>
-      <figcaption class="meta">{a.courtyard.caption}</figcaption>
-    </figure>
-    <div class="inner">
-      <div class="about-text">
+  <div class="inner about">
+    <header class="ab-open">
+      <div class="ab-intro">
         <p class="meta">{a.kicker}</p>
         <h1 class="vtitle" id="h-about">{a.title}</h1>
-        {a.ledes.map((l) => <p class="lede">{l}</p>)}
-        <div class="links">
-          <a class="btn" href={site.links.github} rel="me">GitHub <Icon name="arrow-up-right" weight="medium" /></a>
-          {!isPlaceholder(li) && <a class="qlink" href={li} rel="me">LinkedIn <Icon name="arrow-up-right" /></a>}
-        </div>
+        <p class="lede">{a.opening}</p>
       </div>
+      <div class="about-badge"><IdCard /></div>
+    </header>
+
+    <div class="ab-article">
+      {a.chapters.map((c, i) => {
+        const pics = c.photos ?? [];
+        return (
+          <section class:list={['ch', pics.length === 1 && 'has-side', pics.length > 1 && 'has-row']} id={c.id} aria-labelledby={`h-${c.id}`} data-rail-sec={c.title}>
+            <h2 class="ch-head" id={`h-${c.id}`}><span class="ch-n" aria-hidden="true">{num(i)}</span>{c.title}</h2>
+            <div class="ch-body">
+              {c.text.map((t) => <p>{t}</p>)}
+              {c.list === 'products' && (
+                <ul class="ab-list">
+                  {projects.map((p) => (
+                    <li><a href={url(projectPath(p))}><Wordmark project={p} class="ab-wm" /><span class="ab-note">{p.data.summary}</span><Icon name="arrow-right" /></a></li>
+                  ))}
+                </ul>
+              )}
+              {c.list === 'links' && (
+                <ul class="ab-list">
+                  {links.map((l) => (
+                    <li><a href={l.href} rel="me"><Icon name={l.icon} size={24} /><span class="ab-name">{l.name}</span><span class="ab-note">{l.note}</span><Icon name="arrow-up-right" /></a></li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            {pics.length === 1 && (
+              <aside class="ch-side">
+                {pics.map((p) => <Postcard {...photo(p.photo, 'side')} alt={p.alt} note={p.note} place={p.place} date={p.date} />)}
+              </aside>
+            )}
+            {pics.length > 1 && (
+              <div class="ch-row">
+                {pics.map((p) => <div class="ch-pc"><Postcard {...photo(p.photo, 'row')} alt={p.alt} note={p.note} place={p.place} date={p.date} /></div>)}
+              </div>
+            )}
+          </section>
+        );
+      })}
+
+      <section class="ab-colophon" id="colophon" aria-labelledby="h-colo">
+        <h2 class="meta" id="h-colo">How this site is made</h2>
+        <div class="ch-body">{a.colophon.map(([b, t]) => <p><b>{b}</b> {t}</p>)}</div>
+      </section>
     </div>
-    <div class="about-badge"><IdCard /></div>
-  </div>
-
-  <div class="about-wrap"><div class="inner">
-    <div class="about-body">
-      <dl class="facts">
-        {a.facts.map(([k, v]) => <><dt class="meta">{k}</dt><dd>{v}</dd></>)}
-        <dt class="meta">Elsewhere</dt>
-        <dd><a href={site.links.github} rel="me">GitHub</a>{!isPlaceholder(li) && <> · <a href={li} rel="me">LinkedIn</a></>}</dd>
-      </dl>
-    </div>
-
-    <section class="tracks" id="tracks" aria-labelledby="h-tracks" data-rail-sec={a.tracks.title}>
-      <div class="sec-head"><h2 id="h-tracks">{a.tracks.title}</h2></div>
-      <div class="track-grid">
-        {a.tracks.items.map((t) => (
-          <div class="track">
-            <span class="meta">{t.label}</span>
-            <h3>{t.title}</h3>
-            <p>{t.text}</p>
-            <ul>{t.list.map((x) => <li>{x}</li>)}</ul>
-          </div>
-        ))}
-      </div>
-      <p class="both lede">{a.tracks.both}</p>
-    </section>
-
-    <section class="colophon" id="colophon" aria-labelledby="h-colo" data-rail-sec="How this site is made">
-      <div>
-        <div class="sec-head"><h2 id="h-colo">How this site is made</h2></div>
-        <div class="prose">{a.colophon.map(([b, t]) => <p><b>{b}</b> {t}</p>)}</div>
-      </div>
-      <div class="now-box">
-        <div class="sec-head"><h2>Now</h2><span class="meta">{a.now.label}</span></div>
-        <p>{a.now.text}</p>
-      </div>
-    </section>
     <Foot />
-  </div></div>
+  </div>
 </Base>
 
 <style>
-  /* The ID card hangs over the courtyard (brief §7: the courtyard carries About; the card is composed
-     with it, ADR-0008). Wide screens: in the photo's half, clear of the text column, its lanyard running
-     up under the bar. Phones: below the introduction, in the page's flow. */
-  .about-badge { position: relative; z-index: 1; }
-  @media (min-width: 900px) {
-    .about-badge {
-      position: absolute; top: 0; bottom: 0; right: 0; left: max(40%, calc(var(--gut) + 34rem + 40px));
-      display: flex; justify-content: center; align-items: flex-start; padding-top: clamp(64px, 11svh, 120px);
-      pointer-events: none;
-    }
-    .about-badge > :global(.idc) {
-      pointer-events: auto;
-      --w: clamp(236px, min(22vw, calc((100svh - 300px) * 0.56)), 318px);
-      --strap: calc(var(--bar-h) + clamp(64px, 11svh, 120px) + 56px);
-    }
+  /* One grid for the whole page, so the opening, the chapters and the postcards share their edges.
+     Wide (from 1241 px): chapter heads | the reading column | the margin for postcards and the card.
+     900-1240 px: heads sit above their chapter; the margin stays. Phones: one column. */
+  .about {
+    --head: 200px; --text: 588px; --side: 340px; --gap: 56px;
+    position: relative;
+  }
+  .about::before {   /* the About light: one faint gold pool behind the card, nothing more */
+    content: ""; position: absolute; z-index: 0; right: -6%; top: calc(-1 * var(--bar-h) - 10%); width: 64vmin; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--about) 7%, transparent), transparent);
+  }
+  .ab-open, .ch, .ab-colophon {
+    position: relative; display: grid; column-gap: var(--gap);
+    grid-template-columns: var(--head) minmax(0, var(--text)) var(--side);
+  }
+
+  /* ---- the opening: a short introduction beside the card ---- */
+  .ab-open {
+    --cw: clamp(236px, min(22vw, calc((100svh - 300px) * 0.56)), 318px);
+    --drop: clamp(36px, 6svh, 64px);
+    min-height: calc(var(--drop) + var(--cw) * 1.6 + 72px);
+    align-items: center; padding-bottom: 40px;
+  }
+  .ab-intro { grid-column: 1 / 3; grid-row: 1; max-width: 33rem; padding-bottom: 24px; }
+  .ab-intro .lede { margin-top: 28px; color: var(--ink-2); }
+  /* the card's room to swing (card3d.ts reads this box): from just past the opening's words to the
+     window's right edge, the card hanging in the middle of it, so a throw either way has room before
+     the soft walls (ADR-0008 item 3) and it never swings over the words */
+  .about-badge {
+    position: absolute; z-index: 1; top: 0; bottom: 0;
+    left: calc(min(33rem, 100%) + 16px); right: calc((100% - 100vw) / 2);
+    padding: var(--drop) var(--gut) 0 40px;
+    display: flex; justify-content: center; align-items: flex-start; pointer-events: none;
+  }
+  .about-badge > :global(.idc) {
+    pointer-events: auto; --w: var(--cw);
+    --strap: calc(var(--bar-h) + var(--drop) + 56px);
+  }
+
+  /* ---- chapters ---- */
+  .ch { margin-top: 88px; align-items: start; }
+  .ab-article { position: relative; z-index: 1; }
+  .ch-head { grid-column: 1; font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: -0.012em; padding-top: 3px; }
+  .ch-n { display: block; margin-bottom: 10px; font: 400 var(--t-meta)/1 var(--f-ui); color: var(--about); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+  .ch-body { grid-column: 2; font: 430 21px/1.55 var(--f-read); color: var(--read); max-width: 28em; text-wrap: pretty; hanging-punctuation: first allow-end; }
+  .ch-body > * + * { margin-top: 1em; }
+  .ch-body b { font-weight: 500; color: var(--ink); }
+  .ch-side { grid-column: 3; grid-row: 1 / span 2; }
+  /* a tall postcard beside a short chapter may reach into the margin of the next one, when that one
+     has no photographs of its own, instead of leaving a hole under the words */
+  .ch.has-side:has(+ .ch:not(.has-side, .has-row)) .ch-side { margin-bottom: -160px; }
+  .ch-row { grid-column: 2 / 4; margin-top: 48px; display: flex; gap: 40px; align-items: flex-start; }
+  .ch-pc { width: 400px; flex: none; }
+  .ch-pc:nth-child(2) { margin-top: 56px; }
+
+  /* lists inside the reading column: a product or a profile per row */
+  .ab-list { margin-top: 1.2em; border-top: 1px solid var(--rule); }
+  .ab-list li { border-bottom: 1px solid var(--rule); }
+  .ab-list a {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: baseline; gap: 4px 18px;
+    padding: 16px 2px 15px; min-height: 44px; text-decoration: none; color: var(--ink);
+  }
+  .ab-list a > :global(.icon:last-child) { align-self: center; color: var(--ink-3); transition: color var(--d-1), translate var(--d-2) var(--ease-out); }
+  .ab-list a:hover > :global(.icon:last-child) { color: var(--ink); translate: 2px 0; }
+  .ab-list :global(.ab-wm) { font-size: 22px; line-height: 1.1; min-width: 7.4em; }
+  .ab-name { font: 400 22px/1.1 var(--f-display); }
+  .ab-list a > :global(.icon:first-child) { align-self: center; color: var(--ink-2); }
+  .ab-list a:has(> :global(.icon:first-child)) { grid-template-columns: auto auto minmax(0, 1fr) auto; }
+  .ab-note { font: 400 var(--t-ui)/var(--lh-ui) var(--f-ui); color: var(--ink-2); }
+  .ab-list a:hover .ab-note { color: var(--ink); }
+
+  /* the colophon: quiet, at the end (the Record links here: "How this is written") */
+  .ab-colophon { margin-top: 112px; padding-top: 28px; border-top: 1px solid var(--rule); }
+  .ab-colophon h2 { grid-column: 1; padding-top: 4px; }
+  .ab-colophon .ch-body { font: 400 var(--t-body)/var(--lh-body) var(--f-ui); color: var(--ink-2); max-width: 36em; }
+
+  @media (max-width: 1240px) {
+    .about { --head: 0px; --side: 300px; --gap: 48px; }
+    .ab-open, .ch, .ab-colophon { grid-template-columns: minmax(0, var(--text)) var(--side); }
+    .ab-intro { grid-column: 1; }
+    .ch-head { grid-column: 1; grid-row: 1; margin-bottom: 22px; }
+    .ch-body { grid-column: 1; grid-row: 2; }
+    .ch-side { grid-column: 2; grid-row: 1 / span 3; }
+    .ch-row { grid-column: 1 / 3; grid-row: 3; }
+    .ch-pc { width: 340px; }
+    .ab-colophon h2 { grid-row: 1; margin-bottom: 14px; }
+    .ab-colophon .ch-body { grid-row: 2; }
   }
   @media (max-width: 899.98px) {
-    .about-badge { display: flex; justify-content: center; padding: 104px var(--gut) 8px; overflow: hidden; }
-    .about-badge > :global(.idc) { --w: min(74vw, 300px); --strap: 104px; }
+    .ab-open, .ch, .ab-colophon { display: block; }
+    .ab-open { min-height: 0; padding-bottom: 8px; display: flex; flex-direction: column; }
+    /* phones: the card first, in the first screen, then the words */
+    .about-badge { position: relative; inset: auto; order: -1; align-self: stretch; margin: 0 calc(-1 * var(--gut)); padding: 64px var(--gut) 4px; overflow: hidden; }
+    .about-badge > :global(.idc) { --w: min(62vw, 252px); --strap: 64px; }
+    .ab-intro { padding: 12px 0 0; }
+    .ab-intro .lede { margin-top: 18px; font-size: 20px; }
+    .ch { margin-top: 64px; }
+    .ch-head { margin-bottom: 18px; }
+    .ch-body { font-size: 19px; hyphens: auto; -webkit-hyphens: auto; }
+    .ch-side, .ch.has-side:has(+ .ch:not(.has-side, .has-row)) .ch-side { margin: 36px 0 0; max-width: 420px; }
+    .ch-row { margin-top: 36px; display: block; }
+    .ch-pc { width: min(84%, 380px); }
+    .ch-pc:nth-child(2) { margin: 28px 0 0 auto; }
+    .ab-list :global(.ab-wm) { min-width: 0; }
+    .ab-list a { grid-template-columns: minmax(0, 1fr) auto; }
+    .ab-list a > :global(.ab-wm) { grid-column: 1; }
+    .ab-list a .ab-note { grid-column: 1; grid-row: 2; }
+    .ab-list a > :global(.icon:last-child) { grid-column: 2; grid-row: 1 / span 2; }
+    .ab-list a:has(> :global(.icon:first-child)) { grid-template-columns: auto minmax(0, 1fr) auto; }
+    .ab-list a:has(> :global(.icon:first-child)) .ab-note { grid-column: 2; }
+    .ab-list a:has(> :global(.icon:first-child)) > :global(.icon:last-child) { grid-column: 3; }
+    .ab-colophon { margin-top: 80px; }
+    .ab-colophon h2 { margin-bottom: 14px; }
   }
 </style>

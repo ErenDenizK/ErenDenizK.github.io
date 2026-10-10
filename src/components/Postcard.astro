@@ -5,7 +5,7 @@
 
    Front: the photograph on a narrow card-stock border. Back: a short note, a stamp cut from the same
    photograph, a postmark with the place and the date, and the place and date written out again for
-   readers who cannot see the postmark. Hover tilts it toward the pointer under a moving light; click,
+   readers who cannot see the postmark (the date only when it is known). Hover tilts it toward the pointer under a moving light; click,
    Enter or Space turns it over (scripts/card3d.ts, data-card="tilt").
 
    <Postcard src={webp} avif={avifSrcset} srcset={webpSrcset} width={1000} height={750}
@@ -22,7 +22,8 @@ interface Props {
   alt: string;
   note: string;
   place: string;
-  date: Date | string;
+  /** left out when the date is not known: the postmark and the address then carry the place alone */
+  date?: Date | string;
   /** signature under the note; the owner's first name by default */
   from?: string;
   /** ink of the stamp and postmark; the About gold by default */
@@ -31,18 +32,18 @@ interface Props {
 }
 const site = await getSite();
 const { src, srcset, avif, sizes = '(min-width: 900px) 560px, 92vw', width, height, alt, note, place, date, from = site.firstName, accent, class: cls } = Astro.props;
-const when = typeof date === 'string' ? date : dayMonYear(date);
+const when = date === undefined ? '' : typeof date === 'string' ? date : dayMonYear(date);
 const tall = height > width;
 /* a stable id for the postmark's text path (same input, same markup) */
 let h = 0;
 for (const ch of `${src}|${place}|${when}|${note}`) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
 const pid = `pc-ring-${h.toString(36)}`;
 /* the postmark's ring: place and date repeated until they go round once */
-const unit = `${place} · ${when} · `;
+const unit = when ? `${place} · ${when} · ` : `${place} · `;
 const ring = unit.repeat(Math.max(1, Math.ceil(44 / unit.length)));
 const style = [`--pc-ratio: ${width} / ${height}`, accent ? `--pc-ink: ${accent}` : ''].filter(Boolean).join('; ');
 ---
-<div class:list={['pc', tall && 'pc--tall', cls]} data-card="tilt" role="group" aria-roledescription="postcard" aria-label={`Postcard from ${place}, ${when}`} style={style}>
+<div class:list={['pc', tall && 'pc--tall', cls]} data-card="tilt" role="group" aria-roledescription="postcard" aria-label={when ? `Postcard from ${place}, ${when}` : `Postcard from ${place}`} style={style}>
   <div class="pc-card" data-card-body>
     <div class="pc-face pc-front" data-face>
       <button class="pc-turn" type="button" data-turn aria-label="Turn the postcard over"></button>
@@ -75,7 +76,7 @@ const style = [`--pc-ratio: ${width} / ${height}`, accent ? `--pc-ink: ${accent}
         </svg>
         <dl class="pc-addr">
           <div><dt>Place</dt><dd>{place}</dd></div>
-          <div><dt>Date</dt><dd>{when}</dd></div>
+          {when && <div><dt>Date</dt><dd>{when}</dd></div>}
         </dl>
       </div>
       <span class="pc-glare" aria-hidden="true"></span>
