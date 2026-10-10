@@ -77,7 +77,8 @@ test.describe('Home object, desktop', () => {
 
   test('the droplet melt plays at its own rate', async ({ page }) => {
     await page.goto('');
-    await expect(page.locator('.media.stage')).toHaveClass(/floating/, { timeout: 20_000 });
+    /* the manifest is in once the lean has started loading */
+    await expect.poll(() => page.evaluate(() => !!(document.querySelector('.media.stage .m-layer') as any)?._seq), { timeout: 20_000 }).toBe(true);
     await page.evaluate(() => (window as any).MediaStage.leave());
     await expect.poll(() => page.evaluate(() => (document.querySelector('.media.stage video.m-drop') as HTMLVideoElement | null)?.playbackRate ?? null), { timeout: 10_000 }).toBe(1);
   });
