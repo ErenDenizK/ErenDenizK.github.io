@@ -1,7 +1,8 @@
 ---
 /* The ID card on About (brief §7, 2026-10-09 after v0: "a digital ID card like event badges"; ADR-0008).
-   Every field comes from content/site.json. It hangs from a lanyard; on wide screens with a mouse it
-   leans toward the pointer and can be pulled and let go; click, Enter or Space turns it over. The
+   Every field comes from content/site.json. It hangs from a lanyard; on wide screens with a mouse the
+   lanyard is a rope, and the card leans toward the pointer, can be pulled by itself or its rope, flung
+   and spun (brief §7, 2026-10-10); click, Enter or Space turns it over. The
    front keeps both links, so nothing needs the turn. Behaviour: scripts/card3d.ts. */
 import Icon from './Icon.astro';
 import { getSite, isPlaceholder } from '../lib/site';
@@ -24,6 +25,23 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
 ---
 <div class="idc" data-card="hang" role="group" aria-roledescription={card.label} aria-label={`${card.label}: ${site.name}`}>
   <span class="idc-anchor" data-card-anchor aria-hidden="true"></span>
+  <svg class="idc-rope" data-card-rope aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="idc-rope-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="140">
+        <stop offset="0" stop-color="#000" /><stop offset="1" stop-color="#fff" />
+      </linearGradient>
+      <mask id="idc-rope-mask" maskUnits="userSpaceOnUse" x="-4000" y="-200" width="8000" height="4000">
+        <rect x="-4000" y="-200" width="8000" height="4000" fill="url(#idc-rope-fade)" />
+      </mask>
+      <path id="idc-rope-path" data-rope-path d="M0 0 L0 1" />
+    </defs>
+    <g mask="url(#idc-rope-mask)">
+      <use href="#idc-rope-path" class="r-edge" />
+      <use href="#idc-rope-path" class="r-band" />
+      <text class="r-text"><textPath href="#idc-rope-path" startOffset="100%" text-anchor="end">{strapText}</textPath></text>
+    </g>
+    <use href="#idc-rope-path" class="r-hit" data-rope-hit />
+  </svg>
   <div class="idc-swing" data-card-swing>
     <div class="idc-strap" aria-hidden="true"><span>{strapText}</span></div>
     <div class="idc-hold">
@@ -99,7 +117,20 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
     user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
   }
   .idc-anchor { position: absolute; left: 50%; top: calc(-1 * var(--strap)); width: 0; height: 0; }
-  .idc-swing { position: relative; transform-origin: 50% calc(-1 * var(--strap)); will-change: transform; }
+  /* the card turns about its clip's pivot, 9.4% of its width above it (card3d.ts measures the same) */
+  .idc-swing { position: relative; transform-origin: 50% -9.4cqi; will-change: transform; }
+
+  /* the rope (fine pointers with motion): an SVG path the script moves; its user units are px from the
+     anchor. Otherwise the still strap below stands in for it. */
+  .idc-rope { position: absolute; left: 50%; top: calc(-1 * var(--strap)); width: 1px; height: 1px; overflow: visible; display: none; pointer-events: none; }
+  :global(.js) .idc.is-rope .idc-rope { display: block; }
+  .is-rope .idc-strap { display: none; }
+  .idc-rope use { fill: none; stroke-linecap: butt; stroke-linejoin: round; }
+  .r-edge { stroke: color-mix(in srgb, var(--about) 26%, #15130f); stroke-width: 6.6cqi; }
+  .r-band { stroke: #1c1915; stroke-width: calc(6.6cqi - 2px); }
+  .r-text { font: 400 3.9cqi/1 var(--f-display); letter-spacing: 0.32em; fill: color-mix(in srgb, var(--about) 46%, #5f5b55); dominant-baseline: central; }
+  .r-hit { stroke: transparent; stroke-width: 11cqi; pointer-events: stroke; cursor: grab; }
+  .is-held .r-hit { cursor: grabbing; }
 
   /* the lanyard: a woven band running up out of the page, its mark repeated along it */
   .idc-strap {
