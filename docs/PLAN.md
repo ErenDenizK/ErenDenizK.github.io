@@ -43,8 +43,11 @@ portfolio and the objects do not yet feel like one maker's work (brief §7, late
 | O | Page-world prototype, only if the owner approves (after E) | prototype | — | after E |
 | Q | Work as one tall section per project (ADR-0010) | build | site | done |
 | R | Home product plate + wordmarks | build | site | done |
-| S | Record object: C2 to production (H2 as alternative) | render | `media/objects/record/` | running |
+| S | Record object: C2 in production (H2 as alternative) | render | `media/objects/record/` | done; owner tests |
 | T | Recto logo: new search in Penpot, Dengeli as a candidate | design | — | needs owner references |
+| U | Family kit (`docs/family-kit/`) and app handoffs with session prompts (English Prep, Recto) | design | kit + app branches | done |
+| V | Embassies in project views (ADR-0012) | build | site | done |
+| W | Fix: presses during an arriving page transition | build | site | done |
 | P | Phone pass | build | site | after desktop settles |
 
 ## How work flows
@@ -55,13 +58,14 @@ portfolio and the objects do not yet feel like one maker's work (brief §7, late
 - Taste goes to the owner as short option lists; technique is decided and recorded in ADRs.
 - Every report ends with what could not be verified (real Safari, real iPhone, GPU timings).
 
-## Open questions for the owner (asked as options when the evidence is ready)
+## Open questions for the owner
 
-- Liveliness architecture (after D).
-- Family vision: which shared-origin strategy (after K).
-- Page worlds: prototype one or not (after E).
-- Rail concept (after F).
-- Record redesign (after A and L's mock).
+- `?live` A/B on a real desktop: make it the default?
+- Record object: keep C2 or switch to H2 after seeing it live.
+- Credits line wording (kit options) and whether the outlined mark may be used.
+- Eat Map's real colour values and mark from Xcode.
+- Recto logo: references and sketches; Penpot connector at claude.ai/customize/connectors.
+- "One house, four rooms" prototype: when.
 
 ## Notes for later
 
