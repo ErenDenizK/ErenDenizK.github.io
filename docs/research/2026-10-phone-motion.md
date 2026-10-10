@@ -64,7 +64,7 @@ package, blocks and pulses along buses, and no turning letters in its code (E: n
 time, no 3D type). The turning glass letters the owner remembers are most likely prototype E's
 `edk` (three.js, whose idle added a slow spin and float to the letters) or the 2026-10-08
 turntable test (`tools/objects/turntable.py`). This file takes the request as written, "turning,
-moving objects like spinning letters", and the owner should confirm which one he meant.
+moving objects like spinning letters", and the owner should confirm which one they meant.
 
 **What reads as alive (E, from the liveliness research and the shots here).**
 
@@ -191,14 +191,14 @@ idle size; they are guesses until rendered.
 
 **Recommendation.**
 
-1. Keep the edk spin as the phone idle and let the owner judge it on his iPhone (with `?spin=0` to
-   compare), together with the colour retag (§1): both fix what he reported, and the loop-owner fix
+1. Keep the edk spin as the phone idle and let the owner judge it on their iPhone (with `?spin=0` to
+   compare), together with the colour retag (§1): both fix what they reported, and the loop-owner fix
    is what makes any phone motion visible on Home at all.
-2. If he likes it: Eat Map's pin next (cheapest, the same gesture), then English Prep and Recto as
+2. If they like it: Eat Map's pin next (cheapest, the same gesture), then English Prep and Recto as
    swings, Record last (its frames cost the most). Add the symmetric-pose saving before Recto and
    Record.
-3. Decide with him whether a tap should replay the turn (§5), and whether the edge-on blocks are
-   the look he wants (thinner letters or a 180° turn would change it; a re-render is 24 minutes).
+3. Decide with them whether a tap should replay the turn (§5), and whether the edge-on blocks are
+   the look they want (thinner letters or a 180° turn would change it; a re-render is 24 minutes).
 4. Later, for Low Power Mode, try the animated-AVIF twin on the iPhone, and a 640² phone-only size
    (about 40 % fewer bytes) if the tier budget gets tight.
 
