@@ -231,11 +231,12 @@ const site = defineCollection({
       groups: z.object({ directed: z.string(), byHand: z.string() }),
     }),
     log: z.object({ title: z.string(), dek: z.string(), writingNote: z.string(), empty: z.string() }),
+    /** About is an "about me" article (brief, About, 2026-10-10 evening): the ID card, a short opening,
+        then chapters in the owner's voice. Each chapter is a rung of the rail (ADR-0013). */
     about: z.object({
       kicker: z.string(),
       title: z.string(),
-      ledes: z.array(z.string()),
-      courtyard: z.object({ alt: z.string(), caption: z.string() }),
+      opening: z.string(),
       selfie: z.object({ alt: z.string(), caption: z.string() }),
       /** The ID card on About (brief §7, 2026-10-09: "a digital ID card like event badges"). */
       card: z.object({
@@ -244,14 +245,25 @@ const site = defineCollection({
         back: z.string(),
         hint: z.object({ drag: z.string(), click: z.string(), tap: z.string() }),
       }),
-      facts: z.array(z.tuple([z.string(), z.string()])),
-      tracks: z.object({
+      chapters: z.array(z.object({
+        /** the chapter's anchor: about/#<id> */
+        id: z.string().regex(/^[a-z0-9-]+$/),
         title: z.string(),
-        items: z.array(z.object({ label: z.string(), title: z.string(), text: z.string(), list: z.array(z.string()) })),
-        both: z.string(),
-      }),
+        /** paragraphs */
+        text: z.array(z.string()),
+        /** a list drawn from elsewhere: the directed projects (title, summary, link) or site.links */
+        list: z.enum(['products', 'links']).optional(),
+        /** postcards beside the chapter (ADR-0008): one stands in the margin, two or more form a row.
+            `photo` is a file stem in content/photos/; run `npm run photos` after adding one. */
+        photos: z.array(z.object({
+          photo: z.string().regex(/^[a-z0-9-]+$/),
+          alt: z.string(),
+          note: z.string(),
+          place: z.string(),
+          date: z.string().optional(),
+        })).max(3).optional(),
+      })).min(1),
       colophon: z.array(z.tuple([z.string(), z.string()])),
-      now: z.object({ label: z.string(), text: z.string() }),
     }),
   }),
 });
