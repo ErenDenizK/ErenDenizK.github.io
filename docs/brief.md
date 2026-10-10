@@ -56,8 +56,11 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 
 ### About
 
-- About introduces the owner directly: detailed information in a mini-CV style. Whether "mini
-  CV" also means a downloadable document is open; ask. (2026-10-10; on 2026-10-08 the owner
+- About is an "about me" article, not a CV: who I am, where I study, how I work, what I do at
+  school, my software side; more photos in the postcard style; the ID card keeps the current photo.
+  Home stays as it is for now. (2026-10-10, evening)
+- About introduces the owner directly: detailed information in a mini-CV style. Resolved the same
+  evening: an article, no document (line above). (2026-10-10; on 2026-10-08 the owner
   had said no CV and no work-authorisation line "for now".)
 - The owner likes About's system: the ID card with written descriptions under it. The recent
   About designs draw too much attention and were not liked. (2026-10-10)
@@ -72,6 +75,8 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 
 ### Projects and Work
 
+- Work feels empty: three objects do not show what each app is. A comprehensive study to make
+  it the site's strongest page. (2026-10-10, evening)
 - Three serious projects, all in active development: Recto (browser-only PDF editor,
   `ErenDenizK/recto`, public), English Prep (study app for Turkish university English
   proficiency exams, `ErenDenizK/english-prep`, public), Eat Map (iOS app, `ErenDenizK/eatmap`,
@@ -124,6 +129,8 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 
 ### Look, motion and objects
 
+- Objects look blurry, "like 2.5D", as if bugged: measure and fix. (2026-10-10, evening)
+- Record object: a tape / voice recorder, different from the earlier ones. (2026-10-10, evening)
 - Direction D (ADR-0003) but dark: a black ground; aura, photographs or glass possible, none
   mandatory. Minimal, elegant, unique. (2026-10-08) Grain stays. (2026-10-09)
 - Colours: Recto lime, English Prep sakura, Eat Map rose `#eb4f6b`, edk cool white-blue,
