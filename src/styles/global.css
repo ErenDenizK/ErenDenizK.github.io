@@ -232,6 +232,8 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
 .media .m-lean > canvas { position: absolute; display: block; }
 .media .m-layer.seq-on > .m-lean { opacity: 1; }
 .media .m-layer.clip-on > .m-lean { opacity: 0; }
+/* a lean being given back (media.ts shed) fades out under the returning poster before it is removed */
+.media .m-layer > .m-lean.m-shed { opacity: 0; }
 /* arriving through the droplet: nothing but the glow until the droplet-in clip's first frame */
 .media .m-layer.arriving img, .media .m-layer.arriving > video.m-idle { opacity: 0; transition: none; }
 /* from the first paint, without waiting for the script; it holds for at most 1.6 s on its own */

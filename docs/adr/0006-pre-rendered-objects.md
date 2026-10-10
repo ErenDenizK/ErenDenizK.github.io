@@ -42,5 +42,10 @@ Premium 3D sites mostly pay for the look offline and keep real time thin.
 - Objects are as good as the render, and the page gets lighter (no WebGL on the main path).
 - Every object costs an overnight CPU render; changing a light means re-rendering.
 - Free rotation is limited to the grid's arc (about ±16° yaw, ±4° pitch).
+- The still-to-video handoff is a crossfade both ways (2026-10-10, after the owner saw objects
+  flash while scrolling on a phone): `media.ts` hands a slot back to its poster by fading the video out
+  under it before releasing the decoder, and Work gives an object its video only after its section has
+  held the middle for 300 ms. Still unverified on WebKit: whether Safari draws the BT.709-tagged clips
+  brighter than the sRGB stills (media research §4: retag `-color_trc iec61966-2-1` if it does).
 - To check on the owner's iPhone: ground seam in a dark room, `plus-lighter` over video, Low
   Power Mode, loop seam, every tab twice without a crash, a 206 Range response on Pages.

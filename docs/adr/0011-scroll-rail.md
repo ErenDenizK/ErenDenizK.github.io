@@ -1,7 +1,8 @@
 # ADR-0011: The contents ladder replaces the native scrollbar where a page has sections
 
 **Status:** look chosen by the owner (brief §7, 2026-10-09 late: "Scroll rail: concept B, the
-contents ladder"); technique decided by the agent (CLAUDE.md) · **Rests on:** brief §7
+contents ladder"); technique decided by the agent (CLAUDE.md); the touch variant (item 12) added 2026-10-10 at the
+owner's request (brief §7, "phone check": "bring the ladder to phones too") · **Rests on:** brief §7
 (2026-10-09: "a custom thin rail, newly designed (not a copy of English Prep's)"),
 `docs/research/2026-10-scroll-rail.md` (§2 rules, §4 B and its weaknesses, §5 checks), ADR-0002
 (content is data; pages complete without JavaScript)
@@ -21,8 +22,8 @@ contents ladder"); technique decided by the agent (CLAUDE.md) · **Rests on:** b
    last line says "About N min left" on essays (from the reading time) and "N% down the page" elsewhere.
 3. **One source of truth on essays** (weakness 2). Wherever the rail is on, it *is* the contents list:
    the essay's own left-hand list (`.post-toc ol`) is hidden and the back link stays. Below 1240 px,
-   where that list never showed, the rail is now the only contents list. With no JavaScript, on touch
-   and in forced colours, the page's own list is back. Project pages keep their sticky `.toc` and get no
+   where that list never showed, the rail is now the only contents list (on touch too, item 12). With no
+   JavaScript and in forced colours, the page's own list is back. Project pages keep their sticky `.toc` and get no
    rail, for the same reason.
 4. **Sections are data.** A page opts in at build time (`<Base rail>` → `<html data-rail>`) and marks
    its sections: `[data-rail-sec]` (label, or the element's text) and the `h2[id]` inside
@@ -43,7 +44,8 @@ contents ladder"); technique decided by the agent (CLAUDE.md) · **Rests on:** b
    if the class stayed. If the script then finds the page too short, it removes the class. This is a
    one-time shift, and only on a page that barely scrolls.
 8. **Still twins.** No JavaScript: no class, no rail, the native bar and the essay's own list. Touch and
-   phones: the native indicator, and no rail element at all. Forced colours: as no JavaScript. Reduced
+   phones: the native indicator stays, with the slim ladder of item 12. Forced colours: as no JavaScript,
+   on every device. Reduced
    motion: section jumps are instant. The panel cross-fades instead of being revealed, and the dashes
    change only colour, never width.
 9. **Keyboard and screen readers.** The rail is a `nav` labelled "On this page", placed before `main`
@@ -61,6 +63,20 @@ contents ladder"); technique decided by the agent (CLAUDE.md) · **Rests on:** b
 11. **Hidden while the project sheet is open** (`html.sheet-open`). The rail carries its own
     view-transition name, so it stays in place across tab changes.
 
+12. **Touch: the slim ladder** (phones and tablets, any pointer without hover). The script sets
+    `html.rail-touch` instead of `rail-on`; nothing is hidden, so the platform's scroll indicator, momentum
+    and every native gesture stay. Closed, the ladder is one 44 px wide button at mid-height on the right
+    edge (inset by `env(safe-area-inset-right)`), drawing one short dash per section: 4–10 px by the
+    section's share of the page, the current one 12 px and filling, the ones behind lit as on desktop. The
+    dashes sit inside the 16 px page gutter, so nothing covers the reading column, and `touch-action: pan-y`
+    lets a swipe that starts on the button scroll the page. Its label names the current section ("On this
+    page: Recto, 2 of 4"). A tap opens the titles as a small sheet beside it (44 px rows, the current one
+    marked by its accent, the same last line as item 2); a title goes to its section and closes the sheet,
+    as do a tap outside, Escape and the button again. No hover and no drag on touch: a lifted finger's
+    `pointerleave` is ignored. The silence rules of item 5 hold, with the 44 px rows in the height check.
+    The button covers a 44 × (sections × 10 + 28) px strip of the right edge at mid-height; a link that
+    reaches into that strip there is the known cost.
+
 ## Tests
 
 `tests/e2e/rail.spec.ts` runs with classic scrollbars (`--hide-scrollbars` dropped), so a bar that
@@ -69,8 +85,11 @@ unmarked and short pages keeping the native bar; a constant client width during 
 the rail and End scrolling natively; 3:1 for every dash colour; the keyboard reaching the list with a
 solid 2 px ring at least 24 px tall; Enter jumping instantly under reduced motion and moving focus;
 a click going to its section; a drag landing mid-section on each dash and Escape restoring the
-position; and forced colours, no JavaScript, tablet touch and phone keeping the platform's bar with
-nothing sideways. `fixtures.spec.ts` covers the essay: the rail replacing the list, "min left", and
+position; forced colours and no JavaScript keeping the platform's bar, on desktop and on a phone; and on
+tablet and phone touch: the native indicator kept, the ladder drawn as a 44 px button flush with the
+edge, its dashes inside the gutter, the last dash current at the end of the page, a tap opening the
+sheet (which stays open after the finger lifts) with 44 px rows, a title going to its section and
+closing it, and a tap outside closing it; nothing sideways. `fixtures.spec.ts` covers the essay: the rail replacing the list, "min left", and
 the list coming back without JavaScript.
 
 ## Not done, on purpose

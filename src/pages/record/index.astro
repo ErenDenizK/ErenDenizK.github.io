@@ -28,7 +28,7 @@ const thisYear = String(new Date().getUTCFullYear());
         <p class="rec-dek">{site.log.dek}</p>
         <p class="meta" id="log-count">{count}</p>
       </div>
-      <Media obj="record" slot="record" stage class="rec-media" sizes="150px" priority />
+      <Media obj="record" slot="record" stage class="rec-media" sizes="(min-width: 900px) 320px, 176px" priority />
     </header>
 
     {linked.length > 0 && (
