@@ -1,7 +1,7 @@
 /* The live frame engine behind ?live (ADR-0009, proposed): it boots and draws the Home object, the
    showcase's state axis reverses, reduced motion keeps the still, a software renderer without
    ?live=force falls back to the still, and without the flag the Home stage is exactly the current one
-   (no engine loaded, no canvas, the idle loop as before). Headless Chromium renders WebGL2 on
+   (no engine loaded, no canvas, the float and the lean as before). Headless Chromium renders WebGL2 on
    SwiftShader, a software renderer, so the booting tests force the engine past that gate. */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, phone } from './helpers';
@@ -106,25 +106,34 @@ test.describe('default path', () => {
 });
 
 /* Phone motion (docs/research/2026-10-phone-motion.md): where an object's manifest has a spin loop, a
-   phone plays it as the idle; ?spin=0 and the desktop keep the idle loop. */
-test.describe('spin loop', () => {
+   phone plays it; otherwise, and on the desktop, no loop plays: the exact poster floats (site audit
+   2026-10-10 §3). ?idle=blend brings the old blended idle back for comparison. */
+test.describe('spin loop and float', () => {
   const idleSrc = (page: Page) => page.evaluate(() => (document.querySelector('.media.stage video.m-idle') as HTMLVideoElement | null)?.dataset.src ?? '');
 
-  test('a phone plays the Home object\'s spin as its idle', async ({ browser }) => {
+  test('a phone plays the Home object\'s spin; ?spin=0 floats the poster instead', async ({ browser }) => {
     const ctx = await browser.newContext({ ...phone, baseURL: test.info().project.use.baseURL });
     const page = await ctx.newPage();
     await page.goto('');
     await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/spin\.\w+\.mp4$/);
     await page.goto('?spin=0');
+    await expect(page.locator('.media.stage')).toHaveClass(/floating/, { timeout: 20_000 });
+    expect(await idleSrc(page)).toBe('');
+    await page.goto('?spin=0&idle=blend');
     await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/idle\.\w+\.mp4$/);
     await ctx.close();
   });
 
-  test('the desktop keeps the idle loop', async ({ browser }) => {
+  test('the desktop floats the poster and plays no loop', async ({ browser }) => {
     const ctx = await browser.newContext({ ...desktop, baseURL: test.info().project.use.baseURL });
     const page = await ctx.newPage();
     await page.goto('');
-    await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/idle\.\w+\.mp4$/);
+    const stage = page.locator('.media.stage');
+    await expect(stage).toHaveClass(/floating/, { timeout: 20_000 });
+    /* bob, sway and roll run on the layer, transform only */
+    expect(await stage.locator('.m-layer').evaluate((l) => l.getAnimations().map((a) => (a as CSSAnimation).animationName).sort())).toEqual(['m-bob', 'm-roll', 'm-sway']);
+    await page.waitForTimeout(1500);
+    await expect(page.locator('.media video.m-idle')).toHaveCount(0);
     await ctx.close();
   });
 });
