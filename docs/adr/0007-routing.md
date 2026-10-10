@@ -1,6 +1,7 @@
 # ADR-0007: Every tab is a page; the browser navigates, and only the project sheet is scripted
 
-**Status:** accepted 2026-10-09 by the owner, with a shorter melt that overlaps the navigation (item 3) · **Rests on:** brief §4.1, §7 (2026-10-09: "page transitions and
+**Status:** accepted 2026-10-09 by the owner, with a shorter melt that overlaps the navigation (item 3);
+item 5 and the `/log/` URLs superseded by `docs/design/log.md` (2026-10-09) · **Rests on:** brief §4.1, §7 (2026-10-09: "page transitions and
 navigation are a little buggy", "the top navigation is troublesome, especially clicking Home");
 ADR-0002 (content is HTML), ADR-0005 item 1 (one object per tab, changing into the next), ADR-0006
 item 5 (the droplet change); `research/2026-10-ux-patterns.md` §1–2; `prototypes/f/SPEC.md`
@@ -62,6 +63,9 @@ Option 3, with one scripted exception.
    Work or Home.
 5. **Log entries open in place** on `/log/` with JavaScript; their title is a link to their page
    without it.
+   *Superseded 2026-10-09* by `docs/design/log.md` (§0.1): entries no longer open in place; each
+   has its own page. The Log became the Record: the routes are `/record/` and
+   `/record/<year>/<slug>/`, not the `/log/` URLs named in the context above.
 6. **Verification:** the 21 scenarios of F's suite run against the built site on every push
    (`tests/e2e/nav.spec.ts`), with the same invariant: what is on screen matches the URL.
 

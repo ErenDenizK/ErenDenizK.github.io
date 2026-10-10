@@ -22,3 +22,5 @@ lit by each project's colour).
 ## Consequences
 
 Content and clarity come first; the "world" ambition of brief §5 is deferred, not dropped.
+*Note 2026-10-10:* radical per-page worlds were shown and shelved by the owner (they broke the
+site's unity); per-page light stays.

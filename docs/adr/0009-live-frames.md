@@ -1,7 +1,8 @@
 # ADR-0009: Live frames: one frame engine and one light, behind a flag
 
 **Status:** proposed (the owner A/Bs it on the live site behind `?live`; nothing changes without the
-flag) · **Amends:** ADR-0006 items 4 (interaction) and 6 (tiers); keeps items 1–3, 5 and 7 ·
+flag); no verdict recorded, parked until the real-time 3D decision (2026-10-10, `docs/PLAN.md`
+track 7) · **Amends:** ADR-0006 items 4 (interaction) and 6 (tiers); keeps items 1–3, 5 and 7 ·
 **Rests on:** brief §7 (2026-10-09 after v0: the owner misses prototype E's live, interactive
 animation on desktop; "if we render well, phones can get animation too");
 `research/2026-10-liveliness.md` (§2 diagnosis, §5 design, §6 proofs, §7 tiers)
@@ -95,6 +96,6 @@ Build it in the site, opt-in, for the Home object (edk) and the Home showcase (R
 - A floating object is resampled by a sub-pixel offset (bilinear); with `?float=0` rest is exact.
 - Each object costs one more Blender pass (about a minute) and about 250–290 KB of AVIF.
 - The watchdog and benchmark thresholds come from the research, not from the owner's hardware; real
-  frame times, heat and battery must be measured on his desktop and iPhone before this leaves the flag.
+  frame times, heat and battery must be measured on their desktop and iPhone before this leaves the flag.
 - Per-part axes (edk's letters hopping independently, the Eat Map pin under gravity) and video as
   texture transport are not built yet (research §8 items 3–4).

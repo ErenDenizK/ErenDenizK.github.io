@@ -1,6 +1,7 @@
 # ADR-0002: The HTML content layer is the site; the world enhances it
 
-**Status:** proposed 2026-10-08 · **Rests on:** brief §2.1, §4, §5;
+**Status:** proposed 2026-10-08; accepted by practice 2026-10-10 (every page is built to it and
+CLAUDE.md cites it as a rule; the owner has not accepted it in words, so confirm) · **Rests on:** brief §2.1, §4, §5;
 `research/2026-10-references.md`
 
 ## Context
