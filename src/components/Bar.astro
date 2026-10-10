@@ -14,5 +14,10 @@ const tabs = [['home', 'Home', ''], ['work', 'Work', 'work/'], ['record', 'Recor
       </a>
     ))}
   </nav>
-  <div class="bar-end"><a href={github} rel="me"><Icon name="github" />GitHub</a></div>
+  <div class="bar-end">
+    <p class="clock" data-clock><span class="vh">Local time in </span>Istanbul <time></time></p>
+    {/* the time in Istanbul, written before first paint (scripts/clock.ts keeps it ticking; same format) */}
+    <script is:inline>(function(){try{var t=document.currentScript.previousElementSibling.querySelector('time'),s=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hourCycle:'h23',timeZone:'Europe/Istanbul'}).format(new Date());t.textContent=s;t.dateTime=s;}catch(e){}})();</script>
+    <a href={github} rel="me"><Icon name="github" />GitHub</a>
+  </div>
 </header>

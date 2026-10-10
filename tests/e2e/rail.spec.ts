@@ -1,7 +1,10 @@
-/* The contents ladder (ADR-0011): sections from the page, the native bar hidden without a shift only
-   where the rail is drawn, keyboard reach and a visible focus ring, drag mapped section by section,
-   contrast of every dash, the platform's own scrollbar back for forced colours and no JavaScript, and
-   the touch ladder (the platform indicator hidden so it never overlaps, a sheet on tap). The essay's rail (replacing its contents list) is checked in fixtures.spec.ts. */
+/* The rail (ADR-0011, revised by ADR-0013): one custom scrollbar on every page and in the project sheet.
+   Sections from the page make the ladder, a page without them gets the plain variant (track and thumb);
+   the native bar hidden on every page without a shift, so the bar never moves between pages; keyboard
+   reach and a visible focus ring, drag mapped section by section, contrast of every dash, the platform's
+   own scrollbar back for forced colours and no JavaScript, the touch ladder (the platform indicator hidden
+   so it never overlaps, a sheet on tap), the sheet's own rail, and the Istanbul clock in the bar. The
+   essay's rail (replacing its contents list) is checked in fixtures.spec.ts. */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone, settle } from './helpers';
 
@@ -14,6 +17,7 @@ const rail = (page: Page) => page.evaluate(() => {
   return {
     on: html.classList.contains('rail-on'),
     drawn: !!nav && !nav.hidden && getComputedStyle(nav).display !== 'none',
+    plain: (() => { const p = document.querySelector<HTMLElement>('.rail-plain:not(.in-sheet)'); return !!p && !p.hidden && getComputedStyle(p).display !== 'none'; })(),
     bar: getComputedStyle(html).scrollbarWidth,
     labels: [...document.querySelectorAll('.rail-t')].map((t) => t.textContent),
     gutter: innerWidth - html.clientWidth,
@@ -24,22 +28,77 @@ const rail = (page: Page) => page.evaluate(() => {
 test.describe('desktop', () => {
   test.use(desktop);
 
-  test('sections come from the page; short and unmarked pages get none', async ({ page }) => {
+  test('sections come from the page; pages without them get the plain variant', async ({ page }) => {
     await page.goto('work/?still'); await settle(page, 300);
     let r = await rail(page);
-    expect(r).toMatchObject({ on: true, drawn: true, bar: 'none', gutter: 0, labels: ['Products I direct', 'Recto', 'English Prep', 'Eat Map'] });
+    expect(r).toMatchObject({ on: true, drawn: true, plain: false, bar: 'none', gutter: 0, labels: ['Products I direct', 'Recto', 'English Prep', 'Eat Map'] });
     expect(r.over).toBeLessThanOrEqual(0);
     await page.goto('about/?still'); await settle(page, 300);
     r = await rail(page);
     expect(r).toMatchObject({ on: true, drawn: true, bar: 'none' });
     expect(r.labels).toHaveLength(3);
     expect(r.over).toBeLessThanOrEqual(0);
-    for (const path of ['', 'record/', 'work/recto/', 'nope/']) {
+    /* a project page: its porch and sections are the rungs, and its own contents list steps aside */
+    await page.goto('work/recto/?still'); await settle(page, 300);
+    r = await rail(page);
+    expect(r).toMatchObject({ on: true, drawn: true, bar: 'none', gutter: 0 });
+    expect(r.labels[0]).toBe('Recto');
+    expect(r.labels.length).toBeGreaterThanOrEqual(3);
+    await expect(page.locator('#main .toc')).toBeHidden();
+  });
+
+  test('every route has the rail and no native bar', async ({ page }) => {
+    for (const path of ['', 'work/', 'record/', 'about/', 'work/recto/', 'work/english-prep/', 'work/eat-map/', 'record/2026/', 'lab/postcard/']) {
       await page.goto(path + '?still'); await settle(page, 200);
-      r = await rail(page);
-      expect(r, `/${path}`).toMatchObject({ on: false, drawn: false, bar: 'auto' });
-      if (path !== 'nope/') expect(r.gutter, `/${path} keeps the native bar`).toBeGreaterThan(0);
+      const r = await rail(page);
+      expect(r, `/${path}`).toMatchObject({ on: true, bar: 'none', gutter: 0 });
+      expect(r.drawn !== r.plain, `/${path}: the ladder or the plain variant, exactly one`).toBe(true);
+      expect(r.over, `/${path}`).toBeLessThanOrEqual(0);
     }
+    /* a page that does not scroll has nothing to show, and still no native bar */
+    await page.goto('nope/?still'); await settle(page, 200);
+    expect(await rail(page)).toMatchObject({ on: true, bar: 'none', gutter: 0 });
+  });
+
+  test('the plain variant: a thumb that follows the page, a drag that scrubs it, Escape puts it back', async ({ page }) => {
+    await page.goto('?still'); await settle(page, 300);
+    expect(await rail(page)).toMatchObject({ drawn: false, plain: true });
+    const geo = () => page.evaluate(() => {
+      const t = document.querySelector('.rail-plain .rail-track')!.getBoundingClientRect(), h = document.querySelector('.rail-plain .rail-thumb')!.getBoundingClientRect();
+      return { tTop: t.top, tBot: t.bottom, top: h.top, bot: h.bottom, x: (h.left + h.right) / 2, y: scrollY, max: document.documentElement.scrollHeight - innerHeight };
+    });
+    let g = await geo();
+    expect(g.top).toBeCloseTo(g.tTop, 0);
+    expect(g.bot - g.top, 'the thumb is the share in view').toBeGreaterThanOrEqual(24);
+    /* the wheel over the column scrolls the page natively, and the thumb follows */
+    await page.mouse.move(1440 - 14, (g.tTop + g.tBot) / 2);
+    for (let i = 0; i < 3 && (await page.evaluate(() => scrollY)) < 200; i++) { await page.mouse.wheel(0, 400); await page.waitForTimeout(400); }
+    await page.keyboard.press('End'); await page.waitForTimeout(600);
+    g = await geo();
+    expect(g.bot).toBeCloseTo(g.tBot, 0);
+    /* drag the thumb back up to the top; Escape restores where the drag began */
+    await page.mouse.move(g.x, (g.top + g.bot) / 2);
+    await page.mouse.down();
+    await page.mouse.move(g.x, g.tTop - 40, { steps: 8 });
+    await page.waitForTimeout(100);
+    expect(await page.evaluate(() => scrollY)).toBe(0);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(100);
+    expect(await page.evaluate(() => scrollY)).toBeCloseTo(g.max, -1);
+    await page.mouse.up();
+    /* a press on the track goes there */
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.mouse.click(g.x, g.tTop + 2);
+    await expect.poll(() => page.evaluate(() => scrollY)).toBeLessThan(g.max * 0.25);
+  });
+
+  test('the bar never moves between pages', async ({ page }) => {
+    const at: Record<string, number[]> = {};
+    for (const path of ['', 'work/', 'record/', 'about/', 'work/recto/', 'record/2026/', 'nope/']) {
+      await page.goto(path + '?still'); await settle(page, 200);
+      at['/' + path] = await page.evaluate(() => [document.documentElement.clientWidth, ...['.mark', '.tabs', '.bar-end a[rel="me"]'].map((q) => Math.round(document.querySelector(q)!.getBoundingClientRect().left))]);
+    }
+    expect(new Set(Object.values(at).map((v) => v.join(','))).size, JSON.stringify(at)).toBe(1);
   });
 
   test('the bar is hidden before first paint: no sideways shift', async ({ page }) => {
@@ -270,5 +329,105 @@ test.describe('touch: hidden from the start, kept on its side', () => {
     expect(box!.y).toBeGreaterThanOrEqual(0);
     expect(box!.y + box!.height).toBeLessThanOrEqual(320);
     await ctx.close();
+  });
+});
+
+/* The project sheet has its own rail, bound to its scroller; its sections are the rungs and its own
+   contents list steps aside (ADR-0013 item 3); no native bar inside it. */
+test.describe('the sheet', () => {
+  test.use(desktop);
+  test('its own ladder: the sheet\'s sections, its scroller, its wheel', async ({ page }) => {
+    await page.goto('work/?still'); await settle(page, 300);
+    await page.click('#main a[data-p="english-prep"]');
+    await expect(page.locator('dialog .rail.in-sheet')).toBeVisible();
+    await settle(page, 600);
+    const r = await page.evaluate(() => {
+      const nav = document.querySelector<HTMLElement>('dialog .rail.in-sheet')!, sc = document.getElementById('sheet-scroll')!;
+      const page = document.querySelector<HTMLElement>('nav.rail:not(.in-sheet)');
+      return {
+        labels: [...nav.querySelectorAll('.rail-t')].map((t) => t.textContent),
+        bar: getComputedStyle(sc).scrollbarWidth, gutter: sc.offsetWidth - sc.clientWidth,
+        toc: getComputedStyle(document.querySelector('dialog .toc')!).display,
+        inSheet: document.getElementById('sheet')!.contains(nav),
+        pageRail: page ? getComputedStyle(page).visibility : 'none',
+      };
+    });
+    expect(r.labels[0]).toBe('English Prep');
+    expect(r.labels).toContain('What it is');
+    expect(r).toMatchObject({ bar: 'none', gutter: 0, toc: 'none', inSheet: true, pageRail: 'hidden' });
+    /* reading down the sheet moves the ladder; the wheel over the ladder scrolls the sheet */
+    const box = (await page.locator('dialog .rail.in-sheet').boundingBox())!;
+    await page.mouse.move(box.x + box.width - 8, box.y + box.height / 2);
+    await page.mouse.wheel(0, 600);
+    await expect.poll(() => page.evaluate(() => document.getElementById('sheet-scroll')!.scrollTop)).toBeGreaterThan(300);
+    await page.evaluate(() => { const s = document.getElementById('sheet-scroll')!; s.scrollTo(0, s.scrollHeight); });
+    await expect(page.locator('dialog .rail-i').last()).toHaveAttribute('aria-current', 'location');
+    /* a click on a rung goes to that section inside the sheet */
+    await page.evaluate(() => document.getElementById('sheet-scroll')!.scrollTo(0, 0));
+    await page.mouse.move(box.x + box.width - 8, box.y + box.height / 2); await page.waitForTimeout(400);
+    await page.locator('dialog .rail-i').nth(1).click();
+    await expect.poll(() => page.evaluate(() => {
+      const a = document.querySelectorAll<HTMLAnchorElement>('dialog .rail-i')[1], t = document.getElementById(a.hash.slice(1))!;
+      return Math.round(t.getBoundingClientRect().top - document.getElementById('sheet-scroll')!.getBoundingClientRect().top);
+    }), { timeout: 4000 }).toBeLessThan(140);
+    /* closing the sheet takes its rail away and gives the page its own back */
+    await page.keyboard.press('Escape');
+    await expect(page.locator('dialog .rail')).toHaveCount(0);
+    await expect(page.locator('nav.rail:not(.in-sheet)')).toBeVisible();
+  });
+  test('touch: the sheet has the slim ladder', async ({ browser }) => {
+    const ctx = await browser.newContext(tablet);
+    const page = await ctx.newPage();
+    await page.goto('work/?still'); await settle(page, 300);
+    await page.tap('#main a[data-p="recto"]');
+    await expect(page.locator('dialog .rail.in-sheet .rail-btn')).toBeVisible();
+    expect(await page.evaluate(() => getComputedStyle(document.getElementById('sheet-scroll')!).scrollbarWidth)).toBe('none');
+    await page.tap('dialog .rail-btn');
+    await expect(page.locator('dialog .rail-sheet')).toBeVisible();
+    await ctx.close();
+  });
+});
+
+/* Istanbul and its time (brief, 2026-10-10): "Istanbul HH:MM" in Istanbul's own time, written before first
+   paint so nothing shifts; without JavaScript only the place; hidden on phones. */
+test.describe('the Istanbul clock', () => {
+  const istanbul = () => new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'Europe/Istanbul' }).format(new Date());
+  test('desktop: "Istanbul HH:MM" before GitHub, tabular, in Istanbul time', async ({ browser }) => {
+    /* a browser in another time zone still shows Istanbul's time */
+    const ctx = await browser.newContext({ ...desktop, timezoneId: 'America/Los_Angeles' });
+    const page = await ctx.newPage();
+    await page.addInitScript(() => {
+      (window as any).__clock = [] as string[];
+      new MutationObserver(() => { const t = document.querySelector('.clock time'); if (t?.textContent) (window as any).__clock.push(t.textContent); }).observe(document, { childList: true, subtree: true, characterData: true });
+    });
+    const before = istanbul();
+    await page.goto('?still'); await settle(page, 200);
+    const c = await page.evaluate(() => {
+      const p = document.querySelector<HTMLElement>('.bar-end .clock')!, t = p.querySelector('time')!;
+      const gh = document.querySelector('.bar-end a[rel="me"]')!;
+      return { seen: [...p.childNodes].filter((n) => !(n instanceof Element && n.classList.contains('vh'))).map((n) => n.textContent).join('').trim(), time: t.textContent, dt: t.dateTime, num: getComputedStyle(t).fontVariantNumeric,
+        before: !!(p.compareDocumentPosition(gh) & Node.DOCUMENT_POSITION_FOLLOWING), early: (window as any).__clock as string[], r: Math.round(p.getBoundingClientRect().right), g: Math.round(gh.getBoundingClientRect().left) };
+    });
+    expect(c.time).toMatch(/^([01]\d|2[0-3]):[0-5]\d$/);
+    expect([before, istanbul()]).toContain(c.time);
+    expect(c.seen).toBe(`Istanbul ${c.time}`);
+    expect(c.dt).toBe(c.time);
+    expect(c.num).toContain('tabular-nums');
+    expect(c.before && c.r < c.g, 'the clock sits before GitHub').toBe(true);
+    /* written by the bar itself as it is parsed: no placeholder value ever reaches the screen */
+    expect(c.early.every((v) => v === c.time || v === istanbul())).toBe(true);
+    await ctx.close();
+  });
+  test('no JavaScript: just "Istanbul"; phones: hidden', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...desktop, javaScriptEnabled: false });
+    const page = await ctx.newPage();
+    await page.goto('');
+    expect(await page.locator('.bar-end .clock').evaluate((p) => [...p.childNodes].filter((n) => !(n instanceof Element && n.classList.contains('vh')) && !(n instanceof HTMLElement && getComputedStyle(n).display === 'none')).map((n) => n.textContent).join('').trim())).toBe('Istanbul');
+    await ctx.close();
+    const ctx2 = await browser.newContext(phone);
+    const p2 = await ctx2.newPage();
+    await p2.goto('?still');
+    await expect(p2.locator('.clock')).toBeHidden();
+    await ctx2.close();
   });
 });
