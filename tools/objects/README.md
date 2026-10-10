@@ -17,7 +17,8 @@ Since ADR-0006 the site ships pre-rendered frames and clips instead (`frames.py`
 | `recto.py` | glass page stack, folded corner, steel clip | `page_1`, `page_2`, `page_3`, `fold`, `title`, `lines`, `clip` |
 | `englishprep.py` | sakura glass speech bubble with "Aa" | `bubble`, `A`, `a`, `reply`, `dots` |
 | `eatmap.py` | rose glass map pin over a ceramic plate | `pin`, `plate` |
-| `record.py` | the Record: a glass card file, blue year dividers, one card drawn from the back | `tray`, `glow`, `cards`, `dividers`, `card` |
+| `recorder.py` | the Record (since 2026-10-10): a pocket cassette recorder, the cassette behind a clear door, the record key and lamp in Record blue | `body`, `bezel`, `door`, `cassette`, `label`, `reel_left`, `reel_right`, `key_rec`, `key_play`, `key_stop`, `wheel`, `led` |
+| `record.py` | the Record's second object: a glass card file, blue year dividers, one card drawn from the back | `tray`, `glow`, `cards`, `dividers`, `card` |
 | `log.py` | glass studio microphone (the Record's first object; see below) | `head`, `core`, `band`, `neck`, `stem`, `base`, `led` |
 | `about.py` | round gold-wire glasses | `rim_left`, `rim_right`, `bridge`, `temple_left`, `temple_right`, `lens_left`, `lens_right` |
 | `calib.py` | chrome, clay and glass balls (rig check only) | `chrome`, `clay`, `glass` |
@@ -114,7 +115,11 @@ the head, growing to 1.8 head radii so they stay inside the square. Record's dra
 the way out of the file (spring(110, 13), let go at 0.62 s), tips 11° toward the viewer about
 its foot on a softer spring a beat later, and drops back with a small settle into the stack: 42
 frames. Its rising frames are a state axis too, like Recto's fan, so the live engine could stop
-the lift anywhere (a note a little, an essay all the way). Every clip starts and ends on the
+the lift anywhere (a note a little, an essay all the way). The recorder's record key goes down
+in 0.12 s, its lamp brightens to three times its resting glow and both reels turn (the started one
+a full turn, the full one two thirds; whole multiples of the hubs' three teeth, so the last frame
+is the rest pose), then the key comes up on a stiff spring and the lamp settles: 36 frames, a time
+axis. Every clip starts and ends on the
 grid's centre frame. The droplet is the bake-off's melt with a real glass sphere grown over the
 last 45 %; camera and backlight glide to canonical values, so every object's last frame is the
 same droplet and only the accent light differs.
@@ -239,12 +244,14 @@ and it has no internal reflections, so thick clear glass (the edk letters) looks
 brighter than in Cycles. Shadows in the page are approximations of the catcher's. The
 `compare-*.png` files show where each object stands.
 
-`record.py` is `record_c2.py` (docs/research/2026-10-record-object.md, round 2) with the chosen
-defaults fixed; `record_a.py`, `record_b.py`, `record_b2.py`, `record_c.py`, `record_c2.py`,
+`recorder.py` is round 4's concept 2 (docs/research/2026-10-record-object.md, "Round 4"),
+simplified for a 120 px read, and is what the Record page shows since 2026-10-10. `record.py`, the
+card file it replaced, stays with its media in `media/objects/record/`, unused. `record.py` is
+`record_c2.py` (the same research, round 2) with the chosen defaults fixed; `record_a.py`, `record_b.py`, `record_b2.py`, `record_c.py`, `record_c2.py`,
 `record_h2.py` and `record_kit.py` are that research's concepts, kept so its variants can be
-re-rendered. The Record page shows `record`; `media/objects/log/` (the microphone) stays in place
-but nothing on the site uses it any more, so swapping in another Record object (B2 or H2) later is
-only another object folder and the one `obj` on `src/pages/record/index.astro`.
+re-rendered. `media/objects/log/` (the microphone) and `media/objects/record/` stay in place but
+nothing on the site uses them any more: swapping the Record's object is only another object folder
+and the one `obj` on `src/pages/record/index.astro`.
 
 `make_recto.py` and `turntable.py` are the 2026-10-08 research test (`docs/research/
 2026-10-3d-objects.md`), kept for reference; `recto.py` replaces the object.

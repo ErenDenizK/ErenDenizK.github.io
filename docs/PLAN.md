@@ -18,18 +18,20 @@ Every track below is reviewed for its purpose, its reason and a designer's disci
 | # | Track | What the owner asked (brief, 2026-10-10) | Status |
 |---|---|---|---|
 | 1 | Home as brand and vision | keep the simple layout; present a product, an identity, a brand, the vision; flashier, not busier | open |
-| 2 | About as a mini CV | the ID card with written descriptions under it; detailed, CV-style; quieter than now | open |
+| 2 | About as an about-me article | the ID card on top, then chapters in the owner's voice and postcard photos (2026-10-10 evening) | built 2026-10-10 (ADR-0008 amendment), copy in review |
 | 3 | One scrollbar everywhere | one custom scrollbar on every page and in the project sheet; no native bar left (ADR-0011 revision first) | built 2026-10-10 (ADR-0013), in review |
 | 4 | Istanbul + clock | bring the detail back (`content/site.json` already has `about.kicker` "About · Istanbul") | built 2026-10-10 ("Istanbul HH:MM" in the bar, desktop; ADR-0013 item 9), in review |
 | 5 | ID card calmer | keep it playable; damp extreme input so it no longer goes wild | built 2026-10-10 (ADR-0008 amendment); owner's look check |
 | 6 | edk object bug | find and fix where it glitches and looks unclean | built 2026-10-10 (ADR-0006 amendment); owner's look check |
 | 7 | Object stutter and real-time 3D | measure the pre-rendered stutter vs a real-time desktop tier; report the performance difference to the owner, who decides (ADR-0006 under review) | study done; option (a) built 2026-10-10 (float, sharp lean, no self-turn); 1° grid and real time wait for the owner |
-| 8 | Record object redesign | try H2 (the recorder) again or a tape/cassette player | open |
-| 9 | Photo placement | high-resolution derivatives only; one cat photo, never both; About first, Home possible | open |
+| 8 | Record object redesign | a tape / voice recorder, different from the earlier ones | built 2026-10-10: the pocket cassette recorder (`media/objects/recorder/`), in review |
+| 9 | Photo placement | high-resolution derivatives only; one cat photo, never both; About first, Home possible | About postcards built 2026-10-10; metro censor concepts with the owner |
 | 10 | Screenshots and logos | app captures and app logos (or 3D logos) beside the objects, once the apps are presentable in their own chats | open: waits on the app chats |
 | 11 | Copy and slogans | improve wording | open: last |
 | 12 | Phone pass | after desktop settles; phones must not break meanwhile | open: after desktop |
 | 13 | Sample Record entries | note, entry, release, essay for testing, tagged `sample`, `SAMPLES=0` drops them | done 2026-10-10 |
+| 15 | Work as the flagship page | real screens in platform frames, wordmarks, facts; objects as emblems (ADR-0014) | built 2026-10-10, direction in review |
+| 16 | Object sharpness | blur and the "2.5D" look measured and fixed; edk at 1° (ADR-0006 amendment) | built 2026-10-10; other objects' 1° grids wait on the owner's look |
 | 14 | Docs clean-up | brief consolidated, plans archived, ADR statuses corrected | done 2026-10-10 |
 
 ## How work flows
