@@ -1,7 +1,10 @@
 # ADR-0010: Work is one screen-tall section per project, with one stage each and only the one in view moving
 
 **Status:** technique decided by the agent (CLAUDE.md: "decide technique yourself and record it");
-the look is proposed until the owner has seen it · **Rests on:** brief §7 (2026-10-09 after v0:
+the look is proposed until the owner has seen it · *Amended 2026-10-10 by ADR-0014:* a chapter may be
+taller than one screen (its reel steps in a pinned stage) and, where real screens exist, the object is the
+product's emblem beside its name rather than the whole picture; items 2, 4 and 5 and the media rule stand ·
+**Rests on:** brief §7 (2026-10-09 after v0:
 "Work should be a page that grows downward, each project starting within its own screen height,
 with large objects (small objects packed together looked bad)"; "Home is a showcase; Work is the
 full catalog"), ADR-0006 (pre-rendered objects, at most one video), ADR-0007 (routing, the droplet,
