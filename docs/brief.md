@@ -262,3 +262,9 @@ log design are to be explored.
 - **Page worlds, more radical:** each page should feel different in system and setup, not only
   light or sliding text (examples given only to illustrate: a workbench, a photo album), while the
   site stays one whole.
+- **Owner on English Prep's docs (2026-10-10):** "terrible": most rules were added to fix one
+  broken version; English Prep is not against glass or grain. It needs a thorough rework, more
+  than Recto. Both apps' About pages may change: Recto mostly needs a presentation refresh,
+  English Prep probably needs larger app-level improvements.
+- **Family frame accepted** (six shared things; fonts, glass, structure and signature
+  interactions stay each app's own). **Credits line:** "Made by edk." / "Yapan: edk.".
