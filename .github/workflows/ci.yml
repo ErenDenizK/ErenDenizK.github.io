@@ -22,7 +22,7 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Types and content schemas
         run: npm run check
-      - name: Build (site and log fixtures, under /Portfolio/ like Pages before the rename)
+      - name: Build (site and log fixtures, under the non-root base /Portfolio/ to catch base-path bugs)
         run: npm run build:test
       - name: First-paint size budget
         run: npm run budget

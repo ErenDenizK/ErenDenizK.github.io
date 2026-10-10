@@ -4,8 +4,8 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import siteAssets from './src/integrations/site-assets.mjs';
 
-// Base path (ADR-0001 item 7). The site lives at https://erendenizk.github.io/ once the repo is
-// renamed ErenDenizK.github.io; until then GitHub Pages serves it under /<repo>/. BASE_PATH wins;
+// Base path (ADR-0001 item 7). The repo is ErenDenizK.github.io, so the live site is at
+// https://erendenizk.github.io/ (base "/"); any other repo name is served under /<repo>/. BASE_PATH wins;
 // otherwise the repo name in GITHUB_REPOSITORY decides; locally the base is "/".
 function basePath() {
   if (process.env.BASE_PATH) return process.env.BASE_PATH;
