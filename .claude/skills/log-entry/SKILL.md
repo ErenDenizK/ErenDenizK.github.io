@@ -59,9 +59,10 @@ updates, corrections, figures, what never appears) before the first entry of a s
 9. **Revise** until the owner says to publish. Each revision is shown in full again or as a
    clear diff of the changed sentences.
 10. **Publish on OK**: write `content/log/<year>/<slug>.md`, build, check the entry page and
-    the index at 1440 × 900 and 390 × 844, commit on `dev` with a Conventional Commit
-    (`docs(log): add "<title>"` style, lower-case subject, ≤100 chars, the session's
-    trailers). Tell the owner the URL once it is live.
+    the index at 1440 × 900 and 390 × 844, run `npm run verify`, commit on `dev` with a
+    Conventional Commit (`docs(log): add "<title>"` style, lower-case subject, ≤100 chars, the
+    session's trailers), push (a push to `dev` deploys), then tell the owner the URL once it
+    is live.
 
 ## Voice
 
