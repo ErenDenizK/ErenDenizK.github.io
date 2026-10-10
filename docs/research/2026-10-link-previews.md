@@ -1,5 +1,7 @@
 # Research: link previews, icons and structured data (2026-10-09)
 
+**Status:** current. Built (`tools/og`).
+
 The first impression of the site often happens inside someone else's app: a LinkedIn post or
 the Featured section of a profile, a WhatsApp or iMessage chat, X, Slack, Discord, Telegram.
 The brief makes this the main entry: the site is "the link that sits on a LinkedIn profile"

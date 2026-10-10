@@ -1,5 +1,7 @@
 # Research: reading on screens, and a Record people enjoy reading (2026-10-09)
 
+**Status:** current. Built into the Record; Part D feeds the log-entry skill.
+
 Brief §7 (2026-10-09, after seeing v0): research how to make text easier to read on screens
 today, given short attention, across technique, style, engineering and writing; and fix the
 Record, which has too many controls, odd thread toggles and plain black-and-white reading that

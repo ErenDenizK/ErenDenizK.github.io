@@ -1,5 +1,8 @@
 # Research: Home and About as a flow, and pages that differ in system (2026-10-10)
 
+**Status:** superseded 2026-10-10. Round 1 was rejected except F1's Home and F3; the radical
+per-page systems were shelved. Paths under `scratchpad/` cited here were session scratch, not kept.
+
 Two owner problems (brief §7, 2026-10-10):
 
 1. **Home vs About.** About introduces the owner better than Home (education, how they work) and

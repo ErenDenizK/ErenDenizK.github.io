@@ -1,6 +1,10 @@
 # Research: craft audit of prototype E, and a type and motion system (2026-10-09)
 
-Track 3 of `docs/PLAN.md`. The owner's bar (brief §7, 2026-10-09): fonts, motion and images
+**Status:** current, partly reversed. Its type and motion systems are built; the removal of the
+Istanbul clock (§1, P1.4) was reversed by the owner on 2026-10-10. Paths under `scratchpad/` cited
+here were session scratch, not kept.
+
+Track 3 of `docs/history/plan-2026-10-craft-round.md`. The owner's bar (brief §7, 2026-10-09): fonts, motion and images
 must never feel cheap; the site is brand-led and social, dark, quiet, premium (brief §7,
 2026-10-08). This file audits prototype E against that bar, researches type with licences,
 compares four free pairings on the real hero, and proposes the motion and imagery systems
@@ -61,6 +65,7 @@ dark-portfolio kit rather than designed for one person. Taking things away is mo
    - the kicker pattern "● — A — B — C" with hairline dashes (lines 148–151).
    - the live "ISTANBUL 09:20" clock (line 139, script 1050–1054): a 2023–25 folio trope;
      it changes every visit and says nothing about the work.
+     *Reversed 2026-10-10:* the owner liked the Istanbul clock and wants it back.
    - "Fig. 1 · …" captions (lines 594, 677, 763): an editorial affectation, and wrong while
      the object changes (`flow-1-mid-morph.png` shows Recto above "edk, in glass").
    - 01/02/03 numbering on sections, teasers, tiles, case sections and decisions (six
@@ -263,7 +268,7 @@ Fraunces at opsz 144 lose their hairlines on black; Bricolage and Familjen read 
    templates (phones image: the mono kicker is the template tell again). Source Serif 4 is a
    fine log face. Ranked last for the owner's "never template" bar.
 
-The owner chooses (taste question, PLAN.md open questions). Show the two phone and desktop
+The owner chooses (taste question, open questions in `docs/history/plan-2026-10-craft-round.md`). Show the two phone and desktop
 images for pairings 2 and 1 first.
 
 ### 3.2 Pairing 2 in detail

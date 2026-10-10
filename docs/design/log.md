@@ -401,7 +401,7 @@ fallbacks. It opens on the Log tab.
   (`entry-flow`, `levels`), contents list, update block, copy link, older/newer.
 - Router: F's state machine with one more view (`post`) that belongs to the Log tab; Back and
   Forward, scroll memory and focus behave as in F.
-- Source in the session scratchpad `proto-log/`: `src.html` (made once from F's `src.html` by
+- Source in the session scratchpad `proto-log/` (scratch, not kept): `src.html` (made once from F's `src.html` by
   `make-src.py` and `parts/`), `build.py` (renders the sample entries from data, inlines
   drawings, icons, media), `shoot.mjs`, `nav.mjs`.
 - Shots in `prototypes/f-log/shots/`: `{desktop,tablet,phone}-log[-2|-3]`, `-log-open`,

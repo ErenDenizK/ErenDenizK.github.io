@@ -1,5 +1,8 @@
 # Shared prototype content
 
+**Status:** history (2026-10-10). Content for prototypes A–D; the name, links and copy here are
+out of date. The site's content is `content/`.
+
 Every prototype uses exactly this content so they can be compared on form alone. Do not
 invent facts. Anything marked PLACEHOLDER must look like a placeholder (e.g. a "sample"
 tag), never like a real claim.

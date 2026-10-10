@@ -1,5 +1,7 @@
 # Research: tabs, project views, dark editorial, objects, motion (2026-10-08)
 
+**Status:** history. Fed ADR-0007.
+
 Only github.com, raw.githubusercontent.com and npm were reachable. Tags: **[V]** verified
 (MDN browser-compat-data, cloned source, npm), **[S]** search extracts, **[R]** recollection.
 
