@@ -38,7 +38,7 @@ like Microsoft is the kind of target.
 - English is the main language, including the log. Turkish may follow as a second locale.
 - Address: `https://erendenizk.github.io/` on GitHub Pages. No custom domain for now.
   Hosting, private repositories and open-sourcing AI-built projects are separate research
-  topics for later (see `docs/ROADMAP.md` [now `docs/PLAN.md`]).
+  topics for later (see `docs/ROADMAP.md`, now `docs/PLAN.md`).
 
 ## 4. Content
 

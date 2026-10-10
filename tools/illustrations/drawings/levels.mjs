@@ -1,4 +1,4 @@
-// The site's levels (docs/ROADMAP.md) on a four-year line (brief §2.3). Levels, not dates:
+// The site's levels (docs/history/roadmap-2026-10-08.md) on a four-year line (brief §2.3). Levels, not dates:
 // only the start is dated; the rest are placed in order, drawn as not yet happened.
 import { timeline, hand, text } from '../kit.mjs'
 import { textWidth } from '../rules.mjs'
