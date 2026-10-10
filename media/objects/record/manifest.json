@@ -11,6 +11,42 @@
   "h": 1200,
   "sources": [
    {
+    "src": "poster-320.avif",
+    "type": "image/avif",
+    "w": 320,
+    "bytes": 4141
+   },
+   {
+    "src": "poster-320.webp",
+    "type": "image/webp",
+    "w": 320,
+    "bytes": 6674
+   },
+   {
+    "src": "poster-400.avif",
+    "type": "image/avif",
+    "w": 400,
+    "bytes": 5550
+   },
+   {
+    "src": "poster-400.webp",
+    "type": "image/webp",
+    "w": 400,
+    "bytes": 8928
+   },
+   {
+    "src": "poster-480.avif",
+    "type": "image/avif",
+    "w": 480,
+    "bytes": 6827
+   },
+   {
+    "src": "poster-480.webp",
+    "type": "image/webp",
+    "w": 480,
+    "bytes": 11388
+   },
+   {
     "src": "poster-600.avif",
     "type": "image/avif",
     "w": 600,
@@ -21,6 +57,18 @@
     "type": "image/webp",
     "w": 600,
     "bytes": 15014
+   },
+   {
+    "src": "poster-640.avif",
+    "type": "image/avif",
+    "w": 640,
+    "bytes": 9794
+   },
+   {
+    "src": "poster-640.webp",
+    "type": "image/webp",
+    "w": 640,
+    "bytes": 16206
    },
    {
     "src": "poster-1200.avif",
