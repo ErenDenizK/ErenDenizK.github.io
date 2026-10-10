@@ -77,7 +77,8 @@ A = ap.parse_args()
 # phone (~450 KB) budget with them (media research §7). edk, thick clear glass three letters
 # wide, is the heaviest: its full grid goes to AVIF q55, and its HEVC idle loop one step further.
 DEFAULTS = {"webp_q": 82, "avif_q": 60, "avif_q_half": 50, "idle_seconds": 6.0}
-OBJECT = {"edk": {"avif_q": 55, "idle_crf": {"hevc": "32"}}, "record": {"avif_q": 50, "idle_crf": {"av1": "38", "hevc": "32", "h264": "29"}}}
+OBJECT = {"edk": {"avif_q": 55, "idle_crf": {"hevc": "32"}}, "record": {"avif_q": 50, "idle_crf": {"av1": "38", "hevc": "32", "h264": "29"}},
+          "recorder": {"avif_q": 50, "idle_crf": {"av1": "38", "hevc": "32", "h264": "29"}}}
 for k, v in {**DEFAULTS, **OBJECT.get(A.obj, {})}.items():
     if k != "idle_crf" and getattr(A, k) is None:
         setattr(A, k, v)
@@ -535,7 +536,7 @@ if A.retag:
 # reduction (ADR-0006 amendment of 2026-10-10, evening). Slots: Home 470 (edk); Home showcase 400, Work
 # 640 at 1440 wide, a case sheet 420 (the projects); Record 320. 1280 (Work at DPR 2) would need a larger
 # master than the 1200 render, so the 1200 poster is enlarged there.
-SLOTS = {"edk": (470,), "recto": (400, 420, 640), "englishprep": (400, 420, 640), "eatmap": (400, 420, 640), "record": (320,)}
+SLOTS = {"edk": (470,), "recto": (400, 420, 640), "englishprep": (400, 420, 640), "eatmap": (400, 420, 640), "record": (320,), "recorder": (320,)}
 GRID_CSS = {1: 1, 1.25: 4, 1.5: 2, 2: 0.5}   # the CSS step that is whole device pixels (media.ts grid())
 
 
@@ -752,7 +753,8 @@ if os.path.isdir(sdir) and any(f.startswith("f_") for f in os.listdir(sdir)):
 # ================================================================ 5. manifest
 cinfo = json.load(open(os.path.join(M, "clip", "crop.json"))) if os.path.exists(os.path.join(M, "clip", "crop.json")) else {}
 dinfo = json.load(open(os.path.join(M, "droplet", "crop.json"))) if os.path.exists(os.path.join(M, "droplet", "crop.json")) else {}
-CLIP_NAME = {"edk": "hop", "recto": "fan", "englishprep": "pop", "eatmap": "drop", "log": "on-air", "record": "lift"}
+CLIP_NAME = {"edk": "hop", "recto": "fan", "englishprep": "pop", "eatmap": "drop", "log": "on-air", "record": "lift",
+             "recorder": "record"}
 yaws, pitches = ginfo["yaw"], ginfo["pitch"]
 
 

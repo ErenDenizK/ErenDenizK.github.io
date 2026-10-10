@@ -42,7 +42,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OBJECTS = ("edk", "recto", "englishprep", "eatmap", "log", "record")
+OBJECTS = ("edk", "recto", "englishprep", "eatmap", "log", "record", "recorder")
 STAGES = ("poster", "grid", "clip", "droplet", "shadow", "normal", "spin")
 # The live engine plays a clip either as a time axis (forward from rest, back to rest) or, where
 # its first frames rise monotonically from rest to one extreme, as a reversible state axis: a
@@ -61,6 +61,7 @@ SPINS = {
     "edk": {"kind": "letters", "parts": "edk", "turn": 360.0, "each": 2.0, "stagger": 0.3, "seconds": 4.0},
     "recto": {"kind": "swing", "amp": 35.0, "seconds": 6.0},
     "record": {"kind": "swing", "amp": 30.0, "seconds": 6.0},
+    "recorder": {"kind": "swing", "amp": 30.0, "seconds": 6.0},
     "englishprep": {"kind": "swing", "amp": 40.0, "seconds": 6.0},
     "eatmap": {"kind": "letters", "parts": ["pin"], "turn": 360.0, "each": 2.4, "stagger": 0.0, "seconds": 4.0},
 }
@@ -717,8 +718,52 @@ def clip_record():
     return n, [state(k) for k in range(n)]
 
 
+RECORDER_PRESS = 0.22   # the record key's travel, in key heights
+RECORDER_ON_AIR = 3.0   # the lamp's brightness while recording, in multiples of its rest
+
+
+def clip_recorder():
+    """Record: the record key goes down, the lamp brightens and the reels turn, then the key comes
+    back up and the lamp settles to its resting glow (round 4: "lamp brightens, reels turn"). Quiet
+    and short: 36 frames. The key presses in 0.12 s (smoothstep) and lets go from 0.8 s on a gentle
+    spring(220, 22) with a hair of overshoot; the lamp follows the key; the reels turn while it is
+    down, the started (smaller) one a full turn and the full one two thirds of one, as a take-up
+    reel outruns its supply. Both angles are whole multiples of the hubs' 120 degree teeth, so the
+    last frame is the rest pose exactly."""
+    n = 36
+    key, led = part("key_rec"), part("led")
+    reels = [(part("reel_left"), 240.0), (part("reel_right"), 360.0)]
+    klo, khi = C.world_bbox([key])
+    travel = (khi.z - klo.z) * RECORDER_PRESS
+    up = spring_track(n, 220, 22, [(0.0, {"x": 0.0, "to": 0.0}), (0.8, {"to": 1.0})])
+    p_led = led.data.materials[0].node_tree.nodes["Principled BSDF"]
+    base = float(root.get("led_rest", p_led.inputs["Emission Strength"].default_value))
+    # the axle: the body's depth axis (local -Y, toward the viewer) as the root has turned it
+    axle = (REST[reels[0][0].name].to_3x3() @ Vector((0, -1, 0))).normalized()
+
+    def state(k):
+        t = k / FPS
+        w = taper(n, k, 4)
+        down = smooth(t / 0.12) * (1 - up[k]) if t < 0.8 else (1 - up[k])
+        down *= w
+        lamp = smooth(t / 0.12) * (1 - smooth((t - 0.8) / 0.25))
+        turn = smooth((t - 0.1) / 0.85)   # 0 -> 1 between 0.1 s and 0.95 s, at rest at both ends
+
+        def g():
+            place(key, off=Vector((0, 0, -travel * down)))
+            p_led.inputs["Emission Strength"].default_value = base * (1 + (RECORDER_ON_AIR - 1) * lamp)
+            for o, deg in reels:
+                # positive about the axle toward the viewer: counter-clockwise as seen, so the tape
+                # along the bottom runs left to right
+                place(o, rot=Quaternion(axle, math.radians(deg) * turn))
+            bpy.context.view_layer.update()
+        return g
+    return n, [state(k) for k in range(n)]
+
+
 CLIPS = {"edk": clip_edk, "recto": clip_recto, "englishprep": clip_englishprep,
-         "eatmap": clip_eatmap, "log": clip_log, "record": clip_record}
+         "eatmap": clip_eatmap, "log": clip_log, "record": clip_record,
+         "recorder": clip_recorder}
 
 # ---------------------------------------------------------------- stages
 REST0 = {k: v.copy() for k, v in REST.items()}
@@ -735,6 +780,15 @@ elif STAGE == "grid":
     states = [(lambda y=y, p=p: pose(y, p)) for p in pitches for y in yaws]
     ends = [(lambda y=y, p=p: pose(y, p)) for p in (pitches[0], 0.0, pitches[-1])
             for y in (yaws[0], 0.0, yaws[-1])]
+    # a grid of another density (say --nyaw 33, 1 degree steps) must not resume into this one's
+    # frames: f_### are row-major indices, so they would land on the wrong poses
+    cp = os.path.join(OUT, "crop.json")
+    if os.path.exists(cp):
+        had = json.load(open(cp))
+        if "yaw" in had and ([round(y, 4) for y in had["yaw"]] != [round(y, 4) for y in yaws]
+                             or [round(p, 4) for p in had["pitch"]] != [round(p, 4) for p in pitches]):
+            raise SystemExit(f"{A.obj} grid: {OUT} holds a {len(had['yaw'])} x {len(had['pitch'])} grid, "
+                             f"not {len(yaws)} x {len(pitches)}; move it aside or use another --masters")
     crop = stage_crop(ends, "grid")
     run_frames(states, crop, {**info, "yaw": yaws, "pitch": pitches,
                               "order": "row-major: rows are pitch (first = lowest), columns yaw"})
