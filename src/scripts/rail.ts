@@ -1,44 +1,93 @@
-/* The contents ladder (brief §7, 2026-10-09 late: concept B; ADR-0011; research
-   docs/research/2026-10-scroll-rail.md §4 B). One dash per section at the right edge, where the native
-   scrollbar was. The current dash fills as you read through its section; the dashes behind you stay lit
-   in their own section's colour, the ones ahead are quiet, and each dash's length is its section's share
-   of the page, so the ladder still says how much is left (the weakness §4 B names). Hover opens the
-   titles; a click goes there; a drag along the dashes scrubs section by section.
+/* The rail: one custom scrollbar on every page and in the project sheet (owner, 2026-10-10: "one fixed,
+   consistent custom scrollbar on every page and in every window"; ADR-0013, which revises ADR-0011).
+   A scroller with sections gets the contents ladder (brief §7, 2026-10-09 late: concept B; research
+   docs/research/2026-10-scroll-rail.md §4 B): one dash per section at the right edge, the current dash
+   filling as you read through its section, the dashes behind you lit in their own section's colour, the
+   ones ahead quiet, each dash's length its section's share of the page. Hover opens the titles; a click
+   goes there; a drag along the dashes scrubs section by section. A scroller without sections, or whose
+   ladder would not fit, gets the plain variant: the same column with a track and a thumb and no rungs
+   (ADR-0013 item 2); a drag on it scrubs the page in proportion, a press on the track goes there.
 
-   Scrolling is never taken over: the rail reads scrollY and writes it only while dragged. The page opts
-   in at build time (<html data-rail>, layouts/Base.astro) and the head script hides the native bar
-   before first paint only without forced colours (html.rail-on for a fine pointer, html.rail-touch
-   otherwise); without JavaScript and in forced colours the platform's own scrollbar stays.
-   Touch (phones and tablets, brief §7 2026-10-10 "bring the ladder to phones too"; ADR-0011 item 12):
-   html.rail-touch. Native scrolling stays; the platform's indicator is hidden so it never draws over the
-   ladder (iOS honours scrollbar-width on the root). The ladder is a slim column of short dashes inside
-   the right gutter, drawn by one 44 px button. A tap opens the titles as a small sheet beside it (44 px
-   rows); a title goes there and closes it, as do a tap outside, Escape and the button again. No hover
-   and no drag on touch. Sections are data in the markup: [data-rail-sec] (the label, or the element's
-   text) and the h2s with ids inside [data-rail-heads]; [data-rail-accent] gives the colour. A
-   page with fewer than two sections or under a quarter screen of overflow gets no rail, and the native
-   bar comes back. */
+   Scrolling is never taken over: the rail reads the scroll position and writes it only while dragged. The
+   head script hides the native bar on every page before first paint (html.rail-on for a fine pointer,
+   html.rail-touch otherwise, never in forced colours; layouts/Base.astro), so the page never shifts
+   sideways between pages; without JavaScript and in forced colours the platform's own scrollbar stays.
+   Touch (ADR-0011 item 12): the ladder is a slim column of short dashes inside the right gutter, drawn
+   by one 44 px button; a tap opens the titles as a small sheet beside it. The plain variant on touch is
+   only drawn (no drag on touch). Sections are data in the markup: [data-rail-sec] (the label, or the
+   element's text) and the h2s with ids inside [data-rail-heads]; [data-rail-accent] gives the colour.
+   The project sheet has its own rail bound to its scroller (scripts/sheet.ts), its sections the rungs. */
 import { root, reduce, mq } from './env';
 
-const READ = 0.3;          // the reading line: a section is current once its top passes 30% of the window
+const READ = 0.3;          // the reading line: a section is current once its top passes 30% of the view
 const ROW = 28;            // one dash per 28 px row; each row is a link at least 24 px tall (WCAG 2.5.8)
 const TMARK = 10;          // touch: one 2 px dash and its 8 px gap per section in the closed ladder
 const DRAG = 4;            // pointer travel before a press becomes a scrub
+const MIN_THUMB = 24;      // the plain variant's shortest thumb
 const GROUND: RGB = [10, 10, 11];
 const PAST = 4.5;          // contrast the lit dashes behind you keep against the ground (≥ 3:1, 1.4.11)
 type RGB = [number, number, number];
+type Mode = 'rungs' | 'plain' | 'none';
 
 interface Sec { el: HTMLElement; label: string; a: string; ar: string; top: number; start: number; end: number; w: number }
 
-export function initRail() {
-  if (!root.hasAttribute('data-rail')) return;
-  const nodes = [...document.querySelectorAll<HTMLElement>('[data-rail-sec], [data-rail-heads] h2[id]')];
-  const main = document.getElementById('main');
-  if (nodes.length < 2 || !main) { off(); return; }
+export interface RailOpts {
+  /** the element that scrolls; omitted for the page itself */
+  scroller?: HTMLElement;
+  /** where the rail is placed: the nav goes into `host`, before `before` */
+  host: Element;
+  before?: Element | null;
+  sections: HTMLElement[];
+  /** element observed for size changes (the page's main, the sheet's article) */
+  content: Element;
+  /** element that carries .rail-flat while a scroller with sections shows the plain variant (its own
+      contents list comes back then: ADR-0011 item 3) */
+  flat: Element;
+  /** prefix for the ids the rail creates */
+  id: string;
+  /** distance to keep above a section the rail goes to (the bars over the scroller) */
+  offset: () => number;
+  minutes?: number;
+  extraClass?: string;
+}
+export interface Rail { measure(): void; destroy(): void; mode(): Mode }
 
+/** The page's rail (every page). The project sheet makes its own with createRail (scripts/sheet.ts). */
+export function initRail() {
+  const main = document.getElementById('main');
+  if (!main) return;
+  const sections = [...main.querySelectorAll<HTMLElement>('[data-rail-sec], [data-rail-heads] h2[id]')];
+  const minutes = +(main.querySelector<HTMLElement>('[data-rail-minutes]')?.dataset.railMinutes ?? 0);
+  const rail = createRail({
+    host: main.parentElement!, before: main, sections, content: main, flat: root, id: 'rail', minutes,
+    offset: () => (parseFloat(getComputedStyle(root).getPropertyValue('--bar-h')) || 84) + 24,
+  });
+  /* the pointer or forced colours changed: the classes the head script set follow (the sheet's rail reads them too) */
+  const recheck = () => {
+    if (qualifies()) { root.classList.toggle('rail-on', !touch()); root.classList.toggle('rail-touch', touch()); } else off();
+    rail.measure();
+  };
+  mq.fine.addEventListener?.('change', recheck);
+  forced.addEventListener?.('change', recheck);
+}
+
+export function createRail(o: RailOpts): Rail {
+  const ac = new AbortController();
+  const sig = { signal: ac.signal };
+  const passive = { passive: true, signal: ac.signal };
+  const el = o.scroller;
+  const target: EventTarget = el ?? window;
+  const getY = () => (el ? el.scrollTop : scrollY);
+  const setY = (top: number, behavior: ScrollBehavior) => (el ?? window).scrollTo({ top, behavior });
+  const viewH = () => (el ? el.clientHeight : innerHeight);
+  const fullH = () => (el ? el.scrollHeight : document.documentElement.scrollHeight);
+  const originY = () => (el ? el.getBoundingClientRect().top - el.scrollTop : -scrollY);
+
+  /* ---------- the ladder (rungs) ---------- */
   const nav = document.createElement('nav');
-  nav.className = 'rail';
-  nav.id = 'rail';
+  nav.className = 'rail' + (o.extraClass ? ' ' + o.extraClass : '');
+  nav.id = o.id;
+  nav.hidden = true;
   nav.setAttribute('aria-label', 'On this page');
   const list = document.createElement('ol');
   list.className = 'rail-list';
@@ -50,21 +99,34 @@ export function initRail() {
   btn.type = 'button';
   btn.className = 'rail-btn';
   btn.setAttribute('aria-expanded', 'false');
-  btn.setAttribute('aria-controls', 'rail-sheet');
+  btn.setAttribute('aria-controls', o.id + '-sheet');
   const sheet = document.createElement('div');
   sheet.className = 'rail-sheet';
-  sheet.id = 'rail-sheet';
+  sheet.id = o.id + '-sheet';
   sheet.append(list, foot);
   nav.append(sheet, btn);
-  main.before(nav);
+
+  /* ---------- the plain variant: a track and a thumb, no rungs (ADR-0013 item 2). It is what the native
+     scrollbar was, so like it it stays out of the tab order and the accessibility tree: the keyboard
+     scrolls the page itself. ---------- */
+  const plain = document.createElement('div');
+  plain.className = 'rail-plain' + (o.extraClass ? ' ' + o.extraClass : '');
+  plain.hidden = true;
+  plain.setAttribute('aria-hidden', 'true');
+  const track = document.createElement('div');
+  track.className = 'rail-track';
+  const thumb = document.createElement('i');
+  thumb.className = 'rail-thumb';
+  track.append(thumb);
+  plain.append(track);
+  o.host.insertBefore(plain, o.before ?? null);
 
   const pageAccent = getComputedStyle(root).getPropertyValue('--accent').trim() || '#ddd6cb';
-  const minutes = +(document.querySelector<HTMLElement>('[data-rail-minutes]')?.dataset.railMinutes ?? 0);
-  const secs: Sec[] = nodes.map((el, i) => {
-    if (!el.id) el.id = 'rail-s-' + i;
-    const accent = el.closest<HTMLElement>('[data-rail-accent]')?.dataset.railAccent || pageAccent;
-    const rgb = resolve(accent, nav);
-    return { el, label: (el.dataset.railSec || el.textContent || '').trim(), a: css(rgb), ar: css(rest(rgb)), top: 0, start: 0, end: 0, w: 12 };
+  const secs: Sec[] = o.sections.map((s, i) => {
+    if (!s.id) s.id = o.id + '-s-' + i;
+    const accent = s.closest<HTMLElement>('[data-rail-accent]')?.dataset.railAccent || pageAccent;
+    const rgb = resolve(accent, o.host);
+    return { el: s, label: (s.dataset.railSec || s.textContent || '').trim(), a: css(rgb), ar: css(rest(rgb)), top: 0, start: 0, end: 0, w: 12 };
   });
   const links = secs.map((s, i) => {
     const li = document.createElement('li');
@@ -92,47 +154,68 @@ export function initRail() {
     return a;
   });
   const marks = [...btn.querySelectorAll<HTMLElement>('.rail-m')];
+  /* the ladder is only built where there are rungs to draw */
+  if (secs.length >= 2) o.host.insertBefore(nav, plain);
 
-  let vh = 0, max = 0, cur = -1, raf = 0, shown = false;
+  let vh = 0, max = 0, cur = -1, raf = 0, mode: Mode = 'none', trackH = 0, thumbH = 0;
 
   function measure() {
-    vh = innerHeight;
-    const sh = document.documentElement.scrollHeight;
+    if (!qualifies() || !(root.classList.contains('rail-on') || root.classList.contains('rail-touch'))) { setMode('none'); return; }
+    vh = viewH();
+    const sh = fullH();
     max = Math.max(0, sh - vh);
-    /* touch: the closed ladder is what has to fit (the open sheet scrolls itself). Once iOS has hidden its
-       indicator for this tab it does not bring it back (WebKit turns it off and never on again), so the
-       ladder must not go away just because a phone was turned on its side. */
-    const fits = max > vh * 0.25 && (touch() ? secs.length * TMARK + 28 : secs.length * ROW) + 160 < vh;
-    if (!fits || !qualifies()) { hide(); return; }
-    show();
-    const y = scrollY;
-    secs.forEach((s) => { s.top = s.el.getBoundingClientRect().top + y; });
-    /* where each section starts in scroll space: when its top reaches the reading line. Sections the page
-       cannot scroll that far share out the last stretch, so the last one still becomes current. */
-    let last = 0;
-    secs.forEach((s, i) => { s.start = i === 0 ? 0 : Math.max(last, s.top - READ * vh); if (s.start < max) last = s.start; });
-    const late = secs.filter((s, i) => i > 0 && s.start >= max);
-    if (late.length) {
-      const from = secs[secs.length - late.length - 1].start;
-      late.forEach((s, j) => { s.start = from + (max - from) * (j + 1) / (late.length + 1); });
+    if (!vh) { setMode('none'); return; }       // not laid out (a closed dialog)
+    /* touch: the closed ladder is what has to fit (the open sheet scrolls itself) */
+    const fits = secs.length >= 2 && max > vh * 0.25 && (touch() ? secs.length * TMARK + 28 : secs.length * ROW) + 160 < vh;
+    setMode(fits ? 'rungs' : max > 8 ? 'plain' : 'none');
+    if (mode === 'plain') {
+      trackH = track.clientHeight;
+      thumbH = Math.max(MIN_THUMB, Math.round(trackH * vh / sh));
+      thumb.style.height = thumbH + 'px';
     }
-    secs.forEach((s, i) => { s.end = i + 1 < secs.length ? secs[i + 1].start : max; });
-    /* a dash's length is its section's share of the page: the ladder keeps "how much there is" */
-    const len = secs.map((s, i) => (i + 1 < secs.length ? secs[i + 1].top : sh) - s.top);
-    const most = Math.max(1, ...len);
-    secs.forEach((s, i) => {
-      s.w = Math.round(8 + 12 * Math.max(0, len[i]) / most);
-      links[i].style.setProperty('--w', s.w + 'px');
-      marks[i].style.setProperty('--w', Math.round(s.w / 2) + 'px');   // touch: 4–10 px, inside the gutter
-    });
+    if (mode === 'rungs') {
+      const y0 = originY();
+      secs.forEach((s) => { s.top = s.el.getBoundingClientRect().top - y0; });
+      /* where each section starts in scroll space: when its top reaches the reading line. Sections the page
+         cannot scroll that far share out the last stretch, so the last one still becomes current. */
+      let last = 0;
+      secs.forEach((s, i) => { s.start = i === 0 ? 0 : Math.max(last, s.top - READ * vh); if (s.start < max) last = s.start; });
+      const late = secs.filter((s, i) => i > 0 && s.start >= max);
+      if (late.length) {
+        const from = secs[secs.length - late.length - 1].start;
+        late.forEach((s, j) => { s.start = from + (max - from) * (j + 1) / (late.length + 1); });
+      }
+      secs.forEach((s, i) => { s.end = i + 1 < secs.length ? secs[i + 1].start : max; });
+      /* a dash's length is its section's share of the page: the ladder keeps "how much there is" */
+      const len = secs.map((s, i) => (i + 1 < secs.length ? secs[i + 1].top : sh) - s.top);
+      const most = Math.max(1, ...len);
+      secs.forEach((s, i) => {
+        s.w = Math.round(8 + 12 * Math.max(0, len[i]) / most);
+        links[i].style.setProperty('--w', s.w + 'px');
+        marks[i].style.setProperty('--w', Math.round(s.w / 2) + 'px');   // touch: 4–10 px, inside the gutter
+      });
+    }
     cur = -1;
     update();
   }
 
+  function setMode(m: Mode) {
+    if (m !== 'rungs') setOpen(false);
+    mode = m;
+    nav.hidden = m !== 'rungs';
+    plain.hidden = m !== 'plain';
+    /* a scroller with sections showing the plain variant gets its own contents list back */
+    o.flat.classList.toggle('rail-flat', secs.length >= 2 && m !== 'rungs');
+  }
+
   function update() {
     raf = 0;
-    if (!shown) return;
-    const y = Math.min(max, Math.max(0, scrollY));
+    const y = Math.min(max, Math.max(0, getY()));
+    if (mode === 'plain') {
+      thumb.style.transform = `translateY(${max ? Math.round((trackH - thumbH) * y / max) : 0}px)`;
+      return;
+    }
+    if (mode !== 'rungs') return;
     let i = 0;
     secs.forEach((s, j) => { if (s.start <= y + 0.5) i = j; });
     if (y >= max - 1) i = secs.length - 1;
@@ -152,32 +235,23 @@ export function initRail() {
     links[i].style.setProperty('--f', f.toFixed(3));
     marks[i].style.setProperty('--f', f.toFixed(3));
     const p = max ? y / max : 1;
-    foot.textContent = minutes
-      ? (p >= 0.99 ? 'At the end' : `About ${Math.max(1, Math.ceil(minutes * (1 - p)))} min left`)
+    foot.textContent = o.minutes
+      ? (p >= 0.99 ? 'At the end' : `About ${Math.max(1, Math.ceil(o.minutes * (1 - p)))} min left`)
       : `${Math.round(p * 100)}% down the page`;
   }
   const schedule = () => { if (!raf) raf = requestAnimationFrame(update); };
 
-  function show() {
-    root.classList.toggle('rail-on', !touch());
-    root.classList.toggle('rail-touch', touch());
-    if (shown) return;
-    shown = true; nav.hidden = false;
-  }
-  function hide() { shown = false; nav.hidden = true; setOpen(false); off(); }
-
   /* going to a section: smooth, or instant under reduced motion; a keyboard press also moves focus there */
   function go(i: number, keyboard: boolean) {
-    const el = secs[i].el;
-    const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
-    const top = i === 0 ? 0 : Math.max(0, el.getBoundingClientRect().top + scrollY - Math.max(margin, barOffset()));
-    scrollTo({ top, behavior: reduce() ? 'instant' : 'smooth' });
+    const s = secs[i].el;
+    const margin = parseFloat(getComputedStyle(s).scrollMarginTop) || 0;
+    const top = i === 0 ? 0 : Math.max(0, s.getBoundingClientRect().top - originY() - Math.max(margin, o.offset()));
+    setY(top, reduce() ? 'instant' : 'smooth');
     if (keyboard) {
-      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
-      el.focus({ preventScroll: true });
+      if (!s.hasAttribute('tabindex')) s.setAttribute('tabindex', '-1');
+      s.focus({ preventScroll: true });
     }
   }
-  function barOffset() { return (parseFloat(getComputedStyle(root).getPropertyValue('--bar-h')) || 84) + 24; }
 
   /* the pointer's place on the ladder, mapped between section starts: a drag scrubs section by section */
   function ladder(clientY: number) {
@@ -202,31 +276,53 @@ export function initRail() {
     closeT = window.setTimeout(() => setOpen(false), 280);
   });
 
-  /* ---------- drag ---------- */
-  let drag: { id: number; y0: number; s0: number; on: boolean } | null = null;
+  /* ---------- drag: the ladder scrubs section by section, the plain track in proportion ---------- */
+  let drag: { id: number; y0: number; s0: number; on: boolean; plain: boolean; grab: number } | null = null;
   let swallow = false;
   nav.addEventListener('pointerdown', (e) => {
     if (e.button !== 0 || e.pointerType === 'touch') return;
-    drag = { id: e.pointerId, y0: e.clientY, s0: scrollY, on: false };
+    drag = { id: e.pointerId, y0: e.clientY, s0: getY(), on: false, plain: false, grab: 0 };
   });
-  nav.addEventListener('pointermove', (e) => {
+  /* the plain track: a press on the thumb holds it where it was taken; a press on the track goes there
+     (smooth, or instant under reduced motion) and a drag from there follows the pointer */
+  const fromTrack = (clientY: number, grab: number) => {
+    const r = track.getBoundingClientRect();
+    const room = Math.max(1, trackH - thumbH);
+    return Math.min(max, Math.max(0, (clientY - r.top - grab) / room * max));
+  };
+  plain.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0 || e.pointerType === 'touch' || mode !== 'plain') return;
+    e.preventDefault();
+    const t = thumb.getBoundingClientRect();
+    const onThumb = e.clientY >= t.top && e.clientY <= t.bottom;
+    drag = { id: e.pointerId, y0: e.clientY, s0: getY(), on: false, plain: true, grab: onThumb ? e.clientY - t.top : thumbH / 2 };
+    plain.setPointerCapture(e.pointerId);
+    plain.classList.add('is-drag');
+    if (!onThumb) setY(fromTrack(e.clientY, drag.grab), reduce() ? 'instant' : 'smooth');
+  });
+  const move = (e: PointerEvent) => {
     if (!drag || e.pointerId !== drag.id) return;
     if (!drag.on) {
       if (Math.abs(e.clientY - drag.y0) < DRAG) return;
       drag.on = true;
-      nav.setPointerCapture(e.pointerId);
-      nav.classList.add('is-drag');
-      setOpen(true);
+      if (!drag.plain) {
+        nav.setPointerCapture(e.pointerId);
+        nav.classList.add('is-drag');
+        setOpen(true);
+      }
       root.classList.add('rail-grab');
       getSelection()?.removeAllRanges();
     }
     e.preventDefault();
-    scrollTo({ top: ladder(e.clientY), behavior: 'instant' });
-  });
+    setY(drag.plain ? fromTrack(e.clientY, drag.grab) : ladder(e.clientY), 'instant');
+  };
+  nav.addEventListener('pointermove', move);
+  plain.addEventListener('pointermove', move);
   const end = (e?: Event) => {
     if (!drag) return;
     const was = drag.on;
     drag = null;
+    plain.classList.remove('is-drag');
     if (!was) return;
     swallow = true;
     setTimeout(() => { swallow = false; }, 0);
@@ -234,12 +330,10 @@ export function initRail() {
     root.classList.remove('rail-grab');
     if (e && e.type === 'pointerup' && !nav.matches(':hover')) setOpen(false);
   };
-  nav.addEventListener('pointerup', end);
-  nav.addEventListener('pointercancel', end);
-  nav.addEventListener('lostpointercapture', end);
+  for (const t of [nav, plain]) for (const ev of ['pointerup', 'pointercancel', 'lostpointercapture']) t.addEventListener(ev, end);
   addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && drag?.on) { scrollTo({ top: drag.s0, behavior: 'instant' }); end(); }
-  });
+    if (e.key === 'Escape' && drag) { const s0 = drag.s0; end(); setY(s0, 'instant'); }
+  }, sig);
   nav.addEventListener('dragstart', (e) => e.preventDefault());
 
   /* ---------- click, Enter and the arrow keys ---------- */
@@ -259,10 +353,10 @@ export function initRail() {
   });
   document.addEventListener('pointerdown', (e) => {
     if (nav.classList.contains('is-open') && touch() && !nav.contains(e.target as Node)) setOpen(false);
-  }, { passive: true });
+  }, passive);
   addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && touch() && nav.classList.contains('is-open')) { setOpen(false); btn.focus(); }
-  });
+  }, sig);
   nav.addEventListener('keydown', (e) => {
     const i = links.indexOf(document.activeElement as HTMLAnchorElement);
     if (i < 0) return;
@@ -272,15 +366,37 @@ export function initRail() {
     links[Math.max(0, Math.min(links.length - 1, to))].focus();
   });
 
-  addEventListener('scroll', schedule, { passive: true });
-  addEventListener('resize', measure, { passive: true });
-  addEventListener('load', measure);
-  document.fonts?.ready.then(measure);
-  if ('ResizeObserver' in window) new ResizeObserver(() => measure()).observe(main);
-  const recheck = () => { setOpen(false); if (qualifies()) measure(); else hide(); };
-  mq.fine.addEventListener?.('change', recheck);
-  forced.addEventListener?.('change', recheck);
+  /* a rail inside the sheet sits beside its scroller, not in it: the wheel over the rail goes to the
+     scroller, as it would over a native bar (the page's rail needs nothing: the page is the scroller) */
+  if (el) for (const t of [nav, plain]) t.addEventListener('wheel', (e) => {
+    if (e.ctrlKey) return;
+    e.preventDefault();
+    const k = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? vh : 1;
+    el.scrollBy({ top: e.deltaY * k, behavior: 'instant' });
+  }, { passive: false, signal: ac.signal });
+
+  target.addEventListener('scroll', schedule, passive);
+  addEventListener('resize', measure, passive);
+  addEventListener('load', measure, sig);
+  document.fonts?.ready.then(() => { if (!ac.signal.aborted) measure(); });
+  const ro = 'ResizeObserver' in window ? new ResizeObserver(() => measure()) : null;
+  ro?.observe(o.content);
+  if (el) ro?.observe(el);
   measure();
+
+  return {
+    measure,
+    mode: () => mode,
+    destroy() {
+      ac.abort();
+      ro?.disconnect();
+      cancelAnimationFrame(raf);
+      clearTimeout(openT); clearTimeout(closeT);
+      if (drag) root.classList.remove('rail-grab');
+      o.flat.classList.remove('rail-flat');
+      nav.remove(); plain.remove();
+    },
+  };
 }
 
 const forced = matchMedia('(forced-colors: active)');

@@ -1,15 +1,24 @@
-/* The contents ladder (ADR-0011, scripts/rail.ts): one dash per section at the right edge. The native
-   scrollbar goes only where the rail really is: html.rail-on is set before first paint by the head
-   script (layouts/Base.astro) and only for a fine pointer without forced colours; the media query below
-   repeats both conditions, so forced colours bring the platform's bar back even if the class stays.
-   Without JavaScript nothing here applies. Touch (html.rail-touch, ADR-0011 item 12) draws its own slim
-   ladder, at the end of this file, and hides the platform's indicator the same way. */
+/* The rail (ADR-0013, revising ADR-0011; scripts/rail.ts): one custom scrollbar on every page and in the
+   project sheet. Where a scroller has sections it is the contents ladder, one dash per section at the right
+   edge; elsewhere the plain variant, a track and a thumb in the same column. html.rail-on (fine pointer) or
+   html.rail-touch (any other pointer, item 12) is set on every page before first paint by the head script
+   (layouts/Base.astro), never in forced colours; the media queries below repeat that condition, so forced
+   colours bring the platform's bar back even if a class stayed. Without JavaScript nothing here applies and
+   the native bar stays. Because the native bar is hidden on every page, every page has the same width:
+   the bar never jumps sideways between pages (site audit B6). */
 @media (hover: hover) and (pointer: fine) and (forced-colors: none) {
-  html.rail-on { scrollbar-width: none; }
-  html.rail-on::-webkit-scrollbar { display: none; }
-  /* one source of truth on essays: where the rail is on, it is the contents list (the back link stays) */
-  html.rail-on .post-toc ol, html.rail-on .post-toc > .meta { display: none; }
-  html.rail-on .rail { display: block; }
+  html.rail-on, html.rail-on .sheet-scroll { scrollbar-width: none; }
+  html.rail-on::-webkit-scrollbar, html.rail-on .sheet-scroll::-webkit-scrollbar { display: none; }
+  /* one source of truth: where the ladder is drawn it is the contents list (ADR-0011 item 3, ADR-0013 item 3);
+     a scroller that has sections but shows the plain variant (.rail-flat) keeps its own list */
+  html.rail-on:not(.rail-flat) .post-toc ol, html.rail-on:not(.rail-flat) .post-toc > .meta { display: none; }
+  html.rail-on .rail, html.rail-on .rail-plain { display: block; }
+}
+@media (forced-colors: none) {
+  html:is(.rail-on, .rail-touch):not(.rail-flat) #main .case .toc,
+  html:is(.rail-on, .rail-touch) dialog .sheet:not(.rail-flat) .toc { display: none; }
+  html:is(.rail-on, .rail-touch):not(.rail-flat) #main .case .case-body,
+  html:is(.rail-on, .rail-touch) dialog .sheet:not(.rail-flat) .case-body { grid-template-columns: minmax(0, 1fr); }
 }
 
 :root {
@@ -25,9 +34,13 @@
   clip-path: inset(0 0 0 calc(100% - 44px) round 14px 0 0 14px);
   transition: clip-path var(--d-3) var(--ease-out);
 }
-.rail[hidden] { display: none !important; }
+.rail[hidden], .rail-plain[hidden] { display: none !important; }
 .rail-btn { display: none; }
-html.sheet-open .rail { visibility: hidden; }
+/* the page's rail steps back while the sheet is open; the sheet has its own (ADR-0013 item 3) */
+html.sheet-open :is(.rail, .rail-plain):not(.in-sheet) { visibility: hidden; }
+/* inside the sheet the rail sits at the sheet's right edge, beside its scroller (scripts/sheet.ts); only the
+   page's rail carries the view-transition name, so the sheet's same-document transition never sees two */
+.sheet > .rail.in-sheet, .sheet > .rail-plain.in-sheet { position: absolute; view-transition-name: none; }
 .rail.is-open, .rail:focus-within { clip-path: inset(0 0 0 0 round 14px 0 0 14px); }
 
 /* the panel behind the titles */
@@ -86,6 +99,37 @@ html.sheet-open .rail { visibility: hidden; }
   .rail-d i { transition: background-color var(--d-1); }
 }
 
+/* ---------- the plain variant (ADR-0013 item 2): the ladder's column without rungs ----------
+   A page or sheet without sections (Home, the Record, a year, a note, 404, the lab) gets a track and a
+   thumb in the same place as the ladder: mid-height on the right edge, the line where the dashes end. The
+   track is quiet; the thumb is the page's accent (every accent is at least 5.5:1 on the ground, 1.4.11)
+   and as long as the share of the page in view. The column takes the pointer 44 px wide; on hover and
+   while dragged the thumb thickens (reduced motion: it only brightens). Touch draws it and leaves the
+   pointer alone (no drag on touch, ADR-0011 item 12). */
+.rail-plain {
+  display: none;
+  position: fixed; z-index: 21; right: 0; top: 50%; translate: 0 -50%;
+  width: 44px; height: min(44vh, 320px); padding: 0;
+  view-transition-name: rail;
+  cursor: default; touch-action: none; user-select: none;
+}
+.rail-track { position: absolute; top: 0; bottom: 0; right: 12px; width: 2px; border-radius: 1px;
+  background: color-mix(in srgb, var(--rail-idle) 45%, transparent);
+  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.4); }
+.rail-thumb {
+  position: absolute; top: 0; right: 0; width: 2px; height: 24px; border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
+  transition: width var(--d-2) var(--ease-out), right var(--d-2) var(--ease-out), filter var(--d-2);
+  will-change: transform;
+}
+.rail-plain:hover .rail-thumb, .rail-plain.is-drag .rail-thumb { width: 4px; right: -1px; filter: brightness(1.12); }
+.rail-plain.is-drag { cursor: grabbing; }
+@media (prefers-reduced-motion: reduce) {
+  .rail-thumb { transition: filter var(--d-1); }
+  .rail-plain:hover .rail-thumb, .rail-plain.is-drag .rail-thumb { width: 2px; right: 0; }
+}
+
 /* ---------- touch: phones and tablets (ADR-0011 item 12) ----------
    Native scrolling stays; the platform's indicator goes, so it never draws over the ladder. iOS Safari reads
    only scrollbar-width on the root element for the page's own scroller (WebKit, iOS 18.2 and later: it turns
@@ -96,8 +140,12 @@ html.sheet-open .rail { visibility: hidden; }
    titles show as a small sheet beside it, one 44 px row each. Safe areas: it keeps clear of the notch side
    in landscape. Forced colours: nothing here (the class is never set). */
 @media (forced-colors: none) {
-  html.rail-touch { scrollbar-width: none; }
-  html.rail-touch::-webkit-scrollbar { display: none; }
+  html.rail-touch, html.rail-touch .sheet-scroll { scrollbar-width: none; }
+  html.rail-touch::-webkit-scrollbar, html.rail-touch .sheet-scroll::-webkit-scrollbar { display: none; }
+  /* the plain variant on touch: drawn inside the gutter, the pointer left to the page */
+  html.rail-touch .rail-plain { display: block; right: env(safe-area-inset-right, 0px); pointer-events: none; }
+  html.rail-touch .rail-track { right: 4px; }
+  html.rail-touch .sheet > .rail.in-sheet, html.rail-touch .sheet > .rail-plain.in-sheet { right: 0; }
   html.rail-touch .rail {
     display: flex; align-items: center;
     right: env(safe-area-inset-right, 0px);

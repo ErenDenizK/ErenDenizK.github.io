@@ -12,6 +12,12 @@ project sheet; some pages still show the native bar (brief, "Look, motion and ob
 contradicts this ADR's no-rail cases (pages without sections, short pages, the sheet, year pages).
 A revision follows (`docs/PLAN.md` track 3); until it lands, this ADR describes what is built.
 
+**Amendment 2026-10-10 (later):** revised by [ADR-0013](0013-one-rail-everywhere.md): the rail is on every
+page and in the project sheet (the ladder where there are sections, a plain track and thumb elsewhere),
+project pages and the sheet get the ladder in place of their `.toc`, and the native bar stays only for
+forced colours and no JavaScript. Items 3 (the project-page exception), 5, 7 and 11 and "Not done, on
+purpose" are superseded; the rest stands.
+
 ## Decision
 
 1. **What it is.** One dash per section, stacked 28 px apart at mid-height on the right edge. The
