@@ -11,7 +11,7 @@ libsvtav1, libx265 and libx264 (Ubuntu's ffmpeg 6.1 has all three).
    codec; the page draws the media with mix-blend-mode: plus-lighter and adds its own ground
    back. Pixels the render had darker than the ground (the contact shadow) become 0.
 2. Stills: the lean grid in two tiers (full = the rendered crop, half = half of it, at a lower quality) and the
-   poster at 600 and 1200, each in the still format chosen by the black test (report.json).
+   poster at 600, 1200 and each desktop slot's exact device width (poster_widths), each in the still format chosen by the black test (report.json).
 3. Video: the interaction clip, the droplet clip forward and reversed (the arriving object plays
    it backward; browsers cannot play video in reverse) and an idle loop synthesised from the
    grid, each as AV1 10-bit, HEVC Main 10 (hvc1) and H.264 High, BT.709 matrix and primaries,
@@ -67,6 +67,8 @@ ap.add_argument("--normal-q", type=int, default=45, help="AVIF quality of the no
 ap.add_argument("--spin-only", action="store_true",
                 help="only the spin loop (frames.py stage `spin`), merged into the existing manifest")
 ap.add_argument("--spin-crf", help="av1,hevc,h264 CRFs for the spin loop (default from SPIN_CRF and OBJECT)")
+ap.add_argument("--poster-only", action="store_true",
+                help="only the posters (every width in poster_widths), merged into the existing manifest")
 ap.add_argument("--retag", action="store_true",
                 help="only rewrite the colour tags of the existing videos (no re-encode) and their bytes in the manifest")
 A = ap.parse_args()
@@ -526,6 +528,55 @@ if A.retag:
     raise SystemExit(0)
 
 
+# Poster widths: 600 and 1200 for any screen, plus the exact device width of each desktop slot the
+# object fills at DPR 1, 1.25, 1.5 and 2 (the page snaps the stage to whole device pixels, media.ts
+# fit(): 470 px at DPR 1.25 is 472 x 1.25 = 590). A poster the page has to reduce by any ratio comes out
+# softer than one drawn 1:1: Chrome's reduction kept 0.61 (600 -> 470) to 0.41 (600 -> 590) of a Lanczos
+# reduction (ADR-0006 amendment of 2026-10-10, evening). Slots: Home 470 (edk); Home showcase 400, Work
+# 640 at 1440 wide, a case sheet 420 (the projects); Record 320. 1280 (Work at DPR 2) would need a larger
+# master than the 1200 render, so the 1200 poster is enlarged there.
+SLOTS = {"edk": (470,), "recto": (400, 420, 640), "englishprep": (400, 420, 640), "eatmap": (400, 420, 640), "record": (320,)}
+GRID_CSS = {1: 1, 1.25: 4, 1.5: 2, 2: 0.5}   # the CSS step that is whole device pixels (media.ts grid())
+
+
+def poster_widths(obj, res):
+    ws = {600, 1200}
+    for slot in SLOTS.get(obj, ()):
+        for dpr, g in GRID_CSS.items():
+            w = round(round(slot / g) * g * dpr)
+            if w <= res:
+                ws.add(w)
+    return sorted(ws)
+
+
+def encode_poster():
+    pfiles, pcrop = frames_of("poster")
+    parr = pad(subtracted(pfiles[0]), pcrop, pcrop["res"])
+    assert_lit([parr], "poster")
+    report["poster_edge_max_levels"] = round(edge_max(subtracted(pfiles[0])), 2)
+    poster = {"w": 1200, "h": 1200, "sources": []}
+    for w in poster_widths(A.obj, pcrop["res"]):
+        img = parr if w == pcrop["res"] else resize(parr, w, w)
+        for fmt in ("avif", "webp"):
+            p = os.path.join(OUT, f"poster-{w}.{fmt}")
+            im8 = to8(img)
+            if fmt == "webp":
+                im8.save(p, "WEBP", quality=88, method=6)
+            else:
+                im8.save(p, "AVIF", quality=64, speed=4, subsampling="4:4:4")
+            poster["sources"].append({"src": rel(p), "type": f"image/{fmt}", "w": w, "bytes": size(p)})
+    return poster
+
+
+if A.poster_only:
+    mp = os.path.join(OUT, "manifest.json")
+    man = json.load(open(mp))
+    man["poster"] = encode_poster()
+    json.dump(man, open(mp, "w"), indent=1)
+    print(json.dumps({"poster": [(s["w"], s["type"], s["bytes"]) for s in man["poster"]["sources"]]}))
+    raise SystemExit(0)
+
+
 if A.spin_only:
     mp = os.path.join(OUT, "manifest.json")
     man = json.load(open(mp))
@@ -597,21 +648,7 @@ for tier, scale in (("half", 0.5), ("full", 1.0)):
                   "type": f"image/{FMT}", "frames": urls, "bytes": tot})
 
 # ================================================================ 2. the poster
-pfiles, pcrop = frames_of("poster")
-parr = pad(subtracted(pfiles[0]), pcrop, pcrop["res"])
-assert_lit([parr], "poster")
-report["poster_edge_max_levels"] = round(edge_max(subtracted(pfiles[0])), 2)
-poster = {"w": 1200, "h": 1200, "sources": []}
-for w in (600, 1200):
-    img = parr if w == pcrop["res"] else resize(parr, w, w)
-    for fmt in ("avif", "webp"):
-        p = os.path.join(OUT, f"poster-{w}.{fmt}")
-        im8 = to8(img)
-        if fmt == "webp":
-            im8.save(p, "WEBP", quality=88, method=6)
-        else:
-            im8.save(p, "AVIF", quality=64, speed=4, subsampling="4:4:4")
-        poster["sources"].append({"src": rel(p), "type": f"image/{fmt}", "w": w, "bytes": size(p)})
+poster = encode_poster()
 
 # ================================================================ 3. video
 videos = {}
