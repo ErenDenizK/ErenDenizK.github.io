@@ -103,6 +103,81 @@ test.describe('ID card, desktop', () => {
   });
 });
 
+/* Calm (brief 2026-10-10: "extreme input gets extreme reactions"; ADR-0008 amendment of 2026-10-10):
+   the rope can be taken, the strap gives at most a few px however hard it is pulled, the turn never
+   runs faster than about 720°/s, and a straight yank does not leave the card hanging in mid-air. */
+test.describe('ID card, calm', () => {
+  test.use(desktop);
+  const ropeLen = (page: Page) => page.locator('[data-rope-path]').evaluate((p) => (p as SVGPathElement).getTotalLength());
+
+  test('the rope can be pulled, and it barely stretches', async ({ page }) => {
+    await page.goto('about/');
+    await page.waitForTimeout(2500);
+    await expect(page.locator('.idc')).toHaveClass(/is-rope/);
+    const L0 = await ropeLen(page);
+    const rb = (await page.locator('[data-rope-path]').boundingBox())!;
+    const d0 = await ropeD(page);
+    await page.mouse.move(rb.x + rb.width / 2, rb.y + rb.height * 0.75);
+    await page.mouse.down();
+    await page.mouse.move(120, 860, { steps: 20 });
+    expect(await ropeD(page), 'the rope follows the hand').not.toBe(d0);
+    expect(atRest(await swing(page)), 'the card dangles from it').toBe(false);
+    expect(await ropeLen(page) - L0, 'the strap gives only a little').toBeLessThan(14);
+    await page.mouse.up();
+    /* the card itself, pulled far down and away */
+    await page.mouse.move(10, 10);
+    await expect.poll(async () => atRest(await swing(page)), { timeout: 6000 }).toBe(true);
+    const box = (await page.locator('.idc-card').boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(box.x - 300, box.y + 900, { steps: 20 });
+    expect(await ropeLen(page) - L0).toBeLessThan(14);
+    await page.mouse.up();
+  });
+
+  test('a hard fling turns at most about 720°/s and a yank does not prop the card up', async ({ page }) => {
+    await page.goto('about/');
+    await page.waitForTimeout(1600);
+    const box = (await page.locator('.idc-card').boundingBox())!;
+    const cx = box.x + box.width / 2, cy = box.y + box.height / 2;
+    await page.evaluate(() => {
+      const body = document.querySelector('[data-card-body]') as HTMLElement;
+      const log: [number, number][] = ((window as any).__yaw = []);
+      const f = (t: number) => { log.push([t, +(/rotateY\((-?[\d.]+)deg\)/.exec(body.style.transform)?.[1] ?? 0)]); requestAnimationFrame(f); };
+      requestAnimationFrame(f);
+    });
+    await page.mouse.move(cx, cy);
+    await page.mouse.down();
+    for (let i = 1; i <= 6; i++) { await page.mouse.move(cx - 120 * i, cy); await page.waitForTimeout(10); }
+    await page.mouse.up();
+    await page.waitForTimeout(2500);
+    const peak = await page.evaluate(() => {
+      const r = (window as any).__yaw as [number, number][];
+      let max = 0;
+      for (let i = 1; i < r.length; i++) {
+        let j = i; while (j > 0 && r[i][0] - r[j][0] < 50) j--;
+        /* per-frame steps wrapped to ±180°: at rest the angle is renormalised by whole turns */
+        let a = 0; for (let k = j + 1; k <= i; k++) a += ((r[k][1] - r[k - 1][1]) % 360 + 540) % 360 - 180;
+        if (r[i][0] - r[j][0] >= 30) max = Math.max(max, Math.abs(a) / ((r[i][0] - r[j][0]) / 1000));
+      }
+      return max;
+    });
+    expect(peak, 'turn speed over 50 ms windows').toBeLessThan(800);
+    /* a straight yank upward: the card falls back onto its strap */
+    await page.mouse.move(10, 10);
+    await expect.poll(async () => atRest(await swing(page)), { timeout: 8000 }).toBe(true);
+    const b2 = (await page.locator('.idc-card').boundingBox())!;
+    await page.mouse.move(b2.x + b2.width / 2, b2.y + b2.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(b2.x + b2.width / 2, b2.y + b2.height / 2 + 500, { steps: 15 });
+    await page.waitForTimeout(150);
+    await page.mouse.move(b2.x + b2.width / 2, 5, { steps: 2 });
+    await page.mouse.up();
+    await page.mouse.move(10, 10);
+    await expect.poll(async () => atRest(await swing(page)), { timeout: 5000, message: 'the card hangs on its strap again' }).toBe(true);
+  });
+});
+
 test.describe('ID card, phone', () => {
   test.use(phone);
   test('tap turns it over; touch never drags; nothing overflows', async ({ page }) => {
