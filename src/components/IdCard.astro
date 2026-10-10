@@ -10,6 +10,8 @@ import p360a from '../assets/photos/gate-card-360.avif?url';
 import p640a from '../assets/photos/gate-card-640.avif?url';
 import p360w from '../assets/photos/gate-card-360.webp?url';
 import p640w from '../assets/photos/gate-card-640.webp?url';
+import p960a from '../assets/photos/gate-card-960.avif?url';
+import p960w from '../assets/photos/gate-card-960.webp?url';
 
 const site = await getSite();
 const card = site.about.card;
@@ -54,8 +56,8 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
             <span class="idc-issued">{card.issued}</span>
           </div>
           <picture class="idc-photo">
-            <source type="image/avif" srcset={`${p360a} 360w, ${p640a} 640w`} sizes="(min-width: 900px) 280px, 260px" />
-            <img src={p640w} srcset={`${p360w} 360w, ${p640w} 640w`} sizes="(min-width: 900px) 280px, 260px" alt={site.about.selfie.alt} width="640" height="640" decoding="async" draggable="false" />
+            <source type="image/avif" srcset={`${p360a} 360w, ${p640a} 640w, ${p960a} 960w`} sizes="(min-width: 900px) 280px, 230px" />
+            <img src={p640w} srcset={`${p360w} 360w, ${p640w} 640w, ${p960w} 960w`} sizes="(min-width: 900px) 280px, 230px" alt={site.about.selfie.alt} width="640" height="640" decoding="async" draggable="false" />
           </picture>
           <p class="idc-name">{site.nameLines.map((l) => <span>{l}</span>)}</p>
           <p class="idc-role"><span>{k.study} · {k.year}</span><span>{k.school}</span></p>
