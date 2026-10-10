@@ -215,7 +215,7 @@
     "src": "idle.av1.mp4",
     "type": "video/mp4; codecs=\"av01.0.08M.10\"",
     "codec": "av1",
-    "bytes": 177710
+    "bytes": 177518
    },
    {
     "src": "idle.hevc.mp4",
@@ -243,7 +243,7 @@
      "src": "interact.av1.mp4",
      "type": "video/mp4; codecs=\"av01.0.08M.10\"",
      "codec": "av1",
-     "bytes": 78011
+     "bytes": 77954
     },
     {
      "src": "interact.hevc.mp4",
@@ -279,7 +279,7 @@
      "src": "droplet-out.av1.mp4",
      "type": "video/mp4; codecs=\"av01.0.08M.10\"",
      "codec": "av1",
-     "bytes": 64892
+     "bytes": 64856
     },
     {
      "src": "droplet-out.hevc.mp4",
@@ -308,7 +308,7 @@
      "src": "droplet-in.av1.mp4",
      "type": "video/mp4; codecs=\"av01.0.08M.10\"",
      "codec": "av1",
-     "bytes": 62786
+     "bytes": 62750
     },
     {
      "src": "droplet-in.hevc.mp4",
@@ -350,25 +350,25 @@
   "leanHalf": 222710,
   "leanFull": 653548,
   "clips": {
-   "av1": 205689,
+   "av1": 205560,
    "hevc": 285378,
    "h264": 329695
   },
   "idle": {
-   "av1": 177710,
+   "av1": 177518,
    "hevc": 209385,
    "h264": 269117
   },
   "tiers": {
    "firstPaint": 18028,
    "phone": {
-    "av1": 323416,
+    "av1": 323152,
     "hevc": 388742,
     "h264": 458402
    },
    "desktopLow": 240738,
    "desktopFull": {
-    "av1": 1099975,
+    "av1": 1099846,
     "hevc": 1179664,
     "h264": 1223981
    }
@@ -381,8 +381,8 @@
    "restFull": 13113,
    "tiers": {
     "phoneLive": 34943,
-    "desktopLite": 439779,
-    "desktopFull": 665045
+    "desktopLite": 439707,
+    "desktopFull": 664973
    },
    "note": "desktop tiers add full-size grid frames on demand at rest (lean/full, about 10 KB each)"
   }
