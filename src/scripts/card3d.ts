@@ -8,10 +8,18 @@
    The hanging card (brief §7, 2026-10-10: "pull it by its lanyard, swing and spin it, like GitHub's
    event badges") is a short Verlet rope from an anchor above the page to the clip. The clip is the
    rope's heavy last point: it falls under gravity, the rope holds it, and its swing is damped to
-   ζ ≈ 0.6 (the object spring's damping, craft audit §4.1). The card hangs from the clip and follows
-   the rope's last segment on a spring. A fling hands the hand's speed to the clip and its sideways
-   speed to a spin about the vertical axis; the spin runs down on friction and then settles on the
-   nearest face, front or back, and that face becomes the live one.
+   ζ ≈ 0.9. The card hangs from the clip and follows the rope's last segment on a spring. A fling
+   hands the hand's speed to the clip and its sideways speed to a spin about the vertical axis; the
+   spin runs down on friction and then settles on the nearest face, front or back, and that face
+   becomes the live one.
+
+   Calm (brief, 2026-10-10: "playable and good but goes wild; extreme input gets extreme reactions";
+   ADR-0008 amendment of 2026-10-10 has the measured numbers): every reaction saturates instead of
+   growing with the input. The throw is capped at 1200 px/s, the spin at 720°/s (2 turns a second,
+   under 12° a frame at 60 Hz) and runs down on a stronger friction, the strap stretches at most
+   about 8 px however hard it is pulled (a soft limit, then the hand slips past), the swing saturates
+   near 30°, and the card's area has soft walls that push back over their last 40 px and bounce what
+   still reaches them instead of stopping it dead. A fling settles in about two seconds.
 
    Still twins (CLAUDE.md): reduced motion gets no rope, swing, tilt or drag, and the turn is a
    crossfade (CSS, .is-flipped); touch gets tap to turn and no drag; without JavaScript the front. */
@@ -20,10 +28,10 @@ import { mq, motionOK } from './env';
 type Spring = { x: number; v: number; to: number };
 const UI: [number, number] = [300, 30];
 const TURN: [number, number] = [170, 22];
-/** after a free spin: the object spring's ζ = 0.6, so the face it lands on overshoots once */
-const LAND: [number, number] = [120, 2 * 0.6 * Math.sqrt(120)];
-/** the card following its rope: a little lag, ζ ≈ 0.7 */
-const HANG: [number, number] = [260, 2 * 0.7 * Math.sqrt(260)];
+/** after a free spin: ζ = 0.75, so the face it lands on overshoots a little, once */
+const LAND: [number, number] = [120, 2 * 0.75 * Math.sqrt(120)];
+/** the card following its rope: a little lag, ζ ≈ 0.9 */
+const HANG: [number, number] = [260, 2 * 0.9 * Math.sqrt(260)];
 const sp = (x = 0): Spring => ({ x, v: 0, to: x });
 function step(s: Spring, [k, c]: [number, number], dt: number) {
   s.v += (-k * (s.x - s.to) - c * s.v) * dt;
@@ -33,6 +41,8 @@ const rest = (s: Spring, eps: number) => Math.abs(s.x - s.to) < eps && Math.abs(
 const clamp = (x: number, a: number, b: number) => Math.min(b, Math.max(a, x));
 /** Rubber band: follows the hand near rest, never passes `max`. */
 const band = (x: number, max: number) => max * Math.tanh(x / max);
+/** A soft limit on a length: unchanged up to `max`, then at most `give` more. */
+const give = (d: number, max: number, extra: number) => (d <= max ? d : max + band(d - max, extra));
 
 /* the rope */
 const SEG = 10;
@@ -42,8 +52,18 @@ const CLIP_MASS = 4;
 const ITER = 16;
 /** how far the free rope may stretch: a long-range limit from the anchor keeps it from creeping */
 const STRETCH = 1.02;
-const SPIN_FRICTION = 1.4; // 1/s
+const SPIN_FRICTION = 2.5; // 1/s
 const SPIN_LAND = 240; // deg/s: below this the spin gives way to the landing spring
+/* calm limits (see the header) */
+const SPIN_MAX = 720; // deg/s, for the free spin and the button turn alike
+const SPIN_FROM = 600; // px/s: a slower or mostly vertical throw does not spin the card
+const THROW_MAX = 1200; // px/s
+const GIVE = 8; // px: how far the strap gives past its length, on a soft limit
+const SWING_MAX = 0.52; // rad (30°), a soft limit
+const WALL = 40; // px: the soft walls push back over this distance before the card's limits
+const WALL_K = 900; // 1/s²: stops a 1200 px/s card within WALL
+const BOUNCE = 0.3; // restitution at a limit
+const TWIST_MAX = 12; // deg, while held
 
 type Pt = { x: number; y: number; px: number; py: number };
 
@@ -117,7 +137,7 @@ function setup(el: HTMLElement) {
     const sx = r.width / w || 1;
     const room = (d: number) => Math.max(0, Math.min(d / sx - 0.2 * w, 1.3 * w));
     const L = restY;
-    lim = { l: room(r.left - area.left), r: room(Math.min(area.right, innerWidth) - r.right), up: Math.min(0.35 * L, 72), down: Math.min(0.3 * L, 80) };
+    lim = { l: room(r.left - area.left), r: room(Math.min(area.right, innerWidth) - r.right), up: Math.min(0.35 * L, 72), down: GIVE };
   }
   function measure() {
     /* layout values, not boxes: transforms on the page (its entrance) must not reach the rope */
@@ -127,7 +147,7 @@ function setup(el: HTMLElement) {
     restY = Math.max(40, -anchor!.offsetTop - 0.094 * w);
     const L = restY;
     segLen = (L / SEG) * 0.985;
-    damp = 2 * 0.6 * Math.sqrt(G / L);
+    damp = 2 * 0.9 * Math.sqrt(G / L);
     limits();
     if (ropeFade) ropeFade.setAttribute('y2', String(Math.min(0.6 * L, 140)));
     /* hang the rope straight and let it settle offline, so the page opens on the rope's own rest */
@@ -141,7 +161,7 @@ function setup(el: HTMLElement) {
 
   function physics(h: number) {
     const c = pts[SEG];
-    /* the clip's swing is damped across the rope (ζ ≈ 0.6); a fall along the rope is not */
+    /* the clip's swing is damped across the rope (ζ ≈ 0.9); a fall along the rope is not */
     if (!drag || drag.pin !== SEG) {
       const n = pts[SEG - 1];
       let ux = c.x - n.x, uy = c.y - n.y;
@@ -162,6 +182,12 @@ function setup(el: HTMLElement) {
       p.px = p.x; p.py = p.y;
       p.x += vx; p.y += vy + G * h * h;
     }
+    /* soft walls: over the last WALL px before a side limit, a spring pushes the clip back */
+    if (!settling && (!drag || drag.pin !== SEG)) {
+      const ox = c.x - simRest.x;
+      const pen = Math.max(0, ox - (lim.r - WALL)) - Math.max(0, -(lim.l - WALL) - ox);
+      if (pen) c.x -= WALL_K * pen * h * h;
+    }
     for (let it = 0; it < ITER; it++) {
       for (let i = 0; i < SEG; i++) {
         const a = pts[i], b = pts[i + 1];
@@ -171,6 +197,9 @@ function setup(el: HTMLElement) {
         if (!sum) continue;
         const dx = b.x - a.x, dy = b.y - a.y;
         const d = Math.hypot(dx, dy) || 1e-6;
+        /* a rope pulls and never pushes: a slack strap folds instead of standing up as a rod (a
+           straight upward yank used to leave the card propped in mid-air on its own strap) */
+        if (d <= segLen && !settling) continue;
         const k = (d - segLen) / d / sum;
         a.x += dx * k * wa; a.y += dy * k * wa;
         b.x -= dx * k * wb; b.y -= dy * k * wb;
@@ -186,17 +215,26 @@ function setup(el: HTMLElement) {
     if (!settling && (!drag || drag.pin !== SEG)) {
       const ox = c.x - simRest.x, oy = c.y - simRest.y;
       const nx = clamp(ox, -lim.l, lim.r), ny = clamp(oy, -lim.up, lim.down);
-      if (nx !== ox) { c.x = simRest.x + nx; c.px = c.x; }
-      if (ny !== oy) { c.y = simRest.y + ny; c.py = c.y; }
+      /* what still reaches a limit bounces off it (restitution 0.3) instead of stopping dead */
+      if (nx !== ox) { const v = c.x - c.px; c.x = simRest.x + nx; c.px = c.x + v * BOUNCE; }
+      if (ny !== oy) { const v = c.y - c.py; c.y = simRest.y + ny; c.py = c.y + v * BOUNCE; }
     }
   }
 
   function holdTarget(hx: number, hy: number) {
-    /* the hand, rubber-banded inside the card's area and a little past the rope's length */
+    /* the hand, rubber-banded inside the card's area; the rope gives at most GIVE px past its length
+       in any direction (a box alone let a sideways pull stretch the strap by half) */
     let ox = hx - simRest.x, oy = hy - simRest.y;
     ox = ox < 0 ? -band(-ox, lim.l || 1) : band(ox, lim.r || 1);
     oy = oy < 0 ? -band(-oy, lim.up) : band(oy, lim.down);
-    return { x: simRest.x + ox, y: simRest.y + oy };
+    return reach(simRest.x + ox, simRest.y + oy, Math.hypot(simRest.x, simRest.y));
+  }
+  /** A point held at most `max` (+ GIVE, softly) from the anchor. */
+  function reach(x: number, y: number, max: number) {
+    const d = Math.hypot(x, y);
+    if (d <= max) return { x, y };
+    const k = give(d, max, GIVE) / d;
+    return { x: x * k, y: y * k };
   }
 
   function renderRope() {
@@ -219,7 +257,7 @@ function setup(el: HTMLElement) {
   }
 
   function render() {
-    const twist = clamp(-th.v * 0.4, -22, 22) + tw.x;
+    const twist = clamp(-th.v * 0.4, -10, 10) + tw.x;
     const yaw = ty.x + twist + fl.x;
     const pitch = tx.x;
     body!.style.transform = still() ? '' : `rotateX(${pitch.toFixed(2)}deg) rotateY(${yaw.toFixed(2)}deg)`;
@@ -266,7 +304,7 @@ function setup(el: HTMLElement) {
         const lo = Math.asin(clamp((ox - lim.r) / cardH, -0.9, 0.9));
         const hi = Math.asin(clamp((ox + lim.l) / cardH, -0.9, 0.9));
         a = clamp(a, Math.min(lo, hi), Math.max(lo, hi));
-        th.to = clamp(a, -1, 1);
+        th.to = SWING_MAX * Math.tanh(a / SWING_MAX);
         step(th, HANG, H);
       }
       step(tx, UI, H); step(ty, UI, H); step(gl, UI, H); step(tw, UI, H);
@@ -274,7 +312,7 @@ function setup(el: HTMLElement) {
         fl.v *= Math.exp(-SPIN_FRICTION * H);
         fl.x += fl.v * H;
         if (Math.abs(fl.v) < SPIN_LAND) land();
-      } else step(fl, landing ? LAND : TURN, H);
+      } else { step(fl, landing ? LAND : TURN, H); fl.v = clamp(fl.v, -SPIN_MAX, SPIN_MAX); }
     }
     if (landing && rest(fl, 0.05)) landing = false;
     render();
@@ -362,7 +400,8 @@ function setup(el: HTMLElement) {
       if (onRope) e.preventDefault();
     };
     body.addEventListener('pointerdown', (e) => start(e, false));
-    ropePath!.parentElement!.querySelector('[data-rope-hit]')?.addEventListener('pointerdown', (e) => start(e as PointerEvent, true));
+    /* the hit stroke is a <use> outside the <defs> that hold the path (IdCard.astro) */
+    rope!.querySelector('[data-rope-hit]')?.addEventListener('pointerdown', (e) => start(e as PointerEvent, true));
 
     el.addEventListener('pointermove', (e) => {
       if (!drag || e.pointerId !== drag.id) return;
@@ -384,7 +423,7 @@ function setup(el: HTMLElement) {
         const px = hx - (drag.ox * cs - drag.oy * sn), py = hy - (drag.ox * sn + drag.oy * cs);
         /* pivot (layout) back to the simulated clip */
         t = holdTarget(px + simRest.x, py - restY + simRest.y);
-      } else t = { x: hx + drag.ox, y: Math.max(4, hy + drag.oy) };
+      } else t = reach(hx + drag.ox, Math.max(4, hy + drag.oy), drag.pin * segLen * STRETCH);
       p.x = p.px = t.x; p.y = p.py = t.y;
       /* events can arrive coalesced, one a frame, after a pause: measure between events, not over a
          window that may still hold the pause */
@@ -395,7 +434,7 @@ function setup(el: HTMLElement) {
         drag.vx += (ix - drag.vx) * k; drag.vy += (iy - drag.vy) * k;
         drag.t = e.timeStamp; drag.lx = e.clientX; drag.ly = e.clientY;
       }
-      tw.to = clamp(drag.vx * 0.02, -28, 28);
+      tw.to = clamp(drag.vx * 0.01, -TWIST_MAX, TWIST_MAX);
       kick();
     });
     const end = (e: PointerEvent) => {
@@ -403,12 +442,14 @@ function setup(el: HTMLElement) {
       if (drag.moved) {
         /* a hand that stopped before letting go throws nothing */
         const held = e.timeStamp - drag.t > 110;
-        const vx = held ? 0 : clamp(drag.vx, -3000, 3000);
-        const vy = held ? 0 : clamp(drag.vy, -3000, 3000);
-        /* the hand's speed goes to what it held, and its sideways speed spins the card */
+        /* the throw saturates: its direction is kept, its speed capped */
+        const sp = Math.hypot(drag.vx, drag.vy), cap = held || !sp ? 0 : Math.min(1, THROW_MAX / sp);
+        const vx = drag.vx * cap, vy = drag.vy * cap;
+        /* the hand's speed goes to what it held, and a quick, mostly sideways throw spins the card */
         const p = pts[drag.pin];
         p.px = p.x - vx * H; p.py = p.y - vy * H;
-        fl.v = tw.x * 4 + clamp(vx * 0.7, -1800, 1800);
+        const spin = Math.abs(vx) > SPIN_FROM && Math.abs(vx) > 1.5 * Math.abs(vy);
+        fl.v = spin ? clamp(tw.x * 4 + vx * 0.6, -SPIN_MAX, SPIN_MAX) : 0;
         spinning = Math.abs(fl.v) > SPIN_LAND;
         landing = true;
         if (!spinning) land();
