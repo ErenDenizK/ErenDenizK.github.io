@@ -67,7 +67,7 @@ A = ap.parse_args()
 # phone (~450 KB) budget with them (media research §7). edk, thick clear glass three letters
 # wide, is the heaviest: its full grid goes to AVIF q55, and its HEVC idle loop one step further.
 DEFAULTS = {"webp_q": 82, "avif_q": 60, "avif_q_half": 50, "idle_seconds": 6.0}
-OBJECT = {"edk": {"avif_q": 55, "idle_crf": {"hevc": "32"}}}
+OBJECT = {"edk": {"avif_q": 55, "idle_crf": {"hevc": "32"}}, "record": {"avif_q": 50, "idle_crf": {"av1": "38", "hevc": "32", "h264": "29"}}}
 for k, v in {**DEFAULTS, **OBJECT.get(A.obj, {})}.items():
     if k != "idle_crf" and getattr(A, k) is None:
         setattr(A, k, v)
