@@ -65,3 +65,6 @@ with a short plain-language brief in Turkish; decide technique yourself and reco
 - From Portfolio to all apps: a presentable state, then fresh captures and the app's mark (or a
   3D version of it) for the project pages. The owner decides when each app is ready.
 - From Portfolio to Eat Map: real colour values and the mark, from Xcode.
+- From Portfolio to Family: `docs/design/family.md` still calls the liveliness research "in progress";
+  it is done (`docs/research/2026-10-liveliness.md`), and a stutter study followed
+  (`docs/research/2026-10-realtime-3d.md`).
