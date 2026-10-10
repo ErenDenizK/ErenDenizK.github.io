@@ -146,6 +146,9 @@ const log = defineCollection({
       help: z.enum(['edit', 'more']).default('edit'),
       helpNote: z.string().optional(),
       draft: z.boolean().default(false),
+      /** A sample written to test the record's design, not a real entry: tagged "Sample" in the list
+          and on its page, and dropped from the build with SAMPLES=0 (delete them before the first release). */
+      sample: z.boolean().default(false),
     })
     .refine((e) => e.kind === 'note' || (e.title && e.dek), 'entries and essays need a title and a dek')
     .refine((e) => e.kind !== 'note' || !e.title, 'notes have no title (log.md §3.1)')

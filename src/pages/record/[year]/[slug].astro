@@ -60,6 +60,7 @@ const jsonld = d.kind === 'note' ? [] : [{
         )}
         <div class:list={['prose read post-body', { 'note-body': d.kind === 'note' }]}>
           {d.help === 'more' && <div class="help-note meta">Written with more help than usual{d.helpNote ? `: ${d.helpNote}` : '.'}</div>}
+          {d.sample && <div class="help-note meta">Sample entry, written to test the record's design. Nothing in it is a real claim.</div>}
           <Content components={{ Figure }} />
         </div>
       </div>

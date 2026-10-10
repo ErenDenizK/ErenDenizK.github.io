@@ -24,6 +24,7 @@ const thumb = (shape === 'essay' || shape === 'release') && (d.image || plate);
 const name = shape === 'release' ? releaseName(e, projects) : '';
 const items = shape === 'release' ? releaseItems(e.body) : [];
 const extra = [
+  ...(d.sample ? ['Sample'] : []),
   categoryLabel(d.category),
   ...(d.kind === 'essay' ? [`${readingMinutes(e.body)} min read`] : []),
   ...(lastUpdate ? ['Updated ' + dayMon(lastUpdate)] : []),

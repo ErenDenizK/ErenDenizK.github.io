@@ -24,6 +24,8 @@ export async function getSite() {
 }
 
 const showDrafts = import.meta.env.DEV || process.env.DRAFTS === '1';
+/** Sample record entries (content/log/2026/sample-*) are on until the owner writes real ones. */
+const showSamples = process.env.SAMPLES !== '0';
 
 export async function getProjects(): Promise<Project[]> {
   const all = await getCollection('projects', (p) => showDrafts || !p.data.draft);
@@ -31,7 +33,7 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getLog(): Promise<LogEntry[]> {
-  const all = await getCollection('log', (e) => showDrafts || !e.data.draft);
+  const all = await getCollection('log', (e) => (showDrafts || !e.data.draft) && (showSamples || !e.data.sample));
   return all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime() || b.id.localeCompare(a.id));
 }
 
