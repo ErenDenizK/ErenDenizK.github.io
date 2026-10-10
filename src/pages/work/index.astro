@@ -1,16 +1,20 @@
 ---
-/* Work grows downward (owner, 2026-10-09: "each project starting within its own screen height, with
-   large objects"; the catalog table and the small objects packed together are gone). A short intro
-   states the role once, then every project is a section about one screen tall: its object large on its
-   own stage, the name, a quiet line of facts, the summary and what it is, one way in (the focus view,
-   ADR-0007 item 4) and its links out. Each section is the porch of family.md §3.1, so a threshold and an
-   embassy can later grow under it. Groups follow the two kinds of work (brief §7, 2026-10-08); a group
-   with nothing in it is left out, and so is any unwritten fact (hidden until written).
-   Media (ADR-0010): one stage per section; only the section in view moves (scripts/site.ts, media.ts). */
+/* Work, the full catalogue (ADR-0014; docs/research/2026-10-work-page.md). The opening states the role
+   once and lines the products up by their wordmarks, so the body of work is seen whole before any one
+   product. Then each product is a chapter that starts at a new screen: the real product in a frame that
+   names its platform (components/Reel.astro, stepped by the reading position on wide screens), and
+   beside it the object as the product's emblem, its name in its own wordmark, what it is, a ruled row
+   of facts and one way in (the focus view, ADR-0007 item 4). A product with no captures yet shows its
+   object as the picture, never a made-up screen. Groups follow the two kinds of work (brief, 2026-10-08);
+   an empty group, an unwritten fact and an unwritten line are left out.
+   Media (ADR-0010): one object stage per chapter; only the chapter in view moves (scripts/site.ts). */
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
 import Icon from '../../components/Icon.astro';
 import Foot from '../../components/Foot.astro';
+import Wordmark from '../../components/Wordmark.astro';
+import Reel from '../../components/Reel.astro';
+import { getWorld, reelSteps } from '../../lib/world';
 import '../../styles/work.css';
 import { getSite, getProjects, getLog, url, projectPath, ym, iso, dayMonYear, isPlaceholder, entriesFor, type Project } from '../../lib/site';
 const site = await getSite();
@@ -36,13 +40,18 @@ const facts = (p: Project): [string, string, string?][] => {
   return ([
     ['Status', [d.status, d.statusNote].filter(Boolean).join(', ')],
     ['Version', d.version && !isPlaceholder(d.version) ? d.version : null],
-    ['Started', isPlaceholder(d.started) ? null : ym(d.started), isPlaceholder(d.started) ? undefined : d.started],
+    ['Since', isPlaceholder(d.started) ? null : ym(d.started), isPlaceholder(d.started) ? undefined : d.started],
+    ['Last entry', mine.length ? dayMonYear(mine[0].data.date) : null, mine.length ? iso(mine[0].data.date) : undefined],
     ['Runs on', d.runsOn],
+    ['Stack', d.stack ?? null],
     ['Role', d.group === 'by-hand' || d.role !== commonRole ? d.role : null],
-    ['Last in the record', mine.length ? dayMonYear(mine[0].data.date) : null, mine.length ? iso(mine[0].data.date) : undefined],
   ] as [string, string | null, string?][]).filter((f): f is [string, string, string?] => !!f[1]);
 };
 const two = (n: number) => String(n).padStart(2, '0');
+/* each chapter's reel, resolved at build time (lib/world.ts); none for a product without captures */
+const reels = new Map(await Promise.all(all.map(async (p) => [p.id, reelSteps(p.id, await getWorld(p.id), p.data)] as const)));
+/* the address a web product's browser frame shows: its live link, without the scheme */
+const host = (p: Project) => p.data.links.find((l) => l.kind === 'live')?.href.replace(/^https?:\/\//, '').replace(/\/$/, '');
 let n = 0;
 ---
 <Base title="Work" tab="work" description={site.work.dek}>
@@ -51,8 +60,26 @@ let n = 0;
       <p class="meta">{site.work.kicker}</p>
       <h1 class="vtitle" id="h-work">{site.work.title}</h1>
       <p class="vdek lede">{site.work.dek}</p>
+      {directed.length > 1 && (
+        <nav class="w-lineup" aria-label="The products">
+          <ol>
+            {directed.map((p, i) => (
+              <li style={vars(p)}>
+                <a href={`#${p.id}`}>
+                  <span class="meta w-lu-n">{two(i + 1)}</span>
+                  <span class="w-lu-name"><Wordmark project={p} /></span>
+                  <span class="w-lu-sum">{p.data.summary}</span>
+                  <span class="meta w-lu-meta">{p.data.status}<span aria-hidden="true"> · </span><span class="vh">, </span>{p.data.runsOn.split(/[;,]/)[0]}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
     </header>
 
+    {/* the reels step on wide, tall windows (scripts/reel.ts): decided before the chapters paint, so they do not reflow */}
+    <script is:inline>if (matchMedia('(min-width: 900px)').matches && innerHeight >= 640 && !matchMedia('(forced-colors: active)').matches) document.documentElement.classList.add('reel-on');</script>
     {groups.map((g) => (
       <section class="w-group" data-group={g.id} aria-labelledby={groups.length > 1 || g.note ? `h-${g.id}` : 'h-work'}>
         {(groups.length > 1 || g.note) && (
@@ -66,28 +93,39 @@ let n = 0;
           const i = n++;
           const live = d.links.find((l) => l.kind === 'live');
           const rest = d.links.filter((l) => l !== live);
+          const steps = reels.get(p.id) ?? [];
+          const reel = steps.length > 0;
           return (
-            <article class:list={['w-proj', { flip: i % 2 === 1, light: g.id === 'by-hand' }]} id={p.id} data-p-sec={p.id} data-light={light(p)} data-rail-sec={d.title} data-rail-accent={d.accent.color} style={vars(p)} aria-labelledby={`w-title-${p.id}`}>
-              <div class="w-light" aria-hidden="true"></div>
-              <Media obj={d.object} slot="work" class="w-obj" stage={i === 0} solo light={light(p)} sizes="(min-width: 900px) 640px, 84vw" priority={i === 0} />
-              <div class="w-text">
-                <p class="meta w-index"><span class="w-n">{two(i + 1)}</span><span class="w-of"> of {two(all.length)}</span></p>
-                <h2 class="w-title" id={`w-title-${p.id}`}><span class="t-title" id={`w-t-${p.id}`}>{d.title}</span></h2>
-                <p class="w-sum">{d.summary}</p>
-                {d.what.text && <p class="w-what">{d.what.text}</p>}
-                {!!d.what.numbers?.length && (
-                  <dl class="w-numbers">{d.what.numbers.map((x) => <div><dt class="meta">{x.label}</dt><dd>{x.value}</dd></div>)}</dl>
-                )}
-                <dl class="w-facts">
-                  {facts(p).map(([k, v, dt]) => (
-                    <div class:list={[`f-${k.split(' ')[0].toLowerCase()}`]}><dt class="meta">{k}</dt><dd>{k === 'Status' && <Icon name="dot" />}{dt ? <time datetime={dt}>{v}</time> : v}</dd></div>
-                  ))}
-                </dl>
-                <div class="links w-links">
-                  <a class="btn tint p-open" href={url(projectPath(p))} data-p={p.id} data-ptitle={`w-t-${p.id}`}>{site.work.cta}<span class="vh"> at {d.title}</span> <Icon name="arrow-right" weight="medium" /></a>
-                  {live && <a class="qlink" href={live.href}>{live.label} <Icon name="arrow-up-right" /></a>}
-                  {rest.map((l) => <a class="qlink" href={l.href}>{l.label}<span class="vh">, {d.title}</span> <Icon name="arrow-up-right" /></a>)}
-                  {d.linksNote && <span class="qlink is-note">{d.linksNote}</span>}
+            <article class:list={['w-proj', reel ? 'has-reel' : 'no-reel', { flip: i % 2 === 1, light: g.id === 'by-hand' }]} id={p.id} data-p-sec={p.id} data-light={light(p)} data-rail-sec={d.title} data-rail-accent={d.accent.color} style={`${vars(p)}; --n: ${Math.max(1, steps.length)}`} aria-labelledby={`w-title-${p.id}`}>
+              <div class="w-stage">
+                <div class="w-light" aria-hidden="true"></div>
+                <div class="w-text">
+                  <div class="w-head">
+                    {reel && <Media obj={d.object} slot="work" class="w-obj w-emblem" stage={i === 0} solo light={light(p)} sizes="(min-width: 900px) 200px, 96px" priority={i === 0} />}
+                    <p class="meta w-index"><span class="w-n">{two(i + 1)}</span><span class="w-of"> of {two(all.length)}</span></p>
+                  </div>
+                  <h2 class="w-title" id={`w-title-${p.id}`} style={`--chars: ${(d.wordmark?.text ?? d.title).length + (d.wordmark?.dot ? 1 : 0)}`}><Wordmark project={p} id={`w-t-${p.id}`} /></h2>
+                  <p class="w-sum">{d.summary}</p>
+                  {d.what.text && <p class="w-what">{d.what.text}</p>}
+                  {!!d.what.numbers?.length && (
+                    <dl class="w-numbers">{d.what.numbers.map((x) => <div><dt class="meta">{x.label}</dt><dd>{x.value}</dd></div>)}</dl>
+                  )}
+                  <dl class="w-facts">
+                    {facts(p).map(([k, v, dt]) => (
+                      <div class:list={[`f-${k.split(' ')[0].toLowerCase()}`]}><dt class="meta">{k}</dt><dd>{k === 'Status' && <Icon name="dot" />}{dt ? <time datetime={dt}>{v}</time> : v}</dd></div>
+                    ))}
+                  </dl>
+                  <div class="links w-links">
+                    <a class="btn tint p-open" href={url(projectPath(p))} data-p={p.id} data-ptitle={`w-t-${p.id}`}>{site.work.cta}<span class="vh"> at {d.title}</span> <Icon name="arrow-right" weight="medium" /></a>
+                    {live && <a class="qlink" href={live.href}>{live.label} <Icon name="arrow-up-right" /></a>}
+                    {rest.map((l) => <a class="qlink" href={l.href}>{l.label}<span class="vh">, {d.title}</span> <Icon name="arrow-up-right" /></a>)}
+                    {d.linksNote && <span class="qlink is-note">{d.linksNote}</span>}
+                  </div>
+                </div>
+                <div class="w-media">
+                  {reel
+                    ? <Reel steps={steps} host={host(p)} title={d.title} first={i === 0} />
+                    : <Media obj={d.object} slot="work" class="w-obj w-hero" stage={i === 0} solo light={light(p)} sizes="(min-width: 900px) 600px, 84vw" priority={i === 0} />}
                 </div>
               </div>
             </article>

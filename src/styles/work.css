@@ -1,100 +1,242 @@
-/* Work: a page that grows downward (owner, 2026-10-09), one section per project, each about one screen
-   tall at 1440x900 and never clipped (min-height, content-driven). The object stands large on its own
-   stage; sections alternate sides so three projects do not read as one card three times. Each section
-   is the porch of docs/design/family.md §3.1: house ground, the project's light pool, object, title,
-   facts, one way in. Home's showcase (styles/showcase.css) keeps the giant title and the serif pitch;
-   Work speaks in the house's quieter voice: a title, a lede, a line of labelled facts. Tokens are global.css.
-   Isolation rule (media research §3.1): nothing forms a stacking context around a blended object; the
-   light is a positioned sibling painted first, the content is positioned after it (the .case-top pattern). */
-.w-intro { padding-bottom: 16px; }
+/* Work, the full catalogue (ADR-0014; docs/research/2026-10-work-page.md). An opening that lines the
+   products up by their wordmarks, then one chapter per product, each starting at a new screen: the real
+   product in a frame that names its platform beside the object as its emblem, the wordmark, what it is,
+   a ruled row of facts and one way in. On wide screens with JavaScript (html.reel-on, scripts/reel.ts) a
+   chapter is taller than the window and its stage stays pinned while the reading position steps its
+   reel; nothing takes over scrolling. Without JavaScript, on short windows and on phones the reel is a
+   list of framed screens (phones: a row that scrolls inside itself). Tokens are global.css.
+   Isolation rule (media research §3.1): the stage is a stacking context (isolated, and sticky when the reel
+   steps), so it paints the ground and the project's light itself, beneath everything (z-index -1, which
+   also holds when grid order moves the picture first), and the blended object composes over them. */
+
+.w-intro { padding-bottom: 8px; }
 .w-intro .vdek { max-width: 34em; }
+
+/* ---- the line-up: the body of work in one look, by wordmark; each links to its chapter ---- */
+.w-lineup { margin-top: 48px; }
+.w-lineup ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 0 40px; }
+.w-lineup li { position: relative; border-top: 1px solid var(--rule-2); }
+.w-lineup li::before { content: ""; position: absolute; left: 0; top: -1px; width: 40px; height: 1px; background: var(--p); }
+.w-lineup a { display: grid; gap: 8px; padding: 18px 0 6px; text-decoration: none; color: inherit; }
+.w-lu-n { color: var(--ink-3); }
+.w-lu-name { font-size: 34px; line-height: 1.1; padding: 2px 0 4px; }
+.w-lu-sum { color: var(--ink-2); font-size: var(--t-ui); line-height: var(--lh-ui); max-width: 24em; text-wrap: pretty; transition: color var(--d-2); }
+.w-lu-meta { color: var(--ink-3); }
+.w-lineup a:hover .w-lu-sum, .w-lineup a:focus-visible .w-lu-sum { color: var(--ink); }
 
 .w-ghead { padding: 72px 0 0; }
 .w-ghead h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: -0.012em; }
 .w-gnote { margin-top: 10px; max-width: 34em; color: var(--ink-2); text-wrap: pretty; }
 
-.w-proj {
-  --obj: min(100%, 640px, calc(100svh - var(--bar-h) - 136px));
-  position: relative; min-height: calc(100svh - var(--bar-h));
-  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 72px; align-items: center;
-  padding: 56px 0;
+/* ---- a chapter ---- */
+.w-proj { --stage-h: calc(100svh - var(--bar-h)); --step: 62svh; position: relative; }
+.w-proj + .w-proj { border-top: 1px solid var(--rule); }
+.w-stage {
+  position: relative; isolation: isolate; min-height: var(--stage-h);
+  display: grid; grid-template-columns: minmax(0, 4.3fr) minmax(0, 7.7fr); column-gap: clamp(40px, 5vw, 80px); align-items: center;
+  padding: 48px 0;
 }
-.w-proj > * { position: relative; }
-.w-proj.flip { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
-.w-proj.flip > .w-obj { order: 2; }
+/* the ground, window wide, painted first in the stage: blended objects (plus-lighter, the multiply
+   shadow) compose over it even where they reach past the column */
+.w-stage::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; translate: -50% 0; z-index: -1; background: var(--ground); pointer-events: none; }
+.w-proj.flip .w-stage { grid-template-columns: minmax(0, 7.7fr) minmax(0, 4.3fr); }
+.w-proj.flip .w-media { order: -1; }
+.w-proj.no-reel .w-stage { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+.w-proj.no-reel.flip .w-stage { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
 
-/* the project's light: a pool behind the object and a faint wash over the section, feathered top and
-   bottom so neighbouring sections hand over without an edge. It spans the window, not the column. */
+/* the project's light: a pool behind the picture and a faint wash, feathered top and bottom so chapters
+   hand over without an edge; it spans the window, not the column */
 .w-light {
-  position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; translate: -50% 0; pointer-events: none;
+  position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw; translate: -50% 0; pointer-events: none;
   background:
-    radial-gradient(34% 46% at var(--lx, 31%) 50%, color-mix(in srgb, var(--pg) 12%, transparent), color-mix(in srgb, var(--pg) 4%, transparent) 60%, transparent),
-    radial-gradient(22% 30% at var(--lx2, 46%) 72%, color-mix(in srgb, var(--p3, var(--p2, var(--pg))) 5%, transparent), transparent),
+    radial-gradient(36% 48% at var(--lx, 64%) 52%, color-mix(in srgb, var(--pg) 13%, transparent), color-mix(in srgb, var(--pg) 4%, transparent) 60%, transparent),
+    radial-gradient(18% 26% at var(--lx2, 26%) 30%, color-mix(in srgb, var(--pg) 7%, transparent), transparent),
+    radial-gradient(24% 30% at var(--lx3, 74%) 84%, color-mix(in srgb, var(--p3, var(--p2, var(--pg))) 6%, transparent), transparent),
     linear-gradient(color-mix(in srgb, var(--pg) 2.5%, transparent), color-mix(in srgb, var(--pg) 2.5%, transparent));
-  -webkit-mask-image: linear-gradient(transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(transparent, #000 22%, #000 78%, transparent);
+  -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent); mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
 }
-.w-proj.flip .w-light { --lx: 69%; --lx2: 54%; }
+.w-proj.flip .w-light { --lx: 36%; --lx2: 74%; --lx3: 26%; }
 
-.w-obj { width: var(--obj); justify-self: center; }
-
-.w-text { max-width: 31em; }
-.w-proj:not(.flip) .w-text { justify-self: start; }
-.w-index { display: flex; align-items: baseline; gap: 2px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+/* ---- the text column: the emblem over the name, as an app's icon stands over its name ---- */
+.w-text { min-width: 0; max-width: 30em; container-type: inline-size; }
+.w-head { display: flex; align-items: flex-end; gap: 4px; }
+.w-emblem { width: clamp(112px, 10vw, 148px); margin: -20px 0 -16px -18px; flex: none; }
+.w-index { display: flex; align-items: baseline; gap: 2px; padding-bottom: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
 .w-index .w-n { color: var(--p); }
-.w-title { margin: 14px 0 0 -0.03em; font: 400 var(--t-title)/var(--lh-title) var(--f-display); letter-spacing: -0.02em; }
-.w-sum { margin-top: 22px; font: 400 var(--t-lede)/var(--lh-lede) var(--f-ui); letter-spacing: -0.015em; color: var(--ink); text-wrap: pretty; }
-.w-what { margin-top: 16px; color: var(--ink-2); text-wrap: pretty; }
-.w-numbers { display: flex; gap: 40px; margin-top: 22px; }
+/* the wordmark as large as its column allows: a long name (english prep.) steps down, a short one caps */
+.w-title { --t: clamp(48px, 5vw, 76px); font-size: min(var(--t), calc((100cqi - var(--beside, 0px)) / (var(--chars, 8) * 0.58))); line-height: 1.04; font-weight: 400; margin: 6px 0 0 -0.02em; }
+.w-title .wm { line-height: 1.04; padding-bottom: 0.06em; }
+.w-sum { margin-top: 18px; font: 400 var(--t-lede)/var(--lh-lede) var(--f-ui); letter-spacing: -0.015em; color: var(--ink); text-wrap: pretty; }
+.w-what { margin-top: 12px; color: var(--ink-2); font-size: var(--t-ui); line-height: 1.55; text-wrap: pretty; }
+.w-numbers { display: flex; gap: 36px; margin-top: 20px; }
 .w-numbers div { display: flex; flex-direction: column-reverse; gap: 2px; }
 .w-numbers dd { margin: 0; font: 400 var(--t-h2)/1 var(--f-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums lining-nums; }
 
-/* the quiet facts: labelled, on one line where it fits, under a hairline */
-.w-facts { display: flex; flex-wrap: wrap; gap: 12px 32px; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--rule); }
-.w-facts div { display: grid; gap: 3px; min-width: 0; }
-.w-facts .f-runs, .w-facts .f-role { flex: 1 1 14em; }
-.w-facts dd { margin: 0; display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-ui); line-height: var(--lh-ui); color: var(--ink-2); font-variant-numeric: tabular-nums; text-wrap: pretty; }
+/* the facts: a ruled spec sheet; the short ones in a row that wraps, platform and stack on their own lines */
+.w-facts { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.w-facts div { display: grid; gap: 2px; min-width: 0; align-content: start; }
+.w-facts .f-runs, .w-facts .f-stack, .w-facts .f-role { flex: 1 0 100%; min-width: 0; display: grid; grid-template-columns: 6.2em minmax(0, 1fr); gap: 0 12px; align-items: baseline; }
+.w-facts .f-runs { margin-top: 2px; padding-top: 10px; border-top: 1px solid var(--rule); }
+.w-facts dd { margin: 0; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; line-height: 1.4; color: var(--ink-2); font-variant-numeric: tabular-nums; text-wrap: pretty; }
 .w-facts .f-status dd { color: var(--ink); white-space: nowrap; }
+.w-facts .f-runs dd, .w-facts .f-stack dd, .w-facts .f-role dd { display: block; }
 .w-facts .f-status .icon { color: var(--p); }
+.w-links { margin-top: 26px; column-gap: 20px; }
 
-.w-links { margin-top: 30px; }
 
-/* the section in view: its object is the page's stage (scripts/site.ts); a hairline in its colour marks it */
-.w-proj::before { content: ""; position: absolute; left: 0; top: 0; width: 56px; height: 1px; background: var(--p); opacity: 0; transition: opacity var(--d-4) var(--ease-out); }
-.w-proj.flip::before { left: auto; right: 0; }
-.w-proj.is-current::before { opacity: 0.7; }
-.w-proj + .w-proj { border-top: 1px solid var(--rule); }
+/* ---- the picture column ---- */
+.w-media { min-width: 0; }
+.w-hero { width: min(100%, 600px, calc(var(--stage-h) - 120px)); margin: 0 auto; }
 
-/* hand-written work, when it exists, is lighter (brief §7, 2026-10-08): smaller object, no screen height */
-.w-proj.light { --obj: min(100%, 360px); min-height: 0; padding: 48px 0; }
-.w-proj.light .w-title { font-size: var(--t-h2); line-height: var(--lh-h2); }
+/* the reel: without the script, a list of framed screens */
+.w-screens { display: grid; gap: 56px; }
+.w-shot { margin: 0; min-width: 0; }
+.w-frames { position: relative; }
+.w-shot.has-phone .w-frames { padding: 0 13% 8% 0; }
 
-@media (max-width: 1240px) {
-  .w-proj { column-gap: 44px; padding: 48px 0; }
-  .w-text { max-width: 28em; }
+/* the browser frame: the product's real address in a quiet bar, its own corner, a hairline and its light */
+.fr-web {
+  position: relative; border-radius: 12px; overflow: hidden; background: #0e0e10;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.09), 0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 40px 90px -30px rgba(0, 0, 0, 0.9), 0 0 140px -40px color-mix(in srgb, var(--pg) 45%, transparent);
+}
+.fr-bar { position: relative; height: 32px; display: flex; align-items: center; padding: 0 13px; background: #151517; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.fr-dots { display: flex; gap: 7px; }
+.fr-dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.13); }
+.fr-url { position: absolute; left: 50%; translate: -50% 0; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  padding: 3px 14px; border-radius: 6px; background: rgba(255, 255, 255, 0.05); font: 400 12px/1.4 var(--f-ui); color: var(--ink-3); letter-spacing: 0.01em; }
+.fr-view { position: relative; background: #0b0b0d; }
+.fr-view picture { display: contents; }
+.fr-view img, .fr-view video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.w-clip { position: absolute; inset: 0; opacity: 0; transition: opacity 200ms linear; }
+.w-shot.is-playing .w-clip { opacity: 1; }
+
+/* the phone frame: a slim dark rim around the screen, no drawn hardware */
+.fr-phone {
+  border-radius: 30px; padding: 5px; background: #08080a;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.6) inset, 0 30px 70px -16px rgba(0, 0, 0, 0.92), 0 0 90px -30px color-mix(in srgb, var(--pg) 40%, transparent);
+}
+.fr-phone .fr-view { border-radius: 25px; overflow: hidden; }
+.w-shot.has-phone .fr-phone { position: absolute; right: 0; bottom: 0; width: 27%; }
+.w-shot.only-phone .fr-phone { width: min(300px, 62%); margin: 0 auto; }
+
+.w-cap { display: flex; align-items: baseline; gap: 14px; margin-top: 20px; min-height: 22px; color: var(--ink-2); font-size: var(--t-ui); line-height: 1.45; text-wrap: pretty; }
+.w-cap-n { flex: none; color: var(--p); font-variant-numeric: tabular-nums; }
+.w-cap-of { color: var(--ink-4); }
+
+/* the ticks go to a step (buttons; shown by the script when the reel steps) */
+.w-ticks { display: flex; justify-content: flex-end; margin-top: -33px; position: relative; }
+.w-ticks[hidden] { display: none; }
+.w-tick { width: 36px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+.w-tick span { display: block; width: 24px; height: 2px; border-radius: 1px; background: var(--ink-4); transition: background var(--d-2), width var(--d-3) var(--ease-out); }
+.w-tick:hover span { background: var(--ink-3); }
+.w-tick[aria-current="step"] span { background: var(--p); }
+.w-tick:focus-visible { outline: 2px solid var(--p); outline-offset: -6px; border-radius: 6px; }
+.reel-on .w-proj.has-reel:not(.no-pin) .w-cap { padding-right: calc(var(--n) * 36px + 16px); }
+
+/* ---- the stepping reel (wide windows, tall enough, with the script) ---- */
+.reel-on .w-proj.has-reel:not(.no-pin) { height: calc(var(--stage-h) + (var(--n) - 1) * var(--step)); }
+.reel-on .w-proj.has-reel:not(.no-pin) .w-stage { position: sticky; top: var(--bar-h); height: var(--stage-h); min-height: 0; padding: 32px 0; }
+.reel-on .w-proj.has-reel:not(.no-pin) .w-screens { display: grid; gap: 0; }
+.reel-on .w-proj.has-reel:not(.no-pin) .w-shot { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity 420ms var(--ease-out), visibility 0s linear 420ms; }
+.reel-on .w-proj.has-reel:not(.no-pin) .w-shot.is-on { opacity: 1; visibility: visible; transition: opacity 420ms var(--ease-out), visibility 0s; }
+.reel-on .w-proj.has-reel:not(.no-pin) .w-shot .fr-phone { transition: translate 620ms var(--ease-out); translate: 0 18px; }
+.reel-on .w-proj.has-reel:not(.no-pin) .w-shot.is-on .fr-phone { translate: 0 0; }
+/* the picture never outgrows the pinned stage: its width follows the window height */
+.reel-on .w-proj.has-reel:not(.no-pin) .w-media { width: min(100%, calc((var(--stage-h) - 150px) * 1.5)); justify-self: center; }
+
+/* the text column stays beside a list of frames when the reel does not step (no script, short windows) */
+@media (min-width: 900px) {
+  html:not(.reel-on) .w-proj.has-reel .w-stage, .w-proj.has-reel.no-pin .w-stage { align-items: start; }
+  html:not(.reel-on) .w-proj.has-reel .w-text, .w-proj.has-reel.no-pin .w-text { position: sticky; top: calc(var(--bar-h) + 24px); }
+  /* the first chapter begins right under the opening */
+  .w-group:first-of-type .w-proj:first-of-type .w-stage { padding-top: 24px; }
 }
 
-/* phone: each project stacks, object above text, as tall as its content */
+/* hand-written work, when it exists, is lighter (brief, 2026-10-08): smaller picture, no screen height */
+.w-proj.light .w-stage { min-height: 0; padding: 40px 0; }
+.w-proj.light .w-hero { width: min(100%, 360px); }
+.w-proj.light .w-title { font-size: var(--t-h2); }
+
+@media (max-width: 1240px) {
+  .w-text { max-width: 27em; }
+  .w-lu-name { font-size: 30px; }
+}
+/* short windows (a laptop's browser, a tablet on its side): the text column still fits the pinned stage */
+@media (min-width: 900px) and (max-height: 860px) {
+  .w-emblem { width: clamp(96px, 8.4vw, 120px); }
+  .w-title { --t: clamp(44px, 4.4vw, 64px); }
+  .w-sum { margin-top: 14px; font-size: clamp(19px, 1.6vw, 23px); }
+  .w-what { font-size: 14px; line-height: 1.5; }
+  .w-numbers { margin-top: 14px; }
+  .w-numbers dd { font-size: 34px; }
+  .w-facts { margin-top: 18px; }
+  .w-links { margin-top: 20px; }
+  .reel-on .w-proj.has-reel:not(.no-pin) .w-stage { padding: 20px 0; }
+}
+/* very short windows: the emblem stands beside the name, smaller, so the column keeps its whole text */
+@media (min-width: 900px) and (max-height: 760px) {
+  .has-reel .w-text { --beside: 96px; display: grid; grid-template-columns: var(--beside) minmax(0, 1fr); align-content: center; }
+  .has-reel .w-text > * { grid-column: 1 / -1; }
+  .has-reel .w-head { display: contents; }
+  .has-reel .w-emblem { grid-column: 1; grid-row: 1 / span 2; width: 104px; margin: -14px 0 -14px -14px; align-self: center; }
+  .has-reel .w-index { grid-column: 2; grid-row: 1; padding-bottom: 0; align-self: end; }
+  .has-reel .w-title { grid-column: 2; grid-row: 2; margin-top: 2px; }
+  .w-sum { margin-top: 10px; }
+  .w-numbers dd { font-size: 30px; }
+}
+
+/* ---- phones: nothing pins; the emblem beside the name, the screens in a row that scrolls inside itself ---- */
 @media (max-width: 899.98px) {
-  .w-intro { padding-bottom: 8px; }
-  .w-proj, .w-proj.flip { grid-template-columns: minmax(0, 1fr); min-height: 0; padding: 36px 0 52px; }
-  .w-proj.flip > .w-obj { order: 0; }
-  .w-obj, .w-proj.light .w-obj { width: min(84vw, 360px); margin: -8px auto 4px; }
-  .w-light, .w-proj.flip .w-light { --lx: 50%; --lx2: 62%; background-position: 0 0; }
-  .w-proj .w-light { background:
-    radial-gradient(60% 26% at 50% 24%, color-mix(in srgb, var(--pg) 12%, transparent), color-mix(in srgb, var(--pg) 4%, transparent) 60%, transparent),
-    linear-gradient(color-mix(in srgb, var(--pg) 2.5%, transparent), color-mix(in srgb, var(--pg) 2.5%, transparent)); }
-  .w-text { max-width: none; }
-  .w-title { font-size: clamp(42px, 12vw, 56px); }
-  .w-sum { margin-top: 16px; font-size: 20px; }
+  .w-lineup { margin-top: 36px; }
+  .w-lineup ol { grid-template-columns: minmax(0, 1fr); }
+  .w-lineup a { grid-template-columns: auto 1fr; column-gap: 14px; padding: 14px 0 12px; }
+  .w-lu-n { grid-row: span 3; padding-top: 6px; }
+  .w-lu-name { font-size: 28px; }
+
+  .w-stage, .w-proj.flip .w-stage, .w-proj.no-reel .w-stage, .w-proj.no-reel.flip .w-stage {
+    grid-template-columns: 76px minmax(0, 1fr); column-gap: 14px; align-items: end; min-height: 0; padding: 36px 0 48px;
+  }
+  .w-text, .w-head { display: contents; }
+  .w-stage > *, .w-text > *, .w-head > * { grid-column: 1 / -1; }
+  .w-emblem { grid-column: 1; grid-row: 1 / span 2; width: 92px; margin: -14px 0 -10px -12px; }
+  .w-index { padding-bottom: 0; }
+  .has-reel .w-index { grid-column: 2; grid-row: 1; }
+  .has-reel .w-title { grid-column: 2; grid-row: 2; }
+  .no-reel .w-index { padding-bottom: 6px; }
+  .w-media, .w-proj.flip .w-media { order: 0; margin-top: 24px; }
+  .w-sum { order: -1; }
+  .w-title, .w-index, .w-emblem { order: -2; }
+  .w-what, .w-numbers, .w-facts, .w-links { order: 1; }
+  .w-title { --t: clamp(40px, 11vw, 52px); }
+  .has-reel .w-title { font-size: min(var(--t), calc((100vw - 2 * var(--gut) - 90px) / (var(--chars, 8) * 0.58))); }
+  .w-sum { margin-top: 14px; font-size: 20px; }
   .w-numbers { gap: 28px; }
-  .w-facts { gap: 12px 24px; }
-  .w-proj::before, .w-proj.flip::before { left: 0; right: auto; }
+  .w-facts { gap: 12px 28px; }
+  .w-facts .f-status, .w-facts .f-version, .w-facts .f-since, .w-facts .f-last { flex: 0 0 calc(50% - 14px); }
+  .w-text { max-width: none; }
+  .w-hero { width: min(84vw, 360px); }
+  .w-light, .w-proj.flip .w-light { --lx: 50%; --lx2: 20%; --lx3: 70%; }
+
+  .w-screens {
+    display: flex; gap: 14px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin: 0 calc(-1 * var(--gut)); padding: 8px var(--gut) 20px; scroll-padding: 0 var(--gut);
+  }
+  .w-screens::-webkit-scrollbar { display: none; }
+  .w-screens:focus-visible { outline: 2px solid var(--p); outline-offset: -2px; border-radius: 12px; }
+  .w-shot { flex: 0 0 86%; scroll-snap-align: start; }
+  /* a phone-first product shows its phone screens on a phone */
+  .w-shot.has-phone { flex-basis: 62%; }
+  .w-shot.has-phone .w-frames { padding: 0; }
+  .w-shot.has-phone .fr-web { display: none; }
+  .w-shot.has-phone .fr-phone { position: static; width: 100%; }
+  .fr-bar { height: 26px; }
+  .fr-dots i { width: 7px; height: 7px; }
+  .fr-url { font-size: 11px; padding: 2px 10px; }
+  .w-cap { margin-top: 12px; font-size: 14px; }
   .w-ghead { padding-top: 48px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .w-proj::before { transition-duration: 1ms; }
-}
-@media (min-width: 900px) {
-  /* the first project begins right under the intro, so its title and summary are in the first screen */
-  .w-group:first-of-type .w-proj:first-of-type { padding-top: 24px; }
+  .reel-on .w-proj.has-reel:not(.no-pin) .w-shot, .reel-on .w-proj.has-reel:not(.no-pin) .w-shot.is-on { transition: none; }
+  .reel-on .w-proj.has-reel:not(.no-pin) .w-shot .fr-phone, .reel-on .w-proj.has-reel:not(.no-pin) .w-shot.is-on .fr-phone { transition: none; translate: none; }
 }

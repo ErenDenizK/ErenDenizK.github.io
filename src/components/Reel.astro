@@ -1,0 +1,69 @@
+---
+/* A project's capture reel on Work (ADR-0014; docs/research/2026-10-work-page.md §4 A). Real screens in
+   a frame that names the platform: a browser frame carrying the product's real address for a wide
+   capture, a slim phone frame for a phone capture, both for a phone-first product. Every step is a
+   figure with its own caption, so without JavaScript the reel is a plain list of framed screens.
+   scripts/reel.ts stacks the steps in one frame on wide screens and steps them by the reading position;
+   the ticks (hidden until then) go to a step. A signature clip is a poster first; its video gets
+   sources only when its step is shown and motion is welcome (one video on the page, media.ts).
+   Inside the embassy captures stay bare (family.md §3.2); the frames are Work's alone. */
+import { Picture } from 'astro:assets';
+import type { Step, Shot } from '../lib/world';
+interface Props { steps: Step[]; host?: string; title: string; first?: boolean }
+const { steps, host, title, first = false } = Astro.props;
+const n = steps.length;
+const two = (x: number) => String(x).padStart(2, '0');
+const wideW = (s: Shot) => [720, 1080, 1440, 2048].filter((w) => w <= s.img.width);
+const phoneW = (s: Shot) => [390, 600, 780].filter((w) => w <= s.img.width);
+const WIDE_SIZES = '(min-width: 1240px) 760px, (min-width: 900px) 58vw, 88vw';
+const PHONE_SIZES = '(min-width: 900px) 200px, 64vw';
+---
+<div class="w-reel" data-reel data-steps={n} style={`--n: ${n}`}>
+  <div class="w-screens">
+    {steps.map((s, i) => {
+      const web = s.main.frame === 'wide';
+      const eager = first && i === 0;
+      return (
+        <figure class:list={['w-shot', { 'is-on': i === 0, 'has-phone': !!s.phone, 'is-clip': s.clip, 'only-phone': !web }]} data-step={i}>
+          <div class="w-frames">
+            {web && (
+              <div class="fr-web">
+                <div class="fr-bar" aria-hidden="true"><span class="fr-dots"><i></i><i></i><i></i></span>{host && <span class="fr-url">{host}</span>}</div>
+                <div class="fr-view" style={`aspect-ratio: ${s.main.img.width} / ${s.main.img.height}`}>
+                  <Picture src={s.main.img} alt={s.main.alt} widths={wideW(s.main)} sizes={WIDE_SIZES} formats={['avif', 'webp']} quality={62}
+                    loading={eager ? 'eager' : 'lazy'} decoding="async" class={s.clip ? 'clip-poster' : undefined} />
+                  {s.clip && s.main.video && (
+                    <video class="w-clip" muted playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1">
+                      {s.main.video.map((v) => <source data-src={v.src} type={v.type} />)}
+                    </video>
+                  )}
+                </div>
+              </div>
+            )}
+            {(s.phone ?? (!web ? s.main : null)) && (() => {
+              const ph = s.phone ?? s.main;
+              return (
+                <div class="fr-phone">
+                  <div class="fr-view" style={`aspect-ratio: ${ph.img.width} / ${ph.img.height}`}>
+                    <Picture src={ph.img} alt={ph.alt} widths={phoneW(ph)} sizes={PHONE_SIZES} formats={['avif', 'webp']} quality={70} loading="lazy" decoding="async" />
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+          <figcaption class="w-cap">
+            {n > 1 && <span class="w-cap-n meta"><span class="vh">{title}, screen </span>{two(i + 1)}<span class="w-cap-of"> / {two(n)}</span></span>}
+            <span class="w-cap-t">{s.caption}</span>
+          </figcaption>
+        </figure>
+      );
+    })}
+  </div>
+  {n > 1 && (
+    <div class="w-ticks" role="group" aria-label={`${title} screens`} hidden>
+      {steps.map((s, i) => (
+        <button type="button" class="w-tick" data-go-step={i} aria-current={i === 0 ? 'step' : undefined} aria-label={`Screen ${i + 1} of ${n}: ${s.caption}`}><span></span></button>
+      ))}
+    </div>
+  )}
+</div>

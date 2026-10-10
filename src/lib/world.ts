@@ -120,3 +120,25 @@ export function shot(slug: string, w: World, pick: { id: string; at?: string; ca
     frame, img, video, duration: c.durationSeconds,
   };
 }
+
+/* ---- Work's capture reel (ADR-0014) ---- */
+
+export type Step = { main: Shot; phone: Shot | null; caption?: string; clip: boolean };
+type ReelPick = { id: string; phone?: string; caption?: string };
+
+/** The steps of a project's reel on Work: its `reel` field, or else its first three wide captures.
+    Each id is looked up in world.json (a screen or the signature clip); a phone id must be a phone
+    screen. Unknown ids fail the build, as for the embassy's captures. No world, no reel. */
+export function reelSteps(slug: string, w: World | null, data: { reel?: ReelPick[]; captures: { id: string; caption?: string }[] }): Step[] {
+  if (!w) return [];
+  const kindOf = (id: string) => w.captures.find((c) => c.id === id)?.kind ?? 'screen';
+  const picks: ReelPick[] = data.reel
+    ?? data.captures.map((c) => ({ id: c.id, caption: c.caption })).filter((c) => shot(slug, w, c).frame === 'wide').slice(0, 3);
+  return picks.map((r) => {
+    const clip = kindOf(r.id) === 'signature';
+    const main = shot(slug, w, { id: r.id, caption: r.caption }, clip ? 'signature' : 'screen');
+    const phone = r.phone ? shot(slug, w, { id: r.phone }) : null;
+    if (phone && phone.frame !== 'phone') throw new Error(`${slug}: reel phone "${r.phone}" is not a phone capture`);
+    return { main, phone, caption: r.caption ?? main.caption, clip };
+  });
+}

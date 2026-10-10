@@ -22,6 +22,10 @@ captures:
   - { id: markup-palette }
   - { id: light-table }
 clip: { id: capsule-morph }
+reel:
+  - { id: markup-palette, caption: "Markup: the capsule becomes the palette over the sample document." }
+  - { id: library, caption: "The Library: every document starts here, and nothing leaves the device." }
+  - { id: capsule-morph, caption: "One glass capsule changes shape: dock, Markup palette, Pages bar." }
 what:
   text: Open many PDFs, arrange their pages on one light table, annotate, fill, redact, edit text, recognise scans, compare, sign.
 why:
