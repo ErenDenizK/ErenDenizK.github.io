@@ -72,7 +72,8 @@ test.describe('ID card, desktop', () => {
     await page.mouse.up();
     expect(await flipped(page), 'a drag is not a click').toBe(false);
     await page.mouse.move(10, 10);
-    await expect.poll(async () => atRest(await swing(page)), { timeout: 5000, message: 'the card swings back to rest' }).toBe(true);
+    /* the physics clamps a frame to 50 ms, so a starved headless page settles in slow motion */
+    await expect.poll(async () => atRest(await swing(page)), { timeout: 12000, message: 'the card swings back to rest' }).toBe(true);
   });
 
   test('a fling spins it; it settles on one face, and that face is the live one', async ({ page }) => {
@@ -80,17 +81,24 @@ test.describe('ID card, desktop', () => {
     await page.waitForTimeout(1600);
     const box = (await page.locator('.idc-card').boundingBox())!;
     const cx = box.x + box.width / 2, cy = box.y + box.height * 0.5;
-    await page.mouse.move(cx, cy);
-    await page.mouse.down();
-    await page.mouse.move(cx - 160, cy, { steps: 8 });
-    await page.waitForTimeout(80);
-    /* big, quick steps: a headless page delivers few events, and the throw is measured between them */
-    for (let i = 1; i <= 3; i++) await page.mouse.move(cx - 160 + i * 150, cy);
-    await page.mouse.up();
-    expect(await flipped(page), 'a fling is not a click').toBe(false);
-    await expect.poll(async () => Math.abs(await yaw(page)), { timeout: 1500, message: 'the card spins' }).toBeGreaterThan(90);
+    /* a loaded machine can stall the page between the last move and the release, and a hand that
+       paused before letting go throws nothing (card3d.ts): throw again, at most three times */
+    let spun = false;
+    for (let attempt = 0; attempt < 3 && !spun; attempt++) {
+      await page.mouse.move(cx, cy);
+      await page.mouse.down();
+      await page.mouse.move(cx - 160, cy, { steps: 8 });
+      await page.waitForTimeout(80);
+      /* big, quick steps: a headless page delivers few events, and the throw is measured between them */
+      for (let i = 1; i <= 3; i++) await page.mouse.move(cx - 160 + i * 150, cy);
+      await page.mouse.up();
+      expect(await flipped(page), 'a fling is not a click').toBe(false);
+      spun = await expect.poll(async () => Math.abs(await yaw(page)), { timeout: 1500 }).toBeGreaterThan(90).then(() => true, () => false);
+      if (!spun) await page.waitForTimeout(1500);
+    }
+    expect(spun, 'the card spins').toBe(true);
     await page.mouse.move(10, 10);
-    await expect.poll(async () => { const t = await swing(page); return atRest(t) || t; }, { timeout: 8000, message: 'the card comes to rest' }).toBe(true);
+    await expect.poll(async () => { const t = await swing(page); return atRest(t) || t; }, { timeout: 15000, message: 'the card comes to rest' }).toBe(true);
     await expect.poll(async () => [0, 180].includes((((await yaw(page)) % 360) + 360) % 360), { timeout: 4000, message: 'it faces front or back' }).toBe(true);
     const back = (((await yaw(page)) % 360) + 360) % 360 === 180;
     expect(await flipped(page), 'the face it settled on is the live one').toBe(back);

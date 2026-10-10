@@ -16,7 +16,9 @@ A revision follows (`docs/PLAN.md` track 3); until it lands, this ADR describes 
 page and in the project sheet (the ladder where there are sections, a plain track and thumb elsewhere),
 project pages and the sheet get the ladder in place of their `.toc`, and the native bar stays only for
 forced colours and no JavaScript. Items 3 (the project-page exception), 5, 7 and 11 and "Not done, on
-purpose" are superseded; the rest stands.
+purpose" are superseded; the rest stands. Later the same day ADR-0013's amendment ("one look, not two")
+replaced the dashes of items 1, 2 and 12 with marks on one shared track and thumb; the titles, keyboard,
+colours, touch sheet and iOS findings stand.
 
 ## Decision
 

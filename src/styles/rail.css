@@ -1,6 +1,7 @@
 /* The rail (ADR-0013, revising ADR-0011; scripts/rail.ts): one custom scrollbar on every page and in the
-   project sheet. Where a scroller has sections it is the contents ladder, one dash per section at the right
-   edge; elsewhere the plain variant, a track and a thumb in the same column. html.rail-on (fine pointer) or
+   project sheet, drawn the same everywhere (ADR-0013 amendment, 2026-10-10): one track and one thumb in one
+   place, mid-height on the right edge. Where a scroller has sections they only add marks on that track (and,
+   on desktop, their titles beside it); without sections it is the same bar minus the marks. html.rail-on (fine pointer) or
    html.rail-touch (any other pointer, item 12) is set on every page before first paint by the head script
    (layouts/Base.astro), never in forced colours; the media queries below repeat that condition, so forced
    colours bring the platform's bar back even if a class stayed. Without JavaScript nothing here applies and
@@ -21,42 +22,88 @@
   html:is(.rail-on, .rail-touch) dialog .sheet:not(.rail-flat) .case-body { grid-template-columns: minmax(0, 1fr); }
 }
 
+/* ---------- the bar: one track and one thumb, the same on every page and in the sheet ----------
+   A 2 px track, 6 px from the right edge, min(44vh, 320px) tall at mid-height; the thumb rides on it, the
+   share of the scroller in view (at least 24 px). The track is quiet (decorative); the thumb is the page's
+   accent, or the current section's (every accent is at least 5.5:1 on the ground, 1.4.11). A hairline of
+   ground around both keeps them legible over a photograph (About). Hover and dragging thicken the thumb
+   to 4 px; under reduced motion it only brightens. */
 :root {
-  --rail-idle: #6a665f;          /* the dashes ahead of you: 3.5:1 on the ground (1.4.11 asks 3:1) */
+  --rail-idle: #6a665f;          /* the marks ahead of you: 3.5:1 on the ground (1.4.11 asks 3:1) */
   --rail-panel: rgba(13, 13, 15, 0.94);
+  --rail-h: min(44vh, 320px);
+  --rail-x: 6px;                 /* the track's distance from the right edge */
 }
-
-.rail {
+.rail, .rail-plain {
   display: none;
   position: fixed; z-index: 21; right: 0; top: 50%; translate: 0 -50%;
+  height: var(--rail-h);
   view-transition-name: rail;
-  /* closed, only the 44 px column of dashes is drawn and takes the pointer; open, the titles join it */
-  clip-path: inset(0 0 0 calc(100% - 44px) round 14px 0 0 14px);
-  transition: clip-path var(--d-3) var(--ease-out);
 }
 .rail[hidden], .rail-plain[hidden] { display: none !important; }
+.rail-plain { width: 44px; padding: 0; cursor: default; touch-action: none; user-select: none; }
+.rail-track {
+  position: absolute; top: 0; bottom: 0; right: var(--rail-x); width: 2px; border-radius: 1px;
+  background: color-mix(in srgb, var(--rail-idle) 45%, transparent);
+  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.4);
+  pointer-events: none;
+}
+.rail-thumb {
+  position: absolute; top: 0; right: 0; width: 2px; height: 24px; border-radius: 2px;
+  background: var(--thumb, var(--accent));
+  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
+  transition: width var(--d-2) var(--ease-out), right var(--d-2) var(--ease-out), filter var(--d-2), background-color var(--d-2);
+  will-change: transform;
+}
+:is(.rail-plain:hover, .rail-plain.is-drag, .rail.is-drag) .rail-thumb,
+.rail:has(.rail-track-hit:hover) .rail-thumb { width: 4px; right: -1px; filter: brightness(1.12); }
+:is(.rail-plain, .rail).is-drag { cursor: grabbing; }
+
+/* a section's mark: a short tick on the track's left side, where the thumb's top is when that section
+   begins. The ones behind you keep their section's light at a contrast-solved value (ADR-0011 item 10), the
+   current one is its section's full accent and a little longer, the ones ahead are quiet. */
+.rail-m {
+  position: absolute; right: 100%; top: var(--y, 0); height: 2px; width: 5px; border-radius: 1px 0 0 1px;
+  background: var(--rail-idle); box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
+  transition: width var(--d-2) var(--ease-out), background-color var(--d-2);
+}
+.rail-m.done { background: var(--ar); }
+.rail-m.on { width: 8px; background: var(--a); }
+
+/* ---------- desktop: the titles beside the track ----------
+   Closed, only the 44 px column is drawn and takes the pointer; hover (after a short intent delay) or
+   keyboard focus opens the panel of titles, each row level with its mark (pushed apart to 28 px where
+   marks crowd). The track is the column's own: a press there goes to that place, a drag on the thumb
+   follows the pointer, a click on a row goes to its section. */
+.rail {
+  width: max-content;
+  /* rows may hang 14 px past the track's ends; the panel's foot sits below it */
+  clip-path: inset(-48px 0 -48px calc(100% - 44px));
+  transition: clip-path var(--d-3) var(--ease-out);
+}
+.rail.is-open, .rail:focus-within { clip-path: inset(-48px 0 -48px 0); }
 .rail-btn { display: none; }
 /* the page's rail steps back while the sheet is open; the sheet has its own (ADR-0013 item 3) */
 html.sheet-open :is(.rail, .rail-plain):not(.in-sheet) { visibility: hidden; }
 /* inside the sheet the rail sits at the sheet's right edge, beside its scroller (scripts/sheet.ts); only the
    page's rail carries the view-transition name, so the sheet's same-document transition never sees two */
 .sheet > .rail.in-sheet, .sheet > .rail-plain.in-sheet { position: absolute; view-transition-name: none; }
-.rail.is-open, .rail:focus-within { clip-path: inset(0 0 0 0 round 14px 0 0 14px); }
 
+.rail-sheet { position: relative; margin-top: -14px; }
 /* the panel behind the titles */
-.rail::before {
-  content: ""; position: absolute; inset: 0; border-radius: 14px 0 0 14px; pointer-events: none;
+.rail-sheet::before {
+  content: ""; position: absolute; inset: -8px 0 -4px; border-radius: 14px 0 0 14px; pointer-events: none;
   background: var(--rail-panel);
   -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
   box-shadow: inset 0 0 0 1px var(--rule), -24px 0 60px -24px #000;
   opacity: 0; transition: opacity var(--d-2) var(--ease-out);
 }
-.rail.is-open::before, .rail:focus-within::before { opacity: 1; }
-
-.rail-list { position: relative; padding: 10px 0 4px; }
+.rail.is-open .rail-sheet::before, .rail:focus-within .rail-sheet::before { opacity: 1; }
+.rail-list { position: relative; margin: 0; padding: 0; list-style: none; min-height: var(--lh, auto); }
+.rail-list > li { margin-top: var(--mt, 0); }
 .rail-i {
-  display: flex; align-items: center; justify-content: flex-end; gap: 16px;
-  height: 28px; padding: 0 12px 0 22px;
+  display: flex; align-items: center; justify-content: flex-end;
+  height: 28px; padding: 0 30px 0 22px;
   text-decoration: none; color: var(--ink-3);
   font: 400 14px/1.2 var(--f-ui); letter-spacing: 0.002em; white-space: nowrap;
   cursor: pointer; user-select: none; -webkit-user-drag: none;
@@ -66,122 +113,68 @@ html.sheet-open :is(.rail, .rail-plain):not(.in-sheet) { visibility: hidden; }
 .rail-i.done .rail-t { color: var(--ink-2); }
 .rail-i.on .rail-t, .rail-i:hover .rail-t, .rail-i:focus-visible .rail-t { color: var(--ink); }
 .rail-i:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: 8px; }
-
-/* the dash: its length is its section's share of the page (8–20 px); the current one is longest and fills
-   from the edge as you read; the ones behind you keep their section's light at a contrast-solved value */
-.rail-d { position: relative; flex: none; width: 28px; height: 2px; }
-.rail-d i {
-  position: absolute; right: 0; top: 0; height: 2px; width: var(--w, 12px); border-radius: 1px;
-  background: var(--rail-idle);
-  /* a hairline of ground around each dash, so it keeps its contrast over a photograph (About) */
-  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
-  transition: width var(--d-3) var(--ease-out), background-color var(--d-2);
-}
-.rail-i.done .rail-d i { background: var(--ar); }
-.rail-i.on .rail-d i {
-  width: 28px;
-  background: linear-gradient(to left, var(--a) calc(4px + var(--f, 0) * (100% - 4px)), var(--rail-idle) 0);
-}
-.rail-i:hover .rail-d i { background-color: var(--ink-2); }
-.rail-i.done:hover .rail-d i { background: var(--a); }
-
-.rail-foot { position: relative; padding: 2px 12px 12px 22px; text-align: right; white-space: nowrap; opacity: 0; transition: opacity var(--d-2) var(--ease-out); }
+/* the track's own strip under the rows: a press between rows goes to that place on the page */
+.rail-track-hit { position: absolute; top: 0; bottom: 0; right: 0; width: 44px; }
+.rail-sheet { z-index: 1; pointer-events: none; }   /* between the titles, a press reaches the track */
+.rail-i { pointer-events: auto; }
+.rail > .rail-track { z-index: 2; }
+.rail-foot { position: relative; padding: 4px 30px 10px 22px; text-align: right; white-space: nowrap; opacity: 0; transition: opacity var(--d-2) var(--ease-out); }
 .rail.is-open .rail-foot, .rail:focus-within .rail-foot { opacity: 1; }
 
 .rail.is-drag, html.rail-grab, html.rail-grab * { cursor: grabbing !important; }
-.rail.is-drag .rail-i:hover .rail-d i { background-color: var(--rail-idle); }
-.rail.is-drag .rail-i.done:hover .rail-d i { background: var(--ar); }
-.rail.is-drag .rail-i.on:hover .rail-d i { background: linear-gradient(to left, var(--a) calc(4px + var(--f, 0) * (100% - 4px)), var(--rail-idle) 0); }
 
 /* reduced motion: the panel and titles cross-fade; nothing grows, slides or reveals */
 @media (prefers-reduced-motion: reduce) {
   .rail { transition: none; }
-  .rail-d i { transition: background-color var(--d-1); }
-}
-
-/* ---------- the plain variant (ADR-0013 item 2): the ladder's column without rungs ----------
-   A page or sheet without sections (Home, the Record, a year, a note, 404, the lab) gets a track and a
-   thumb in the same place as the ladder: mid-height on the right edge, the line where the dashes end. The
-   track is quiet; the thumb is the page's accent (every accent is at least 5.5:1 on the ground, 1.4.11)
-   and as long as the share of the page in view. The column takes the pointer 44 px wide; on hover and
-   while dragged the thumb thickens (reduced motion: it only brightens). Touch draws it and leaves the
-   pointer alone (no drag on touch, ADR-0011 item 12). */
-.rail-plain {
-  display: none;
-  position: fixed; z-index: 21; right: 0; top: 50%; translate: 0 -50%;
-  width: 44px; height: min(44vh, 320px); padding: 0;
-  view-transition-name: rail;
-  cursor: default; touch-action: none; user-select: none;
-}
-.rail-track { position: absolute; top: 0; bottom: 0; right: 12px; width: 2px; border-radius: 1px;
-  background: color-mix(in srgb, var(--rail-idle) 45%, transparent);
-  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.4); }
-.rail-thumb {
-  position: absolute; top: 0; right: 0; width: 2px; height: 24px; border-radius: 2px;
-  background: var(--accent);
-  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
-  transition: width var(--d-2) var(--ease-out), right var(--d-2) var(--ease-out), filter var(--d-2);
-  will-change: transform;
-}
-.rail-plain:hover .rail-thumb, .rail-plain.is-drag .rail-thumb { width: 4px; right: -1px; filter: brightness(1.12); }
-.rail-plain.is-drag { cursor: grabbing; }
-@media (prefers-reduced-motion: reduce) {
-  .rail-thumb { transition: filter var(--d-1); }
-  .rail-plain:hover .rail-thumb, .rail-plain.is-drag .rail-thumb { width: 2px; right: 0; }
+  .rail-thumb { transition: filter var(--d-1), background-color var(--d-1); }
+  :is(.rail-plain:hover, .rail-plain.is-drag, .rail.is-drag) .rail-thumb,
+  .rail:has(.rail-track-hit:hover) .rail-thumb { width: 2px; right: 0; }
+  .rail-m { transition: background-color var(--d-1); }
+  .rail-m.on { width: 5px; }
 }
 
 /* ---------- touch: phones and tablets (ADR-0011 item 12) ----------
-   Native scrolling stays; the platform's indicator goes, so it never draws over the ladder. iOS Safari reads
+   Native scrolling stays; the platform's indicator goes, so it never draws over the rail. iOS Safari reads
    only scrollbar-width on the root element for the page's own scroller (WebKit, iOS 18.2 and later: it turns
    the scroll view's indicators off); ::-webkit-scrollbar does not reach it there, but does in other WebKit
-   and Blink builds. Closed, the ladder is one 44 px button at mid-height on
-   the right edge whose dashes (4–10 px, the current one 12 px and filling) sit inside the page gutter, so
-   nothing covers the reading column; vertical swipes over it still scroll the page (touch-action). Open, the
-   titles show as a small sheet beside it, one 44 px row each. Safe areas: it keeps clear of the notch side
-   in landscape. Forced colours: nothing here (the class is never set). */
+   and Blink builds. The bar is the same as on desktop and sits inside the 16 px page gutter (track 6 px from
+   the edge, marks at most 8 px left of it), inset by the safe area. Without sections it never takes the
+   pointer. With them, the bar is one 44 px wide button over the track (vertical swipes still scroll the
+   page: touch-action); a tap opens the titles as a small sheet beside it, one 44 px row each. Forced
+   colours: nothing here (the class is never set). */
 @media (forced-colors: none) {
   html.rail-touch, html.rail-touch .sheet-scroll { scrollbar-width: none; }
   html.rail-touch::-webkit-scrollbar, html.rail-touch .sheet-scroll::-webkit-scrollbar { display: none; }
-  /* the plain variant on touch: drawn inside the gutter, the pointer left to the page */
   html.rail-touch .rail-plain { display: block; right: env(safe-area-inset-right, 0px); pointer-events: none; }
-  html.rail-touch .rail-track { right: 4px; }
   html.rail-touch .sheet > .rail.in-sheet, html.rail-touch .sheet > .rail-plain.in-sheet { right: 0; }
   html.rail-touch .rail {
-    display: flex; align-items: center;
+    display: block; width: 44px;
     right: env(safe-area-inset-right, 0px);
     clip-path: none; transition: none;
   }
-  html.rail-touch .rail::before { opacity: 0; }
-  html.rail-touch .rail.is-open::before { opacity: 1; right: 44px; border-radius: 14px; background: rgba(13, 13, 15, 0.98); }
+  html.rail-touch .rail-track-hit { display: none; }
   html.rail-touch .rail-btn {
-    display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 8px;
-    width: 44px; min-height: 44px; padding: 14px 4px 14px 0; margin: 0;
+    display: block; position: absolute; top: 0; bottom: 0; right: 0;
+    width: 44px; min-height: 44px; padding: 0; margin: 0;
     background: none; border: 0; border-radius: 12px 0 0 12px; color: inherit; cursor: pointer;
     touch-action: pan-y; -webkit-tap-highlight-color: transparent;
   }
   html.rail-touch .rail-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
-  .rail-m {
-    display: block; height: 2px; width: var(--w, 6px); border-radius: 1px;
-    background: var(--rail-idle); box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
-    transition: width var(--d-3) var(--ease-out), background-color var(--d-2);
-  }
-  .rail-m.done { background: var(--ar); }
-  .rail-m.on { width: 12px; background: linear-gradient(to left, var(--a) calc(3px + var(--f, 0) * (100% - 3px)), var(--rail-idle) 0); }
-  html.rail-touch .rail-sheet { display: none; }
+  html.rail-touch .rail-sheet { display: none; pointer-events: auto; }
   html.rail-touch .rail.is-open .rail-sheet {
-    display: block; position: relative; margin-right: 8px;
+    display: block; position: absolute; right: 52px; top: 50%; translate: 0 -50%; margin: 0;
+    width: max-content;
     max-width: calc(100vw - 44px - 8px - 16px - env(safe-area-inset-right, 0px));
-    /* a phone on its side can be shorter than the titles: the sheet scrolls itself rather than the ladder going */
+    /* a phone on its side can be shorter than the titles: the sheet scrolls itself rather than the rail going */
     max-height: calc(100dvh - 32px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
     overflow-y: auto; overscroll-behavior: contain;
+    background: rgba(13, 13, 15, 0.98); border-radius: 14px; box-shadow: inset 0 0 0 1px var(--rule), 0 12px 40px -12px #000;
   }
-  html.rail-touch .rail-list { padding: 6px 0 0; }
+  html.rail-touch .rail-sheet::before { display: none; }
+  html.rail-touch .rail-list { padding: 6px 0 0; min-height: 0; }
+  html.rail-touch .rail-list > li { margin-top: 0; }
   html.rail-touch .rail-i { height: 44px; padding: 0 16px; justify-content: flex-start; font-size: 15px; }
-  html.rail-touch .rail-i .rail-d { display: none; }
   html.rail-touch .rail-t { opacity: 1; max-width: none; min-width: 0; }
   html.rail-touch .rail-i.on { box-shadow: inset 3px 0 0 var(--a); }
   html.rail-touch .rail-foot { opacity: 1; text-align: left; padding: 2px 16px 12px; }
-}
-@media (forced-colors: none) and (prefers-reduced-motion: reduce) {
-  .rail-m { transition: background-color var(--d-1); }
 }
