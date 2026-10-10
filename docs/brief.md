@@ -234,3 +234,20 @@ log design are to be explored.
 - **Grain stays** in the portfolio. Recto's "grain ban" is a misrecording: the owner had asked to
   fix the glass object's wrong render and its banding, not to ban grain.
 - **Scroll rail:** concept B, the contents ladder.
+
+### 2026-10-10 (phone check)
+
+- **Pace:** normal usage now; start low (a few agents at once), protect the weekly limit; the owner
+  raises it when needed. When portfolio work waits on the owner, research for English Prep and
+  Recto may move ahead (no code changes there).
+- **Phone verdict:** everything looks good. Bugs: while scrolling, objects flash a white light
+  (the still-to-video switch); phone objects are not lively enough; the owner wants turning,
+  moving pre-rendered objects like prototype A's spinning letters.
+- **ID card:** very good. On desktop it should be more interactive: pull it by its lanyard, swing
+  and spin it (like GitHub's event badges). The phone's simple flip is fine.
+- **Scroll rail:** bring the ladder to phones too.
+- **Home:** has nothing visual of the owner, only "edk"; how to add identity is open (with the
+  four-rooms findings).
+- **Record:** the object looks too small.
+- **Photos:** five more (metro platform, metro mirror selfie, Bostancı in rain, two kitten sunsets)
+  in `content/photos/`, to use where they fit.
