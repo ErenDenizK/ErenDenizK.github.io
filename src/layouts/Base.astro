@@ -96,8 +96,9 @@ const graph = [
       var d = document.documentElement;
       d.classList.add('js');
       /* the contents ladder replaces the native scrollbar only where it will be drawn (ADR-0011): a page
-         that has one, a fine pointer, no forced colours. Set now, so the page never shifts sideways. */
-      if (d.hasAttribute('data-rail') && matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(forced-colors: active)').matches) d.classList.add('rail-on');
+         that has one, no forced colours; rail-on for a fine pointer, rail-touch (the slim ladder, item 12)
+         otherwise. Set now, so the page never shifts sideways and iOS hides its indicator from the start. */
+      if (d.hasAttribute('data-rail') && !matchMedia('(forced-colors: active)').matches) d.classList.add(matchMedia('(hover: hover) and (pointer: fine)').matches ? 'rail-on' : 'rail-touch');
       /* arriving through the droplet (scripts/media.ts): hide the poster from the first paint */
       try {
         var at = +sessionStorage.getItem('edk-droplet');
