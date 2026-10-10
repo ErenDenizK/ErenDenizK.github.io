@@ -1,7 +1,7 @@
 # ADR-0008: The About ID card and the postcard are CSS 3D objects with a small spring loop
 
-**Status:** accepted 2026-10-10 (owner: "very good"; the rope was asked for and built). Item 7, the
-composition over the courtyard, stays open: the mini-CV About may move it. The desktop card was made
+**Status:** accepted 2026-10-10 (owner: "very good"; the rope was asked for and built). Items 7 and 8 were
+amended 2026-10-10 evening (About as an article; postcards in public). The desktop card was made
 calmer on 2026-10-10 (amendment below; the owner's look check is pending). Technique decided by the agent (CLAUDE.md) · **Rests on:** brief §7 (2026-10-09 after v0: "About
 photo: both a digital ID card like event badges on About, and postcards for photo entries later"; after
 E: "the courtyard photo should carry About"; 2026-10-10: "ID card: very good; on desktop more interactive:
@@ -92,6 +92,25 @@ all (before: up to 2313°/s and 584-1465°), the swing peaked at 11-20° (26-33�
 8-12 px measured along its curve (38-99 px), and the card settled within 1 px and 0.5° in 1.7-3.0 s
 (3.1-3.9 s). Settle times vary with headless frame pacing (the loop clamps a frame at 50 ms); on a
 60 Hz screen they sit at the low end. A straight pull and yank settles in 0.4-0.9 s (before: stuck).
+
+## Amendment 2026-10-10 (evening): About as an article, postcards in public
+
+The owner (brief, About, 2026-10-10 evening): "an about-me article; more photos, in the postcard style;
+the ID card keeps the current photo". Items 7 and 8 change:
+
+- **Composition (item 7).** The courtyard no longer carries the page. About opens with the card beside a
+  short introduction (wide screens: the card in the margin column, its room to swing running from the end
+  of the introduction to the page's edge, `.about-badge`); on phones the card comes first, centred, in the
+  first screen, and the heading follows. Chapters follow in the Record's reading style, and they are the
+  rail's rungs (ADR-0013). The gate selfie still appears only on the card.
+- **Postcards (item 8).** `Postcard.astro` is now used on About: one postcard stands in a chapter's margin,
+  two or three form a row. Photos, notes and places are content (`about.chapters[].photos` in
+  `content/site.json`); a date is optional and left out where it is not known (the postmark then rings
+  the place alone). `tools/photos/postcards.mjs` resizes the full-resolution originals to 480, 760 and
+  1080 px (never past the original), with no metadata; each placement's `sizes` matches its drawn width,
+  so a 3x phone and a 2x desktop never stretch a file (tested in `tests/e2e/about.spec.ts`). The card's
+  photo gained a 960 px file for 3x phones for the same reason.
+- The postcard workbench (`/lab/postcard/`) stays as a hidden test page.
 
 ## Consequences
 
