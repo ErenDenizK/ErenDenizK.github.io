@@ -1,5 +1,8 @@
 # Research: the Record's object (2026-10-09)
 
+**Status:** superseded 2026-10-10. C2 shipped, then the owner rejected the design; next: H2 again or
+a tape/cassette player (`docs/PLAN.md` track 8).
+
 **Why:** brief §7 (2026-10-09, after seeing v0): "the microphone looks too simple; rethink it
 from every angle." The family audit (C3) adds that the objects read as glossy, toy-like generic
 symbols rather than crafted things in their subject's language. This file proposes three

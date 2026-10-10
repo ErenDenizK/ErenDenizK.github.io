@@ -1,6 +1,9 @@
 # Research: how live 3D sites look premium and stay consistent (2026-10-09)
 
-Track 1 of `PLAN.md`. Question: the owner judges the in-page objects of prototype E weaker than
+**Status:** current reference. The evidence base if real-time 3D returns on desktop (`docs/PLAN.md`
+track 7).
+
+Track 1 of `docs/history/plan-2026-10-craft-round.md`. Question: the owner judges the in-page objects of prototype E weaker than
 their Cycles posters (brief §7, 2026-10-09: "lighting is the bar"). How do the best 3D sites look
 premium, keep many objects consistent, and what should this site do?
 

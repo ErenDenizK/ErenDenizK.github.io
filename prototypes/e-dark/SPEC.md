@@ -1,5 +1,8 @@
 # Prototype E: dark D with tabs, focus views and objects
 
+**Status:** history (2026-10-10). Prototype E's spec; "`docs/brief.md` §7" now means
+`docs/history/brief-log.md` §7.
+
 Read first: `docs/brief.md` (all amendments), `docs/adr/0003`, `0005`,
 `docs/research/2026-10-requirements.md`, `2026-10-ux-patterns.md`, `2026-10-3d-objects.md`,
 and `prototypes/d-quiet/index.html` (the chosen direction's feeling).

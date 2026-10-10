@@ -1,5 +1,8 @@
 # Research: logo design with an agent, and the tools around it (2026-10-09)
 
+**Status:** current, open. App logos are now explicitly needed (owner, 2026-10-10; `docs/PLAN.md`
+track 10). Paths under `scratchpad/` cited here were session scratch, not kept.
+
 **Why:** brief §7 (2026-10-09, "Home hierarchy"): Recto will later get a professional logo, and
 the owner asks what tools could make 2D logo work strong. In conversation the owner added: how
 good is Claude at 2D logos, which skills, apps or free alternatives could connect to it, which

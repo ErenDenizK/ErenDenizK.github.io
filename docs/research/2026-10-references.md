@@ -1,5 +1,7 @@
 # Research: design references (2026-10-08)
 
+**Status:** history. Early references for the first prototypes.
+
 The researcher's fetch tool reached only github.com, so liveness is marked:
 **[GH]** repo opened, **[S]** described live in 2025–26 sources, **[K]** prior knowledge,
 not re-checked. Open [K] links in a browser before citing them.
