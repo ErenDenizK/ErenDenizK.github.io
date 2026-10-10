@@ -209,8 +209,9 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
 
 /* ---------- media stage: poster first, moving media later (MEDIA manifest, SPEC.md) ----------
    Media is encoded with the ground subtracted and drawn with plus-lighter, so the ground is exact
-   (media research §3.1, §8.3). .m-layer never forms a stacking context: morphs and the
-   pointer parallax animate the blended elements themselves (scale/opacity by WAAPI, translate here). */
+   (media research §3.1, §8.3). .m-layer forms a stacking context only while it floats, and is then
+   itself added with plus-lighter (below); morphs and the pointer parallax animate the blended elements
+   themselves (scale/opacity by WAAPI, translate here). */
 .media { position: relative; aspect-ratio: 1; width: 100%; --mx: 0; --my: 0; --gx: 50%; --gy: 40%; }
 /* The stage is one additive group: the glow and the subtracted media inside it add up, and the group
    adds onto the ground. Needed because a view-transition-name (the stage morphs between pages, ADR-0007)
@@ -234,7 +235,7 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
   -webkit-mask-image: radial-gradient(closest-side, #000 60%, rgba(0, 0, 0, 0.75) 80%, transparent 100%); mask-image: radial-gradient(closest-side, #000 60%, rgba(0, 0, 0, 0.75) 80%, transparent 100%);
 }
 /* Layers are additive (plus-lighter), so exactly one shows at rest and changes are crossfades:
-   poster, then the idle loop, the lean canvas over it while the pointer moves, a clip over everything. */
+   poster (or a phone's spin loop), the lean canvas once the pointer comes near, a clip over everything. */
 .media .m-layer > video, .media .m-layer > canvas { opacity: 0; }
 .media .m-layer.video-on > video.m-idle { opacity: 1; }
 .media .m-layer.video-on img { opacity: 0; }
@@ -268,6 +269,38 @@ html[data-arrive] .media.stage .m-layer img { animation: hold-hidden 1.6s step-e
 .media .m-layer.dropping > .m-live, .media .m-layer.arriving > .m-live { opacity: 0; transition: none; }
 .media.live-on .m-glint { display: none; }
 .media.live-on .m-shadow { opacity: var(--live-shadow, 1); transition: none; }
+/* The float (scripts/media.ts; site audit 2026-10-10 §3, real-time 3D study option a): it replaced the
+   idle loop, which was crossfaded from 2° stills and pulsed in sharpness four times a second. The layer
+   that shows the exact poster (or lean frame, or clip) moves as a whole on three incommensurate slow
+   sines, E's bob, sway and roll at the live engine's amplitudes (0.55 % and 0.18 % of the square,
+   0.25°): transform only, nothing redrawn, never a blend of frames. Each sine is a four-step keyframe
+   eased like a sine (fast through the middle, slow at the ends) and starts from rest at zero. A
+   floating layer is its own group, so it is added onto the stage as a whole. The phase is shared by
+   every layer of a slot (media.ts sets animation-delay); offscreen it pauses where it is. */
+.media.floating .m-layer { mix-blend-mode: plus-lighter;
+  animation: m-bob 6.98s linear infinite, m-sway 11.86s linear infinite, m-roll 8.85s linear infinite; }
+.media.float-off .m-layer { animation-play-state: paused; }
+@keyframes m-bob {
+  0% { translate: 0 0; animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1); }
+  25% { translate: 0 -0.55%; animation-timing-function: cubic-bezier(0.12, 0, 0.39, 0); }
+  50% { translate: 0 0; animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1); }
+  75% { translate: 0 0.55%; animation-timing-function: cubic-bezier(0.12, 0, 0.39, 0); }
+  100% { translate: 0 0; }
+}
+@keyframes m-sway {
+  0% { transform: translateX(0); animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1); }
+  25% { transform: translateX(0.18%); animation-timing-function: cubic-bezier(0.12, 0, 0.39, 0); }
+  50% { transform: translateX(0); animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1); }
+  75% { transform: translateX(-0.18%); animation-timing-function: cubic-bezier(0.12, 0, 0.39, 0); }
+  100% { transform: translateX(0); }
+}
+@keyframes m-roll {
+  0% { rotate: 0deg; animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1); }
+  25% { rotate: 0.25deg; animation-timing-function: cubic-bezier(0.12, 0, 0.39, 0); }
+  50% { rotate: 0deg; animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1); }
+  75% { rotate: -0.25deg; animation-timing-function: cubic-bezier(0.12, 0, 0.39, 0); }
+  100% { rotate: 0deg; }
+}
 img.blend { mix-blend-mode: plus-lighter; }
 /* CSS-only life: a glint that follows the pointer, masked by the poster's own light, and one slow sweep on arrival */
 .media .m-glint { position: absolute; inset: 0; pointer-events: none; opacity: 0; mix-blend-mode: screen;
@@ -513,6 +546,7 @@ html.vt-sheet::view-transition-old(root), html.vt-sheet::view-transition-new(roo
 @media (prefers-reduced-motion: reduce) {
   :root { --d-1: 1ms; --d-2: 120ms; --d-3: 150ms; --d-4: 150ms; --d-5: 150ms; }
   .media .m-layer img, .media .m-layer > video, .media .m-layer > canvas { translate: none; }
+  .media .m-layer { animation: none !important; }
   .teaser::before, .tile::before, .bar { transition-duration: 1ms; }
   .media.sweep .m-glint { animation: none; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }

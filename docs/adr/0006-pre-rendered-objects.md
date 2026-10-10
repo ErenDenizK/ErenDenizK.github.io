@@ -3,7 +3,8 @@
 **Status:** accepted 2026-10-09 (owner: "fake it with very high-resolution photos and video; a
 still first, the moving version behind it"); **under review 2026-10-10:** the owner finds the
 objects stutter in tiny movements and may bring real-time 3D back on desktop once the performance
-difference is reported (brief, "Look, motion and objects"; `docs/PLAN.md` track 7). A new ADR would
+difference is reported (brief, "Look, motion and objects"; `docs/PLAN.md` track 7); the stutter
+causes inside this pipeline were fixed on 2026-10-10 (amendment below). A new ADR would
 supersede item 7 and ADR-0001 item 2 · **Amends:** ADR-0005 items 2 and 3 ·
 **Rests on:** brief §7 (2026-10-09, after prototype E); `research/2026-10-render-bakeoff.md`,
 `research/2026-10-3d-quality.md`, `research/2026-10-media.md`
@@ -41,6 +42,47 @@ Premium 3D sites mostly pay for the look offline and keep real time thin.
    Save-Data, or a rejected `play()` (Low Power Mode): poster only, no play button.
 7. **Real-time GLBs** stay in `tools/objects/` as the source and for later experiments, but the
    site does not ship three.js for objects.
+
+## Amendment 2026-10-10: stutter fixes inside the pre-rendered pipeline (option a)
+
+The real-time 3D study (`research/2026-10-realtime-3d.md` §1, option a) and the site audit
+(`research/2026-10-site-audit.md` §3-4) traced the "tiny stuttering movements" to causes inside this
+pipeline. Fixed in `src/scripts/media.ts`, `src/scripts/lean.ts` and `global.css`; technique decided
+by the agent, the look of the float is the owner's to judge.
+
+- **Items 1 and 6, the idle:** the idle loop is no longer played. It was built from crossfaded 2°
+  stills (sharpness pulsing 4:1 about four times a second) and had a seam every 6 s (edk: last-to-first
+  step 3.2x the median). In its place the **float**: the layer showing the exact poster (or lean frame)
+  moves as a whole on three slow sines (bob 0.55 % of the square, sway 0.18 %, roll 0.25°; periods
+  7.0, 11.9 and 8.9 s, the live engine's), transform only. A CSS animation is not refused by Low Power
+  Mode the way `video.play()` is. Phones and tablets keep a real-rendered spin where the manifest has
+  one (edk; its seam is 0.15x a step). `?idle=blend` brings the old loop back for comparison. The idle
+  files stay in the manifests and on disk, unfetched.
+  Measured on the Home object at rest, 60 screenshots over 4-11 s, Laplacian variance over the
+  object: DPR 1 max/min 4.58 → 2.01 (the rest is sub-pixel resampling of a moving exact frame);
+  DPR 2 4.28 → 1.38.
+- **Item 3, decoded frames (amended):** where the lean canvas shows more pixels than the half-size
+  frames have (more than 1.1x: DPR 2, or the large Work slots), the full-size files are fetched in the
+  background after the half grid and decoded at the canvas's own size around the current pose, in an
+  LRU capped at 40 MB per object (8-30 frames), and the lean blends those, never a mix of sizes. So
+  moving and resting are equally sharp: no soft-to-sharp pop when the hand stops (edk at DPR 2: 93 of
+  93 frames of a slow sweep drawn from full-size frames). Cost: the full tier per leaned object
+  (0.41-0.65 MB of AVIF), while the 0.2-0.26 MB idle video is no longer fetched.
+- **Item 4, interaction (amended):** the lean answers a pointer near the object only: full lean at one
+  object width from its centre, faded out between 1 and 1.8 widths; a pointer that leaves the window
+  returns it to rest; a scroll re-aims it. It moves on a spring (ζ 0.9, about 300 ms), so the pose
+  never changes speed in a step. 90 ms after the pointer rests, the target moves to an exact cell
+  chosen ahead in the direction of travel (unless that is more than 0.7 of a cell away), so the settle
+  is the tail of the hand's movement: measured after a stop, backtrack 0.003 of a cell (before: a
+  0.33-cell turn back starting 300 ms after the stop) and the exact frame at about 360 ms (before:
+  958 ms, then a sharpness step). With no idle loop there is no handoff between lean and idle and no
+  hidden video under the lean. A press while leaning glides to the rest pose first (stiff, critically
+  damped, about 250 ms) and the clip starts there (measured within 0.1 of a cell of the centre); the
+  lean resumes from the rest pose afterwards.
+- **Item 5, droplet:** the melt plays at its own rate (24 frames at 60 fps, 400 ms) instead of 1.143x.
+- **Not done:** a 1° yaw grid. Moving the hand still crossfades between 2° columns (the remaining
+  stepping, only while the hand moves); halving it costs a night of Blender renders and doubles the
+  grid bytes per object. Left for the owner's eye on a real screen first.
 
 ## Consequences
 

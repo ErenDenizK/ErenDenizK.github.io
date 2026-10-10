@@ -1,8 +1,8 @@
 # ADR-0008: The About ID card and the postcard are CSS 3D objects with a small spring loop
 
 **Status:** accepted 2026-10-10 (owner: "very good"; the rope was asked for and built). Item 7, the
-composition over the courtyard, stays open: the mini-CV About may move it; the owner also wants the
-desktop card calmer (brief, 2026-10-10). Technique decided by the agent (CLAUDE.md) · **Rests on:** brief §7 (2026-10-09 after v0: "About
+composition over the courtyard, stays open: the mini-CV About may move it. The desktop card was made
+calmer on 2026-10-10 (amendment below; the owner's look check is pending). Technique decided by the agent (CLAUDE.md) · **Rests on:** brief §7 (2026-10-09 after v0: "About
 photo: both a digital ID card like event badges on About, and postcards for photo entries later"; after
 E: "the courtyard photo should carry About"; 2026-10-10: "ID card: very good; on desktop more interactive:
 pull it by its lanyard, swing and spin it, like GitHub's event badges; the phone's simple flip is fine"),
@@ -66,6 +66,32 @@ transforms driven by a small script.
 8. **The postcard is not public yet.** `src/components/Postcard.astro` is shown only on `/lab/postcard/`,
    which is linked from nowhere, `noindex`, and filtered out of the sitemap. Photo entries in the record
    will use it once the owner sends photographs for them.
+
+## Amendment 2026-10-10: calmer, and the rope can be taken
+
+The owner (brief, 2026-10-10): "playable and good but goes wild; extreme input gets extreme
+reactions". Every reaction now saturates instead of growing with the input (`card3d.ts`):
+
+| | Before | After |
+|---|---|---|
+| Throw (release speed) | clamped at 3000 px/s per axis | 1200 px/s, direction kept |
+| Spin | `tw·4 + vx·0.7`, up to about 1900°/s, friction 1.4/s (about 3 turns) | only for a quick, mostly sideways throw (over 600 px/s, 1.5x its vertical part); capped at 720°/s, also for button turns; friction 2.5/s (half a turn to a turn) |
+| Twist while held | ±28° | ±12°; the swing's twist ±10° (was ±22°) |
+| Strap stretch | a box around the rest: a sideways pull stretched it 30-47 % | at most 8 px past its length in any direction, on a soft limit (the hand slips past); a rope point held mid-strap is held within its length too |
+| Swing | clamp at 1 rad (57°) | soft limit, saturating at 0.52 rad (30°) |
+| Walls | velocity killed at the limit | a spring over the last 40 px (900/s²), then a bounce (restitution 0.3) |
+| Damping | swing ζ 0.6, card on the rope ζ 0.7, landing ζ 0.6 | 0.9, 0.9, 0.75 |
+| Slack rope | constraints pushed as well as pulled: a straight yank left the card propped in mid-air on its own strap | a rope pulls and never pushes |
+
+The rope's hit stroke (`[data-rope-hit]`) was looked up inside the `<defs>`, so pressing the rope
+did nothing (audit B1); it now takes the nearest rope point.
+
+Measured at 1440×900 in headless Chromium (`card.mjs` in the session scratch; each scenario on a fresh
+page; turn speed over 50 ms windows of rAF time): a hard fling turned at 611-713°/s for 221-232° in
+all (before: up to 2313°/s and 584-1465°), the swing peaked at 11-20° (26-33°), the rope grew by
+8-12 px measured along its curve (38-99 px), and the card settled within 1 px and 0.5° in 1.7-3.0 s
+(3.1-3.9 s). Settle times vary with headless frame pacing (the loop clamps a frame at 50 ms); on a
+60 Hz screen they sit at the low end. A straight pull and yank settles in 0.4-0.9 s (before: stuck).
 
 ## Consequences
 

@@ -21,9 +21,9 @@ Every track below is reviewed for its purpose, its reason and a designer's disci
 | 2 | About as a mini CV | the ID card with written descriptions under it; detailed, CV-style; quieter than now | open |
 | 3 | One scrollbar everywhere | one custom scrollbar on every page and in the project sheet; no native bar left (ADR-0011 revision first) | built 2026-10-10 (ADR-0013), in review |
 | 4 | Istanbul + clock | bring the detail back (`content/site.json` already has `about.kicker` "About · Istanbul") | built 2026-10-10 ("Istanbul HH:MM" in the bar, desktop; ADR-0013 item 9), in review |
-| 5 | ID card calmer | keep it playable; damp extreme input so it no longer goes wild | open |
-| 6 | edk object bug | find and fix where it glitches and looks unclean | open |
-| 7 | Object stutter and real-time 3D | measure the pre-rendered stutter vs a real-time desktop tier; report the performance difference to the owner, who decides (ADR-0006 under review) | open: study first |
+| 5 | ID card calmer | keep it playable; damp extreme input so it no longer goes wild | built 2026-10-10 (ADR-0008 amendment); owner's look check |
+| 6 | edk object bug | find and fix where it glitches and looks unclean | built 2026-10-10 (ADR-0006 amendment); owner's look check |
+| 7 | Object stutter and real-time 3D | measure the pre-rendered stutter vs a real-time desktop tier; report the performance difference to the owner, who decides (ADR-0006 under review) | study done; option (a) built 2026-10-10 (float, sharp lean, no self-turn); 1° grid and real time wait for the owner |
 | 8 | Record object redesign | try H2 (the recorder) again or a tape/cassette player | open |
 | 9 | Photo placement | high-resolution derivatives only; one cat photo, never both; About first, Home possible | open |
 | 10 | Screenshots and logos | app captures and app logos (or 3D logos) beside the objects, once the apps are presentable in their own chats | open: waits on the app chats |
