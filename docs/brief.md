@@ -251,3 +251,14 @@ log design are to be explored.
 - **Record:** the object looks too small.
 - **Photos:** five more (metro platform, metro mirror selfie, Bostancı in rain, two kitten sunsets)
   in `content/photos/`, to use where they fit.
+- **How to ask (2026-10-10):** the owner cannot read the research files closely; every question
+  comes with a short plain brief of the situation first.
+- **English Prep handover is weaker than Recto's:** sessions there hallucinate more; be careful;
+  Recto's documentation is the model.
+- **iPhone:** the phone ladder and Safari's own scroll indicator overlap; only the custom ladder
+  should remain.
+- **Home vs About:** About introduces the owner better than Home and feels like the real front
+  page; re-evaluate the two as a flow, or make Home far more striking.
+- **Page worlds, more radical:** each page should feel different in system and setup, not only
+  light or sliding text (examples given only to illustrate: a workbench, a photo album), while the
+  site stays one whole.
