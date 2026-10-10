@@ -130,8 +130,18 @@ test.describe('spin loop and float', () => {
     await page.goto('');
     const stage = page.locator('.media.stage');
     await expect(stage).toHaveClass(/floating/, { timeout: 20_000 });
-    /* bob, sway and roll run on the layer, transform only */
-    expect(await stage.locator('.m-layer').evaluate((l) => l.getAnimations().map((a) => (a as CSSAnimation).animationName).sort())).toEqual(['m-bob', 'm-roll', 'm-sway']);
+    /* one bob runs on the layer: translate only, every step a whole number of device pixels (never a
+       fraction, never a turn: either resamples the bitmap, ADR-0006 amendment of 2026-10-10, evening) */
+    const bob = await stage.locator('.m-layer').evaluate((l) => l.getAnimations().map((a) => ((a as Animation).effect as KeyframeEffect).getKeyframes().map((k) => ({ ...k }))));
+    expect(bob).toHaveLength(1);
+    const props = new Set(bob[0].flatMap((k) => Object.keys(k).filter((p) => !['offset', 'easing', 'composite', 'computedOffset'].includes(p))));
+    expect([...props]).toEqual(['translate']);
+    const dpr = await page.evaluate(() => devicePixelRatio);
+    for (const k of bob[0]) {
+      const [x, y] = String(k.translate).split(' ').map(parseFloat);
+      expect(x).toBe(0);
+      expect(Math.abs(y * dpr - Math.round(y * dpr))).toBeLessThan(1e-6);
+    }
     await page.waitForTimeout(1500);
     await expect(page.locator('.media video.m-idle')).toHaveCount(0);
     await ctx.close();
