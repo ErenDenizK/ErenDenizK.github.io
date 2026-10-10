@@ -23,6 +23,10 @@ captures:
   - { id: results-phone }
   - { id: about }
 clip: { id: signature, phone: signature-phone }
+reel:
+  - { id: home, phone: home-phone }
+  - { id: lesson, phone: lesson-phone }
+  - { id: question, phone: question-phone }
 what:
   text: Article-led lessons, each a contrast (“Present Perfect vs Past Simple”), then paragraph-cloze tests with explained feedback. Built for learners who already speak English and lack the labels.
   numbers:

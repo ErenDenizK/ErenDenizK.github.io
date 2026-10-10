@@ -5,7 +5,9 @@
    captures, the signature clip, the case sections in the maker's voice), and the foot (credits).
    The same article is the standalone page /work/<slug>/ and, on wide screens with JavaScript, the
    sheet over Work or Home. A project without a world.json keeps the house ground throughout. Its sections
-   are the rail's rungs, on the page and in the sheet (ADR-0013 item 3): the porch, then each written section. */
+   are the rail's rungs, on the page and in the sheet (ADR-0013 item 3): the porch, then each written section.
+   The porch names the product by its wordmark, as Work and Home do (ADR-0014), so the title that morphs
+   from Work's chapter into the sheet keeps its face. */
 import Media from './Media.astro';
 import Icon from './Icon.astro';
 import Section from './Section.astro';
@@ -13,6 +15,7 @@ import ThreadRow from './ThreadRow.astro';
 import LogRow from './LogRow.astro';
 import Capture from './Capture.astro';
 import Clip from './Clip.astro';
+import Wordmark from './Wordmark.astro';
 import { url, projectPath, ym, isPlaceholder, threads, getSite, type Project, type LogEntry } from '../lib/site';
 import { getWorld, worldVars, field, shot, type Shot } from '../lib/world';
 interface Props { p: Project; prev: Project; next: Project; index: number; total: number; entries: LogEntry[]; allEntries: LogEntry[]; projects: Project[] }
@@ -60,7 +63,7 @@ const light = world ? field(p.id, world) : null;
   <div class="case-top" data-rail-sec={d.title}>
     <div>
       <p class="meta">{statusLine}</p>
-      <h1 class="case-title" id="focus-title" tabindex="-1">{d.title}</h1>
+      <h1 class="case-title" id="focus-title" tabindex="-1"><Wordmark project={p} /></h1>
       <p class="oneliner lede">{d.summary}</p>
       <div class="links">
         {d.links.map((l, i) => i === 0 && l.kind === 'live'
