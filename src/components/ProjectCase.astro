@@ -4,7 +4,8 @@
    threshold into the product's ground, the embassy in the product's own world (its promise, real
    captures, the signature clip, the case sections in the maker's voice), and the foot (credits).
    The same article is the standalone page /work/<slug>/ and, on wide screens with JavaScript, the
-   sheet over Work or Home. A project without a world.json keeps the house ground throughout. */
+   sheet over Work or Home. A project without a world.json keeps the house ground throughout. Its sections
+   are the rail's rungs, on the page and in the sheet (ADR-0013 item 3): the porch, then each written section. */
 import Media from './Media.astro';
 import Icon from './Icon.astro';
 import Section from './Section.astro';
@@ -55,8 +56,8 @@ const statusLine = [d.status, d.version && !isPlaceholder(d.version) ? d.version
 const live = d.links[0]?.kind === 'live' ? d.links[0] : null;
 const light = world ? field(p.id, world) : null;
 ---
-<article class:list={['case', { 'has-world': !!world }]} data-case={p.id} data-index={index + 1} data-total={total} data-title={d.title} style={vars}>
-  <div class="case-top">
+<article class:list={['case', { 'has-world': !!world }]} data-case={p.id} data-index={index + 1} data-total={total} data-title={d.title} data-rail-accent={a.color} style={vars}>
+  <div class="case-top" data-rail-sec={d.title}>
     <div>
       <p class="meta">{statusLine}</p>
       <h1 class="case-title" id="focus-title" tabindex="-1">{d.title}</h1>
@@ -112,7 +113,7 @@ const light = world ? field(p.id, world) : null;
               ? <div class="shots-row">{g.map((x) => <Capture s={x} />)}</div>
               : <Capture s={g[0]} />)];
             return written(s) ? (
-              <section class="case-sec" id={id} aria-labelledby={`${id}-h`}>
+              <section class="case-sec" id={id} aria-labelledby={`${id}-h`} data-rail-sec={label}>
                 <h2 id={`${id}-h`}>{label}</h2>
                 <Section s={s} />
                 {shotsHere}
@@ -120,7 +121,7 @@ const light = world ? field(p.id, world) : null;
             ) : shotsHere.length > 0 && <div class="case-shots">{shotsHere}</div>;
           })}
           {entries.length > 0 && (
-            <section class="case-sec" id="in-the-record" aria-labelledby="in-the-record-h">
+            <section class="case-sec" id="in-the-record" aria-labelledby="in-the-record-h" data-rail-sec="In the record">
               <h2 id="in-the-record-h">In the record</h2>
               {thread && <div class="threads case-thread"><ThreadRow t={thread} /></div>}
               <ol class="entries spine">{entries.map((e) => <LogRow e={e} projects={projects} compact />)}</ol>
