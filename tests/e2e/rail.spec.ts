@@ -1,7 +1,7 @@
 /* The contents ladder (ADR-0011): sections from the page, the native bar hidden without a shift only
    where the rail is drawn, keyboard reach and a visible focus ring, drag mapped section by section,
    contrast of every dash, the platform's own scrollbar back for forced colours and no JavaScript, and
-   the touch ladder (native indicator kept, a sheet on tap). The essay's rail (replacing its contents list) is checked in fixtures.spec.ts. */
+   the touch ladder (the platform indicator hidden so it never overlaps, a sheet on tap). The essay's rail (replacing its contents list) is checked in fixtures.spec.ts. */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone, settle } from './helpers';
 
@@ -180,22 +180,24 @@ test.describe('the platform scrollbar stays', () => {
   });
 });
 
-/* Touch (ADR-0011 item 12): the native indicator and native scrolling stay; a slim ladder sits inside the
-   right gutter as one 44 px button; a tap opens the titles as a small sheet, a title goes there and closes it. */
+/* Touch (ADR-0011 item 12): native scrolling stays and the platform's indicator is hidden through the root's
+   scrollbar-width (the one switch iOS Safari reads for the page scroller), so it never draws over the ladder;
+   a slim ladder sits inside the right gutter as one 44 px button; a tap opens the titles as a small sheet, a
+   title goes there and closes it. */
 test.describe('touch: the slim ladder', () => {
   for (const [size, opts] of [['tablet', tablet], ['phone', phone]] as const) {
-    test(`touch (${size}): native indicator, a ladder in the gutter, a sheet on tap`, async ({ browser }) => {
+    test(`touch (${size}): no platform indicator, a ladder in the gutter, a sheet on tap`, async ({ browser }) => {
       const ctx = await browser.newContext(opts);
       const page = await ctx.newPage();
       for (const path of ['work/', 'about/']) {
         await page.goto(path + '?still'); await settle(page, 300);
         const r = await rail(page);
-        expect(r, `/${path}`).toMatchObject({ on: false, drawn: true, bar: 'auto' });
+        expect(r, `/${path}`).toMatchObject({ on: false, drawn: true, bar: 'none', gutter: 0 });
         expect(r.over).toBeLessThanOrEqual(0);
         const g = await page.evaluate(() => {
           const b = document.querySelector<HTMLElement>('.rail-btn')!.getBoundingClientRect();
           const marks = [...document.querySelectorAll<HTMLElement>('.rail-m')].map((m) => m.getBoundingClientRect());
-          const W = document.documentElement.clientWidth;   // a classic bar (tablet here) stays: the ladder sits beside it
+          const W = document.documentElement.clientWidth;
           const gut = parseFloat(getComputedStyle(document.querySelector('.page')!).paddingRight) || 16;
           return { w: b.width, h: b.height, right: W - b.right, inGutter: marks.every((m) => m.left >= W - gut), sheet: getComputedStyle(document.querySelector('.rail-sheet')!).display };
         });
@@ -236,4 +238,37 @@ test.describe('touch: the slim ladder', () => {
       await ctx.close();
     });
   }
+});
+
+/* the bar is hidden before first paint on touch too (classic bars here, so a late hide would narrow the page),
+   and a phone on its side keeps the ladder: iOS does not bring its indicator back once it is hidden */
+test.describe('touch: hidden from the start, kept on its side', () => {
+  test('tablet: constant client width during load', async ({ browser }) => {
+    const ctx = await browser.newContext(tablet);
+    const page = await ctx.newPage();
+    await page.addInitScript(() => {
+      const w: number[] = [];
+      (window as unknown as { __w: number[] }).__w = w;
+      const tick = () => { if (document.documentElement) w.push(document.documentElement.clientWidth); if (w.length < 120) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    });
+    await page.goto('work/?still'); await settle(page, 600);
+    const w = await page.evaluate(() => (window as unknown as { __w: number[] }).__w);
+    expect(new Set(w).size, `widths seen: ${[...new Set(w)].join(', ')}`).toBe(1);
+    expect(w[0]).toBe(1180);
+    await ctx.close();
+  });
+  test('phone turned on its side: the ladder stays, its sheet fits', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...phone });
+    const page = await ctx.newPage();
+    await page.goto('work/?still'); await settle(page, 300);
+    await page.setViewportSize({ width: 844, height: 320 });
+    await settle(page, 300);
+    expect(await rail(page)).toMatchObject({ drawn: true, bar: 'none' });
+    await page.tap('.rail-btn');
+    const box = await page.locator('.rail-sheet').boundingBox();
+    expect(box!.y).toBeGreaterThanOrEqual(0);
+    expect(box!.y + box!.height).toBeLessThanOrEqual(320);
+    await ctx.close();
+  });
 });

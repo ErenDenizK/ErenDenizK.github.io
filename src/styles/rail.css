@@ -2,8 +2,8 @@
    scrollbar goes only where the rail really is: html.rail-on is set before first paint by the head
    script (layouts/Base.astro) and only for a fine pointer without forced colours; the media query below
    repeats both conditions, so forced colours bring the platform's bar back even if the class stays.
-   Without JavaScript nothing here applies. Touch (html.rail-touch, ADR-0011 item 12) keeps the native
-   indicator and draws its own slim ladder, at the end of this file. */
+   Without JavaScript nothing here applies. Touch (html.rail-touch, ADR-0011 item 12) draws its own slim
+   ladder, at the end of this file, and hides the platform's indicator the same way. */
 @media (hover: hover) and (pointer: fine) and (forced-colors: none) {
   html.rail-on { scrollbar-width: none; }
   html.rail-on::-webkit-scrollbar { display: none; }
@@ -87,12 +87,17 @@ html.sheet-open .rail { visibility: hidden; }
 }
 
 /* ---------- touch: phones and tablets (ADR-0011 item 12) ----------
-   The native indicator and native scrolling stay. Closed, the ladder is one 44 px button at mid-height on
+   Native scrolling stays; the platform's indicator goes, so it never draws over the ladder. iOS Safari reads
+   only scrollbar-width on the root element for the page's own scroller (WebKit, iOS 18.2 and later: it turns
+   the scroll view's indicators off); ::-webkit-scrollbar does not reach it there, but does in other WebKit
+   and Blink builds. Closed, the ladder is one 44 px button at mid-height on
    the right edge whose dashes (4–10 px, the current one 12 px and filling) sit inside the page gutter, so
    nothing covers the reading column; vertical swipes over it still scroll the page (touch-action). Open, the
    titles show as a small sheet beside it, one 44 px row each. Safe areas: it keeps clear of the notch side
    in landscape. Forced colours: nothing here (the class is never set). */
 @media (forced-colors: none) {
+  html.rail-touch { scrollbar-width: none; }
+  html.rail-touch::-webkit-scrollbar { display: none; }
   html.rail-touch .rail {
     display: flex; align-items: center;
     right: env(safe-area-inset-right, 0px);
@@ -118,6 +123,9 @@ html.sheet-open .rail { visibility: hidden; }
   html.rail-touch .rail.is-open .rail-sheet {
     display: block; position: relative; margin-right: 8px;
     max-width: calc(100vw - 44px - 8px - 16px - env(safe-area-inset-right, 0px));
+    /* a phone on its side can be shorter than the titles: the sheet scrolls itself rather than the ladder going */
+    max-height: calc(100dvh - 32px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto; overscroll-behavior: contain;
   }
   html.rail-touch .rail-list { padding: 6px 0 0; }
   html.rail-touch .rail-i { height: 44px; padding: 0 16px; justify-content: flex-start; font-size: 15px; }

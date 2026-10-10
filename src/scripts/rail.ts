@@ -7,21 +7,22 @@
 
    Scrolling is never taken over: the rail reads scrollY and writes it only while dragged. The page opts
    in at build time (<html data-rail>, layouts/Base.astro) and the head script hides the native bar
-   before first paint only for a fine pointer without forced colours (html.rail-on); without JavaScript
-   and in forced colours the platform's own scrollbar stays.
+   before first paint only without forced colours (html.rail-on for a fine pointer, html.rail-touch
+   otherwise); without JavaScript and in forced colours the platform's own scrollbar stays.
    Touch (phones and tablets, brief §7 2026-10-10 "bring the ladder to phones too"; ADR-0011 item 12):
-   html.rail-touch. The native indicator stays and so does native scrolling; the ladder is a slim column
-   of short dashes inside the right gutter, drawn by one 44 px button. A tap opens the titles as a small
-   sheet beside it (44 px rows); a title goes there and closes it, as do a tap outside, Escape and the
-   button again. No hover and no drag on touch. Sections are data in the markup:
-   [data-rail-sec] (the label, or the element's text) and the h2s with ids inside [data-rail-heads];
-   [data-rail-accent] gives the colour. A page with fewer than two sections or under a quarter screen of
-   overflow gets no rail, and the native bar comes back. */
+   html.rail-touch. Native scrolling stays; the platform's indicator is hidden so it never draws over the
+   ladder (iOS honours scrollbar-width on the root). The ladder is a slim column of short dashes inside
+   the right gutter, drawn by one 44 px button. A tap opens the titles as a small sheet beside it (44 px
+   rows); a title goes there and closes it, as do a tap outside, Escape and the button again. No hover
+   and no drag on touch. Sections are data in the markup: [data-rail-sec] (the label, or the element's
+   text) and the h2s with ids inside [data-rail-heads]; [data-rail-accent] gives the colour. A
+   page with fewer than two sections or under a quarter screen of overflow gets no rail, and the native
+   bar comes back. */
 import { root, reduce, mq } from './env';
 
 const READ = 0.3;          // the reading line: a section is current once its top passes 30% of the window
 const ROW = 28;            // one dash per 28 px row; each row is a link at least 24 px tall (WCAG 2.5.8)
-const TROW = 44;           // touch: one 44 px row per title in the open sheet
+const TMARK = 10;          // touch: one 2 px dash and its 8 px gap per section in the closed ladder
 const DRAG = 4;            // pointer travel before a press becomes a scrub
 const GROUND: RGB = [10, 10, 11];
 const PAST = 4.5;          // contrast the lit dashes behind you keep against the ground (≥ 3:1, 1.4.11)
@@ -98,7 +99,10 @@ export function initRail() {
     vh = innerHeight;
     const sh = document.documentElement.scrollHeight;
     max = Math.max(0, sh - vh);
-    const fits = max > vh * 0.25 && secs.length * (touch() ? TROW : ROW) + 160 < vh;
+    /* touch: the closed ladder is what has to fit (the open sheet scrolls itself). Once iOS has hidden its
+       indicator for this tab it does not bring it back (WebKit turns it off and never on again), so the
+       ladder must not go away just because a phone was turned on its side. */
+    const fits = max > vh * 0.25 && (touch() ? secs.length * TMARK + 28 : secs.length * ROW) + 160 < vh;
     if (!fits || !qualifies()) { hide(); return; }
     show();
     const y = scrollY;
