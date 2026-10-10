@@ -321,3 +321,29 @@ The owner's words, translated from Turkish.
   different spots (a photo card, the ID card, ...); About fits best, Home is possible.
 - **Clean head:** start fresh: discard earlier rounds, a fresh situation analysis, fix wrong
   CLAUDE.md, ADRs and docs; an evaluation board; regular reports.
+
+### 2026-10-10 (answers after the board, evening)
+
+- **Objects look blurry**, "like 2.5D", as if bugged, probably from frame handling or pointer
+  tracking. Measure it if possible.
+- **"Mini CV"** means an "about me" article: who I am, I study here, how I work, what I do at
+  school, my software side. **Home stays as it is for now.**
+- **About** may have more photos, in the postcard style ("that looks nice").
+- **ID card photo:** keep the current one; a better one (from LinkedIn) may replace it later.
+- **Strangers in the metro photos:** hardly visible anyway. Test a second method: a stylised
+  censor, e.g. white-pen blocks over faces (an example, not an instruction), never plain black;
+  make the censor itself eye-catching, and edit me a little (brighter) so I stand out; a
+  hacker-like or "criminal" aesthetic.
+- **Istanbul clock:** fine where it is.
+- **Record object:** a tape / voice recorder, but different from the earlier ones; or try the
+  earlier alternative.
+- **Copy:** the owner does not want to answer the vision/why-YTU questions. Vision is along the
+  lines of "I direct and optimise multiple agents"; the lead may draft it from what the owner has
+  said before. Nothing much learned by hand yet besides school and CS50 projects. Next: keep
+  studying, grow through CS50 and similar courses, and build projects at the same time.
+- **Scrollbar on the phone:** does each page have a different bar (a line on one, a ladder on
+  another)? Unclear to the owner.
+- **Work** (the projects page) feels empty: just three 3D objects that do not show what each app
+  is. Do a comprehensive study of how this page could be perfect, as a design expert whose most
+  important showcase this is; push it from every angle; ask anything needed.
+- Everything else was tested and is fine.
