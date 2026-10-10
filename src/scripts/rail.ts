@@ -1,35 +1,37 @@
 /* The rail: one custom scrollbar on every page and in the project sheet (owner, 2026-10-10: "one fixed,
-   consistent custom scrollbar on every page and in every window"; ADR-0013, which revises ADR-0011).
-   A scroller with sections gets the contents ladder (brief §7, 2026-10-09 late: concept B; research
-   docs/research/2026-10-scroll-rail.md §4 B): one dash per section at the right edge, the current dash
-   filling as you read through its section, the dashes behind you lit in their own section's colour, the
-   ones ahead quiet, each dash's length its section's share of the page. Hover opens the titles; a click
-   goes there; a drag along the dashes scrubs section by section. A scroller without sections, or whose
-   ladder would not fit, gets the plain variant: the same column with a track and a thumb and no rungs
-   (ADR-0013 item 2); a drag on it scrubs the page in proportion, a press on the track goes there.
+   consistent custom scrollbar on every page and in every window"; ADR-0013, which revises ADR-0011, and its
+   amendment of the same day: "Does each page have its own different scrollbar? One is a line, another is a
+   ladder?"). One bar everywhere: a 2 px track mid-height on the right edge and a thumb the share in view.
+   A scroller with sections adds only marks on that same track (brief §7, concept B's strengths: research
+   docs/research/2026-10-scroll-rail.md §4 B): one tick per section where the thumb's top is when the
+   section begins, the ticks behind you lit in their section's colour, the current one in its full accent
+   and a little longer, the ones ahead quiet, and the thumb in the current section's light. On desktop,
+   hover or focus opens the titles beside the marks; a click goes there. A scroller without sections, or
+   whose titles would not fit beside the track, is the same bar without marks. On both, a drag on the
+   thumb follows the pointer in proportion and a press on the track goes there.
 
    Scrolling is never taken over: the rail reads the scroll position and writes it only while dragged. The
    head script hides the native bar on every page before first paint (html.rail-on for a fine pointer,
    html.rail-touch otherwise, never in forced colours; layouts/Base.astro), so the page never shifts
    sideways between pages; without JavaScript and in forced colours the platform's own scrollbar stays.
-   Touch (ADR-0011 item 12): the ladder is a slim column of short dashes inside the right gutter, drawn
-   by one 44 px button; a tap opens the titles as a small sheet beside it. The plain variant on touch is
-   only drawn (no drag on touch). Sections are data in the markup: [data-rail-sec] (the label, or the
-   element's text) and the h2s with ids inside [data-rail-heads]; [data-rail-accent] gives the colour.
-   The project sheet has its own rail bound to its scroller (scripts/sheet.ts), its sections the rungs. */
+   Touch (ADR-0011 item 12): the same bar inside the right gutter; with sections it is one 44 px button
+   and a tap opens the titles as a small sheet beside it; without, it is only drawn (no drag on touch).
+   Sections are data in the markup: [data-rail-sec] (the label, or the element's text) and the h2s with
+   ids inside [data-rail-heads]; [data-rail-accent] gives the colour. The project sheet has its own rail
+   bound to its scroller (scripts/sheet.ts), its sections the marks. */
 import { root, reduce, mq } from './env';
 
 const READ = 0.3;          // the reading line: a section is current once its top passes 30% of the view
-const ROW = 28;            // one dash per 28 px row; each row is a link at least 24 px tall (WCAG 2.5.8)
-const TMARK = 10;          // touch: one 2 px dash and its 8 px gap per section in the closed ladder
-const DRAG = 4;            // pointer travel before a press becomes a scrub
-const MIN_THUMB = 24;      // the plain variant's shortest thumb
+const ROW = 28;            // one title per 28 px row at least; each row is a link at least 24 px tall (WCAG 2.5.8)
+const TMARK = 8;           // touch: the least room one mark needs on the track (a 2 px tick and its gap)
+const DRAG = 4;            // pointer travel before a press on a title becomes a drag
+const MIN_THUMB = 24;      // the shortest thumb
 const GROUND: RGB = [10, 10, 11];
-const PAST = 4.5;          // contrast the lit dashes behind you keep against the ground (≥ 3:1, 1.4.11)
+const PAST = 4.5;          // contrast the lit marks behind you keep against the ground (≥ 3:1, 1.4.11)
 type RGB = [number, number, number];
 type Mode = 'rungs' | 'plain' | 'none';
 
-interface Sec { el: HTMLElement; label: string; a: string; ar: string; top: number; start: number; end: number; w: number }
+interface Sec { el: HTMLElement; label: string; a: string; ar: string; top: number; start: number; end: number }
 
 export interface RailOpts {
   /** the element that scrolls; omitted for the page itself */
@@ -83,7 +85,17 @@ export function createRail(o: RailOpts): Rail {
   const fullH = () => (el ? el.scrollHeight : document.documentElement.scrollHeight);
   const originY = () => (el ? el.getBoundingClientRect().top - el.scrollTop : -scrollY);
 
-  /* ---------- the ladder (rungs) ---------- */
+  /* ---------- the bar: one track and one thumb, built the same for both variants (ADR-0013 amendment) ---------- */
+  const bar = () => {
+    const track = document.createElement('div');
+    track.className = 'rail-track';
+    const thumb = document.createElement('i');
+    thumb.className = 'rail-thumb';
+    track.append(thumb);
+    return { track, thumb };
+  };
+
+  /* ---------- with sections: the same bar, its marks on the track and the titles beside it ---------- */
   const nav = document.createElement('nav');
   nav.className = 'rail' + (o.extraClass ? ' ' + o.extraClass : '');
   nav.id = o.id;
@@ -94,7 +106,7 @@ export function createRail(o: RailOpts): Rail {
   const foot = document.createElement('p');
   foot.className = 'rail-foot meta';
   foot.setAttribute('aria-hidden', 'true');
-  /* touch: the ladder is one button (its dashes are drawn, the titles wait in the sheet) */
+  /* touch: the bar is one button (its marks are drawn on the track, the titles wait in the sheet) */
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'rail-btn';
@@ -104,30 +116,32 @@ export function createRail(o: RailOpts): Rail {
   sheet.className = 'rail-sheet';
   sheet.id = o.id + '-sheet';
   sheet.append(list, foot);
-  nav.append(sheet, btn);
+  const hit = document.createElement('div');
+  hit.className = 'rail-track-hit';
+  hit.setAttribute('aria-hidden', 'true');
+  const ladderBar = bar();
+  ladderBar.track.setAttribute('aria-hidden', 'true');
+  nav.append(hit, sheet, ladderBar.track, btn);
 
-  /* ---------- the plain variant: a track and a thumb, no rungs (ADR-0013 item 2). It is what the native
-     scrollbar was, so like it it stays out of the tab order and the accessibility tree: the keyboard
-     scrolls the page itself. ---------- */
+  /* ---------- without sections: the bar alone. It is what the native scrollbar was, so like it it stays out
+     of the tab order and the accessibility tree: the keyboard scrolls the page itself. ---------- */
   const plain = document.createElement('div');
   plain.className = 'rail-plain' + (o.extraClass ? ' ' + o.extraClass : '');
   plain.hidden = true;
   plain.setAttribute('aria-hidden', 'true');
-  const track = document.createElement('div');
-  track.className = 'rail-track';
-  const thumb = document.createElement('i');
-  thumb.className = 'rail-thumb';
-  track.append(thumb);
-  plain.append(track);
+  const plainBar = bar();
+  plain.append(plainBar.track);
   o.host.insertBefore(plain, o.before ?? null);
+  const active = () => (mode === 'rungs' ? ladderBar : plainBar);
 
   const pageAccent = getComputedStyle(root).getPropertyValue('--accent').trim() || '#ddd6cb';
   const secs: Sec[] = o.sections.map((s, i) => {
     if (!s.id) s.id = o.id + '-s-' + i;
     const accent = s.closest<HTMLElement>('[data-rail-accent]')?.dataset.railAccent || pageAccent;
     const rgb = resolve(accent, o.host);
-    return { el: s, label: (s.dataset.railSec || s.textContent || '').trim(), a: css(rgb), ar: css(rest(rgb)), top: 0, start: 0, end: 0, w: 12 };
+    return { el: s, label: (s.dataset.railSec || s.textContent || '').trim(), a: css(rgb), ar: css(rest(rgb)), top: 0, start: 0, end: 0 };
   });
+  const marks: HTMLElement[] = [];
   const links = secs.map((s, i) => {
     const li = document.createElement('li');
     const a = document.createElement('a');
@@ -139,22 +153,18 @@ export function createRail(o: RailOpts): Rail {
     const t = document.createElement('span');
     t.className = 'rail-t';
     t.textContent = s.label;
-    const d = document.createElement('span');
-    d.className = 'rail-d';
-    d.setAttribute('aria-hidden', 'true');
-    d.append(document.createElement('i'));
-    a.append(t, d);
+    a.append(t);
     li.append(a);
     list.append(li);
     const m = document.createElement('i');
     m.className = 'rail-m';
     m.style.setProperty('--a', s.a);
     m.style.setProperty('--ar', s.ar);
-    btn.append(m);
+    ladderBar.track.append(m);
+    marks.push(m);
     return a;
   });
-  const marks = [...btn.querySelectorAll<HTMLElement>('.rail-m')];
-  /* the ladder is only built where there are rungs to draw */
+  /* the titles are only built where there are sections to mark */
   if (secs.length >= 2) o.host.insertBefore(nav, plain);
 
   let vh = 0, max = 0, cur = -1, raf = 0, mode: Mode = 'none', trackH = 0, thumbH = 0;
@@ -165,14 +175,15 @@ export function createRail(o: RailOpts): Rail {
     const sh = fullH();
     max = Math.max(0, sh - vh);
     if (!vh) { setMode('none'); return; }       // not laid out (a closed dialog)
-    /* touch: the closed ladder is what has to fit (the open sheet scrolls itself) */
-    const fits = secs.length >= 2 && max > vh * 0.25 && (touch() ? secs.length * TMARK + 28 : secs.length * ROW) + 160 < vh;
+    /* the marks get a row each beside the track (on touch only a mark: the open sheet scrolls itself) */
+    const barH = Math.min(innerHeight * 0.44, 320);   // --rail-h, the same for both variants
+    const fits = secs.length >= 2 && max > vh * 0.25 && secs.length * (touch() ? TMARK : ROW) <= barH;
     setMode(fits ? 'rungs' : max > 8 ? 'plain' : 'none');
-    if (mode === 'plain') {
-      trackH = track.clientHeight;
-      thumbH = Math.max(MIN_THUMB, Math.round(trackH * vh / sh));
-      thumb.style.height = thumbH + 'px';
-    }
+    if (mode === 'none') return;
+    const { track, thumb } = active();
+    trackH = track.clientHeight;
+    thumbH = Math.max(MIN_THUMB, Math.round(trackH * vh / sh));
+    thumb.style.height = thumbH + 'px';
     if (mode === 'rungs') {
       const y0 = originY();
       secs.forEach((s) => { s.top = s.el.getBoundingClientRect().top - y0; });
@@ -186,14 +197,20 @@ export function createRail(o: RailOpts): Rail {
         late.forEach((s, j) => { s.start = from + (max - from) * (j + 1) / (late.length + 1); });
       }
       secs.forEach((s, i) => { s.end = i + 1 < secs.length ? secs[i + 1].start : max; });
-      /* a dash's length is its section's share of the page: the ladder keeps "how much there is" */
-      const len = secs.map((s, i) => (i + 1 < secs.length ? secs[i + 1].top : sh) - s.top);
-      const most = Math.max(1, ...len);
-      secs.forEach((s, i) => {
-        s.w = Math.round(8 + 12 * Math.max(0, len[i]) / most);
-        links[i].style.setProperty('--w', s.w + 'px');
-        marks[i].style.setProperty('--w', Math.round(s.w / 2) + 'px');   // touch: 4–10 px, inside the gutter
-      });
+      /* a mark sits where the thumb's top is when its section begins; its row is level with it, pushed
+         apart to one row where marks crowd and kept within half a row of the track's ends */
+      const room = Math.max(0, trackH - thumbH);
+      const ys = secs.map((s) => (max ? Math.round(room * s.start / max) : 0));
+      ys.forEach((y, i) => marks[i].style.setProperty('--y', y + 'px'));
+      const c = ys.map((y) => y + 1);
+      for (let i = 1; i < c.length; i++) c[i] = Math.max(c[i], c[i - 1] + ROW);
+      if (c[c.length - 1] > trackH) {
+        c[c.length - 1] = trackH;
+        for (let i = c.length - 2; i >= 0; i--) c[i] = Math.min(c[i], c[i + 1] - ROW);
+      }
+      /* the list starts half a row above the track: row i's top in the list is c[i] */
+      c.forEach((ci, i) => (links[i].parentElement as HTMLElement).style.setProperty('--mt', Math.max(0, Math.round(ci - (i ? c[i - 1] + ROW : 0))) + 'px'));
+      list.style.setProperty('--lh', trackH + ROW + 'px');
     }
     cur = -1;
     update();
@@ -204,23 +221,19 @@ export function createRail(o: RailOpts): Rail {
     mode = m;
     nav.hidden = m !== 'rungs';
     plain.hidden = m !== 'plain';
-    /* a scroller with sections showing the plain variant gets its own contents list back */
+    /* a scroller with sections showing the bar alone gets its own contents list back */
     o.flat.classList.toggle('rail-flat', secs.length >= 2 && m !== 'rungs');
   }
 
   function update() {
     raf = 0;
+    if (mode === 'none') return;
     const y = Math.min(max, Math.max(0, getY()));
-    if (mode === 'plain') {
-      thumb.style.transform = `translateY(${max ? Math.round((trackH - thumbH) * y / max) : 0}px)`;
-      return;
-    }
+    active().thumb.style.transform = `translateY(${max ? Math.round((trackH - thumbH) * y / max) : 0}px)`;
     if (mode !== 'rungs') return;
     let i = 0;
     secs.forEach((s, j) => { if (s.start <= y + 0.5) i = j; });
     if (y >= max - 1) i = secs.length - 1;
-    const s = secs[i];
-    const f = y >= max - 1 ? 1 : Math.min(1, Math.max(0, (y - s.start) / Math.max(1, s.end - s.start)));
     if (i !== cur) {
       cur = i;
       links.forEach((a, j) => {
@@ -230,10 +243,10 @@ export function createRail(o: RailOpts): Rail {
         marks[j].classList.toggle('on', j === i);
         marks[j].classList.toggle('done', j < i);
       });
+      /* the thumb carries the current section's light */
+      nav.style.setProperty('--thumb', secs[i].a);
       btn.setAttribute('aria-label', `On this page: ${secs[i].label}, ${i + 1} of ${secs.length}`);
     }
-    links[i].style.setProperty('--f', f.toFixed(3));
-    marks[i].style.setProperty('--f', f.toFixed(3));
     const p = max ? y / max : 1;
     foot.textContent = o.minutes
       ? (p >= 0.99 ? 'At the end' : `About ${Math.max(1, Math.ceil(o.minutes * (1 - p)))} min left`)
@@ -253,14 +266,6 @@ export function createRail(o: RailOpts): Rail {
     }
   }
 
-  /* the pointer's place on the ladder, mapped between section starts: a drag scrubs section by section */
-  function ladder(clientY: number) {
-    const top = links[0].getBoundingClientRect().top;
-    const fy = Math.min(secs.length - 0.001, Math.max(0, (clientY - top) / ROW));
-    const i = Math.floor(fy), t = fy - i, s = secs[i];
-    return s.start + (s.end - s.start) * t;
-  }
-
   /* ---------- hover: the titles open after a short intent delay and close a little after leaving ---------- */
   let openT = 0, closeT = 0;
   function setOpen(v: boolean) { nav.classList.toggle('is-open', v); btn.setAttribute('aria-expanded', String(v)); }
@@ -276,45 +281,45 @@ export function createRail(o: RailOpts): Rail {
     closeT = window.setTimeout(() => setOpen(false), 280);
   });
 
-  /* ---------- drag: the ladder scrubs section by section, the plain track in proportion ---------- */
-  let drag: { id: number; y0: number; s0: number; on: boolean; plain: boolean; grab: number } | null = null;
+  /* ---------- drag: one behaviour for both variants, as a scrollbar's. A press on the thumb holds it where
+     it was taken and a drag follows the pointer in proportion; a press on the track goes there (smooth, or
+     instant under reduced motion) and a drag continues from there; a click on a title goes to its
+     section. Escape during a drag puts the page back. ---------- */
+  let drag: { id: number; y0: number; s0: number; on: boolean; host: HTMLElement; grab: number } | null = null;
   let swallow = false;
-  nav.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0 || e.pointerType === 'touch') return;
-    drag = { id: e.pointerId, y0: e.clientY, s0: getY(), on: false, plain: false, grab: 0 };
-  });
-  /* the plain track: a press on the thumb holds it where it was taken; a press on the track goes there
-     (smooth, or instant under reduced motion) and a drag from there follows the pointer */
   const fromTrack = (clientY: number, grab: number) => {
-    const r = track.getBoundingClientRect();
+    const r = active().track.getBoundingClientRect();
     const room = Math.max(1, trackH - thumbH);
     return Math.min(max, Math.max(0, (clientY - r.top - grab) / room * max));
   };
-  plain.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0 || e.pointerType === 'touch' || mode !== 'plain') return;
+  const press = (host: HTMLElement) => (e: PointerEvent) => {
+    if (e.button !== 0 || e.pointerType === 'touch' || mode === 'none') return;
+    const t = active().thumb.getBoundingClientRect();
+    const onThumb = e.clientY >= t.top - 2 && e.clientY <= t.bottom + 2;
+    const onTitle = !!(e.target as Element).closest('a.rail-i');
+    if (host === nav && !onTitle && e.target !== hit) return;   // the panel around the titles is not the track
+    drag = { id: e.pointerId, y0: e.clientY, s0: getY(), on: false, host, grab: onThumb ? e.clientY - t.top : thumbH / 2 };
+    if (onTitle) return;             // a title: a click goes to its section, a drag still scrubs
     e.preventDefault();
-    const t = thumb.getBoundingClientRect();
-    const onThumb = e.clientY >= t.top && e.clientY <= t.bottom;
-    drag = { id: e.pointerId, y0: e.clientY, s0: getY(), on: false, plain: true, grab: onThumb ? e.clientY - t.top : thumbH / 2 };
-    plain.setPointerCapture(e.pointerId);
-    plain.classList.add('is-drag');
+    host.setPointerCapture(e.pointerId);
+    host.classList.add('is-drag');
     if (!onThumb) setY(fromTrack(e.clientY, drag.grab), reduce() ? 'instant' : 'smooth');
-  });
+  };
+  nav.addEventListener('pointerdown', press(nav));
+  plain.addEventListener('pointerdown', press(plain));
   const move = (e: PointerEvent) => {
     if (!drag || e.pointerId !== drag.id) return;
     if (!drag.on) {
       if (Math.abs(e.clientY - drag.y0) < DRAG) return;
       drag.on = true;
-      if (!drag.plain) {
-        nav.setPointerCapture(e.pointerId);
-        nav.classList.add('is-drag');
-        setOpen(true);
-      }
+      if (!drag.host.hasPointerCapture(e.pointerId)) drag.host.setPointerCapture(e.pointerId);
+      drag.host.classList.add('is-drag');
+      if (drag.host === nav) setOpen(true);
       root.classList.add('rail-grab');
       getSelection()?.removeAllRanges();
     }
     e.preventDefault();
-    setY(drag.plain ? fromTrack(e.clientY, drag.grab) : ladder(e.clientY), 'instant');
+    setY(fromTrack(e.clientY, drag.grab), 'instant');
   };
   nav.addEventListener('pointermove', move);
   plain.addEventListener('pointermove', move);
@@ -323,10 +328,10 @@ export function createRail(o: RailOpts): Rail {
     const was = drag.on;
     drag = null;
     plain.classList.remove('is-drag');
+    nav.classList.remove('is-drag');
     if (!was) return;
     swallow = true;
     setTimeout(() => { swallow = false; }, 0);
-    nav.classList.remove('is-drag');
     root.classList.remove('rail-grab');
     if (e && e.type === 'pointerup' && !nav.matches(':hover')) setOpen(false);
   };
@@ -404,8 +409,8 @@ const qualifies = () => !forced.matches;
 const touch = () => !mq.fine.matches;
 function off() { root.classList.remove('rail-on', 'rail-touch'); }
 
-/* ---------- colour: every lit dash keeps ≥ 3:1 on the ground (research §5: Eat Map rose at a fixed
-   rest opacity fell to 2.4:1). The dashes behind you keep each accent's hue and chroma and lower only its
+/* ---------- colour: every lit mark keeps ≥ 3:1 on the ground (research §5: Eat Map rose at a fixed
+   rest opacity fell to 2.4:1). The marks behind you keep each accent's hue and chroma and lower only its
    OKLab lightness, as far as PAST allows: a dark accent (rose) keeps nearly all of itself, a bright one
    (lime) steps further down. ---------- */
 function resolve(value: string, host: Element): RGB {
