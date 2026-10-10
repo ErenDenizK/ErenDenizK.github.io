@@ -1,6 +1,6 @@
 /* Quality gates in a browser (ADR-0001 item 6). The site is built first (npm run build:test), then
-   served by tests/serve.mjs (which behaves like GitHub Pages) under the same base path GitHub Pages uses before the rename (/Portfolio/),
-   so base-path mistakes fail here. A second build with fixture log entries (never published) exercises
+   served by tests/serve.mjs (which behaves like GitHub Pages) under a non-root base (/Portfolio/) on
+   purpose, so base-path mistakes fail here; the live site is at /. A second build with fixture log entries (never published) exercises
    the log's templates. Locally, Playwright's Chromium comes from PLAYWRIGHT_BROWSERS_PATH. */
 import { defineConfig } from '@playwright/test';
 

@@ -2,7 +2,7 @@
 
 The personal site of Eren Deniz Kuyucaklıoğlu: the products I direct, a dated record of the work,
 and who I am. A four-year project that grows level by level ([brief](docs/brief.md),
-[roadmap](docs/ROADMAP.md)).
+[plan](docs/PLAN.md)).
 
 Astro 7 (static), on GitHub Pages. Every page is complete HTML without JavaScript; a small script
 adds the moving objects, the project sheet and the transitions. Decisions are in
@@ -17,12 +17,12 @@ npm ci
 npm run dev           # http://localhost:4321/
 npm run build         # dist/ (base "/" locally; on GitHub, the repository name decides)
 npm run check         # types and content schemas
-npm run verify        # check, test builds, size budget and every browser test
+npm run verify        # worlds, check, test builds, size budget and every browser test
 ```
 
 The browser tests need Playwright's Chromium (`npx playwright install chromium`, or set
-`PLAYWRIGHT_BROWSERS_PATH`). `npm run build:test` builds the site under `/Portfolio/` (as Pages
-serves it before the rename) and a second copy with fixture log entries; `npm test` serves both like
+`PLAYWRIGHT_BROWSERS_PATH`). `npm run build:test` builds the site under the non-root base `/Portfolio/`
+on purpose, to catch base-path bugs (the live site is at `/`), and a second copy with fixture log entries; `npm test` serves both like
 Pages and runs the navigation suite, the log templates, axe, and the screenshot matrix (written to
 `tests/shots/`). `npm run budget` checks first paint (at most 200 KB per page).
 
@@ -40,8 +40,10 @@ src/
   pages/               routes: /, /work/, /work/<slug>/, /record/, /record/<year>/<slug>/, /about/, 404, feed;
                        lab/ holds hidden component workbenches (noindex, not in the sitemap)
   components/          Media (the object stage), ProjectCase, LogRow, Figure, Icon, IdCard, Postcard, ...
-  scripts/             media.ts (stage), sheet.ts (project sheet), log.ts, card3d.ts (cards), site.ts
-  styles/              global.css (tokens and layout), log.css, transitions.css
+  scripts/             media.ts (stage), sheet.ts (project sheet), log.ts, card3d.ts (cards), site.ts,
+                       rail.ts (scroll rail), embassy.ts, accent.ts, env.ts, live/ (the ?live engine)
+  styles/              global.css (tokens and layout), log.css, transitions.css, rail.css, showcase.css,
+                       work.css, embassy.css, wordmarks.css
   fonts/               subset Newsreader and Inter (tools/fonts/subset.py)
   assets/photos/       graded photos (tools/photos/grade.mjs)
 tools/                 generators: icons, link-preview cards and favicons, objects, illustrations, fonts
@@ -109,6 +111,6 @@ the owner said. The slug never changes once published.
 
 ## Releases
 
-Work happens on `dev`; CI (`.github/workflows/ci.yml`) runs every gate on each push. The site
-deploys from `main` only (`.github/workflows/deploy.yml`), and only the owner merges into `main`
-(ADR-0004).
+Work happens on `dev`; CI (`.github/workflows/ci.yml`) runs every gate on each push. Pushes to
+`dev` deploy the live site during the build-up (`.github/workflows/deploy.yml`, ADR-0004
+amendment), so run `npm run verify` first; only the owner touches `main`.

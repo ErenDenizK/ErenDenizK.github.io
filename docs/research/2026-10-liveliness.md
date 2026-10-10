@@ -1,5 +1,9 @@
 # Research: liveliness, how to bring E's life back without E's cost (2026-10-09)
 
+**Status:** current, open. Fed ADR-0009 (`?live`, parked until the real-time 3D decision); its §2
+measurement of the default stage is input to the stutter study (`docs/PLAN.md` track 7). Paths under
+`scratchpad/` cited here were session scratch, not kept.
+
 Brief §7 (2026-10-09, after seeing v0): the owner misses prototype E's live, interactive
 animation on desktop. "It doesn't have to be 3D; whatever is best. If we render well, phones can
 get animation too." Desktop first; phones must benefit. This file diagnoses what made E feel
@@ -318,7 +322,7 @@ light sits (under-glow proposal); whether phones should get tap interactions.
    the view transition, the under-glow in the pill. Owner judges on desktop.
 2. **Frame engine on the Home stage behind `?live`** in a `wip/` worktree: replace idle video,
    Canvas2D lean and interaction video; add relight; crop-rectangle canvas; tiering and watchdog.
-   Owner A/B against the current site and against E on his own desktop; record real frame times
+   Owner A/B against the current site and against E on their own desktop; record real frame times
    and a 10-minute battery delta.
 3. **One character object with per-part axes:** Eat Map pin (height x squash, real gravity) or edk
    letters (hop height per letter, ID mask). Add an object-index pass and a `--stage normals,axes`

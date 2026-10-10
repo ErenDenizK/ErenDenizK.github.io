@@ -1,5 +1,9 @@
 # Prototype F: prototype E rebuilt to the owner's verdict
 
+**Status:** history (2026-10-10). Prototype F's spec; ADR-0007 still cites it. "`docs/brief.md` §7"
+now means `docs/history/brief-log.md` §7. The Istanbul clock removed here (P1.4) is wanted back
+(owner, 2026-10-10). Session scratchpad paths cited here were scratch, not kept.
+
 Read first: `docs/brief.md` §7 (2026-10-09 after prototype E), `docs/research/2026-10-craft-audit.md`
 (type, motion, the P1 list), `docs/research/2026-10-media.md` (§8 rules for pre-rendered media),
 `tools/icons/README.md` (the icon set), `prototypes/e-dark/SPEC.md`, `prototypes/CONTENT.md`.

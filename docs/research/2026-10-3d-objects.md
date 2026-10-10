@@ -1,5 +1,8 @@
 # Research: making premium 3D objects without a GUI (2026-10-08)
 
+**Status:** history. The Blender pipeline test behind ADR-0005; pre-rendering (ADR-0006) replaced
+its GLB path.
+
 A hands-on test in the agent container. Comparison of one object, three ways:
 ![Cycles poster, Blender GLB in three.js, procedural three.js](assets/2026-10-objects-compare.png)
 Left: Blender Cycles render. Middle: the Blender GLB in three.js. Right: procedural three.js.

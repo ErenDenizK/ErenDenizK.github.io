@@ -1,5 +1,9 @@
 # Research: a custom scroll rail (2026-10-09)
 
+**Status:** history. Concept B was chosen and built (ADR-0011); the one-scrollbar-everywhere
+revision (owner, 2026-10-10) starts from it. Paths under `scratchpad/` cited here were session
+scratch, not kept.
+
 The owner dislikes system scrollbars and asked for "a custom thin rail, newly designed (not a
 copy of English Prep's, which did not turn out as the owner imagined)" (brief §7, 2026-10-09,
 "Scrollbar"). Already decided: hide the native bar and draw a rail; desktop first, phones must

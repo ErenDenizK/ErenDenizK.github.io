@@ -1,5 +1,9 @@
 # Plan: the craft round (2026-10-09)
 
+Status: closed 2026-10-09. Kept as written; "running" tracks landed or changed in the character
+round ([`plan-2026-10-character-round.md`](plan-2026-10-character-round.md)). The site
+deploys from `dev` (ADR-0004 amendment), not `main`; `ROADMAP.md` has since been removed.
+
 The lead's working plan for the round after prototype E. `ROADMAP.md` stays the level view;
 this file is the current round, its workstreams and who is on them. Update it as tracks land.
 

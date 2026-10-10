@@ -1,5 +1,7 @@
 # Research: product wordmarks and Home's hierarchy (2026-10-09)
 
+**Status:** current. The product plate and wordmarks are accepted and built.
+
 **Why:** brief §7, "Home hierarchy" (2026-10-09). On Home the showcase project (Recto, large) is
 bigger than the hero's "edk" object, so at first glance it is unclear which is the owner and which is
 a project. The owner's idea: set each product's name in its own display face (Recto in pairing 4's

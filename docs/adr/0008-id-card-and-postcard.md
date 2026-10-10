@@ -1,7 +1,8 @@
 # ADR-0008: The About ID card and the postcard are CSS 3D objects with a small spring loop
 
-**Status:** technique decided by the agent (CLAUDE.md: "decide technique yourself and record it");
-the look is proposed until the owner has seen it · **Rests on:** brief §7 (2026-10-09 after v0: "About
+**Status:** accepted 2026-10-10 (owner: "very good"; the rope was asked for and built). Item 7, the
+composition over the courtyard, stays open: the mini-CV About may move it; the owner also wants the
+desktop card calmer (brief, 2026-10-10). Technique decided by the agent (CLAUDE.md) · **Rests on:** brief §7 (2026-10-09 after v0: "About
 photo: both a digital ID card like event badges on About, and postcards for photo entries later"; after
 E: "the courtyard photo should carry About"; 2026-10-10: "ID card: very good; on desktop more interactive:
 pull it by its lanyard, swing and spin it, like GitHub's event badges; the phone's simple flip is fine"),
