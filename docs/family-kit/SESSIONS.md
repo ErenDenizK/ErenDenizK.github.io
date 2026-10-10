@@ -19,7 +19,9 @@ everything. Each chat owns one area and reads the others' files without editing 
 
 The Portfolio and Family chats share one branch that deploys on every push. Both pull before
 they push, run `npm run verify` before pushing, and never rewrite history. A docs-only push by the
-Family chat still deploys, so it must not break the build either.
+Family chat still deploys, and the site imports `light.css`, `springs.js` and `world.schema.json`
+from this folder at build time, so a kit change can change the live site: the Family chat tells
+the Portfolio chat (Open requests below) before changing those three files.
 
 ## Starting each chat
 
