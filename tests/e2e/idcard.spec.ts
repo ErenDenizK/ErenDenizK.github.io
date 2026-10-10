@@ -1,13 +1,23 @@
 /* The ID card on About and the postcard (ADR-0008): both turn over by keyboard and by pointer, the
-   hidden face is never reachable, the front links work without turning, a drag swings the card without
-   turning it, and the still twins hold (touch, reduced motion, no JavaScript). */
+   hidden face is never reachable, the front links work without turning, a drag swings the card on its
+   rope without turning it, a fling spins it and it settles on one face, which becomes the live one, and
+   the still twins hold (touch, reduced motion, no JavaScript). */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, phone } from './helpers';
 
 const flipped = (page: Page, sel = '.idc') => page.locator(sel).first().evaluate((e) => e.classList.contains('is-flipped'));
 const inert = (page: Page, sel: string) => page.locator(sel).first().evaluate((e) => (e as HTMLElement).inert);
 const swing = (page: Page) => page.locator('.idc-swing').evaluate((e) => getComputedStyle(e).transform);
-const atRest = (t: string) => t === 'none' || /^matrix\(1, 0, 0, 1, 0, 0\)$/.test(t) || /^matrix\(1, -?0, -?0, 1, 0, 0\)$/.test(t);
+const atRest = (t: string) => {
+  if (t === 'none') return true;
+  const m = /^matrix\(([^)]+)\)$/.exec(t);
+  if (!m) return false;
+  const [a, b, , , e, f] = m[1].split(',').map(Number);
+  return Math.abs(a - 1) < 1e-3 && Math.abs(b) < 1e-3 && Math.abs(e) < 0.5 && Math.abs(f) < 0.5;
+};
+/** the card's turn about its vertical axis, from its inline transform */
+const yaw = (page: Page) => page.locator('.idc-card').evaluate((e) => +(/rotateY\((-?[\d.]+)deg\)/.exec((e as HTMLElement).style.transform)?.[1] ?? 0));
+const ropeD = (page: Page) => page.locator('[data-rope-path]').getAttribute('d');
 
 test.describe('ID card, desktop', () => {
   test.use(desktop);
@@ -52,14 +62,44 @@ test.describe('ID card, desktop', () => {
     await page.mouse.move(10, 10);
     await page.waitForTimeout(1200);
 
+    await expect(page.locator('.idc')).toHaveClass(/is-rope/);
+    const d0 = await ropeD(page);
     await page.mouse.move(cx, cy);
     await page.mouse.down();
     await page.mouse.move(cx - 140, cy + 20, { steps: 10 });
     expect(atRest(await swing(page)), 'the card follows the hand').toBe(false);
+    expect(await ropeD(page), 'the rope follows the card').not.toBe(d0);
     await page.mouse.up();
     expect(await flipped(page), 'a drag is not a click').toBe(false);
     await page.mouse.move(10, 10);
     await expect.poll(async () => atRest(await swing(page)), { timeout: 5000, message: 'the card swings back to rest' }).toBe(true);
+  });
+
+  test('a fling spins it; it settles on one face, and that face is the live one', async ({ page }) => {
+    await page.goto('about/');
+    await page.waitForTimeout(1600);
+    const box = (await page.locator('.idc-card').boundingBox())!;
+    const cx = box.x + box.width / 2, cy = box.y + box.height * 0.5;
+    await page.mouse.move(cx, cy);
+    await page.mouse.down();
+    await page.mouse.move(cx - 160, cy, { steps: 8 });
+    await page.waitForTimeout(80);
+    /* big, quick steps: a headless page delivers few events, and the throw is measured between them */
+    for (let i = 1; i <= 3; i++) await page.mouse.move(cx - 160 + i * 150, cy);
+    await page.mouse.up();
+    expect(await flipped(page), 'a fling is not a click').toBe(false);
+    await expect.poll(async () => Math.abs(await yaw(page)), { timeout: 1500, message: 'the card spins' }).toBeGreaterThan(90);
+    await page.mouse.move(10, 10);
+    await expect.poll(async () => { const t = await swing(page); return atRest(t) || t; }, { timeout: 8000, message: 'the card comes to rest' }).toBe(true);
+    await expect.poll(async () => [0, 180].includes((((await yaw(page)) % 360) + 360) % 360), { timeout: 4000, message: 'it faces front or back' }).toBe(true);
+    const back = (((await yaw(page)) % 360) + 360) % 360 === 180;
+    expect(await flipped(page), 'the face it settled on is the live one').toBe(back);
+    expect(await inert(page, back ? '.idc-front' : '.idc-back')).toBe(true);
+    expect(await inert(page, back ? '.idc-back' : '.idc-front')).toBe(false);
+    /* and the keyboard still turns it from there */
+    await page.locator(back ? '.idc-back .idc-turn' : '.idc-front .idc-turn').focus();
+    await page.keyboard.press('Enter');
+    expect(await flipped(page)).toBe(!back);
   });
 });
 
@@ -74,6 +114,9 @@ test.describe('ID card, phone', () => {
     await page.locator('.idc-back .idc-turn').tap();
     expect(await flipped(page)).toBe(false);
     expect(atRest(await swing(page))).toBe(true);
+    /* phones keep the still strap: no rope, no physics */
+    await expect(page.locator('.idc')).not.toHaveClass(/is-rope/);
+    await expect(page.locator('.idc-strap')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
   });
 });
@@ -85,6 +128,8 @@ test('reduced motion: the card hangs still and the turn is a crossfade', async (
   await page.locator('.idc-front .idc-turn').click();
   expect(await flipped(page)).toBe(true);
   expect(await page.locator('.idc-card').evaluate((e) => getComputedStyle(e).transform)).toBe('none');
+  await expect(page.locator('.idc')).not.toHaveClass(/is-rope/);
+  expect(atRest(await swing(page))).toBe(true);
   await expect.poll(() => page.locator('.idc-back').evaluate((e) => +getComputedStyle(e).opacity)).toBe(1);
   await expect.poll(() => page.locator('.idc-front').evaluate((e) => +getComputedStyle(e).opacity)).toBe(0);
   await ctx.close();

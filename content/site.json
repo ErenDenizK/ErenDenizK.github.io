@@ -51,7 +51,7 @@
       "label": "ID card",
       "issued": "Issued Oct 2026",
       "back": "Fundamentals by hand, products by directing agents.",
-      "hint": { "drag": "Drag it, or click to turn it over", "click": "Click to turn it over", "tap": "Tap to turn it over" }
+      "hint": { "drag": "Pull it, fling it to spin, or click to turn it over", "click": "Click to turn it over", "tap": "Tap to turn it over" }
     },
     "facts": [
       ["Study", "Computer Engineering, Yıldız Technical University"],
