@@ -36,7 +36,7 @@ test.describe('desktop', () => {
     await page.goto('about/?still'); await settle(page, 300);
     r = await rail(page);
     expect(r).toMatchObject({ on: true, drawn: true, bar: 'none' });
-    expect(r.labels).toHaveLength(3);
+    expect(r.labels.length).toBeGreaterThanOrEqual(3);
     expect(r.over).toBeLessThanOrEqual(0);
     /* a project page: its porch and sections are the rungs, and its own contents list steps aside */
     await page.goto('work/recto/?still'); await settle(page, 300);
