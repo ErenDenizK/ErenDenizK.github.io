@@ -14,8 +14,8 @@ libsvtav1, libx265 and libx264 (Ubuntu's ffmpeg 6.1 has all three).
    poster at 600 and 1200, each in the still format chosen by the black test (report.json).
 3. Video: the interaction clip, the droplet clip forward and reversed (the arriving object plays
    it backward; browsers cannot play video in reverse) and an idle loop synthesised from the
-   grid, each as AV1 10-bit, HEVC Main 10 (hvc1) and H.264 High, BT.709 limited range tagged,
-   +faststart, no audio. Clips are padded back to the full square so they sit on the poster.
+   grid, each as AV1 10-bit, HEVC Main 10 (hvc1) and H.264 High, BT.709 matrix and primaries,
+   limited range, the sRGB transfer tagged (see COLOR), +faststart, no audio. Clips are padded back to the full square so they sit on the poster.
 4. The floor shadow (frames.py stage `shadow`), which step 1 zeroes: a small grayscale map
    m = composite / ground, clamped to 1, meaning "multiply the ground by this". The page draws
    it under the object with mix-blend-mode: multiply, so ground * m + object reproduces the
@@ -25,6 +25,9 @@ libsvtav1, libx265 and libx264 (Ubuntu's ffmpeg 6.1 has all three).
    maps at half size, one vertical strip per pitch row plus the rest pose alone, and the clip
    as stills (half size strip, plus the state axis's peak at full size) with its own normals.
    `--live-only` writes just these and adds `normals` and `states` to the existing manifest.
+7. The spin loop (frames.py stage `spin`), when it exists: the phones' idle (phone motion
+   research). Its rendered frames, then frame 0 repeated to the loop's length, as the three
+   codecs. `--spin-only` writes just this and merges `spin` into the existing manifest.
 
 Per-object settings that differ from the defaults (budgets, media research §7) are in OBJECT
 below, so a rerun reproduces the shipped files; command-line flags override them.
@@ -55,12 +58,17 @@ ap.add_argument("--avif-q", type=int, help="full grid tier (default 60)")
 ap.add_argument("--avif-q-half", type=int, help="the half tier only stands in until the full one arrives (default 50)")
 ap.add_argument("--idle-seconds", type=float)
 ap.add_argument("--droplet-fps", type=int, default=60)
-ap.add_argument("--videos", default="interact,droplet,idle",
+ap.add_argument("--videos", default="interact,droplet,idle,spin",
                 help="videos to (re-)encode; the others are kept from the existing manifest")
 ap.add_argument("--skip-video", action="store_true", help="stills and manifest only (tests)")
 ap.add_argument("--live-only", action="store_true",
                 help="only the live engine's normals and state frames, merged into the existing manifest")
 ap.add_argument("--normal-q", type=int, default=45, help="AVIF quality of the normal strips (4:4:4)")
+ap.add_argument("--spin-only", action="store_true",
+                help="only the spin loop (frames.py stage `spin`), merged into the existing manifest")
+ap.add_argument("--spin-crf", help="av1,hevc,h264 CRFs for the spin loop (default from SPIN_CRF and OBJECT)")
+ap.add_argument("--retag", action="store_true",
+                help="only rewrite the colour tags of the existing videos (no re-encode) and their bytes in the manifest")
 A = ap.parse_args()
 
 # Defaults, then per-object overrides for an object that does not fit the desktop (~1.15 MB) or
@@ -224,8 +232,16 @@ def black_test(samples):
 
 
 # ---------------------------------------------------------------- video
-COLOR = ["-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
+# The transfer is tagged sRGB (iec61966-2-1, code 13), not BT.709 (1): the frames are sRGB code
+# values (encode step 1), and Apple's decoders draw a BT.709-tagged clip through a different curve
+# than the sRGB stills beside it, brighter in the shadows (phone motion research §1). Chrome draws
+# 1 and 13 alike and Firefox ignores tags, so only Safari changes. The tag goes into the stream
+# (VUI / sequence header, from these flags) and the MP4 `colr` nclx box (the muxer copies it).
+TRC = "iec61966-2-1"
+COLOR = ["-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", TRC,
          "-color_range", "tv", "-an", "-movflags", "+faststart"]
+# the same tag written into an existing file without re-encoding (encode.py --retag)
+RETAG_BSF = {"av1": "av1_metadata", "hevc": "hevc_metadata", "h264": "h264_metadata"}
 CODECS = {
     "av1": (["-c:v", "libsvtav1", "-preset", "4", "-crf", "30", "-pix_fmt", "yuv420p10le",
              "-svtav1-params", "tune=0"], "yuv420p10le"),
@@ -281,6 +297,60 @@ def check_video(path, ref_first):
     src = np.round(ref_first * 255).astype(int)
     obj = src.max(-1) > 6
     return {**ground_stats(src, dec), "object_mae": round(float(np.abs(dec[obj] - src[obj]).mean()), 2)}
+
+
+# The spin loop: real renders, and turning glass refracts everything behind it, so it is the
+# costliest video per second. Budgeted for the phone tier (~450 KB with poster and droplets, media
+# research §7). edk at 34/28/26: 389/405/347 KB; at 40/32/30: 281/274/230 KB, object MAE 2.65 levels,
+# far ground exact in HEVC and H.264, AV1 within 1 level (phone motion research §4).
+SPIN_CRF = {"av1": "40", "hevc": "32", "h264": "30"}
+
+
+def encode_spin():
+    """The spin entry for the manifest, or None when the stage has not been rendered."""
+    d = os.path.join(M, "spin")
+    if not os.path.exists(os.path.join(d, "crop.json")):
+        return None
+    files, crop = frames_of("spin")
+    assert len(files) == crop["rendered"], f"spin incomplete: {len(files)} of {crop['rendered']}"
+    sq = crop["res"]
+    seq = os.path.join(WORK, "spin")
+    if os.path.isdir(seq):
+        shutil.rmtree(seq)
+    os.makedirs(seq)
+    first = None
+    for k, f in enumerate(files):   # one frame at a time: a 120-frame square in float is gigabytes
+        a = pad(subtracted(f), crop, sq)
+        if k % 8 == 0:
+            assert_lit([a], f"spin frame {k}")
+        first = a if first is None else first
+        write_png16(a, os.path.join(seq, f"f_{k:03d}.png"))
+    for k in range(len(files), crop["loopFrames"]):
+        shutil.copy(os.path.join(seq, "f_000.png"), os.path.join(seq, f"f_{k:03d}.png"))
+    crf = {**SPIN_CRF, **OBJECT.get(A.obj, {}).get("spin_crf", {})}
+    if A.spin_crf:
+        crf = dict(zip(("av1", "hevc", "h264"), A.spin_crf.split(",")))
+    srcs = encode_video(seq, "spin", crop["fps"], crf)
+    n = crop["loopFrames"]
+    keep = {k: crop[k] for k in ("kind", "parts", "turn", "each", "stagger", "amp") if k in crop}
+    if isinstance(keep.get("parts"), str):
+        keep["parts"] = list(keep["parts"])
+    return {"fps": crop["fps"], "frames": n, "duration": round(n / crop["fps"], 3), "loop": True,
+            "holdFrom": crop["rendered"], **keep, "sources": srcs,
+            "check": check_video(os.path.join(OUT, srcs[0]["src"]), first)}
+
+
+def spin_bytes(man):
+    """bytes.spin and bytes.tiers.phoneSpin: what a phone fetches when it plays the spin."""
+    sp = man.get("spin")
+    if not sp:
+        return
+    b = man["bytes"]
+    per = {c: sum(s["bytes"] for s in sp["sources"] if s["codec"] == c) for c in ("av1", "hevc", "h264")}
+    drop = {c: sum(s["bytes"] for k in ("out", "in") for s in ((man.get("droplet") or {}).get(k) or {}).get("sources", [])
+                   if s["codec"] == c) for c in per}
+    b["spin"] = per
+    b["tiers"]["phoneSpin"] = {c: b["tiers"]["firstPaint"] + per[c] + drop[c] for c in per}
 
 
 def write_seq(arrs, d):
@@ -414,6 +484,60 @@ def live_bytes(man):
             "note": "desktop tiers add full-size grid frames on demand at rest (lean/full, about 10 KB each)"}
 
 
+def retag(path, kind):
+    """Rewrite one video's transfer tag in place: the bitstream's (metadata filter) and the
+    container's colr box (-color_trc on a stream copy). Pixels are untouched (checked by md5)."""
+    tmp = path + ".retag.mp4"
+    md5 = lambda f: sh(["ffmpeg", "-v", "error", "-i", f, "-f", "md5", "-"], text=True).stdout  # noqa: E731
+    sh(["ffmpeg", "-v", "error", "-y", "-i", path, "-map", "0:v:0", "-c", "copy",
+        "-bsf:v", f"{RETAG_BSF[kind]}=transfer_characteristics=13", "-color_trc", TRC,
+        "-an", "-movflags", "+faststart", tmp])
+    got = sh(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries",
+              "stream=color_transfer", "-of", "csv=p=0", tmp], text=True).stdout.strip()
+    assert got == TRC, f"{path}: transfer reads {got!r} after retag"
+    assert md5(tmp) == md5(path), f"{path}: pixels changed on retag"
+    os.replace(tmp, path)
+
+
+if A.retag:
+    mp = os.path.join(OUT, "manifest.json")
+    man = json.load(open(mp))
+    groups = {"interact": (man.get("clips") or {}).get("interact"), "idle": man.get("idle"), "spin": man.get("spin"),
+              "drop": {"sources": [s for k in ("out", "in") for s in ((man.get("droplet") or {}).get(k) or {}).get("sources", [])]}}
+    d = {}                                             # (group, codec) -> bytes gained
+    for g, node in groups.items():
+        for s in (node or {}).get("sources", []):
+            p = os.path.join(OUT, s["src"])
+            retag(p, s["codec"])
+            d[g, s["codec"]] = d.get((g, s["codec"]), 0) + size(p) - s["bytes"]
+            s["bytes"] = size(p)
+    b, t = man["bytes"], man["bytes"]["tiers"]
+    for key, gs, where in (("clips", ("interact", "drop"), b), ("idle", ("idle",), b), ("spin", ("spin",), b),
+                           ("phone", ("idle", "drop"), t), ("phoneSpin", ("spin", "drop"), t),
+                           ("desktopFull", ("interact", "drop"), t)):
+        for c in list((where.get(key) or {})):
+            where[key][c] += sum(d.get((g, c), 0) for g in gs)
+    lt = b.get("live", {}).get("tiers", {})
+    for key in ("desktopLite", "desktopFull"):     # these count the droplets' AV1 files
+        if key in lt:
+            lt[key] += d.get(("drop", "av1"), 0)
+    json.dump(man, open(mp, "w"), indent=1)
+    print(json.dumps({"obj": A.obj, "bytes_delta": {f"{g}.{c}": n for (g, c), n in d.items()}}))
+    raise SystemExit(0)
+
+
+if A.spin_only:
+    mp = os.path.join(OUT, "manifest.json")
+    man = json.load(open(mp))
+    sp = encode_spin()
+    assert sp, f"{A.obj}: render the spin stage first"
+    man["spin"] = sp
+    spin_bytes(man)
+    json.dump(man, open(mp, "w"), indent=1)
+    print(json.dumps({"spin": sp, "phoneSpin": man["bytes"]["tiers"]["phoneSpin"]}, indent=1))
+    raise SystemExit(0)
+
+
 if A.live_only:
     man = json.load(open(os.path.join(OUT, "manifest.json")))
     fmt = next(t for t in man["lean"]["tiers"] if t["name"] == "full")["format"]
@@ -502,6 +626,8 @@ if "droplet" not in WANT and prev.get("droplet"):
 if "idle" not in WANT and prev.get("idle"):
     videos["idle"] = prev["idle"]
 drop_n = prev["droplet"]["frames"] if prev.get("droplet") else 0
+spin = encode_spin() if "spin" in WANT else None
+spin = spin or prev.get("spin")
 
 if "interact" in WANT:
     cfiles, ccrop = frames_of("clip")
@@ -627,6 +753,8 @@ man = {
 }
 if shadow:
     man["shadow"] = shadow
+if spin:
+    man["spin"] = spin
 p1200 = min(s["bytes"] for s in poster["sources"] if s["w"] == 1200)
 half_b = tiers[0]["bytes"]
 full_b = tiers[1]["bytes"]
@@ -647,6 +775,7 @@ man["bytes"] = {
                         + vbytes("droplet-in", c) for c in CODECS},
     },
 }
+spin_bytes(man)
 man.update(encode_live(man, FMT))
 if live_bytes(man):
     man["bytes"]["live"] = live_bytes(man)

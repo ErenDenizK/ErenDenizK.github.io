@@ -104,3 +104,27 @@ test.describe('default path', () => {
     expect(await report(page)).toBeNull();
   });
 });
+
+/* Phone motion (docs/research/2026-10-phone-motion.md): where an object's manifest has a spin loop, a
+   phone plays it as the idle; ?spin=0 and the desktop keep the idle loop. */
+test.describe('spin loop', () => {
+  const idleSrc = (page: Page) => page.evaluate(() => (document.querySelector('.media.stage video.m-idle') as HTMLVideoElement | null)?.dataset.src ?? '');
+
+  test('a phone plays the Home object\'s spin as its idle', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...phone, baseURL: test.info().project.use.baseURL });
+    const page = await ctx.newPage();
+    await page.goto('');
+    await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/spin\.\w+\.mp4$/);
+    await page.goto('?spin=0');
+    await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/idle\.\w+\.mp4$/);
+    await ctx.close();
+  });
+
+  test('the desktop keeps the idle loop', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...desktop, baseURL: test.info().project.use.baseURL });
+    const page = await ctx.newPage();
+    await page.goto('');
+    await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/idle\.\w+\.mp4$/);
+    await ctx.close();
+  });
+});

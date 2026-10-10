@@ -93,6 +93,7 @@ a pivot at its bounds centre, and renders one stage per Blender process:
 | `clip` | the object's micro-interaction, rest → rest, 30 fps (`CLIPS` in `frames.py`) | 30–45 frames |
 | `droplet` | rest → the shared glass droplet, ease-in cubic, uniform in time | 24 frames |
 | `shadow` | the rest pose's floor shadow alone: the object hidden from the camera, still casting | 600², 128 spp, whole square |
+| `spin` | the phones' idle loop: edk's letters each turn 360° about their own vertical axis in a staggered wave (2 s each, 0.3 s apart) and rest; others would swing about the pivot (`SPINS` in `frames.py`, proposals). Only the moving frames are rendered; `--stage all` skips it | 1040², 32 spp + OIDN, 4 s loop at 30 fps (edk: 78 rendered frames, about 25 minutes) |
 | `normal` | camera-space normals for every grid pose (and the state axis's frames), inside the grid's and clip's crops; needs `grid` and `clip` first | 1040², 8 spp, emission override, no bounces: about 0.3 s (edk) to 1.3 s (Recto) a frame |
 
 Yaw turns the object about its vertical axis (positive faces right), as the page's lean did;
@@ -131,9 +132,14 @@ subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact blac
   off it, and the page's ground does not stop there), meaning "multiply the ground by this";
 - `interact.*.mp4`, `droplet-out.*.mp4`, `droplet-in.*.mp4` (the same clip reversed, because
   browsers cannot play video backwards) and `idle.*.mp4` (a 6 s figure-of-eight through the
-  grid, synthesised from the grid frames: no extra render). Each as `av1` (10-bit), `hevc`
-  (Main 10, `hvc1`) and `h264` (High, 8-bit), BT.709 limited range, `+faststart`, no audio.
-  Clips are padded to the full square so they sit exactly on the poster.
+  grid, synthesised from the grid frames: no extra render) and, where the `spin` stage exists,
+  `spin.*.mp4` (its rendered frames, then frame 0 repeated to the loop's length; `--spin-only`
+  writes just it). Each as `av1` (10-bit), `hevc` (Main 10, `hvc1`) and `h264` (High, 8-bit),
+  BT.709 matrix and primaries, limited range, the **sRGB transfer** (`iec61966-2-1`) in the stream
+  and the MP4 `colr` box, `+faststart`, no audio. Clips are padded to the full square so they sit
+  exactly on the poster. `encode.py <name> --retag` rewrites the tags of existing videos without
+  re-encoding (and checks the pixels are unchanged): Safari draws a BT.709-tagged clip brighter in
+  the shadows than the sRGB stills (docs/research/2026-10-phone-motion.md §1).
 
 - for the live frame engine (ADR-0009, behind `?live`), when the `normal` stage exists, in
   `live/`: `normals-r<row>.avif`, the half-size normal maps of one pitch row as a vertical strip
@@ -183,6 +189,9 @@ picks which videos to re-encode; the others are kept from the existing manifest.
     tiers: [{ name: "half"|"full", scale, w, h, format, type, frames: [url × cols·rows], bytes }]
   },
   idle:  { fps: 30, frames: 180, duration: 6, loop: true, sources },
+  spin:  { fps: 30, frames: 120, duration: 4, loop: true, holdFrom: 78,   // optional; phones play it
+           kind: "letters"|"swing", parts, turn, each, stagger | amp,    // instead of idle
+           sources, check },                  // frame 0 and frames from holdFrom on are the rest pose
   clips: { interact: { label: "hop", returnsToRest: true, fps, frames, duration, sources } },
   droplet: { fps: 60, frames: 24, duration: 0.4, dropletFrame: 23, curve,
              out: { sources },                // rest → droplet: the leaving object, forward
@@ -198,7 +207,8 @@ picks which videos to re-encode; the others are kept from the existing manifest.
             peak, values,                         // state axis: the peak frame, each frame's 0..1 amount
             peakFull: { w, h, src, type, bytes } } },             // state axis: the peak at full size
   bytes: { shadow, poster1200, leanHalf, leanFull, clips: {av1, hevc, h264}, idle: {…},
-           tiers: { firstPaint, phone: {…}, desktopLow, desktopFull: {…} },   // tiers include the shadow
+           spin: {…},                                                         // when there is a spin
+           tiers: { firstPaint, phone: {…}, phoneSpin: {…}, desktopLow, desktopFull: {…} },   // tiers include the shadow
            live: { normalsGrid, normalsRest, clipNormals, states, restFull,
                    tiers: { phoneLive, desktopLite, desktopFull } } }   // what each live tier fetches
 }
