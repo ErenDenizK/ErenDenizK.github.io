@@ -11,6 +11,54 @@
   "h": 1200,
   "sources": [
    {
+    "src": "poster-400.avif",
+    "type": "image/avif",
+    "w": 400,
+    "bytes": 4389
+   },
+   {
+    "src": "poster-400.webp",
+    "type": "image/webp",
+    "w": 400,
+    "bytes": 8080
+   },
+   {
+    "src": "poster-420.avif",
+    "type": "image/avif",
+    "w": 420,
+    "bytes": 4776
+   },
+   {
+    "src": "poster-420.webp",
+    "type": "image/webp",
+    "w": 420,
+    "bytes": 8530
+   },
+   {
+    "src": "poster-500.avif",
+    "type": "image/avif",
+    "w": 500,
+    "bytes": 5815
+   },
+   {
+    "src": "poster-500.webp",
+    "type": "image/webp",
+    "w": 500,
+    "bytes": 10758
+   },
+   {
+    "src": "poster-525.avif",
+    "type": "image/avif",
+    "w": 525,
+    "bytes": 6357
+   },
+   {
+    "src": "poster-525.webp",
+    "type": "image/webp",
+    "w": 525,
+    "bytes": 11566
+   },
+   {
     "src": "poster-600.avif",
     "type": "image/avif",
     "w": 600,
@@ -21,6 +69,66 @@
     "type": "image/webp",
     "w": 600,
     "bytes": 13706
+   },
+   {
+    "src": "poster-630.avif",
+    "type": "image/avif",
+    "w": 630,
+    "bytes": 7927
+   },
+   {
+    "src": "poster-630.webp",
+    "type": "image/webp",
+    "w": 630,
+    "bytes": 14916
+   },
+   {
+    "src": "poster-640.avif",
+    "type": "image/avif",
+    "w": 640,
+    "bytes": 8020
+   },
+   {
+    "src": "poster-640.webp",
+    "type": "image/webp",
+    "w": 640,
+    "bytes": 15054
+   },
+   {
+    "src": "poster-800.avif",
+    "type": "image/avif",
+    "w": 800,
+    "bytes": 10309
+   },
+   {
+    "src": "poster-800.webp",
+    "type": "image/webp",
+    "w": 800,
+    "bytes": 19514
+   },
+   {
+    "src": "poster-840.avif",
+    "type": "image/avif",
+    "w": 840,
+    "bytes": 11157
+   },
+   {
+    "src": "poster-840.webp",
+    "type": "image/webp",
+    "w": 840,
+    "bytes": 21372
+   },
+   {
+    "src": "poster-960.avif",
+    "type": "image/avif",
+    "w": 960,
+    "bytes": 13034
+   },
+   {
+    "src": "poster-960.webp",
+    "type": "image/webp",
+    "w": 960,
+    "bytes": 24706
    },
    {
     "src": "poster-1200.avif",
