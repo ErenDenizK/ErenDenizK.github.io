@@ -138,7 +138,7 @@ test.describe('spin loop and float', () => {
     expect([...props]).toEqual(['translate']);
     const dpr = await page.evaluate(() => devicePixelRatio);
     for (const k of bob[0]) {
-      const [x, y] = String(k.translate).split(' ').map(parseFloat);
+      const [x, y = 0] = String(k.translate).split(' ').map(parseFloat);   // '0px' when y is 0
       expect(x).toBe(0);
       expect(Math.abs(y * dpr - Math.round(y * dpr))).toBeLessThan(1e-6);
     }
