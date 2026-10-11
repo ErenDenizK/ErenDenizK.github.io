@@ -8,6 +8,8 @@ the newest line wins.
 ## Where things are
 
 - `docs/brief.md`: what the owner wants (its dated log: `docs/history/brief-log.md`).
+  `docs/PROJECT.md`: why the main decisions were made. `docs/WORKFLOW.md`: how we work.
+  `docs/HANDOFF.md`: the current state and the next steps.
   `docs/PLAN.md`: the one live plan and the owner's open questions.
 - `docs/adr/`: decisions; `docs/adr/README.md` has true statuses. Proposed ones are not
   binding until the owner accepts.

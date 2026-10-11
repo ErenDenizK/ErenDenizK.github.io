@@ -1,6 +1,7 @@
 # Handoff (2026-10-11)
 
-Start here in a fresh session, after CLAUDE.md and `docs/brief.md`.
+Start here in a fresh session, after CLAUDE.md, `docs/brief.md`, `docs/PROJECT.md` (the reasons)
+and `docs/WORKFLOW.md` (how we work).
 
 ## State of the live site (`dev`)
 
@@ -34,3 +35,20 @@ Start here in a fresh session, after CLAUDE.md and `docs/brief.md`.
   keeps every answer in its own database; nothing there is lost when a session ends.
 - Nine older questions (first record entries, first `main` release, photos on Home, Eat Map screens,
   Recto logo, English Prep improvements, Recto's first job, Eat Map code, the Family chat).
+
+## Not in the repo (lost when the cloud session ends)
+
+The 16-bit render masters (`scratchpad/pipe/masters`, 5.6 GB) and the Blender environment live in the
+cloud session's scratch space. The site's published media are in the repo, so nothing visible is lost;
+re-encoding an object later means re-rendering it from its script in `tools/objects/` (hours per
+object, `tools/objects/README.md`). The hero study's notes, script and contact sheet were copied to
+`docs/research/hero-study/`.
+
+## Starting prompt for the next session
+
+> Read CLAUDE.md, then docs/HANDOFF.md, docs/PROJECT.md, docs/WORKFLOW.md and docs/brief.md. Tell me in
+> Turkish, briefly, where the portfolio stands and what you propose next, with your questions. Do not
+> build anything until I answer.
+
+Reference research that needs real websites: `docs/prompts/reference-research.md`, to run on the
+owner's computer.
