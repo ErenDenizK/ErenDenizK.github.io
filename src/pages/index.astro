@@ -1,108 +1,209 @@
 ---
-/* Home is the showcase, Work is the catalog (owner, 2026-10-09: no duplication). After the hero, the
-   project that leads (leadProject: `featured`, else the latest record activity) is shown object
-   first, with its pitch, status and one way in; the others follow as a quiet "also building" strip.
-   Every project link opens the focus view (ADR-0007 item 4).
-   Hierarchy (brief §7, "Home hierarchy"; docs/research/2026-10-wordmarks.md §3, variant A): the hero
-   is the person, the showcase is the work. A "Work" threshold in the maker's voice, then the lead
-   project on a plate of its own with its light kept inside, its object smaller than edk, and every
-   product named by its wordmark in its own face. */
+/* Home, direction A: the cinematic object stage (docs/research/2026-10-home-a.md; brief, Home, 2026-10-11:
+   "a stunning opening page"; Home presents the brand, the identity and the vision).
+   One composed first screen (the edk glass, the name, one vision line, Istanbul and its time), then a scroll
+   story in chapters while the glass stays pinned: who, the two tracks, the three products (the glass changes
+   into each product's own object, the light takes each product's colour, its real screen beside it), the
+   record, and the way on to Work and About. The object turns with the reading position on its real 1° pose
+   grid (ADR-0006; scripts/home.ts drives media.ts's pose), and a press plays its hop.
+   Layering (media research §3.1): .ha-stage is one additive group (plus-lighter) pinned over the page; the
+   big words (.ha-word, the name, the wordmarks) are painted under it, so the glass adds its light onto
+   them; the reading text is painted over it, beside the object, never under it.
+   Still twins: without JavaScript every chapter is there, the edk glass pinned (desktop) or in the first
+   screen (phones), each product with its own poster beside its text; reduced motion keeps posters and swaps
+   without movement. Content is data: site.json `home`, the projects and the record. */
 import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
 import Icon from '../components/Icon.astro';
 import Thumb from '../components/Thumb.astro';
 import Foot from '../components/Foot.astro';
 import Wordmark from '../components/Wordmark.astro';
-import '../styles/showcase.css';
-import { getSite, getProjects, getLog, url, projectPath, entryPath, entryTitle, dayMonYear, isPlaceholder, leadProject, statusLine } from '../lib/site';
+import { Picture } from 'astro:assets';
+import '../styles/home.css';
+import { poster } from '../lib/media';
+import { getWorld, reelSteps } from '../lib/world';
+import { getSite, getProjects, getLog, url, projectPath, entryPath, entryTitle, dayMonYear, iso, isPlaceholder, leadProject, statusLine, entryColors, type Project } from '../lib/site';
 const site = await getSite();
 const log = await getLog();
-const projects = (await getProjects()).filter((p) => p.data.group === 'directed');
-const lead = leadProject(projects, log);
-const others = projects.filter((p) => p !== lead);
-const latest = log[0];
+const h = site.home;
 const k = site.kicker;
-const sc = site.home.showcase;
-const L = lead.data;
-const la = L.accent;
-const leadVars = [`--p: ${la.color}`, `--pg: ${la.glow ?? la.color}`, la.p2 && `--p2: ${la.p2}`, la.p3 && `--p3: ${la.p3}`].filter(Boolean).join('; ');
+const directed = (await getProjects()).filter((p) => p.data.group === 'directed');
+/* the hand-picked lead first (featured), then the rest in their order */
+const lead = leadProject(directed, log);
+const products = [lead, ...directed.filter((p) => p !== lead)];
+const latest = log.slice(0, 3);
+const lanes = site.about.chapters.find((c) => c.tracks)?.tracks;
+const light = (p: Project) => p.data.accent.glow ?? p.data.accent.color;
+const vars = (p: Project) => {
+  const a = p.data.accent;
+  return [`--p: ${a.color}`, `--pg: ${light(p)}`, a.p2 && `--p2: ${a.p2}`, a.p3 && `--p3: ${a.p3}`].filter(Boolean).join('; ');
+};
+/* each product's one real screen: the first step of its Work reel (a phone-first product shows its phone screen) */
+const screens = new Map(await Promise.all(products.map(async (p) => {
+  const s = reelSteps(p.id, await getWorld(p.id), p.data)[0];
+  const shot = s ? (s.phone ?? s.main) : null;
+  return [p.id, shot] as const;
+})));
+const host = (p: Project) => p.data.links.find((l) => l.kind === 'live')?.href.replace(/^https?:\/\//, '').replace(/\/$/, '');
+const live = (p: Project) => p.data.links.find((l) => l.kind === 'live');
+/* the objects the stage can change into (media.ts show() reads this index) */
+const objs = ['edk', ...products.map((p) => p.data.object)];
+const index = Object.fromEntries(objs.map((o) => {
+  const q = poster(o);
+  return [o, { manifest: q.manifest, src: q.src, srcset: q.sources, shadow: q.shadow, light: q.light }];
+}));
+const EDK = 'var(--edk)';
+const two = (n: number) => String(n).padStart(2, '0');
+const total = products.length;
+const STAGE_SIZES = '(min-width: 1360px) and (min-height: 860px) and (max-resolution: 1.49dppx) 705px, (min-width: 1360px) and (min-height: 820px) 600px, (min-width: 900px) 500px, min(96vw, 400px)';
 ---
-<Base tab="home" og="home" ogAlt={`${site.name}, with the edk glass object.`} type="profile">
-  <div class="inner">
-    <div class="hero">
-      <div>
-        <p class="meta">{k.study} · <span class="lg">{k.school}</span><abbr class="sm" title={k.school}>{k.schoolShort}</abbr> · {k.year}</p>
-        <h1 id="h-home">{site.nameLines.map((l) => <span>{l}</span>)}</h1>
-        <p class="lede">{site.lede}</p>
-        <div class="links">
+<Base tab="home" og="home" ogAlt={`${site.name}, with the edk glass object.`} type="profile" pageClass="page-home">
+  <script type="application/json" id="media-index" set:html={JSON.stringify(index)} />
+  {/* before the first screen paints: ?still and reduced motion get the still twin, with no entrance */}
+  <script is:inline>(function(){var d=document.documentElement;if(/[?&]still/.test(location.search)||matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('ha-calm');})();</script>
+  <div class="ha" data-ha>
+    <div class="ha-veil" aria-hidden="true"></div>
+    <div class="ha-stage" aria-hidden="true">
+      <div class="ha-light"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="ha-obj">
+        <Media obj="edk" slot="home" stage solo priority sizes={STAGE_SIZES} />
+        <i class="ha-ring"></i>
+      </div>
+    </div>
+
+    <header class="ha-hero" data-ch="hero" data-obj="edk" data-light={EDK} data-pose="0,0" data-rail-sec={site.firstName} data-rail-accent={EDK}>
+      <p class="meta ha-meta ha-in" style="--i: 4">{k.study} · <span class="lg">{k.school}</span><abbr class="sm" title={k.school}>{k.schoolShort}</abbr> · {k.year}</p>
+      <h1 id="h-home" class="ha-name">
+        <span class="ha-word ha-n1"><span class="ha-in" style="--i: 0">{site.nameLines[0]}</span></span>
+        <span class="ha-word ha-n2"><span class="ha-in" style="--i: 1">{site.nameLines[1]}</span></span>
+      </h1>
+      <p class="ha-vision ha-in" style="--i: 2" data-draft={h.visionDraft ? '' : undefined}>{h.vision}{h.visionDraft && <span class="sample">draft</span>}</p>
+      <div class="ha-foot ha-in" style="--i: 5">
+        <p class="ha-time" data-clock><span class="ha-city">Istanbul</span> <time></time></p>
+        <script is:inline>(function(){try{var t=document.currentScript.previousElementSibling.querySelector('time'),s=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',hourCycle:'h23',timeZone:'Europe/Istanbul'}).format(new Date());t.textContent=s;t.dateTime=s;}catch(e){}})();</script>
+        <p class="meta ha-cue"><i aria-hidden="true"></i>{h.cue}</p>
+        <div class="ha-go">
           <a class="btn" href={url('work/')}>See the work <Icon name="arrow-right" weight="medium" /></a>
           <a class="qlink" href={site.links.github} rel="me">GitHub <Icon name="arrow-up-right" /></a>
           {!isPlaceholder(site.links.linkedin) && <a class="qlink" href={site.links.linkedin} rel="me">LinkedIn <Icon name="arrow-up-right" /></a>}
         </div>
       </div>
-      <Media obj="edk" slot="home" stage priority />
-    </div>
+      <p class="meta ha-hint" hidden>{h.hint}</p>
+    </header>
 
-    <section class="showcase" aria-labelledby="h-show" data-lead={lead.id} style={leadVars}>
-      <div class="sc-head"><h2 id="h-show">{sc.title}</h2><a class="more" href={url('work/')}>{sc.all} <Icon name="arrow-right" /></a></div>
-      <div class="sc-plate">
-        <div class="sc-light" aria-hidden="true"></div>
-        <div class="sc-lead">
-          <Media obj={L.object} slot="showcase" class="sc-obj" light={la.glow ?? la.color} sizes="(min-width: 900px) 400px, 46vw" />
-          <div class="sc-text">
-            <p class="meta sc-kicker"><Icon name="dot" />{sc.kicker}</p>
-            <h3 class="sc-title"><Wordmark project={lead} id={`sc-title-${lead.id}`} /></h3>
-            <p class="meta sc-status">{statusLine(lead)}{L.statusNote && ` · ${L.statusNote}`}</p>
-            <p class="sc-pitch">{L.summary}</p>
-            {L.what.text && <p class="sc-what">{L.what.text}</p>}
-            {!!L.what.numbers?.length && (
-              <dl class="sc-numbers">{L.what.numbers.map((n) => <div><dt class="meta">{n.label}</dt><dd>{n.value}</dd></div>)}</dl>
-            )}
-            <div class="links">
-              <a class="btn tint p-open" href={url(projectPath(lead))} data-p={lead.id} data-title={L.title} data-ptitle={`sc-title-${lead.id}`}>{sc.cta} <Icon name="arrow-right" weight="medium" /></a>
-            </div>
-          </div>
-        </div>
+    <section class="ha-ch ha-who" data-ch="who" data-obj="edk" data-light={EDK} data-light2="var(--about)" data-pose="-1.1,0.2" data-rail-sec={h.who.label} data-rail-accent={EDK} aria-labelledby="h-who">
+      <div class="ha-l ha-rv">
+        <p class="ha-k"><span>01</span>{h.who.label}</p>
+        <h2 class="ha-h" id="h-who">{h.who.title}</h2>
+        {h.who.text.map((t) => <p class="ha-p">{t}</p>)}
       </div>
-
-      {others.length > 0 && (
-        <div class="sc-also">
-          <h3 class="meta sc-also-head" id="h-also">{sc.also}</h3>
-          <ul class="also-list" aria-labelledby="h-also">
-            {others.map((p) => (
-              <li><a class="also p-open" href={url(projectPath(p))} data-p={p.id} data-title={p.data.title} style={`--p: ${p.data.accent.glow ?? p.data.accent.color}`}>
-                <Thumb obj={p.data.object} size={96} class="also-thumb" />
-                <span class="also-text">
-                  <span class="also-name"><Wordmark project={p} /><Icon name="arrow-right" size={20} /></span>
-                  <span class="meta">{statusLine(p)}</span>
-                  <span class="also-sum">{p.data.summary}</span>
-                </span>
-              </a></li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <dl class="ha-r ha-facts ha-rv">
+        {h.who.facts.map(([a, b]) => <div><dt class="meta">{a}</dt><dd>{b}</dd></div>)}
+      </dl>
     </section>
 
-    <div class="now-grid">
-      <div>
-        <span class="meta">{site.now.label}</span>
-        <p>{site.now.text}</p>
+    {lanes && (
+      <section class="ha-ch ha-tracks" data-ch="tracks" data-obj="edk" data-light="var(--about)" data-light2={EDK} data-light3="var(--log)" data-pose="-1.43,0.1;0,0;1.43,0.1" data-rail-sec={h.tracks.label} data-rail-accent="var(--about)" aria-labelledby="h-tracks">
+        <div class="ha-head ha-rv">
+          <p class="ha-k"><span>02</span>{h.tracks.label}</p>
+          <h2 class="ha-h" id="h-tracks">{h.tracks.title}</h2>
+        </div>
+        <p class="ha-word ha-tw1" aria-hidden="true">{lanes.lanes[0].label}</p>
+        <div class="ha-l ha-lane ha-rv">
+          <h3 class="ha-lh">{lanes.lanes[0].label}</h3>
+          <ul>{lanes.lanes[0].items.map((x) => <li>{x}</li>)}</ul>
+          <p class="ha-gives"><span class="meta">{lanes.teaches}</span>{lanes.lanes[0].gives}</p>
+        </div>
+        <p class="ha-word ha-tw2" aria-hidden="true">{lanes.lanes[1].label}</p>
+        <div class="ha-r ha-lane ha-rv">
+          <h3 class="ha-lh">{lanes.lanes[1].label}</h3>
+          <ul>{lanes.lanes[1].items.map((x) => <li>{x}</li>)}</ul>
+          <p class="ha-gives"><span class="meta">{lanes.teaches}</span>{lanes.lanes[1].gives}</p>
+        </div>
+        <p class="ha-meet ha-rv">{lanes.meet} {h.tracks.text}</p>
+      </section>
+    )}
+
+    <section class="ha-ch ha-intro" data-ch="products" data-obj="edk" data-light="var(--accent-neutral)" data-light2={light(products[0])} data-light3={light(products[1] ?? products[0])} data-pose="0,-0.3" data-rail-sec={h.products.label} data-rail-accent="var(--accent-neutral)" aria-labelledby="h-products">
+      <div class="ha-head ha-rv">
+        <p class="ha-k"><span>03</span>{h.products.label}</p>
+        <h2 class="ha-h" id="h-products">{h.products.title}</h2>
+        <p class="ha-p">{h.products.text}</p>
       </div>
-      <div>
-        {latest ? (
-          <>
-            <span class="meta">Latest in the record · <time datetime={latest.data.date.toISOString().slice(0, 10)}>{dayMonYear(latest.data.date)}</time></span>
-            <a class="latest" href={url(entryPath(latest))}><b>{entryTitle(latest)}</b>{latest.data.dek && <span>{latest.data.dek}</span>}</a>
-          </>
-        ) : (
-          <>
-            <span class="meta">Record</span>
-            <p class="log-empty-line">{site.log.empty} <a href={url('record/')}>The record</a></p>
-          </>
-        )}
+    </section>
+
+    {products.map((p, i) => {
+      const d = p.data;
+      const shot = screens.get(p.id);
+      const ln = live(p);
+      return (
+        <section class="ha-ch ha-prod" id={`home-${p.id}`} data-ch={p.id} data-obj={d.object} data-light={light(p)} data-light2={d.accent.p2 ?? light(p)} data-light3={d.accent.p3 ?? d.accent.color}
+          data-pose={i % 2 ? '1,0.2' : '-1,0.2'} data-rail-sec={d.title} data-rail-accent={light(p)} style={vars(p)} aria-labelledby={`ha-t-${p.id}`}>
+          <h3 class="ha-word ha-pname"><Wordmark project={p} id={`ha-t-${p.id}`} /></h3>
+          <div class="ha-l ha-rv">
+            <p class="ha-k"><span>{two(i + 1)} / {two(total)}</span>{statusLine(p)}{d.statusNote && ` · ${d.statusNote}`}</p>
+            <p class="ha-pitch">{d.summary}</p>
+            {d.what.text && <p class="ha-p">{d.what.text}</p>}
+            {!!d.what.numbers?.length && (
+              <dl class="ha-nums">{d.what.numbers.map((n) => <div><dt class="meta">{n.label}</dt><dd>{n.value}</dd></div>)}</dl>
+            )}
+            <div class="links">
+              <a class="btn tint p-open" href={url(projectPath(p))} data-p={p.id} data-title={d.title} data-ptitle={`ha-t-${p.id}`}>{h.products.cta} <Icon name="arrow-right" weight="medium" /></a>
+              {ln && <a class="qlink" href={ln.href}>{ln.label} <Icon name="arrow-up-right" /></a>}
+            </div>
+          </div>
+          <div class:list={['ha-r', 'ha-shot', 'ha-rv', { 'is-phone': shot?.frame === 'phone', 'no-shot': !shot }]}>
+            <Thumb obj={d.object} size={240} class="ha-still" />
+            {shot && shot.frame === 'wide' && (
+              <figure class="hs-web">
+                <div class="hs-bar" aria-hidden="true"><span class="hs-dots"><i></i><i></i><i></i></span>{host(p) && <span class="hs-url">{host(p)}</span>}</div>
+                <Picture src={shot.img} alt={shot.alt} widths={[720, 1080, 1440].filter((w) => w <= shot.img.width)} sizes="(min-width: 1240px) 380px, (min-width: 900px) 46vw, 92vw" formats={['avif', 'webp']} quality={62} loading="lazy" decoding="async" />
+              </figure>
+            )}
+            {shot && shot.frame === 'phone' && (
+              <figure class="hs-phone">
+                <Picture src={shot.img} alt={shot.alt} widths={[390, 600, 780].filter((w) => w <= shot.img.width)} sizes="(min-width: 900px) 220px, 58vw" formats={['avif', 'webp']} quality={70} loading="lazy" decoding="async" />
+              </figure>
+            )}
+          </div>
+        </section>
+      );
+    })}
+
+    <section class="ha-ch ha-record" data-ch="record" data-obj="edk" data-light="var(--log)" data-light2={EDK} data-pose="1.1,0.25" data-rail-sec={h.record.label} data-rail-accent="var(--log)" aria-labelledby="h-record">
+      <div class="ha-l ha-rv">
+        <p class="ha-k"><span>04</span>{h.record.label}</p>
+        <h2 class="ha-h" id="h-record">{h.record.title}</h2>
+        <p class="ha-p">{site.log.dek}</p>
+        <a class="qlink ha-all" href={url('record/')}>{h.record.all} <Icon name="arrow-right" /></a>
       </div>
-    </div>
-    <Foot />
+      <div class="ha-r ha-rv">
+        {latest.length ? (
+          <ol class="ha-entries">
+            {latest.map((e) => {
+              const c = entryColors(e, directed);
+              return (
+                <li style={`--c: ${c[0] ?? 'var(--log)'}`}>
+                  <a href={url(entryPath(e))}>
+                    <time class="meta" datetime={iso(e.data.date)}>{dayMonYear(e.data.date)}</time>
+                    <b>{entryTitle(e)}</b>
+                    {e.data.dek && <span>{e.data.dek}</span>}
+                  </a>
+                </li>
+              );
+            })}
+          </ol>
+        ) : <p class="ha-p">{site.log.empty}</p>}
+      </div>
+    </section>
+
+    <section class="ha-ch ha-exit" data-ch="exit" data-obj="edk" data-light={EDK} data-light2="var(--about)" data-light3="var(--log)" data-pose="0,0" data-rail-sec={h.exit.label} data-rail-accent={EDK} aria-labelledby="h-exit">
+      <h2 class="vh" id="h-exit">{h.exit.label}</h2>
+      <a class="ha-l ha-door ha-rv" href={url('work/')}><span class="meta">{h.exit.work[0]}</span><b>{h.exit.work[1]}</b><Icon name="arrow-right" size={24} /></a>
+      <a class="ha-r ha-door ha-rv" href={url('about/')}><span class="meta">{h.exit.about[0]}</span><b>{h.exit.about[1]}</b><Icon name="arrow-right" size={24} /></a>
+      <p class="ha-now ha-rv"><span class="meta">{site.now.label}</span>{site.now.text}</p>
+    </section>
   </div>
+  <div class="inner"><Foot /></div>
+  <script>import '../scripts/home';</script>
 </Base>

@@ -1,5 +1,6 @@
 /* The live frame engine behind ?live (ADR-0009, proposed): it boots and draws the Home object, the
-   showcase's state axis reverses, reduced motion keeps the still, a software renderer without
+   showcase's state axis (no longer on Home, whose products are one pinned stage since direction A) is
+   not tested here; reduced motion keeps the still, a software renderer without
    ?live=force falls back to the still, and without the flag the Home stage is exactly the current one
    (no engine loaded, no canvas, the float and the lean as before). Headless Chromium renders WebGL2 on
    SwiftShader, a software renderer, so the booting tests force the engine past that gate. */
@@ -58,19 +59,6 @@ test.describe('live frames, desktop', () => {
     await page.waitForTimeout(1000);
     await expect(page.locator('.live-chip')).toHaveCount(0);
     expect(await engineRequested(page)).toBe(false);
-  });
-
-  test('the showcase fan is a state axis that reverses on leave', async ({ page }) => {
-    await page.goto('?live=force&watchdog=0&float=0');
-    const slot = page.locator('.media[data-slot="showcase"]');
-    await slot.scrollIntoViewIfNeeded();
-    await page.mouse.move(700, 890);
-    await expect.poll(async () => (await report(page))?.showcase?.have?.clip, { timeout: 40_000 }).toBe(true);
-    const b = (await slot.boundingBox())!;
-    await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 3 });
-    await expect.poll(async () => (await report(page)).showcase.axis, { timeout: 20_000 }).toBeGreaterThan(0.95);
-    await page.mouse.move(b.x + b.width * 1.6, b.y + b.height / 2, { steps: 2 });
-    await expect.poll(async () => (await report(page)).showcase.axis, { timeout: 20_000 }).toBe(0);
   });
 
   test('a software renderer without force falls back to the still', async ({ page }) => {

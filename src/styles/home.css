@@ -1,0 +1,291 @@
+/* Home, direction A: the cinematic object stage (pages/index.astro; docs/research/2026-10-home-a.md).
+   Three planes in one stacking context (#app), so the glass adds its light onto the ground and onto the
+   words under it (media research §3.1):
+     z 0  the big words: the name, the two tracks, each product's wordmark (.ha-word)
+     z 1  the stage: light and the pinned glass, one additive group (plus-lighter), never a stacking
+          context of its own that blends with nothing; the contact shadow is left out (a multiply image in
+          an additive group would brighten the ground)
+     z 2  the reading text, beside the object and never under it
+   Phones pin the glass as a small emblem once the story starts (html.ha-pin, scripts/home.ts): the stage
+   goes on top (z 4) and a veil of ground (z 3) takes the text that passes under the emblem.
+   Widths: 1240 px and up the glass stands in the middle with a column each side; 900-1239 it stands on the
+   right of one text column; below 900 it heads one column. Slots are poster widths (600, 500), so the
+   still is drawn 1:1 (ADR-0006 amendment of 2026-10-10, evening). */
+
+@property --l1 { syntax: "<color>"; inherits: true; initial-value: #c9d4ff; }
+@property --l2 { syntax: "<color>"; inherits: true; initial-value: #c9d4ff; }
+@property --l3 { syntax: "<color>"; inherits: true; initial-value: #c9d4ff; }
+
+.page-home { padding-top: 0; }
+.ha {
+  --obj: 600px;                  /* the glass's slot */
+  --mid: calc(var(--obj) - 120px); /* the column it owns: its square's feathered corners may sit under text */
+  --objtop: calc(var(--bar-h) + (100svh - var(--bar-h) - var(--obj) - 72px) / 2);   /* room under it for the first screen's last row */
+  --gap: 32px;
+  --name: clamp(64px, 10.3vw, 156px);
+  --big: clamp(72px, 11vw, 172px);
+  --k: 0;                        /* phones: 0 in the first screen, 1 once the glass is the emblem */
+  position: relative; margin: 0 calc(var(--gut) * -1); padding: 0 var(--gut);
+}
+/* a 1:1 still at 1x where the window allows (the edk poster's 705 width); at 2x the 1200 poster caps the
+   slot at 600, since a larger one would be drawn enlarged (ADR-0006, evening amendment) */
+@media (min-width: 1360px) and (min-height: 860px) and (max-resolution: 1.49dppx) { .ha { --obj: 705px; } }
+@media (max-width: 1359.98px), (max-height: 819.98px) { .ha { --obj: 500px; } }
+@media (min-width: 900px) and (max-height: 699.98px) { .ha { --obj: 420px; } }
+
+/* ---------- the stage ---------- */
+.ha-stage {
+  position: sticky; top: 0; z-index: 1; height: 100svh; margin: 0 calc(var(--gut) * -1) -100svh;
+  mix-blend-mode: plus-lighter; pointer-events: none;
+  --l1: var(--edk); --l2: var(--edk); --l3: var(--edk);
+  transition: --l1 1200ms var(--ease-move), --l2 1500ms var(--ease-move), --l3 1800ms var(--ease-move);
+}
+.ha-light, .ha-light i { position: absolute; pointer-events: none; }
+.ha-light { inset: 0; overflow: hidden; }
+.ha-light .l1 {
+  left: 50%; top: calc(var(--objtop) + var(--obj) / 2); width: calc(var(--obj) * 2.3); aspect-ratio: 1; translate: -50% -50%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--l1) 15%, transparent), color-mix(in oklab, var(--l1) 5%, transparent) 48%, transparent);
+}
+.ha-light .l2 { left: -22%; bottom: -38%; width: 78%; height: 86%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--l2) 9%, transparent), color-mix(in oklab, var(--l2) 3%, transparent) 60%, transparent); }
+.ha-light .l3 { right: -18%; top: -30%; width: 64%; height: 80%;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--l3) 8%, transparent), color-mix(in oklab, var(--l3) 2.5%, transparent) 60%, transparent); }
+.ha-veil { display: none; }
+.ha-obj { position: absolute; left: calc(50% - var(--obj) / 2); top: var(--objtop); width: var(--obj); aspect-ratio: 1; }
+.ha-obj .media { pointer-events: auto; cursor: pointer; }
+.ha-obj .media .m-shadow-pic { display: none; }
+/* the press: a ring of the chapter's light leaves the glass as it hops */
+.ha-ring { position: absolute; inset: 14%; border-radius: 50%; opacity: 0; pointer-events: none;
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--l1) 50%, transparent), 0 0 60px 6px color-mix(in oklab, var(--l1) 18%, transparent); }
+.ha-ring.go { animation: ha-ring 1100ms var(--ease-out); }
+@keyframes ha-ring { from { opacity: 0.9; transform: scale(0.7); } to { opacity: 0; transform: scale(1.35); } }
+
+/* the first light: it blooms as the page arrives (no effect on the poster itself, which paints at once) */
+html.js:not(.ha-calm) .ha-light { animation: ha-bloom 2400ms var(--ease-out) both; }
+@keyframes ha-bloom { from { opacity: 0; transform: scale(0.55); } 45% { opacity: 1; } }
+
+/* ---------- planes ---------- */
+.ha-word { position: relative; z-index: 0; margin: 0; font: 400 var(--big)/0.86 var(--f-display); letter-spacing: -0.035em; white-space: nowrap; }
+.ha-l, .ha-r, .ha-head, .ha-meet, .ha-now, .ha-meta, .ha-vision, .ha-foot, .ha-hint { position: relative; z-index: 2; }
+
+/* ---------- the first screen: one composed frame ---------- */
+.ha-hero {
+  position: relative; min-height: 100svh;
+  display: grid; column-gap: var(--gap);
+  grid-template-columns: minmax(0, 1fr) var(--mid) minmax(0, 1fr);
+  grid-template-rows: var(--objtop) var(--obj) minmax(0, 1fr);
+}
+.ha-meta { grid-column: 1 / -1; grid-row: 2; align-self: start; margin-top: calc(var(--obj) * 0.19 - 34px); color: var(--ink-2); }
+.ha-name { display: grid; grid-column: 1 / -1; grid-row: 2; grid-template-columns: subgrid; grid-template-rows: auto 1fr auto; margin: 0; }
+.ha-name .ha-word { font-size: var(--name); line-height: 0.9; letter-spacing: -0.03em; }
+.ha-name .ha-word > span { display: inline-block; }
+/* the two lines close in on the glass, above and below its letters (they sit at 0.37-0.65 of the square) */
+.ha-n1 { grid-column: 1 / span 2; grid-row: 1; margin: calc(var(--obj) * 0.19) 0 0 -0.04em; }
+.ha-n2 { grid-column: 2 / -1; grid-row: 3; justify-self: end; margin: 0 -0.02em calc(var(--obj) * 0.13) 0; }
+.ha-vision { grid-column: 1; grid-row: 2; align-self: end; max-width: 15em; margin-bottom: calc(var(--obj) * 0.13 + 10px);
+  font: 400 clamp(22px, 1.9vw, 28px)/1.22 var(--f-display); letter-spacing: -0.012em; color: var(--ink); text-wrap: pretty; }
+.ha-vision .sample { margin-left: 10px; }
+.ha-foot { grid-column: 1 / -1; grid-row: 3; align-self: center; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; padding: 12px 0; }
+.ha-time { margin: 0; font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-3); font-variant-numeric: tabular-nums; display: flex; gap: 0.5em; align-items: baseline; }
+.ha-time time { color: var(--ink); font: 400 28px/1 var(--f-display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums lining-nums; }
+.ha-time time:empty { display: none; }
+.ha-cue { display: inline-flex; flex-direction: column; align-items: center; gap: 10px; color: var(--ink-3); }
+.ha-cue i { width: 1px; height: 34px; background: linear-gradient(var(--ink-3), transparent); transform-origin: 50% 0; }
+html.js:not(.ha-calm) .ha-cue i { animation: ha-cue 2400ms var(--ease-move) 1800ms infinite; }
+@keyframes ha-cue { 0% { transform: scaleY(0); opacity: 1; } 55% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+.ha-go { justify-self: end; display: flex; align-items: center; gap: 22px; }
+.ha-hint { grid-column: 3; grid-row: 2; align-self: start; justify-self: start; margin-top: calc(var(--obj) * 0.4); display: inline-flex; align-items: center; gap: 8px; color: var(--ink-3); }
+.ha-hint::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+.ha-hint[hidden] { display: none; }
+/* the bar's clock rests while the first screen shows its own (scripts/home.ts sets ha-top) */
+html.ha-top .bar-end .clock { opacity: 0; }
+.bar-end .clock { transition: opacity var(--d-3) var(--ease-out); }
+
+/* the first screen arrives: the name rises line by line, then the vision line and the rest */
+html.js:not(.ha-calm) .ha-in { animation: ha-rise 1100ms var(--ease-out) both; animation-delay: calc(var(--i) * 120ms + 120ms); }
+@keyframes ha-rise { from { opacity: 0; transform: translateY(0.4em); } }
+html.js:not(.ha-calm) .ha-name .ha-in { animation-duration: 1300ms; }
+html.js:not(.ha-calm) .ha-name .ha-in { animation-name: ha-rise-name; }
+@keyframes ha-rise-name { from { opacity: 0; transform: translateY(0.22em); filter: blur(10px); } }
+
+/* ---------- chapters ---------- */
+.ha-ch {
+  position: relative; min-height: 100svh; padding: 14svh 0;
+  display: grid; column-gap: var(--gap); align-content: center;
+  grid-template-columns: minmax(0, 1fr) var(--mid) minmax(0, 1fr);
+}
+.ha-l { grid-column: 1; }
+.ha-r { grid-column: 3; }
+.ha-head { grid-column: 1; }
+.ha-k { display: flex; align-items: baseline; gap: 12px; margin: 0 0 18px; font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); color: var(--ink-2); letter-spacing: 0.01em; }
+.ha-k span { color: var(--accent); font-variant-numeric: tabular-nums; }
+.ha-h { font: 400 clamp(34px, 2.9vw, 44px)/1.04 var(--f-display); letter-spacing: -0.02em; text-wrap: balance; margin-left: -0.03em; }
+.ha-p { margin-top: 18px; max-width: 30em; color: var(--ink-2); font-size: var(--t-body); line-height: 1.55; text-wrap: pretty; }
+.ha-h + .ha-p { margin-top: 22px; }
+
+/* who */
+.ha-facts { align-self: center; display: grid; gap: 0; border-top: 1px solid var(--rule-2); }
+.ha-facts div { display: grid; gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+.ha-facts dd { margin: 0; font: 400 var(--t-h3)/1.15 var(--f-display); letter-spacing: -0.01em; }
+
+/* the two tracks: the object turns from one to the other as you read */
+.ha-tracks { grid-template-rows: auto auto auto auto auto; row-gap: 0; }
+.ha-tracks .ha-head { grid-column: 1; grid-row: 1; margin-bottom: 40px; }
+.ha-tw1, .ha-tw2 { color: color-mix(in oklab, var(--ink) 50%, transparent); font-size: var(--big); }
+.ha-tw1 { grid-column: 1 / span 2; grid-row: 2; margin-left: -0.05em; }
+.ha-tw2 { grid-column: 2 / -1; grid-row: 4; justify-self: end; margin-top: 48px; }
+.ha-tracks .ha-l { grid-row: 3; margin-top: 20px; }
+.ha-tracks .ha-r { grid-row: 5; margin-top: 20px; }
+.ha-lh { font: 500 var(--t-meta)/1 var(--f-ui); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 14px; }
+.ha-lane ul { border-top: 1px solid var(--rule-2); }
+.ha-lane li { padding: 12px 0; border-bottom: 1px solid var(--rule); font-size: var(--t-body); line-height: 1.4; color: var(--read); }
+.ha-gives { margin-top: 18px; display: grid; gap: 4px; font: 400 var(--t-h3)/1.15 var(--f-display); letter-spacing: -0.01em; }
+/* the lanes meet: under the left lane, beside the glass (a centred line would pass over it) */
+.ha-meet { grid-column: 1; grid-row: 6; margin-top: 64px; font: 400 clamp(22px, 1.9vw, 28px)/1.25 var(--f-display); color: var(--ink-2); max-width: 14em; text-wrap: balance; }
+
+/* products */
+.ha-intro { min-height: 80svh; }
+.ha-prod { min-height: 118svh; grid-template-rows: auto 1fr; row-gap: 40px; }
+.ha-pname { grid-column: 1 / -1; grid-row: 1; justify-self: center; font-size: var(--big); line-height: 1; }
+.ha-pname .wm { font-size: inherit; }
+.ha-prod .ha-l, .ha-prod .ha-r { grid-row: 2; align-self: start; }
+.ha-prod .ha-k span { color: var(--p); }
+.ha-pitch { font: 400 clamp(24px, 2.1vw, 30px)/1.18 var(--f-display); letter-spacing: -0.014em; text-wrap: balance; }
+.ha-nums { display: flex; gap: 32px; margin-top: 26px; }
+.ha-nums div { display: flex; flex-direction: column-reverse; gap: 2px; }
+.ha-nums dd { margin: 0; font: 400 var(--t-h2)/1 var(--f-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums lining-nums; }
+.ha-prod .links { margin-top: 30px; }
+.ha-shot { display: grid; justify-items: start; }
+.ha-shot.is-phone { justify-items: center; }
+/* the product's own still: only without JavaScript (with it, the pinned glass becomes the product) */
+.ha-still-pic { display: none; }
+html:not(.js) .ha-still-pic { display: block; }
+.ha-still { display: block; width: 200px; height: 200px; margin: -20px 0 8px; }
+.ha-shot.no-shot .ha-still { width: 280px; height: 280px; }
+/* real screens: Work's frames, lighter (ADR-0014 item 3): a quiet browser bar with the real address; a slim rim for a phone */
+.hs-web { width: 100%; max-width: 420px; border-radius: 12px; overflow: hidden; background: #111113;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 40px 90px -40px color-mix(in oklab, var(--pg) 40%, rgba(0, 0, 0, 0.9)); }
+.hs-bar { display: flex; align-items: center; gap: 12px; height: 30px; padding: 0 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.hs-dots { display: flex; gap: 5px; }
+.hs-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
+.hs-url { flex: 1; text-align: center; margin-right: 32px; font: 400 12px/1 var(--f-ui); color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hs-web img { display: block; width: 100%; height: auto; }
+.hs-phone { width: 220px; padding: 5px; border-radius: 34px; background: #121214;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 40px 90px -40px color-mix(in oklab, var(--pg) 45%, rgba(0, 0, 0, 0.9)); }
+.hs-phone img { display: block; width: 100%; height: auto; border-radius: 29px; }
+
+/* the record */
+.ha-all { margin-top: 20px; }
+.ha-entries { border-top: 1px solid var(--rule-2); }
+.ha-entries a { position: relative; display: grid; gap: 4px; padding: 16px 0 16px 18px; border-bottom: 1px solid var(--rule); text-decoration: none; }
+.ha-entries a::before { content: ""; position: absolute; left: 0; top: 23px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px color-mix(in oklab, var(--c) 60%, transparent); }
+.ha-entries b { font: 400 22px/1.2 var(--f-display); letter-spacing: -0.01em; transition: color var(--d-1); }
+.ha-entries span { color: var(--ink-2); font-size: var(--t-ui); line-height: var(--lh-ui); }
+.ha-entries a:hover b { color: var(--c); }
+
+/* the way on */
+.ha-exit { min-height: 100svh; align-content: center; }
+.ha-door { grid-row: 1; display: grid; gap: 8px; align-content: center; padding: 26px 0; border-top: 1px solid var(--rule-2); border-bottom: 1px solid var(--rule); text-decoration: none; color: var(--ink); }
+.ha-door b { font: 400 var(--t-h2)/1.02 var(--f-display); letter-spacing: -0.02em; text-wrap: balance; }
+.ha-door .icon { color: var(--ink-3); transition: transform var(--d-3) var(--ease-out), color var(--d-1); }
+.ha-door:hover .icon { color: var(--accent); transform: translateX(6px); }
+.ha-exit .ha-r { text-align: right; justify-items: end; }
+.ha-now { grid-column: 1; grid-row: 2; margin-top: 40px; display: grid; gap: 8px; max-width: 26em; color: var(--ink-2); text-wrap: pretty; }
+.page-home + * { position: relative; }
+
+/* reading text arrives as it enters (scripts/home.ts adds .in; without it, everything simply shows) */
+html.ha-motion .ha-rv { opacity: 0; transform: translateY(28px); transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out); }
+html.ha-motion .ha-rv.in { opacity: 1; transform: none; }
+
+/* ---------- 900-1239 px: the glass on the right of one text column ---------- */
+@media (min-width: 900px) and (max-width: 1239.98px) {
+  .ha { --name: clamp(64px, 9.6vw, 116px); --big: clamp(64px, 9.4vw, 112px); }
+  .ha-obj { left: auto; right: var(--gut); }
+  .ha-light .l1 { left: calc(100% - var(--gut) - var(--obj) / 2); }
+  .ha-hero, .ha-ch { grid-template-columns: minmax(0, 1fr) calc(var(--obj) - 60px); }
+  .ha-n1 { grid-column: 1 / -1; }
+  .ha-n2 { grid-column: 1 / -1; }
+  .ha-vision { grid-column: 1; max-width: 11em; }
+  .ha-hint { grid-column: 1; align-self: center; margin-top: 0; }
+  .ha-l, .ha-r, .ha-head { grid-column: 1; }
+  .ha-r { margin-top: 36px; }
+  .ha-tw1 { grid-column: 1 / -1; }
+  .ha-tw2 { grid-column: 1 / -1; }
+  .ha-tracks .ha-r { grid-row: 5; }
+  .ha-meet { grid-column: 1; }
+  .ha-prod { grid-template-rows: auto auto auto; row-gap: 0; }
+  .ha-pname { grid-column: 1 / -1; justify-self: start; margin-bottom: 36px; }
+  .ha-prod .ha-l { grid-row: 2; }
+  .ha-prod .ha-r { grid-row: 3; }
+  .ha-exit .ha-door { grid-row: auto; }
+  .ha-exit .ha-r { text-align: left; justify-items: start; margin-top: 0; border-top: 0; }
+  .ha-now { grid-column: 1; grid-row: auto; justify-self: start; text-align: left; }
+}
+
+/* ---------- phones: one column under the glass; the glass becomes an emblem once the story starts ---------- */
+@media (max-width: 899.98px) {
+  .ha { --obj: min(96vw, 400px); --objtop: calc(var(--bar-h) + 12px); --name: clamp(40px, 13.8vw, 64px); --big: clamp(52px, 15vw, 76px); --emb: 0.42; }
+  .ha-stage { position: absolute; left: 0; right: 0; top: 0; height: calc(var(--objtop) + var(--obj) + 40px); margin: 0; }
+  html.ha-pin .ha-stage { position: sticky; z-index: 4; height: 100svh; margin: 0 calc(var(--gut) * -1) -100svh; }
+  .ha-light .l1 { width: calc(var(--obj) * 2.6); }
+  .ha-light .l2 { left: -60%; width: 160%; bottom: -20%; height: 60%; }
+  .ha-light .l3 { right: -50%; width: 130%; top: -10%; height: 55%; }
+  /* the emblem: the glass at --emb of its size, its centre moved to 44 px under the bar */
+  .ha { --emb-y: calc(var(--bar-h) + 44px - var(--objtop) - var(--obj) * 0.5); }
+  html.ha-pin .ha-obj { transform: translateY(calc(var(--k) * var(--emb-y))) scale(calc(1 - var(--k) * (1 - var(--emb)))); will-change: transform; }
+  html.ha-pin .ha-light .l1 { transform: translateY(calc(var(--k) * var(--emb-y))) scale(calc(1 - var(--k) * 0.4)); }
+  html.ha-pin .ha-veil {
+    display: block; position: sticky; top: 0; z-index: 3; margin: 0 calc(var(--gut) * -1); pointer-events: none;
+    height: calc(var(--bar-h) + 176px); margin-bottom: calc(-1 * (var(--bar-h) + 176px));
+    background: linear-gradient(var(--ground) calc(100% - 72px), transparent); opacity: var(--k);
+  }
+  .ha-hero { display: flex; flex-direction: column; min-height: 100svh; padding-top: calc(var(--objtop) + var(--obj) * 0.7); }
+  .ha-meta { order: 3; padding: 0; margin-top: 20px; align-self: flex-start; }
+  .ha-name { display: block; }
+  .ha-name .ha-word { display: block; }
+  .ha-n1, .ha-n2 { margin: 0 0 0 -0.03em; padding: 0; }
+  .ha-vision { order: 2; margin: 22px 0 0; font-size: 22px; max-width: 17em; }
+  .ha-name { order: 1; }
+  .ha-hint { display: none; }
+  .ha-foot { order: 4; margin-top: auto; padding: 28px 0 22px; grid-template-columns: auto 1fr; row-gap: 18px; }
+  .ha-cue { display: none; }
+  .ha-go { grid-column: 1 / -1; justify-self: stretch; justify-content: space-between; gap: 12px 18px; flex-wrap: wrap; }
+  .ha-go .btn { flex: 1 1 auto; justify-content: center; min-height: 52px; font-size: 16px; }
+  .ha-time { grid-column: 1; }
+  .ha-time time { font-size: 24px; }
+
+  .ha-ch { display: block; min-height: 0; padding: 64px 0 40px; }
+  html.ha-pin .ha-ch:first-of-type { padding-top: 120px; }
+  .ha-h { font-size: clamp(30px, 8.6vw, 38px); }
+  .ha-r { margin-top: 32px; }
+  .ha-word { white-space: normal; }
+  .ha-tw1, .ha-tw2 { display: block; font-size: var(--big); line-height: 0.95; margin: 32px 0 0; }
+  .ha-tw2 { text-align: right; margin-top: 48px; }
+  .ha-meet { margin-top: 48px; text-align: left; }
+  .ha-intro { min-height: 0; padding-bottom: 8px; }
+  .ha-prod { padding-top: 72px; }
+  .ha-pname { display: block; text-align: left; margin-bottom: 28px; line-height: 1.02; }
+  .ha-pitch { font-size: 26px; }
+  .ha-prod .links { gap: 10px 22px; }
+  .ha-prod .links .btn { min-height: 52px; padding: 0 24px; }
+  .hs-web { max-width: none; }
+  .hs-phone { width: min(62vw, 240px); }
+  .ha-shot.is-phone { justify-items: start; }
+  .ha-door { padding: 22px 0; }
+  .ha-door b { font-size: 34px; }
+  .ha-exit { min-height: 0; padding-top: 72px; }
+  .ha-exit .ha-r { text-align: left; justify-items: start; margin-top: 0; border-top: 0; }
+  .ha-now { margin-top: 48px; text-align: left; justify-self: start; }
+}
+
+/* ---------- still twins ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ha-stage { transition-duration: 150ms; }
+  .ha-light, .ha-in, .ha-cue i { animation: none !important; }
+  .ha-ring.go { animation: none; }
+  html.ha-motion .ha-rv { transform: none; transition: opacity 150ms linear; }
+  .ha-door:hover .icon { transform: none; }
+}
+@media (forced-colors: active) {
+  .ha-stage { position: relative; height: auto; margin-bottom: 0; mix-blend-mode: normal; }
+}

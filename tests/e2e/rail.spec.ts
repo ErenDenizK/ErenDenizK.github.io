@@ -64,7 +64,8 @@ test.describe('desktop', () => {
   /* without sections (ADR-0013 amendment 2026-10-11): one bead per screen follows the page, the wheel over it
      scrolls natively, a drag along it scrubs the page and Escape puts it back */
   test('without sections: beads per screen follow the page, a drag scrubs it, Escape puts it back', async ({ page }) => {
-    await page.goto('?still'); await settle(page, 300);
+    /* the Record's index has no sections (Home has chapters since direction A) */
+    await page.goto('record/?still'); await settle(page, 300);
     expect(await rail(page)).toMatchObject({ drawn: false, plain: true });
     const geo = () => page.evaluate(() => {
       const t = document.querySelector('.rail-plain .rail-track')!.getBoundingClientRect();
@@ -237,7 +238,7 @@ for (const [size, opts] of [['desktop', desktop], ['phone', phone]] as const) {
     const page = await ctx.newPage();
     await page.goto('about/?still'); await settle(page, 300);
     const secs = await bar(page, 'nav.rail:not(.in-sheet)', '');
-    await page.goto('?still'); await settle(page, 300);
+    await page.goto('record/?still'); await settle(page, 300);
     const flat = await bar(page, '.rail-plain:not(.in-sheet)', '');
     let inSheet;
     if (size === 'phone') {
