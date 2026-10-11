@@ -3,7 +3,8 @@
    Every field comes from content/site.json. It hangs from a lanyard; on wide screens with a mouse the
    lanyard is a rope, and the card leans toward the pointer, can be pulled by itself or its rope, flung
    and spun (brief §7, 2026-10-10); click, Enter or Space turns it over. The
-   front keeps both links, so nothing needs the turn. Behaviour: scripts/card3d.ts. */
+   front keeps both links, so nothing needs the turn. Once per page view it twists into place on its
+   lanyard as the page opens (ADR-0008 amendment of 2026-10-11). Behaviour: scripts/card3d.ts. */
 import Icon from './Icon.astro';
 import { getSite, isPlaceholder } from '../lib/site';
 import p360a from '../assets/photos/gate-card-360.avif?url';
@@ -178,6 +179,11 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
     mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   }
   .idc-back { transform: rotateY(180deg); }
+  /* the front first, whatever the engine does with backface-visibility: WebKit painted the masked back
+     face over the front on the owner's iPhone (2026-10-11). card3d.ts then fades the face turned away
+     from the viewer by the turn's angle; the classes cover the moment before it runs. */
+  .idc-back, .is-flipped .idc-front { opacity: 0; }
+  .is-flipped .idc-back { opacity: 1; }
 
   /* the light: a soft specular glare, and a faint rainbow of the laminate only where the light falls */
   .idc-glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: var(--glare); mix-blend-mode: screen; }

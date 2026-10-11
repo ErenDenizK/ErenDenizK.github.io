@@ -2,7 +2,8 @@
 
 **Status:** accepted 2026-10-10 (owner: "very good"; the rope was asked for and built). Items 7 and 8 were
 amended 2026-10-10 evening (About as an article; postcards in public). The desktop card was made
-calmer on 2026-10-10 (amendment below; the owner's look check is pending). Technique decided by the agent (CLAUDE.md) · **Rests on:** brief §7 (2026-10-09 after v0: "About
+calmer on 2026-10-10 (amendment below; the owner's look check is pending). The front-first fix and the
+entrance were added 2026-10-11 (amendment below). Technique decided by the agent (CLAUDE.md) · **Rests on:** brief §7 (2026-10-09 after v0: "About
 photo: both a digital ID card like event badges on About, and postcards for photo entries later"; after
 E: "the courtyard photo should carry About"; 2026-10-10: "ID card: very good; on desktop more interactive:
 pull it by its lanyard, swing and spin it, like GitHub's event badges; the phone's simple flip is fine"),
@@ -111,6 +112,50 @@ the ID card keeps the current photo". Items 7 and 8 change:
   so a 3x phone and a 2x desktop never stretch a file (tested in `tests/e2e/about.spec.ts`). The card's
   photo gained a 960 px file for 3x phones for the same reason.
 - The postcard workbench (`/lab/postcard/`) stays as a hidden test page.
+
+## Amendment 2026-10-11: the front first, and an entrance
+
+The owner (brief log, 2026-10-11): "About's card shows its back on first open"; and the idea "let the card
+move naturally as the page opens, a small swing or turn, so the visitor notices it moves".
+
+**The back on first open.** Headless Chromium always showed the front, so the cause was read from the
+code and WebKit's known behaviour rather than reproduced (Playwright's WebKit is not installed here). The
+two faces share one grid cell and only `backface-visibility: hidden` kept the back, which comes later in
+the DOM and therefore paints on top, from showing. Each face also carries a `mask` (the clip's slot),
+plus a `mix-blend-mode` glare inside; WebKit composites masked and blended content in its own pass and
+can paint such a face's back side, and its cross-document view-transition snapshot flattens 3D. Either
+way the back covers the front. The fix does not rely on the engine:
+
+- the CSS starts from the front: the back is `opacity: 0` until the card is turned (`.is-flipped`);
+- `card3d.ts` fades the face turned away from the viewer on every frame, from the turn's angle (the
+  front's normal faces the viewer while cos(yaw) > 0; the pitch never passes 90°), so the switch happens
+  edge-on and is not seen. `backface-visibility` stays as the first line. Reduced motion keeps its CSS
+  crossfade. The postcard, which shares the loop, gets the same fade.
+
+**The entrance.** Once per page view, after the card's photo is decoded (`img.decode()`, given up after
+4 s), two frames after it is ready:
+
+| | Rope (wide, fine pointer) | Touch (phones and tablets) |
+|---|---|---|
+| Twist about the lanyard | 130°/s kick on an underdamped spring (k 60, ζ 0.3, period ≈ 0.85 s): about 10°, then −4°, then ±1° | 210°/s: about 18°, then −7°, then ±2° |
+| Swing | the clip is pushed sideways at 200 px/s and the rope swings it out once (about 11 px and 7°) and back, on its own damping | the card (with its clip, not the strap) swings about the clip's pivot: about 4°, decaying with the twist |
+
+After 1.3 s the twist is handed to the turn spring (ζ ≈ 0.84), so what is left (under a degree) settles
+without another wobble; measured in headless Chromium the visible motion ends 1.2–1.4 s after it starts
+and the card is exactly square by about 1.7 s. Any press or key anywhere, or the pointer over the card,
+takes over at once: the entrance stops driving the twist and it settles on the turn spring from where it
+is, so a tap that turns the card during the entrance turns it normally. A visitor who pressed something
+before the photo was ready gets no entrance. None under reduced motion, Save-Data or `?still`; the still
+twins are unchanged. This replaces the 1.6 px nudge the rope got at load. The page's own entrance (the
+view transition) runs at the same time, so the card seems to start moving with the page.
+
+Tested in `tests/e2e/idcard.spec.ts`: on desktop and on a 3x phone, no frame shows the back while the
+front faces the viewer, the twist peaks between 3° and 30°, the card ends square with the front live and
+nothing replays; a tap during the entrance turns the card and it settles on the back; reduced motion and
+`?still` get no entrance.
+
+What to check on a real iPhone: the front on first open (from Home and on a reload), the twist and swing
+feeling natural rather than mechanical, and a tap during it.
 
 ## Consequences
 

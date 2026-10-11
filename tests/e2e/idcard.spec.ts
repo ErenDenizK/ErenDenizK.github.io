@@ -248,3 +248,89 @@ test.describe('postcard workbench', () => {
     expect(sitemap).not.toContain('/lab/');
   });
 });
+
+/* The front first, and the entrance (ADR-0008 amendment of 2026-10-11). The owner's iPhone showed the
+   back on first open: the face turned away is now faded by the script from the turn's angle, and the
+   CSS starts from the front. Once per page view, after the photo is decoded, the card twists into
+   place on its lanyard (and swings, on the rope or about its clip); input takes over; none under
+   reduced motion or ?still. */
+const trace = (page: Page) => page.addInitScript(() => {
+  const log: [number, number, string, string, string][] = ((window as any).__tr = []);
+  const f = (t: number) => {
+    const c = document.querySelector<HTMLElement>('[data-card-body]');
+    if (c) {
+      const [front, back] = [...document.querySelectorAll('.idc-face')].map((e) => getComputedStyle(e).opacity);
+      log.push([t, +(/rotateY\((-?[\d.]+)deg\)/.exec(c.style.transform)?.[1] ?? 0), document.querySelector<HTMLElement>('.idc-hold')!.style.transform, front, back]);
+    }
+    requestAnimationFrame(f);
+  };
+  requestAnimationFrame(f);
+});
+const entrance = (page: Page) => page.locator('.idc').evaluate((e) => (e as HTMLElement).dataset.entrance ?? '');
+
+for (const [name, use] of [['desktop', desktop], ['phone', { ...phone, deviceScaleFactor: 3 }]] as const) {
+  test(`ID card, ${name}: the front shows first, the card twists into place once, then rests`, async ({ browser }) => {
+    const ctx = await browser.newContext({ ...use, baseURL: test.info().project.use.baseURL });
+    const page = await ctx.newPage();
+    await trace(page);
+    await page.goto('about/');
+    /* a loaded machine stretches the frames (the physics clamps one at 50 ms), so wait on state */
+    await expect.poll(() => entrance(page), { timeout: 15000 }).toBe('done');
+    const tr = await page.evaluate(() => (window as any).__tr as [number, number, string, string, string][]);
+    expect(tr.length).toBeGreaterThan(5);
+    /* no frame ever shows the back while the front faces the viewer */
+    for (const [, yaw, , front, back] of tr) {
+      const facing = Math.cos((yaw * Math.PI) / 180) >= 0;
+      expect([front, back], `yaw ${yaw}`).toEqual(facing ? ['1', '0'] : ['0', '1']);
+    }
+    /* the twist is felt and small: a few degrees, never near edge-on */
+    const peak = Math.max(...tr.map((r) => Math.abs(r[1])));
+    expect(peak).toBeGreaterThan(3);
+    expect(peak).toBeLessThan(30);
+    if (name === 'phone') expect(tr.some((r) => /rotate\(/.test(r[2])), 'the touch card swings about its clip').toBe(true);
+    /* at rest: square to the viewer, front live */
+    expect(await yaw(page)).toBe(0);
+    expect(await flipped(page)).toBe(false);
+    expect(await page.locator('.idc-hold').evaluate((e) => (e as HTMLElement).style.transform)).toBe('');
+    if (name === 'desktop') expect(atRest(await swing(page))).toBe(true);
+    /* once per page view: nothing replays */
+    const n = tr.length;
+    await page.waitForTimeout(800);
+    const later = await page.evaluate((n) => ((window as any).__tr as [number, number][]).slice(n).map((r) => r[1]), n);
+    expect(later.every((y) => y === 0)).toBe(true);
+    await ctx.close();
+  });
+}
+
+test('ID card: a press during the entrance takes over and the card settles', async ({ browser }) => {
+  const ctx = await browser.newContext({ ...phone, baseURL: test.info().project.use.baseURL });
+  const page = await ctx.newPage();
+  await page.goto('about/');
+  await expect.poll(() => entrance(page), { timeout: 15000 }).toBe('play');
+  await page.locator('.idc-front .idc-turn').tap();
+  expect(await flipped(page)).toBe(true);
+  await expect.poll(() => entrance(page), { timeout: 10000 }).toBe('done');
+  /* the entrance may have ended on its own just before the tap: wait for the turn itself */
+  await expect.poll(() => yaw(page), { timeout: 10000 }).toBe(180);
+  expect(await page.locator('.idc-back').evaluate((e) => getComputedStyle(e).opacity)).toBe('1');
+  expect(await page.locator('.idc-front').evaluate((e) => getComputedStyle(e).opacity)).toBe('0');
+  await ctx.close();
+});
+
+test('ID card: no entrance under reduced motion or ?still', async ({ browser }) => {
+  const ctx = await browser.newContext({ ...phone, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
+  const page = await ctx.newPage();
+  await page.goto('about/');
+  await page.waitForTimeout(2500);
+  expect(await entrance(page)).toBe('');
+  expect(await page.locator('.idc-card').evaluate((e) => getComputedStyle(e).transform)).toBe('none');
+  expect(await page.locator('.idc-back').evaluate((e) => getComputedStyle(e).opacity)).toBe('0');
+  await ctx.close();
+  const ctx2 = await browser.newContext({ ...desktop, baseURL: test.info().project.use.baseURL });
+  const p2 = await ctx2.newPage();
+  await p2.goto('about/?still');
+  await p2.waitForTimeout(2500);
+  expect(await entrance(p2)).toBe('');
+  expect(await yaw(p2)).toBe(0);
+  await ctx2.close();
+});
