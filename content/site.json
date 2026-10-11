@@ -72,8 +72,7 @@
         "id": "who",
         "title": "Who I am",
         "text": [
-          "I'm Eren Deniz Kuyucaklıoğlu, and I live in Istanbul. What pulls me in is whatever sits closest to the machine: processors, embedded systems, the machine's own language.",
-          "One day I'd like to work abroad."
+          "I'm Eren Deniz Kuyucaklıoğlu, and I live in Istanbul. What pulls me in is whatever sits closest to the machine: processors, embedded systems, the machine's own language."
         ]
       },
       {
@@ -81,7 +80,7 @@
         "title": "Where I study",
         "text": [
           "Yıldız Technical University, YTÜ for short. I'm in my first year of Computer Engineering.",
-          "Before that came the English prep year. I passed it with AA, full marks."
+          "I skipped the English prep year: I passed YTÜ's prep exam with full marks."
         ],
         "facts": [
           [
@@ -102,15 +101,23 @@
           ],
           [
             "Prep year",
-            "AA, full marks"
+            "Skipped, exam passed with full marks"
           ]
+        ],
+        "photos": [
+          {
+            "photo": "park-through-lens",
+            "alt": "The university's inner courtyard on a sunny afternoon, trees and a lawn, seen through a tinted lens held close to the camera.",
+            "note": "The inner courtyard at YTÜ, through a tinted lens.",
+            "place": "YTÜ, Istanbul"
+          }
         ]
       },
       {
         "id": "photos",
         "title": "Photos",
         "text": [
-          "I take photos, mostly around Istanbul. Three of them are here as postcards: put one aside to see the next, or turn it over to read the back."
+          "I take photos, mostly around Istanbul. A few of them are on this page as postcards, each beside the part it belongs to: turn one over to read the back."
         ],
         "photos": [
           {
@@ -118,18 +125,6 @@
             "alt": "Bostancı station platform in the rain at blue hour, the wet ground reflecting the platform lights and red signals.",
             "note": "Bostancı station in the rain, at blue hour.",
             "place": "Bostancı, Istanbul"
-          },
-          {
-            "photo": "cat-sunset-silhouette",
-            "alt": "A tabby kitten silhouetted on a sea wall, the sun low over the Sea of Marmara.",
-            "note": "A kitten on the sea wall, the sun low over the Marmara.",
-            "place": "Istanbul"
-          },
-          {
-            "photo": "park-through-lens",
-            "alt": "The university's inner courtyard on a sunny afternoon, trees and a lawn, seen through a tinted lens held close to the camera.",
-            "note": "The inner courtyard at YTÜ, through a tinted lens.",
-            "place": "YTÜ, Istanbul"
           }
         ]
       },
@@ -189,13 +184,18 @@
         ],
         "timeline": [
           {
-            "when": "Last year",
-            "what": "English prep year, passed with AA",
+            "when": "Before term",
+            "what": "Skipped the prep year: full marks on YTÜ's prep exam",
             "state": "past"
           },
           {
             "when": "Sep 2026",
-            "what": "Started Recto and English Prep",
+            "what": "Started English Prep, the app",
+            "state": "past"
+          },
+          {
+            "when": "Sep 2026",
+            "what": "Then started Recto",
             "state": "past"
           },
           {
@@ -207,6 +207,14 @@
             "when": "Next",
             "what": "More CS50, more projects, the first work by hand on this page",
             "state": "next"
+          }
+        ],
+        "photos": [
+          {
+            "photo": "cat-sunset-silhouette",
+            "alt": "A tabby kitten silhouetted on a sea wall, the sun low over the Sea of Marmara.",
+            "note": "A kitten on the sea wall, the sun low over the Marmara.",
+            "place": "Istanbul"
           }
         ]
       },
@@ -227,15 +235,15 @@
         "is built the same way as my projects: I decide and review, agents write most of the code. The glass objects are modelled in Blender and rendered ahead of time; the page shows the renders."
       ]
     ],
-    "pile": {
-      "label": "Postcards",
-      "prev": "Previous postcard",
-      "next": "Next postcard",
-      "turn": "Turn over",
-      "of": "of",
+    "postcard": {
+      "of": "Postcard from",
+      "turn": "Turn it over",
+      "back": "Turn it back to the photograph",
+      "head": "Post card",
+      "credit": "Photograph",
       "hint": {
-        "drag": "Drag one aside, or click to turn it over",
-        "tap": "Swipe one aside, or tap to turn it over"
+        "fine": "Click to turn it over, or pick it up and let go",
+        "touch": "Tap to turn it over"
       }
     }
   }

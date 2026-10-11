@@ -195,3 +195,41 @@ in a row) is replaced:
 - **Still twins.** Reduced motion or `?still`: no tilt, fan, drag or slide; the order changes at once and
   the turn is the 150 ms crossfade. Without JavaScript the photographs stand in a row, each with its note
   and place under it (the back is not repeated).
+
+## Amendment 2026-10-11 (afternoon): postcards through the page
+
+The owner (brief log, 2026-10-11 afternoon): About is good, but "postcards should not be gathered in one
+place: spread them through the page"; "design the back more elegantly"; "switching and turning by buttons
+is bad: more interactivity by tapping and clicking". The pile above is replaced:
+
+- **Placement.** Each photograph stands in the margin of the chapter it belongs to (`about.chapters[].photos`,
+  at most two a chapter): the YTÜ courtyard beside "Where I study", Bostancı beside "Photos", the kitten on
+  the sea wall beside "Next". Where a chapter's margin held its facts, the facts move under its words as a
+  two-column plate. Each card lies at its own small angle, alternating down the page. On phones a card
+  follows its chapter's words, centred, at most 340 px wide. `PostcardPile.astro` and `pile.ts` are gone.
+- **Behaviour** (`src/scripts/postcard.ts`, one loop per card, asleep at rest, CSS transforms only). The
+  face is the button: a tap, a click, Enter or Space turns it, and focus follows to the other face; the
+  turn is a spring with a little give (k 150, ζ 0.62) and the card lifts toward the viewer while it is
+  edge-on. A mouse or pen can pick it up: it follows on a rubber band (at most 14 % of its width, 28–56 px),
+  leans into the move, and on release is tossed back with the hand's speed (k 170, ζ 0.5: one small
+  overshoot). A sheen follows the mouse and the card leans a few degrees toward it. Touch gets the tap
+  only; no device orientation (it would need a permission prompt). The face turned away is hidden from the
+  turn's angle each frame, as the ID card's. No Previous/Next/Turn over buttons remain.
+- **The back** is a real divided back: "Post card" printed at the head of the message side, the note in a
+  calligraphic system italic (Palatino where present, then Georgia) in blue-black ink, the signature
+  under it; the address side has a perforated stamp cut from the same photograph on a white margin with
+  a fine frame, a postmark ringing the place (and the date, only when known) with wavy cancellation
+  lines, and the place written on ruled lines, one part a line. A credit ("Photograph", the owner's name)
+  runs up the dividing line. The stock is warm laid card made in CSS (gradients for light and the laid
+  lines, the page's 5 KB grain tile multiplied at 22 %); the About gold appears only in the postmark ink.
+  The front is the photograph on a hairline of the same stock, so both faces are one card.
+- **Still twins.** Reduced motion or `?still`: no lift, toss, lean or sheen; the turn is a 180 ms crossfade.
+  Without JavaScript the front stands with its place and note under it (the back is not shown).
+- **Phone bug** (same day, "About has the same problem as the Record"): in the products list a generic
+  rule (`.ab-list a .ab-note { grid-column: 1 }`, more specific) out-ranked the products' own and put
+  each description into the 10 px column of the colour dot, one word per line. The lists now use named
+  grid areas, so a phone layout only redraws the template. The two tracks stack on phones.
+
+Tested in `tests/e2e/about.spec.ts`: no buttons but the faces, a click and Enter/Space turn, a mouse pick-up
+springs back, each card in its chapter's margin, no wrapped text column under 120 px at 320–430 px, no
+stretched photograph, the reduced-motion crossfade and the no-JavaScript caption.
