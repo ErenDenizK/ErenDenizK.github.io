@@ -135,8 +135,12 @@ a.e-date:hover { color: var(--ink); text-decoration: underline; }
 /* inside a project's view the same rows hang on a spine of that project's colour */
 .case-sec .spine, .case-sec .entries { --gutter: 64px; --spine-w: 32px; --spine-x: calc(var(--gutter) + var(--spine-w) / 2); }
 .case-sec .entries.spine { border-top: 0; }
-.case-sec .spine > .entry.has-thumb { grid-template-columns: var(--gutter) var(--spine-w) minmax(0, 1fr) 200px; }
-.case-sec .e-thumb { width: 184px; }
+/* wide screens only: at four classes this rule outranks the phone grid below, and on a phone it once
+   squeezed a release's text into the 22 px spine column, one word per line (owner's iPhone, 2026-10-11) */
+@media (min-width: 900px) {
+  .case-sec .spine > .entry.has-thumb { grid-template-columns: var(--gutter) var(--spine-w) minmax(0, 1fr) 200px; }
+  .case-sec .e-thumb { width: 184px; }
+}
 
 
 /* corrections and updates inside an entry (§3.5, §3.6) */
