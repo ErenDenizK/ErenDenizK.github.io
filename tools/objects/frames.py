@@ -12,11 +12,13 @@ Cycles, one stage per Blender process (the droplet stage rewrites the meshes):
            axis or clip, inside the grid's and the clip's own crops (needs those stages first),
            for the live frame engine's pointer light (ADR-0009; liveliness research §3 d).
            An emission override, no bounces, 8 spp: about a second a frame, not minutes
-  spin     a seamless idle loop for phones (phone motion research): edk's letters each turn a
-           full 360 degrees about their own vertical axis in a staggered wave and come to rest;
-           other objects swing about the pivot (SPINS below). Starts and ends on the rest pose;
-           frames after the motion are the rest pose again and are not rendered (crop.json
-           `loopFrames`: encode.py repeats frame 0 to fill the loop)
+  spin     a seamless idle loop for phones and touch tablets (phone motion research; ADR-0006
+           note of 2026-10-11, "every object turns"): each object's own turn, then rest (SPINS
+           below): edk's letters turn in a staggered wave, Eat Map's pin lifts and spins about its
+           own axis, English Prep's bubbles turn together on a bob and the dots bounce on landing,
+           Recto's stack turns with its pages fanning, the recorder turns with its reels running.
+           Starts and ends on the rest pose; frames after the motion are the rest pose again and
+           are not rendered (crop.json `loopFrames`: encode.py repeats frame 0 to fill the loop)
 
   <venv>/bin/python tools/objects/frames.py edk                       # all four stages
   <venv>/bin/python tools/objects/frames.py recto --stage grid --res 1040 --masters DIR
@@ -51,19 +53,29 @@ STAGES = ("poster", "grid", "clip", "droplet", "shadow", "normal", "spin")
 # (the overshoot peak at 0.37 s), so they are the axis; frames after it are the way back.
 AXES = {"recto": {"axis": "state", "frames": 12, "peak": 11}}
 # Record's lift is one too; clip_record() adds its entry, because its peak frame comes from its spring.
-# The spin stage (docs/research/2026-10-phone-motion.md): "letters" turns each named part a full
-# `turn` about its own vertical axis, part i starting `stagger` s after part i-1 and taking `each` s
-# (smoothstep), then holds the rest pose until `seconds`; "swing" turns the whole object
-# yaw = amp * sin(2 pi t / seconds) about the pivot (an object that only reads from the front).
-# `--stage all` skips it (opt-in per object): name it with --stage spin. Only edk's is rendered;
-# the others are the research's proposals, unrendered.
+# The spin stage (docs/research/2026-10-phone-motion.md; ADR-0006 note of 2026-10-11, "every object
+# turns"): the phones' idle, one motion that ends on the rest pose, then rest until `seconds`, so the
+# loop's seam is the rest frame and a tap can start the interaction clip (rendered from rest) once the
+# loop reaches its hold. Every turn is a smoothstep over `each` seconds (zero speed at both ends).
+#   letters    each named part turns `turn` degrees about its own vertical axis, part i `stagger` s
+#              after part i-1 (edk)
+#   pin        one part turns about its own vertical axis and lifts by `lift` (world units) on a
+#              sine bump meanwhile, landing as it stops (Eat Map: the pin is round, its hole shows the
+#              turn; the plate stays)
+#   turntable  the whole object turns about the pivot (the bounds centre), with the object's own
+#              extras: `bob` lifts it on a bump; `dots` bounces English Prep's typing dots twice as
+#              it lands; `fan` spreads Recto's back pages as in its clip, up and back within the turn;
+#              `reels` turns the recorder's reels by whole multiples of their hubs' 120-degree teeth
+# `res` renders the loop smaller where no slot needs more (the recorder: 320 CSS px at most, 640
+# device px on a 2x tablet). `--stage all` skips the stage (opt-in per object): name it with
+# --stage spin. `swing` (yaw = amp * sin(2 pi t / seconds)) is kept for the card file, unused.
 SPINS = {
     "edk": {"kind": "letters", "parts": "edk", "turn": 360.0, "each": 2.0, "stagger": 0.3, "seconds": 4.0},
-    "recto": {"kind": "swing", "amp": 35.0, "seconds": 6.0},
+    "eatmap": {"kind": "pin", "parts": ["pin"], "turn": 360.0, "each": 2.2, "lift": 0.1, "seconds": 4.0},
+    "englishprep": {"kind": "turntable", "turn": 360.0, "each": 2.2, "bob": 0.06, "dots": 0.16, "seconds": 4.0},
+    "recto": {"kind": "turntable", "turn": 360.0, "each": 2.4, "fan": 0.6, "seconds": 4.0},
+    "recorder": {"kind": "turntable", "turn": 360.0, "each": 2.4, "reels": [480.0, 720.0], "seconds": 4.0, "res": 640},
     "record": {"kind": "swing", "amp": 30.0, "seconds": 6.0},
-    "recorder": {"kind": "swing", "amp": 30.0, "seconds": 6.0},
-    "englishprep": {"kind": "swing", "amp": 40.0, "seconds": 6.0},
-    "eatmap": {"kind": "letters", "parts": ["pin"], "turn": 360.0, "each": 2.4, "stagger": 0.0, "seconds": 4.0},
 }
 
 
@@ -120,7 +132,9 @@ os.makedirs(OUT, exist_ok=True)
 
 # ---------------------------------------------------------------- build the object
 sys.path.insert(0, HERE)
-res = {"poster": A.poster_res, "shadow": A.shadow_res}.get(STAGE, A.res)
+# the spin's own `res` (SPINS) unless --res is given
+spin_res = A.res if "--res" in sys.argv else SPINS.get(A.obj, {}).get("res", A.res)
+res = {"poster": A.poster_res, "shadow": A.shadow_res, "spin": spin_res}.get(STAGE, A.res)
 spp = {"poster": A.poster_samples, "shadow": A.shadow_samples, "normal": A.normal_samples}.get(STAGE, A.samples)
 sys.argv = [os.path.join(HERE, f"{A.obj}.py"), "--no-render", "--no-export", "--out", OUT,
             "--samples", str(spp), "--res", str(res)]
@@ -185,14 +199,15 @@ def pose(yaw_deg=0.0, pitch_deg=0.0):
     bpy.context.view_layer.update()
 
 
-def place(o, off=None, rot=None, scale=None, about=None):
+def place(o, off=None, rot=None, scale=None, about=None, pre=None):
     """World-space move of a part from its rest matrix: scale (world axes) and rotate about
-    `about` (default: the part's origin, the centre of its bounds), then translate by `off`."""
+    `about` (default: the part's origin, the centre of its bounds), then translate by `off`;
+    `pre` then moves the result with the whole object (the pivot's own move, see spin_turn)."""
     M0 = REST[o.name]
     p = about if about is not None else M0.translation
     S = Matrix.Diagonal((*scale, 1.0)) if scale is not None else I4
     R = rot.to_matrix().to_4x4() if rot is not None else I4
-    o.matrix_world = T(off if off is not None else Vector()) @ T(p) @ R @ S @ T(-p) @ M0
+    o.matrix_world = (pre or I4) @ T(off if off is not None else Vector()) @ T(p) @ R @ S @ T(-p) @ M0
 
 
 def b3(v):
@@ -893,9 +908,9 @@ elif STAGE == "spin":
         raise SystemExit(f"{A.obj}: no spin in SPINS")
     pose(0, 0)
     n = round(sp["seconds"] * FPS)
-    if sp["kind"] == "letters":
+    if sp["kind"] in ("letters", "pin"):
         L = [part(c) for c in sp["parts"]]
-        end = sp["stagger"] * (len(L) - 1) + sp["each"]
+        end = sp.get("stagger", 0.0) * (len(L) - 1) + sp["each"]
         moving = min(n, math.ceil(end * FPS))        # frames from here on are the rest pose
 
         def state(k):
@@ -903,8 +918,51 @@ elif STAGE == "spin":
 
             def f():
                 for i, P in enumerate(L):
-                    a = math.radians(sp["turn"]) * smooth((t - i * sp["stagger"]) / sp["each"])
-                    place(P, rot=Quaternion(UP, a))
+                    u = (t - i * sp.get("stagger", 0.0)) / sp["each"]
+                    a = math.radians(sp["turn"]) * smooth(u)
+                    # the pin's lift: a sine bump over the turn, so it lands as it stops turning
+                    lift = sp.get("lift", 0.0) * math.sin(math.pi * min(max(u, 0.0), 1.0))
+                    place(P, off=UP * lift, rot=Quaternion(UP, a))
+                bpy.context.view_layer.update()
+            return f
+    elif sp["kind"] == "turntable":
+        each = sp["each"]
+        # English Prep's dots bounce twice as the bubbles land: 0.3 s and a smaller 0.24 s after it
+        BOUNCES = [(each - 0.12, 0.3, 1.0), (each + 0.18, 0.24, 0.4)] if sp.get("dots") else []
+        end = max([each] + [t0 + d for t0, d, _ in BOUNCES])
+        moving = min(n, math.ceil(end * FPS))
+        p2, p3 = (part("page_2"), part("page_3")) if sp.get("fan") else (None, None)
+        dots = part("dots") if sp.get("dots") else None
+        reels = list(zip((part("reel_left"), part("reel_right")), sp["reels"])) if sp.get("reels") else []
+        # the reels' axle: the body's depth axis (local -Y, toward the viewer), as in clip_recorder
+        axle = (REST[reels[0][0].name].to_3x3() @ Vector((0, -1, 0))).normalized() if reels else None
+
+        def spin_turn(t):
+            """The pivot's move at time t (from its rest, T(center)) as a world-space delta."""
+            u = min(max(t / each, 0.0), 1.0)
+            yaw = math.radians(sp["turn"]) * smooth(u)
+            lift = sp.get("bob", 0.0) * math.sin(math.pi * u) ** 2
+            return T(UP * lift) @ T(center) @ Matrix.Rotation(yaw, 4, "Z") @ T(-center), u
+
+        def state(k):
+            t = k / FPS
+
+            def f():
+                D, u = spin_turn(t)
+                piv.matrix_world = D @ T(center)
+                bpy.context.view_layer.update()   # the parts' parent (the root) follows the pivot first
+                if p2 is not None:
+                    fa = sp["fan"] * math.sin(math.pi * u) ** 2   # the clip's fan, up and back in the turn
+                    place(p2, off=b3((-0.16 * fa, -0.05 * fa, -0.03 * fa)), rot=Quaternion(TOWARD, 0.13 * fa), pre=D)
+                    place(p3, off=b3((-0.32 * fa, -0.1 * fa, -0.06 * fa)), rot=Quaternion(TOWARD, 0.26 * fa), pre=D)
+                if dots is not None:
+                    b = 1.0
+                    for t0, d, w in BOUNCES:
+                        if t0 <= t <= t0 + d:
+                            b += sp["dots"] * w * math.sin(math.pi * (t - t0) / d)
+                    place(dots, scale=(b, b, b), pre=D)
+                for o, deg in reels:
+                    place(o, rot=Quaternion(axle, math.radians(deg) * smooth(u)), pre=D)
                 bpy.context.view_layer.update()
             return f
     else:
@@ -913,8 +971,9 @@ elif STAGE == "spin":
         def state(k):
             return lambda: pose(sp["amp"] * math.sin(2 * math.pi * k / n), 0)
     states = [state(k) for k in range(moving)]
-    # the crop: every eighth of the motion, which holds each letter's widest (diagonal) angle
-    crop = stage_crop(states[::4] + [states[-1]], "spin")
+    # the crop: every other frame of the motion (a turntable passes 20-30 degrees in four), which
+    # holds every part's widest (diagonal) angle; edk's was found from every fourth
+    crop = stage_crop(states[::2] + [states[-1]], "spin")
     for o, M in REST0.items():
         REST[o] = M.copy()
     run_frames(states, crop, {**info, **sp, "fps": FPS, "loopFrames": n, "rendered": moving,
