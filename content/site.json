@@ -52,7 +52,7 @@
   "about": {
     "kicker": "About · Istanbul",
     "title": "Hi, I'm Eren.",
-    "opening": "I'm a first-year Computer Engineering student at Yıldız Technical University in Istanbul. I learn the fundamentals by hand, and I build products by directing AI agents.",
+    "opening": "I study Computer Engineering at Yıldız Technical University in Istanbul, and this is my first year. I learn the fundamentals by hand, and I build products by directing AI agents.",
     "selfie": {
       "alt": "Eren in a black hoodie and round glasses, giving a thumbs-up at the YTU gate on a rainy day.",
       "caption": "At the YTÜ gate, in the rain"
@@ -72,56 +72,45 @@
         "id": "who",
         "title": "Who I am",
         "text": [
-          "I'm Eren Deniz Kuyucaklıoğlu, and I live in Istanbul. I like what sits closest to the machine: processors, embedded systems, the machine's own language.",
-          "I'd like to work abroad one day."
+          "I'm Eren Deniz Kuyucaklıoğlu, and I live in Istanbul. What pulls me in is whatever sits closest to the machine: processors, embedded systems, the machine's own language.",
+          "One day I'd like to work abroad."
         ]
       },
       {
         "id": "study",
         "title": "Where I study",
         "text": [
-          "I study Computer Engineering at Yıldız Technical University, YTÜ for short, and I'm in my first year.",
+          "Yıldız Technical University, YTÜ for short. I'm in my first year of Computer Engineering.",
           "Before that came the English prep year. I passed it with AA, full marks."
         ],
-        "photos": [
-          {
-            "photo": "park-through-lens",
-            "alt": "The university's inner courtyard on a sunny afternoon, trees and a lawn, seen through a tinted lens held close to the camera.",
-            "note": "The inner courtyard at YTÜ, through a tinted lens.",
-            "place": "YTÜ, Istanbul"
-          }
+        "facts": [
+          [
+            "City",
+            "Istanbul"
+          ],
+          [
+            "School",
+            "Yıldız Technical University"
+          ],
+          [
+            "Department",
+            "Computer Engineering"
+          ],
+          [
+            "Year",
+            "First"
+          ],
+          [
+            "Prep year",
+            "AA, full marks"
+          ]
         ]
       },
       {
-        "id": "work",
-        "title": "How I work",
+        "id": "photos",
+        "title": "Photos",
         "text": [
-          "I work on two tracks. On the first I learn the fundamentals by hand: at school, and through CS50 and similar courses, where I write the code myself.",
-          "On the second I build products with AI agents. I direct and optimise multiple agents: I write the specs, make the decisions and review what they build. That track teaches me project discipline and product sense.",
-          "Both matter. I don't stay away from AI, and I don't let it stand in for the first track."
-        ]
-      },
-      {
-        "id": "school",
-        "title": "At school, by hand",
-        "text": [
-          "School goes on, and it is where most of my hand-written code comes from. Outside class I take CS50, and I write the projects for it myself.",
-          "That is all there is on this side for now. More will come, and it will be labelled as work I wrote myself."
-        ]
-      },
-      {
-        "id": "products",
-        "title": "The products",
-        "text": [
-          "Three products, all in active development, all built by directing agents."
-        ],
-        "list": "products"
-      },
-      {
-        "id": "photography",
-        "title": "Photography",
-        "text": [
-          "I take photos. A few of them are on this page."
+          "I take photos, mostly around Istanbul. Three of them are here as postcards: put one aside to see the next, or turn it over to read the back."
         ],
         "photos": [
           {
@@ -135,14 +124,90 @@
             "alt": "A tabby kitten silhouetted on a sea wall, the sun low over the Sea of Marmara.",
             "note": "A kitten on the sea wall, the sun low over the Marmara.",
             "place": "Istanbul"
+          },
+          {
+            "photo": "park-through-lens",
+            "alt": "The university's inner courtyard on a sunny afternoon, trees and a lawn, seen through a tinted lens held close to the camera.",
+            "note": "The inner courtyard at YTÜ, through a tinted lens.",
+            "place": "YTÜ, Istanbul"
           }
         ]
+      },
+      {
+        "id": "work",
+        "title": "How I work",
+        "text": [
+          "I work on two tracks at the same time, and they meet in everything I make."
+        ],
+        "tracks": {
+          "lanes": [
+            {
+              "label": "By hand",
+              "items": [
+                "At school",
+                "CS50 and similar courses",
+                "I write the code myself"
+              ],
+              "gives": "The fundamentals"
+            },
+            {
+              "label": "With agents",
+              "items": [
+                "Several agents at once, each with its own job",
+                "I write the specs and make the calls",
+                "I review what they build and tune how they work"
+              ],
+              "gives": "Project discipline and product sense"
+            }
+          ],
+          "teaches": "What it teaches",
+          "meet": "Both matter."
+        },
+        "quote": "I don't stay away from AI, and I don't let it stand in for learning the basics myself."
+      },
+      {
+        "id": "school",
+        "title": "At school, by hand",
+        "text": [
+          "School is where most of my hand-written code comes from. Outside class I take CS50, and I write its projects myself.",
+          "There isn't much to show on this side yet. When there is, it goes here, labelled as work I wrote myself."
+        ]
+      },
+      {
+        "id": "products",
+        "title": "The products",
+        "text": [
+          "Three products, all in active development, all built by directing agents. Each one has its own colour on this site."
+        ],
+        "list": "products"
       },
       {
         "id": "next",
         "title": "Next",
         "text": [
-          "I'll keep studying, grow through CS50 and similar courses, and build projects at the same time."
+          "I'll keep studying, go further with CS50 and courses like it, and build projects alongside."
+        ],
+        "timeline": [
+          {
+            "when": "Last year",
+            "what": "English prep year, passed with AA",
+            "state": "past"
+          },
+          {
+            "when": "Sep 2026",
+            "what": "Started Recto and English Prep",
+            "state": "past"
+          },
+          {
+            "when": "Oct 2026",
+            "what": "First term at YTÜ, and this site",
+            "state": "now"
+          },
+          {
+            "when": "Next",
+            "what": "More CS50, more projects, the first work by hand on this page",
+            "state": "next"
+          }
         ]
       },
       {
@@ -161,6 +226,17 @@
         "The site",
         "is built the same way as my projects: I decide and review, agents write most of the code. The glass objects are modelled in Blender and rendered ahead of time; the page shows the renders."
       ]
-    ]
+    ],
+    "pile": {
+      "label": "Postcards",
+      "prev": "Previous postcard",
+      "next": "Next postcard",
+      "turn": "Turn over",
+      "of": "of",
+      "hint": {
+        "drag": "Drag one aside, or click to turn it over",
+        "tap": "Swipe one aside, or tap to turn it over"
+      }
+    }
   }
 }

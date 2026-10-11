@@ -255,6 +255,11 @@ const site = defineCollection({
         back: z.string(),
         hint: z.object({ drag: z.string(), click: z.string(), tap: z.string() }),
       }),
+      /** the postcard pile's controls, for buttons and screen readers */
+      pile: z.object({
+        label: z.string(), prev: z.string(), next: z.string(), turn: z.string(), of: z.string(),
+        hint: z.object({ drag: z.string(), tap: z.string() }),
+      }),
       chapters: z.array(z.object({
         /** the chapter's anchor: about/#<id> */
         id: z.string().regex(/^[a-z0-9-]+$/),
@@ -263,15 +268,29 @@ const site = defineCollection({
         text: z.array(z.string()),
         /** a list drawn from elsewhere: the directed projects (title, summary, link) or site.links */
         list: z.enum(['products', 'links']).optional(),
-        /** postcards beside the chapter (ADR-0008): one stands in the margin, two or more form a row.
-            `photo` is a file stem in content/photos/; run `npm run photos` after adding one. */
+        /** a small plate of facts in the margin: [label, value] (only what the text already says) */
+        facts: z.array(z.tuple([z.string(), z.string()])).optional(),
+        /** two tracks side by side that meet in one line (the two-track education, brief 2026-10-08) */
+        tracks: z.object({
+          lanes: z.array(z.object({ label: z.string(), items: z.array(z.string()).min(1), gives: z.string() })).length(2),
+          /** the label before each lane's `gives` */
+          teaches: z.string(),
+          meet: z.string(),
+        }).optional(),
+        /** one pull quote, set large after the chapter */
+        quote: z.string().optional(),
+        /** the year as a line: what happened, a lit "now", a dashed "next" (dates only where known) */
+        timeline: z.array(z.object({ when: z.string(), what: z.string(), state: z.enum(['past', 'now', 'next']) })).optional(),
+        /** postcards (ADR-0008): one stands in the margin; two or more form the pile, a wide band
+            (docs/research/2026-10-about-and-postcards.md). `photo` is a file stem in content/photos/;
+            run `npm run photos` after adding one. */
         photos: z.array(z.object({
           photo: z.string().regex(/^[a-z0-9-]+$/),
           alt: z.string(),
           note: z.string(),
           place: z.string(),
           date: z.string().optional(),
-        })).max(3).optional(),
+        })).max(6).optional(),
       })).min(1),
       colophon: z.array(z.tuple([z.string(), z.string()])),
     }),

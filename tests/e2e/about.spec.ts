@@ -1,13 +1,18 @@
-/* About as an "about me" article (brief, About, 2026-10-10 evening): the ID card opens the page, the
-   chapters from content/site.json follow in the reading style and are the rail's rungs, and the
-   photographs stand beside them as postcards with alt text, never drawn larger than their pixels. */
+/* About as an "about me" article (brief, About, 2026-10-10 evening; made livelier 2026-10-11): the ID card
+   opens the page, the chapters from content/site.json follow in the reading style and are the rail's
+   rungs, each with its own object (facts, the pile, two tracks, a quote, the year), and the photographs
+   lie in a pile of postcards that turns, shuffles and is dragged aside, by hand or by keyboard, with
+   alt text, never drawn larger than their pixels, and a still twin. */
 import fs from 'node:fs';
 import path from 'node:path';
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone } from './helpers';
 
 const site = JSON.parse(fs.readFileSync(path.resolve('content/site.json'), 'utf8'));
-const chapters: { id: string; title: string; photos?: { alt: string }[] }[] = site.about.chapters;
+type Ch = { id: string; title: string; photos?: { alt: string; note: string; place: string }[]; facts?: [string, string][]; tracks?: { lanes: unknown[]; meet: string }; quote?: string; timeline?: { state: string }[] };
+const chapters: Ch[] = site.about.chapters;
+const pileCh = chapters.find((c) => (c.photos?.length ?? 0) > 1)!;
+const pics = pileCh.photos!;
 const photoCount = chapters.reduce((n, c) => n + (c.photos?.length ?? 0), 0);
 
 /** Every image in the page at its drawn size, against the pixels of the file the browser chose. */
@@ -70,18 +75,94 @@ test.describe('About, desktop', () => {
     expect(r.perLine).toBeLessThan(80);
   });
 
-  test('postcards carry alt text and turn over', async ({ page }) => {
+  test('each chapter carries its own object: facts, two tracks, a quote, the year', async ({ page }) => {
     await page.goto('about/?still');
-    const pcs = page.locator('#main .pc');
+    for (const c of chapters) {
+      if (c.facts) await expect(page.locator(`#${c.id} .facts dt`)).toHaveText(c.facts.map(([k]) => k));
+      if (c.tracks) {
+        await expect(page.locator(`#${c.id} .tr-lane`)).toHaveCount(2);
+        await expect(page.locator(`#${c.id} .tr-end`)).toHaveText(c.tracks.meet);
+      }
+      if (c.quote) await expect(page.locator(`#${c.id} blockquote`)).toHaveText(c.quote);
+      if (c.timeline) {
+        await expect(page.locator(`#${c.id} .tl-step`)).toHaveCount(c.timeline.length);
+        await expect(page.locator(`#${c.id} .tl-step[aria-current="step"]`)).toHaveCount(c.timeline.filter((t) => t.state === 'now').length);
+      }
+    }
+    /* the now line under the opening, from site.json */
+    await expect(page.locator('.ab-now')).toContainText(site.now.text);
+    /* products in their own colours, with their status */
+    await expect(page.locator('#products .ab-status')).toHaveCount(3);
+  });
+
+  test('the pile: alt text, keyboard turn, previous and next, a live caption', async ({ page }) => {
+    await page.goto('about/?still');
+    const pile = page.locator(`#${pileCh.id} [data-pile]`);
+    await expect(pile).toHaveClass(/is-live/);
+    const pcs = pile.locator('.pc');
     await expect(pcs).toHaveCount(photoCount);
-    const alts = await page.locator('#main .pc img').evaluateAll((imgs) => imgs.map((i) => (i as HTMLImageElement).alt));
-    expect(alts).toEqual(chapters.flatMap((c) => (c.photos ?? []).map((p) => p.alt)));
+    const alts = await pile.locator('.pc img').evaluateAll((imgs) => imgs.map((i) => (i as HTMLImageElement).alt));
+    expect(alts).toEqual(pics.map((p) => p.alt));
     for (const a of alts) expect(a.length).toBeGreaterThan(20);
+    /* only the top card can be reached */
+    expect(await pile.locator('[data-pile-card]').evaluateAll((cs) => cs.map((c) => (c as HTMLElement).inert))).toEqual(pics.map((_, i) => i !== 0));
+    await expect(pile.locator('[data-pile-place]')).toHaveText(pics[0].place);
+
+    /* turn with the keyboard: Enter on the face, focus follows to the back */
     const first = pcs.first();
     await first.locator('.pc-front .pc-turn').focus();
     await page.keyboard.press('Enter');
     await expect(first).toHaveClass(/is-flipped/);
     await expect(first.locator('.pc-back .pc-turn')).toBeFocused();
+    await expect(pile.locator('[data-pile-turn]')).toHaveAttribute('aria-pressed', 'true');
+
+    /* the arrow keys inside the pile: the next card rises, put away face up; focus stays on the top card */
+    await page.keyboard.press('ArrowRight');
+    await expect(pile.locator('[data-pile-n]')).toHaveText('02');
+    await expect(pile.locator('[data-pile-note]')).toHaveText(pics[1].note);
+    await expect(pile.locator('[data-pile-live]')).toContainText(pics[1].place);
+    await expect(first).not.toHaveClass(/is-flipped/);
+    await expect(pcs.nth(1).locator('.pc-front .pc-turn')).toBeFocused();
+    await page.keyboard.press('ArrowLeft');
+    await expect(pile.locator('[data-pile-n]')).toHaveText('01');
+
+    /* the buttons do the same, and go round */
+    const next = pile.locator('[data-pile-next]');
+    for (let i = 0; i < pics.length; i++) await next.click();
+    await expect(pile.locator('[data-pile-n]')).toHaveText('01');
+    await pile.locator('[data-pile-prev]').click();
+    await expect(pile.locator('[data-pile-n]')).toHaveText(String(pics.length).padStart(2, '0'));
+    await pile.locator('[data-pile-turn]').click();
+    await expect(pcs.nth(pics.length - 1)).toHaveClass(/is-flipped/);
+  });
+
+  test('the pile: a throw puts the top card under, a short pull springs back, a click turns', async ({ page }) => {
+    await page.goto('about/');
+    const pile = page.locator(`#${pileCh.id} [data-pile]`);
+    const stage = pile.locator('[data-pile-stage]');
+    await stage.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(1200);   // the pile is dealt as it comes into view
+    const b = (await stage.boundingBox())!;
+    const cx = b.x + b.width / 2, cy = b.y + b.height / 2;
+    /* a short pull: back to its place, still the first card, not turned */
+    await page.mouse.move(cx, cy); await page.mouse.down();
+    await page.mouse.move(cx + 30, cy, { steps: 5 }); await page.waitForTimeout(200); await page.mouse.up();
+    await page.waitForTimeout(900);
+    await expect(pile.locator('[data-pile-n]')).toHaveText('01');
+    await expect(pile.locator('.pc.is-flipped')).toHaveCount(0);
+    /* a throw */
+    await page.mouse.move(cx, cy); await page.mouse.down();
+    await page.mouse.move(cx + 60, cy, { steps: 3 }); await page.mouse.move(cx + 240, cy + 10, { steps: 3 }); await page.mouse.up();
+    await expect(pile.locator('[data-pile-n]')).toHaveText('02');
+    await expect(pile.locator('.pc.is-flipped')).toHaveCount(0);
+    await page.waitForTimeout(1500);
+    /* the card that went under is back inside the pile, below the others */
+    const z = await pile.locator('[data-pile-card]').evaluateAll((cs) => cs.map((c) => +(c as HTMLElement).style.zIndex));
+    expect(z[0]).toBe(Math.min(...z));
+    /* a click turns the new top card */
+    await page.mouse.click(cx, cy);
+    await expect(pile.locator('.pc').nth(1)).toHaveClass(/is-flipped/);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
   });
 });
 
@@ -115,13 +196,62 @@ test.describe('About, phone', () => {
     await expect(page.locator('#main .pc')).toHaveCount(photoCount);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
   });
+
+  test('a tap turns the top postcard; the pile and its controls fit the screen', async ({ page }) => {
+    await page.goto('about/?still');
+    const pile = page.locator(`#${pileCh.id} [data-pile]`);
+    const stage = pile.locator('[data-pile-stage]');
+    await stage.scrollIntoViewIfNeeded();
+    await stage.tap();
+    await expect(pile.locator('.pc').first()).toHaveClass(/is-flipped/);
+    for (const sel of ['[data-pile-prev]', '[data-pile-next]', '[data-pile-turn]']) {
+      const r = (await pile.locator(sel).boundingBox())!;
+      expect(r.height, sel).toBeGreaterThanOrEqual(44);
+      expect(r.x + r.width, sel).toBeLessThanOrEqual(390);
+    }
+    const r = (await stage.boundingBox())!;
+    expect(r.x).toBeGreaterThanOrEqual(0);
+    expect(r.x + r.width).toBeLessThanOrEqual(390);
+  });
 });
 
-test('without JavaScript every chapter reads and postcards show both sides', async ({ browser }) => {
+test('reduced motion: the pile changes at once, nothing tilts or is dragged', async ({ browser }) => {
+  const ctx = await browser.newContext({ ...desktop, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
+  const page = await ctx.newPage();
+  await page.goto('about/');
+  const pile = page.locator(`#${pileCh.id} [data-pile]`);
+  await expect(pile).toHaveClass(/is-still/);
+  const stage = pile.locator('[data-pile-stage]');
+  await stage.scrollIntoViewIfNeeded();
+  const b = (await stage.boundingBox())!;
+  /* a drag does nothing */
+  await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2); await page.mouse.down();
+  await page.mouse.move(b.x + b.width / 2 + 300, b.y + b.height / 2, { steps: 4 }); await page.mouse.up();
+  await expect(pile.locator('[data-pile-n]')).toHaveText('01');
+  /* the order changes at once, and no card body is turned in 3D */
+  await pile.locator('[data-pile-next]').click();
+  await expect(pile.locator('[data-pile-n]')).toHaveText('02');
+  const t = await pile.locator('[data-card-body]').evaluateAll((bs) => bs.map((x) => (x as HTMLElement).style.transform));
+  expect(t.every((x) => x === '')).toBe(true);
+  /* the turn is a crossfade: the back shows without a rotation */
+  await pile.locator('[data-pile-turn]').click();
+  await expect(pile.locator('.pc').nth(1).locator('.pc-back')).toHaveCSS('opacity', '1');
+  await ctx.close();
+});
+
+test('without JavaScript every chapter reads and the photographs stand with their notes', async ({ browser }) => {
   const ctx = await browser.newContext({ ...desktop, javaScriptEnabled: false, baseURL: test.info().project.use.baseURL });
   const page = await ctx.newPage();
   await page.goto('about/');
   for (const c of chapters) await expect(page.locator(`#${c.id} h2`)).toBeVisible();
-  await expect(page.locator('#main .pc-back').first()).toBeVisible();
+  /* the pile stands as a row: every photograph with its note under it, no controls */
+  const figs = page.locator(`#${pileCh.id} .pile-fig`);
+  await expect(figs).toHaveCount(pics.length);
+  for (let i = 0; i < pics.length; i++) {
+    await expect(figs.nth(i)).toBeVisible();
+    await expect(figs.nth(i)).toContainText(pics[i].note);
+    await expect(page.locator(`#${pileCh.id} .pc-front img`).nth(i)).toBeVisible();
+  }
+  await expect(page.locator(`#${pileCh.id} .pile-bar`)).toBeHidden();
   await ctx.close();
 });
