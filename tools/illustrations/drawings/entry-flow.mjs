@@ -27,7 +27,7 @@ export default {
   },
 
   narrow() {
-    const W = 232, H = 56, G = 32
+    const W = 184, H = 56, G = 32
     const names = [
       ['Dictated notes', 'raw, often Turkish'],
       ['Draft', 'edited into English'],
@@ -38,7 +38,7 @@ export default {
     const body = [...b]
     for (let i = 0; i < 3; i++) body.push(arrow({ points: [b[i].bottom, b[i + 1].top], accent: i === 2 }))
     const [rv, dr] = [b[2], b[1]]
-    const lx = W + 32
+    const lx = W + 24
     body.push(arrow({ points: [rv.right, [lx, rv.right[1]], [lx, dr.right[1]], dr.right], label: 'changes', labelSide: 'right' }))
     return { height: 8 + 4 * H + 3 * G + 8, body }
   },

@@ -27,8 +27,9 @@ export const ACCENT = {
 
 /** Two widths, never one scaled to the other: text inside an SVG must not shrink below its
  * size on the page. wide = the reading column with figures allowed to break out (46em of
- * 17px ≈ 720, measured on F); narrow = a 390 phone minus two 16px gutters. */
-export const WIDTH = { wide: 720, narrow: 358 }
+ * 17px ≈ 720, measured on F); narrow = the smallest phone we support, 320, minus two 16px
+ * gutters (it was 358, a 390 phone, and ran out of the column on 320 and 360 phones). */
+export const WIDTH = { wide: 720, narrow: 288 }
 
 /** Layout grid. Every box edge, gap and row sits on it. */
 export const UNIT = 8

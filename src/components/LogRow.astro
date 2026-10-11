@@ -21,6 +21,9 @@ const lastUpdate = d.updated.length ? d.updated[d.updated.length - 1].date : nul
 const { Content } = shape === 'note' ? await render(e) : { Content: null };
 const plate = !d.image && d.kind === 'essay' && d.lead ? (drawings as Record<string, { plate?: string }>)[d.lead]?.plate ?? '' : '';
 const thumb = (shape === 'essay' || shape === 'release') && (d.image || plate);
+/* 216 px beside the row on desktop, the full column above it on phones and tablets (log.css): up to
+   about 710 css px at 2x and 380 at 3x, so the widths run to 1440 where the image has the pixels */
+const thumbW = d.image ? [260, 520, 800, 1100, 1440].filter((w) => w <= d.image!.width) : [];
 const name = shape === 'release' ? releaseName(e, projects) : '';
 const items = shape === 'release' ? releaseItems(e.body) : [];
 const extra = [
@@ -54,7 +57,7 @@ const extra = [
   {thumb && (
     <span class="e-thumb" aria-hidden="true">
       {d.image
-        ? <Picture src={d.image} alt="" widths={[260, 520]} sizes="(max-width: 899.98px) calc(100vw - 32px), 260px" formats={['avif', 'webp']} loading="lazy" decoding="async" />
+        ? <Picture src={d.image} alt="" widths={thumbW} sizes="(max-width: 899.98px) calc(100vw - 32px), 260px" formats={['avif', 'webp']} loading="lazy" decoding="async" />
         : <span class="e-plate" set:html={plate} />}
     </span>
   )}

@@ -297,3 +297,24 @@ Every `<img>` on every route at 1440@2×, 1180@2× and 390@3× was compared agai
 - Transitions: cross-document view transitions and the droplet behaved without errors. The bar shift (B6) is the
   only visible glitch found in navigation.
 - Phones: nothing breaks. Touch ladder and tap-to-turn both work. The bar tucks on scroll down.
+
+## 10. Addendum, 2026-10-11: squeezed text on phones, and the guard
+Twice the owner found on an iPhone a sentence set one word per line in a narrow column: a project
+page's "In the record" rows, then About's products list (V, both). The cause class is one: a grid or
+flex row written for wide screens (a marker, number or icon column beside the text) whose phone rule
+does not re-place every child, or is less specific than the wide rule, so the text keeps a column a
+few dozen pixels wide. The same sweep found three more of the class and two relatives (V, Chromium,
+fixed on `wip/sweep`): the Reel caption on Work beside its "01 / 03" (119 px at 320, now wraps under
+it once it has less than 12em); the facts on Work, where a non-wrapping status ran under its
+neighbour at 320 (a fact is now never narrower than its own words); the essay figure's narrow
+drawing, drawn for a 390 phone and cut off at 320 (now drawn at 288); phone captures and the phone
+clip stretched to 68 to 72vw on a 768 tablet, past a 2x capture's pixels (now at most 390 css px);
+and record thumbnails offered only 520 px for a full-width phone slot (now up to 1440). The guard is
+`tests/e2e/layout.spec.ts`: every route, the project sheet from Home and from Work, at 320, 360, 390
+and 430 (3x, touch) and 768 and 1180 (touch), after scrolling the page through. It fails when a block
+of four or more words wraps at under 120 px (35 % of the viewport on a phone), when anything scrolls
+sideways or text is cut off at the edge outside its own scroller, when two lines of text overlap, or
+when an image is drawn more than 15 % past its file's pixels at the device pixel ratio. It reads the
+rendered page, not the CSS, so a new rule of this class fails wherever it lands. Open: About is left
+out until its rebuild lands (its products list and, at 320, its track lanes still squeeze), and
+English Prep's signature clip is a 1x master, soft on every phone and on a 2x tablet, until recaptured.
