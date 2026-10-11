@@ -591,6 +591,146 @@
     "av1": 1328060,
     "hevc": 1403984,
     "h264": 1425971
+   },
+   "phoneSpin": {
+    "av1": 195723,
+    "hevc": 242310,
+    "h264": 257202
+   },
+   "phoneSpinSizes": {
+    "640": {
+     "av1": 180623,
+     "hevc": 224888,
+     "h264": 232860
+    },
+    "1040": {
+     "av1": 195723,
+     "hevc": 242310,
+     "h264": 257202
+    }
+   }
+  },
+  "spin": {
+   "av1": 94647,
+   "hevc": 109999,
+   "h264": 115990
+  },
+  "spinSizes": {
+   "640": {
+    "av1": 79547,
+    "hevc": 92577,
+    "h264": 91648
+   },
+   "1040": {
+    "av1": 94647,
+    "hevc": 109999,
+    "h264": 115990
+   }
+  }
+ },
+ "spin": {
+  "fps": 30,
+  "frames": 120,
+  "duration": 4.0,
+  "loop": true,
+  "holdFrom": 66,
+  "kind": "pin",
+  "parts": [
+   "pin"
+  ],
+  "turn": 360.0,
+  "each": 2.2,
+  "lift": 0.1,
+  "w": 1040,
+  "sources": [
+   {
+    "src": "spin.av1.mp4",
+    "type": "video/mp4; codecs=\"av01.0.08M.10\"",
+    "codec": "av1",
+    "bytes": 94647
+   },
+   {
+    "src": "spin.hevc.mp4",
+    "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
+    "codec": "hevc",
+    "bytes": 109999
+   },
+   {
+    "src": "spin.h264.mp4",
+    "type": "video/mp4; codecs=\"avc1.640028\"",
+    "codec": "h264",
+    "bytes": 115990
+   }
+  ],
+  "sizes": [
+   {
+    "w": 640,
+    "sources": [
+     {
+      "src": "spin-640.av1.mp4",
+      "type": "video/mp4; codecs=\"av01.0.04M.10\"",
+      "codec": "av1",
+      "bytes": 79547
+     },
+     {
+      "src": "spin-640.hevc.mp4",
+      "type": "video/mp4; codecs=\"hvc1.2.4.L90.B0\"",
+      "codec": "hevc",
+      "bytes": 92577
+     },
+     {
+      "src": "spin-640.h264.mp4",
+      "type": "video/mp4; codecs=\"avc1.64001F\"",
+      "codec": "h264",
+      "bytes": 91648
+     }
+    ]
+   },
+   {
+    "w": 1040,
+    "sources": [
+     {
+      "src": "spin.av1.mp4",
+      "type": "video/mp4; codecs=\"av01.0.08M.10\"",
+      "codec": "av1",
+      "bytes": 94647
+     },
+     {
+      "src": "spin.hevc.mp4",
+      "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
+      "codec": "hevc",
+      "bytes": 109999
+     },
+     {
+      "src": "spin.h264.mp4",
+      "type": "video/mp4; codecs=\"avc1.640028\"",
+      "codec": "h264",
+      "bytes": 115990
+     }
+    ]
+   }
+  ],
+  "check": {
+   "ground_off_share": 0.003906,
+   "far_ground_px": 840695,
+   "far_ground_off": 16,
+   "far_ground_max": 2,
+   "object_mae": 2.16
+  },
+  "checks": {
+   "640": {
+    "ground_off_share": 0.005726,
+    "far_ground_px": 304023,
+    "far_ground_off": 0,
+    "far_ground_max": 0,
+    "object_mae": 2.39
+   },
+   "1040": {
+    "ground_off_share": 0.003906,
+    "far_ground_px": 840695,
+    "far_ground_off": 16,
+    "far_ground_max": 2,
+    "object_mae": 2.16
    }
   }
  }

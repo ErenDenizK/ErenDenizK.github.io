@@ -27,7 +27,9 @@ libsvtav1, libx265 and libx264 (Ubuntu's ffmpeg 6.1 has all three).
    `--live-only` writes just these and adds `normals` and `states` to the existing manifest.
 7. The spin loop (frames.py stage `spin`), when it exists: the phones' idle (phone motion
    research). Its rendered frames, then frame 0 repeated to the loop's length, as the three
-   codecs. `--spin-only` writes just this and merges `spin` into the existing manifest.
+   codecs, at the rendered size and at each smaller size a touch slot needs (SPIN_SIZES: the page
+   takes the smallest that covers the slot's device pixels). `--spin-only` writes just this and
+   merges `spin` into the existing manifest.
 
 Per-object settings that differ from the defaults (budgets, media research §7) are in OBJECT
 below, so a rerun reproduces the shipped files; command-line flags override them.
@@ -78,9 +80,11 @@ A = ap.parse_args()
 # wide, is the heaviest: its full grid goes to AVIF q55, and its HEVC idle loop one step further.
 DEFAULTS = {"webp_q": 82, "avif_q": 60, "avif_q_half": 50, "idle_seconds": 6.0}
 OBJECT = {"edk": {"avif_q": 55, "idle_crf": {"hevc": "32"}}, "record": {"avif_q": 50, "idle_crf": {"av1": "38", "hevc": "32", "h264": "29"}},
-          "recorder": {"avif_q": 50, "idle_crf": {"av1": "38", "hevc": "32", "h264": "29"}}}
+          # the recorder's loop is rendered at 640 (its largest touch slot) and drawn nearly 1:1: the small sizes' CRF
+          "recorder": {"avif_q": 50, "idle_crf": {"av1": "38", "hevc": "32", "h264": "29"},
+                       "spin_crf": {"av1": "34", "hevc": "28", "h264": "26"}}}
 for k, v in {**DEFAULTS, **OBJECT.get(A.obj, {})}.items():
-    if k != "idle_crf" and getattr(A, k) is None:
+    if k not in ("idle_crf", "spin_crf") and getattr(A, k) is None:
         setattr(A, k, v)
 
 M = os.path.join(A.masters, A.obj)
@@ -307,6 +311,21 @@ def check_video(path, ref_first):
 # research §7). edk at 34/28/26: 389/405/347 KB; at 40/32/30: 281/274/230 KB, object MAE 2.65 levels,
 # far ground exact in HEVC and H.264, AV1 within 1 level (phone motion research §4).
 SPIN_CRF = {"av1": "40", "hevc": "32", "h264": "30"}
+# the smaller sizes are drawn nearly 1:1, where CRF 40 shows: edk's 640 at CRF 40 kept 0.71 of the master's
+# Laplacian variance at 630 device px against 0.83 for the 1040 file reduced; a lower CRF costs little there
+SPIN_CRF_SMALL = {"av1": "34", "hevc": "28", "h264": "26"}
+# and the emblems' 320 lower still: at CRF 34 it kept 0.61 mid-turn at 276 device px (English Prep), where
+# the 640 file reduced kept 0.82, for 48 KB against 101 KB
+SPIN_CRF_TINY = {"av1": "26", "hevc": "22", "h264": "20"}
+
+
+# The loop at the sizes the touch slots draw it (ADR-0006 note of 2026-10-11, "every object turns"):
+# the page measures the stage in device pixels and takes the smallest of these that covers it, the
+# rendered size otherwise. Slots on phones (390 x 844 at DPR 3) and the 1180 x 820 tablet (DPR 2):
+# Work's emblem 92 / 99 CSS px (276 / 198), the Home showcase 46vw / 400 (538 / 800), a case sheet
+# 78vw / 420 (913 / 840), Work's large object min(84vw, 360) / 600 (984 / 1200), Home's edk 210 / 470
+# (630 / 940), Record 176 / 320 (528 / 640, rendered at 640).
+SPIN_SIZES = {"edk": (640,), "recto": (320, 640), "englishprep": (320, 640), "eatmap": (640,)}
 
 
 def encode_spin():
@@ -317,30 +336,43 @@ def encode_spin():
     files, crop = frames_of("spin")
     assert len(files) == crop["rendered"], f"spin incomplete: {len(files)} of {crop['rendered']}"
     sq = crop["res"]
-    seq = os.path.join(WORK, "spin")
-    if os.path.isdir(seq):
-        shutil.rmtree(seq)
-    os.makedirs(seq)
-    first = None
+    widths = sorted({w for w in SPIN_SIZES.get(A.obj, ()) if w < sq} | {sq})
+    seqs = {w: os.path.join(WORK, "spin" if w == sq else f"spin-{w}") for w in widths}
+    for seq in seqs.values():
+        if os.path.isdir(seq):
+            shutil.rmtree(seq)
+        os.makedirs(seq)
+    first = {}
     for k, f in enumerate(files):   # one frame at a time: a 120-frame square in float is gigabytes
         a = pad(subtracted(f), crop, sq)
         if k % 8 == 0:
             assert_lit([a], f"spin frame {k}")
-        first = a if first is None else first
-        write_png16(a, os.path.join(seq, f"f_{k:03d}.png"))
-    for k in range(len(files), crop["loopFrames"]):
-        shutil.copy(os.path.join(seq, "f_000.png"), os.path.join(seq, f"f_{k:03d}.png"))
+        for w, seq in seqs.items():
+            b = a if w == sq else resize(a, w, w)
+            if k == 0:
+                first[w] = b
+            write_png16(b, os.path.join(seq, f"f_{k:03d}.png"))
+    for seq in seqs.values():
+        for k in range(len(files), crop["loopFrames"]):
+            shutil.copy(os.path.join(seq, "f_000.png"), os.path.join(seq, f"f_{k:03d}.png"))
     crf = {**SPIN_CRF, **OBJECT.get(A.obj, {}).get("spin_crf", {})}
     if A.spin_crf:
         crf = dict(zip(("av1", "hevc", "h264"), A.spin_crf.split(",")))
-    srcs = encode_video(seq, "spin", crop["fps"], crf)
+    sizes = []
+    for w in widths:
+        srcs = encode_video(seqs[w], "spin" if w == sq else f"spin-{w}", crop["fps"],
+                            crf if w == sq or A.spin_crf else SPIN_CRF_TINY if w <= 360 else SPIN_CRF_SMALL)
+        sizes.append({"w": w, "sources": srcs, "check": check_video(os.path.join(OUT, srcs[0]["src"]), first[w])})
     n = crop["loopFrames"]
-    keep = {k: crop[k] for k in ("kind", "parts", "turn", "each", "stagger", "amp") if k in crop}
+    keep = {k: crop[k] for k in ("kind", "parts", "turn", "each", "stagger", "amp", "lift", "bob", "dots", "fan", "reels")
+            if k in crop}
     if isinstance(keep.get("parts"), str):
         keep["parts"] = list(keep["parts"])
+    top = sizes[-1]
     return {"fps": crop["fps"], "frames": n, "duration": round(n / crop["fps"], 3), "loop": True,
-            "holdFrom": crop["rendered"], **keep, "sources": srcs,
-            "check": check_video(os.path.join(OUT, srcs[0]["src"]), first)}
+            "holdFrom": crop["rendered"], **keep, "w": top["w"], "sources": top["sources"],
+            "sizes": [{"w": z["w"], "sources": z["sources"]} for z in sizes],
+            "check": top["check"], "checks": {str(z["w"]): z["check"] for z in sizes}}
 
 
 def spin_bytes(man):
@@ -354,6 +386,11 @@ def spin_bytes(man):
                    if s["codec"] == c) for c in per}
     b["spin"] = per
     b["tiers"]["phoneSpin"] = {c: b["tiers"]["firstPaint"] + per[c] + drop[c] for c in per}
+    # per loop size: what a slot that takes that size fetches for the loop, and its phone tier
+    b["spinSizes"] = {str(z["w"]): {c: sum(s["bytes"] for s in z["sources"] if s["codec"] == c) for c in per}
+                      for z in sp.get("sizes", [])}
+    b["tiers"]["phoneSpinSizes"] = {w: {c: b["tiers"]["firstPaint"] + v[c] + drop[c] for c in per}
+                                    for w, v in b["spinSizes"].items()}
 
 
 def write_seq(arrs, d):

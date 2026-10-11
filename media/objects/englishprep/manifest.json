@@ -807,6 +807,184 @@
     "av1": 1251273,
     "hevc": 1314445,
     "h264": 1322039
+   },
+   "phoneSpin": {
+    "av1": 205977,
+    "hevc": 254112,
+    "h264": 260239
+   },
+   "phoneSpinSizes": {
+    "320": {
+     "av1": 157907,
+     "hevc": 205746,
+     "h264": 200838
+    },
+    "640": {
+     "av1": 187424,
+     "hevc": 230589,
+     "h264": 228889
+    },
+    "1040": {
+     "av1": 205977,
+     "hevc": 254112,
+     "h264": 260239
+    }
+   }
+  },
+  "spin": {
+   "av1": 119469,
+   "hevc": 140462,
+   "h264": 143838
+  },
+  "spinSizes": {
+   "320": {
+    "av1": 71399,
+    "hevc": 92096,
+    "h264": 84437
+   },
+   "640": {
+    "av1": 100916,
+    "hevc": 116939,
+    "h264": 112488
+   },
+   "1040": {
+    "av1": 119469,
+    "hevc": 140462,
+    "h264": 143838
+   }
+  }
+ },
+ "spin": {
+  "fps": 30,
+  "frames": 120,
+  "duration": 4.0,
+  "loop": true,
+  "holdFrom": 79,
+  "kind": "turntable",
+  "turn": 360.0,
+  "each": 2.2,
+  "bob": 0.06,
+  "dots": 0.16,
+  "w": 1040,
+  "sources": [
+   {
+    "src": "spin.av1.mp4",
+    "type": "video/mp4; codecs=\"av01.0.08M.10\"",
+    "codec": "av1",
+    "bytes": 119469
+   },
+   {
+    "src": "spin.hevc.mp4",
+    "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
+    "codec": "hevc",
+    "bytes": 140462
+   },
+   {
+    "src": "spin.h264.mp4",
+    "type": "video/mp4; codecs=\"avc1.640028\"",
+    "codec": "h264",
+    "bytes": 143838
+   }
+  ],
+  "sizes": [
+   {
+    "w": 320,
+    "sources": [
+     {
+      "src": "spin-320.av1.mp4",
+      "type": "video/mp4; codecs=\"av01.0.00M.10\"",
+      "codec": "av1",
+      "bytes": 71399
+     },
+     {
+      "src": "spin-320.hevc.mp4",
+      "type": "video/mp4; codecs=\"hvc1.2.4.L60.B0\"",
+      "codec": "hevc",
+      "bytes": 92096
+     },
+     {
+      "src": "spin-320.h264.mp4",
+      "type": "video/mp4; codecs=\"avc1.640015\"",
+      "codec": "h264",
+      "bytes": 84437
+     }
+    ]
+   },
+   {
+    "w": 640,
+    "sources": [
+     {
+      "src": "spin-640.av1.mp4",
+      "type": "video/mp4; codecs=\"av01.0.04M.10\"",
+      "codec": "av1",
+      "bytes": 100916
+     },
+     {
+      "src": "spin-640.hevc.mp4",
+      "type": "video/mp4; codecs=\"hvc1.2.4.L90.B0\"",
+      "codec": "hevc",
+      "bytes": 116939
+     },
+     {
+      "src": "spin-640.h264.mp4",
+      "type": "video/mp4; codecs=\"avc1.64001F\"",
+      "codec": "h264",
+      "bytes": 112488
+     }
+    ]
+   },
+   {
+    "w": 1040,
+    "sources": [
+     {
+      "src": "spin.av1.mp4",
+      "type": "video/mp4; codecs=\"av01.0.08M.10\"",
+      "codec": "av1",
+      "bytes": 119469
+     },
+     {
+      "src": "spin.hevc.mp4",
+      "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
+      "codec": "hevc",
+      "bytes": 140462
+     },
+     {
+      "src": "spin.h264.mp4",
+      "type": "video/mp4; codecs=\"avc1.640028\"",
+      "codec": "h264",
+      "bytes": 143838
+     }
+    ]
+   }
+  ],
+  "check": {
+   "ground_off_share": 0.010328,
+   "far_ground_px": 773900,
+   "far_ground_off": 1306,
+   "far_ground_max": 1,
+   "object_mae": 2.04
+  },
+  "checks": {
+   "320": {
+    "ground_off_share": 0.013576,
+    "far_ground_px": 63997,
+    "far_ground_off": 0,
+    "far_ground_max": 0,
+    "object_mae": 2.41
+   },
+   "640": {
+    "ground_off_share": 0.009102,
+    "far_ground_px": 282220,
+    "far_ground_off": 81,
+    "far_ground_max": 1,
+    "object_mae": 2.15
+   },
+   "1040": {
+    "ground_off_share": 0.010328,
+    "far_ground_px": 773900,
+    "far_ground_off": 1306,
+    "far_ground_max": 1,
+    "object_mae": 2.04
    }
   }
  }
