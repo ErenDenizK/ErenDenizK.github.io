@@ -1,7 +1,7 @@
 ---
-/* A postcard for photo entries in the record (brief §7, 2026-10-09 after v0: "postcards (from E's framed
-   photo; hover, flip) for photo entries later"; ADR-0008). Not used on a public page yet; see
-   /lab/postcard/ (noindex, outside the sitemap).
+/* A postcard (brief §7, 2026-10-09 after v0: "postcards (from E's framed photo; hover, flip)"; ADR-0008).
+   On its own (`mode="tilt"`, /lab/postcard/) it tilts and turns with scripts/card3d.ts. In the pile on
+   About (`mode="pile"`, PostcardPile.astro) it carries no behaviour of its own: scripts/pile.ts moves it.
 
    Front: the photograph on a narrow card-stock border. Back: a short note, a stamp cut from the same
    photograph, a postmark with the place and the date, and the place and date written out again for
@@ -28,10 +28,14 @@ interface Props {
   from?: string;
   /** ink of the stamp and postmark; the About gold by default */
   accent?: string;
+  /** "tilt": a postcard on its own (card3d.ts); "pile": one card of PostcardPile, moved by pile.ts */
+  mode?: 'tilt' | 'pile';
+  /** pile mode: the stack position, "1 of 3", which names the card for screen readers */
+  pos?: string;
   class?: string;
 }
 const site = await getSite();
-const { src, srcset, avif, sizes = '(min-width: 900px) 560px, 92vw', width, height, alt, note, place, date, from = site.firstName, accent, class: cls } = Astro.props;
+const { src, srcset, avif, sizes = '(min-width: 900px) 560px, 92vw', width, height, alt, note, place, date, from = site.firstName, accent, mode = 'tilt', pos, class: cls } = Astro.props;
 const when = date === undefined ? '' : typeof date === 'string' ? date : dayMonYear(date);
 const tall = height > width;
 /* a stable id for the postmark's text path (same input, same markup) */
@@ -43,7 +47,7 @@ const unit = when ? `${place} · ${when} · ` : `${place} · `;
 const ring = unit.repeat(Math.max(1, Math.ceil(44 / unit.length)));
 const style = [`--pc-ratio: ${width} / ${height}`, accent ? `--pc-ink: ${accent}` : ''].filter(Boolean).join('; ');
 ---
-<div class:list={['pc', tall && 'pc--tall', cls]} data-card="tilt" role="group" aria-roledescription="postcard" aria-label={when ? `Postcard from ${place}, ${when}` : `Postcard from ${place}`} style={style}>
+<div class:list={['pc', tall && 'pc--tall', mode === 'pile' && 'pc--pile', cls]} data-card={mode === 'tilt' ? 'tilt' : undefined} data-pc role="group" aria-roledescription="postcard" aria-label={(pos ? `${pos}: ` : '') + (when ? `Postcard from ${place}, ${when}` : `Postcard from ${place}`)} style={style}>
   <div class="pc-card" data-card-body>
     <div class="pc-face pc-front" data-face>
       <button class="pc-turn" type="button" data-turn aria-label="Turn the postcard over"></button>
@@ -101,6 +105,15 @@ const style = [`--pc-ratio: ${width} / ${height}`, accent ? `--pc-ink: ${accent}
     box-shadow: inset 0 0 0 1px rgba(255, 245, 232, 0.08), 0 2.4cqi 5cqi -2cqi rgba(0, 0, 0, 0.7);
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
   }
+  /* the back is card stock: a little warmer and lighter than the front, with the page's grain as its
+     fibre and a soft light from the upper left, the way a print reads under a desk lamp */
+  .pc-back {
+    background:
+      radial-gradient(120% 80% at 18% 0%, rgba(255, 236, 214, 0.07), transparent 60%),
+      url("../assets/photos/grain.png") 0 0 / 96px repeat,
+      linear-gradient(165deg, #211d19, #15130f 80%);
+    background-blend-mode: normal, soft-light, normal;
+  }
   .pc-back { transform: rotateY(180deg); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 5cqi 5cqi 4.4cqi; gap: 0 5cqi; }
   .pc-back::before { content: ""; position: absolute; left: 50%; top: 8%; bottom: 8%; width: 1px; background: var(--rule); }
   .pc-face[inert] { pointer-events: none; }
@@ -117,8 +130,9 @@ const style = [`--pc-ratio: ${width} / ${height}`, accent ? `--pc-ink: ${accent}
 
   /* back */
   .pc-msg { display: flex; flex-direction: column; justify-content: center; gap: 3cqi; padding-right: 1cqi; }
-  .pc-note { font: 400 max(13px, 3.4cqi)/1.45 var(--f-read); color: var(--read); text-wrap: pretty; }
-  .pc-from { font: 400 max(13px, 3.4cqi)/1 var(--f-display); color: var(--ink-2); }
+  /* the note in the reading serif's italic, set a hair off the level, as a careful hand writes it */
+  .pc-note { font: italic 400 max(13px, 3.6cqi)/1.42 var(--f-read); color: #eadfce; text-wrap: pretty; rotate: -0.8deg; transform-origin: 0 50%; }
+  .pc-from { font: italic 400 max(13px, 3.6cqi)/1 var(--f-display); color: color-mix(in srgb, var(--pc-ink) 70%, var(--ink-2)); rotate: -0.8deg; }
   .pc-side { position: relative; display: flex; flex-direction: column; }
   .pc-stamp {
     --r: 0.55cqi;
@@ -150,8 +164,11 @@ const style = [`--pc-ratio: ${width} / ${height}`, accent ? `--pc-ink: ${accent}
   .pc--tall .pc-addr dd { font-size: 5cqi; }
   .pc--tall .pc-addr div { padding: 2.4cqi 0 1.6cqi; }
   .pc--tall .pc-msg { justify-content: flex-end; }
-  .pc--tall .pc-note { font-size: 5.4cqi; }
-  .pc--tall .pc-from { font-size: 5.4cqi; }
+  .pc--tall .pc-note { font-size: 6cqi; }
+  .pc--tall .pc-from { font-size: 6cqi; align-self: flex-end; padding-right: 4cqi; }
+
+  /* in the pile, without JavaScript, the front alone: the pile prints each note under its photo */
+  :global(html:not(.js)) .pc--pile .pc-back { display: none; }
 
   /* without JavaScript: both sides, one under the other */
   :global(html:not(.js)) .pc-card { gap: 16px; }

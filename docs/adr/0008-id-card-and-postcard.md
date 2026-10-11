@@ -121,3 +121,32 @@ the ID card keeps the current photo". Items 7 and 8 change:
 - Open taste questions for the owner: the back's line (a draft taken from the two-track framing), the
   "Issued Oct 2026" date, the lanyard's repeated mark, and whether postcards keep the About gold or take
   the record's blue.
+
+## Amendment 2026-10-11: the pile of postcards
+
+The owner (brief log, 2026-10-11): About is "soulless: plain text and three photos"; "postcards should be
+more interactive; research what makes a photo frame richer and more fun". Research and direction:
+`docs/research/2026-10-about-and-postcards.md`. Item 8's placement (one postcard in a margin, two or three
+in a row) is replaced:
+
+- **One pile.** The photographs of a chapter with two or more lie in a pile (`PostcardPile.astro`), a wide
+  band beside the chapter's words; a chapter with one keeps it in the margin. The pile is the chapter's
+  rung on the rail like any other chapter.
+- **Behaviour** (`src/scripts/pile.ts`, one loop per pile, asleep at rest, CSS transforms only): the top
+  card leans toward a mouse under the glare (ui spring, ζ ≈ 0.87) while the cards beneath fan out; it can
+  be dragged by mouse or pen or swiped sideways on touch (`touch-action: pan-y` keeps vertical scrolling
+  native, and a touch that starts mostly vertical is left to the page). On release the throw is projected
+  (release speed × 0.22 s): past 42 % of the card's width it slides off, changes layer once clear of the
+  others and comes back under the pile; short of that it springs back with the hand's speed (slot spring
+  ζ ≈ 0.82). A click or tap turns it (turn spring as item 2). "Previous", "Next" and "Turn over" buttons
+  and the arrow keys do the same for everyone; only the top card is reachable (the others are `inert`);
+  the caption beside the pile shows the top card's place and note, and a polite live region names it.
+  Card3d.ts is not used for pile cards (`Postcard mode="pile"` drops `data-card`).
+- **Light is colour.** `tools/photos/postcards.mjs` measures each photo's tone (the mean of its more
+  saturated half, lifted to one lightness) into `postcards.json`; the pool of light behind the pile
+  crossfades to the top card's tone (a registered `--tone` custom property).
+- **The back** is warmer card stock with the page's grain as fibre, the note in the reading serif's italic
+  a hair off level, the signature in the postmark's ink.
+- **Still twins.** Reduced motion or `?still`: no tilt, fan, drag or slide; the order changes at once and
+  the turn is the 150 ms crossfade. Without JavaScript the photographs stand in a row, each with its note
+  and place under it (the back is not repeated).
