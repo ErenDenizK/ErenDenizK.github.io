@@ -15,8 +15,10 @@ const n = steps.length;
 const two = (x: number) => String(x).padStart(2, '0');
 const wideW = (s: Shot) => [720, 1080, 1440, 2048].filter((w) => w <= s.img.width);
 const phoneW = (s: Shot) => [390, 600, 780].filter((w) => w <= s.img.width);
-const WIDE_SIZES = '(min-width: 1240px) 760px, (min-width: 900px) 58vw, 88vw';
-const PHONE_SIZES = '(min-width: 900px) 200px, 64vw';
+/* the browser frame fills the picture column (about 800 px from 1240 px, 56 % of the window to 900 px); the
+   phone is 27 % of it beside a browser or the shared phone width alone (ADR-0015 item 5) */
+const WIDE_SIZES = '(min-width: 1240px) 800px, (min-width: 900px) 58vw, 88vw';
+const PHONE_SIZES = '(min-width: 900px) 300px, 62vw';
 ---
 <div class="w-reel" data-reel data-steps={n} style={`--n: ${n}`}>
   <div class="w-screens">

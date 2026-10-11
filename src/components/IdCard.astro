@@ -221,6 +221,8 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
     font: 400 4.3cqi/1 var(--f-ui); color: var(--ink-2); text-decoration: none; border-radius: 6px;
   }
   .idc-link + .idc-link { margin-left: 0; }
+  /* touch: the link's target reaches 44 px without moving the card's layout (ADR-0015 item 6) */
+  @media (pointer: coarse) { .idc-link::after { content: ""; position: absolute; inset: -6px 0; } }
   .idc-link:hover { color: var(--ink); }
   .idc-link .icon { color: var(--ink-3); }
   /* the security foil: a small hologram whose rings catch the light as the card turns */
