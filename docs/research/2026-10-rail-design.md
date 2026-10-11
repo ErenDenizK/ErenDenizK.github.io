@@ -1,8 +1,8 @@
 # Research: the rail, simpler (2026-10-11)
 
-**Status:** proposal. Four looks are built behind a temporary switch (`?rail=a|b|c|d`) and the
-recommendation (A, Beads) is the default until the owner chooses; ADR-0013's amendment of
-2026-10-11 records it. Nothing here overrides the owner's choice. The earlier research,
+**Status:** closed. The owner chose A, the beads (2026-10-11); B, C, D and the `?rail` switch are
+removed, and ADR-0013's later amendment of 2026-10-11 records the final geometry. The concepts below
+are kept as the record of what was compared. Nothing here overrides the owner's choice. The earlier research,
 `2026-10-scroll-rail.md`, stays the reference for the platform facts (hiding, iOS, forced colours)
 and its §2 accessibility rules; this file only adds what the redesign needed.
 
