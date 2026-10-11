@@ -372,3 +372,16 @@ The owner's words, translated from Turkish.
   move naturally as the page opens, a small swing or turn, so the visitor notices it moves.
 - **Way of working:** "Read the tasks and answers fully, assign agents across branches, set up the
   system: you are the boss of this work."
+
+### 2026-10-11, afternoon (board round 3)
+
+- **Rail:** look A, the beads (the owner's sketch).
+- **Copy:** neither "work abroad" nor "a company like Microsoft" on the page.
+- **Correction of a fact:** the owner did **not** do the English prep year: they skipped YTÜ's prep by
+  passing its exam with full marks. Order: English Prep (the app) first, then Recto.
+- **About** is good. Postcards: not gathered in one place but spread through the page; a more
+  elegant back; switching and turning by buttons is bad: more interactivity by tapping and clicking.
+- **Bugs:** the Record fix worked, but About has the same problem (text squeezed into a narrow
+  column on the phone). The owner asks what causes it.
+- **Objects:** edk looks great on the phone; give the other objects the same kind of interaction.
+- **Record samples** are good. Home: improvement later. Tested on the phone only.

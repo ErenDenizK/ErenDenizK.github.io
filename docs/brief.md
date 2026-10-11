@@ -13,8 +13,8 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 ### Who
 
 - Eren Deniz Kuyucaklıoğlu, in full; the mark is "edk", no logo. (2026-10-09)
-- First-year Computer Engineering student at Yıldız Technical University, Istanbul; passed the
-  English prep year with AA (full marks). Learns the fundamentals on their own (CS50 and similar
+- First-year Computer Engineering student at Yıldız Technical University, Istanbul; skipped the
+  English prep year by passing YTÜ's prep exam with full marks (corrected 2026-10-11). Learns the fundamentals on their own (CS50 and similar
   courses, camps), drawn to the low level: processors, embedded systems, the machine's own
   language. Ships products by directing AI agents and treats that as a second discipline. Aims
   to work abroad; a company like Microsoft is the kind of target. (2026-10-08)
@@ -64,7 +64,7 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   had said no CV and no work-authorisation line "for now".)
 - The owner likes About's system: the ID card with written descriptions under it. The recent
   About designs draw too much attention and were not liked. (2026-10-10)
-- Content: YTU, Computer Engineering, year one, prep AA; personal photographs. (2026-10-08)
+- Content: YTU, Computer Engineering, year one, prep exam passed with full marks, prep year skipped (corrected 2026-10-11); personal photographs. (2026-10-08)
 - Links: GitHub and LinkedIn only, no email (2026-10-09). LinkedIn:
   `https://www.linkedin.com/in/eren-d-kuyucakl%C4%B1o%C4%9Flu-7037b433a` (2026-10-09).
 - ID card: very good; the phone's simple flip is fine (2026-10-10, phone check). The desktop
