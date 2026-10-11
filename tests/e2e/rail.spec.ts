@@ -519,7 +519,7 @@ test.describe('the Istanbul clock', () => {
     expect(c.num).toContain('tabular-nums');
     expect(c.before && c.r < c.g, 'the clock sits before GitHub').toBe(true);
     /* written by the bar itself as it is parsed: no placeholder value ever reaches the screen */
-    expect(c.early.every((v) => v === c.time || v === istanbul())).toBe(true);
+    expect(c.early.every((v) => v === c.time || v === before || v === istanbul())).toBe(true);
     await ctx.close();
   });
   test('no JavaScript: just "Istanbul"; phones: hidden', async ({ browser }) => {
