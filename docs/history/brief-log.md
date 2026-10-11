@@ -385,3 +385,18 @@ The owner's words, translated from Turkish.
   column on the phone). The owner asks what causes it.
 - **Objects:** edk looks great on the phone; give the other objects the same kind of interaction.
 - **Record samples** are good. Home: improvement later. Tested on the phone only.
+
+### 2026-10-11, evening
+
+- **Postcards:** try other designs beyond the postcard; it looks a little simple and cheap. "I want a
+  design that would win a design award."
+- **All other pages are good;** every improvement is great. Content work starts soon.
+- **Home feels very empty.** It must be a stunning opening page with a "woaaww" effect, a design
+  marvel. Run several strong agents: analyse award-winning pages, research similar examples, measure
+  the page, try everything possible. It is the first page, so the most important one.
+- **Branches in every project:** two branches, `main` and a development branch (dev/develop/test).
+  All development happens on the development branch; the owner merges into `main` by hand; publishing
+  from the development branch is fine. Docs that said otherwise were wrong (fixed in
+  `docs/family-kit/SESSIONS.md` and the app session prompts).
+- **Other projects:** brief what has been done so far and what is wanted in this project and the
+  others; ask every question, assume nothing. "A design-award feel on every page: go all out."
