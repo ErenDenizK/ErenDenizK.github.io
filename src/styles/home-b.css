@@ -1,0 +1,366 @@
+/* Home, direction B: the living editorial index (pages/lab/home-b.astro; docs/research/2026-10-home-b.md).
+   Tokens are global.css. The page is transparent so the sky and the light field, painted behind it,
+   show on the body's ground; the blended objects add onto that ground and light (media research §3.1:
+   nothing here forms a stacking context around them, the plates clip with overflow, which forms none). */
+/* main is its own group over an opaque ground: the sky and the light sit at z -1 inside it, under the
+   content, and the blended objects and the lens blend against the real ground */
+.page-homeb { isolation: isolate; }
+.page-homeb > section, .page-homeb > .inner { position: relative; max-width: var(--max); margin-left: auto; margin-right: auto; }
+
+/* ---------- ground: the sky over the name, and the light that follows the pointer ---------- */
+.hb-ground { position: absolute; z-index: -1; inset: 0 0 auto; height: 0; pointer-events: none; }
+.hb-sky {
+  --sky-a: #6d7fc0; --sky-b: #3b3566; --sky-i: 0.55; --sx: 70%;
+  position: absolute; left: 0; right: 0; top: 0; height: min(130vh, 1200px);
+  background:
+    radial-gradient(60% 52% at var(--sx) -12%, color-mix(in oklab, var(--sky-a) calc(var(--sky-i) * 26%), transparent), transparent 100%),
+    radial-gradient(44% 40% at calc(100% - var(--sx)) -6%, color-mix(in oklab, var(--sky-b) calc(var(--sky-i) * 18%), transparent), transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0, #000 45%, transparent 100%); mask-image: linear-gradient(180deg, #000 0, #000 45%, transparent 100%);
+  transition: opacity 1600ms var(--ease-out);
+}
+html.js .hb-sky { opacity: 0; }
+html.js .hb-sky.on { opacity: 1; }
+/* the field: a wide, soft light in the page's colour, moved by transform only (scripts/home.ts) */
+.hb-field {
+  position: fixed; left: 0; top: 0; width: 84vmax; height: 84vmax; margin: -42vmax 0 0 -42vmax; border-radius: 50%;
+  translate: 72vw 30vh;
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--accent) 9%, transparent), color-mix(in oklab, var(--accent) 3%, transparent) 55%, transparent);
+  transition: --accent var(--accent-glide);
+  will-change: translate;
+}
+
+/* ---------- the hero ---------- */
+.hb-hero { --hb-s: min(calc((100vw - 2 * var(--gut)) / 6.55), calc(var(--max) / 6.55)); padding-top: 18px; }
+.hb-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 32px; }
+.hb-kicker { color: var(--ink-2); }
+.hb-skyline { display: inline-flex; align-items: center; gap: 12px; color: var(--ink-3); white-space: nowrap; }
+.hb-sky-t b { font-weight: 400; color: var(--ink-2); }
+.hb-sky-t [data-sun]:not(:empty)::before { content: " · "; }
+.hb-arc { position: relative; width: 46px; height: 18px; border: 1px solid var(--rule-2); border-bottom: 0; border-radius: 46px 46px 0 0; }
+.hb-arc::after { content: ""; position: absolute; left: -6px; right: -6px; bottom: 0; height: 1px; background: var(--rule-2); }
+.hb-sun { position: absolute; left: var(--ax, 50%); bottom: var(--ay, 60%); width: 7px; height: 7px; margin: 0 0 -3.5px -3.5px; border-radius: 50%;
+  background: var(--sky-a, #f3b886); box-shadow: 0 0 10px var(--sky-a, #f3b886); opacity: 0; transition: opacity 600ms; }
+.hb-skyline.on .hb-sun { opacity: 1; }
+.hb-skyline.night .hb-sun { background: transparent; box-shadow: inset 0 0 0 1.5px #c9d4ff, 0 0 8px rgba(201, 212, 255, 0.5); }
+
+.hb-stage { position: relative; margin-top: clamp(8px, 2vh, 28px); }
+.hb-name {
+  position: relative; font: 400 var(--hb-s)/0.86 var(--f-display); letter-spacing: -0.03em;
+  margin: 0 0 0 -0.045em; color: var(--ink); font-kerning: normal;
+}
+.hb-letters { display: block; }
+.hb-line { display: block; white-space: nowrap; }
+.hb-w { display: inline-block; white-space: nowrap; }
+.hb-w + .hb-w { margin-left: 0.2em; }
+.hb-name .ch { display: inline-block; }
+/* the dot after the name: the mark's own dot, at the name's size, in the page's light */
+.hb-dot { display: inline-block; position: relative; width: 0.19em; height: 0.19em; margin-left: 0.05em; vertical-align: 0.02em; }
+.hb-dot i { position: absolute; inset: 0; border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 0.3em color-mix(in oklab, var(--accent) 70%, transparent), 0 0 0.9em color-mix(in oklab, var(--accent) 30%, transparent);
+  transition: --accent var(--accent-glide); }
+.hb-dot::after { content: ""; position: absolute; inset: -0.5em; border-radius: 50%; border: 0.012em solid var(--accent); opacity: 0; transition: --accent var(--accent-glide); }
+/* the lens: the pointer's light, colouring the letters it passes (multiply: the ground stays black) */
+.hb-lens {
+  position: absolute; left: 0; top: 0; width: 3.4em; height: 3.4em; margin: -1.7em 0 0 -1.7em; border-radius: 50%;
+  pointer-events: none; mix-blend-mode: multiply; translate: 62% 40%;
+  background: radial-gradient(closest-side, var(--accent), color-mix(in oklab, var(--accent) 55%, #fff) 42%, #fff 100%);
+  opacity: 0; transition: opacity 900ms var(--ease-out), --accent var(--accent-glide);
+}
+html.js .hb-lens.on { opacity: 1; }
+.hb-obj { position: absolute; right: -1%; top: calc(var(--hb-s) * 0.43 - min(15.5vw, 220px)); width: min(31vw, 440px); }
+
+/* the row under the name: the vision, and what is happening now */
+.hb-row { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; margin-top: clamp(28px, 4.4vh, 52px); padding-top: 26px; border-top: 1px solid var(--rule); align-items: start; }
+.hb-v { font: 400 clamp(26px, 2.35vw, 36px)/1.16 var(--f-display); letter-spacing: -0.015em; max-width: 20em; text-wrap: balance; }
+.hb-vision .links { margin-top: 26px; }
+.hb-now { display: grid; gap: 10px; }
+.hb-now-k { display: inline-flex; align-items: center; gap: 9px; color: var(--ink-2); }
+.hb-pulse { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); transition: --accent var(--accent-glide); }
+.hb-pulse::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: hb-pulse 2.4s var(--ease-out) infinite; }
+@keyframes hb-pulse { from { scale: 1; opacity: 0.7; } 70%, to { scale: 3.2; opacity: 0; } }
+.hb-now-t { color: var(--ink-2); font-size: var(--t-ui); line-height: var(--lh-ui); max-width: 30em; text-wrap: pretty; }
+.hb-latest { display: grid; gap: 6px; margin-top: 6px; padding: 14px 0 0; border-top: 1px solid var(--rule); text-decoration: none; }
+.hb-latest-k { display: block; }
+.hb-latest-k time { color: var(--c); }
+.hb-latest-t { font: 400 var(--t-h3)/1.22 var(--f-display); letter-spacing: -0.012em; text-wrap: pretty; transition: color var(--d-1); }
+.hb-latest:hover .hb-latest-t { color: color-mix(in oklab, var(--c) 40%, var(--ink)); }
+
+/* ---------- the composition (CSS: it plays without JavaScript; once per visit; never when reduced) ----------
+   Each letter settles on the object spring, the initials e, d, k light in turn, and the dot lights last.
+   The bar's mark answers the dot. Timeline: letters 0.14-1.9 s, initials 1.35-2.2 s, dot 1.85 s. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.hb-seen) .hb-name .ch {
+    animation: hb-rise 1150ms var(--spring-object) both, hb-fade 520ms var(--ease-out) both;
+    animation-delay: calc(140ms + var(--i) * 30ms);
+  }
+  html:not(.hb-seen) .hb-name .ch.ini {
+    animation: hb-rise 1150ms var(--spring-object) both, hb-fade 520ms var(--ease-out) both, hb-ini 1100ms var(--ease-out) both;
+    animation-delay: calc(140ms + var(--i) * 30ms), calc(140ms + var(--i) * 30ms), calc(1250ms + var(--i) * 26ms);
+  }
+  html:not(.hb-seen) .hb-dot i { animation: hb-dot 900ms var(--spring-object) 1880ms both; }
+  html:not(.hb-seen) .hb-dot::after { animation: hb-ring 1400ms var(--ease-out) 1960ms both; }
+  html:not(.hb-seen):not(.accent-arrive) .mark .dot { animation: hb-ping 900ms var(--spring-object) 1980ms both; }
+  html:not(.hb-seen) .hb-top, html:not(.hb-seen) .hb-row { animation: hb-up 900ms var(--spring-ui) both; }
+  html:not(.hb-seen) .hb-top { animation-delay: 60ms; }
+  html:not(.hb-seen) .hb-row { animation-delay: 820ms; }
+  html.hb-seen .hb-dot i { animation: hb-dot 700ms var(--spring-object) 160ms both; }
+}
+@keyframes hb-rise { from { transform: translateY(0.46em) rotate(6deg); } }
+@keyframes hb-fade { from { opacity: 0; } }
+@keyframes hb-ini { 0% { color: var(--ink); } 28% { color: var(--accent); text-shadow: 0 0 0.18em color-mix(in oklab, var(--accent) 60%, transparent); } 100% { color: var(--ink); } }
+@keyframes hb-dot { from { scale: 0; opacity: 0; } 30% { opacity: 1; } }
+@keyframes hb-ring { from { opacity: 0.8; scale: 0.2; } to { opacity: 0; scale: 1.6; } }
+@keyframes hb-ping { 50% { scale: 1.7; } }
+@keyframes hb-up { from { opacity: 0; translate: 0 14px; } }
+
+/* The spectrum: at 0.95 s a band of the family's colours crosses the name (multiply: the letters take
+   each colour as it passes, the ground stays black), with a soft wash of the same colours on the ground. */
+.hb-sweep, .hb-sweep-g { position: absolute; top: -0.12em; bottom: -0.28em; left: 0; width: 2.8em; pointer-events: none; opacity: 0;
+  background: linear-gradient(90deg, #fff 0%, var(--edk) 14%, var(--prep) 30%, var(--recto) 46%, var(--eat) 62%, var(--log) 78%, var(--about) 90%, #fff 100%); }
+.hb-sweep { mix-blend-mode: multiply; }
+.hb-sweep-g { background: linear-gradient(90deg, transparent 0%, var(--edk) 14%, var(--prep) 30%, var(--recto) 46%, var(--eat) 62%, var(--log) 78%, var(--about) 90%, transparent 100%);
+  -webkit-mask-image: radial-gradient(50% 50%, #000, transparent); mask-image: radial-gradient(50% 50%, #000, transparent); }
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.hb-seen) .hb-sweep { animation: hb-sweep 1650ms var(--ease-move) 950ms; }
+  html:not(.hb-seen) .hb-sweep-g { animation: hb-sweep-g 1650ms var(--ease-move) 950ms; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hb-name.sweep .hb-sweep { animation: hb-sweep 1250ms var(--ease-move); }
+  .hb-name.sweep .hb-sweep-g { animation: hb-sweep-g 1250ms var(--ease-move); }
+}
+@keyframes hb-sweep { from { translate: -3em 0; opacity: 1; } to { translate: 7.4em 0; opacity: 1; } }
+@keyframes hb-sweep-g { from { translate: -3em 0; opacity: 0; } 30%, 70% { opacity: 0.2; } to { translate: 7.4em 0; opacity: 0; } }
+
+/* The first scroll: the name docks into the bar's mark (scripts/home.ts writes the transforms). Each
+   initial carries its lower-case twin (e, d, k) and changes into it on the way. */
+.hb-name .ch.ini { position: relative; }
+.hb-name .lc { position: absolute; left: 0; top: 0; font-weight: 500; opacity: 0; }
+html.hb-done .hb-name .ch, html.hb-done .hb-dot i, html.hb-done .hb-dot::after { animation: none !important; }
+html.hb-docking .hb-name .ch, html.hb-docking .hb-dot { will-change: transform, opacity; }
+.mark.hb-land .dot { animation: hb-ping 800ms var(--spring-object); }
+
+/* the dot as a control (added by scripts/home.ts, so there is no dead button without it) */
+.hb-dot-btn { position: absolute; z-index: 2; width: 56px; height: 56px; margin: -28px 0 0 -28px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; }
+.hb-dot-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: -6px; }
+.hb-dot.pop i { animation: hb-dot-pop 700ms var(--spring-object); }
+.hb-dot.pop::after { animation: hb-ring 1100ms var(--ease-out); }
+@keyframes hb-dot-pop { 40% { scale: 0.6; } }
+.hb-hint { position: absolute; z-index: 2; translate: -50% 0; margin-top: 30px; white-space: nowrap; color: var(--ink-3); pointer-events: none;
+  opacity: 0; transition: opacity var(--d-4) var(--ease-out); }
+.hb-hint.on { opacity: 1; }
+
+/* ---------- section heads ---------- */
+.hb-head { display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto; align-items: baseline; gap: 12px 28px; padding-bottom: 16px; border-bottom: 1px solid var(--rule-2); }
+.hb-head h2 { font: 400 var(--t-h2)/var(--lh-h2) var(--f-display); letter-spacing: -0.02em; }
+.hb-no { color: var(--ink-3); }
+.hb-dek { color: var(--ink-3); font-size: var(--t-ui); line-height: var(--lh-ui); max-width: 32em; }
+.hb-head .more { font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.hb-head .more:hover { color: var(--ink); }
+
+/* ---------- now building: one pinned stage, one product at a time in its own light ----------
+   Not a catalogue (Work is the catalogue): a moment per product, its name set large in its own face, one
+   real picture, one line. The stage is sticky for the section's height; the act shown is the one the
+   reading position has reached (scripts/home.ts), never by taking the scroll. Without JavaScript the
+   acts are plain sections one under the other. */
+.page-homeb > .hb-show { max-width: none; margin-top: clamp(80px, 12vh, 140px); }
+.hb-show-stage { position: relative; margin: 0 calc(-1 * var(--gut)); padding: 0 var(--gut); }
+html.js .hb-show { height: calc(100svh * (var(--acts) * 0.8 + 0.5)); }
+/* sticky makes the stage a group: it paints its own ground, so its objects blend against it (ADR-0014 item 6) */
+html.js .hb-show-stage { position: sticky; top: 0; height: 100svh; overflow: hidden; background: var(--ground); }
+.hb-show-light { position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(46% 58% at 68% 56%, color-mix(in oklab, var(--accent) 17%, transparent), transparent 72%),
+    radial-gradient(34% 42% at 14% 88%, color-mix(in oklab, var(--accent) 8%, transparent), transparent 70%);
+  transition: --accent var(--accent-glide); }
+.hb-show-head { position: relative; z-index: 4; max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 24px; padding: 0 0 14px; border-bottom: 1px solid var(--rule); }
+html.js .hb-show-head { padding-top: calc(var(--bar-h) + 6px); }
+.hb-show-head h2 { display: inline-flex; align-items: center; gap: 9px; color: var(--ink-2); }
+.hb-show-head .more { justify-self: end; font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; }
+.hb-show-head .more:hover { color: var(--ink); }
+.hb-index { display: flex; gap: 6px; }
+.hb-index a { display: grid; grid-template-columns: auto auto; column-gap: 8px; align-items: baseline; min-width: 132px; min-height: 44px; padding: 8px 12px 0; text-decoration: none; color: var(--ink-3); font: 400 var(--t-meta)/1.2 var(--f-ui); transition: color var(--d-2); }
+.hb-ix-n { font-variant-numeric: tabular-nums; }
+.hb-ix-t { color: inherit; }
+.hb-ix-bar { grid-column: 1 / -1; height: 2px; margin-top: 10px; border-radius: 2px; background: var(--rule-2); overflow: hidden; }
+.hb-ix-bar i { display: block; height: 100%; width: 100%; background: var(--pg); transform-origin: 0 50%; transform: scaleX(var(--prog, 0)); }
+.hb-index li.on a, .hb-index a:hover { color: var(--ink); }
+.hb-index li.on .hb-ix-n { color: var(--pg); }
+
+.hb-act { position: relative; max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; align-items: center; padding: 48px 0; }
+/* an act is shown by visibility alone: opacity or a transform on it would make it a group and the blended
+   object inside would lose the ground; its parts fade and move instead, each on its own */
+html.js .hb-act { position: absolute; left: var(--gut); right: var(--gut); top: calc(var(--bar-h) + 70px); bottom: 3vh; padding: 0; visibility: hidden; transition: visibility 0s linear 300ms; }
+html.js .hb-act.is-on { visibility: visible; transition: visibility 0s; }
+html.js .hb-act-text, html.js .hb-screens, html.js .hb-fan, html.js .hb-act .m-stage, html.js .hb-act .hb-th, html.js .hb-object .hb-pic::before { opacity: 0; transition: opacity 280ms var(--ease-out); }
+html.js .hb-act.is-on :is(.hb-act-text, .hb-screens, .hb-fan, .m-stage, .hb-th), html.js .hb-object.is-on .hb-pic::before { opacity: 1; transition: opacity 480ms var(--ease-out) 60ms; }
+.hb-act .m-shadow { display: none; }
+/* no z-index: the picture comes later and lies over it, so its object takes the pointer, not the link under it */
+.hb-act-text { grid-column: 1; grid-row: 1; position: relative; display: flex; flex-direction: column; align-items: flex-start; }
+.hb-pk { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; color: var(--ink-3); }
+.hb-lead-k { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-2); }
+.hb-lead-k .icon { color: var(--pg); }
+/* the name in its own face, as large as its length allows: it runs under the picture on purpose */
+.hb-pt { position: relative; margin: 18px 0 0 -0.05em; font-size: min(15vw, 228px, calc(56vw / (var(--wl) * 0.53))); line-height: 0.92; white-space: nowrap; }
+.hb-plink { text-decoration: none; }
+.hb-plink::after { content: ""; position: absolute; inset: -1000px; z-index: 0; }
+html.js .hb-act .hb-plink::after { inset: calc(-1 * (var(--bar-h) + 70px)) -100vw -100vh; }
+.hb-act:has(.hb-plink:focus-visible) .hb-pt { outline: 2px solid var(--focus); outline-offset: 6px; border-radius: 6px; }
+.hb-plink:focus-visible { outline: none; }
+.hb-pitch { position: relative; margin-top: 22px; max-width: 15em; font: 400 clamp(22px, 2vw, 30px)/1.2 var(--f-display); letter-spacing: -0.012em; text-wrap: balance; }
+.hb-nums { position: relative; display: flex; gap: 34px; margin-top: 24px; }
+.hb-nums div { display: flex; flex-direction: column-reverse; gap: 2px; }
+.hb-nums dd { margin: 0; font: 400 40px/1 var(--f-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums lining-nums; }
+.hb-cta { position: relative; margin-top: 30px; pointer-events: none; }
+.hb-act:hover .hb-cta { background: color-mix(in srgb, var(--p) 88%, #fff); }
+/* no perspective here: it would make the picture a group and the blended object would lose the ground */
+.hb-pic { grid-column: 2; grid-row: 1; position: relative; height: 100%; min-height: 420px; pointer-events: none; }
+.hb-pic .media { pointer-events: auto; }
+/* arrival of an act: the name rises, the picture follows on the object spring */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .hb-act .hb-pt, html.js .hb-act .hb-pitch, html.js .hb-act .hb-fan, html.js .hb-act .hb-thumb { transition: translate 900ms var(--spring-object), opacity 500ms var(--ease-out); }
+  html.js .hb-act:not(.is-on) .hb-pt { translate: 0 0.22em; }
+  html.js .hb-act:not(.is-on) .hb-pitch { translate: 0 24px; opacity: 0; }
+  html.js .hb-act:not(.is-on) .hb-fan { translate: 0 12vh; }
+  html.js .hb-act.is-on .hb-pitch { transition-delay: 120ms; }
+  html.js .hb-act.is-on .hb-fan { transition-delay: 60ms; }
+  html.js .hb-act .hb-screens { transition: transform 900ms var(--spring-object), opacity 480ms var(--ease-out); }
+  html.js .hb-act:not(.is-on) .hb-screens { transform: perspective(1800px) rotateX(8deg) rotateY(-22deg) translateY(10vh); }
+}
+
+/* wide screens: two browser frames, one behind the other, tilting toward the pointer */
+.hb-screens { position: absolute; inset: 6% calc(-1 * var(--gut) - 4%) 8% 4%; transform-style: preserve-3d;
+  transform: perspective(1800px) rotateX(var(--rx, 1deg)) rotateY(var(--ry, -7deg)) rotateZ(0.5deg); transition: transform 700ms var(--ease-out); }
+.hb-web { position: absolute; left: 0; right: 0; top: 50%; translate: 0 -50%; border-radius: 12px; overflow: hidden; background: #0d0d0f;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09), 0 50px 100px -30px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 0, 0, 0.5), 0 0 120px -40px color-mix(in oklab, var(--pg) 50%, transparent); }
+.hb-web picture, .hb-web img { display: block; width: 100%; height: auto; }
+.hb-web-0 { z-index: 2; }
+.hb-web-1 { z-index: 1; transform: translate3d(10%, -17%, -140px) scale(0.92); opacity: 0.5; }
+.hb-web-bar { display: flex; align-items: center; gap: 12px; height: 30px; padding: 0 12px; background: #141416; box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.05); }
+.hb-dots { display: inline-flex; gap: 6px; }
+.hb-dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
+.hb-url { font: 400 12px/1 var(--f-ui); color: var(--ink-3); margin: 0 auto; padding-right: 40px; }
+.hb-pobj { position: absolute; left: -12%; bottom: -2%; width: min(25vw, 340px); cursor: pointer; }
+
+/* phone screens: a fan */
+.hb-fan { position: absolute; inset: 0; }
+.hb-phone {
+  position: absolute; left: 50%; top: 50%; width: min(30%, 236px); margin: 0; border-radius: 30px; overflow: hidden; background: #000;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 0 5px #0e0e10, 0 0 0 6px rgba(255, 255, 255, 0.08), 0 50px 90px -30px rgba(0, 0, 0, 0.95);
+  transform-origin: 50% 140%;
+  transform: translate(-50%, -50%) translateX(calc(var(--j) * 70%)) rotate(calc(var(--j) * 8deg)) translateY(calc(var(--a) * 6%));
+}
+.hb-phone:nth-child(2) { z-index: 2; }
+.hb-phone picture, .hb-phone img { display: block; width: 100%; height: auto; }
+
+/* a product without screens yet: its object is the picture, large, in its own light */
+.hb-thumb { position: absolute; display: block; pointer-events: none; }
+.hb-th { display: block; width: 100%; height: auto; }
+.hb-phones .hb-thumb { right: 2%; top: 2%; width: 150px; }
+.hb-object .hb-thumb { inset: 0; margin: auto; width: min(100%, 560px); height: fit-content; }
+.hb-object .hb-pic::before { content: ""; position: absolute; left: 50%; top: 52%; width: 90%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--p2, var(--pg)) 70%, transparent), transparent); }
+@media (prefers-reduced-motion: no-preference) {
+  html.js .hb-act.is-on .hb-th { animation: hb-bob 7s ease-in-out infinite alternate; }
+}
+@keyframes hb-bob { to { translate: 0 -2%; } }
+
+/* ---------- the record: the year as a strip, and the newest entries ---------- */
+.hb-record { margin-top: clamp(110px, 15vh, 170px); }
+.hb-rec { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: 56px; margin-top: 36px; align-items: end; }
+.hb-count { display: flex; align-items: baseline; gap: 14px; }
+.hb-count b { font: 400 clamp(88px, 9vw, 140px)/0.8 var(--f-display); letter-spacing: -0.04em; font-variant-numeric: lining-nums; }
+.hb-strip { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 6px; margin-top: 32px; }
+.hb-mo { display: grid; grid-template-rows: 108px auto; gap: 10px; text-decoration: none; color: var(--ink-3); border-radius: 6px; }
+.hb-mo.on { color: var(--ink-2); }
+.hb-ticks { display: flex; flex-direction: column-reverse; gap: 4px; padding-bottom: 0; border-bottom: 1px solid var(--rule-2); }
+.hb-ticks i { display: block; height: 6px; border-radius: 2px; background: var(--c); box-shadow: 0 0 12px color-mix(in oklab, var(--c) 40%, transparent); transform-origin: 50% 100%; }
+.hb-ticks i.t-note { height: 3px; }
+.hb-m { font: 400 12px/1 var(--f-ui); }
+.hb-mo.on:hover .hb-m { color: var(--ink); }
+.hb-mo.on:hover .hb-ticks i { filter: brightness(1.25); }
+.hb-list { border-top: 1px solid var(--rule); }
+.hb-list li { border-bottom: 1px solid var(--rule); }
+.hb-list a { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 18px; align-items: baseline; padding: 15px 0 15px 18px; text-decoration: none; }
+.hb-list a::before { content: ""; position: absolute; left: 0; top: 24px; width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
+.hb-lt { font: 400 20px/1.3 var(--f-display); letter-spacing: -0.01em; transition: color var(--d-1); text-wrap: pretty; }
+.hb-list a:hover .hb-lt { color: color-mix(in oklab, var(--c) 45%, var(--ink)); }
+.hb-lm { text-align: right; }
+
+/* ---------- sign-off ---------- */
+.hb-sign { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; margin-top: clamp(120px, 16vh, 190px); padding-top: 28px; border-top: 1px solid var(--rule); }
+.hb-mark { font: 500 clamp(120px, 17vw, 260px)/0.8 var(--f-display); letter-spacing: -0.04em; margin-left: -0.04em; color: var(--ink); }
+.hb-mark i { display: inline-block; width: 0.2em; height: 0.2em; margin-left: 0.05em; border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 0.35em color-mix(in oklab, var(--accent) 60%, transparent); transition: --accent var(--accent-glide); }
+.hb-sign-t { display: grid; gap: 12px; padding-bottom: 10px; }
+.hb-else { display: flex; flex-wrap: wrap; gap: 6px 26px; }
+.hb-else a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font: 400 var(--t-lede)/1 var(--f-ui); color: var(--ink-2); text-decoration: none; }
+.hb-else a:hover { color: var(--ink); }
+.page-homeb .foot { padding-top: 56px; }
+
+/* ---------- tablet ---------- */
+@media (max-width: 1240px) {
+  .hb-pobj { width: min(28vw, 300px); }
+}
+
+/* ---------- phones: designed as carefully as the desktop ---------- */
+@media (max-width: 899.98px) {
+  .hb-hero { --hb-s: calc((100vw - 2 * var(--gut)) / 6.5); padding-top: 10px; }
+  .hb-top { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .hb-stage { margin-top: 18px; }
+  /* Eren and Deniz on lines of their own, half again larger; the surname fills the width */
+  .hb-l1 { font-size: 1.62em; line-height: 0.84; }
+  .hb-l1 .hb-w { display: block; }
+  .hb-l1 .hb-w + .hb-w { margin-left: 0; }
+  .hb-l2 { margin-top: 0.12em; }
+  /* the glass on a line of its own under the name, as wide as the column: the square's empty top and
+     bottom are taken back by negative margins (percentages of the column), so it never leaves the screen */
+  .hb-obj { position: relative; right: auto; top: auto; width: 100%; margin: -25% 0 -27%; }
+  /* only the band where the glass is takes a tap (it plays its turn); the square's empty top lies over the
+     surname, and a tap there belongs to the name */
+  .hb-obj { pointer-events: none; }
+  .hb-obj::after { content: ""; position: absolute; inset: 25% 6% 27%; pointer-events: auto; }
+  .hb-lens { width: 4.4em; height: 4.4em; margin: -2.2em 0 0 -2.2em; }
+  .hb-row { grid-template-columns: 1fr; gap: 30px; margin-top: 26px; padding-top: 22px; }
+  .hb-v { font-size: 26px; }
+  .hb-latest-t { font-size: 22px; }
+
+  .hb-head { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 14px; }
+  .hb-head .hb-dek { grid-column: 1 / -1; grid-row: 2; }
+  html.js .hb-show { height: calc(100svh * (var(--acts) * 0.75 + 0.5)); }
+  .hb-show-head { grid-template-columns: 1fr; gap: 8px; padding-bottom: 10px; }
+  html.js .hb-show-head { padding-top: 14px; }
+  .hb-show-head .more { display: none; }
+  .hb-index { display: grid; grid-template-columns: repeat(var(--acts), minmax(0, 1fr)); gap: 8px; }
+  .hb-index a { min-width: 0; padding: 4px 0 0; font-size: 12px; }
+  .hb-ix-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hb-ix-bar { margin-top: 8px; }
+  .hb-act { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; gap: 0; padding: 32px 0; }
+  html.js .hb-act { top: 104px; bottom: max(18px, env(safe-area-inset-bottom)); }
+  .hb-pic { grid-column: 1; grid-row: 1; min-height: 300px; }
+  .hb-act-text { grid-column: 1; grid-row: 2; }
+  .hb-pt { margin-top: 10px; font-size: min(24vw, 112px, calc(90vw / (var(--wl) * 0.53))); }
+  .hb-pitch { margin-top: 12px; font-size: 20px; max-width: 18em; }
+  .hb-nums { gap: 24px; margin-top: 14px; }
+  .hb-nums dd { font-size: 28px; }
+  .hb-cta { margin-top: 18px; }
+  .hb-screens { inset: 10% -30% 6% 4%; }
+  .hb-pobj { left: -4%; bottom: -6%; width: 46%; }
+  .hb-phone { width: 34%; border-radius: 22px; }
+  .hb-phones .hb-thumb { width: 92px; right: 0; top: -2%; }
+  .hb-object .hb-thumb { width: min(92%, 400px); }
+  .hb-record { margin-top: 96px; }
+  .hb-rec { grid-template-columns: 1fr; gap: 36px; margin-top: 26px; }
+  .hb-strip { gap: 4px; margin-top: 24px; }
+  .hb-mo { grid-template-rows: 84px auto; }
+  .hb-m { font-size: 10px; letter-spacing: -0.01em; }
+  .hb-list a { grid-template-columns: 52px minmax(0, 1fr); gap: 4px 12px; }
+  .hb-ld { grid-row: 1 / span 2; }
+  .hb-lt { grid-column: 2; grid-row: 1; }
+  .hb-lm { grid-column: 2; grid-row: 2; text-align: left; }
+  .hb-lt { font-size: 19px; }
+
+  .hb-sign { flex-direction: column; align-items: flex-start; margin-top: 110px; }
+  .hb-mark { font-size: 38vw; }
+  .hb-else a { font-size: 19px; }
+}
+
