@@ -218,7 +218,7 @@ test('reduced motion: the card hangs still and the turn is a crossfade', async (
   await ctx.close();
 });
 
-test('without JavaScript the front stands alone, links included; postcards show both sides', async ({ browser }) => {
+test('without JavaScript the front stands alone, links included; a postcard shows its front and caption', async ({ browser }) => {
   const ctx = await browser.newContext({ ...desktop, javaScriptEnabled: false, baseURL: test.info().project.use.baseURL });
   const page = await ctx.newPage();
   await page.goto('about/');
@@ -227,7 +227,9 @@ test('without JavaScript the front stands alone, links included; postcards show 
   await expect(page.locator('.idc-back')).toBeHidden();
   await expect(page.locator('.idc-turn:visible')).toHaveCount(0);
   await page.goto('lab/postcard/');
-  await expect(page.locator('.pc-back').first()).toBeVisible();
+  await expect(page.locator('.pc-front img').first()).toBeVisible();
+  await expect(page.locator('.pc-back').first()).toBeHidden();
+  await expect(page.locator('.pc-cap-note').first()).toBeVisible();
   await ctx.close();
 });
 

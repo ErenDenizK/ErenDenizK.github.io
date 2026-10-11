@@ -255,10 +255,11 @@ const site = defineCollection({
         back: z.string(),
         hint: z.object({ drag: z.string(), click: z.string(), tap: z.string() }),
       }),
-      /** the postcard pile's controls, for buttons and screen readers */
-      pile: z.object({
-        label: z.string(), prev: z.string(), next: z.string(), turn: z.string(), of: z.string(),
-        hint: z.object({ drag: z.string(), tap: z.string() }),
+      /** the postcards' words: their buttons' names for screen readers, the back's printed head and
+          credit, and the line under the first one (ADR-0008, "postcards through the page") */
+      postcard: z.object({
+        of: z.string(), turn: z.string(), back: z.string(), head: z.string(), credit: z.string(),
+        hint: z.object({ fine: z.string(), touch: z.string() }),
       }),
       chapters: z.array(z.object({
         /** the chapter's anchor: about/#<id> */
@@ -281,16 +282,15 @@ const site = defineCollection({
         quote: z.string().optional(),
         /** the year as a line: what happened, a lit "now", a dashed "next" (dates only where known) */
         timeline: z.array(z.object({ when: z.string(), what: z.string(), state: z.enum(['past', 'now', 'next']) })).optional(),
-        /** postcards (ADR-0008): one stands in the margin; two or more form the pile, a wide band
-            (docs/research/2026-10-about-and-postcards.md). `photo` is a file stem in content/photos/;
-            run `npm run photos` after adding one. */
+        /** postcards (ADR-0008, "postcards through the page"): each stands beside its chapter, in the
+            margin. `photo` is a file stem in content/photos/; run `npm run photos` after adding one. */
         photos: z.array(z.object({
           photo: z.string().regex(/^[a-z0-9-]+$/),
           alt: z.string(),
           note: z.string(),
           place: z.string(),
           date: z.string().optional(),
-        })).max(6).optional(),
+        })).max(2).optional(),
       })).min(1),
       colophon: z.array(z.tuple([z.string(), z.string()])),
     }),

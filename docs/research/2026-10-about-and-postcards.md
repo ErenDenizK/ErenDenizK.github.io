@@ -1,6 +1,6 @@
 # Research: About as a personal page, and photographs as postcards (2026-10-11)
 
-**Status:** current. Rests on the owner's words of 2026-10-11 (brief log): About is "soulless: plain
+**Status:** current, except the pile (§3), which the owner replaced on 2026-10-11 (afternoon) with postcards spread through the page; see ADR-0008, amendment "postcards through the page". Rests on the owner's words of 2026-10-11 (brief log): About is "soulless: plain
 text and three photos"; postcards should be "more interactive"; "research what makes a photo frame
 richer and more fun, and how photos are presented digitally". The direction at the end is what
 `src/pages/about.astro` and `src/components/PostcardPile.astro` build.
