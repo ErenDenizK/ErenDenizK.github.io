@@ -14,7 +14,8 @@ const isProject = (path: string) => /^work\/[^/]+$/.test(rel(path));
 const slugOf = (path: string) => rel(path).split('/')[1];
 const pageBase = location.pathname;            // the page the sheet sits on (Home or Work)
 const pageRel = rel(pageBase);
-const enabled = pageRel === '' || pageRel === 'work';
+/* Home and Work; and a lab page that hosts project links (Home's direction B, pages/lab/home-b.astro) */
+const enabled = pageRel === '' || pageRel === 'work' || !!document.querySelector('#main [data-sheet-host]');
 
 const cache = new Map<string, Promise<HTMLElement | null>>();
 function load(href: string): Promise<HTMLElement | null> {

@@ -27,7 +27,7 @@ const stems = [...new Set((site.about.chapters ?? []).flatMap((c) => (c.photos ?
 
 // files from an earlier run that no chapter names any more
 for (const f of fs.readdirSync(OUT)) {
-  const m = /^pc-(.+)-\d+\.(avif|webp)$/.exec(f);
+  const m = /^pc-(.+)-(?:\d+|full)\.(avif|webp)$/.exec(f);
   if (m && !stems.includes(m[1])) fs.rmSync(path.join(OUT, f));
 }
 
@@ -65,7 +65,15 @@ for (const stem of stems.sort()) {
     await r.clone().avif({ quality: 52, effort: 6 }).toFile(path.join(OUT, `pc-${stem}-${w}.avif`));
     await r.clone().webp({ quality: 76, effort: 6, smartSubsample: true }).toFile(path.join(OUT, `pc-${stem}-${w}.webp`));
   }
-  manifest[stem] = { width, height, widths, tone: await tone(file) };
-  console.log(stem.padEnd(24), `${width}x${height}`, widths.join(' '), manifest[stem].tone);
+  // the whole photograph at its own width, for a loupe and an enlarged view (photo-presentation research,
+  // concepts 2 and 3): loaded only when one of them is used, and never drawn larger than these pixels
+  const full = width > WIDTHS[WIDTHS.length - 1] ? width : 0;
+  if (full) {
+    const r = sharp(file).rotate();
+    await r.clone().avif({ quality: 56, effort: 6 }).toFile(path.join(OUT, `pc-${stem}-full.avif`));
+    await r.clone().webp({ quality: 80, effort: 6, smartSubsample: true }).toFile(path.join(OUT, `pc-${stem}-full.webp`));
+  }
+  manifest[stem] = { width, height, widths, full, tone: await tone(file) };
+  console.log(stem.padEnd(24), `${width}x${height}`, widths.join(' '), full ? `full ${full}` : '', manifest[stem].tone);
 }
 fs.writeFileSync(path.join(OUT, 'postcards.json'), JSON.stringify(manifest, null, 2) + '\n');

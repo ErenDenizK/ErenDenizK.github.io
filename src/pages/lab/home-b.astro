@@ -1,5 +1,7 @@
 ---
-/* Home, direction B: the living editorial index (docs/research/2026-10-home-b.md).
+/* Home, direction B: the living editorial index (docs/research/2026-10-home-b.md). A lab page, unlinked and
+   noindex, so the owner can compare it with the live Home (direction A); everything here would move to
+   index.astro unchanged if B were chosen.
    Typography and life are the hero. The name is set monumentally in the display face and composes
    itself on load (CSS only: each letter settles on the object spring, the initials e, d, k light in
    turn and the dot after the name lights last, echoing the mark). Around it the page is an index of
@@ -12,16 +14,16 @@
    the sky is a neutral dusk; reduced motion and ?still skip the composition and the light stands still.
    Kept from the Home before (tests rest on them): the edk stage (slot "home"), the lead project's
    object in slot "showcase", one `a.p-open[data-p]` per project (ADR-0007 item 4), no rail sections. */
-import Base from '../layouts/Base.astro';
-import Media from '../components/Media.astro';
-import Icon from '../components/Icon.astro';
-import Thumb from '../components/Thumb.astro';
-import Foot from '../components/Foot.astro';
-import Wordmark from '../components/Wordmark.astro';
+import Base from '../../layouts/Base.astro';
+import Media from '../../components/Media.astro';
+import Icon from '../../components/Icon.astro';
+import Thumb from '../../components/Thumb.astro';
+import Foot from '../../components/Foot.astro';
+import Wordmark from '../../components/Wordmark.astro';
 import { Picture } from 'astro:assets';
-import '../styles/home.css';
-import { getWorld, reelSteps, type Shot } from '../lib/world';
-import { getSite, getProjects, getLog, url, projectPath, entryPath, entryTitle, dayMon, dayMonYear, iso, isPlaceholder, leadProject, statusLine, projectColor, entryProjects, entryColors, yearStrip, entryYear, rowShape } from '../lib/site';
+import '../../styles/home-b.css';
+import { getWorld, reelSteps, type Shot } from '../../lib/world';
+import { getSite, getProjects, getLog, url, projectPath, entryPath, entryTitle, dayMon, dayMonYear, iso, isPlaceholder, leadProject, statusLine, projectColor, entryProjects, entryColors, yearStrip, entryYear, rowShape } from '../../lib/site';
 
 const site = await getSite();
 const log = await getLog();
@@ -29,7 +31,7 @@ const projects = (await getProjects()).filter((p) => p.data.group === 'directed'
 const lead = leadProject(projects, log);
 /* the lead first, then the rest in their order */
 const ordered = [lead, ...projects.filter((p) => p !== lead)];
-const H = site.home;
+const H = site.homeB;
 const k = site.kicker;
 const ix = H.index;
 
@@ -73,11 +75,11 @@ const latestProject = latest ? entryProjects(latest, projects)[0] : null;
 const lights = ['var(--edk)', ...ordered.map(projectColor), 'var(--log)', 'var(--about)'];
 const two = (x: number) => String(x).padStart(2, '0');
 ---
-<Base tab="home" og="home" ogAlt={`${site.name}, with the edk glass object.`} type="profile" pageClass="page-home">
+<Base title="Home, direction B" tab={null} accent="var(--edk)" description="Direction B of Home: the living editorial index (a prototype)." noindex pageClass="page-homeb">
   <script is:inline>
     /* Before the hero paints: the composition plays once per visit (a second Home in the same tab
        arrives composed), and never with ?still. */
-    (function () { var d = document.documentElement; try { if (/[?&]still/.test(location.search) || sessionStorage.getItem('edk-home')) d.classList.add('hb-seen'); sessionStorage.setItem('edk-home', '1'); } catch (e) {} })();
+    (function () { var d = document.documentElement; try { if (/[?&]still/.test(location.search) || sessionStorage.getItem('edk-home-b')) d.classList.add('hb-seen'); sessionStorage.setItem('edk-home-b', '1'); } catch (e) {} })();
   </script>
   <div class="hb-ground" aria-hidden="true">
     <div class="hb-sky"></div>
@@ -135,7 +137,7 @@ const two = (x: number) => String(x).padStart(2, '0');
     </div>
   </section>
 
-  <section class="hb-show" aria-labelledby="h-work" data-acts={ordered.length} style={`--acts: ${ordered.length}`}>
+  <section class="hb-show" aria-labelledby="h-work" data-sheet-host data-acts={ordered.length} style={`--acts: ${ordered.length}`}>
     <div class="hb-show-stage">
       <div class="hb-show-light" aria-hidden="true"></div>
       <header class="hb-show-head">
@@ -246,4 +248,4 @@ const two = (x: number) => String(x).padStart(2, '0');
   </section>
   <div class="inner"><Foot /></div>
 </Base>
-<script>import '../scripts/home';</script>
+<script>import '../../scripts/home-b';</script>

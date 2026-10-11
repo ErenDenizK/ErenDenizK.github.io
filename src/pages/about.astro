@@ -16,7 +16,7 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Foot from '../components/Foot.astro';
 import IdCard from '../components/IdCard.astro';
-import Postcard from '../components/Postcard.astro';
+import Photo from '../components/Photo.astro';
 import Wordmark from '../components/Wordmark.astro';
 import { getSite, getProjects, isPlaceholder, projectPath, url } from '../lib/site';
 import postcards from '../assets/photos/postcards.json';
@@ -33,7 +33,9 @@ const links = [
 
 /* the postcard files, by the photo's stem: pc-<stem>-<width>.<avif|webp> */
 const files = import.meta.glob<string>('../assets/photos/pc-*.{avif,webp}', { eager: true, query: '?url', import: 'default' });
-const manifest = postcards as Record<string, { width: number; height: number; widths: number[]; tone: string }>;
+/* the painted depth maps (tools/photos/depth.py), for the "depth" presentation */
+const depths = import.meta.glob<string>('../assets/photos/depth-*.png', { eager: true, query: '?url', import: 'default' });
+const manifest = postcards as Record<string, { width: number; height: number; widths: number[]; full?: number; tone: string }>;
 /* what each placement is drawn at (the styles below): sizes never promise less than the box */
 const SIZES = {
   side: '(min-width: 1241px) 340px, (min-width: 900px) 300px, min(calc(100vw - 32px), 340px)',
@@ -46,10 +48,12 @@ function photo(stem: string, place: keyof typeof SIZES) {
     if (!f) throw new Error(`missing pc-${stem}-${w}.${ext}: run npm run photos`);
     return `${f} ${w}w`;
   }).join(', ');
+  const full = m.full ? { avif: files[`../assets/photos/pc-${stem}-full.avif`], webp: files[`../assets/photos/pc-${stem}-full.webp`], width: m.width, height: m.height } : undefined;
   return {
-    src: files[`../assets/photos/pc-${stem}-${m.widths[0]}.webp`],
+    stem, src: files[`../assets/photos/pc-${stem}-${m.widths[0]}.webp`], small: files[`../assets/photos/pc-${stem}-${m.widths[0]}.webp`],
     srcset: set('webp'), avif: set('avif'), sizes: SIZES[place],
     width: m.width, height: m.height, tone: m.tone,
+    full: full?.avif && full.webp ? full : undefined, depth: depths[`../assets/photos/depth-${stem}.png`],
   };
 }
 const num = (i: number) => String(i + 1).padStart(2, '0');
@@ -130,7 +134,7 @@ const dot = a.title.endsWith('.');
             {(factsSide || pics.length > 0) && (
               <aside class="ch-side">
                 {factsSide && facts}
-                {pics.map((p) => <Postcard {...photo(p.photo, 'side')} alt={p.alt} note={p.note} place={p.place} date={p.date} rest={RESTS[nCard % RESTS.length]} hint={nCard++ === 0} />)}
+                {pics.map((p) => <Photo {...photo(p.photo, 'side')} alt={p.alt} note={p.note} place={p.place} date={p.date} rest={RESTS[nCard % RESTS.length]} index={nCard} hint={nCard++ === 0} />)}
               </aside>
             )}
           </section>

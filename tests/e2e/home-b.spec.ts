@@ -1,4 +1,4 @@
-/* Home, direction B: the living editorial index (docs/research/2026-10-home-b.md). The name composes
+/* Home, direction B, on its lab page /lab/home-b/ (docs/research/2026-10-home-b.md). The name composes
    itself once per visit and the family's colours cross it; the dot after it changes the site's light; the
    sky names Istanbul's phase of the day; the latest record entry says how long ago; the first scroll docks
    the name into the bar's mark; "Now building" is one pinned stage that steps through the products by
@@ -8,21 +8,23 @@ import fs from 'node:fs';
 import { desktop, phone, settle } from './helpers';
 
 const site = JSON.parse(fs.readFileSync('content/site.json', 'utf8'));
+/* direction B lives on a lab page while the live Home is direction A (lead, 2026-10-11) */
+const B = 'lab/home-b/';
 const accent = (page: Page) => page.evaluate(() => document.documentElement.style.getPropertyValue('--accent').trim());
 /* the letters' own animations (the dot may still pop on a composed arrival) */
 const running = (page: Page) => page.evaluate(() => document.getAnimations().filter((a) => (a as any).effect?.target?.classList?.contains('ch')).length);
 
-test.describe('Home, desktop', () => {
+test.describe('Home B, desktop', () => {
   test.use(desktop);
 
   test('the hero: the name in letters, read whole; the vision from content; the edk stage', async ({ page }) => {
-    await page.goto('?still'); await settle(page, 300);
+    await page.goto(B + '?still'); await settle(page, 300);
     const h1 = page.locator('#main h1');
     await expect(h1.locator('.vh')).toHaveText(site.name);
     expect(await h1.locator('.ch').count()).toBe(site.name.replace(/\s/g, '').length);
     expect(await h1.locator('.ch.ini .lc').allTextContents()).toEqual(['e', 'd', 'k']);
     await expect(h1.locator('.hb-letters')).toHaveAttribute('aria-hidden', 'true');
-    await expect(page.locator('.hb-v')).toHaveText(site.home.vision.text);
+    await expect(page.locator('.hb-v')).toHaveText(site.homeB.vision.text);
     await expect(page.locator('.media.stage[data-slot="home"]')).toHaveCount(1);
     await expect(page.locator('.media[data-slot="showcase"]')).toHaveCount(1);
     /* the first screen holds the name, the vision and "now" */
@@ -35,26 +37,26 @@ test.describe('Home, desktop', () => {
   });
 
   test('the composition plays once per visit, and the second Home arrives composed', async ({ page }) => {
-    await page.goto('');
+    await page.goto(B + '');
     await expect.poll(() => running(page)).toBeGreaterThan(0);
     await page.waitForTimeout(3600);
-    await page.goto('');
+    await page.goto(B + '');
     expect(await page.evaluate(() => document.documentElement.classList.contains('hb-seen'))).toBe(true);
     expect(await running(page)).toBe(0);
   });
 
   test('the sky names the phase in Istanbul, the latest entry says how long ago', async ({ page }) => {
-    await page.goto('?still'); await settle(page, 300);
-    const phases = Object.values(site.home.sky.phases).join('|');
-    await expect(page.locator('[data-phase]')).toHaveText(new RegExp(`^(${phases}) in ${site.home.sky.place}$`));
+    await page.goto(B + '?still'); await settle(page, 300);
+    const phases = Object.values(site.homeB.sky.phases).join('|');
+    await expect(page.locator('[data-phase]')).toHaveText(new RegExp(`^(${phases}) in ${site.homeB.sky.place}$`));
     await expect(page.locator('.hb-skyline')).toHaveClass(/on/);
     await expect(page.locator('.hb-latest time[data-ago]')).toHaveText(/today|yesterday|ago/);
   });
 
   test('the dot changes the light of the whole site, and comes back round', async ({ page }) => {
-    await page.goto('?still'); await settle(page, 400);
+    await page.goto(B + '?still'); await settle(page, 400);
     const btn = page.locator('.hb-dot-btn');
-    await expect(btn).toHaveAccessibleName(site.home.index.light);
+    await expect(btn).toHaveAccessibleName(site.homeB.index.light);
     const n = (await page.locator('.hb-hero').getAttribute('data-lights'))!.split('|').length;
     const seen = [await accent(page)];
     for (let i = 0; i < n; i++) { await btn.click(); seen.push(await accent(page)); }
@@ -66,7 +68,7 @@ test.describe('Home, desktop', () => {
   });
 
   test('the first scroll docks the name into the mark, and scrolling back sets it again', async ({ page }) => {
-    await page.goto('?'); await page.waitForTimeout(3600);
+    await page.goto(B + '?'); await page.waitForTimeout(3600);
     const k = page.locator('.hb-name .ch.ini').nth(2);
     const mark = (await page.locator('.bar .mark').boundingBox())!;
     await page.evaluate(() => scrollTo(0, innerHeight * 0.3)); await page.waitForTimeout(250);
@@ -83,7 +85,7 @@ test.describe('Home, desktop', () => {
   });
 
   test('now building: one pinned stage, the act follows the reading position, the light follows the act', async ({ page }) => {
-    await page.goto('?still'); await settle(page, 300);
+    await page.goto(B + '?still'); await settle(page, 300);
     const g = await page.evaluate(() => { const s = document.querySelector<HTMLElement>('.hb-show')!; return { top: s.getBoundingClientRect().top + scrollY, h: s.offsetHeight, n: s.querySelectorAll('.hb-act').length }; });
     expect(g.n).toBe(3);
     const order: string[] = [];
@@ -107,7 +109,7 @@ test.describe('Home, desktop', () => {
   test('reduced motion: no composition, no docking, the light stands still', async ({ browser }) => {
     const ctx = await browser.newContext({ ...desktop, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
     const page = await ctx.newPage();
-    await page.goto(''); await settle(page, 500);
+    await page.goto(B + ''); await settle(page, 500);
     expect(await running(page)).toBe(0);
     await page.evaluate(() => scrollTo(0, innerHeight * 0.4)); await page.waitForTimeout(300);
     expect(await page.locator('.hb-name .ch.ini').first().evaluate((el) => el.style.transform)).toBe('');
@@ -117,7 +119,7 @@ test.describe('Home, desktop', () => {
   test('without JavaScript: the whole page, the acts one under another, no dead control', async ({ browser }) => {
     const ctx = await browser.newContext({ ...desktop, javaScriptEnabled: false, baseURL: test.info().project.use.baseURL });
     const page = await ctx.newPage();
-    await page.goto('');
+    await page.goto(B + '');
     await page.waitForTimeout(3000);
     await expect(page.locator('.hb-dot-btn')).toHaveCount(0);
     for (const a of await page.locator('.hb-act').all()) await expect(a.locator('.hb-pt .wm')).toBeVisible();
@@ -128,11 +130,11 @@ test.describe('Home, desktop', () => {
   });
 });
 
-test.describe('Home, phone', () => {
+test.describe('Home B, phone', () => {
   test.use(phone);
 
   test('the name stacks, the object stays beside it, nothing leaves the page', async ({ page }) => {
-    await page.goto('?still'); await settle(page, 400);
+    await page.goto(B + '?still'); await settle(page, 400);
     const l1 = await page.locator('.hb-l1 .hb-w').evaluateAll((ws) => ws.map((w) => w.getBoundingClientRect().top));
     expect(l1[1]).toBeGreaterThan(l1[0] + 40);
     const l2 = (await page.locator('.hb-l2').boundingBox())!;
@@ -144,7 +146,7 @@ test.describe('Home, phone', () => {
   });
 
   test('a touch on the name sends the colours through it; the stage pins on a phone too', async ({ page }) => {
-    await page.goto('?'); await page.waitForTimeout(3600);
+    await page.goto(B + '?'); await page.waitForTimeout(3600);
     const n = (await page.locator('.hb-l2').boundingBox())!;
     await page.touchscreen.tap(n.x + 60, n.y + n.height / 2);
     await expect(page.locator('.hb-name')).toHaveClass(/sweep/);

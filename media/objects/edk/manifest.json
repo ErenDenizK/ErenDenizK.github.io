@@ -519,6 +519,7 @@
   "turn": 360.0,
   "each": 2.0,
   "stagger": 0.3,
+  "w": 1040,
   "sources": [
    {
     "src": "spin.av1.mp4",
@@ -539,12 +540,76 @@
     "bytes": 229728
    }
   ],
+  "sizes": [
+   {
+    "w": 640,
+    "sources": [
+     {
+      "src": "spin-640.av1.mp4",
+      "type": "video/mp4; codecs=\"av01.0.04M.10\"",
+      "codec": "av1",
+      "bytes": 226353
+     },
+     {
+      "src": "spin-640.hevc.mp4",
+      "type": "video/mp4; codecs=\"hvc1.2.4.L90.B0\"",
+      "codec": "hevc",
+      "bytes": 229375
+     },
+     {
+      "src": "spin-640.h264.mp4",
+      "type": "video/mp4; codecs=\"avc1.64001F\"",
+      "codec": "h264",
+      "bytes": 187426
+     }
+    ]
+   },
+   {
+    "w": 1040,
+    "sources": [
+     {
+      "src": "spin.av1.mp4",
+      "type": "video/mp4; codecs=\"av01.0.08M.10\"",
+      "codec": "av1",
+      "bytes": 280573
+     },
+     {
+      "src": "spin.hevc.mp4",
+      "type": "video/mp4; codecs=\"hvc1.2.4.L120.B0\"",
+      "codec": "hevc",
+      "bytes": 273766
+     },
+     {
+      "src": "spin.h264.mp4",
+      "type": "video/mp4; codecs=\"avc1.640028\"",
+      "codec": "h264",
+      "bytes": 229728
+     }
+    ]
+   }
+  ],
   "check": {
    "ground_off_share": 0.010704,
    "far_ground_px": 926686,
    "far_ground_off": 1947,
    "far_ground_max": 2,
    "object_mae": 2.65
+  },
+  "checks": {
+   "640": {
+    "ground_off_share": 0.008246,
+    "far_ground_px": 338040,
+    "far_ground_off": 101,
+    "far_ground_max": 1,
+    "object_mae": 2.65
+   },
+   "1040": {
+    "ground_off_share": 0.010704,
+    "far_ground_px": 926686,
+    "far_ground_off": 1947,
+    "far_ground_max": 2,
+    "object_mae": 2.65
+   }
   }
  },
  "bytes": {
@@ -579,6 +644,18 @@
     "av1": 466814,
     "hevc": 498802,
     "h264": 409867
+   },
+   "phoneSpinSizes": {
+    "640": {
+     "av1": 412594,
+     "hevc": 454411,
+     "h264": 367565
+    },
+    "1040": {
+     "av1": 466814,
+     "hevc": 498802,
+     "h264": 409867
+    }
    }
   },
   "spin": {
@@ -598,6 +675,18 @@
     "desktopFull": 971189
    },
    "note": "desktop tiers add full-size grid frames on demand at rest (lean/full, about 10 KB each)"
+  },
+  "spinSizes": {
+   "640": {
+    "av1": 226353,
+    "hevc": 229375,
+    "h264": 187426
+   },
+   "1040": {
+    "av1": 280573,
+    "hevc": 273766,
+    "h264": 229728
+   }
   }
  },
  "normals": {

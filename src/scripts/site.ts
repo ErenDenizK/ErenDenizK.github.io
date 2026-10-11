@@ -162,7 +162,7 @@ if (bar) {
   let lastY = scrollY;
   addEventListener('scroll', () => {
     const y = scrollY;
-    /* Home holds the bar while its name docks into the mark, the first 60 % of a window (scripts/home.ts) */
+    /* Home holds the bar while its name docks into the mark, the first 60 % of a window (scripts/home-b.ts) */
     if (!mq.wide.matches && !root.classList.contains('sheet-open')) {
       const hold = root.classList.contains('hb-hold') && y < innerHeight * 0.62;
       if (!hold && y > lastY + 6 && y > 90) bar.classList.add('tucked');

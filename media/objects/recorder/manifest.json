@@ -531,6 +531,18 @@
     "av1": 1878952,
     "hevc": 1903857,
     "h264": 1923413
+   },
+   "phoneSpin": {
+    "av1": 343478,
+    "hevc": 376307,
+    "h264": 397460
+   },
+   "phoneSpinSizes": {
+    "640": {
+     "av1": 343478,
+     "hevc": 376307,
+     "h264": 397460
+    }
    }
   },
   "live": {
@@ -545,6 +557,18 @@
     "desktopFull": 1149236
    },
    "note": "desktop tiers add full-size grid frames on demand at rest (lean/full, about 10 KB each)"
+  },
+  "spin": {
+   "av1": 147700,
+   "hevc": 153573,
+   "h264": 164189
+  },
+  "spinSizes": {
+   "640": {
+    "av1": 147700,
+    "hevc": 153573,
+    "h264": 164189
+   }
   }
  },
  "normals": {
@@ -598,6 +622,82 @@
     "src": "live/clip-half.avif",
     "type": "image/avif",
     "bytes": 172333
+   }
+  }
+ },
+ "spin": {
+  "fps": 30,
+  "frames": 120,
+  "duration": 4.0,
+  "loop": true,
+  "holdFrom": 72,
+  "kind": "turntable",
+  "turn": 360.0,
+  "each": 2.4,
+  "reels": [
+   480.0,
+   720.0
+  ],
+  "w": 640,
+  "sources": [
+   {
+    "src": "spin.av1.mp4",
+    "type": "video/mp4; codecs=\"av01.0.04M.10\"",
+    "codec": "av1",
+    "bytes": 147700
+   },
+   {
+    "src": "spin.hevc.mp4",
+    "type": "video/mp4; codecs=\"hvc1.2.4.L90.B0\"",
+    "codec": "hevc",
+    "bytes": 153573
+   },
+   {
+    "src": "spin.h264.mp4",
+    "type": "video/mp4; codecs=\"avc1.64001F\"",
+    "codec": "h264",
+    "bytes": 164189
+   }
+  ],
+  "sizes": [
+   {
+    "w": 640,
+    "sources": [
+     {
+      "src": "spin.av1.mp4",
+      "type": "video/mp4; codecs=\"av01.0.04M.10\"",
+      "codec": "av1",
+      "bytes": 147700
+     },
+     {
+      "src": "spin.hevc.mp4",
+      "type": "video/mp4; codecs=\"hvc1.2.4.L90.B0\"",
+      "codec": "hevc",
+      "bytes": 153573
+     },
+     {
+      "src": "spin.h264.mp4",
+      "type": "video/mp4; codecs=\"avc1.64001F\"",
+      "codec": "h264",
+      "bytes": 164189
+     }
+    ]
+   }
+  ],
+  "check": {
+   "ground_off_share": 0.005182,
+   "far_ground_px": 243974,
+   "far_ground_off": 1,
+   "far_ground_max": 1,
+   "object_mae": 2.9
+  },
+  "checks": {
+   "640": {
+    "ground_off_share": 0.005182,
+    "far_ground_px": 243974,
+    "far_ground_off": 1,
+    "far_ground_max": 1,
+    "object_mae": 2.9
    }
   }
  }

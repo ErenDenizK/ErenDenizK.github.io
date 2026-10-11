@@ -232,7 +232,21 @@ const site = defineCollection({
     description: z.string(),
     links: z.object({ github: z.url(), linkedin: z.union([z.url(), placeholder]) }),
     now: z.object({ label: z.string(), text: z.string() }),
+    /** Home, the cinematic object stage (docs/research/2026-10-home-a.md): one composed first screen, then
+        a scroll story in chapters while the glass object stays pinned. Projects and record entries come
+        from their own collections; only Home's own words live here. */
     home: z.object({
+      /** the one vision line under the name; visionDraft marks it as the lead's draft until the owner writes it */
+      vision: z.string(), visionDraft: z.boolean().optional(),
+      cue: z.string(), hint: z.string(),
+      who: z.object({ label: z.string(), title: z.string(), text: z.array(z.string()), facts: z.array(z.tuple([z.string(), z.string()])) }),
+      tracks: z.object({ label: z.string(), title: z.string(), text: z.string() }),
+      products: z.object({ label: z.string(), title: z.string(), text: z.string(), cta: z.string(), all: z.string() }),
+      record: z.object({ label: z.string(), title: z.string(), all: z.string() }),
+      exit: z.object({ label: z.string(), work: z.tuple([z.string(), z.string()]), about: z.tuple([z.string(), z.string()]) }),
+    }),
+    /** Home, direction B, on its lab page (pages/lab/home-b.astro; docs/research/2026-10-home-b.md). */
+    homeB: z.object({
       /** The vision line under the name. `draft` says who wrote it while the owner has not approved it. */
       vision: z.object({ text: z.string(), draft: z.string().optional() }),
       /** The living index's labels (docs/research/2026-10-home-b.md). */
@@ -241,7 +255,7 @@ const site = defineCollection({
         record: z.string(), recordDek: z.string(), entries: z.string(), since: z.string(), open: z.string(),
         light: z.string(), lightHint: z.string(), elsewhere: z.string(),
       }),
-      /** The quiet sky over the name: Istanbul's sun, named by phase (scripts/home.ts). */
+      /** The quiet sky over the name: Istanbul's sun, named by phase (scripts/home-b.ts). */
       sky: z.object({
         place: z.string(), in: z.string(),
         phases: z.object({ night: z.string(), twilight: z.string(), dawn: z.string(), morning: z.string(), afternoon: z.string(), golden: z.string(), dusk: z.string() }),
