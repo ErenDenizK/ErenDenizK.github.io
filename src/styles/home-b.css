@@ -315,6 +315,10 @@ html.js .hb-act .hb-plink::after { inset: calc(-1 * (var(--bar-h) + 70px)) -100v
   /* the glass on a line of its own under the name, as wide as the column: the square's empty top and
      bottom are taken back by negative margins (percentages of the column), so it never leaves the screen */
   .hb-obj { position: relative; right: auto; top: auto; width: 100%; margin: -25% 0 -27%; }
+  /* only the band where the glass is takes a tap (it plays its turn); the square's empty top lies over the
+     surname, and a tap there belongs to the name */
+  .hb-obj { pointer-events: none; }
+  .hb-obj::after { content: ""; position: absolute; inset: 25% 6% 27%; pointer-events: auto; }
   .hb-lens { width: 4.4em; height: 4.4em; margin: -2.2em 0 0 -2.2em; }
   .hb-row { grid-template-columns: 1fr; gap: 30px; margin-top: 26px; padding-top: 22px; }
   .hb-v { font-size: 26px; }

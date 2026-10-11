@@ -95,8 +95,9 @@ test.describe('Home B, desktop', () => {
       const on = page.locator('.hb-act.is-on');
       await expect(on).toHaveCount(1);
       order.push((await on.getAttribute('data-plate'))!);
-      expect((await page.locator('.hb-show-stage').boundingBox())!.y).toBe(0);
-      expect(await accent(page)).toBe(await on.getAttribute('data-light'));
+      await expect.poll(async () => Math.round((await page.locator('.hb-show-stage').boundingBox())!.y)).toBe(0);
+      const want = await on.getAttribute('data-light');
+      await expect.poll(() => accent(page)).toBe(want);
       await expect(on.locator('.hb-pt .wm')).toBeVisible();
     }
     expect(order[0]).toBe('recto');   // `featured` leads
@@ -155,9 +156,12 @@ test.describe('Home B, phone', () => {
     const n = (await page.locator('.hb-l2').boundingBox())!;
     await page.touchscreen.tap(n.x + 60, n.y + n.height / 2);
     await expect(page.locator('.hb-name')).toHaveClass(/sweep/);
+    /* the glass below still takes its own tap: the press reaches the object, not the page under it */
+    const o = (await page.locator('.hb-obj').boundingBox())!;
+    expect(await page.evaluate(([x, y]) => !!document.elementFromPoint(x, y)?.closest('.hb-obj'), [o.x + o.width / 2, o.y + o.height / 2])).toBe(true);
     const top = await page.evaluate(() => { const s = document.querySelector<HTMLElement>('.hb-show')!; return s.getBoundingClientRect().top + scrollY + (s.offsetHeight - innerHeight) * 0.5; });
     await page.evaluate((y) => scrollTo(0, y), Math.round(top)); await page.waitForTimeout(600);
-    expect((await page.locator('.hb-show-stage').boundingBox())!.y).toBe(0);
+    await expect.poll(async () => Math.round((await page.locator('.hb-show-stage').boundingBox())!.y)).toBe(0);
     await expect(page.locator('.hb-act.is-on')).toHaveAttribute('data-plate', 'english-prep');
     /* the bar stays while the name docks, so the mark is there to receive it */
     await page.evaluate(() => scrollTo(0, 0)); await page.waitForTimeout(300);
