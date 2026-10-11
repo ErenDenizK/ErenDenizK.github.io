@@ -133,7 +133,7 @@ test.describe('Home B, desktop', () => {
 test.describe('Home B, phone', () => {
   test.use(phone);
 
-  test('the name stacks, the object stays beside it, nothing leaves the page', async ({ page }) => {
+  test('the name stacks, the glass has its own line inside the column, nothing leaves the page', async ({ page }) => {
     await page.goto(B + '?still'); await settle(page, 400);
     const l1 = await page.locator('.hb-l1 .hb-w').evaluateAll((ws) => ws.map((w) => w.getBoundingClientRect().top));
     expect(l1[1]).toBeGreaterThan(l1[0] + 40);
@@ -141,6 +141,11 @@ test.describe('Home B, phone', () => {
     expect(l2.x + l2.width).toBeLessThanOrEqual(390);
     expect(l2.width).toBeGreaterThan(300);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+    /* the glass stands on its own line inside the column */
+    const o = (await page.locator('.hb-obj').boundingBox())!, n = (await page.locator('.hb-l2').boundingBox())!;
+    expect(o.x).toBeGreaterThanOrEqual(0);
+    expect(o.x + o.width).toBeLessThanOrEqual(390);
+    expect(o.y + o.height * 0.3).toBeGreaterThan(n.y + n.height * 0.5);
     const row = (await page.locator('.hb-v').boundingBox())!;
     expect(row.y).toBeLessThan(844);
   });

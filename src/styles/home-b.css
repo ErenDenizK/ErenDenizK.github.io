@@ -312,7 +312,9 @@ html.js .hb-act .hb-plink::after { inset: calc(-1 * (var(--bar-h) + 70px)) -100v
   .hb-l1 .hb-w { display: block; }
   .hb-l1 .hb-w + .hb-w { margin-left: 0; }
   .hb-l2 { margin-top: 0.12em; }
-  .hb-obj { right: -13%; top: calc(var(--hb-s) * 0.72 - min(28vw, 140px)); width: min(56vw, 280px); }
+  /* the glass on a line of its own under the name, as wide as the column: the square's empty top and
+     bottom are taken back by negative margins (percentages of the column), so it never leaves the screen */
+  .hb-obj { position: relative; right: auto; top: auto; width: 100%; margin: -25% 0 -27%; }
   .hb-lens { width: 4.4em; height: 4.4em; margin: -2.2em 0 0 -2.2em; }
   .hb-row { grid-template-columns: 1fr; gap: 30px; margin-top: 26px; padding-top: 22px; }
   .hb-v { font-size: 26px; }
