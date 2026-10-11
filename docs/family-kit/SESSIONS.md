@@ -13,8 +13,8 @@ everything. Each chat owns one area and reads the others' files without editing 
 |---|---|---|---|
 | **Portfolio** | `ErenDenizK/ErenDenizK.github.io`, `dev` (never `main`) | the whole site: `src/`, `content/`, `tests/`, `tools/`, `media/`, `docs/` except the two paths on the right | `docs/family-kit/`, `docs/design/family.md` |
 | **Family (shared)** | same repository, `dev`, docs only | `docs/family-kit/`, `docs/design/family.md`, and copying the kit into each app's `docs/family/kit/` | site code, content, any other doc |
-| **Recto** | `ErenDenizK/recto`, its session branch (never `develop` or `main`) | the app | other repositories |
-| **English Prep** | `ErenDenizK/english-prep`, its session branch (never `test`, which is live, or `main`) | the app, including the handover rework | other repositories |
+| **Recto** | `ErenDenizK/recto`, `develop` (never `main`) | the app | other repositories |
+| **English Prep** | `ErenDenizK/english-prep`, `test` (live; never `main`) | the app, including the handover rework | other repositories |
 | **Eat Map** | Xcode project, outside GitHub for now | the app | n/a |
 
 The Portfolio and Family chats share one branch that deploys on every push. Both pull before
@@ -23,17 +23,28 @@ Family chat still deploys, and the site imports `light.css`, `springs.js` and `w
 from this folder at build time, so a kit change can change the live site: the Family chat tells
 the Portfolio chat (Open requests below) before changing those three files.
 
+## Branches: the same rule in every repository
+
+Every repository has two branches: `main` and one development branch (`dev` here, `develop` in Recto,
+`test` in English Prep). All work lands on the development branch, after that repo's own checks pass.
+The owner merges into `main` by hand; no session ever pushes to or merges into `main`. Publishing from
+the development branch is fine (the portfolio deploys from `dev`, English Prep serves `test`). A
+session may use a short-lived branch of its own while it works, but the work is finished only when it
+is on the development branch. (Owner, 2026-10-11; earlier versions of these files that sent app
+sessions to separate branches and away from `develop`/`test` were wrong.)
+
 ## Starting each chat
 
 Paste the prompt for that chat into a new session on its repository.
 
 - **Recto:** `docs/family/SESSION-PROMPT.md` on the branch `claude/portfolio-site-design-n38jml`.
-  That branch is not merged into `develop`; start the session from it or merge it first.
+  That branch is not merged into `develop` yet: the Recto chat merges it into `develop` first.
 - **English Prep:** read `docs/handover/CURRENT.md` first; it records the owner's decisions of
   2026-10-10 (the glass ban is lifted; no grain; `docs/app1-final.md` is history and a new
   roadmap follows; About may be redesigned from scratch). Then `docs/handover/AUDIT.md` and
   `docs/handover/CLAUDE.draft.md`, then `docs/family/SESSION-PROMPT.md`. All of them are on the
-  branch `claude/portfolio-site-design-n38jml`, which is not merged into `test`.
+  branch `claude/portfolio-site-design-n38jml`, which is not merged into `test` yet: the English
+  Prep chat merges it into `test` first, after `npm run check`.
 - **Eat Map:** `PROMPT-TEMPLATE.md` in this folder, with the Eat Map note.
 - **Family (shared):** the block below.
 
@@ -44,7 +55,8 @@ docs/brief.md §7, docs/family-kit/SESSIONS.md, docs/family-kit/README.md and
 docs/design/family.md. You edit only docs/family-kit/ and docs/design/family.md; the site
 belongs to the Portfolio chat. Pull before you push and run `npm run verify` before every push,
 because pushes to dev deploy the site. When the kit changes, copy it into each app's
-docs/family/kit/ on that app's session branch, with a line saying which kit commit it is.
+docs/family/kit/ on that app's development branch (`develop` in Recto, `test` in English Prep),
+with a line saying which kit commit it is.
 Never flatten an app's signature; family.md §2.3 outranks everything. Ask the owner about taste
 with a short plain-language brief in Turkish; decide technique yourself and record it.
 ```

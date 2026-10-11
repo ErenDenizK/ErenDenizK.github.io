@@ -67,7 +67,7 @@ English and end with a short Turkish summary for the owner.
 
 ## Per-app notes (keep the one for this app inside the prompt)
 
-**Recto** (`ErenDenizK/recto`). Its own solvers stay authoritative: `motion/springs.ts` (the kit's
+**Recto** (`ErenDenizK/recto`). Work lands on `develop`, never `main` (the owner merges it). Its own solvers stay authoritative: `motion/springs.ts` (the kit's
 springs.js is a port of it and must print the same strings), `styles/apca.ts`, the glass model.
 Untouchable: the lime and "lime touches ink", the capsule morph, glass M1–M5, the aurora still at
 rest, zero-bounce surfaces, the "Dengeli" R and its brand rules. About v2 waits on drop D4 from
@@ -76,8 +76,9 @@ wording (Q-1) is a misrecording: they had asked to fix the glass object's wrong 
 banding, not to ban grain. Propose the correction to Q-1 and its references, and apply it only
 when the owner confirms the wording.
 
-**English Prep** (`ErenDenizK/english-prep`). `test` is the live branch and a push is a deploy:
-`npm run check` and `npm run verify` before anything lands. No build step, no runtime
+**English Prep** (`ErenDenizK/english-prep`). `test` is the development branch and the live one;
+work lands there, and a push is a deploy: `npm run check` and `npm run verify` before anything
+lands. Never `main` (the owner merges it). No build step, no runtime
 dependency, no `innerHTML`; version `x` stays 0. Its motion runs one ease today
 (`cubic-bezier(0.22, 1, 0.36, 1)`): record it, do not replace it (motion.md §3.2). Its aurora is
 the reference for the kit's light rules; keep its own CSS. The credits line goes in the folio
