@@ -98,8 +98,11 @@ for (const w of [320, 360]) {
     test('the mark stays on one line and the tabs stay inside E0', async ({ page }) => {
       await page.goto('work/?still'); await settle(page, 200);
       const m = await page.evaluate(() => {
-        const mk = document.querySelector('.mark')!; const r = document.createRange(); r.selectNodeContents(mk);
-        const lines = new Set([...r.getClientRects()].map((q) => Math.round(q.top))).size;
+        /* the dot sits on the letters' line, not under them */
+        const mk = document.querySelector('.mark')!; const txt = [...mk.childNodes].find((n) => n.nodeType === 3 && n.nodeValue!.trim())!;
+        const r = document.createRange(); r.selectNodeContents(txt); const t = r.getClientRects()[0];
+        const d = mk.querySelector('.dot')!.getBoundingClientRect();
+        const lines = d.top >= t.top - 1 && d.bottom <= t.bottom + 1 ? 1 : 2;
         const gut = parseFloat(getComputedStyle(document.querySelector('.bar')!).paddingRight);
         return { lines, right: document.querySelector('.tabs')!.getBoundingClientRect().right, edge: innerWidth - gut };
       });

@@ -81,7 +81,7 @@
 .w-facts .f-status dd { color: var(--ink); white-space: nowrap; }
 .w-facts .f-runs dd, .w-facts .f-stack dd, .w-facts .f-role dd { display: block; }
 .w-facts .f-status .icon { color: var(--p); }
-.w-links { margin-top: var(--s-5); column-gap: var(--s-5); }
+.w-links { margin-top: var(--s-5); column-gap: var(--s-4); }
 
 
 /* ---- the picture column ---- */
