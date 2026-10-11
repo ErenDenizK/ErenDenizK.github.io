@@ -1,6 +1,6 @@
 # Research: phone motion, turning pre-rendered objects (2026-10-10)
 
-**Status:** current. Built (the edk spin loop, the colour tag). Paths under `scratchpad/` cited here
+**Status:** current. Built (the edk spin loop, the colour tag); since 2026-10-11 every object has its own turn and a tap plays its clip, superseding §6's swings (ADR-0006 note of 2026-10-11, evening). Paths under `scratchpad/` cited here
 were session scratch, not kept.
 
 Brief §7 (2026-10-10, phone check): "objects flash a white light while scrolling (the

@@ -39,7 +39,8 @@ Premium 3D sites mostly pay for the look offline and keep real time thin.
 5. **Tab change.** The old object's droplet clip plays forward, a short crossfade at the shared
    droplet, the new object's clip plays backward: one clip per object, not one per pair.
 6. **Tiers.** Desktop: everything. Phone: poster, idle loop (the object's spin loop instead where its
-   manifest has one, 2026-10-10: `research/2026-10-phone-motion.md`) and droplet clips. Reduced motion,
+   manifest has one, 2026-10-10: `research/2026-10-phone-motion.md`; every object since 2026-10-11, with
+   the interaction clip on a tap) and droplet clips. Reduced motion,
    Save-Data, or a rejected `play()` (Low Power Mode): poster only, no play button.
 7. **Real-time GLBs** stay in `tools/objects/` as the source and for later experiments, but the
    site does not ship three.js for objects.
@@ -243,6 +244,74 @@ Exact frames are of 61. A sweep now crosses twice as many steps, each with its 2
 more frames fall inside one; each change is smaller. The emblems sweep through 18-21 of the 33 columns
 (the lean is relative to the object's width and the sweep stays within one width). The worst frames
 (0.26-0.57) are still the first one or two of a first lean. Headless Chromium only, as above.
+
+## Note 2026-10-11 (evening): every object turns on touch screens, and a tap plays its clip from rest
+
+The owner, on an iPhone: "The edk animations are great. Do the same interaction for the others too."
+Until now only edk had a rendered loop on phones and touch tablets; Recto, English Prep, Eat Map and the
+recorder floated. And a tap did nothing on touch (`play()` was desktop-only), so "the interaction" there
+was the spin alone. Technique decided by the agent; the look of each turn is the owner's to judge.
+
+- **One turn, then rest, per object** (`SPINS` in `frames.py`; 4 s loops at 30 fps, only the moving
+  frames rendered, the rest of the loop frame 0 repeated, as edk's): Eat Map's pin lifts a little and
+  turns 360° about its own axis over the still plate, its hole closing edge-on and opening again (2.2 s,
+  `kind: pin`); English Prep's two bubbles turn 360° together on a soft bob and the typing dots bounce
+  twice as they land (2.2 s + 0.4 s; turning the bubbles separately would pass one through the other);
+  Recto's stack turns 360° while its back pages fan out and close within the turn, the clip's fan at 0.6
+  (2.4 s); the recorder turns 360° with both reels running (2.4 s, 480° and 720°, whole multiples of the
+  hubs' teeth, so the last frame is the rest pose). Every turn is a smoothstep: still at both ends. The
+  swing proposals of the phone motion research were set aside: the owner asked for edk's interaction,
+  and a full turn is what reads at emblem size. Rendered at 1040², 32 spp + OIDN, `nice -n 19` on four
+  cores shared with other agents' builds and tests (load 7-16); the recorder at 640², its largest touch
+  slot (Record: 176 CSS px on phones, 320 on the tablet).
+- **The size the slot draws.** Touch slots measured (390 × 844 at DPR 3; 1180 × 820 at DPR 2): Work's
+  emblems 92 / 99 CSS px (276 / 198 device px), Work's large object (Eat Map) 328 / 600 (984 / 1200),
+  the Home showcase (Recto) 179 / 400 (538 / 800), a case sheet 78vw / 420, Home's edk 210 / 437 (630 /
+  873), Record 164 / 320 (492 / 640). `encode.py` now writes the loop at the rendered size and at each
+  smaller size in `SPIN_SIZES` (Recto and English Prep 320 and 640, edk and Eat Map 640), the smaller
+  ones at a lower CRF (640: 34/28/26; 320: 26/22/20, AV1/HEVC/H.264; the recorder's 640 render too), and the manifest lists them as
+  `spin.sizes`; `media.ts` takes the smallest that covers the stage's device width. edk's 1040 files are
+  unchanged (bit-identical re-encode).
+- **A tap plays the clip from the loop's pose, without a jump** (`media.ts` `play()`, `toRest()`). The
+  clip was rendered from the rest pose, and the loop holds that pose from `holdFrom` to its end. A tap
+  in the hold starts the clip at once; a tap mid-turn lets the loop run on at 3x until it reaches the hold
+  (at most about 0.8 s), pauses it on a rest frame, and the clip (fetched meanwhile) fades in over the same
+  pose. After the clip the loop resumes inside its hold, so a turn follows about a second later. Only
+  the visible slot nearest the middle plays its loop, as before; Work's unfocused emblems keep the still
+  and ignore taps; reduced motion, Save-Data and a refused `play()` (Low Power Mode) keep the poster, no
+  loop, no clip. Desktop is unchanged (the lean, the hop on click). Measured in Chromium at 390 × 844:
+  edk tapped at 0.81 s into the turn showed the clip's first frame with the loop paused at 2.65 s (hold
+  2.6 s), 0.8 s after the tap; Eat Map tapped at 1.13 s, paused at 2.22 s (hold 2.2 s). `live.spec.ts`
+  checks it (the loop is paused on a rest frame under the clip's first frame, and runs on afterwards).
+
+**Render and bytes** (render = sum of frame times; spin = the loop at each size, AV1 / HEVC / H.264;
+phone tier = first paint + loop + both droplet clips, at the size the largest touch slot takes):
+
+| | frames | render | 1040 (rec. 640) | 640 | 320 | phone tier |
+|---|---|---|---|---|---|---|
+| edk | 78 | (2026-10-10) | 281 / 274 / 230 KB | 226 / 229 / 187 KB | | 467 / 499 / 410 KB |
+| Eat Map | 66 | 51 min | 95 / 110 / 116 KB | 80 / 93 / 92 KB | | 196 / 242 / 257 KB |
+| English Prep | 79 | 36 min | 119 / 140 / 144 KB | 101 / 117 / 112 KB | 71 / 92 / 84 KB | 206 / 254 / 260 KB |
+| Recto | 72 | 56 min | 188 / 197 / 221 KB | 147 / 159 / 171 KB | 96 / 115 / 121 KB | 334 / 377 / 411 KB |
+| recorder | 72 | 51 min | 148 / 154 / 164 KB (640², at CRF 34/28/26) | | | 343 / 376 / 397 KB |
+
+Every phone tier is within the ~450 KB budget (media research §7) except edk's HEVC, as before; an emblem
+fetches its 320 loop only (71-121 KB). Encodes took about 2 minutes an object.
+
+**Seams and sharpness.** Seam: the loop's last-to-first change against the median frame-to-frame change
+during the turn (mean levels over the crop, masters): Eat Map 0.28 (the pin lands with a little speed, as
+a landing), English Prep 0.007, Recto 0.064, the recorder 0.082, edk 0.045; decoded, the hold's frames
+and frame 0 differ by 0.4-0.8 levels in every file. Sharpness at the displayed size: Laplacian variance of
+the decoded H.264 frame Lanczos-reduced to the slot's device width over that of the master reduced the same
+way, at the rest frame / mid-turn / last moving frame: Recto 320 at 276 px 0.87 / 0.97 / 0.89, 640 at 538
+0.91 / 0.83 / 0.91, 1040 at 800 0.92 / 0.82 / 0.95; English Prep 320 at 276 0.88 / 0.74 / 0.90, 1040 at
+913 0.76 / 0.70 / 0.87; Eat Map 1040 at 984 0.89 / 0.84 / 0.94, 640 at 656 0.80 / 0.76 / 0.85; edk 640
+at 630 0.78 / 0.70 / 0.82 (1040 at 940 0.79 / 0.73 / 0.88); the recorder 640 at 492 px 0.93 / 0.83 / 0.97, at 640 0.94 / 0.83 / 0.96. The browser's own
+reduction is softer than Lanczos, so the 1040 files reduced on the page sit below these numbers; the
+smaller files are drawn nearly 1:1.
+
+**Not verified:** Safari and a real iPhone (the decoder at 3x playback rate, Low Power Mode, the
+loop-to-clip crossfade); all numbers are headless Chromium.
 
 ## Consequences
 

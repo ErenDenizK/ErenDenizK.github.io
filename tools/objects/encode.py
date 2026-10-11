@@ -80,9 +80,11 @@ A = ap.parse_args()
 # wide, is the heaviest: its full grid goes to AVIF q55, and its HEVC idle loop one step further.
 DEFAULTS = {"webp_q": 82, "avif_q": 60, "avif_q_half": 50, "idle_seconds": 6.0}
 OBJECT = {"edk": {"avif_q": 55, "idle_crf": {"hevc": "32"}}, "record": {"avif_q": 50, "idle_crf": {"av1": "38", "hevc": "32", "h264": "29"}},
-          "recorder": {"avif_q": 50, "idle_crf": {"av1": "38", "hevc": "32", "h264": "29"}}}
+          # the recorder's loop is rendered at 640 (its largest touch slot) and drawn nearly 1:1: the small sizes' CRF
+          "recorder": {"avif_q": 50, "idle_crf": {"av1": "38", "hevc": "32", "h264": "29"},
+                       "spin_crf": {"av1": "34", "hevc": "28", "h264": "26"}}}
 for k, v in {**DEFAULTS, **OBJECT.get(A.obj, {})}.items():
-    if k != "idle_crf" and getattr(A, k) is None:
+    if k not in ("idle_crf", "spin_crf") and getattr(A, k) is None:
         setattr(A, k, v)
 
 M = os.path.join(A.masters, A.obj)
