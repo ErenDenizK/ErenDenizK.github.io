@@ -33,10 +33,31 @@ test.describe('live frames, desktop', () => {
     await page.mouse.move(1400, 450, { steps: 6 });
     await expect.poll(async () => (await report(page)).home.yaw, { timeout: 20_000 }).toBeGreaterThan(4);
     await expect.poll(async () => (await report(page)).home.exact, { timeout: 20_000 }).toBe(true);
-    /* the flag is remembered: the next page view without the query is live too */
-    expect(await page.evaluate(() => localStorage.getItem('edk-live'))).toBe('1');
     await expect(page.locator('.live-chip')).toContainText('Live frames');
+    /* the flag lasts one page load (amendment 2026-10-11): nothing is stored, and the next page view
+       without the query is the default stage */
+    expect(await page.evaluate(() => localStorage.getItem('edk-live'))).toBeNull();
+    await page.goto('');
+    await page.waitForTimeout(1500);
+    await expect(page.locator('.m-live, .live-chip')).toHaveCount(0);
+    expect(await engineRequested(page)).toBe(false);
     expect(errors).toEqual([]);
+  });
+
+  test('an old remembered flag is cleared and never turns the engine on', async ({ page }) => {
+    await page.goto('');
+    await page.evaluate(() => localStorage.setItem('edk-live', '1'));
+    await page.goto('');
+    await page.waitForTimeout(1500);
+    expect(await page.evaluate(() => localStorage.getItem('edk-live'))).toBeNull();
+    await expect(page.locator('.m-live, .live-chip')).toHaveCount(0);
+    expect(await engineRequested(page)).toBe(false);
+    /* nor on any other page (the chip once showed on a project page) */
+    await page.evaluate(() => localStorage.setItem('edk-live', '1'));
+    await page.goto('work/recto/');
+    await page.waitForTimeout(1000);
+    await expect(page.locator('.live-chip')).toHaveCount(0);
+    expect(await engineRequested(page)).toBe(false);
   });
 
   test('the showcase fan is a state axis that reverses on leave', async ({ page }) => {
@@ -58,8 +79,6 @@ test.describe('live frames, desktop', () => {
     expect((await report(page)).home.reason).toBe('software renderer');
     await expect(page.locator('.media.stage canvas')).toHaveCount(0);
     await expect(page.locator('.media.stage .m-poster')).toBeVisible();
-    await page.goto('?live=0');
-    expect(await page.evaluate(() => localStorage.getItem('edk-live'))).toBeNull();
   });
 });
 
@@ -78,6 +97,17 @@ test('live frames, reduced motion: no engine slot, the poster stays', async ({ b
 
 test.describe('live frames, phone', () => {
   test.use({ ...phone });
+
+  test('a phone never gets the engine without ?live=force, even with a stored flag', async ({ page }) => {
+    await page.goto('');
+    await page.evaluate(() => localStorage.setItem('edk-live', '1'));
+    for (const q of ['', '?live', '?live=1']) {
+      await page.goto(q);
+      await page.waitForTimeout(1200);
+      await expect(page.locator('.m-live, .live-chip')).toHaveCount(0);
+      expect(await engineRequested(page)).toBe(false);
+    }
+  });
 
   test('a phone gets the phone tier: the rest frame, its normals, a few KB', async ({ page }) => {
     await page.goto('?live=force&watchdog=0');

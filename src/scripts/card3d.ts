@@ -22,7 +22,19 @@
    still reaches them instead of stopping it dead. A fling settles in about two seconds.
 
    Still twins (CLAUDE.md): reduced motion gets no rope, swing, tilt or drag, and the turn is a
-   crossfade (CSS, .is-flipped); touch gets tap to turn and no drag; without JavaScript the front. */
+   crossfade (CSS, .is-flipped); touch gets tap to turn and no drag; without JavaScript the front.
+
+   The face away from the viewer is also faded out by the script, from the turn's angle (2026-10-11):
+   WebKit can paint a masked face's back side despite backface-visibility, and the back, later in
+   the DOM, then covered the front on the owner's iPhone. The CSS starts from the front for the same
+   reason (IdCard.astro).
+
+   Entrance (ADR-0008 amendment of 2026-10-11; owner: "a small swing or turn, natural, as if it
+   started moving with the page opening"): once per page view, when the card's photo is decoded, the
+   hanging card twists on its lanyard and settles in two decaying oscillations (k 60, ζ 0.3, about
+   1.2 s); with the rope the clip also swings out once, without it (touch) the card swings a few
+   degrees about its clip. Any press, key or hover takes over and the twist settles on the turn
+   spring. None under reduced motion, Save-Data or ?still. */
 import { mq, motionOK } from './env';
 
 type Spring = { x: number; v: number; to: number };
@@ -32,6 +44,13 @@ const TURN: [number, number] = [170, 22];
 const LAND: [number, number] = [120, 2 * 0.75 * Math.sqrt(120)];
 /** the card following its rope: a little lag, ζ ≈ 0.9 */
 const HANG: [number, number] = [260, 2 * 0.9 * Math.sqrt(260)];
+/** the entrance: an underdamped twist (period ≈ 0.85 s, ζ 0.3), handed to TURN after ENTER_MS */
+const ENTER: [number, number] = [60, 2 * 0.3 * Math.sqrt(60)];
+const ENTER_MS = 1300;
+/** first-peak sizes: the twist on the rope and on touch, the touch card's swing about its clip, the
+    clip's sideways push on the rope */
+const ENTER_YAW_ROPE = 130, ENTER_YAW_TOUCH = 210, ENTER_SWING = 50; // deg/s
+const ENTER_PUSH = 200; // px/s
 const sp = (x = 0): Spring => ({ x, v: 0, to: x });
 function step(s: Spring, [k, c]: [number, number], dt: number) {
   s.v += (-k * (s.x - s.to) - c * s.v) * dt;
@@ -84,6 +103,7 @@ function setup(el: HTMLElement) {
   const rope = el.querySelector<SVGSVGElement>('[data-card-rope]');
   const ropePath = rope?.querySelector<SVGPathElement>('[data-rope-path]');
   const ropeFade = rope?.querySelector<SVGLinearGradientElement>('linearGradient');
+  const hold = el.querySelector<HTMLElement>('.idc-hold');
 
   const still = () => mq.reduce.matches;
   const canTilt = () => mq.fine.matches && !still();
@@ -91,6 +111,10 @@ function setup(el: HTMLElement) {
 
   let flipped = false;
   const tx = sp(), ty = sp(), fl = sp(), gl = sp(), th = sp(), tw = sp();
+  /* the entrance: a twist about the lanyard (en, deg) and, without the rope, a swing about the clip (ep, deg) */
+  const en = sp(), ep = sp();
+  let entering = 0; // performance.now() when the entrance began, 0 when none is playing
+  let tookOver = false;
   let spinning = false, landing = false;
   let raf = 0, last = 0, acc = 0, suppress = false;
 
@@ -109,11 +133,21 @@ function setup(el: HTMLElement) {
   };
   let drag: Drag | null = null;
 
+  /** Only the face toward the viewer is drawn: the normal of the front, turned by rotateY(yaw) (pitch
+      never passes 90°), points at the viewer while cos(yaw) > 0. Under reduced motion the CSS
+      crossfade decides. */
+  function showFaces(yaw: number) {
+    if (still()) { faces.forEach((f) => (f.style.opacity = '')); return; }
+    const front = Math.cos((yaw * Math.PI) / 180) >= 0;
+    faces[0].style.opacity = front ? '1' : '0';
+    faces[1].style.opacity = front ? '0' : '1';
+  }
   function faceState() {
     faces.forEach((f, i) => { f.inert = (i === 1) !== flipped; });
     el.classList.toggle('is-flipped', flipped);
   }
   faceState();
+  showFaces(0);
   el.classList.add('is-live');
 
   function turn() {
@@ -258,9 +292,11 @@ function setup(el: HTMLElement) {
 
   function render() {
     const twist = clamp(-th.v * 0.4, -10, 10) + tw.x;
-    const yaw = ty.x + twist + fl.x;
+    const yaw = ty.x + twist + fl.x + en.x;
     const pitch = tx.x;
     body!.style.transform = still() ? '' : `rotateX(${pitch.toFixed(2)}deg) rotateY(${yaw.toFixed(2)}deg)`;
+    showFaces(yaw);
+    if (hold && !live) hold.style.transform = still() || Math.abs(ep.x) < 0.005 ? '' : `rotate(${ep.x.toFixed(3)}deg)`;
     if (live) {
       const c = pts[SEG];
       swing!.style.transform = `translate(${(c.x - simRest.x).toFixed(2)}px, ${(c.y - simRest.y).toFixed(2)}px) rotate(${th.x.toFixed(4)}rad)`;
@@ -308,6 +344,8 @@ function setup(el: HTMLElement) {
         step(th, HANG, H);
       }
       step(tx, UI, H); step(ty, UI, H); step(gl, UI, H); step(tw, UI, H);
+      const ent = entering && t - entering < ENTER_MS ? ENTER : TURN;
+      step(en, ent, H); step(ep, ent, H);
       if (spinning) {
         fl.v *= Math.exp(-SPIN_FRICTION * H);
         fl.x += fl.v * H;
@@ -323,9 +361,11 @@ function setup(el: HTMLElement) {
       for (const p of pts) if (Math.abs(p.x - p.px) > eps || Math.abs(p.y - p.py) > eps) { moving = true; break; }
       moving ||= !rest(th, eps < 0.01 ? 0.0008 : 0.004);
     }
-    const done = !drag && !moving && !spinning && rest(tx, 0.02) && rest(ty, 0.02) && rest(fl, 0.05) && rest(gl, 0.002) && rest(tw, 0.02);
+    const done = !drag && !moving && !spinning && rest(tx, 0.02) && rest(ty, 0.02) && rest(fl, 0.05) && rest(gl, 0.002) && rest(tw, 0.02) && rest(en, 0.02) && rest(ep, 0.01);
     if (done) {
-      for (const s of [tx, ty, gl, tw, th]) { s.x = s.to; s.v = 0; }
+      entering = 0;
+      if (el.dataset.entrance === 'play') el.dataset.entrance = 'done';
+      for (const s of [tx, ty, gl, tw, th, en, ep]) { s.x = s.to; s.v = 0; }
       fl.x = fl.to = flipped ? 180 : 0; fl.v = 0;
       for (const p of pts) { p.px = p.x; p.py = p.y; }
       /* within a pixel and a half of rest, the rope takes its rest shape exactly, and the card hangs
@@ -349,6 +389,7 @@ function setup(el: HTMLElement) {
   /* hover: lean toward the pointer (fine pointers only) */
   el.addEventListener('pointermove', (e) => {
     if (e.pointerType !== 'mouse' || drag || spinning || !canTilt()) return;
+    takeOver();
     const r = body.getBoundingClientRect();
     const nx = clamp((e.clientX - (r.left + r.width / 2)) / (r.width / 2), -1, 1);
     const ny = clamp((e.clientY - (r.top + r.height / 2)) / (r.height / 2), -1, 1);
@@ -466,12 +507,48 @@ function setup(el: HTMLElement) {
     el.addEventListener('pointercancel', end);
     el.addEventListener('lostpointercapture', end);
 
-    /* a small settle when the page opens, as if it was just hung up (wide screens, motion welcome) */
-    if (live && motionOK()) { const c = pts[SEG]; c.px = c.x + 1.6; kick(); }
+    enter();
+  }
+
+  /* ---- the entrance (see the header) ---- */
+  function takeOver() {
+    tookOver = true;
+    entering = 0; // the twist and swing settle on the turn spring from wherever they are
+  }
+  function enter() {
+    if (!motionOK()) return;
+    const stop = () => { takeOver(); off(); };
+    const off = () => { removeEventListener('pointerdown', stop, true); removeEventListener('keydown', stop, true); };
+    addEventListener('pointerdown', stop, true);
+    addEventListener('keydown', stop, true);
+    const img = el.querySelector<HTMLImageElement>('.idc-photo img');
+    const decoded = !img || (img.complete && img.naturalWidth > 0) ? Promise.resolve() : img.decode().catch(() => {});
+    let late = false;
+    const go = () => {
+      /* a reader who already pressed something, or a photo that took seconds, gets no entrance */
+      if (tookOver || late || still() || !motionOK()) { off(); return; }
+      if (document.hidden) { addEventListener('visibilitychange', () => requestAnimationFrame(go), { once: true }); return; }
+      entering = performance.now();
+      el.dataset.entrance = 'play';
+      setTimeout(off, ENTER_MS + 1500);
+      if (live) {
+        en.v = ENTER_YAW_ROPE;
+        const c = pts[SEG]; c.px = c.x - ENTER_PUSH * H;
+      } else {
+        en.v = ENTER_YAW_TOUCH;
+        ep.v = ENTER_SWING;
+      }
+      kick();
+    };
+    Promise.race([decoded.then(() => 'ok'), new Promise((r) => setTimeout(r, 4000, 'late'))]).then((v) => {
+      late = v === 'late';
+      requestAnimationFrame(() => requestAnimationFrame(go));
+    });
   }
 
   const reset = () => {
-    for (const s of [tx, ty, gl, th, tw]) { s.x = s.to = 0; s.v = 0; }
+    for (const s of [tx, ty, gl, th, tw, en, ep]) { s.x = s.to = 0; s.v = 0; }
+    entering = 0;
     spinning = landing = false;
     fl.x = fl.to = flipped ? 180 : 0; fl.v = 0;
     if (hang) setLive();
