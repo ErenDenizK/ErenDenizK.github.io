@@ -85,25 +85,41 @@
   ]
  },
  "lean": {
-  "cols": 17,
+  "cols": 33,
   "rows": 3,
   "yaw": [
    -16.0,
+   -15.0,
    -14.0,
+   -13.0,
    -12.0,
+   -11.0,
    -10.0,
+   -9.0,
    -8.0,
+   -7.0,
    -6.0,
+   -5.0,
    -4.0,
+   -3.0,
    -2.0,
+   -1.0,
    0.0,
+   1.0,
    2.0,
+   3.0,
    4.0,
+   5.0,
    6.0,
+   7.0,
    8.0,
+   9.0,
    10.0,
+   11.0,
    12.0,
+   13.0,
    14.0,
+   15.0,
    16.0
   ],
   "pitch": [
@@ -112,11 +128,11 @@
    4.0
   ],
   "stepDeg": {
-   "yaw": 2.0,
+   "yaw": 1.0,
    "pitch": 4.0
   },
   "center": {
-   "col": 8,
+   "col": 16,
    "row": 1
   },
   "order": "row-major; row 0 is the lowest pitch (faces down), column 0 the lowest yaw (faces left)",
@@ -152,6 +168,22 @@
      "lean/half/r0c14.avif",
      "lean/half/r0c15.avif",
      "lean/half/r0c16.avif",
+     "lean/half/r0c17.avif",
+     "lean/half/r0c18.avif",
+     "lean/half/r0c19.avif",
+     "lean/half/r0c20.avif",
+     "lean/half/r0c21.avif",
+     "lean/half/r0c22.avif",
+     "lean/half/r0c23.avif",
+     "lean/half/r0c24.avif",
+     "lean/half/r0c25.avif",
+     "lean/half/r0c26.avif",
+     "lean/half/r0c27.avif",
+     "lean/half/r0c28.avif",
+     "lean/half/r0c29.avif",
+     "lean/half/r0c30.avif",
+     "lean/half/r0c31.avif",
+     "lean/half/r0c32.avif",
      "lean/half/r1c00.avif",
      "lean/half/r1c01.avif",
      "lean/half/r1c02.avif",
@@ -169,6 +201,22 @@
      "lean/half/r1c14.avif",
      "lean/half/r1c15.avif",
      "lean/half/r1c16.avif",
+     "lean/half/r1c17.avif",
+     "lean/half/r1c18.avif",
+     "lean/half/r1c19.avif",
+     "lean/half/r1c20.avif",
+     "lean/half/r1c21.avif",
+     "lean/half/r1c22.avif",
+     "lean/half/r1c23.avif",
+     "lean/half/r1c24.avif",
+     "lean/half/r1c25.avif",
+     "lean/half/r1c26.avif",
+     "lean/half/r1c27.avif",
+     "lean/half/r1c28.avif",
+     "lean/half/r1c29.avif",
+     "lean/half/r1c30.avif",
+     "lean/half/r1c31.avif",
+     "lean/half/r1c32.avif",
      "lean/half/r2c00.avif",
      "lean/half/r2c01.avif",
      "lean/half/r2c02.avif",
@@ -185,9 +233,25 @@
      "lean/half/r2c13.avif",
      "lean/half/r2c14.avif",
      "lean/half/r2c15.avif",
-     "lean/half/r2c16.avif"
+     "lean/half/r2c16.avif",
+     "lean/half/r2c17.avif",
+     "lean/half/r2c18.avif",
+     "lean/half/r2c19.avif",
+     "lean/half/r2c20.avif",
+     "lean/half/r2c21.avif",
+     "lean/half/r2c22.avif",
+     "lean/half/r2c23.avif",
+     "lean/half/r2c24.avif",
+     "lean/half/r2c25.avif",
+     "lean/half/r2c26.avif",
+     "lean/half/r2c27.avif",
+     "lean/half/r2c28.avif",
+     "lean/half/r2c29.avif",
+     "lean/half/r2c30.avif",
+     "lean/half/r2c31.avif",
+     "lean/half/r2c32.avif"
     ],
-    "bytes": 257122
+    "bytes": 499751
    },
    {
     "name": "full",
@@ -214,6 +278,22 @@
      "lean/full/r0c14.avif",
      "lean/full/r0c15.avif",
      "lean/full/r0c16.avif",
+     "lean/full/r0c17.avif",
+     "lean/full/r0c18.avif",
+     "lean/full/r0c19.avif",
+     "lean/full/r0c20.avif",
+     "lean/full/r0c21.avif",
+     "lean/full/r0c22.avif",
+     "lean/full/r0c23.avif",
+     "lean/full/r0c24.avif",
+     "lean/full/r0c25.avif",
+     "lean/full/r0c26.avif",
+     "lean/full/r0c27.avif",
+     "lean/full/r0c28.avif",
+     "lean/full/r0c29.avif",
+     "lean/full/r0c30.avif",
+     "lean/full/r0c31.avif",
+     "lean/full/r0c32.avif",
      "lean/full/r1c00.avif",
      "lean/full/r1c01.avif",
      "lean/full/r1c02.avif",
@@ -231,6 +311,22 @@
      "lean/full/r1c14.avif",
      "lean/full/r1c15.avif",
      "lean/full/r1c16.avif",
+     "lean/full/r1c17.avif",
+     "lean/full/r1c18.avif",
+     "lean/full/r1c19.avif",
+     "lean/full/r1c20.avif",
+     "lean/full/r1c21.avif",
+     "lean/full/r1c22.avif",
+     "lean/full/r1c23.avif",
+     "lean/full/r1c24.avif",
+     "lean/full/r1c25.avif",
+     "lean/full/r1c26.avif",
+     "lean/full/r1c27.avif",
+     "lean/full/r1c28.avif",
+     "lean/full/r1c29.avif",
+     "lean/full/r1c30.avif",
+     "lean/full/r1c31.avif",
+     "lean/full/r1c32.avif",
      "lean/full/r2c00.avif",
      "lean/full/r2c01.avif",
      "lean/full/r2c02.avif",
@@ -247,9 +343,25 @@
      "lean/full/r2c13.avif",
      "lean/full/r2c14.avif",
      "lean/full/r2c15.avif",
-     "lean/full/r2c16.avif"
+     "lean/full/r2c16.avif",
+     "lean/full/r2c17.avif",
+     "lean/full/r2c18.avif",
+     "lean/full/r2c19.avif",
+     "lean/full/r2c20.avif",
+     "lean/full/r2c21.avif",
+     "lean/full/r2c22.avif",
+     "lean/full/r2c23.avif",
+     "lean/full/r2c24.avif",
+     "lean/full/r2c25.avif",
+     "lean/full/r2c26.avif",
+     "lean/full/r2c27.avif",
+     "lean/full/r2c28.avif",
+     "lean/full/r2c29.avif",
+     "lean/full/r2c30.avif",
+     "lean/full/r2c31.avif",
+     "lean/full/r2c32.avif"
     ],
-    "bytes": 584729
+    "bytes": 1136313
    }
   ]
  },
@@ -395,8 +507,8 @@
  "bytes": {
   "shadow": 1226,
   "poster1200": 20401,
-  "leanHalf": 257122,
-  "leanFull": 584729,
+  "leanHalf": 499751,
+  "leanFull": 1136313,
   "clips": {
    "av1": 221261,
    "hevc": 246166,
@@ -414,23 +526,23 @@
     "hevc": 390695,
     "h264": 443695
    },
-   "desktopLow": 278749,
+   "desktopLow": 521378,
    "desktopFull": {
-    "av1": 1084739,
-    "hevc": 1109644,
-    "h264": 1129200
+    "av1": 1878952,
+    "hevc": 1903857,
+    "h264": 1923413
    }
   },
   "live": {
-   "normalsGrid": 141123,
+   "normalsGrid": 269521,
    "normalsRest": 3029,
    "clipNormals": 0,
    "states": 172333,
    "restFull": 11853,
    "tiers": {
     "phoneLive": 36509,
-    "desktopLite": 628262,
-    "desktopFull": 778209
+    "desktopLite": 870891,
+    "desktopFull": 1149236
    },
    "note": "desktop tiers add full-size grid frames on demand at rest (lean/full, about 10 KB each)"
   }
@@ -444,23 +556,23 @@
    {
     "src": "live/normals-r0.avif",
     "type": "image/avif",
-    "bytes": 50325,
+    "bytes": 96384,
     "row": 0,
-    "frames": 17
+    "frames": 33
    },
    {
     "src": "live/normals-r1.avif",
     "type": "image/avif",
-    "bytes": 45834,
+    "bytes": 87366,
     "row": 1,
-    "frames": 17
+    "frames": 33
    },
    {
     "src": "live/normals-r2.avif",
     "type": "image/avif",
-    "bytes": 44964,
+    "bytes": 85771,
     "row": 2,
-    "frames": 17
+    "frames": 33
    }
   ],
   "rest": {
