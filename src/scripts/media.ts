@@ -140,7 +140,7 @@ function float(el: Slot, on: boolean) {
    plays here; a stage that starts again pauses the clip in turn (start() above). */
 function claimVideo(v: HTMLVideoElement) { if (playing && playing !== v) { try { playing.pause(); } catch {} } playing = v; }
 function yieldVideo(v: HTMLVideoElement) { if (playing === v) playing = null; }
-export const api = { changes: 0, visible, playing: () => playing, show, play, refresh, arrive, leave, focus, focused: () => current, claimVideo, yieldVideo, refused: () => refused, pose };
+export const api = { changes: 0, visible, playing: () => playing, show, play, refresh, arrive, leave, focus, focused: () => current, claimVideo, yieldVideo, refused: () => refused };
 const live = liveOn ? import('./live/engine') : null;
 live?.then((L) => L.init()).catch(() => {});
 const isLive = (el: Slot) => !!live && LIVE_SLOTS.has(el.dataset.slot || '');
@@ -828,20 +828,13 @@ document.addEventListener('mouseleave', away);
 addEventListener('blur', away);
 addEventListener('scroll', () => { if (ptrIn) aimSoon(); }, { passive: true });
 function aimSoon() { if (!raf) raf = requestAnimationFrame(aimAll); }
-/** A pose for a slot set by the page instead of the pointer (Home's scroll story, scripts/home.ts): mx, my as
-    aim() gives them (1 = the pointer's full lean, up to 1.43 = the grid's edge); null gives the slot back. */
-const posed = new WeakMap<Slot, { mx: number; my: number }>();
-function pose(el: Slot, p: { mx: number; my: number } | null) { if (p) posed.set(el, p); else posed.delete(el); aimSoon(); }
 function aimAll() {
   raf = 0;
   visible.forEach((el) => {
     if (isLive(el)) return;
     const r = el.getBoundingClientRect();
     if (!r.width) return;
-    let { mx, my } = ptrIn ? aim(r, px, py) : { mx: 0, my: 0 };
-    /* a pose the page sets (Home's scroll story): the pointer near the object takes over from it */
-    const ps = posed.get(el);
-    if (ps) { const w = Math.min(1, Math.hypot(mx, my) * 3); mx = ps.mx + (mx - ps.mx) * w; my = ps.my + (my - ps.my) * w; }
+    const { mx, my } = ptrIn ? aim(r, px, py) : { mx: 0, my: 0 };
     el.style.setProperty('--gx', (50 + mx * 28).toFixed(1) + '%');
     el.style.setProperty('--gy', (40 + my * 24).toFixed(1) + '%');
     const layer = el._layer, seq = layer?._seq;

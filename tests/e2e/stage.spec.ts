@@ -36,41 +36,39 @@ test.describe('Home object, desktop', () => {
     const back = seen.slice(1).reduce((a, u, i) => a + Math.max(0, seen[i] - u), 0);
     expect(back, `poses after the stop: ${seen.map((u) => u.toFixed(2)).join(' ')}`).toBeLessThan(0.1);
     await expect.poll(async () => (await lean(page))!.exact, { timeout: 3000 }).toBe(true);
-    /* the pointer leaves: the object goes back to rest (the glass is 600-705 px wide on Home now, so no point
-       of a 1440 window is beyond its 1.8-width reach) */
-    await page.evaluate(() => document.dispatchEvent(new MouseEvent('mouseleave')));
+    /* the text column is far away: the object goes back to rest */
+    await page.mouse.move(120, cy, { steps: 8 });
     await expect.poll(async () => { const s = (await lean(page))!; return s.u === s.centre && s.tu === s.centre; }, { timeout: 5000 }).toBe(true);
   });
 
-  test('returns to rest when the pointer leaves the window; the reading position turns it on its grid', async ({ page }) => {
+  test('returns to rest when the pointer leaves the window, and re-aims after a scroll', async ({ page }) => {
     const { cx, cy } = await ready(page);
     await page.mouse.move(cx - 260, cy, { steps: 6 });
     await expect.poll(async () => (await lean(page))!.u, { timeout: 5000 }).toBeLessThan(-4);
     await page.evaluate(() => document.dispatchEvent(new MouseEvent('mouseleave')));
     await expect.poll(async () => { const s = (await lean(page))!; return s.u === s.centre; }, { timeout: 5000 }).toBe(true);
-    /* Home's scroll story (scripts/home.ts): the glass is pinned and the reading position poses it. The two
-       tracks turn it from one lane (left) to the other (right) as the chapter passes; back at the top it rests. */
-    const at = (sel: string, f: number) => page.evaluate(([sel, f]) => { const r = document.querySelector(sel as string)!.getBoundingClientRect(); scrollTo(0, scrollY + r.top + r.height * (f as number) - innerHeight / 2); }, [sel, f] as const);
-    await at('.ha-tracks', 0.15);
-    await expect.poll(async () => (await lean(page))!.tu, { timeout: 5000 }).toBeLessThan(-6);
-    await at('.ha-tracks', 0.85);
-    await expect.poll(async () => (await lean(page))!.tu, { timeout: 5000 }).toBeGreaterThan(6);
-    /* it settles on an exact frame once the page stops */
-    await expect.poll(async () => (await lean(page))!.exact, { timeout: 4000 }).toBe(true);
-    await page.evaluate(() => scrollTo(0, 0));
-    await expect.poll(async () => { const s = (await lean(page))!; return Math.abs(s.u) < 0.01 && Math.abs(s.tu) < 0.01; }, { timeout: 5000 }).toBe(true);
+    /* back near, then the page scrolls under a pointer that does not move: the object is carried away
+       from the pointer and leans less, and leans again when it comes back */
+    await page.mouse.move(cx - 300, cy + 200, { steps: 4 });
+    await expect.poll(async () => (await lean(page))!.u, { timeout: 5000 }).toBeLessThan(-10);
+    await page.waitForTimeout(600);
+    const near = (await lean(page))!.tu;
+    await page.mouse.wheel(0, 400);
+    await expect.poll(async () => (await lean(page))!.tu, { timeout: 5000 }).toBeGreaterThan(near + 4);
+    await page.mouse.wheel(0, -400);
+    await expect.poll(async () => (await lean(page))!.tu, { timeout: 5000 }).toBeLessThan(near + 1);
   });
 
   test('a press while leaning glides to the rest pose and hops from there', async ({ page }) => {
     const { cx, cy } = await ready(page);
-    await page.mouse.move(cx - 300, cy, { steps: 6 });
+    await page.mouse.move(cx - 150, cy, { steps: 6 });
     await expect.poll(async () => (await lean(page))!.u, { timeout: 5000 }).toBeLessThan(-3);
     await page.evaluate(() => {
       const l = document.querySelector('.media.stage .m-layer:not(.leaving)') as any;
       (window as any).__hopAt = null;
       new MutationObserver(() => { if (l.classList.contains('clip-on') && (window as any).__hopAt === null) (window as any).__hopAt = (l._seq.cur.u - 0.5) * 32; }).observe(l, { attributes: true, attributeFilter: ['class'] });
     });
-    await page.mouse.click(cx - 300, cy);
+    await page.mouse.click(cx - 150, cy);
     await expect.poll(() => page.evaluate(() => (window as any).__hopAt), { timeout: 10_000 }).not.toBeNull();
     const at = await page.evaluate(() => (window as any).__hopAt);
     expect(Math.abs(at), 'the clip starts at the rest pose (degrees)').toBeLessThan(0.6);

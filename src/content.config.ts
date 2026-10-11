@@ -232,19 +232,7 @@ const site = defineCollection({
     description: z.string(),
     links: z.object({ github: z.url(), linkedin: z.union([z.url(), placeholder]) }),
     now: z.object({ label: z.string(), text: z.string() }),
-    /** Home, the cinematic object stage (docs/research/2026-10-home-a.md): one composed first screen, then
-        a scroll story in chapters while the glass object stays pinned. Projects and record entries come
-        from their own collections; only Home's own words live here. */
-    home: z.object({
-      /** the one vision line under the name; visionDraft marks it as the lead's draft until the owner writes it */
-      vision: z.string(), visionDraft: z.boolean().optional(),
-      cue: z.string(), hint: z.string(),
-      who: z.object({ label: z.string(), title: z.string(), text: z.array(z.string()), facts: z.array(z.tuple([z.string(), z.string()])) }),
-      tracks: z.object({ label: z.string(), title: z.string(), text: z.string() }),
-      products: z.object({ label: z.string(), title: z.string(), text: z.string(), cta: z.string(), all: z.string() }),
-      record: z.object({ label: z.string(), title: z.string(), all: z.string() }),
-      exit: z.object({ label: z.string(), work: z.tuple([z.string(), z.string()]), about: z.tuple([z.string(), z.string()]) }),
-    }),
+    home: z.object({ showcase: z.object({ title: z.string(), all: z.string(), kicker: z.string(), cta: z.string(), also: z.string() }) }),
     work: z.object({
       kicker: z.string(), title: z.string(), dek: z.string(), byHand: z.string(),
       /** The one way into a project's focus view from its section. */
