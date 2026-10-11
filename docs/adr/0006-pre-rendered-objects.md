@@ -22,7 +22,7 @@ Premium 3D sites mostly pay for the look offline and keep real time thin.
 1. **Every pixel of an object at rest is a Cycles frame.** Per object, from its committed
    Blender script and `rig.json`:
    - a poster (first paint, and the centre frame of the grid);
-   - a lean grid of stills (about 17 yaw × 3 pitch at 2° steps; edk 33 × 3 at 1° since 2026-10-10), which also made the idle drift;
+   - a lean grid of stills (about 17 yaw × 3 pitch at 2° steps; 33 × 3 at 1° since 2026-10-10 for edk and 2026-10-11 for the others), which also made the idle drift;
    - one clip per micro-interaction (30–45 frames);
    - one clip melting into the shared glass droplet (24 frames).
 2. **Formats.** Grids are stills (fast to decode, exact to scrub). Linear clips are video:
@@ -181,6 +181,68 @@ about 2x in the first hour by another object's render. Bytes (full grid at AVIF 
 first paint 21.6 KB; desktop full 1.08 / 1.11 / 1.13 MB (AV1 / HEVC / H.264) against about 1.15 MB;
 phone 361 / 391 / 444 KB against about 450 KB. The clip is 36 frames (record key down, lamp up, reels
 turn); far ground decodes exact in the clip and the droplet.
+
+## Note 2026-10-11: every object on the 1° grid; Work's emblems drawn at their own size
+
+The owner approved the evening amendment's sharpness fix; this brings the other leaned objects (Recto,
+English Prep, Eat Map, the recorder) to edk's grid. Technique decided by the agent.
+
+- **The 1° grid.** As for edk: the 2° frames copied bit-identically to the even columns of a 33 × 3
+  grid, `frames.py <obj> --stage grid --nyaw 33` rendering only the 48 odd frames (32 spp + OIDN,
+  `nice -n 19` on four cores shared with other agents' tests), then `--stage normal` again for the two
+  objects with a live engine. Encoded with `encode.py <obj> --videos ""`: grid, posters, live normals and
+  manifest only; clips, droplets and the unfetched idle are unchanged. Render time (sum of frame times):
+  English Prep 48 min (60 s a frame), Recto 45 min (57 s) + normals 52 s, Eat Map 18 min (23 s, an
+  unloaded machine), recorder 41 min (51 s) + normals 42 s; encodes 3-7 min each.
+- **Bytes** (lean half / full tier; `desktopFull` AV1, the manifest's worst case):
+
+  | | half | full | desktopFull |
+  |---|---|---|---|
+  | Recto | 223 → 432 KB | 654 KB → 1.27 MB | 1.10 → 1.93 MB |
+  | English Prep | 169 → 328 KB | 413 → 801 KB | 0.70 → 1.25 MB |
+  | Eat Map | 177 → 343 KB | 429 → 832 KB | 0.76 → 1.33 MB |
+  | recorder | 257 → 500 KB | 585 KB → 1.14 MB | 1.08 → 1.88 MB |
+
+  First paint and the phone tiers are unchanged (phones never fetch the grid). **The desktop budget
+  (about 1.15 MB, media research §7) rises** for Recto, Eat Map and the recorder, as it did for edk
+  (1.68 MB): the grid is the only thing that can halve the step, every byte of it loads after first
+  paint, on desktop only, for the one object in view, and the alternative, a lower AVIF quality, gives
+  back the sharpness this work is for. What Work actually fetches (measured, 1440 × 900, DPR 1 and 2):
+  Recto's and English Prep's emblems the half tier only (422 and 320 KB), Eat Map half and full
+  (335 + 813 KB).
+- **Work's slots (ADR-0014) were not what `SLOTS` said.** Measured: the emblem is 144 CSS px at
+  1440 × 900 (`clamp(112px, 10vw, 148px)`), 99 at 1180 × 820, 92 on phones; Eat Map's object 600.
+  `SLOTS` still listed Work's old 640 and the emblem's `sizes` said 200 px, so a 144 px emblem drew the
+  400 poster (reduced 2.8x at DPR 1, 1.4x at DPR 2). Now `SLOTS` has 99, 104, 120, 144 and 148 for the
+  emblems and 600 for Eat Map, `PHONE_SLOTS` the 92 px phone emblem at DPR 2 and 3, and both `sizes`
+  attributes follow work.css's rules, so each slot gets its exact width (1440: 144 and 288; 390 at DPR 3:
+  276). The 640 and 960 posters, which nothing draws any more, are removed.
+- **Small slots drew the half tier through the browser's resize** (0.3 of its size in an emblem): 0.55-
+  0.67 of the ideal frame at rest and in motion. The half frames are now decoded at the canvas's device
+  size by the same Lanczos worker as the full ones when the canvas shows them below 0.95 of their size
+  (`media.ts halfFrames`).
+- **The decode-ahead window outgrew the LRU** at 1°: 4° behind and 6° ahead is 22 frames, and Eat Map's
+  808 px frames at DPR 2 fit 14 in 40 MB, so frames were evicted before the pose reached them (9 of 61
+  sweep frames fell back to the half tier). The window is now capped at half the LRU's frames (2° behind,
+  4° ahead there; unchanged wherever it fits).
+
+**Sharpness, slow pointer sweep on /work/ and /record/** (the evening amendment's method: 61 positions
+across the object's middle row, from one object width left of centre to one right, 16 ms apart, each
+captured on whole device pixels with the ground subtracted; LV against the exact nearest full grid frame
+Lanczos-reduced to the frame's device size; frame-to-frame change in mean levels; before = dev, after =
+this work; DPR 1 / DPR 2):
+
+| | median LV, before | after | lean at rest, after | change per frame (median), before | after | exact frames, before | after |
+|---|---|---|---|---|---|---|---|
+| Recto (144) | 0.61 / 0.67 | 0.83 / 0.81 | 0.83 / 0.80 | 1.34 / 3.24 | 1.35 / 1.86 | 50 / 57 | 47 / 48 |
+| English Prep (144) | 0.56 / 0.59 | 0.81 / 0.77 | 0.82 / 0.79 | 1.02 / 2.19 | 0.62 / 0.96 | 48 / 58 | 51 / 48 |
+| Eat Map (600) | 0.95 / 0.88 | 0.95 / 0.88 | 0.93 / 0.88 | 1.60 / 3.55 | 1.57 / 2.98 | 59 / 61 | 58 / 61 |
+| recorder (320) | 0.68 / 0.86 | 0.83 / 0.87 | 0.81 / 0.84 | 3.94 / 3.47 | 2.53 / 2.94 | 54 / 61 | 51 / 60 |
+
+Exact frames are of 61. A sweep now crosses twice as many steps, each with its 24 % dissolve, so a few
+more frames fall inside one; each change is smaller. The emblems sweep through 18-21 of the 33 columns
+(the lean is relative to the object's width and the sweep stays within one width). The worst frames
+(0.26-0.57) are still the first one or two of a first lean. Headless Chromium only, as above.
 
 ## Consequences
 
