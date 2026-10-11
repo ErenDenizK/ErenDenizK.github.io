@@ -1,15 +1,17 @@
 /* The rail (ADR-0013, revising ADR-0011; scripts/rail.ts): one custom scrollbar on every page and in the
-   project sheet, drawn the same everywhere (ADR-0013 amendment, 2026-10-10): one track and one thumb in one
-   place, mid-height on the right edge. Where a scroller has sections they only add marks on that track (and,
-   on desktop, their titles beside it); without sections it is the same bar minus the marks. html.rail-on (fine pointer) or
+   project sheet, drawn the same everywhere (ADR-0013 amendments, 2026-10-10 and 2026-10-11): one look in one
+   place, mid-height on the right edge, chosen by html[data-rail] (a, b, c or d; the ?rail switch is
+   temporary). Where a scroller has sections they add marks (and, on desktop, their titles beside them). html.rail-on (fine pointer) or
    html.rail-touch (any other pointer, item 12) is set on every page before first paint by the head script
    (layouts/Base.astro), never in forced colours; the media queries below repeat that condition, so forced
    colours bring the platform's bar back even if a class stayed. Without JavaScript nothing here applies and
    the native bar stays. Because the native bar is hidden on every page, every page has the same width:
    the bar never jumps sideways between pages (site audit B6). */
 @media (hover: hover) and (pointer: fine) and (forced-colors: none) {
-  html.rail-on, html.rail-on .sheet-scroll { scrollbar-width: none; }
-  html.rail-on::-webkit-scrollbar, html.rail-on .sheet-scroll::-webkit-scrollbar { display: none; }
+  /* no native bar anywhere (owner, 2026-10-11): the page, the sheet and any inner scroller (a code block, a
+     caption, a strip of cards) alike; the page and the sheet draw the rail, inner scrollers scroll as before */
+  html.rail-on, html.rail-on * { scrollbar-width: none; }
+  html.rail-on::-webkit-scrollbar, html.rail-on *::-webkit-scrollbar { display: none; }
   /* one source of truth: where the ladder is drawn it is the contents list (ADR-0011 item 3, ADR-0013 item 3);
      a scroller that has sections but shows the plain variant (.rail-flat) keeps its own list */
   html.rail-on:not(.rail-flat) .post-toc ol, html.rail-on:not(.rail-flat) .post-toc > .meta { display: none; }
@@ -22,53 +24,108 @@
   html:is(.rail-on, .rail-touch) dialog .sheet:not(.rail-flat) .case-body { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* ---------- the bar: one track and one thumb, the same on every page and in the sheet ----------
-   A 2 px track, 6 px from the right edge, min(44vh, 320px) tall at mid-height; the thumb rides on it, the
-   share of the scroller in view (at least 24 px). The track is quiet (decorative); the thumb is the page's
-   accent, or the current section's (every accent is at least 5.5:1 on the ground, 1.4.11). A hairline of
-   ground around both keeps them legible over a photograph (About). Hover and dragging thicken the thumb
-   to 4 px; under reduced motion it only brightens. */
+/* ---------- the bar (ADR-0013 amendment 2026-10-11): four looks on one engine, html[data-rail] ----------
+   Every look sits on one axis 7 px from the right edge (of the window, or of the sheet), mid-height, at most
+   --rail-h tall, and stays inside the 16 px page gutter on touch. What is needed to read the place (the
+   thumb, the needle, the current mark, the fills) is the full accent (every accent is at least 5.5:1 on
+   the ground, 1.4.11); the marks behind you keep their section's light at a contrast-solved value (ADR-0011
+   item 10); the marks ahead are --rail-idle (3.5:1); a look's resting line is decorative (--rail-faint) and
+   wakes while the scroller moves, is hovered or dragged. A hairline of ground around the marks keeps them
+   legible over a photograph (About). */
 :root {
   --rail-idle: #6a665f;          /* the marks ahead of you: 3.5:1 on the ground (1.4.11 asks 3:1) */
   --rail-panel: rgba(13, 13, 15, 0.94);
   --rail-h: min(44vh, 320px);
-  --rail-x: 6px;                 /* the track's distance from the right edge */
+  --rail-x: 6px;                 /* the axis's right edge from the window's */
+  --rail-halo: 0 0 0 1px rgba(10, 10, 11, 0.5);
 }
 .rail, .rail-plain {
   display: none;
   position: fixed; z-index: 21; right: 0; top: 50%; translate: 0 -50%;
   height: var(--rail-h);
   view-transition-name: rail;
+  --rail-faint: color-mix(in srgb, var(--rail-idle) 45%, transparent);
 }
+:is(.rail, .rail-plain):is(.is-live, .is-drag, :hover) { --rail-faint: color-mix(in srgb, var(--rail-idle) 78%, transparent); }
 .rail[hidden], .rail-plain[hidden] { display: none !important; }
 .rail-plain { width: 44px; padding: 0; cursor: default; touch-action: none; user-select: none; }
-.rail-track {
-  position: absolute; top: 0; bottom: 0; right: var(--rail-x); width: 2px; border-radius: 1px;
-  background: color-mix(in srgb, var(--rail-idle) 45%, transparent);
-  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.4);
-  pointer-events: none;
-}
-.rail-thumb {
-  position: absolute; top: 0; right: 0; width: 2px; height: 24px; border-radius: 2px;
-  background: var(--thumb, var(--accent));
-  box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
-  transition: width var(--d-2) var(--ease-out), right var(--d-2) var(--ease-out), filter var(--d-2), background-color var(--d-2);
-  will-change: transform;
-}
-:is(.rail-plain:hover, .rail-plain.is-drag, .rail.is-drag) .rail-thumb,
-.rail:has(.rail-track-hit:hover) .rail-thumb { width: 4px; right: -1px; filter: brightness(1.12); }
+.rail-track { position: absolute; top: 0; bottom: 0; right: var(--rail-x); width: 2px; pointer-events: none; }
+.rail-thumb { display: none; position: absolute; top: 0; right: 0; will-change: transform; }
+.rail-m { position: absolute; right: 0; top: var(--y, 0); }
+.rail-k { position: absolute; right: 0; top: var(--y, 0); }
 :is(.rail-plain, .rail).is-drag { cursor: grabbing; }
 
-/* a section's mark: a short tick on the track's left side, where the thumb's top is when that section
-   begins. The ones behind you keep their section's light at a contrast-solved value (ADR-0011 item 10), the
-   current one is its section's full accent and a little longer, the ones ahead are quiet. */
-.rail-m {
-  position: absolute; right: 100%; top: var(--y, 0); height: 2px; width: 5px; border-radius: 1px 0 0 1px;
-  background: var(--rail-idle); box-shadow: 0 0 0 1px rgba(10, 10, 11, 0.55);
-  transition: width var(--d-2) var(--ease-out), background-color var(--d-2);
+/* a · Beads (the owner's sketch): a short column, one mark per section (or per screen on a page without
+   sections). Behind you a 4 px dot in its section's light, ahead an 8 × 2 px dash, the current one a
+   3 × 40 px line in its rest light that fills with the full accent as you read it. Marks morph on the UI
+   spring as the current section changes. */
+:root[data-rail="a"] .rail-track {
+  top: 50%; bottom: auto; translate: 0 -50%; right: 0; width: 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
 }
-.rail-m.done { background: var(--ar); }
-.rail-m.on { width: 8px; background: var(--a); }
+:root[data-rail="a"] .rail-m {
+  position: relative; top: auto; right: auto; flex: none; overflow: hidden;
+  width: 8px; height: 2px; border-radius: 1px; background: var(--rail-idle); box-shadow: var(--rail-halo);
+  transition: width var(--d-4) var(--spring-ui), height var(--d-4) var(--spring-ui), border-radius var(--d-4) var(--spring-ui), background-color var(--d-2);
+}
+:root[data-rail="a"] .rail-m.done { width: 4px; height: 4px; border-radius: 2px; background: var(--ar); }
+:root[data-rail="a"] .rail-m.on { width: 3px; height: 40px; border-radius: 1.5px; background: var(--ar); }
+:root[data-rail="a"] .rail-m.on::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--a);
+  transform-origin: top; transform: scaleY(max(0.1, var(--f, 0)));
+}
+:root[data-rail="a"] :is(.rail-plain:hover, .is-drag, .rail:has(.rail-track-hit:hover)) .rail-m:not(.on, .done) { width: 10px; background: var(--ink-3); }
+
+/* b · Hairline: a 1 px line, the length of the bar, and a 2 px segment on it, the share in view. The line
+   rests faint and wakes while the scroller moves; hover and dragging widen the segment to 4 px. Nothing
+   else is drawn: sections show only as titles. */
+:root[data-rail="b"] .rail-track::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 0.5px; width: 1px; border-radius: 1px;
+  background: var(--rail-faint); transition: background-color var(--d-4) var(--ease-out);
+}
+:root[data-rail="b"] :is(.is-live, .is-drag, :hover) > .rail-track::before { transition-duration: var(--d-1); }
+:root[data-rail="b"] .rail-thumb {
+  display: block; width: 2px; height: 24px; border-radius: 1px;
+  background: var(--thumb, var(--accent)); box-shadow: var(--rail-halo);
+  transition: width var(--d-2) var(--ease-out), right var(--d-2) var(--ease-out), filter var(--d-2), background-color var(--d-2);
+}
+:root[data-rail="b"] :is(.rail-plain:hover, .is-drag, .rail:has(.rail-track-hit:hover)) .rail-thumb { width: 4px; right: -1px; filter: brightness(1.12); }
+:root[data-rail="b"] .rail-m { display: none; }
+
+/* c · Scale: 1 px ticks every 6 px, 4 px long; a 16 × 2 px needle in the accent at the place you are; the
+   ticks within a lens around it lengthen to 13 px and take the accent's light, so the lens glides as the
+   page moves. A section's first tick is 8 px, in its section's light behind you and its accent when
+   current. */
+:root[data-rail="c"] .rail-track { width: 18px; --kb: 4px; --kg: 2.25; --mb: 8px; }
+:root[data-rail="c"] .rail-k, :root[data-rail="c"] .rail-m {
+  height: 1px; width: var(--kb); transform-origin: right; transform: scaleX(calc(1 + var(--g, 0) * var(--kg)));
+  background: color-mix(in srgb, var(--thumb, var(--accent)) calc(var(--g, 0) * 100%), var(--rail-faint));
+  transition: background-color var(--d-2);
+}
+:root[data-rail="c"] .rail-m { width: var(--mb); transform: scaleX(calc(1 + var(--g, 0) * 0.6)); background: var(--rail-idle); box-shadow: var(--rail-halo); }
+:root[data-rail="c"] .rail-m.done { background: var(--ar); }
+:root[data-rail="c"] .rail-m.on { background: var(--a); }
+:root[data-rail="c"] .rail-thumb {
+  display: block; width: 16px; height: 2px; margin-top: -0.5px; border-radius: 1px;
+  background: var(--thumb, var(--accent)); box-shadow: var(--rail-halo);
+}
+:root[data-rail="c"] :is(.rail-plain:hover, .is-drag, .rail:has(.rail-track-hit:hover)) .rail-thumb { filter: brightness(1.15); }
+
+/* d · Segments: the line broken into one 2 px segment per section, each as long as its section's stretch
+   of the page (at least 8 px, 4 px apart); a page without sections is one segment. Behind you a segment
+   is full in its section's light, the current one fills with its accent to where you are, the ones ahead
+   rest faint. Hover and dragging widen them to 4 px. */
+:root[data-rail="d"] .rail-m {
+  height: var(--h, 8px); width: 2px; border-radius: 1px; overflow: hidden;
+  background: var(--rail-faint);
+  transition: width var(--d-2) var(--ease-out), right var(--d-2) var(--ease-out), background-color var(--d-4) var(--ease-out);
+}
+:root[data-rail="d"] .rail-m::after {
+  content: ""; position: absolute; inset: 0; background: var(--ar);
+  transform-origin: top; transform: scaleY(var(--f, 0));
+}
+:root[data-rail="d"] .rail-m.on::after { background: var(--a); }
+:root[data-rail="d"] :is(.rail-plain:hover, .is-drag, .rail:has(.rail-track-hit:hover)) .rail-m { width: 4px; right: -1px; }
 
 /* ---------- desktop: the titles beside the track ----------
    Closed, only the 44 px column is drawn and takes the pointer; hover (after a short intent delay) or
@@ -89,7 +146,7 @@ html.sheet-open :is(.rail, .rail-plain):not(.in-sheet) { visibility: hidden; }
    page's rail carries the view-transition name, so the sheet's same-document transition never sees two */
 .sheet > .rail.in-sheet, .sheet > .rail-plain.in-sheet { position: absolute; view-transition-name: none; }
 
-.rail-sheet { position: relative; margin-top: -14px; }
+.rail-sheet { position: relative; margin-top: var(--st, -14px); }
 /* the panel behind the titles */
 .rail-sheet::before {
   content: ""; position: absolute; inset: -8px 0 -4px; border-radius: 14px 0 0 14px; pointer-events: none;
@@ -99,7 +156,7 @@ html.sheet-open :is(.rail, .rail-plain):not(.in-sheet) { visibility: hidden; }
   opacity: 0; transition: opacity var(--d-2) var(--ease-out);
 }
 .rail.is-open .rail-sheet::before, .rail:focus-within .rail-sheet::before { opacity: 1; }
-.rail-list { position: relative; margin: 0; padding: 0; list-style: none; min-height: var(--lh, auto); }
+.rail-list { position: relative; margin: 0; padding: 0; list-style: none; }
 .rail-list > li { margin-top: var(--mt, 0); }
 .rail-i {
   display: flex; align-items: center; justify-content: flex-end;
@@ -123,15 +180,29 @@ html.sheet-open :is(.rail, .rail-plain):not(.in-sheet) { visibility: hidden; }
 
 .rail.is-drag, html.rail-grab, html.rail-grab * { cursor: grabbing !important; }
 
-/* reduced motion: the panel and titles cross-fade; nothing grows, slides or reveals */
+/* reduced motion: the panel and titles cross-fade; nothing grows, slides, morphs or reveals, only brightens */
 @media (prefers-reduced-motion: reduce) {
   .rail { transition: none; }
-  .rail-thumb { transition: filter var(--d-1), background-color var(--d-1); }
-  :is(.rail-plain:hover, .rail-plain.is-drag, .rail.is-drag) .rail-thumb,
-  .rail:has(.rail-track-hit:hover) .rail-thumb { width: 2px; right: 0; }
-  .rail-m { transition: background-color var(--d-1); }
-  .rail-m.on { width: 5px; }
+  .rail-m, .rail-k, .rail-thumb { transition: background-color var(--d-1), filter var(--d-1) !important; }
+  :root[data-rail="b"] :is(.rail-plain:hover, .is-drag, .rail:has(.rail-track-hit:hover)) .rail-thumb,
+  :root[data-rail="d"] :is(.rail-plain:hover, .is-drag, .rail:has(.rail-track-hit:hover)) .rail-m { width: 2px; right: 0; }
+  :root[data-rail="a"] :is(.rail-plain:hover, .is-drag, .rail:has(.rail-track-hit:hover)) .rail-m:not(.on, .done) { width: 8px; }
 }
+
+/* the temporary look switch (scripts/rail.ts, chooser): only after a visit with ?rail= */
+.rail-pick {
+  position: fixed; z-index: 30; left: calc(12px + env(safe-area-inset-left, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  display: flex; gap: 2px; padding: 3px; border-radius: 999px;
+  background: var(--rail-panel); box-shadow: inset 0 0 0 1px var(--rule);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+}
+.rail-pick a {
+  display: grid; place-items: center; min-width: 36px; height: 36px; border-radius: 999px;
+  font: 500 12px/1 var(--f-ui); letter-spacing: 0.04em; color: var(--ink-3); text-decoration: none;
+}
+.rail-pick a[aria-current] { color: var(--ink); background: rgba(233, 229, 222, 0.1); }
+.rail-pick a:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+html.sheet-open .rail-pick { display: none; }
 
 /* ---------- touch: phones and tablets (ADR-0011 item 12) ----------
    Native scrolling stays; the platform's indicator goes, so it never draws over the rail. iOS Safari reads
@@ -143,8 +214,12 @@ html.sheet-open :is(.rail, .rail-plain):not(.in-sheet) { visibility: hidden; }
    page: touch-action); a tap opens the titles as a small sheet beside it, one 44 px row each. Forced
    colours: nothing here (the class is never set). */
 @media (forced-colors: none) {
-  html.rail-touch, html.rail-touch .sheet-scroll { scrollbar-width: none; }
-  html.rail-touch::-webkit-scrollbar, html.rail-touch .sheet-scroll::-webkit-scrollbar { display: none; }
+  html.rail-touch, html.rail-touch * { scrollbar-width: none; }
+  html.rail-touch::-webkit-scrollbar, html.rail-touch *::-webkit-scrollbar { display: none; }
+  /* c's ticks and needle are shorter, so the lens stays inside the 16 px gutter */
+  html.rail-touch[data-rail="c"] .rail-track { --kb: 3px; --kg: 2; --mb: 6px; }
+  html.rail-touch[data-rail="c"] .rail-thumb { width: 10px; }
+  html.rail-touch[data-rail="a"] .rail-m.on { height: 32px; }
   html.rail-touch .rail-plain { display: block; right: env(safe-area-inset-right, 0px); pointer-events: none; }
   html.rail-touch .sheet > .rail.in-sheet, html.rail-touch .sheet > .rail-plain.in-sheet { right: 0; }
   html.rail-touch .rail {
