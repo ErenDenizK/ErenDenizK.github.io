@@ -142,12 +142,14 @@ test.describe('spin loop and float', () => {
     await ctx.close();
   });
 
-  test('every touch slot gets the loop size that covers it: edk at 640 on Home, a 92 px emblem at 320 on Work', async ({ browser }) => {
+  test('every touch slot gets the loop size that covers it: Home\'s hero glass by its device width, a 92 px emblem at 320 on Work', async ({ browser }) => {
     for (const dpr of [1, 3]) {
       const ctx = await browser.newContext({ ...phone, deviceScaleFactor: dpr, baseURL: test.info().project.use.baseURL });
       const page = await ctx.newPage();
       await page.goto('');
-      await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/spin-640\.\w+\.mp4$/);   // 210 CSS px: 210 or 630 device px
+      /* Home's hero glass (ADR-0014 home A) is about 330 CSS px on a phone: 330 device px at 1x (the 640
+         loop) and about 1000 at 3x (the full 1040 loop) */
+      await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(dpr === 1 ? /\/edk\/spin-640\.\w+\.mp4$/ : /\/edk\/spin\.\w+\.mp4$/);
       await page.goto('work/');
       const src = () => page.evaluate(() => (document.querySelector('.media.w-emblem video.m-idle') as HTMLVideoElement | null)?.dataset.src ?? '');
       await expect.poll(src, { timeout: 20_000 }).toMatch(/\/(recto|englishprep)\/spin-320\.\w+\.mp4$/);
