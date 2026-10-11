@@ -8,9 +8,12 @@
      the idle loop, which was built from crossfaded 2° stills and pulsed in sharpness four times a
      second, with a seam every 6 s (site audit 2026-10-10 §3; real-time 3D study §1.2); `?idle=blend`
      brings that loop back for comparison;
-   - phones and tablets, when the manifest has the optional `spin` loop: that loop (edk's letters
-     turning, rendered frame by frame in Cycles; phone motion research,
-     docs/research/2026-10-phone-motion.md); `?spin=0` leaves the float alone;
+   - phones and tablets, when the manifest has the optional `spin` loop: that loop (each object's own
+     turn, rendered frame by frame in Cycles, then a hold on the rest pose; phone motion research,
+     docs/research/2026-10-phone-motion.md, and ADR-0006 note of 2026-10-11), at the smallest of its
+     sizes that covers the slot's device pixels; `?spin=0` leaves the float alone. A tap plays the
+     interaction clip: the loop first runs on, quickened, to its hold (the clip was rendered from the
+     rest pose, so it starts there without a jump), and after the clip the loop resumes in its hold;
    - desktop with a fine pointer, in addition: the lean grid and the interaction clip on a press. The
      lean answers a pointer near the object only (lean.ts), returns to rest when the pointer leaves,
      moves on a spring, shows one exact frame for most poses with a short dissolve to the next (snapT),
@@ -36,7 +39,7 @@ type Manifest = {
   lean?: { cols: number; rows: number; center: { col: number; row: number }; crop: { x: number; y: number; w: number; h: number }; stepDeg?: { yaw: number; pitch: number };
     tiers: { name: string; w: number; h: number; frames: string[] }[] };
   idle?: { sources: Source[] };
-  spin?: { sources: Source[] };
+  spin?: { sources: Source[]; sizes?: { w: number; sources: Source[] }[]; fps?: number; frames?: number; holdFrom?: number };
   clips?: Record<string, { sources: Source[] }>;
   droplet?: { duration?: number; out?: { sources: Source[] }; in?: { sources: Source[] } };
 };
@@ -82,6 +85,15 @@ const idleBlend = /[?&]idle=blend\b/.test(location.search);
 /** The loop a slot plays: the real-rendered spin on phones and tablets where there is one; the blended
     idle only for the ?idle=blend comparison. Otherwise there is no loop: the poster floats. */
 const loopOf = (m: Manifest) => (!desktopTier() && !spinOff && m.spin) || (idleBlend ? m.idle : undefined);
+/** The loop's sources for this slot: of the spin's sizes, the smallest that covers the stage's device
+    pixels (Work's 92 px emblem at DPR 3 is 276: the 320 loop, not the 1040 one), else the largest. */
+function loopSources(el: Slot, m: Manifest, loop: { sources: Source[] }): Source[] {
+  const sizes = loop === m.spin ? m.spin.sizes : undefined;
+  if (!sizes?.length) return loop.sources;
+  const need = ((el.querySelector('.m-stage') || el).getBoundingClientRect().width || 0) * (devicePixelRatio || 1);
+  const fit = [...sizes].sort((a, b) => a.w - b.w).find((z) => z.w >= need * 0.98);
+  return (fit || sizes.reduce((a, b) => (b.w > a.w ? b : a))).sources;
+}
 
 /* ---- the float: the layer showing the exact poster (or lean frame, or clip) bobs as a whole, in whole
    device pixels (ADR-0006 amendment of 2026-10-10, evening). A bitmap moved by a fraction of a pixel, or
@@ -345,7 +357,9 @@ function wake(el: Slot) {
     const dir = dirOf(layer._manifest!);
     const loop = loopOf(m);
     if (loop && !layer._idleFailed && !layer._idle) {
-      const v = makeVideo(loop.sources, dir, true, 'm-idle');
+      const v = makeVideo(loopSources(el, m, loop), dir, true, 'm-idle');
+      /* where the loop holds the rest pose (the spin: from holdFrom to its end), so a tap can wait for it */
+      if (v && loop === m.spin && m.spin.holdFrom && m.spin.fps) v.dataset.hold = String(m.spin.holdFrom / m.spin.fps);
       if (v) {
         layer._idle = v;
         layer.appendChild(v);
@@ -655,15 +669,47 @@ function follow(seq: Lean) {
 }
 const centreOf = (seq: Lean) => ({ u: seq.m.center.col / (seq.m.cols - 1), v: seq.m.center.row / Math.max(1, seq.m.rows - 1) });
 
-/* ---- interaction clips (desktop tier): once over the rest pose, then back to the lean ---- */
+/* ---- interaction clips: once over the rest pose, then back to the lean (desktop) or the loop (touch) ---- */
+const QUICK = 3;   // the loop's speed on its way to the rest pose after a tap: at most about 0.8 s of turn left
+/** Touch: bring a playing loop to its rest pose and hold it there. The spin's frames from data-hold to its
+    end are the rest pose (frame 0 too), and the interaction clip was rendered from that pose, so the clip
+    starts on the frame the loop shows. Mid-turn the loop runs on, quickened, until it reaches the hold
+    (or wraps to frame 0), then pauses on a rest frame: the turn finishes faster, it never jumps. */
+function toRest(v: HTMLVideoElement): Promise<void> {
+  const hold = parseFloat(v.dataset.hold || '');
+  if (!(hold > 0) || !v.duration) return Promise.resolve();
+  return new Promise((res) => {
+    const t0 = v.currentTime;
+    let raf = 0, done = false;
+    const at = () => v.currentTime >= hold || v.currentTime < t0 - 0.05;   // in the hold, or wrapped to frame 0
+    const stop = () => {
+      if (done) return;
+      done = true; cancelAnimationFrame(raf); clearTimeout(guard);
+      try { v.pause(); } catch {}
+      v.playbackRate = 1;
+      /* the frame on screen may trail currentTime by one: in the hold, settle on a frame inside it */
+      if (v.currentTime >= hold && v.currentTime < hold + 1 / 30) { try { v.currentTime = hold + 1 / 60; } catch {} }
+      res();
+    };
+    const guard = window.setTimeout(stop, 2000);
+    if (at()) { stop(); return; }
+    v.playbackRate = QUICK;
+    if (v.paused) v.play().catch(stop);
+    const tick = () => { if (!v.isConnected || at()) stop(); else raf = requestAnimationFrame(tick); };
+    raf = requestAnimationFrame(tick);
+  });
+}
 function play(el: Slot, clip: string): boolean {
   const layer = el._layer;
   if (isLive(el)) return false;            // the engine answers the pointer itself
-  if (!layer || !moving() || !desktopTier() || layer._clip || layer._drop || !visible.has(el) || benched(el)) return false;
+  if (!layer || !moving() || layer._clip || layer._drop || !visible.has(el) || benched(el)) return false;
+  const desk = desktopTier();
   /* the clip was rendered at the rest pose: a leaning object glides there first, and hops from it */
-  const seq = layer._seq && layer._seq.ok && layer.classList.contains('seq-on') ? layer._seq : null;
+  const seq = desk && layer._seq && layer._seq.ok && layer.classList.contains('seq-on') ? layer._seq : null;
   const centred = seq ? new Promise<void>((res) => { seq.hop = true; seq.target = centreOf(seq); seq.centred = res; follow(seq); }) : Promise.resolve();
   const done = () => { if (seq) { seq.hop = false; seq.centred = null; aimSoon(); } };
+  /* touch: a turning loop runs on to its rest pose (toRest) while the clip loads */
+  const loop = !desk && layer._idle && layer.classList.contains('video-on') ? layer._idle : null;
   getManifest(layer._manifest).then((m) => {
     const spec = m?.clips?.[clip];
     if (!spec || layer._clip || el._layer !== layer || benched(el)) { done(); return; }
@@ -672,14 +718,19 @@ function play(el: Slot, clip: string): boolean {
     layer._clip = v;
     layer.appendChild(v);
     v.src = v.dataset.src!;
-    const back = () => { done(); if (layer._idle) start(layer._idle, () => {}).catch(() => {}); };
+    const rested = loop ? toRest(loop) : Promise.resolve();
+    const back = () => {
+      done();
+      const l = layer._idle;
+      if (l) { l.playbackRate = 1; start(l, () => {}).catch(() => {}); }
+    };
     /* the clip starts once the pose is home and the clip can play; a clip that cannot gives up */
     const ready = new Promise<void>((res, rej) => {
       if (v.readyState >= 3) res();
       else { v.addEventListener('canplay', () => res(), { once: true }); v.addEventListener('error', () => rej(), { once: true }); }
       setTimeout(() => rej(), 2500);
     });
-    Promise.all([centred, ready]).then(() => start(v, () => { layer.classList.add('clip-on'); })).then(() => {
+    Promise.all([centred, ready, rested]).then(() => start(v, () => { layer.classList.add('clip-on'); })).then(() => {
       v.addEventListener('ended', () => {
         layer.classList.remove('clip-on');
         setTimeout(() => { release(v); layer._clip = null; back(); }, 220);

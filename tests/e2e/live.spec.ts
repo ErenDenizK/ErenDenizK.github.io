@@ -145,12 +145,54 @@ test.describe('spin loop and float', () => {
     const ctx = await browser.newContext({ ...phone, baseURL: test.info().project.use.baseURL });
     const page = await ctx.newPage();
     await page.goto('');
-    await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/spin\.\w+\.mp4$/);
+    await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/spin(-\d+)?\.\w+\.mp4$/);
     await page.goto('?spin=0');
     await expect(page.locator('.media.stage')).toHaveClass(/floating/, { timeout: 20_000 });
     expect(await idleSrc(page)).toBe('');
     await page.goto('?spin=0&idle=blend');
     await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/idle\.\w+\.mp4$/);
+    await ctx.close();
+  });
+
+  test('every touch slot gets the loop size that covers it: edk at 640 on Home, a 92 px emblem at 320 on Work', async ({ browser }) => {
+    for (const dpr of [1, 3]) {
+      const ctx = await browser.newContext({ ...phone, deviceScaleFactor: dpr, baseURL: test.info().project.use.baseURL });
+      const page = await ctx.newPage();
+      await page.goto('');
+      await expect.poll(() => idleSrc(page), { timeout: 20_000 }).toMatch(/\/edk\/spin-640\.\w+\.mp4$/);   // 210 CSS px: 210 or 630 device px
+      await page.goto('work/');
+      const src = () => page.evaluate(() => (document.querySelector('.media.w-emblem video.m-idle') as HTMLVideoElement | null)?.dataset.src ?? '');
+      await expect.poll(src, { timeout: 20_000 }).toMatch(/\/(recto|englishprep)\/spin-320\.\w+\.mp4$/);
+      await ctx.close();
+    }
+  });
+
+  test('a tap plays the clip from the loop\'s rest pose, never mid-turn, and the loop resumes in its hold', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...phone, baseURL: test.info().project.use.baseURL });
+    const page = await ctx.newPage();
+    await page.goto('');
+    const stage = page.locator('.media.stage');
+    await expect(stage.locator('.m-layer.video-on')).toHaveCount(1, { timeout: 20_000 });
+    const hold = await stage.evaluate((el) => parseFloat((el.querySelector('video.m-idle') as HTMLVideoElement).dataset.hold || 'NaN'));
+    expect(hold).toBeGreaterThan(1);
+    /* note the loop's state on the clip's first shown frame (clip-on), then tap mid-turn */
+    await stage.evaluate((el) => {
+      const layer = el.querySelector('.m-layer')!, loop = layer.querySelector('video.m-idle') as HTMLVideoElement;
+      new MutationObserver(() => {
+        if (layer.classList.contains('clip-on') && !(window as any).__atClip) (window as any).__atClip = { t: loop.currentTime, paused: loop.paused, at: performance.now() };
+      }).observe(layer, { attributes: true, attributeFilter: ['class'] });
+    });
+    await page.waitForFunction((h) => { const v = document.querySelector('.media.stage video.m-idle') as HTMLVideoElement; return !v.paused && v.currentTime > 0.3 && v.currentTime < h - 1; }, hold, { timeout: 20_000 });
+    const tapped = await page.evaluate(() => performance.now());
+    await stage.tap();
+    await page.waitForFunction(() => !!(window as any).__atClip, null, { timeout: 10_000 });
+    const at = await page.evaluate(() => (window as any).__atClip);
+    expect(at.paused, 'the loop holds still under the clip').toBe(true);
+    expect(at.t >= hold || at.t < 0.1, `the loop is on a rest frame (t ${at.t}, hold ${hold})`).toBe(true);
+    expect(at.at - tapped, 'the turn finishes quickened').toBeLessThan(2500);
+    /* the clip ends and hands back to the loop, which runs on at its own speed */
+    await expect(stage.locator('video.m-clip')).toHaveCount(0, { timeout: 10_000 });
+    await expect.poll(() => stage.evaluate((el) => { const v = el.querySelector('video.m-idle') as HTMLVideoElement; return !v.paused && v.playbackRate === 1; }), { timeout: 5_000 }).toBe(true);
     await ctx.close();
   });
 
