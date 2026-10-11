@@ -15,5 +15,7 @@ site is a choice made with the owner; nothing here is shown just because it exis
 
 Each has a `-1000.webp` preview. About's postcards are made from the originals by
 `tools/photos/postcards.mjs` (`npm run photos`) at the widths they are shown, never upscaled; the
-script also measures each photo's light colour (`tone`) for the glow behind the pile. Added 2026-10-10 (owner: "use them where they fit; you don't
+script also measures each photo's light colour (`tone`) for the glow behind the pile, and writes the whole
+photograph at its own width (`pc-<stem>-full`) for the loupe and enlarged view of the alternatives in
+`docs/research/2026-10-photo-presentation.md`. Their depth maps are painted by `tools/photos/depth.py`. Added 2026-10-10 (owner: "use them where they fit; you don't
 have to use them all").
