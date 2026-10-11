@@ -11,6 +11,246 @@
   "h": 1200,
   "sources": [
    {
+    "src": "poster-99.avif",
+    "type": "image/avif",
+    "w": 99,
+    "bytes": 1005
+   },
+   {
+    "src": "poster-99.webp",
+    "type": "image/webp",
+    "w": 99,
+    "bytes": 884
+   },
+   {
+    "src": "poster-104.avif",
+    "type": "image/avif",
+    "w": 104,
+    "bytes": 1005
+   },
+   {
+    "src": "poster-104.webp",
+    "type": "image/webp",
+    "w": 104,
+    "bytes": 914
+   },
+   {
+    "src": "poster-120.avif",
+    "type": "image/avif",
+    "w": 120,
+    "bytes": 1136
+   },
+   {
+    "src": "poster-120.webp",
+    "type": "image/webp",
+    "w": 120,
+    "bytes": 1068
+   },
+   {
+    "src": "poster-125.avif",
+    "type": "image/avif",
+    "w": 125,
+    "bytes": 1178
+   },
+   {
+    "src": "poster-125.webp",
+    "type": "image/webp",
+    "w": 125,
+    "bytes": 1126
+   },
+   {
+    "src": "poster-130.avif",
+    "type": "image/avif",
+    "w": 130,
+    "bytes": 1220
+   },
+   {
+    "src": "poster-130.webp",
+    "type": "image/webp",
+    "w": 130,
+    "bytes": 1312
+   },
+   {
+    "src": "poster-144.avif",
+    "type": "image/avif",
+    "w": 144,
+    "bytes": 1325
+   },
+   {
+    "src": "poster-144.webp",
+    "type": "image/webp",
+    "w": 144,
+    "bytes": 1356
+   },
+   {
+    "src": "poster-148.avif",
+    "type": "image/avif",
+    "w": 148,
+    "bytes": 1327
+   },
+   {
+    "src": "poster-148.webp",
+    "type": "image/webp",
+    "w": 148,
+    "bytes": 1364
+   },
+   {
+    "src": "poster-150.avif",
+    "type": "image/avif",
+    "w": 150,
+    "bytes": 1339
+   },
+   {
+    "src": "poster-150.webp",
+    "type": "image/webp",
+    "w": 150,
+    "bytes": 1390
+   },
+   {
+    "src": "poster-156.avif",
+    "type": "image/avif",
+    "w": 156,
+    "bytes": 1392
+   },
+   {
+    "src": "poster-156.webp",
+    "type": "image/webp",
+    "w": 156,
+    "bytes": 1480
+   },
+   {
+    "src": "poster-180.avif",
+    "type": "image/avif",
+    "w": 180,
+    "bytes": 1640
+   },
+   {
+    "src": "poster-180.webp",
+    "type": "image/webp",
+    "w": 180,
+    "bytes": 1820
+   },
+   {
+    "src": "poster-184.avif",
+    "type": "image/avif",
+    "w": 184,
+    "bytes": 1718
+   },
+   {
+    "src": "poster-184.webp",
+    "type": "image/webp",
+    "w": 184,
+    "bytes": 1906
+   },
+   {
+    "src": "poster-185.avif",
+    "type": "image/avif",
+    "w": 185,
+    "bytes": 1730
+   },
+   {
+    "src": "poster-185.webp",
+    "type": "image/webp",
+    "w": 185,
+    "bytes": 1910
+   },
+   {
+    "src": "poster-198.avif",
+    "type": "image/avif",
+    "w": 198,
+    "bytes": 1790
+   },
+   {
+    "src": "poster-198.webp",
+    "type": "image/webp",
+    "w": 198,
+    "bytes": 2006
+   },
+   {
+    "src": "poster-208.avif",
+    "type": "image/avif",
+    "w": 208,
+    "bytes": 1853
+   },
+   {
+    "src": "poster-208.webp",
+    "type": "image/webp",
+    "w": 208,
+    "bytes": 2116
+   },
+   {
+    "src": "poster-216.avif",
+    "type": "image/avif",
+    "w": 216,
+    "bytes": 1903
+   },
+   {
+    "src": "poster-216.webp",
+    "type": "image/webp",
+    "w": 216,
+    "bytes": 2260
+   },
+   {
+    "src": "poster-222.avif",
+    "type": "image/avif",
+    "w": 222,
+    "bytes": 1956
+   },
+   {
+    "src": "poster-222.webp",
+    "type": "image/webp",
+    "w": 222,
+    "bytes": 2354
+   },
+   {
+    "src": "poster-240.avif",
+    "type": "image/avif",
+    "w": 240,
+    "bytes": 2030
+   },
+   {
+    "src": "poster-240.webp",
+    "type": "image/webp",
+    "w": 240,
+    "bytes": 2586
+   },
+   {
+    "src": "poster-276.avif",
+    "type": "image/avif",
+    "w": 276,
+    "bytes": 2393
+   },
+   {
+    "src": "poster-276.webp",
+    "type": "image/webp",
+    "w": 276,
+    "bytes": 3116
+   },
+   {
+    "src": "poster-288.avif",
+    "type": "image/avif",
+    "w": 288,
+    "bytes": 2573
+   },
+   {
+    "src": "poster-288.webp",
+    "type": "image/webp",
+    "w": 288,
+    "bytes": 3144
+   },
+   {
+    "src": "poster-296.avif",
+    "type": "image/avif",
+    "w": 296,
+    "bytes": 2575
+   },
+   {
+    "src": "poster-296.webp",
+    "type": "image/webp",
+    "w": 296,
+    "bytes": 3244
+   },
+   {
     "src": "poster-400.avif",
     "type": "image/avif",
     "w": 400,
@@ -83,18 +323,6 @@
     "bytes": 8066
    },
    {
-    "src": "poster-640.avif",
-    "type": "image/avif",
-    "w": 640,
-    "bytes": 5541
-   },
-   {
-    "src": "poster-640.webp",
-    "type": "image/webp",
-    "w": 640,
-    "bytes": 8336
-   },
-   {
     "src": "poster-800.avif",
     "type": "image/avif",
     "w": 800,
@@ -119,18 +347,6 @@
     "bytes": 11576
    },
    {
-    "src": "poster-960.avif",
-    "type": "image/avif",
-    "w": 960,
-    "bytes": 8502
-   },
-   {
-    "src": "poster-960.webp",
-    "type": "image/webp",
-    "w": 960,
-    "bytes": 13468
-   },
-   {
     "src": "poster-1200.avif",
     "type": "image/avif",
     "w": 1200,
@@ -145,25 +361,41 @@
   ]
  },
  "lean": {
-  "cols": 17,
+  "cols": 33,
   "rows": 3,
   "yaw": [
    -16.0,
+   -15.0,
    -14.0,
+   -13.0,
    -12.0,
+   -11.0,
    -10.0,
+   -9.0,
    -8.0,
+   -7.0,
    -6.0,
+   -5.0,
    -4.0,
+   -3.0,
    -2.0,
+   -1.0,
    0.0,
+   1.0,
    2.0,
+   3.0,
    4.0,
+   5.0,
    6.0,
+   7.0,
    8.0,
+   9.0,
    10.0,
+   11.0,
    12.0,
+   13.0,
    14.0,
+   15.0,
    16.0
   ],
   "pitch": [
@@ -172,11 +404,11 @@
    4.0
   ],
   "stepDeg": {
-   "yaw": 2.0,
+   "yaw": 1.0,
    "pitch": 4.0
   },
   "center": {
-   "col": 8,
+   "col": 16,
    "row": 1
   },
   "order": "row-major; row 0 is the lowest pitch (faces down), column 0 the lowest yaw (faces left)",
@@ -212,6 +444,22 @@
      "lean/half/r0c14.avif",
      "lean/half/r0c15.avif",
      "lean/half/r0c16.avif",
+     "lean/half/r0c17.avif",
+     "lean/half/r0c18.avif",
+     "lean/half/r0c19.avif",
+     "lean/half/r0c20.avif",
+     "lean/half/r0c21.avif",
+     "lean/half/r0c22.avif",
+     "lean/half/r0c23.avif",
+     "lean/half/r0c24.avif",
+     "lean/half/r0c25.avif",
+     "lean/half/r0c26.avif",
+     "lean/half/r0c27.avif",
+     "lean/half/r0c28.avif",
+     "lean/half/r0c29.avif",
+     "lean/half/r0c30.avif",
+     "lean/half/r0c31.avif",
+     "lean/half/r0c32.avif",
      "lean/half/r1c00.avif",
      "lean/half/r1c01.avif",
      "lean/half/r1c02.avif",
@@ -229,6 +477,22 @@
      "lean/half/r1c14.avif",
      "lean/half/r1c15.avif",
      "lean/half/r1c16.avif",
+     "lean/half/r1c17.avif",
+     "lean/half/r1c18.avif",
+     "lean/half/r1c19.avif",
+     "lean/half/r1c20.avif",
+     "lean/half/r1c21.avif",
+     "lean/half/r1c22.avif",
+     "lean/half/r1c23.avif",
+     "lean/half/r1c24.avif",
+     "lean/half/r1c25.avif",
+     "lean/half/r1c26.avif",
+     "lean/half/r1c27.avif",
+     "lean/half/r1c28.avif",
+     "lean/half/r1c29.avif",
+     "lean/half/r1c30.avif",
+     "lean/half/r1c31.avif",
+     "lean/half/r1c32.avif",
      "lean/half/r2c00.avif",
      "lean/half/r2c01.avif",
      "lean/half/r2c02.avif",
@@ -245,9 +509,25 @@
      "lean/half/r2c13.avif",
      "lean/half/r2c14.avif",
      "lean/half/r2c15.avif",
-     "lean/half/r2c16.avif"
+     "lean/half/r2c16.avif",
+     "lean/half/r2c17.avif",
+     "lean/half/r2c18.avif",
+     "lean/half/r2c19.avif",
+     "lean/half/r2c20.avif",
+     "lean/half/r2c21.avif",
+     "lean/half/r2c22.avif",
+     "lean/half/r2c23.avif",
+     "lean/half/r2c24.avif",
+     "lean/half/r2c25.avif",
+     "lean/half/r2c26.avif",
+     "lean/half/r2c27.avif",
+     "lean/half/r2c28.avif",
+     "lean/half/r2c29.avif",
+     "lean/half/r2c30.avif",
+     "lean/half/r2c31.avif",
+     "lean/half/r2c32.avif"
     ],
-    "bytes": 169151
+    "bytes": 328183
    },
    {
     "name": "full",
@@ -274,6 +554,22 @@
      "lean/full/r0c14.avif",
      "lean/full/r0c15.avif",
      "lean/full/r0c16.avif",
+     "lean/full/r0c17.avif",
+     "lean/full/r0c18.avif",
+     "lean/full/r0c19.avif",
+     "lean/full/r0c20.avif",
+     "lean/full/r0c21.avif",
+     "lean/full/r0c22.avif",
+     "lean/full/r0c23.avif",
+     "lean/full/r0c24.avif",
+     "lean/full/r0c25.avif",
+     "lean/full/r0c26.avif",
+     "lean/full/r0c27.avif",
+     "lean/full/r0c28.avif",
+     "lean/full/r0c29.avif",
+     "lean/full/r0c30.avif",
+     "lean/full/r0c31.avif",
+     "lean/full/r0c32.avif",
      "lean/full/r1c00.avif",
      "lean/full/r1c01.avif",
      "lean/full/r1c02.avif",
@@ -291,6 +587,22 @@
      "lean/full/r1c14.avif",
      "lean/full/r1c15.avif",
      "lean/full/r1c16.avif",
+     "lean/full/r1c17.avif",
+     "lean/full/r1c18.avif",
+     "lean/full/r1c19.avif",
+     "lean/full/r1c20.avif",
+     "lean/full/r1c21.avif",
+     "lean/full/r1c22.avif",
+     "lean/full/r1c23.avif",
+     "lean/full/r1c24.avif",
+     "lean/full/r1c25.avif",
+     "lean/full/r1c26.avif",
+     "lean/full/r1c27.avif",
+     "lean/full/r1c28.avif",
+     "lean/full/r1c29.avif",
+     "lean/full/r1c30.avif",
+     "lean/full/r1c31.avif",
+     "lean/full/r1c32.avif",
      "lean/full/r2c00.avif",
      "lean/full/r2c01.avif",
      "lean/full/r2c02.avif",
@@ -307,9 +619,25 @@
      "lean/full/r2c13.avif",
      "lean/full/r2c14.avif",
      "lean/full/r2c15.avif",
-     "lean/full/r2c16.avif"
+     "lean/full/r2c16.avif",
+     "lean/full/r2c17.avif",
+     "lean/full/r2c18.avif",
+     "lean/full/r2c19.avif",
+     "lean/full/r2c20.avif",
+     "lean/full/r2c21.avif",
+     "lean/full/r2c22.avif",
+     "lean/full/r2c23.avif",
+     "lean/full/r2c24.avif",
+     "lean/full/r2c25.avif",
+     "lean/full/r2c26.avif",
+     "lean/full/r2c27.avif",
+     "lean/full/r2c28.avif",
+     "lean/full/r2c29.avif",
+     "lean/full/r2c30.avif",
+     "lean/full/r2c31.avif",
+     "lean/full/r2c32.avif"
     ],
-    "bytes": 412855
+    "bytes": 801272
    }
   ]
  },
@@ -455,8 +783,8 @@
  "bytes": {
   "shadow": 1042,
   "poster1200": 10537,
-  "leanHalf": 169151,
-  "leanFull": 412855,
+  "leanHalf": 328183,
+  "leanFull": 801272,
   "clips": {
    "av1": 110239,
    "hevc": 173411,
@@ -474,11 +802,11 @@
     "hevc": 233577,
     "h264": 257336
    },
-   "desktopLow": 180730,
+   "desktopLow": 339762,
    "desktopFull": {
-    "av1": 703824,
-    "hevc": 766996,
-    "h264": 774590
+    "av1": 1251273,
+    "hevc": 1314445,
+    "h264": 1322039
    }
   }
  }

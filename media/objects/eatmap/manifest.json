@@ -83,16 +83,16 @@
     "bytes": 9018
    },
    {
-    "src": "poster-640.avif",
+    "src": "poster-750.avif",
     "type": "image/avif",
-    "w": 640,
-    "bytes": 5961
+    "w": 750,
+    "bytes": 6820
    },
    {
-    "src": "poster-640.webp",
+    "src": "poster-750.webp",
     "type": "image/webp",
-    "w": 640,
-    "bytes": 9124
+    "w": 750,
+    "bytes": 11004
    },
    {
     "src": "poster-800.avif",
@@ -119,16 +119,16 @@
     "bytes": 12532
    },
    {
-    "src": "poster-960.avif",
+    "src": "poster-900.avif",
     "type": "image/avif",
-    "w": 960,
-    "bytes": 8922
+    "w": 900,
+    "bytes": 8309
    },
    {
-    "src": "poster-960.webp",
+    "src": "poster-900.webp",
     "type": "image/webp",
-    "w": 960,
-    "bytes": 14652
+    "w": 900,
+    "bytes": 13676
    },
    {
     "src": "poster-1200.avif",
@@ -145,25 +145,41 @@
   ]
  },
  "lean": {
-  "cols": 17,
+  "cols": 33,
   "rows": 3,
   "yaw": [
    -16.0,
+   -15.0,
    -14.0,
+   -13.0,
    -12.0,
+   -11.0,
    -10.0,
+   -9.0,
    -8.0,
+   -7.0,
    -6.0,
+   -5.0,
    -4.0,
+   -3.0,
    -2.0,
+   -1.0,
    0.0,
+   1.0,
    2.0,
+   3.0,
    4.0,
+   5.0,
    6.0,
+   7.0,
    8.0,
+   9.0,
    10.0,
+   11.0,
    12.0,
+   13.0,
    14.0,
+   15.0,
    16.0
   ],
   "pitch": [
@@ -172,11 +188,11 @@
    4.0
   ],
   "stepDeg": {
-   "yaw": 2.0,
+   "yaw": 1.0,
    "pitch": 4.0
   },
   "center": {
-   "col": 8,
+   "col": 16,
    "row": 1
   },
   "order": "row-major; row 0 is the lowest pitch (faces down), column 0 the lowest yaw (faces left)",
@@ -212,6 +228,22 @@
      "lean/half/r0c14.avif",
      "lean/half/r0c15.avif",
      "lean/half/r0c16.avif",
+     "lean/half/r0c17.avif",
+     "lean/half/r0c18.avif",
+     "lean/half/r0c19.avif",
+     "lean/half/r0c20.avif",
+     "lean/half/r0c21.avif",
+     "lean/half/r0c22.avif",
+     "lean/half/r0c23.avif",
+     "lean/half/r0c24.avif",
+     "lean/half/r0c25.avif",
+     "lean/half/r0c26.avif",
+     "lean/half/r0c27.avif",
+     "lean/half/r0c28.avif",
+     "lean/half/r0c29.avif",
+     "lean/half/r0c30.avif",
+     "lean/half/r0c31.avif",
+     "lean/half/r0c32.avif",
      "lean/half/r1c00.avif",
      "lean/half/r1c01.avif",
      "lean/half/r1c02.avif",
@@ -229,6 +261,22 @@
      "lean/half/r1c14.avif",
      "lean/half/r1c15.avif",
      "lean/half/r1c16.avif",
+     "lean/half/r1c17.avif",
+     "lean/half/r1c18.avif",
+     "lean/half/r1c19.avif",
+     "lean/half/r1c20.avif",
+     "lean/half/r1c21.avif",
+     "lean/half/r1c22.avif",
+     "lean/half/r1c23.avif",
+     "lean/half/r1c24.avif",
+     "lean/half/r1c25.avif",
+     "lean/half/r1c26.avif",
+     "lean/half/r1c27.avif",
+     "lean/half/r1c28.avif",
+     "lean/half/r1c29.avif",
+     "lean/half/r1c30.avif",
+     "lean/half/r1c31.avif",
+     "lean/half/r1c32.avif",
      "lean/half/r2c00.avif",
      "lean/half/r2c01.avif",
      "lean/half/r2c02.avif",
@@ -245,9 +293,25 @@
      "lean/half/r2c13.avif",
      "lean/half/r2c14.avif",
      "lean/half/r2c15.avif",
-     "lean/half/r2c16.avif"
+     "lean/half/r2c16.avif",
+     "lean/half/r2c17.avif",
+     "lean/half/r2c18.avif",
+     "lean/half/r2c19.avif",
+     "lean/half/r2c20.avif",
+     "lean/half/r2c21.avif",
+     "lean/half/r2c22.avif",
+     "lean/half/r2c23.avif",
+     "lean/half/r2c24.avif",
+     "lean/half/r2c25.avif",
+     "lean/half/r2c26.avif",
+     "lean/half/r2c27.avif",
+     "lean/half/r2c28.avif",
+     "lean/half/r2c29.avif",
+     "lean/half/r2c30.avif",
+     "lean/half/r2c31.avif",
+     "lean/half/r2c32.avif"
     ],
-    "bytes": 176862
+    "bytes": 343410
    },
    {
     "name": "full",
@@ -274,6 +338,22 @@
      "lean/full/r0c14.avif",
      "lean/full/r0c15.avif",
      "lean/full/r0c16.avif",
+     "lean/full/r0c17.avif",
+     "lean/full/r0c18.avif",
+     "lean/full/r0c19.avif",
+     "lean/full/r0c20.avif",
+     "lean/full/r0c21.avif",
+     "lean/full/r0c22.avif",
+     "lean/full/r0c23.avif",
+     "lean/full/r0c24.avif",
+     "lean/full/r0c25.avif",
+     "lean/full/r0c26.avif",
+     "lean/full/r0c27.avif",
+     "lean/full/r0c28.avif",
+     "lean/full/r0c29.avif",
+     "lean/full/r0c30.avif",
+     "lean/full/r0c31.avif",
+     "lean/full/r0c32.avif",
      "lean/full/r1c00.avif",
      "lean/full/r1c01.avif",
      "lean/full/r1c02.avif",
@@ -291,6 +371,22 @@
      "lean/full/r1c14.avif",
      "lean/full/r1c15.avif",
      "lean/full/r1c16.avif",
+     "lean/full/r1c17.avif",
+     "lean/full/r1c18.avif",
+     "lean/full/r1c19.avif",
+     "lean/full/r1c20.avif",
+     "lean/full/r1c21.avif",
+     "lean/full/r1c22.avif",
+     "lean/full/r1c23.avif",
+     "lean/full/r1c24.avif",
+     "lean/full/r1c25.avif",
+     "lean/full/r1c26.avif",
+     "lean/full/r1c27.avif",
+     "lean/full/r1c28.avif",
+     "lean/full/r1c29.avif",
+     "lean/full/r1c30.avif",
+     "lean/full/r1c31.avif",
+     "lean/full/r1c32.avif",
      "lean/full/r2c00.avif",
      "lean/full/r2c01.avif",
      "lean/full/r2c02.avif",
@@ -307,9 +403,25 @@
      "lean/full/r2c13.avif",
      "lean/full/r2c14.avif",
      "lean/full/r2c15.avif",
-     "lean/full/r2c16.avif"
+     "lean/full/r2c16.avif",
+     "lean/full/r2c17.avif",
+     "lean/full/r2c18.avif",
+     "lean/full/r2c19.avif",
+     "lean/full/r2c20.avif",
+     "lean/full/r2c21.avif",
+     "lean/full/r2c22.avif",
+     "lean/full/r2c23.avif",
+     "lean/full/r2c24.avif",
+     "lean/full/r2c25.avif",
+     "lean/full/r2c26.avif",
+     "lean/full/r2c27.avif",
+     "lean/full/r2c28.avif",
+     "lean/full/r2c29.avif",
+     "lean/full/r2c30.avif",
+     "lean/full/r2c31.avif",
+     "lean/full/r2c32.avif"
     ],
-    "bytes": 428771
+    "bytes": 832422
    }
   ]
  },
@@ -455,8 +567,8 @@
  "bytes": {
   "shadow": 1485,
   "poster1200": 10960,
-  "leanHalf": 176862,
-  "leanFull": 428771,
+  "leanHalf": 343410,
+  "leanFull": 832422,
   "clips": {
    "av1": 139783,
    "hevc": 215707,
@@ -474,11 +586,11 @@
     "hevc": 257355,
     "h264": 289474
    },
-   "desktopLow": 189307,
+   "desktopLow": 355855,
    "desktopFull": {
-    "av1": 757861,
-    "hevc": 833785,
-    "h264": 855772
+    "av1": 1328060,
+    "hevc": 1403984,
+    "h264": 1425971
    }
   }
  }

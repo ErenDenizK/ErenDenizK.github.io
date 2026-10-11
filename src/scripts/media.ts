@@ -59,6 +59,9 @@ type Lean = {
   hop: boolean; centred: (() => void) | null;
   /** what the last draw showed (tests and the HUD-less measurements read it) */
   drawn: { exact: boolean; full: boolean; u: number; v: number };
+  /** a small slot (Work's emblems): the half-size files, kept to decode again at a new canvas size, and the
+      device width the half frames were last decoded at (0: decoded at their own size) */
+  halfBlobs: Blob[]; halfW: number;
 };
 export type ObjInfo = { manifest: string | null; src: string; srcset?: { type: string; srcset: string }[]; shadow?: { src: string; sources: { type: string; src: string }[] } | null; light: string };
 
@@ -418,10 +421,18 @@ function loadLean(layer: Layer, m: Manifest, dir: string) {
   const slot = layer.closest<Slot>('.media')!;
   const ci = lean.center.col / (lean.cols - 1), cj = lean.center.row / Math.max(1, lean.rows - 1);
   const seq: Lean = { m: lean, S: m.size, dir, half: [], canvas: c, ok: false, slot, blobs: new Map(), full: new Map(), decoding: new Set(), cap: 0, useFull: false, dw: 0, dh: 0, ox: 0, oy: 0, pw: 0, ph: 0,
-    empty: new Set(), cur: { u: ci, v: cj }, vel: { u: 0, v: 0 }, target: { u: ci, v: cj }, raf: 0, hop: false, centred: null, drawn: { exact: true, full: false, u: ci, v: cj } };
+    empty: new Set(), cur: { u: ci, v: cj }, vel: { u: 0, v: 0 }, target: { u: ci, v: cj }, raf: 0, hop: false, centred: null, drawn: { exact: true, full: false, u: ci, v: cj },
+    halfBlobs: [], halfW: 0 };
   layer._seq = seq;
   size(seq);
-  Promise.all(tier.frames.map((u) => fetch(dir + u).then((r) => r.blob()).then((b) => createImageBitmap(b)))).then((frames) => {
+  Promise.all(tier.frames.map((u) => fetch(dir + u).then((r) => r.blob()))).then((blobs) => {
+    if (!layer.isConnected || layer._seq !== seq) return null;
+    seq.halfBlobs = blobs;
+    layer.appendChild(wrap);   // still empty and black (adds nothing): measured from the stage it draws in
+    size(seq);
+    return halfFrames(seq);
+  }).then((frames) => {
+    if (!frames) return;
     if (!layer.isConnected || layer._seq !== seq) { frames.forEach((f) => f.close()); return; }   // shed while loading
     seq.half = frames;
     /* a render can drop the object from a frame (tools/objects/README.md); such frames are left out of
@@ -434,7 +445,6 @@ function loadLean(layer: Layer, m: Manifest, dir: string) {
       let sum = 0; for (let k = 0; k < d.length; k += 4) sum += d[k] + d[k + 1] + d[k + 2];
       if (sum < 16 * 16 * 3) seq.empty.add(i);
     });
-    layer.appendChild(wrap);
     seq.ok = true;
     size(seq);   // now inside the stage, measured from it
     draw(seq);
@@ -444,6 +454,17 @@ function loadLean(layer: Layer, m: Manifest, dir: string) {
   }).catch(() => { if (layer._seq === seq) layer._seq = null; });
 }
 const fullTier = (seq: Lean) => seq.m.tiers.find((t) => t.name === 'full');
+/** The half-size frames as bitmaps. Where the canvas draws them well below their own size (Work's emblems:
+    144 CSS px, the half frames reduced to about 0.3), they are decoded at the canvas's device size by the
+    Lanczos worker, as the full-size frames are: the browser's reduction kept 0.55-0.67 of the detail of
+    the ideal frame there, at rest and in motion alike (ADR-0006 note of 2026-10-11). */
+function halfFrames(seq: Lean): Promise<ImageBitmap[]> {
+  const tier = seq.m.tiers.find((t) => t.name === 'half') || seq.m.tiers[0];
+  const small = !seq.useFull && seq.dw < tier.w * 0.95 && !!resizer();
+  const w = seq.dw, h = seq.dh;
+  seq.halfW = small ? w : 0;
+  return Promise.all(seq.halfBlobs.map((b) => (small ? decodeTo(b, w, h) : Promise.resolve(null)).then((f) => f || createImageBitmap(b))));
+}
 /** The smallest whole CSS length that is also a whole number of device pixels: 1 px at DPR 1 and 2, 2 at
     1.5, 4 at 1.25. Chrome draws a canvas whose box is not on this grid resampled as a whole: a box a
     fraction of a CSS pixel wide (365.5 px at DPR 2, odd device widths) lost three quarters of a 1-px
@@ -487,6 +508,13 @@ function size(seq: Lean) {
     if (seq.dw && dw !== seq.dw) { seq.full.forEach((f) => f.close()); seq.full.clear(); }   // decoded at the old size
     seq.dw = dw; seq.dh = dh; seq.useFull = useFull;
     seq.cap = Math.max(8, Math.min(30, Math.floor(FULL_BYTES / (dw * dh * 4))));
+    if (seq.ok && seq.halfW && seq.halfW !== dw) {   // a small slot resized: its half frames again at the new size
+      const next = halfFrames(seq), at = seq.halfW;
+      next.then((frames) => {
+        if (!seq.ok || seq.halfW !== at) { frames.forEach((f) => f.close()); return; }   // shed, or resized again
+        seq.half.forEach((f) => { if ('close' in f) f.close(); }); seq.half = frames; draw(seq);
+      });
+    }
   } else if (!moved) return;
   if (seq.ok) draw(seq);
 }
@@ -515,7 +543,7 @@ function decodeTo(b: Blob, w: number, h: number): Promise<ImageBitmap | null> {
 function dropLean(seq: Lean) {
   cancelAnimationFrame(seq.raf);
   seq.ok = false;
-  seq.half.forEach((f) => { if ('close' in f) f.close(); }); seq.half = [];
+  seq.half.forEach((f) => { if ('close' in f) f.close(); }); seq.half = []; seq.halfBlobs = [];
   seq.full.forEach((f) => f.close()); seq.full.clear(); seq.blobs.clear();
 }
 const cell = (seq: Lean, col: number, row: number) => row * seq.m.cols + col;
@@ -575,9 +603,13 @@ function draw(seq: Lean) {
     w.forEach(([k]) => decodeFull(seq, k));
     full = w.every(([k]) => seq.full.has(k));
     /* the neighbourhood the pose is heading into, so moving stays sharp: 4° behind, 6° ahead, whatever
-       the grid's step (2°, or 1° for edk since 2026-10-10) */
+       the grid's step (2°, or 1° since 2026-10-10), but never more frames than the LRU holds: a window
+       larger than the cap evicts the frames it decoded before the pose reaches them (Eat Map at DPR 2,
+       808 px frames, a cap of 14 against 22 wanted, drew 9 of 61 sweep frames from the half tier;
+       ADR-0006 note of 2026-10-11) */
     const ahead = seq.vel.u >= 0 ? 1 : -1, per = 2 / (seq.m.stepDeg?.yaw || 2);
-    for (let d = -2 * per; d <= 3 * per; d++) {
+    const span = Math.max(2, Math.min(5 * per + 1, Math.floor(seq.cap / 2))), back = Math.floor((span - 1) * 0.4);
+    for (let d = -back; d <= span - 1 - back; d++) {
       const i = i0 + (d * ahead) + (ahead < 0 ? 1 : 0);
       if (i < 0 || i >= cols) continue;
       for (let j = j0; j <= Math.min(rows - 1, j0 + 1); j++) decodeFull(seq, cell(seq, i, j));
