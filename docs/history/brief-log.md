@@ -400,3 +400,12 @@ The owner's words, translated from Turkish.
   `docs/family-kit/SESSIONS.md` and the app session prompts).
 - **Other projects:** brief what has been done so far and what is wanted in this project and the
   others; ask every question, assume nothing. "A design-award feel on every page: go all out."
+
+### 2026-10-11, night (Home A seen)
+
+- **Hero object:** just "edk" beside the name on Home is too simple a move for a flashier, cooler
+  site. What better 3D object could stand there? Think more innovatively; something mascot-like could
+  make a lot of sense, but evaluate it. A photo of the owner is available later if wanted.
+- **Measured type and screens:** size the fonts and screenshots from the research already done (size,
+  big type), or from new research kept under control; nothing uncontrolled: design every detail,
+  size, alignment and interaction deliberately. Fold this into the current work.
