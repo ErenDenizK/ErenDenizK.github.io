@@ -1,7 +1,7 @@
 # ADR-0009: Live frames: one frame engine and one light, behind a flag
 
-**Status:** proposed (the owner A/Bs it on the live site behind `?live`; nothing changes without the
-flag); no verdict recorded, parked until the real-time 3D decision (2026-10-10, `docs/PLAN.md`
+**Status:** proposed (the owner A/Bs it on the live site behind `?live`, one page load at a time since
+2026-10-11; nothing changes without the flag); no verdict recorded, parked until the real-time 3D decision (2026-10-10, `docs/PLAN.md`
 track 7) · **Amends:** ADR-0006 items 4 (interaction) and 6 (tiers); keeps items 1–3, 5 and 7 ·
 **Rests on:** brief §7 (2026-10-09 after v0: the owner misses prototype E's live, interactive
 animation on desktop; "if we render well, phones can get animation too");
@@ -23,7 +23,8 @@ relit from a normal pass, and proved both in a scratch page.
 Build it in the site, opt-in, for the Home object (edk) and the Home showcase (Recto):
 
 1. **Opt-in.** `?live` turns the engine on and remembers it in this browser (`localStorage`
-   `edk-live`); `?live=0` or the chip's "Turn off" ends it. Without the flag the page loads 1 KB more
+   `edk-live`); `?live=0` or the chip's "Turn off" ends it. *Amended 2026-10-11 (below): one page
+   load only, nothing remembered, phones only with `?live=force`.* Without the flag the page loads 1 KB more
    script (the flag check and Vite's preload helper) and behaves exactly as before; the engine
    (10 KB gzip) is a separate chunk loaded only when the flag is on.
 2. **One engine, one canvas per slot** (`src/scripts/live/`, WebGL2, no library). Exact Cycles frames
@@ -100,6 +101,23 @@ The stutter work (ADR-0006 amendment of 2026-10-10) weighed making the engine th
 
 It becomes the default only after the owner's A/B on their own machine and a real-device frame-time
 and battery check (still open, as below).
+
+## Amendment 2026-10-11: one page load, never remembered, not on phones
+
+The owner saw the chip ("Live frames: starting / Turn off") on their iPhone, over a project page,
+long after a visit with `?live`: item 1 remembered the flag in `localStorage`, and the chip showed on
+every page with media. The owner chose to stay with pre-rendered media (board round 2, 2026-10-11:
+"stay pre-rendered and fix it", option a); the engine stays an experiment. So (`live/flag.ts`):
+
+- the flag lasts one page load: `?live` (or `?live=1`) in that URL turns the engine on; nothing is
+  stored, and a link or reload without it is the default page;
+- an old stored `edk-live` is removed on every page load and never read;
+- a phone (coarse pointer on a narrow screen) never gets the engine or the chip unless the URL says
+  `?live=force`; the phone tier stays reachable for tests and the owner's own A/B;
+- "Turn off" reloads the page without the flag.
+
+Tested in `tests/e2e/live.spec.ts` (not remembered; an old stored flag is cleared and ignored, on Home
+and a project page; a phone with `?live` or `?live=1` loads no engine) and `tests/e2e/reading.spec.ts`.
 
 ## Consequences
 
