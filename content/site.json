@@ -79,6 +79,49 @@
       ]
     }
   },
+  "homeB": {
+    "vision": {
+      "text": "I build products by directing many AI agents at once, and I learn the machine underneath by hand.",
+      "draft": "Lead draft, 2026-10-11, written in the owner’s spirit and not a quote; the owner approves or rewrites it."
+    },
+    "index": {
+      "title": "The index",
+      "now": "Now building",
+      "latest": "Latest in the record",
+      "work": "The work",
+      "workDek": "Three products, all in active development, each built by directing AI agents.",
+      "record": "The record",
+      "recordDek": "A dated log of what I do, why, and what I’m building.",
+      "entries": "entries",
+      "since": "since",
+      "open": "Open the record",
+      "light": "Change the light",
+      "lightHint": "The dot changes the light",
+      "elsewhere": "Elsewhere"
+    },
+    "sky": {
+      "place": "Istanbul",
+      "in": "in",
+      "phases": {
+        "night": "Night",
+        "twilight": "Twilight",
+        "dawn": "Dawn",
+        "morning": "Morning",
+        "afternoon": "Afternoon",
+        "golden": "Golden hour",
+        "dusk": "Dusk"
+      },
+      "sunrise": "sunrise",
+      "sunset": "sunset"
+    },
+    "showcase": {
+      "title": "Work",
+      "all": "All work",
+      "kicker": "Building now",
+      "cta": "Take a look",
+      "also": "Also building"
+    }
+  },
   "work": {
     "kicker": "Three products, all in development",
     "title": "Products I direct",
