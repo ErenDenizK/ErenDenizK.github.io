@@ -1,0 +1,33 @@
+---
+/* One photograph on About, in the presentation the page is showing. The owner (brief log, 2026-10-11
+   evening): "try designs other than the postcard; it looks a bit simple and cheap; I want a design that
+   would win a design award". Three alternatives were built beside the postcard
+   (docs/research/2026-10-photo-presentation.md) and can be compared on the live page until the owner
+   picks one; the switch is temporary:
+
+     /about/             the postcard (components/Postcard.astro), as before
+     /about/?photos=1    Darkroom: the print develops as it comes into view; a tap shows its label in light
+     /about/?photos=2    Proof: a film strip on a light table, a loupe, a tap enlarges the frame
+     /about/?photos=3    Depth: a window with a painted depth map; look around, tap to pull focus
+
+   The postcard is what the page is built with, so without JavaScript (and by default) it is what shows.
+   The alternatives wait in <template>s (inert: no image loads, nothing is in the accessibility tree)
+   and scripts/photos/switch.ts swaps them in when ?photos asks for one. */
+import Postcard from './Postcard.astro';
+import Darkroom from './photo/Darkroom.astro';
+import Proof from './photo/Proof.astro';
+import Depth from './photo/Depth.astro';
+import type { PhotoProps } from './photo/types';
+type Props = PhotoProps;
+const p = Astro.props;
+---
+<div class="ph" data-photo>
+  <Postcard src={p.src} srcset={p.srcset} avif={p.avif} sizes={p.sizes} width={p.width} height={p.height} alt={p.alt} note={p.note} place={p.place} date={p.date} rest={p.rest} hint={p.hint} />
+  <template data-look="1"><Darkroom {...p} /></template>
+  <template data-look="2"><Proof {...p} /></template>
+  <template data-look="3"><Depth {...p} /></template>
+</div>
+
+<script>
+  import '../scripts/photos/switch';
+</script>

@@ -7,6 +7,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { test, expect, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 import { desktop, tablet, phone } from './helpers';
 
 const site = JSON.parse(fs.readFileSync(path.resolve('content/site.json'), 'utf8'));
@@ -279,3 +280,231 @@ test('without JavaScript every chapter reads and each photograph stands with its
   await expect(page.locator('#main .pc-turn:visible')).toHaveCount(0);
   await ctx.close();
 });
+
+/* The three alternatives to the postcard (2026-10-11 evening: "a design that would win a design award";
+   docs/research/2026-10-photo-presentation.md), switchable with ?photos=1|2|3 until the owner picks:
+   Darkroom (the print develops as it comes into view; a tap shows its label in light), Proof (a strip
+   on a light table, a loupe, a tap enlarges the frame) and Depth (a window with a painted depth map;
+   look around, tap to pull focus). Each stands where the postcard stood, keeps the alt text, never
+   draws a photograph larger than its pixels, and has its still twin. */
+const LOOKS = [['1', '.dk'], ['2', '.pf'], ['3', '.dp']] as const;
+
+test.describe('About photo alternatives, desktop', () => {
+  test.use(desktop);
+
+  for (const [n, sel] of LOOKS) {
+    test(`?photos=${n} puts ${sel} where each postcard stood, with its alt text and the switch`, async ({ page }) => {
+      await page.goto(`about/?photos=${n}&still`);
+      await expect(page.locator('#main .pc')).toHaveCount(0);
+      await expect(page.locator(`#main ${sel}`)).toHaveCount(photoCount);
+      for (const c of cardChs) {
+        const fig = page.locator(`#${c.id} ${sel}`).first();
+        expect(await fig.locator('img').first().getAttribute('alt')).toBe(c.photos![0].alt);
+        const words = (await page.locator(`#${c.id} .ch-body`).boundingBox())!;
+        const box = (await fig.boundingBox())!;
+        expect(box.x, 'in the margin, right of the words').toBeGreaterThan(words.x + words.width);
+      }
+      const sw = page.locator('.ph-switch a');
+      await expect(sw).toHaveCount(4);
+      await expect(page.locator('.ph-switch a[aria-current]')).toHaveText(['Postcard', 'Darkroom', 'Proof', 'Depth'][+n]);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+    });
+  }
+
+  test('the default page has no switch, and the alternatives wait inert in templates', async ({ page }) => {
+    await page.goto('about/?still');
+    await expect(page.locator('.ph-switch')).toHaveCount(0);
+    await expect(page.locator('#main .dk, #main .pf, #main .dp')).toHaveCount(0);
+    expect(await page.locator('#main [data-photo] template').count()).toBe(photoCount * 3);
+  });
+
+  test('Darkroom: the print develops in view; a click shows its label in light, and takes it away', async ({ page }) => {
+    await page.goto('about/?photos=1');
+    const dk = page.locator(`#${cardChs[1].id} .dk`);
+    await dk.evaluate((e) => e.scrollIntoView({ block: 'center' }));
+    await expect(dk).toHaveClass(/is-developed/, { timeout: 10_000 });
+    const hit = dk.locator('.dk-hit');
+    await expect(hit).toHaveAttribute('aria-pressed', 'false');
+    await hit.click();
+    await expect(dk).toHaveClass(/is-safe/);
+    await expect(hit).toHaveAttribute('aria-pressed', 'true');
+    await expect(dk.locator('.dk-plate')).toHaveCSS('opacity', '1', { timeout: 3000 });
+    await expect(dk.locator('.dk-place .vh')).toHaveText(cardChs[1].photos![0].place.split(',')[0]);
+    await expect(dk.locator('.dk-note')).toHaveText(cardChs[1].photos![0].note);
+    await hit.focus();
+    await page.keyboard.press('Enter');
+    await expect(dk).not.toHaveClass(/is-safe/);
+  });
+
+  test('Proof: the loupe follows a mouse and magnifies within the pixels; a click enlarges, Escape closes', async ({ page }) => {
+    await page.goto('about/?photos=2');
+    const pf = page.locator(`#${cardChs[1].id} .pf`);
+    await pf.evaluate((e) => e.scrollIntoView({ block: 'center' }));
+    await expect(pf).toHaveClass(/is-seen/);
+    const fr = (await pf.locator('.pf-frame--pick').boundingBox())!;
+    const loupe = pf.locator('.pf-loupe');
+    const at0 = (await loupe.boundingBox())!;
+    await page.mouse.move(fr.x + fr.width * 0.3, fr.y + fr.height * 0.3, { steps: 6 });
+    await expect(pf).toHaveClass(/is-follow/);
+    await expect.poll(async () => { const b = (await loupe.boundingBox())!; return Math.hypot(b.x + b.width / 2 - (fr.x + fr.width * 0.3), b.y + b.height / 2 - (fr.y + fr.height * 0.3)); }, { timeout: 3000 }).toBeLessThan(3);
+    expect(Math.abs(at0.x - (await loupe.boundingBox())!.x)).toBeGreaterThan(20);
+    /* the lens's picture is never drawn larger than the file's pixels */
+    const mag = pf.locator('.pf-mag img');
+    await page.waitForFunction((el) => (el as HTMLImageElement).complete && (el as HTMLImageElement).naturalWidth > 0, await mag.elementHandle(), { timeout: 15_000 });
+    const m = await mag.evaluate((i: HTMLImageElement) => ({ drawn: i.getBoundingClientRect().width, px: i.naturalWidth, dpr: devicePixelRatio }));
+    expect(m.drawn * m.dpr).toBeLessThanOrEqual(m.px + 1);
+    expect(m.drawn, 'it magnifies').toBeGreaterThan(fr.width * 1.2);
+    /* a click enlarges the frame in a modal dialog; Escape closes it and gives the focus back */
+    await page.mouse.click(fr.x + fr.width * 0.3, fr.y + fr.height * 0.3);
+    const dlg = pf.locator('.pf-dlg');
+    await expect(dlg).toHaveJSProperty('open', true);
+    await expect(dlg.locator('.pf-dlg-note')).toHaveText(cardChs[1].photos![0].note);
+    await page.waitForTimeout(700);
+    const big = (await dlg.locator('.pf-dlg-pic').boundingBox())!;
+    expect(big.width).toBeGreaterThan(fr.width);
+    const nat = await dlg.locator('img').evaluate((i: HTMLImageElement) => +i.getAttribute('width')!);
+    expect(big.width).toBeLessThanOrEqual(nat + 1);
+    await page.keyboard.press('Escape');
+    await expect(dlg).toHaveJSProperty('open', false, { timeout: 3000 });
+    await expect(pf.locator('.pf-open')).toBeFocused();
+    /* leaving the strip sends the loupe back to where it lay */
+    await page.mouse.move(5, 450, { steps: 4 });
+    await expect(pf).not.toHaveClass(/is-follow/);
+    await expect.poll(async () => Math.abs((await loupe.boundingBox())!.x - at0.x), { timeout: 3000 }).toBeLessThan(2);
+  });
+
+  test('Depth: moving over the photo moves the eye; a click pulls focus and shows where', async ({ page }) => {
+    await page.goto('about/?photos=3');
+    const dp = page.locator(`#${cardChs[1].id} .dp`);
+    await dp.evaluate((e) => e.scrollIntoView({ block: 'center' }));
+    await expect(dp).toHaveClass(/is-live/);
+    const pic = (await dp.locator('.dp-pic').boundingBox())!;
+    await page.mouse.move(pic.x + pic.width - 4, pic.y + pic.height / 2, { steps: 5 });
+    await expect.poll(() => dp.evaluate((e) => +getComputedStyle(e).getPropertyValue('--lx')), { timeout: 3000 }).toBeGreaterThan(0.5);
+    await page.mouse.click(pic.x + pic.width / 2, pic.y + pic.height * 0.9);
+    await expect(dp.locator('.dp-ring')).toHaveClass(/is-on/);
+    await expect(dp.locator('.dp-label')).toContainText(cardChs[1].photos![0].note);
+    await expect(dp.locator('.dp-label')).toContainText(cardChs[1].photos![0].place);
+  });
+});
+
+for (const [n, sel] of LOOKS) {
+  test(`?photos=${n}: no photograph is stretched (phone 3x)`, async ({ browser }) => {
+    const ctx = await browser.newContext({ ...phone, deviceScaleFactor: 3, baseURL: test.info().project.use.baseURL });
+    const page = await ctx.newPage();
+    await page.goto(`about/?photos=${n}&still`);
+    await expect(page.locator(`#main ${sel}`)).toHaveCount(photoCount);
+    await page.evaluate(async () => {
+      for (let y = 0; y < document.documentElement.scrollHeight; y += 300) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 40)); }
+    });
+    /* every photograph drawn on the page (the enlarged view's is not drawn until it opens) */
+    const q = `#main ${sel} img:not(.pf-dlg img)`;
+    await page.waitForFunction((s) => [...document.querySelectorAll<HTMLImageElement>(s)].every((i) => !i.getBoundingClientRect().width || (i.complete && i.naturalWidth > 0)), q, { timeout: 20_000 });
+    const all = await page.evaluate(async (s) => Promise.all([...document.querySelectorAll<HTMLImageElement>(s)].filter((i) => i.getBoundingClientRect().width).map(async (img) => {
+      const probe = new Image();
+      probe.src = img.currentSrc;
+      await probe.decode();
+      return { src: img.currentSrc.split('/').pop(), drawn: img.getBoundingClientRect().width, px: probe.naturalWidth, dpr: devicePixelRatio };
+    })), q);
+    expect(all.length).toBeGreaterThanOrEqual(photoCount);
+    for (const s of all) expect(s.drawn * s.dpr, `${s.src}: drawn ${s.drawn} css px at ${s.dpr}x from ${s.px} px`).toBeLessThanOrEqual(s.px + 1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+    await ctx.close();
+  });
+}
+
+test.describe('About photo alternatives, phone', () => {
+  test.use(phone);
+
+  test('Darkroom: a tap shows the label', async ({ page }) => {
+    await page.goto('about/?photos=1&still');
+    const dk = page.locator('#main .dk').first();
+    await dk.scrollIntoViewIfNeeded();
+    await expect(dk).toHaveClass(/is-developed/);
+    await dk.locator('.dk-hit').tap();
+    await expect(dk).toHaveClass(/is-safe/);
+  });
+
+  test('Proof: a finger drags the loupe without scrolling the page; a tap enlarges the frame', async ({ page }) => {
+    await page.goto('about/?photos=2');
+    const pf = page.locator('#main .pf').first();
+    await pf.evaluate((e) => e.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(300);
+    const lb = (await pf.locator('.pf-loupe').boundingBox())!;
+    const y0 = await page.evaluate(() => scrollY);
+    const cdp = await page.context().newCDPSession(page);
+    const cx = lb.x + lb.width / 2, cy = lb.y + lb.height / 2;
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: cx, y: cy }] });
+    for (let i = 1; i <= 8; i++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: cx - i * 12, y: cy - i * 16 }] });
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await page.waitForTimeout(200);
+    const lb2 = (await pf.locator('.pf-loupe').boundingBox())!;
+    expect(lb.y - lb2.y, 'the loupe moved with the finger').toBeGreaterThan(60);
+    expect(Math.abs((await page.evaluate(() => scrollY)) - y0), 'the page did not scroll').toBeLessThanOrEqual(1);
+    const fr = (await pf.locator('.pf-frame--pick').boundingBox())!;
+    await page.touchscreen.tap(fr.x + fr.width * 0.75, fr.y + fr.height * 0.85);
+    await expect(pf.locator('.pf-dlg')).toHaveJSProperty('open', true);
+    const big = (await pf.locator('.pf-dlg-pic').boundingBox())!;
+    expect(big.x).toBeGreaterThanOrEqual(0);
+    expect(big.x + big.width).toBeLessThanOrEqual(390);
+    await page.touchscreen.tap(195, 60);
+    await expect(pf.locator('.pf-dlg')).toHaveJSProperty('open', false, { timeout: 3000 });
+  });
+
+  test('Depth: a tap pulls focus; the label stands under the photo', async ({ page }) => {
+    await page.goto('about/?photos=3');
+    const dp = page.locator('#main .dp').first();
+    await dp.evaluate((e) => e.scrollIntoView({ block: 'center' }));
+    const pic = (await dp.locator('.dp-pic').boundingBox())!;
+    await page.touchscreen.tap(pic.x + pic.width / 2, pic.y + pic.height * 0.8);
+    await expect(dp.locator('.dp-ring')).toHaveClass(/is-on/);
+    const lab = (await dp.locator('.dp-label').boundingBox())!;
+    expect(lab.y).toBeGreaterThan(pic.y + pic.height);
+  });
+});
+
+test('photo alternatives, reduced motion: developed at once, the loupe without lag, depth still and sharp', async ({ browser }) => {
+  const ctx = await browser.newContext({ ...desktop, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
+  const page = await ctx.newPage();
+  await page.goto('about/?photos=1');
+  const dk = page.locator('#main .dk').first();
+  await expect(dk).toHaveClass(/is-developed/);
+  await expect(dk).not.toHaveClass(/is-live/);
+  await expect(dk.locator('img')).toHaveCSS('opacity', '1');
+  await page.goto('about/?photos=3');
+  const dp = page.locator('#main .dp').first();
+  await expect(dp).not.toHaveClass(/is-live/);
+  await expect(dp.locator('.dp-hit')).toBeHidden();
+  await page.goto('about/?photos=2');
+  const pf = page.locator('#main .pf').first();
+  await expect(pf).toHaveClass(/is-seen/);
+  await pf.evaluate((e) => e.scrollIntoView({ block: 'center' }));
+  const fr = (await pf.locator('.pf-frame--pick').boundingBox())!;
+  await page.mouse.move(fr.x + 40, fr.y + 40);
+  const lb = (await pf.locator('.pf-loupe').boundingBox())!;
+  expect(Math.hypot(lb.x + lb.width / 2 - fr.x - 40, lb.y + lb.height / 2 - fr.y - 40)).toBeLessThan(2);
+  await ctx.close();
+});
+
+test('without JavaScript, ?photos still shows the postcards with their captions', async ({ browser }) => {
+  const ctx = await browser.newContext({ ...desktop, javaScriptEnabled: false, baseURL: test.info().project.use.baseURL });
+  const page = await ctx.newPage();
+  await page.goto('about/?photos=2');
+  await expect(page.locator('#main .pc')).toHaveCount(photoCount);
+  await expect(page.locator('#main .pf')).toHaveCount(0);
+  await expect(page.locator('#main .pc-cap-note').first()).toBeVisible();
+  await ctx.close();
+});
+
+/* axe on each alternative (a11y.spec.ts covers the default page): no serious or critical violations */
+for (const [n] of LOOKS) {
+  test(`axe /about/?photos=${n}`, async ({ browser }) => {
+    const ctx = await browser.newContext({ ...desktop, baseURL: test.info().project.use.baseURL });
+    const page = await ctx.newPage();
+    await page.goto(`about/?photos=${n}&still`);
+    const res = await new AxeBuilder({ page: page as any }).include('#main').withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+    const bad = res.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
+    expect(bad.map((v) => `${v.id}: ${v.nodes.slice(0, 3).map((x) => x.target.join(' ')).join(' | ')}`)).toEqual([]);
+    await ctx.close();
+  });
+}
