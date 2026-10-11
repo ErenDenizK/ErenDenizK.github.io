@@ -19,7 +19,7 @@ export default {
     return { height: 316, body }
   },
   narrow() {
-    return { height: 166, body: [frame({ id: 'sf-n', x: 0, y: 8, w: 240, h: 150, href: SHOT, notes: [
+    return { height: 141, body: [frame({ id: 'sf-n', x: 0, y: 8, w: 200, h: 125, href: SHOT, notes: [
       { at: [0.268, 0.513], label: 'Sample' }, { at: [0.52, 0.6], label: 'Kind' },
     ] })] }
   },

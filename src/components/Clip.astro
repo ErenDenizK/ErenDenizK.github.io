@@ -27,8 +27,8 @@ const sizes = '(min-width: 1240px) 1010px, 92vw';
   <div class="cap-frame clip-frame">
     <picture>
       {posters.map((p) => [
-        <source type="image/avif" srcset={p.avif} sizes={p.media === NARROW ? '72vw' : sizes} media={p.media} />,
-        <source type="image/webp" srcset={p.webp} sizes={p.media === NARROW ? '72vw' : sizes} media={p.media} />,
+        <source type="image/avif" srcset={p.avif} sizes={p.media === NARROW ? 'min(72vw, 390px)' : sizes} media={p.media} />,
+        <source type="image/webp" srcset={p.webp} sizes={p.media === NARROW ? 'min(72vw, 390px)' : sizes} media={p.media} />,
       ])}
       <img class="clip-poster" src={fallback.src} alt={s.alt} width={s.img.width} height={s.img.height} loading="lazy" decoding="async" />
     </picture>

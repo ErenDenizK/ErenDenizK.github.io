@@ -135,10 +135,12 @@ dialog.focus .sheet { container-type: size; }
   .emb-promise { padding-bottom: 32px; }
   .emb-line { font-size: calc(var(--w-display-s) * 0.86); }
   .cap-lead { margin-bottom: 44px; }
-  .clip-cut .clip-frame { aspect-ratio: var(--clip-ar-phone, var(--clip-ar)); max-width: 72vw; margin-inline: auto; border-radius: calc(var(--cap-r) * 2); }
+  /* a phone screen is never drawn larger than the phone it was captured on (390 css px): on a
+     tablet 68vw would stretch a 2x capture past its pixels (audit 2026-10-11) */
+  .clip-cut .clip-frame { aspect-ratio: var(--clip-ar-phone, var(--clip-ar)); max-width: min(72vw, 390px); margin-inline: auto; border-radius: calc(var(--cap-r) * 2); }
   /* phone captures: a row that scrolls inside itself; the page never scrolls sideways */
   .shots-row, .shots-row:has(> :nth-child(2):last-child) {
-    display: grid; grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 68vw; max-width: none;
+    display: grid; grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: min(68vw, 390px); max-width: none;
     gap: 14px; margin-inline: calc(-1 * var(--case-pad)); padding: 0 var(--case-pad) 6px;
     overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
   }

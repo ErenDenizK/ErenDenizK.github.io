@@ -344,7 +344,7 @@ Never: AI-generated images, stock photos, emoji, rough.js sketch style (taste qu
 - **Alt text**: the figure's `desc`, describing the content, not the look ("Four steps from
   left to right …").
 - **Width**: up to 720 px, breaking out of the 680 px reading column on desktop; never full
-  bleed. Two drawings per figure (720 and 358 wide); the page shows the one that fits, so a
+  bleed. Two drawings per figure (720 and 288 wide); the page shows the one that fits, so a
   13 px label is never scaled to 7 px.
 - **Colour**: the project the entry belongs to, or the Log's blue; everything else in the
   page's inks.

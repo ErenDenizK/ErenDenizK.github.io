@@ -120,8 +120,11 @@
 .w-shot.has-phone .fr-phone { position: absolute; right: 0; bottom: 0; width: 27%; }
 .w-shot.only-phone .fr-phone { width: min(300px, 62%); margin: 0 auto; }
 
-.w-cap { display: flex; align-items: baseline; gap: 14px; margin-top: 20px; min-height: 22px; color: var(--ink-2); font-size: var(--t-ui); line-height: 1.45; text-wrap: pretty; }
+/* the number beside the caption while the caption has room for a line of words (12em), above it in a
+   narrow phone frame: never a sentence squeezed one word per line beside its number (audit 2026-10-11) */
+.w-cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; margin-top: 20px; min-height: 22px; color: var(--ink-2); font-size: var(--t-ui); line-height: 1.45; text-wrap: pretty; }
 .w-cap-n { flex: none; color: var(--p); font-variant-numeric: tabular-nums; }
+.w-cap-t { flex: 1 1 12em; min-width: 0; }
 .w-cap-of { color: var(--ink-4); }
 
 /* the ticks go to a step (buttons; shown by the script when the reel steps) */
@@ -213,7 +216,9 @@
   .w-sum { margin-top: 14px; font-size: 20px; }
   .w-numbers { gap: 28px; }
   .w-facts { gap: 12px 28px; }
-  .w-facts .f-status, .w-facts .f-version, .w-facts .f-since, .w-facts .f-last { flex: 0 0 calc(50% - 14px); }
+  /* two short facts to a row, but a fact never narrower than its own words (the status does not
+     wrap): a long one takes its own row instead of running under its neighbour (audit 2026-10-11) */
+  .w-facts .f-status, .w-facts .f-version, .w-facts .f-since, .w-facts .f-last { flex: 0 0 calc(50% - 14px); min-width: min-content; }
   .w-text { max-width: none; }
   .w-hero { width: min(84vw, 360px); }
   .w-light, .w-proj.flip .w-light { --lx: 50%; --lx2: 20%; --lx3: 70%; }

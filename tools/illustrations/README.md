@@ -38,7 +38,7 @@ estimated wider than its box). Open `out/sheet.html` and look at it after any ch
 Every number comes from `rules.mjs`; a drawing never picks its own.
 
 1. **Two widths, never one scaled.** Each figure is drawn at 720 (desktop, breaking out of
-   the reading column) and 358 (a 390 phone minus 16 px gutters). The page shows the one that
+   the reading column) and 288 (a 320 phone minus 16 px gutters). The page shows the one that
    fits its container, so a 13 px label is always 13 px. The narrow drawing re-lays the
    figure out (rows become a column), it is not a crop.
 2. **The site's tokens.** Every colour is a CSS variable with the token as fallback
