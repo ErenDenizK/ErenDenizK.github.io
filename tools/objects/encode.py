@@ -312,6 +312,9 @@ SPIN_CRF = {"av1": "40", "hevc": "32", "h264": "30"}
 # the smaller sizes are drawn nearly 1:1, where CRF 40 shows: edk's 640 at CRF 40 kept 0.71 of the master's
 # Laplacian variance at 630 device px against 0.83 for the 1040 file reduced; a lower CRF costs little there
 SPIN_CRF_SMALL = {"av1": "34", "hevc": "28", "h264": "26"}
+# and the emblems' 320 lower still: at CRF 34 it kept 0.61 mid-turn at 276 device px (English Prep), where
+# the 640 file reduced kept 0.82, for 48 KB against 101 KB
+SPIN_CRF_TINY = {"av1": "26", "hevc": "22", "h264": "20"}
 
 
 # The loop at the sizes the touch slots draw it (ADR-0006 note of 2026-10-11, "every object turns"):
@@ -356,7 +359,7 @@ def encode_spin():
     sizes = []
     for w in widths:
         srcs = encode_video(seqs[w], "spin" if w == sq else f"spin-{w}", crop["fps"],
-                            crf if w == sq or A.spin_crf else {**SPIN_CRF_SMALL, **OBJECT.get(A.obj, {}).get("spin_crf_small", {})})
+                            crf if w == sq or A.spin_crf else SPIN_CRF_TINY if w <= 360 else SPIN_CRF_SMALL)
         sizes.append({"w": w, "sources": srcs, "check": check_video(os.path.join(OUT, srcs[0]["src"]), first[w])})
     n = crop["loopFrames"]
     keep = {k: crop[k] for k in ("kind", "parts", "turn", "each", "stagger", "amp", "lift", "bob", "dots", "fan", "reels")
