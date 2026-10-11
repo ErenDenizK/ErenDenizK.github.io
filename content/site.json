@@ -24,12 +24,59 @@
     "text": "First term of Computer Engineering at YTU. Recto is in public beta; English Prep is at 0.75."
   },
   "home": {
-    "showcase": {
-      "title": "Work",
-      "all": "All work",
-      "kicker": "Building now",
+    "vision": "I build products by directing AI agents, and learn the machine beneath them by hand.",
+    "visionDraft": true,
+    "cue": "Scroll",
+    "hint": "Click the glass",
+    "who": {
+      "label": "Who",
+      "title": "First year of Computer Engineering, in Istanbul.",
+      "text": [
+        "I study at Yıldız Technical University. I skipped the English prep year by passing its exam with full marks.",
+        "What pulls me in sits closest to the machine: processors, embedded systems, the machine's own language."
+      ],
+      "facts": [
+        [
+          "City",
+          "Istanbul"
+        ],
+        [
+          "School",
+          "Yıldız Technical University"
+        ],
+        [
+          "Year",
+          "First"
+        ]
+      ]
+    },
+    "tracks": {
+      "label": "How I work",
+      "title": "Two tracks, at the same time.",
+      "text": "They meet in everything I make."
+    },
+    "products": {
+      "label": "What I build",
+      "title": "Three products, all in development.",
+      "text": "I write the specs, make the calls and review what the agents build. Each product keeps its own colour here.",
       "cta": "Take a look",
-      "also": "Also building"
+      "all": "All work"
+    },
+    "record": {
+      "label": "The record",
+      "title": "Written down as it happens.",
+      "all": "The whole record"
+    },
+    "exit": {
+      "label": "Next",
+      "work": [
+        "Work",
+        "Products I direct"
+      ],
+      "about": [
+        "About",
+        "Who I am, at more length"
+      ]
     }
   },
   "work": {
