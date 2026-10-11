@@ -533,10 +533,14 @@ if A.retag:
 # object fills at DPR 1, 1.25, 1.5 and 2 (the page snaps the stage to whole device pixels, media.ts
 # fit(): 470 px at DPR 1.25 is 472 x 1.25 = 590). A poster the page has to reduce by any ratio comes out
 # softer than one drawn 1:1: Chrome's reduction kept 0.61 (600 -> 470) to 0.41 (600 -> 590) of a Lanczos
-# reduction (ADR-0006 amendment of 2026-10-10, evening). Slots: Home 470 (edk); Home showcase 400, Work
-# 640 at 1440 wide, a case sheet 420 (the projects); Record 320. 1280 (Work at DPR 2) would need a larger
-# master than the 1200 render, so the 1200 poster is enlarged there.
-SLOTS = {"edk": (470,), "recto": (400, 420, 640), "englishprep": (400, 420, 640), "eatmap": (400, 420, 640), "record": (320,), "recorder": (320,)}
+# reduction (ADR-0006 amendment of 2026-10-10, evening). Slots: Home 470 (edk); Home showcase 400 and a
+# case sheet 420 (the projects); Record 320. Work (ADR-0014, measured 2026-10-11): the emblem beside the
+# wordmark is clamp(112px, 10vw, 148px), so 144 at 1440 wide and 148 from 1480; 120 in a window at most
+# 860 px tall (a 1440 x 900 laptop's browser; 99 in the 1180 x 820 tablet), 104 at most 760; Eat Map, with no screens, keeps the large
+# object at 600. Phones (PHONE_SLOTS, DPR 2 and 3): the emblem is 92 px at any phone width.
+SLOTS = {"edk": (470,), "recto": (99, 104, 120, 144, 148, 400, 420), "englishprep": (99, 104, 120, 144, 148, 400, 420),
+         "eatmap": (400, 420, 600), "record": (320,), "recorder": (320,)}
+PHONE_SLOTS = {"recto": (92,), "englishprep": (92,)}
 GRID_CSS = {1: 1, 1.25: 4, 1.5: 2, 2: 0.5}   # the CSS step that is whole device pixels (media.ts grid())
 
 
@@ -547,6 +551,8 @@ def poster_widths(obj, res):
             w = round(round(slot / g) * g * dpr)
             if w <= res:
                 ws.add(w)
+    for slot in PHONE_SLOTS.get(obj, ()):
+        ws.update(slot * dpr for dpr in (2, 3) if slot * dpr <= res)
     return sorted(ws)
 
 

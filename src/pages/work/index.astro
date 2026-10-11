@@ -101,7 +101,7 @@ let n = 0;
                 <div class="w-light" aria-hidden="true"></div>
                 <div class="w-text">
                   <div class="w-head">
-                    {reel && <Media obj={d.object} slot="work" class="w-obj w-emblem" stage={i === 0} solo light={light(p)} sizes="(min-width: 900px) 200px, 96px" priority={i === 0} />}
+                    {reel && <Media obj={d.object} slot="work" class="w-obj w-emblem" stage={i === 0} solo light={light(p)} sizes="(max-width: 899.98px) 92px, (max-height: 760px) 104px, (max-height: 860px) clamp(96px, 8.4vw, 120px), clamp(112px, 10vw, 148px)" priority={i === 0} />}
                     <p class="meta w-index"><span class="w-n">{two(i + 1)}</span><span class="w-of"> of {two(all.length)}</span></p>
                   </div>
                   <h2 class="w-title" id={`w-title-${p.id}`} style={`--chars: ${(d.wordmark?.text ?? d.title).length + (d.wordmark?.dot ? 1 : 0)}`}><Wordmark project={p} id={`w-t-${p.id}`} /></h2>
@@ -125,7 +125,7 @@ let n = 0;
                 <div class="w-media">
                   {reel
                     ? <Reel steps={steps} host={host(p)} title={d.title} first={i === 0} />
-                    : <Media obj={d.object} slot="work" class="w-obj w-hero" stage={i === 0} solo light={light(p)} sizes="(min-width: 900px) 600px, 84vw" priority={i === 0} />}
+                    : <Media obj={d.object} slot="work" class="w-obj w-hero" stage={i === 0} solo light={light(p)} sizes="(max-width: 899.98px) min(84vw, 360px), 600px" priority={i === 0} />}
                 </div>
               </div>
             </article>

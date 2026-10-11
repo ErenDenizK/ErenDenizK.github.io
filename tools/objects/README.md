@@ -90,7 +90,7 @@ a pivot at its bounds centre, and renders one stage per Blender process:
 | Stage | What | Defaults |
 |---|---|---|
 | `poster` | the centre pose, first paint | 1200², 128 spp |
-| `grid` | the lean grid, 17 yaw × 3 pitch: yaw ±16° in 2° steps, pitch −4°/0°/+4°; edk 33 × 3 at 1° (`--nyaw 33`; copy the 2° frames to the even indices first and only the odd columns render) | 1040², 32 spp + OIDN |
+| `grid` | the lean grid, 17 yaw × 3 pitch: yaw ±16° in 2° steps, pitch −4°/0°/+4°; since 2026-10-11 every leaned object (edk, Recto, English Prep, Eat Map, the recorder) is 33 × 3 at 1° (`--nyaw 33`; copy the 2° frames to the even indices first, with the grid's `crop.json` given the 33 yaws, and only the odd columns render; then the `normal` stage again where the object has one) | 1040², 32 spp + OIDN |
 | `clip` | the object's micro-interaction, rest → rest, 30 fps (`CLIPS` in `frames.py`) | 30–45 frames |
 | `droplet` | rest → the shared glass droplet, ease-in cubic, uniform in time | 24 frames |
 | `shadow` | the rest pose's floor shadow alone: the object hidden from the camera, still casting | 600², 128 spp, whole square |
@@ -127,7 +127,7 @@ same droplet and only the accent light differs.
 `encode.py` composites each master on the ground exactly as `common.render_poster` does,
 subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact black) and writes:
 
-- `poster-<w>.avif|webp`: 600, 1200 and the exact device width of each desktop slot the object fills at DPR 1-2 (`encode.py` `SLOTS`, `--poster-only` rewrites just these), so the page draws the poster 1:1;
+- `poster-<w>.avif|webp`: 600, 1200 and the exact device width of each desktop slot the object fills at DPR 1-2 (`encode.py` `SLOTS`; Work's emblems 99-148 px, measured 2026-10-11) and of each fixed phone slot at DPR 2-3 (`PHONE_SLOTS`), `--poster-only` rewrites just these, so the page draws the poster 1:1 (the slot's `sizes` must say the same widths);
 - `lean/half/` and `lean/full/`: the grid as stills, `r<row>c<col>.<ext>`, cropped to the
   rectangle in the manifest. The format is chosen by a black test on three grid frames (bytes,
   object error, and whether ground far from the object decodes to exact 0), recorded in
