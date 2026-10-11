@@ -1,7 +1,7 @@
 /* The rail (ADR-0011, revised by ADR-0013 and its amendments): one custom scrollbar on every page and in the
-   project sheet, in one of four looks (a Beads, the default; b Hairline; c Scale; d Segments; ?rail= switches
-   them for the tab, temporarily). Each look is the same rail with sections, without them and in the sheet;
-   sections from the page add marks and titles; no native bar anywhere (the page, the sheet, any inner
+   project sheet: the beads (the owner's sketch, chosen 2026-10-11), the same with sections, without them
+   and in the sheet; sections from the page add beads and titles; the beads' geometry, their spring and the
+   column spreading to meet the titles; never over content on a phone; no native bar anywhere (the page, the sheet, any inner
    scroller) and no shift between pages; keyboard reach and a visible focus ring, the drag and Escape,
    contrast of every mark, the platform's own scrollbar back for forced colours and no JavaScript, touch (the
    platform indicator hidden so it never overlaps, a sheet on tap), the sheet's own rail, and the Istanbul
@@ -61,50 +61,43 @@ test.describe('desktop', () => {
     expect(await rail(page)).toMatchObject({ on: true, bar: 'none', gutter: 0 });
   });
 
-  /* every look (ADR-0013 amendment 2026-10-11): on a page without sections the rail follows the page, the
-     wheel over it scrolls natively, a drag along it scrubs the page and Escape puts it back */
-  for (const look of ['a', 'b', 'c', 'd']) {
-    test(`the plain variant (${look}): follows the page, a drag scrubs it, Escape puts it back`, async ({ page }) => {
-      await page.goto(`?still&rail=${look}`); await settle(page, 300);
-      expect(await rail(page)).toMatchObject({ drawn: false, plain: true });
-      const geo = () => page.evaluate(() => {
-        const t = document.querySelector('.rail-plain .rail-track')!.getBoundingClientRect(), h = document.querySelector('.rail-plain .rail-thumb')!.getBoundingClientRect();
-        const ms = [...document.querySelectorAll<HTMLElement>('.rail-plain .rail-m')];
-        return { tTop: t.top, tBot: t.bottom, x: (t.left + t.right) / 2, top: h.top, bot: h.bottom, y: scrollY, max: document.documentElement.scrollHeight - innerHeight,
-          on: ms.findIndex((m) => m.classList.contains('on')), n: ms.length, f: ms.map((m) => +m.style.getPropertyValue('--f')) };
-      });
-      /* the track draws itself in on a spring: wait for it rather than read it mid-flight on a slow machine */
-      await expect.poll(async () => { const t = await geo(); return t.tBot - t.tTop; }, { timeout: 5000, message: 'drawn' }).toBeGreaterThan(20);
-      let g = await geo();
-      if (look === 'b') { expect(g.top).toBeCloseTo(g.tTop, 0); expect(g.bot - g.top, 'the thumb is the share in view').toBeGreaterThanOrEqual(24); }
-      if (look === 'a') { expect(g.n, 'one bead per screen').toBeGreaterThanOrEqual(2); expect(g.on).toBe(0); }
-      if (look === 'd') expect(g.n, 'one segment').toBe(1);
-      /* the wheel over the column scrolls the page natively, and the rail follows to the end */
-      await page.mouse.move(1440 - 7, (g.tTop + g.tBot) / 2);
-      for (let i = 0; i < 3 && (await page.evaluate(() => scrollY)) < 200; i++) { await page.mouse.wheel(0, 400); await page.waitForTimeout(400); }
-      expect(await page.evaluate(() => scrollY)).toBeGreaterThan(0);
-      await page.keyboard.press('End'); await page.waitForTimeout(700);
-      g = await geo();
-      if (look === 'b' || look === 'c') expect(Math.abs(g.bot - g.tBot), 'at the end of the rail').toBeLessThanOrEqual(1.5);
-      if (look === 'a') expect(g.on).toBe(g.n - 1);
-      if (look === 'd') expect(g.f[0]).toBe(1);
-      /* drag from the end of the rail up past its start: the page follows to the top; Escape restores it */
-      await page.mouse.move(g.x, g.tBot - 1);
-      await page.mouse.down();
-      await page.mouse.move(g.x, g.tTop - 40, { steps: 8 });
-      await page.waitForTimeout(150);
-      expect(await page.evaluate(() => scrollY)).toBe(0);
-      await page.keyboard.press('Escape');
-      await page.waitForTimeout(100);
-      expect(await page.evaluate(() => scrollY)).toBeCloseTo(g.max, -1);
-      await page.mouse.up();
-      /* a press near the rail's start goes there */
-      await page.emulateMedia({ reducedMotion: 'reduce' });
-      g = await geo();
-      await page.mouse.click(g.x, g.tTop + 1);
-      await expect.poll(() => page.evaluate(() => scrollY)).toBeLessThan(g.max * 0.25);
+  /* without sections (ADR-0013 amendment 2026-10-11): one bead per screen follows the page, the wheel over it
+     scrolls natively, a drag along it scrubs the page and Escape puts it back */
+  test('without sections: beads per screen follow the page, a drag scrubs it, Escape puts it back', async ({ page }) => {
+    await page.goto('?still'); await settle(page, 300);
+    expect(await rail(page)).toMatchObject({ drawn: false, plain: true });
+    const geo = () => page.evaluate(() => {
+      const t = document.querySelector('.rail-plain .rail-track')!.getBoundingClientRect();
+      const ms = [...document.querySelectorAll<HTMLElement>('.rail-plain .rail-m')];
+      return { tTop: t.top, tBot: t.bottom, x: (t.left + t.right) / 2, y: scrollY, max: document.documentElement.scrollHeight - innerHeight,
+        on: ms.findIndex((m) => m.classList.contains('on')), n: ms.length };
     });
-  }
+    let g = await geo();
+    expect(g.n, 'one bead per screen').toBeGreaterThanOrEqual(2);
+    expect(g.on).toBe(0);
+    /* the wheel over the column scrolls the page natively, and the beads follow to the end */
+    await page.mouse.move(1440 - 7, (g.tTop + g.tBot) / 2);
+    for (let i = 0; i < 3 && (await page.evaluate(() => scrollY)) < 200; i++) { await page.mouse.wheel(0, 400); await page.waitForTimeout(400); }
+    expect(await page.evaluate(() => scrollY)).toBeGreaterThan(0);
+    await page.keyboard.press('End'); await page.waitForTimeout(700);
+    g = await geo();
+    expect(g.on).toBe(g.n - 1);
+    /* drag from the end of the column up past its start: the page follows to the top; Escape restores it */
+    await page.mouse.move(g.x, g.tBot - 1);
+    await page.mouse.down();
+    await page.mouse.move(g.x, g.tTop - 40, { steps: 8 });
+    await page.waitForTimeout(150);
+    expect(await page.evaluate(() => scrollY)).toBe(0);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(100);
+    expect(await page.evaluate(() => scrollY)).toBeCloseTo(g.max, -1);
+    await page.mouse.up();
+    /* a press near the column's start goes there */
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    g = await geo();
+    await page.mouse.click(g.x, g.tTop + 1);
+    await expect.poll(() => page.evaluate(() => scrollY)).toBeLessThan(g.max * 0.25);
+  });
 
   test('the bar never moves between pages', async ({ page }) => {
     const at: Record<string, number[]> = {};
@@ -200,9 +193,9 @@ test.describe('desktop', () => {
     await expect(page.locator('.rail-i').nth(3)).toHaveAttribute('aria-current', 'location');
   });
 
-  for (const look of ['a', 'b', 'c', 'd']) {
-    test(`with sections (${look}) a drag along the rail scrubs the page; Escape puts it back`, async ({ page }) => {
-      await page.goto(`work/?still&rail=${look}`); await settle(page, 300);
+  {
+    test('with sections a drag along the beads scrubs the page; Escape puts it back', async ({ page }) => {
+      await page.goto('work/?still'); await settle(page, 300);
       const g = await page.evaluate(() => {
         const t = document.querySelector('nav.rail .rail-track')!.getBoundingClientRect();
         return { x: (t.left + t.right) / 2, tTop: t.top, tBot: t.bottom, max: document.documentElement.scrollHeight - innerHeight };
@@ -228,21 +221,21 @@ test.describe('desktop', () => {
     });
   }
 });
-/* One rail (ADR-0013 amendments, 2026-10-10: "One is a line, another is a ladder?", and 2026-10-11): in each
-   look the rail has the same place, size and parts with sections, without them and in the sheet or on a
-   project page, on desktop and on a phone; sections only add marks. */
+/* One rail (ADR-0013 amendments, 2026-10-10: "One is a line, another is a ladder?", and 2026-10-11): the
+   column has the same place and box with sections, without them and in the sheet or on a project page, on
+   desktop and on a phone; sections only change how many beads. */
 const bar = (page: Page, sel: string, box: string) => page.evaluate(([sel, box]) => {
   const n = document.querySelector<HTMLElement>(sel)!, t = n.querySelector<HTMLElement>('.rail-track')!;
   const r = t.getBoundingClientRect(), nr = n.getBoundingClientRect();
   const c = box ? document.querySelector(box)!.getBoundingClientRect() : { right: document.documentElement.clientWidth, top: 0, bottom: innerHeight };
   return { w: r.width, right: Math.round(c.right - r.right), h: Math.round(nr.height), mid: Math.round((r.top + r.bottom) / 2 - (c.top + c.bottom) / 2),
-    thumb: getComputedStyle(t.querySelector('.rail-thumb')!).display, marks: t.querySelectorAll('.rail-m').length };
+    marks: t.querySelectorAll('.rail-m').length };
 }, [sel, box] as const);
-for (const look of ['a', 'b', 'c', 'd']) for (const [size, opts] of [['desktop', desktop], ['phone', phone]] as const) {
-  test(`one rail (${look}, ${size}): the same with sections, without them and in the sheet or project page`, async ({ browser }) => {
+for (const [size, opts] of [['desktop', desktop], ['phone', phone]] as const) {
+  test(`one rail (${size}): the same with sections, without them and in the sheet or project page`, async ({ browser }) => {
     const ctx = await browser.newContext(opts);
     const page = await ctx.newPage();
-    await page.goto(`about/?still&rail=${look}`); await settle(page, 300);
+    await page.goto('about/?still'); await settle(page, 300);
     const secs = await bar(page, 'nav.rail:not(.in-sheet)', '');
     await page.goto('?still'); await settle(page, 300);
     const flat = await bar(page, '.rail-plain:not(.in-sheet)', '');
@@ -257,16 +250,80 @@ for (const look of ['a', 'b', 'c', 'd']) for (const [size, opts] of [['desktop',
       await settle(page, 600);
       inSheet = await bar(page, 'dialog .rail.in-sheet', 'dialog .sheet');
     }
-    expect(secs.marks, 'sections add marks').toBeGreaterThanOrEqual(3);
+    expect(secs.marks, 'sections add beads').toBeGreaterThanOrEqual(3);
     for (const r of [secs, flat, inSheet]) {
-      expect(r).toMatchObject({ w: flat.w, right: flat.right, thumb: flat.thumb, h: Math.round(Math.min(opts.viewport.height * 0.44, 320)) });
+      expect(r).toMatchObject({ w: flat.w, right: flat.right, h: Math.round(Math.min(opts.viewport.height * 0.44, 320)) });
       expect(Math.abs(r.mid), 'mid-height').toBeLessThanOrEqual(1);
-      expect(r.right + r.w / 2, 'on the axis 7 px from the edge (c: its ticks end there)').toBeLessThanOrEqual(look === 'c' ? 16 : 7);
+      expect(r.right + r.w / 2, 'on the axis 7 px from the edge').toBe(7);
     }
-    expect(flat.thumb).toBe(look === 'b' || look === 'c' ? 'block' : 'none');
     await ctx.close();
   });
 }
+
+/* The beads (ADR-0013 amendment 2026-10-11, later): a dot behind, a dash ahead, the current one a line that
+   fills; every bead keeps a 4 px slot, so the column does not change height as the section changes; with the
+   titles open the column spreads until each bead is level with its title. */
+test.describe('the beads', () => {
+  test.use(desktop);
+  const beads = (page: Page) => page.evaluate(() => {
+    const t = document.querySelector('nav.rail .rail-track')!;
+    return { h: Math.round(t.getBoundingClientRect().height), b: [...t.querySelectorAll<HTMLElement>('.rail-m')].map((m) => {
+      const r = m.getBoundingClientRect();
+      return { w: r.width, h: r.height, y: (r.top + r.bottom) / 2, s: m.classList.contains('on') ? 'on' : m.classList.contains('done') ? 'done' : 'ahead', f: +m.style.getPropertyValue('--f') };
+    }) };
+  });
+  test('shapes, fill and a steady column', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('about/?still'); await settle(page, 300);
+    const a = await beads(page);
+    expect(a.b[0]).toMatchObject({ w: 3, h: 40, s: 'on' });
+    for (const b of a.b.slice(1)) expect(b).toMatchObject({ w: 8, h: 2, s: 'ahead' });
+    /* the third section: two dots behind, the line partly filled */
+    await page.evaluate(() => { const s = document.querySelectorAll<HTMLElement>('#main [data-rail-sec]')[2]; scrollTo(0, s.getBoundingClientRect().top + scrollY - innerHeight * 0.3 + 60); });
+    await page.waitForTimeout(400);
+    const b = await beads(page);
+    expect(b.b.slice(0, 2).map((x) => [x.w, x.h, x.s])).toEqual([[4, 4, 'done'], [4, 4, 'done']]);
+    expect(b.b[2]).toMatchObject({ w: 3, h: 40, s: 'on' });
+    expect(b.b[2].f).toBeGreaterThan(0);
+    expect(b.b[2].f).toBeLessThan(1);
+    expect(b.h, 'the column keeps its height').toBe(a.h);
+    /* open: every bead level with its title */
+    await page.mouse.move(1440 - 7, 450); await page.waitForTimeout(600);
+    const o = await beads(page);
+    const rows = await page.locator('nav.rail .rail-i').evaluateAll((as) => as.map((x) => { const r = x.getBoundingClientRect(); return (r.top + r.bottom) / 2; }));
+    o.b.forEach((x, i) => expect(Math.abs(x.y - rows[i]), `bead ${i} level with its title`).toBeLessThanOrEqual(1));
+  });
+});
+
+/* on a phone the beads never sit on content: where a picture or a strip of screens reaches the edge they step
+   aside until it has passed */
+test('phone: the beads never sit on a picture or text', async ({ browser }) => {
+  const ctx = await browser.newContext(phone);
+  const page = await ctx.newPage();
+  for (const path of ['work/', 'work/english-prep/', 'about/']) {
+    await page.goto(path + '?still'); await settle(page, 300);
+    const max = await page.evaluate(() => document.documentElement.scrollHeight - innerHeight);
+    for (let y = 0; y <= max; y += 160) {
+      await page.evaluate((y) => scrollTo(0, y), y); await page.waitForTimeout(60);
+      const hits = await page.evaluate(() => {
+        const box = [...document.querySelectorAll<HTMLElement>('.rail, .rail-plain')].find((n) => !n.hidden && getComputedStyle(n).display !== 'none');
+        if (!box || box.classList.contains('is-over')) return [];
+        const out = new Set<string>();
+        for (const m of box.querySelectorAll('.rail-m')) {
+          const q = m.getBoundingClientRect();
+          for (let x = q.left - 2; x <= q.right + 2; x += 2) for (let y = q.top - 2; y <= q.bottom + 2; y += 2) for (const e of document.elementsFromPoint(x, y)) {
+            if (box.contains(e)) continue;
+            const text = [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent!.trim() && (() => { const r = document.createRange(); r.selectNodeContents(n); return [...r.getClientRects()].some((k) => x >= k.left && x <= k.right && y >= k.top && y <= k.bottom); })());
+            if (/^(IMG|VIDEO|CANVAS)$/.test(e.tagName) || text) out.add(e.tagName.toLowerCase());
+          }
+        }
+        return [...out];
+      });
+      expect(hits, `/${path} at ${y}`).toEqual([]);
+    }
+  }
+  await ctx.close();
+});
 
 /* No native bar anywhere (owner, 2026-10-11): every element that can scroll hides the platform's bar while the
    rail is on (pages, the open sheet, any inner scroller), on desktop and on touch. */
@@ -291,26 +348,6 @@ for (const [size, opts] of [['desktop', desktop], ['phone', phone]] as const) {
     await ctx.close();
   });
 }
-
-/* The temporary switch: ?rail=a|b|c|d picks the look for the tab and shows four links to compare them;
-   without it the recommended look and no switch. */
-test.describe('the look switch (temporary)', () => {
-  test.use(desktop);
-  test('default look, no switch; ?rail= sticks for the tab and shows the switch', async ({ page }) => {
-    await page.goto('about/?still'); await settle(page, 200);
-    expect(await page.evaluate(() => document.documentElement.dataset.rail)).toBe('a');
-    await expect(page.locator('.rail-pick')).toHaveCount(0);
-    await page.goto('about/?still&rail=c'); await settle(page, 200);
-    expect(await page.evaluate(() => document.documentElement.dataset.rail)).toBe('c');
-    await expect(page.locator('.rail-pick a')).toHaveCount(4);
-    await expect(page.locator('.rail-pick a[aria-current]')).toHaveText('C');
-    await page.goto('work/?still'); await settle(page, 200);
-    expect(await page.evaluate(() => document.documentElement.dataset.rail)).toBe('c');
-    await page.locator('.rail-pick a').nth(3).click();
-    await expect.poll(() => page.evaluate(() => document.documentElement.dataset.rail)).toBe('d');
-    expect(new URL(page.url()).pathname).toMatch(/\/work\/$/);
-  });
-});
 
 test.describe('the platform scrollbar stays', () => {
   test('forced colours: no rail, native bar', async ({ browser }) => {

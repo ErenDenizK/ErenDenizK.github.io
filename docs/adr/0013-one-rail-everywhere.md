@@ -73,6 +73,37 @@ the look is the owner's to choose, so four are built and the recommendation is t
   sections, without them and in the sheet or on a project page (desktop and phone); every scrollable element
   on ten routes and in the sheet without a native bar; the switch.
 
+**Amendment 2026-10-11 (later): the beads, chosen; the other looks are gone.** The owner chose look A, the
+beads (their own sketch). Looks B, C and D, the `?rail` switch, its `sessionStorage` key (`edk-rail`), the
+corner links and `html[data-rail]` are removed, with their tests; the rest of the previous amendment stands
+(no native bar anywhere, the behaviour, titles, touch sheet, keyboard, colours, forced colours, no
+JavaScript). Final geometry and motion (technique decided by the agent, after screenshots of every page and
+the sheet at 1440 × 900, 1180 × 820 touch and 390 × 844, top, middle and end, and a slowed frame capture of a
+section change):
+
+- **Place.** A 14 px column centred on an axis 7 px from the right edge (of the window, or of the sheet), in
+  the middle of a `--rail-h` = min(44vh, 320 px) box, inside the 16 px gutter on touch (inset by the safe
+  area). One bead per section; a page without sections gets one per screen (2 to 6), in the page's light.
+- **Beads.** Every bead has a 4 px slot, 8 px apart, so the column keeps its height as the section changes
+  (About's eight chapters: 124 px). Behind you: a 4 px dot in the section's light at the solved rest value.
+  Ahead: an 8 × 2 px dash in `--rail-idle` (3.5:1), slightly brighter while the page moves, 10 px and
+  `--ink-3` under the pointer. Current: a 3 × 40 px line (32 px on touch), a dim trace of its light (48 % of
+  the rest value over the ground) filling from the top in the full accent as you read the section (at least
+  10 %; clipped, so its round end stays round). A 1 px hairline of ground keeps beads legible over photographs.
+- **Motion.** On a section change the width settles first (200 ms, ease-out) and the length follows on
+  `--spring-ui` (480 ms), so a dash narrows into a line and then grows, and the old line shrinks into a dot,
+  with no in-between block; the fill follows the scroll on the frame. Reduced motion: shapes change at once,
+  only colours fade.
+- **Titles.** On desktop, when the titles open (hover after 120 ms, or focus), the column spreads on the same
+  spring until every bead is level with its title, one 28 px row each (the current line shortens to 20 px),
+  and gathers again when they close. The drag maps the pointer along the column's full height.
+- **Never over content on a phone.** On touch, while a picture or a strip that scrolls sideways (Work's
+  screens, which bleed to the edge) passes under the column, the beads fade out (200 ms) and return once it
+  has passed, as the platform's indicator would; no text reaches the column on any route.
+- `tests/e2e/rail.spec.ts`: the plain-page and sectioned drag and Escape, the same rail with sections, without
+  them and in the sheet or a project page (desktop and phone), the beads' shapes, fill, steady column and the
+  spread to the titles, no bead over a picture or text on a phone, and the no-native-bar audit.
+
 ## Context
 
 ADR-0011 put the contents ladder only on pages with sections and kept the native bar everywhere else

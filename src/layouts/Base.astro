@@ -98,12 +98,6 @@ const graph = [
          fine pointer, rail-touch (the slim ladder, ADR-0011 item 12) otherwise. Set now, so no page ever
          shifts sideways (every page has the same width) and iOS hides its indicator from the start. */
       if (!matchMedia('(forced-colors: active)').matches) d.classList.add(matchMedia('(hover: hover) and (pointer: fine)').matches ? 'rail-on' : 'rail-touch');
-      /* the rail's look: a temporary ?rail=a|b|c|d switch, kept for the tab (ADR-0013 amendment 2026-10-11) */
-      try {
-        var rl = (/[?&]rail=([abcd])\b/.exec(location.search) || [])[1];
-        if (rl) sessionStorage.setItem('edk-rail', rl); else rl = sessionStorage.getItem('edk-rail');
-        d.dataset.rail = rl || 'a';
-      } catch (e) { d.dataset.rail = 'a'; }
       /* arriving through the droplet (scripts/media.ts): hide the poster from the first paint */
       try {
         var at = +sessionStorage.getItem('edk-droplet');
