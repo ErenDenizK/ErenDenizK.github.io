@@ -347,3 +347,28 @@ The owner's words, translated from Turkish.
   is. Do a comprehensive study of how this page could be perfect, as a design expert whose most
   important showcase this is; push it from every angle; ask anything needed.
 - Everything else was tested and is fine.
+
+### 2026-10-11 (board round 2 and a phone check)
+
+- **3D:** stay pre-rendered and fix it (option a). The sharpness fix is OK; the cassette recorder is OK.
+- **Work:** direction A, the stage. Frames: keep (Work framed, inside the project view bare); the
+  owner asked for a clearer explanation. "Side by side, really?" (they look on a phone, where the
+  line-up stacks).
+- **Metro photos:** do not use them. The censor concepts did not convince; the scribble overpowered the
+  owner. The owner asks whether not using them at all is right, ethically.
+- **About:** "soulless: plain text and three photos." Make a lively, uplifting about-me, a design
+  masterpiece. Copy: do not quote the owner directly ("I said it casually"); write a fitting line in
+  the lead's own words for now.
+- **Postcards:** more interactive; research what makes a photo frame richer and more fun; study how
+  photos are presented digitally and improve.
+- **Scrollbar:** never a native bar anywhere; custom everywhere. The new bar is not minimal enough:
+  design a simpler, aesthetic one, very professionally; an important element, one of the best things
+  the lead designs. (The owner sent a sketch: dots and short dashes beside a thumb line, and a
+  ladder of ticks of varying length.)
+- **Home:** visual improvement should still happen; wait a little longer.
+- **Bugs on the phone:** reading vertically, a page breaks (a release entry opened over Home wrapped one
+  word per line, with a line through the text; a "Live frames: starting / Turn off" toast showed).
+- **About's card shows its back on first open** (an animation or render bug). Inspiration: let the card
+  move naturally as the page opens, a small swing or turn, so the visitor notices it moves.
+- **Way of working:** "Read the tasks and answers fully, assign agents across branches, set up the
+  system: you are the boss of this work."
