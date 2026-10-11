@@ -43,6 +43,36 @@ owner has seen it):
   `tests/e2e/rail.spec.ts` asserts the same track size, place, colour and thumb on About, Home and in the
   sheet, at 1440 × 900 and 390 × 844.
 
+**Amendment 2026-10-11: simpler, and no native bar anywhere.** The owner: "No native scrollbar anywhere;
+custom everywhere. I didn't like the new scrollbar: it isn't minimalist; design something simpler and
+aesthetic" (brief log, 2026-10-11, with a sketch). Research and concepts:
+[`docs/research/2026-10-rail-design.md`](../research/2026-10-rail-design.md). Technique decided by the agent;
+the look is the owner's to choose, so four are built and the recommendation is the default until then:
+
+- **Four looks on one engine** (`scripts/rail.ts`, `styles/rail.css`, `html[data-rail]`), all on one axis
+  7 px from the right edge (of the window or the sheet), mid-height, at most `--rail-h` tall, inside the 16 px
+  gutter on touch, with the behaviour, titles, touch sheet, keyboard, colours and still twins of this ADR
+  unchanged. **A, Beads** (the owner's sketch; recommended, the default): one mark per section in a short
+  column, dots behind, dashes ahead, the current one a 3 × 40 px line that fills as you read it and morphs
+  on the UI spring when the section changes; a page without sections gets one bead per screen (2 to 6).
+  **B, Hairline:** a 1 px line and a 2 px segment, the share in view; the line rests faint and wakes while
+  the page moves; sections only as titles. **C, Scale:** 1 px ticks every 6 px with a needle and a lens of
+  longer, lit ticks around it; a section's first tick longer. **D, Segments:** the line broken into one
+  segment per section, each as long as its section, lit behind you and filling where you are.
+- **The 2 px track with a thumb and 5/8 px ticks** of the 2026-10-10 amendment is replaced by look B (its
+  closest descendant) and is no longer the default. Each look's drag maps the pointer's place along what is
+  drawn to the place in the page (B keeps the held thumb); the rest of "one behaviour" stands.
+- **The switch is temporary:** `?rail=a|b|c|d` sets the look for the tab (`sessionStorage`), read by the head
+  script before first paint, and only then shows four small links in the bottom-left corner to compare. When
+  the owner chooses, the other looks, the switch and its links go, and this amendment is updated.
+- **No native bar anywhere** while the rail is on: `scrollbar-width: none` and `::-webkit-scrollbar` now apply
+  to every element under `html.rail-on` / `html.rail-touch` (the page, the sheet and any inner scroller, today
+  or in a future entry), behind the same media conditions; forced colours and no JavaScript keep the
+  platform's bars, as item 4. Inner scrollers keep native scrolling and draw no rail of their own.
+- `tests/e2e/rail.spec.ts`: each look's plain-page drag and Escape, its drag with sections, the same rail with
+  sections, without them and in the sheet or on a project page (desktop and phone); every scrollable element
+  on ten routes and in the sheet without a native bar; the switch.
+
 ## Context
 
 ADR-0011 put the contents ladder only on pages with sections and kept the native bar everywhere else
