@@ -31,7 +31,7 @@ if (slots.length && load[look]) {
 
 if (slots.length && params.has('photos')) {
   const bar = document.createElement('nav');
-  bar.className = 'ph-switch';
+  bar.className = 'photo-switch';
   bar.setAttribute('aria-label', 'Photo presentation (temporary)');
   for (const l of LOOKS) {
     const a = document.createElement('a');
@@ -43,10 +43,10 @@ if (slots.length && params.has('photos')) {
     bar.append(a);
   }
   const css = document.createElement('style');
-  css.textContent = `.ph-switch{position:fixed;z-index:60;left:50%;bottom:max(14px,env(safe-area-inset-bottom));translate:-50% 0;display:flex;gap:2px;padding:4px;border-radius:999px;
+  css.textContent = `.photo-switch{position:fixed;z-index:60;left:50%;bottom:max(14px,env(safe-area-inset-bottom));translate:-50% 0;display:flex;gap:2px;padding:4px;border-radius:999px;
     background:rgba(18,17,16,.82);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 0 0 1px rgba(255,245,235,.08),0 10px 30px -10px rgba(0,0,0,.8);font:500 13px/1 var(--f-ui)}
-    .ph-switch a{display:grid;place-items:center;min-height:36px;padding:0 13px;border-radius:999px;color:var(--ink-2);text-decoration:none;white-space:nowrap}
-    .ph-switch a:hover{color:var(--ink)}.ph-switch a[aria-current]{background:rgba(243,184,134,.16);color:var(--about)}`;
+    .photo-switch a{display:grid;place-items:center;min-height:36px;padding:0 13px;border-radius:999px;color:var(--ink-2);text-decoration:none;white-space:nowrap}
+    .photo-switch a:hover{color:var(--ink)}.photo-switch a[aria-current]{background:rgba(243,184,134,.16);color:var(--about)}`;
   document.head.append(css);
   document.body.append(bar);
 }

@@ -304,16 +304,16 @@ test.describe('About photo alternatives, desktop', () => {
         const box = (await fig.boundingBox())!;
         expect(box.x, 'in the margin, right of the words').toBeGreaterThan(words.x + words.width);
       }
-      const sw = page.locator('.ph-switch a');
+      const sw = page.locator('.photo-switch a');
       await expect(sw).toHaveCount(4);
-      await expect(page.locator('.ph-switch a[aria-current]')).toHaveText(['Postcard', 'Darkroom', 'Proof', 'Depth'][+n]);
+      await expect(page.locator('.photo-switch a[aria-current]')).toHaveText(['Postcard', 'Darkroom', 'Proof', 'Depth'][+n]);
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
     });
   }
 
   test('the default page has no switch, and the alternatives wait inert in templates', async ({ page }) => {
     await page.goto('about/?still');
-    await expect(page.locator('.ph-switch')).toHaveCount(0);
+    await expect(page.locator('.photo-switch')).toHaveCount(0);
     await expect(page.locator('#main .dk, #main .pf, #main .dp')).toHaveCount(0);
     expect(await page.locator('#main [data-photo] template').count()).toBe(photoCount * 3);
   });

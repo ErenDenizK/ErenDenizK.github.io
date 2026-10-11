@@ -21,7 +21,7 @@ import type { PhotoProps } from './photo/types';
 type Props = PhotoProps;
 const p = Astro.props;
 ---
-<div class="ph" data-photo>
+<div class="photo-slot" data-photo>
   <Postcard src={p.src} srcset={p.srcset} avif={p.avif} sizes={p.sizes} width={p.width} height={p.height} alt={p.alt} note={p.note} place={p.place} date={p.date} rest={p.rest} hint={p.hint} />
   <template data-look="1"><Darkroom {...p} /></template>
   <template data-look="2"><Proof {...p} /></template>
