@@ -409,3 +409,14 @@ The owner's words, translated from Turkish.
 - **Measured type and screens:** size the fonts and screenshots from the research already done (size,
   big type), or from new research kept under control; nothing uncontrolled: design every detail,
   size, alignment and interaction deliberately. Fold this into the current work.
+
+### 2026-10-11, late (rejection of the home round)
+
+- **Home B preferred to A** for its structure: more compact, more focused. But as design both are
+  very bad: everything too big, not professional, contrived; technically problematic, many bugs on the
+  phone; not elegant, quite ugly. "A major error." Revert Home to the previous version.
+- **Before any new task:** a detailed analysis of why the output was this bad (the owner's prompts?
+  insufficient research? the lead's reviews and reading? the documentation?).
+- **Photos:** the postcard concept is not required. Wanted: a modern, innovative, elegant,
+  professional way to present the photos, beautiful in every respect; not a simple gimmick.
+- **Session:** the owner wants to compact and start clean, and asks whether answers would be lost.
