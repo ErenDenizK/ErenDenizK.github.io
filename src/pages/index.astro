@@ -55,11 +55,6 @@ const index = Object.fromEntries(objs.map((o) => {
 const EDK = 'var(--edk)';
 const two = (n: number) => String(n).padStart(2, '0');
 const total = products.length;
-/* the frames fill their column (ADR-0015 item 5): the side column beside the glass (at most 400 px), one
-   text column beside it from 900 px (the window less the glass's slot), the column on phones; a phone
-   alone is the shared phone width */
-const WEB_SIZES = '(min-width: 1240px) 400px, (min-width: 900px) calc(92vw - 472px), 92vw';
-const PHONE_SIZES = '(min-width: 900px) 300px, min(62vw, 240px)';
 const STAGE_SIZES = '(min-width: 1360px) and (min-height: 860px) and (max-resolution: 1.49dppx) 705px, (min-width: 1360px) and (min-height: 820px) 600px, (min-width: 900px) 500px, min(96vw, 400px)';
 ---
 <Base tab="home" og="home" ogAlt={`${site.name}, with the edk glass object.`} type="profile" pageClass="page-home">
@@ -160,18 +155,14 @@ const STAGE_SIZES = '(min-width: 1360px) and (min-height: 860px) and (max-resolu
           <div class:list={['ha-r', 'ha-shot', 'ha-rv', { 'is-phone': shot?.frame === 'phone', 'no-shot': !shot }]}>
             <Thumb obj={d.object} size={240} class="ha-still" />
             {shot && shot.frame === 'wide' && (
-              <figure class="fr-web">
-                <div class="fr-bar" aria-hidden="true"><span class="fr-dots"><i></i><i></i><i></i></span>{host(p) && <span class="fr-url">{host(p)}</span>}</div>
-                <div class="fr-view" style={`aspect-ratio: ${shot.img.width} / ${shot.img.height}`}>
-                  <Picture src={shot.img} alt={shot.alt} widths={[720, 1080, 1440, 2048].filter((w) => w <= shot.img.width)} sizes={WEB_SIZES} formats={['avif', 'webp']} quality={62} loading="lazy" decoding="async" />
-                </div>
+              <figure class="hs-web">
+                <div class="hs-bar" aria-hidden="true"><span class="hs-dots"><i></i><i></i><i></i></span>{host(p) && <span class="hs-url">{host(p)}</span>}</div>
+                <Picture src={shot.img} alt={shot.alt} widths={[720, 1080, 1440].filter((w) => w <= shot.img.width)} sizes="(min-width: 1240px) 380px, (min-width: 900px) 46vw, 92vw" formats={['avif', 'webp']} quality={62} loading="lazy" decoding="async" />
               </figure>
             )}
             {shot && shot.frame === 'phone' && (
-              <figure class="fr-phone">
-                <div class="fr-view" style={`aspect-ratio: ${shot.img.width} / ${shot.img.height}`}>
-                  <Picture src={shot.img} alt={shot.alt} widths={[390, 600, 780].filter((w) => w <= shot.img.width)} sizes={PHONE_SIZES} formats={['avif', 'webp']} quality={70} loading="lazy" decoding="async" />
-                </div>
+              <figure class="hs-phone">
+                <Picture src={shot.img} alt={shot.alt} widths={[390, 600, 780].filter((w) => w <= shot.img.width)} sizes="(min-width: 900px) 220px, 58vw" formats={['avif', 'webp']} quality={70} loading="lazy" decoding="async" />
               </figure>
             )}
           </div>

@@ -6,18 +6,15 @@ a.pj:hover { text-decoration: underline; text-decoration-color: currentColor; }
 .entry[hidden], .ygroup[hidden] { display: none; }
 .sep { color: var(--ink-4); padding: 0 0.4em; }
 
-/* the rows start on E1, the reading edge About's chapters and an entry's text share (ADR-0015 item 3): the
-   date sits in the index column on E0, the spine in the gap before the text */
-.rec { --rec-w: 1220px; --spine-w: 36px; --gutter: calc(var(--index) + var(--igap) - var(--spine-w)); --spine-x: calc(var(--gutter) + var(--spine-w) / 2); }
-@media (max-width: 1240px) { .rec { --rec-w: 1060px; --gutter: 64px; } }
+.rec { --rec-w: 1060px; --gutter: 64px; --spine-w: 36px; --spine-x: calc(var(--gutter) + var(--spine-w) / 2); }
 .rec > :not(.foot) { max-width: var(--rec-w); }
 
 /* header: at most ~220 px, so the first entry shows on the first screen at 1440×900 (L2) */
 .rec-head { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 24px; padding: 28px 0 20px; }
 .rec-head::before { content: ""; position: absolute; z-index: -1; left: -12%; top: -70%; width: 80%; height: 230%; pointer-events: none;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--log) 11%, transparent), transparent); }
-.rec-title { font: 400 var(--t-5)/var(--lh-5) var(--f-display); letter-spacing: var(--tr-5); margin-left: -0.03em; }
-.rec-dek { margin-top: var(--s-3); max-width: 34em; color: var(--ink-2); font-size: var(--t-body); line-height: var(--lh-body); text-wrap: pretty; }
+.rec-title { font: 400 var(--t-h2)/var(--lh-h2) var(--f-display); letter-spacing: -0.02em; margin-left: -0.03em; }
+.rec-dek { margin-top: 14px; max-width: 34em; color: var(--ink-2); font-size: var(--t-body); line-height: 1.5; text-wrap: pretty; }
 .rec-head .meta { margin-top: 10px; }
 /* the object at the scale of the other tabs' objects (brief §7 2026-10-10: "the object looks too small");
    its box is mostly glow and empty ground, so negative margins keep the header, and the first entry, where
@@ -32,10 +29,10 @@ a.pj:hover { text-decoration: underline; text-decoration-color: currentColor; }
 
 /* year head: the year in the gutter, the strip over the reading column */
 .ygroup { position: relative; }
-.ygroup + .ygroup { margin-top: var(--s-8); }
+.ygroup + .ygroup { margin-top: 56px; }
 .y-head { display: grid; grid-template-columns: calc(var(--gutter) + var(--spine-w)) minmax(0, 1fr); align-items: end; padding: 18px 0 0; }
 .y-label { display: grid; gap: 2px; padding-bottom: 22px; }
-.y-label h2 { font: 400 var(--t-h3)/1 var(--f-display); letter-spacing: var(--tr-2); font-variant-numeric: lining-nums tabular-nums; }
+.y-label h2 { font: 400 var(--t-h3)/1 var(--f-display); letter-spacing: -0.01em; font-variant-numeric: lining-nums tabular-nums; }
 .y-count { white-space: nowrap; }
 
 /* the year strip: twelve months, a tick per entry, stacked (§5.4, amended); a picture, months are anchors */
@@ -45,8 +42,8 @@ a.pj:hover { text-decoration: underline; text-decoration-color: currentColor; }
 .ym-ticks i { display: block; height: 4px; border-radius: 2px; background: var(--c); }
 .ym-ticks i.t-note { width: 45%; }
 .ym-ticks i.t-release { height: 6px; }
-.ym-more { position: absolute; right: 0; top: 0; font: 500 var(--t-micro)/1 var(--f-ui); color: var(--ink-3); }
-.ym-l { padding-top: 7px; font: 400 var(--t-micro)/1 var(--f-ui); color: var(--ink-3); letter-spacing: 0.01em; }
+.ym-more { position: absolute; right: 0; top: 0; font: 500 10px/1 var(--f-ui); color: var(--ink-3); }
+.ym-l { padding-top: 7px; font: 400 12px/1 var(--f-ui); color: var(--ink-3); letter-spacing: 0.01em; }
 .ym.on .ym-l { color: var(--ink-2); }
 a.ym:hover .ym-l { color: var(--ink); }
 a.ym:hover .ym-ticks i { filter: brightness(1.15); }
@@ -75,24 +72,24 @@ a.e-date:hover { color: var(--ink); text-decoration: underline; }
 .entry:hover .e-mark, .entry:focus-within .e-mark, .entry:target .e-mark { scale: 1.3; }
 
 /* a note: the text itself, at reading size, in full */
-.n-text { font: 430 var(--t-read)/var(--lh-read) var(--f-read); color: var(--read); max-width: var(--measure); text-wrap: pretty; hanging-punctuation: first allow-end; }
+.n-text { font: 430 21px/1.5 var(--f-read); color: var(--read); max-width: 28em; text-wrap: pretty; hanging-punctuation: first allow-end; }
 .n-text p + p { margin-top: 0.6em; }
 .n-text a { color: var(--log); text-decoration-color: color-mix(in srgb, var(--log) 45%, transparent); }
 .s-note .e-meta { margin-top: 10px; }
 
 /* an entry and an essay: title, dek, projects; the title's link covers the row, project names sit above it */
-.e-title { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: var(--tr-2); text-wrap: balance; }
+.e-title { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: -0.012em; text-wrap: balance; }
 .e-link { color: inherit; text-decoration: none; transition: color var(--d-1); }
 .e-link::after { content: ""; position: absolute; inset: 0; z-index: 0; }
 .entry:hover .e-link { color: #fff8ec; }
 .e-link:focus-visible { outline: none; }
 .e-link:focus-visible::after { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: 8px; }
-.e-dek { margin-top: var(--s-2); color: var(--ink-2); max-width: 34em; font-size: var(--t-body); line-height: var(--lh-body); text-wrap: pretty; }
+.e-dek { margin-top: 8px; color: var(--ink-2); max-width: 34em; font-size: var(--t-body); line-height: 1.5; text-wrap: pretty; }
 .e-meta { margin-top: 12px; position: relative; z-index: 1; width: fit-content; }
 .e-meta .pj { display: inline-block; padding: 6px 0; margin: -6px 0; font-weight: 500; }
 
 /* a release: the version large in its project's colour, up to three items (readability research S2) */
-.r-name { font: 400 var(--t-3)/var(--lh-3) var(--f-display); letter-spacing: var(--tr-3); color: color-mix(in srgb, var(--p) 88%, var(--ink)); font-variant-numeric: lining-nums; }
+.r-name { font: 400 34px/1.08 var(--f-display); letter-spacing: -0.018em; color: color-mix(in srgb, var(--p) 88%, var(--ink)); font-variant-numeric: lining-nums; }
 .s-release .entry-title, .r-name .e-link { color: inherit; }
 .entry.s-release:hover .e-link { color: color-mix(in srgb, var(--p) 70%, #fff); }
 .r-title { margin-top: 6px; font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); color: var(--ink); }
@@ -112,7 +109,7 @@ a.e-date:hover { color: var(--ink); text-decoration: underline; }
 /* the empty record: the same frame, nothing on it; the marks and colours it will use */
 .empty-spine { padding: 26px 0 8px; }
 .empty-spine .empty-lead, .empty-spine .empty-colours { margin-left: calc(var(--gutter) + var(--spine-w)); }
-.empty-lead { font: 430 var(--t-read)/var(--lh-read) var(--f-read); color: var(--read); max-width: var(--measure); text-wrap: pretty; }
+.empty-lead { font: 430 21px/1.5 var(--f-read); color: var(--read); max-width: 28em; text-wrap: pretty; }
 .kinds { margin: 22px 0 0; }
 .empty-spine::before { background: repeating-linear-gradient(180deg, var(--rule-2) 0 4px, transparent 4px 9px); }
 .kinds .entry { padding: 13px 0; }
@@ -126,7 +123,7 @@ a.e-date:hover { color: var(--ink); text-decoration: underline; }
 .empty-colours .pj { font-weight: 500; }
 
 /* the foot: how it is written and the feed, after the record rather than before it */
-.rec-foot { display: grid; gap: 0; margin: var(--s-8) 0 0 calc(var(--gutter) + var(--spine-w)); padding-top: 18px; border-top: 1px solid var(--rule); max-width: 40em !important; }
+.rec-foot { display: grid; gap: 6px; margin: 56px 0 0 calc(var(--gutter) + var(--spine-w)); padding-top: 18px; border-top: 1px solid var(--rule); max-width: 40em !important; }
 .rec-foot a { color: var(--ink-2); }
 
 /* archives of past years */
@@ -164,12 +161,11 @@ ins { text-decoration: none; color: var(--ink); }
 .thread.dim { opacity: 0.45; }
 .thread:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
 .t-axis { display: block; width: 100%; height: 22px; margin-top: 6px; overflow: visible; }
-.t-axis text { font: 400 var(--t-micro)/1 var(--f-ui); fill: var(--ink-3); font-variant-numeric: tabular-nums; }
+.t-axis text { font: 400 12px/1 var(--f-ui); fill: var(--ink-3); font-variant-numeric: tabular-nums; }
 .threads-note { margin-top: 12px; max-width: 26em; }
 
 /* ---------- one essay on its own page (§3.3, §7) ---------- */
-/* an entry: the contents list in the index column on E0, the text on E1 (ADR-0015 item 3) */
-.post-wrap { display: grid; grid-template-columns: var(--index) minmax(0, 720px) minmax(0, 1fr); justify-content: start; gap: 0 var(--igap); padding-top: var(--s-7); }
+.post-wrap { display: grid; grid-template-columns: 180px minmax(0, 680px) 180px; justify-content: center; gap: 0 56px; padding-top: 40px; }
 .post-toc { position: sticky; top: calc(var(--bar-h) + 40px); align-self: start; display: grid; gap: 4px; }
 .post-toc .meta { margin: 28px 0 6px; }
 .post-toc ol { display: grid; gap: 2px; }
@@ -177,14 +173,14 @@ ins { text-decoration: none; color: var(--ink); }
 .post-toc ol a:hover { color: var(--ink); }
 .post-toc ol a.on { color: var(--ink); border-left-color: var(--log); }
 .post-toc ol a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
-.post-back { min-height: var(--hit); }
+.post-back { min-height: 40px; }
 .post-back .icon { color: var(--ink-3); }
 .post-back-sm { display: none; }
 .post-head { padding-top: 4px; }
-.post-title { font: 400 var(--t-title)/var(--lh-title) var(--f-display); letter-spacing: var(--tr-7); margin: var(--s-4) 0 0 -0.03em; text-wrap: balance; }
-.post-dek { margin-top: var(--s-5); color: var(--ink-2); max-width: 28em; }
+.post-title { font: 400 var(--t-title)/var(--lh-title) var(--f-display); letter-spacing: -0.02em; margin: 16px 0 0 -0.03em; text-wrap: balance; }
+.post-dek { margin-top: 24px; color: var(--ink-2); max-width: 28em; }
 
-.post-body h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: var(--tr-2); color: var(--ink); margin: 1.9em 0 0.6em; scroll-margin-top: calc(var(--bar-h) + 24px); }
+.post-body h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: -0.012em; color: var(--ink); margin: 1.9em 0 0.6em; scroll-margin-top: calc(var(--bar-h) + 24px); }
 .post-body .post-update { margin-top: 2.4em; }
 .post-update { font: 400 var(--t-ui)/var(--lh-ui) var(--f-ui); color: var(--ink-2); padding: 14px 0 14px 16px; border-left: 1px solid var(--rule-2); }
 .post-update b { font-weight: 500; color: var(--ink); }
@@ -204,12 +200,12 @@ ins { text-decoration: none; color: var(--ink); }
 .pn { display: grid; gap: 6px; padding: 14px 0; text-decoration: none; color: inherit; }
 .pn:last-child { text-align: right; justify-items: end; }
 .pn .meta { display: inline-flex; align-items: center; gap: 6px; }
-.pn b { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: var(--tr-2); transition: color var(--d-1); }
+.pn b { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); transition: color var(--d-1); }
 a.pn:hover b { color: #fff8ec; }
 .pn b.none { color: var(--ink-3); }
 
 @media (max-width: 1240px) {
-  .post-wrap { grid-template-columns: minmax(0, 720px); }
+  .post-wrap { grid-template-columns: minmax(0, 680px); }
   .post-toc { display: none; }
   .post-back-sm { display: inline-flex; margin-bottom: 20px; }
 }
@@ -226,6 +222,7 @@ a.pn:hover b { color: #fff8ec; }
 /* ---------- entry pages, amended 2026-10-09 (readability research §9, T1–T2, C1–C2) ---------- */
 /* reading text: Newsreader 21 px / 1.55 at weight 430 (chosen from 400 / 430 / 450 side by side on the
    ground, log.md §4.3), ~70 characters a line; 19 px on phones. Links in Record blue. */
+.read { font: 430 21px/1.55 var(--f-read); color: var(--read); max-width: 28em; text-wrap: pretty; hanging-punctuation: first allow-end; }
 .read > * + * { margin-top: 1em; }
 .read a { color: var(--log); text-decoration-color: color-mix(in srgb, var(--log) 45%, transparent); }
 .read a:hover { text-decoration-color: currentColor; }
@@ -236,7 +233,7 @@ a.pn:hover b { color: #fff8ec; }
 .read ul > li::before { content: ""; position: absolute; left: -1em; top: 0.75em; width: 8px; height: 1.5px; border-radius: 1px; background: color-mix(in srgb, var(--p, var(--log)) 75%, transparent); }
 .read ol { list-style: decimal; }
 .read li + li { margin-top: 0.35em; }
-.read h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: var(--tr-2); }
+.read h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); }
 
 /* the page's light: a faint wash of the project's colour at the top, fading by ~400 px; still (C1) */
 .page-post { position: relative; }
@@ -245,50 +242,43 @@ a.pn:hover b { color: #fff8ec; }
     radial-gradient(52% 70% at 36% 0%, color-mix(in srgb, var(--p) 14%, transparent), transparent 70%),
     radial-gradient(30% 40% at 62% 6%, color-mix(in srgb, var(--p) 6%, transparent), transparent 80%); }
 .post-wrap, .page-post > .inner { position: relative; z-index: 1; }
+.post-wrap { grid-template-columns: 180px minmax(0, 720px) 180px; }
 .post > :not(.post-flow, .post-foot) { max-width: 600px; }
 /* the reading flow: the body's children are laid out with the key line and the image, which sit after
    its first paragraph on screen (the body box itself is display: contents and still sets the type) */
 .post-flow { display: flex; flex-direction: column; margin-top: 44px; }
 .post-body { display: contents; }
-.post-body > * { order: 4; max-width: var(--measure); }
+.post-body > * { order: 4; max-width: 28em; }
 .post-body > .help-note { order: 0; margin: 0 0 1.4em; }
 .post-body > p:first-of-type { order: 1; margin-top: 0; }
 .post-body > .fig { max-width: none; }
 .post-flow > .post-key { order: 2; }
 .post-flow > .post-fig { order: 3; }
-.post-entry .post-title, .post-note .post-title, .post-release .post-title { font-size: var(--t-5); line-height: var(--lh-5); }
+.post-entry .post-title, .post-note .post-title, .post-release .post-title { font-size: var(--t-h2); line-height: 1.04; }
 .post-title.is-version { color: color-mix(in srgb, var(--p) 88%, var(--ink)); }
-.post-version { margin-top: var(--s-4); font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); color: color-mix(in srgb, var(--p) 88%, var(--ink)); }
+.post-version { margin-top: 18px; font: 400 var(--t-h3)/1.1 var(--f-display); color: color-mix(in srgb, var(--p) 88%, var(--ink)); }
 .post-version + .post-title { margin-top: 6px; }
-.post-dek { margin-top: var(--s-5); max-width: 26em; }
+.post-dek { margin-top: 20px; max-width: 26em; }
 .post-head .pj { font-weight: 500; }
 
 /* the key line: one number or fact the owner said, in the display face and the project's colour */
 .post-key { margin: 1.5em 0 0.4em; align-self: flex-start; padding-left: 20px; border-left: 2px solid color-mix(in srgb, var(--p) 70%, transparent);
-  font: 400 var(--t-3)/var(--lh-3) var(--f-display); letter-spacing: var(--tr-3); color: color-mix(in srgb, var(--p) 88%, var(--ink)); font-variant-numeric: lining-nums; text-wrap: balance; }
+  font: 400 clamp(28px, 2.6vw, 36px)/1.15 var(--f-display); letter-spacing: -0.015em; color: color-mix(in srgb, var(--p) 88%, var(--ink)); font-variant-numeric: lining-nums; text-wrap: balance; }
 .post-flow > .post-fig { margin-top: 2.2em; margin-bottom: 2.4em; }
 .post-fig picture, .post-fig img { display: block; width: 100%; height: auto; border-radius: 10px; }
 .post-fig picture { position: relative; }
 .post-fig img { box-shadow: 0 0 0 1px var(--rule), 0 24px 60px -30px rgba(0, 0, 0, 0.8); }
 
 /* the closing line: the owner's next step */
-.post-next { margin-top: 2em; font: 400 var(--t-body)/var(--lh-body) var(--f-ui); color: var(--ink-2); }
+.post-next { margin-top: 2em; font: 400 var(--t-body)/1.5 var(--f-ui); color: var(--ink-2); }
 .post-next b { font-weight: 600; color: color-mix(in srgb, var(--p) 80%, var(--ink)); }
 
-.note-body { font: 430 var(--t-2)/var(--lh-lede) var(--f-read); color: var(--ink); }
+.note-body { font: 430 27px/1.42 var(--f-read); color: var(--ink); }
 .post-note .post-flow { margin-top: 28px; }
 .note-body > * { max-width: 24em; }
 
 @media (max-width: 1240px) {
   .post-wrap { grid-template-columns: minmax(0, 720px); }
-}
-/* touch: a date or a project name in a row is a full target; padding grows the box, the line stays */
-@media (pointer: coarse) {
-  a.e-date { position: relative; }
-  a.e-date::after { content: ""; position: absolute; inset: -13px 0; }
-  .e-meta .pj { padding-block: 13px; margin-block: -13px; }
-  /* inline links in a meta line: inline padding grows the target and leaves the line box alone */
-  .post-head .pj, .post-foot .meta a { padding-block: 14px; }
 }
 
 /* ---------- phones: the same content, less chrome (L5) ---------- */
@@ -300,10 +290,11 @@ a.pn:hover b { color: #fff8ec; }
   .rec-title { grid-column: 1; grid-row: 1; align-self: center; }
   .rec-media { grid-column: 2; grid-row: 1; width: min(42vw, 176px); margin: -34px -18px -38px 0; }
   .rec-dek, .rec-head .meta { grid-column: 1 / -1; }
+  .rec-dek { font-size: 16px; }
   .y-head { grid-template-columns: 1fr; gap: 14px; padding-top: 12px; }
   .y-label { display: flex; align-items: baseline; gap: 12px; padding: 0; }
   .ym { padding: 0 2px; }
-  .ym-l { letter-spacing: 0; }
+  .ym-l { font-size: 11px; letter-spacing: 0; }
   .spine > .entry, .spine > .entry.has-thumb, .kinds > .entry { grid-template-columns: var(--spine-w) minmax(0, 1fr); padding: 22px 0; row-gap: 0; }
   .spine > .entry .e-mark { grid-column: 1; grid-row: 1 / span 2; }
   .spine > .entry .e-date { grid-column: 2; grid-row: 1; margin-bottom: 6px; }
@@ -313,14 +304,19 @@ a.pn:hover b { color: #fff8ec; }
   .spine > .entry + .entry::before { left: var(--spine-w); }
   .e-mark { --mark-y: 4px !important; }
   .s-release .e-mark { --mark-y: 5px !important; }
+  .n-text { font-size: 19px; }
+  .r-name { font-size: 29px; }
   .empty-spine .empty-lead, .empty-spine .empty-colours, .rec-foot, .y-more, .rec-projects { margin-left: var(--spine-w); }
+  .empty-lead { font-size: 19px; }
   .kinds .entry { grid-template-columns: var(--spine-w) 76px minmax(0, 1fr); padding: 10px 0; }
   .kinds .e-mark { grid-column: 1; grid-row: 1 !important; }
   .kinds .entry .e-date { grid-column: 2; margin: 0; }
   .kinds .entry p { grid-column: 3; }
   .case-sec .spine, .case-sec .entries { --gutter: 0px; --spine-w: 22px; }
   .post-wrap { padding-top: 16px; }
-  .post-key { margin-top: var(--s-6); }
+  .read { font-size: 19px; line-height: 1.55; hyphens: auto; -webkit-hyphens: auto; }
+  .note-body { font-size: 23px; }
+  .post-key { margin-top: 32px; font-size: 26px; }
   .post-fig { --fw: calc(100vw - 2 * var(--gut)); margin-top: 32px; }
   .post-light { height: 420px; background: radial-gradient(90% 60% at 30% 0%, color-mix(in srgb, var(--p) 14%, transparent), transparent 75%); }
 }

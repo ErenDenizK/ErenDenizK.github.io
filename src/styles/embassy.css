@@ -97,11 +97,11 @@ dialog.focus .sheet { container-type: size; }
 .clip.is-playing .clip-video { opacity: 1; }
 
 /* ---- the maker's text, in the product's ink (readability T1: reading at 21 px) ---- */
-.case.has-world .emb .prose { font-size: var(--t-read); line-height: var(--lh-read); }
-.case.has-world .emb .decisions li { font: 430 var(--t-read)/var(--lh-read) var(--f-read); color: var(--read); }
+.case.has-world .emb .prose { font-size: 21px; line-height: 1.55; }
+.case.has-world .emb .decisions li { font: 400 19px/1.5 var(--f-read); color: var(--read); }
 .case.has-world .emb .case-sec blockquote { color: var(--ink); }
 /* numbers are the product's own facts: its face */
-.case.has-world .emb .numbers b { font: var(--w-display-w) var(--t-4)/1 var(--w-display); letter-spacing: var(--w-display-t); }
+.case.has-world .emb .numbers b { font: var(--w-display-w) 44px/1 var(--w-display); letter-spacing: var(--w-display-t); }
 .case.has-world .emb .numbers .meta { font-family: var(--w-face); }
 .case.has-world .emb a:not(.btn):not(.toc a) { color: var(--w-link); }
 
@@ -120,7 +120,7 @@ dialog.focus .sheet { container-type: size; }
 .case.has-world .emb-foot { position: relative; z-index: 2; margin: 0 calc(-1 * var(--case-pad)); padding: 44px var(--case-pad) 48px; border-top: 1px solid var(--rule); }
 .emb-credits { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px 20px; }
 .emb-credits .links { margin: 0; }
-.emb-mark { font: 500 var(--t-2)/1 var(--f-display); letter-spacing: -0.01em; color: var(--ink); }
+.emb-mark { font: 500 26px/1 var(--f-display); letter-spacing: -0.01em; color: var(--ink); }
 .emb-mark .dot { display: inline-block; width: 0.22em; height: 0.22em; margin-left: 0.07em; border-radius: 50%; background: var(--w-accent-light); }
 .emb-credits .meta { color: var(--ink-3); text-wrap: pretty; }
 .case.has-world .emb-foot .case-next { margin-top: 28px; }
@@ -145,6 +145,8 @@ dialog.focus .sheet { container-type: size; }
     overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
   }
   .shots-row .cap { scroll-snap-align: center; }
+  .case.has-world .emb .prose { font-size: 19px; }
+  .case.has-world .emb .numbers b { font-size: 36px; }
   .emb-credits { grid-template-columns: auto minmax(0, 1fr); }
   .emb-credits .links { grid-column: 1 / -1; }
 }

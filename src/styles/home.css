@@ -22,14 +22,10 @@
   --mid: calc(var(--obj) - 120px); /* the column it owns: its square's feathered corners may sit under text */
   --objtop: calc(var(--bar-h) + (100svh - var(--bar-h) - var(--obj) - 72px) / 2);   /* room under it for the first screen's last row */
   --gap: 32px;
-  /* the big words take the scale's top step; the name is fitted to the columns it spans and never exceeds it */
-  --name: min(10.3vw, var(--t-10));
-  --big: var(--t-10);
+  --name: clamp(64px, 10.3vw, 156px);
+  --big: clamp(72px, 11vw, 172px);
   --k: 0;                        /* phones: 0 in the first screen, 1 once the glass is the emblem */
-  /* the page's padding, widened to E0 where the window is wider than the column (ADR-0015 item 3), so the
-     name and the chapters start on the same edge as the bar's mark and every other page */
-  --pad: max(var(--gut), (100vw - var(--max)) / 2);   /* vw: the native bar is hidden wherever the rail runs */
-  position: relative; margin: 0 calc(var(--gut) * -1); padding: 0 var(--pad);
+  position: relative; margin: 0 calc(var(--gut) * -1); padding: 0 var(--gut);
 }
 /* a 1:1 still at 1x where the window allows (the edk poster's 705 width); at 2x the 1200 poster caps the
    slot at 600, since a larger one would be drawn enlarged (ADR-0006, evening amendment) */
@@ -39,7 +35,7 @@
 
 /* ---------- the stage ---------- */
 .ha-stage {
-  position: sticky; top: 0; z-index: 1; height: 100svh; margin: 0 calc(var(--pad) * -1) -100svh;
+  position: sticky; top: 0; z-index: 1; height: 100svh; margin: 0 calc(var(--gut) * -1) -100svh;
   mix-blend-mode: plus-lighter; pointer-events: none;
   --l1: var(--edk); --l2: var(--edk); --l3: var(--edk);
   transition: --l1 1200ms var(--ease-move), --l2 1500ms var(--ease-move), --l3 1800ms var(--ease-move);
@@ -69,7 +65,7 @@ html.js:not(.ha-calm) .ha-light { animation: ha-bloom 2400ms var(--ease-out) bot
 @keyframes ha-bloom { from { opacity: 0; transform: scale(0.55); } 45% { opacity: 1; } }
 
 /* ---------- planes ---------- */
-.ha-word { position: relative; z-index: 0; margin: 0; font: 400 var(--big)/var(--lh-10) var(--f-display); letter-spacing: var(--tr-10); white-space: nowrap; }
+.ha-word { position: relative; z-index: 0; margin: 0; font: 400 var(--big)/0.86 var(--f-display); letter-spacing: -0.035em; white-space: nowrap; }
 .ha-l, .ha-r, .ha-head, .ha-meet, .ha-now, .ha-meta, .ha-vision, .ha-foot, .ha-hint { position: relative; z-index: 2; }
 
 /* ---------- the first screen: one composed frame ---------- */
@@ -81,17 +77,17 @@ html.js:not(.ha-calm) .ha-light { animation: ha-bloom 2400ms var(--ease-out) bot
 }
 .ha-meta { grid-column: 1 / -1; grid-row: 2; align-self: start; margin-top: calc(var(--obj) * 0.19 - 34px); color: var(--ink-2); }
 .ha-name { display: grid; grid-column: 1 / -1; grid-row: 2; grid-template-columns: subgrid; grid-template-rows: auto 1fr auto; margin: 0; }
-.ha-name .ha-word { font-size: var(--name); line-height: 0.9; letter-spacing: var(--tr-9); }
+.ha-name .ha-word { font-size: var(--name); line-height: 0.9; letter-spacing: -0.03em; }
 .ha-name .ha-word > span { display: inline-block; }
 /* the two lines close in on the glass, above and below its letters (they sit at 0.37-0.65 of the square) */
 .ha-n1 { grid-column: 1 / span 2; grid-row: 1; margin: calc(var(--obj) * 0.19) 0 0 -0.04em; }
 .ha-n2 { grid-column: 2 / -1; grid-row: 3; justify-self: end; margin: 0 -0.02em calc(var(--obj) * 0.13) 0; }
 .ha-vision { grid-column: 1; grid-row: 2; align-self: end; max-width: 15em; margin-bottom: calc(var(--obj) * 0.13 + 10px);
-  font: 400 var(--t-2)/var(--lh-2) var(--f-display); letter-spacing: var(--tr-2); color: var(--ink); text-wrap: pretty; }
+  font: 400 clamp(22px, 1.9vw, 28px)/1.22 var(--f-display); letter-spacing: -0.012em; color: var(--ink); text-wrap: pretty; }
 .ha-vision .sample { margin-left: 10px; }
 .ha-foot { grid-column: 1 / -1; grid-row: 3; align-self: center; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; padding: 12px 0; }
 .ha-time { margin: 0; font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-3); font-variant-numeric: tabular-nums; display: flex; gap: 0.5em; align-items: baseline; }
-.ha-time time { color: var(--ink); font: 400 var(--t-2)/1 var(--f-display); letter-spacing: var(--tr-2); font-variant-numeric: tabular-nums lining-nums; }
+.ha-time time { color: var(--ink); font: 400 28px/1 var(--f-display); letter-spacing: -0.01em; font-variant-numeric: tabular-nums lining-nums; }
 .ha-time time:empty { display: none; }
 .ha-cue { display: inline-flex; flex-direction: column; align-items: center; gap: 10px; color: var(--ink-3); }
 .ha-cue i { width: 1px; height: 34px; background: linear-gradient(var(--ink-3), transparent); transform-origin: 50% 0; }
@@ -121,16 +117,16 @@ html.js:not(.ha-calm) .ha-name .ha-in { animation-name: ha-rise-name; }
 .ha-l { grid-column: 1; }
 .ha-r { grid-column: 3; }
 .ha-head { grid-column: 1; }
-.ha-k { display: flex; align-items: baseline; gap: 12px; margin: 0 0 18px; font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); color: var(--ink-2); letter-spacing: var(--tr-meta); }
+.ha-k { display: flex; align-items: baseline; gap: 12px; margin: 0 0 18px; font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); color: var(--ink-2); letter-spacing: 0.01em; }
 .ha-k span { color: var(--accent); font-variant-numeric: tabular-nums; }
-.ha-h { font: 400 var(--t-4)/var(--lh-4) var(--f-display); letter-spacing: var(--tr-4); text-wrap: balance; margin-left: -0.03em; }
-.ha-p { margin-top: var(--s-4); max-width: 30em; color: var(--ink-2); font-size: var(--t-body); line-height: var(--lh-body); text-wrap: pretty; }
-.ha-h + .ha-p { margin-top: var(--s-5); }
+.ha-h { font: 400 clamp(34px, 2.9vw, 44px)/1.04 var(--f-display); letter-spacing: -0.02em; text-wrap: balance; margin-left: -0.03em; }
+.ha-p { margin-top: 18px; max-width: 30em; color: var(--ink-2); font-size: var(--t-body); line-height: 1.55; text-wrap: pretty; }
+.ha-h + .ha-p { margin-top: 22px; }
 
 /* who */
 .ha-facts { align-self: center; display: grid; gap: 0; border-top: 1px solid var(--rule-2); }
 .ha-facts div { display: grid; gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
-.ha-facts dd { margin: 0; font: 400 var(--t-2)/var(--lh-2) var(--f-display); letter-spacing: var(--tr-2); }
+.ha-facts dd { margin: 0; font: 400 var(--t-h3)/1.15 var(--f-display); letter-spacing: -0.01em; }
 
 /* the two tracks: the object turns from one to the other as you read */
 .ha-tracks { grid-template-rows: auto auto auto auto auto; row-gap: 0; }
@@ -140,12 +136,12 @@ html.js:not(.ha-calm) .ha-name .ha-in { animation-name: ha-rise-name; }
 .ha-tw2 { grid-column: 2 / -1; grid-row: 4; justify-self: end; margin-top: 48px; }
 .ha-tracks .ha-l { grid-row: 3; margin-top: 20px; }
 .ha-tracks .ha-r { grid-row: 5; margin-top: 20px; }
-.ha-lh { font: 500 var(--t-meta)/1 var(--f-ui); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 14px; }
+.ha-lh { font: 500 var(--t-meta)/1 var(--f-ui); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 14px; }
 .ha-lane ul { border-top: 1px solid var(--rule-2); }
-.ha-lane li { padding: var(--s-3) 0; border-bottom: 1px solid var(--rule); font-size: var(--t-body); line-height: var(--lh-ui); color: var(--read); }
-.ha-gives { margin-top: var(--s-4); display: grid; gap: var(--s-1); font: 400 var(--t-2)/var(--lh-2) var(--f-display); letter-spacing: var(--tr-2); }
+.ha-lane li { padding: 12px 0; border-bottom: 1px solid var(--rule); font-size: var(--t-body); line-height: 1.4; color: var(--read); }
+.ha-gives { margin-top: 18px; display: grid; gap: 4px; font: 400 var(--t-h3)/1.15 var(--f-display); letter-spacing: -0.01em; }
 /* the lanes meet: under the left lane, beside the glass (a centred line would pass over it) */
-.ha-meet { grid-column: 1; grid-row: 6; margin-top: 64px; font: 400 var(--t-2)/var(--lh-2) var(--f-display); letter-spacing: var(--tr-2); color: var(--ink-2); max-width: 14em; text-wrap: balance; }
+.ha-meet { grid-column: 1; grid-row: 6; margin-top: 64px; font: 400 clamp(22px, 1.9vw, 28px)/1.25 var(--f-display); color: var(--ink-2); max-width: 14em; text-wrap: balance; }
 
 /* products */
 .ha-intro { min-height: 80svh; }
@@ -154,10 +150,10 @@ html.js:not(.ha-calm) .ha-name .ha-in { animation-name: ha-rise-name; }
 .ha-pname .wm { font-size: inherit; }
 .ha-prod .ha-l, .ha-prod .ha-r { grid-row: 2; align-self: start; }
 .ha-prod .ha-k span { color: var(--p); }
-.ha-pitch { font: 400 var(--t-3)/var(--lh-3) var(--f-display); letter-spacing: var(--tr-3); text-wrap: balance; }
+.ha-pitch { font: 400 clamp(24px, 2.1vw, 30px)/1.18 var(--f-display); letter-spacing: -0.014em; text-wrap: balance; }
 .ha-nums { display: flex; gap: 32px; margin-top: 26px; }
 .ha-nums div { display: flex; flex-direction: column-reverse; gap: 2px; }
-.ha-nums dd { margin: 0; font: 400 var(--t-h2)/1 var(--f-display); letter-spacing: var(--tr-4); font-variant-numeric: tabular-nums lining-nums; }
+.ha-nums dd { margin: 0; font: 400 var(--t-h2)/1 var(--f-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums lining-nums; }
 .ha-prod .links { margin-top: 30px; }
 .ha-shot { display: grid; justify-items: start; }
 .ha-shot.is-phone { justify-items: center; }
@@ -166,24 +162,31 @@ html.js:not(.ha-calm) .ha-name .ha-in { animation-name: ha-rise-name; }
 html:not(.js) .ha-still-pic { display: block; }
 .ha-still { display: block; width: 200px; height: 200px; margin: -20px 0 8px; }
 .ha-shot.no-shot .ha-still { width: 280px; height: 280px; }
-/* real screens: the site's browser and phone frames (global.css, screens; ADR-0014 item 3, ADR-0015 item 5).
-   The browser frame fills the column; a phone alone is the shared phone width */
-.ha-shot .fr-web { width: 100%; }
-.ha-shot .fr-phone { width: min(300px, 66%); }
+/* real screens: Work's frames, lighter (ADR-0014 item 3): a quiet browser bar with the real address; a slim rim for a phone */
+.hs-web { width: 100%; max-width: 420px; border-radius: 12px; overflow: hidden; background: #111113;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 40px 90px -40px color-mix(in oklab, var(--pg) 40%, rgba(0, 0, 0, 0.9)); }
+.hs-bar { display: flex; align-items: center; gap: 12px; height: 30px; padding: 0 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.hs-dots { display: flex; gap: 5px; }
+.hs-dots i { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
+.hs-url { flex: 1; text-align: center; margin-right: 32px; font: 400 12px/1 var(--f-ui); color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hs-web img { display: block; width: 100%; height: auto; }
+.hs-phone { width: 220px; padding: 5px; border-radius: 34px; background: #121214;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 40px 90px -40px color-mix(in oklab, var(--pg) 45%, rgba(0, 0, 0, 0.9)); }
+.hs-phone img { display: block; width: 100%; height: auto; border-radius: 29px; }
 
 /* the record */
 .ha-all { margin-top: 20px; }
 .ha-entries { border-top: 1px solid var(--rule-2); }
 .ha-entries a { position: relative; display: grid; gap: 4px; padding: 16px 0 16px 18px; border-bottom: 1px solid var(--rule); text-decoration: none; }
 .ha-entries a::before { content: ""; position: absolute; left: 0; top: 23px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px color-mix(in oklab, var(--c) 60%, transparent); }
-.ha-entries b { font: 400 var(--t-2)/var(--lh-2) var(--f-display); letter-spacing: var(--tr-2); transition: color var(--d-1); }
+.ha-entries b { font: 400 22px/1.2 var(--f-display); letter-spacing: -0.01em; transition: color var(--d-1); }
 .ha-entries span { color: var(--ink-2); font-size: var(--t-ui); line-height: var(--lh-ui); }
 .ha-entries a:hover b { color: var(--c); }
 
 /* the way on */
 .ha-exit { min-height: 100svh; align-content: center; }
 .ha-door { grid-row: 1; display: grid; gap: 8px; align-content: center; padding: 26px 0; border-top: 1px solid var(--rule-2); border-bottom: 1px solid var(--rule); text-decoration: none; color: var(--ink); }
-.ha-door b { font: 400 var(--t-5)/var(--lh-5) var(--f-display); letter-spacing: var(--tr-5); text-wrap: balance; }
+.ha-door b { font: 400 var(--t-h2)/1.02 var(--f-display); letter-spacing: -0.02em; text-wrap: balance; }
 .ha-door .icon { color: var(--ink-3); transition: transform var(--d-3) var(--ease-out), color var(--d-1); }
 .ha-door:hover .icon { color: var(--accent); transform: translateX(6px); }
 .ha-exit .ha-r { text-align: right; justify-items: end; }
@@ -196,9 +199,9 @@ html.ha-motion .ha-rv.in { opacity: 1; transform: none; }
 
 /* ---------- 900-1239 px: the glass on the right of one text column ---------- */
 @media (min-width: 900px) and (max-width: 1239.98px) {
-  .ha { --name: min(9.6vw, var(--t-10)); --big: min(9.4vw, var(--t-10)); }
-  .ha-obj { left: auto; right: var(--pad); }
-  .ha-light .l1 { left: calc(100% - var(--pad) - var(--obj) / 2); }
+  .ha { --name: clamp(64px, 9.6vw, 116px); --big: clamp(64px, 9.4vw, 112px); }
+  .ha-obj { left: auto; right: var(--gut); }
+  .ha-light .l1 { left: calc(100% - var(--gut) - var(--obj) / 2); }
   .ha-hero, .ha-ch { grid-template-columns: minmax(0, 1fr) calc(var(--obj) - 60px); }
   .ha-n1 { grid-column: 1 / -1; }
   .ha-n2 { grid-column: 1 / -1; }
@@ -221,9 +224,9 @@ html.ha-motion .ha-rv.in { opacity: 1; transform: none; }
 
 /* ---------- phones: one column under the glass; the glass becomes an emblem once the story starts ---------- */
 @media (max-width: 899.98px) {
-  .ha { --obj: min(96vw, 400px); --objtop: calc(var(--bar-h) + 12px); --name: min(13.8vw, var(--t-10)); --big: min(15vw, var(--t-10)); --emb: 0.42; }
+  .ha { --obj: min(96vw, 400px); --objtop: calc(var(--bar-h) + 12px); --name: clamp(40px, 13.8vw, 64px); --big: clamp(52px, 15vw, 76px); --emb: 0.42; }
   .ha-stage { position: absolute; left: 0; right: 0; top: 0; height: calc(var(--objtop) + var(--obj) + 40px); margin: 0; }
-  html.ha-pin .ha-stage { position: sticky; z-index: 4; height: 100svh; margin: 0 calc(var(--pad) * -1) -100svh; }
+  html.ha-pin .ha-stage { position: sticky; z-index: 4; height: 100svh; margin: 0 calc(var(--gut) * -1) -100svh; }
   .ha-light .l1 { width: calc(var(--obj) * 2.6); }
   .ha-light .l2 { left: -60%; width: 160%; bottom: -20%; height: 60%; }
   .ha-light .l3 { right: -50%; width: 130%; top: -10%; height: 55%; }
@@ -232,7 +235,7 @@ html.ha-motion .ha-rv.in { opacity: 1; transform: none; }
   html.ha-pin .ha-obj { transform: translateY(calc(var(--k) * var(--emb-y))) scale(calc(1 - var(--k) * (1 - var(--emb)))); will-change: transform; }
   html.ha-pin .ha-light .l1 { transform: translateY(calc(var(--k) * var(--emb-y))) scale(calc(1 - var(--k) * 0.4)); }
   html.ha-pin .ha-veil {
-    display: block; position: sticky; top: 0; z-index: 3; margin: 0 calc(var(--pad) * -1); pointer-events: none;
+    display: block; position: sticky; top: 0; z-index: 3; margin: 0 calc(var(--gut) * -1); pointer-events: none;
     height: calc(var(--bar-h) + 176px); margin-bottom: calc(-1 * (var(--bar-h) + 176px));
     background: linear-gradient(var(--ground) calc(100% - 72px), transparent); opacity: var(--k);
   }
@@ -241,17 +244,19 @@ html.ha-motion .ha-rv.in { opacity: 1; transform: none; }
   .ha-name { display: block; }
   .ha-name .ha-word { display: block; }
   .ha-n1, .ha-n2 { margin: 0 0 0 -0.03em; padding: 0; }
-  .ha-vision { order: 2; margin: var(--s-5) 0 0; max-width: 17em; }
+  .ha-vision { order: 2; margin: 22px 0 0; font-size: 22px; max-width: 17em; }
   .ha-name { order: 1; }
   .ha-hint { display: none; }
   .ha-foot { order: 4; margin-top: auto; padding: 28px 0 22px; grid-template-columns: auto 1fr; row-gap: 18px; }
   .ha-cue { display: none; }
   .ha-go { grid-column: 1 / -1; justify-self: stretch; justify-content: space-between; gap: 12px 18px; flex-wrap: wrap; }
-  .ha-go .btn { flex: 1 1 auto; justify-content: center; min-height: 52px; font-size: var(--t-body); }
+  .ha-go .btn { flex: 1 1 auto; justify-content: center; min-height: 52px; font-size: 16px; }
   .ha-time { grid-column: 1; }
+  .ha-time time { font-size: 24px; }
 
   .ha-ch { display: block; min-height: 0; padding: 64px 0 40px; }
   html.ha-pin .ha-ch:first-of-type { padding-top: 120px; }
+  .ha-h { font-size: clamp(30px, 8.6vw, 38px); }
   .ha-r { margin-top: 32px; }
   .ha-word { white-space: normal; }
   .ha-tw1, .ha-tw2 { display: block; font-size: var(--big); line-height: 0.95; margin: 32px 0 0; }
@@ -260,11 +265,14 @@ html.ha-motion .ha-rv.in { opacity: 1; transform: none; }
   .ha-intro { min-height: 0; padding-bottom: 8px; }
   .ha-prod { padding-top: 72px; }
   .ha-pname { display: block; text-align: left; margin-bottom: 28px; line-height: 1.02; }
+  .ha-pitch { font-size: 26px; }
   .ha-prod .links { gap: 10px 22px; }
   .ha-prod .links .btn { min-height: 52px; padding: 0 24px; }
-  .ha-shot .fr-phone { width: min(62vw, 240px); }
+  .hs-web { max-width: none; }
+  .hs-phone { width: min(62vw, 240px); }
   .ha-shot.is-phone { justify-items: start; }
   .ha-door { padding: 22px 0; }
+  .ha-door b { font-size: 34px; }
   .ha-exit { min-height: 0; padding-top: 72px; }
   .ha-exit .ha-r { text-align: left; justify-items: start; margin-top: 0; border-top: 0; }
   .ha-now { margin-top: 48px; text-align: left; justify-self: start; }
