@@ -245,24 +245,6 @@ const site = defineCollection({
       record: z.object({ label: z.string(), title: z.string(), all: z.string() }),
       exit: z.object({ label: z.string(), work: z.tuple([z.string(), z.string()]), about: z.tuple([z.string(), z.string()]) }),
     }),
-    /** Home, direction B, on its lab page (pages/lab/home-b.astro; docs/research/2026-10-home-b.md). */
-    homeB: z.object({
-      /** The vision line under the name. `draft` says who wrote it while the owner has not approved it. */
-      vision: z.object({ text: z.string(), draft: z.string().optional() }),
-      /** The living index's labels (docs/research/2026-10-home-b.md). */
-      index: z.object({
-        title: z.string(), now: z.string(), latest: z.string(), work: z.string(), workDek: z.string(),
-        record: z.string(), recordDek: z.string(), entries: z.string(), since: z.string(), open: z.string(),
-        light: z.string(), lightHint: z.string(), elsewhere: z.string(),
-      }),
-      /** The quiet sky over the name: Istanbul's sun, named by phase (scripts/home-b.ts). */
-      sky: z.object({
-        place: z.string(), in: z.string(),
-        phases: z.object({ night: z.string(), twilight: z.string(), dawn: z.string(), morning: z.string(), afternoon: z.string(), golden: z.string(), dusk: z.string() }),
-        sunrise: z.string(), sunset: z.string(),
-      }),
-      showcase: z.object({ title: z.string(), all: z.string(), kicker: z.string(), cta: z.string(), also: z.string() }),
-    }),
     work: z.object({
       kicker: z.string(), title: z.string(), dek: z.string(), byHand: z.string(),
       /** The one way into a project's focus view from its section. */
