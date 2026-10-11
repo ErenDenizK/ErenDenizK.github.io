@@ -15,9 +15,8 @@ import { settle, PROJECTS } from './helpers';
 
 const ENTRIES = ['sample-entry-eat-map', 'sample-entry-two-tracks', 'sample-essay-agents', 'sample-note-photo',
   'sample-note-prep-rail', 'sample-note-quiz', 'sample-note-recto-worker', 'sample-release-recto'];
-/* TODO(about): About is being rebuilt by the About agent (its products list set one word per line on an
-   iPhone). Add 'about/' here once that rebuild lands. The lab page is unlinked and noindex, so not swept. */
-const ROUTES = ['', 'work/', ...PROJECTS.map((p) => `work/${p}/`), 'record/', 'record/2026/',
+/* The lab page is unlinked and noindex, so not swept. */
+const ROUTES = ['', 'work/', 'about/', ...PROJECTS.map((p) => `work/${p}/`), 'record/', 'record/2026/',
   ...ENTRIES.map((e) => `record/2026/${e}/`), 'nope/'];
 
 /* A stretch up to 15 % is not visible at 3x (a 780 px phone capture drawn 292 css px wide on a 430 phone).
