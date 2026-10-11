@@ -38,19 +38,49 @@
   --log: #8fb8ff;
   --about: #f3b886;
 
-  /* type: three roles, nine sizes (audit §3.2, §3.4) */
+  /* type: three roles (audit §3.2) on one modular scale (ADR-0015; docs/research/2026-10-type-and-screens.md).
+     Ratio 1.25 on wide screens from a 17 px body (17, 21, 26, 33, 42, 52, 65, 80, 100, 127, 158), compressed
+     to about 1.18 on a 360 px phone. Text you read is set at fixed pixels, one value below 900 px and one
+     from 900 px (crisp, and the Record's 21 px on desktop and tablet holds exactly); type you look at is
+     fluid between the phone value at 360 px and the wide value at 1440 px. These are the only sizes the
+     site sets; objects that scale with their own box (the ID card, postcards, photo studies) and a
+     product's own face inside its embassy (world.json) are outside it. Leading and tracking belong to the
+     step: tracking tightens as size grows and stops before counters close (audit §3.3). */
   --f-display: "Newsreader", "Newsreader Fallback", Georgia, serif;
   --f-ui: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-read: "Newsreader", "Newsreader Fallback", Georgia, serif;
-  --t-meta: 13px;   --lh-meta: 1.35;
-  --t-ui: 15px;     --lh-ui: 1.45;
-  --t-body: 17px;   --lh-body: 1.6;
-  --t-read: 19px;   --lh-read: 1.6;
-  --t-lede: clamp(21px, 1.85vw, 27px); --lh-lede: 1.34;
-  --t-h3: 25px;     --lh-h3: 1.2;
-  --t-h2: clamp(36px, 3.4vw, 48px); --lh-h2: 1.05;
-  --t-title: clamp(46px, 5.2vw, 80px); --lh-title: 0.96;
-  --t-name: clamp(52px, 7.8vw, 122px); --lh-name: 0.92;
+  --t-micro: 12px;  --lh-micro: 1.2;                       /* figure labels: months, the frame's address */
+  --t-meta: 13px;   --lh-meta: 1.35; --tr-meta: 0.005em;   /* step -1: labels, dates, status */
+  --t-ui: 15px;     --lh-ui: 1.45;                         /* the interface half-step: controls, notes, captions */
+  --t-tab: 15px;                                           /* the tab pill only: 14 px on phones, so four tabs fit at 320 px */
+  --t-body: 17px;   --lh-body: 1.55;                       /* step 0: interface paragraphs */
+  --t-read: 21px;   --lh-read: 1.55;                       /* step 1: reading prose, Newsreader 430 */
+  --t-2: clamp(22px, 20.67px + 0.370vw, 26px);  --lh-2: 1.22; --tr-2: -0.012em;   /* sub-heads, entry titles, display lines */
+  --t-3: clamp(26px, 23.67px + 0.648vw, 33px);  --lh-3: 1.16; --tr-3: -0.015em;   /* pitch, key line, release name */
+  --t-4: clamp(30px, 26px + 1.111vw, 42px);     --lh-4: 1.06; --tr-4: -0.02em;    /* section heads, numbers */
+  --t-5: clamp(34px, 28px + 1.667vw, 52px);     --lh-5: 1.04; --tr-5: -0.02em;    /* index titles (Record, an entry), doors */
+  --t-6: clamp(40px, 31.67px + 2.315vw, 65px);  --lh-6: 1;    --tr-6: -0.02em;    /* a wordmark in a short window */
+  --t-7: clamp(44px, 32px + 3.333vw, 80px);     --lh-7: 0.96; --tr-7: -0.02em;    /* page titles, project wordmarks */
+  --t-9: clamp(56px, 32.33px + 6.574vw, 127px); --lh-9: 0.92; --tr-9: -0.03em;    /* About's greeting */
+  --t-10: clamp(58px, 24.67px + 9.259vw, 158px); --lh-10: 0.86; --tr-10: -0.035em; /* Home's big words: never above this, fitted to their column */
+  /* roles */
+  --t-lede: var(--t-2); --lh-lede: 1.34;   /* a lede is a paragraph: the step's size, a paragraph's leading */
+  --t-h3: var(--t-2);   --lh-h3: var(--lh-2);
+  --t-h2: var(--t-4);   --lh-h2: var(--lh-4);
+  --t-title: var(--t-7); --lh-title: var(--lh-7);
+  --t-name: var(--t-9); --lh-name: var(--lh-9);
+
+  /* space: one 4 px-based rhythm (ADR-0015 item 4) */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
+
+  /* screens (ADR-0015 item 5): one browser frame and one phone frame on every page */
+  --r-web: 12px;                 /* a browser window's corner */
+  --r-phone: 30px; --phone-rim: 5px;   /* the phone's rim; the screen's corner is the rim's minus the rim */
+  --r-media: 10px;               /* a figure or a capture without a frame */
+  --r-thumb: 8px;
+  --frame-bar: 32px;
+  --shadow-frame: 0 0 0 1px rgba(255, 255, 255, 0.09), 0 40px 90px -30px rgba(0, 0, 0, 0.9);
+  --hit: 44px;                   /* the smallest target on touch */
 
   /* motion (audit §4.1) */
   --d-1: 120ms; --d-2: 200ms; --d-3: 320ms; --d-4: 480ms; --d-5: 720ms;
@@ -61,8 +91,15 @@
   --spring-ui: linear(0, 0.073 5.6%, 0.2279 11.1%, 0.4014 16.7%, 0.561 22.2%, 0.6935 27.8%, 0.7959 33.3%, 0.8707 38.9%, 0.9229 44.4%, 0.9575 50%, 0.9794 55.6%, 0.9924 61.1%, 0.9996 66.7%, 1.003 72.2%, 1.0042 77.8%, 1.0042 83.3%, 1.0037 88.9%, 1.003 94.4%, 1);
   --spring-object: linear(0, 0.0739 4.2%, 0.2449 8.3%, 0.4516 12.5%, 0.6517 16.7%, 0.8206 20.8%, 0.9474 25%, 1.0316 29.2%, 1.0783 33.3%, 1.0959 37.5%, 1.0936 41.7%, 1.0794 45.8%, 1.06 50%, 1.04 54.2%, 1.0224 58.3%, 1.0087 62.5%, 0.9992 66.7%, 0.9936 70.8%, 0.991 75%, 0.9907 79.2%, 0.9918 83.3%, 0.9935 87.5%, 0.9955 91.7%, 0.9973 95.8%, 1);
 
+  /* the grid (ADR-0015 item 3): every page shares two vertical edges. E0, the content edge: the gutter, or
+     the centred 1320 px column's edge on windows wider than it (the bar's mark and the last link line up
+     with it). E1, the reading edge, one index column (chapter heads, dates, the contents list) and its gap
+     past E0: About's chapters, the Record's rows and an entry's text all start there. Below 1241 px the
+     index column folds away (About, entries) or narrows to the dates (the Record). */
   --gut: clamp(16px, 3.9vw, 56px);
   --max: 1320px;
+  --index: 200px; --igap: 56px;
+  --measure: 28em;               /* the reading measure at the reading size: about 70 characters */
   --bar-h: 84px;
 }
 
@@ -95,16 +132,19 @@ abbr { text-decoration: none; }
 /* icons.css from tools/icons/out is imported by the layout */
 
 /* type roles */
-.meta { font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); letter-spacing: 0.005em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.meta { font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); letter-spacing: var(--tr-meta); color: var(--ink-3); font-variant-numeric: tabular-nums; }
 .display { font-family: var(--f-display); font-weight: 400; }
 .lede { font: 400 var(--t-lede)/var(--lh-lede) var(--f-ui); letter-spacing: -0.015em; text-wrap: pretty; }
-.prose { font: 400 var(--t-read)/var(--lh-read) var(--f-read); color: var(--read); max-width: 35em; text-wrap: pretty; }
-.prose p + p { margin-top: 0.9em; }
+.prose { font: 430 var(--t-read)/var(--lh-read) var(--f-read); color: var(--read); max-width: var(--measure); text-wrap: pretty; hanging-punctuation: first allow-end; }
+.prose p + p { margin-top: 1em; }
+/* the reading face at the reading size: the Record, About's chapters, a project's prose (readability T1, T2) */
+.read, .ch-body { font: 430 var(--t-read)/var(--lh-read) var(--f-read); color: var(--read); max-width: var(--measure); text-wrap: pretty; hanging-punctuation: first allow-end; }
+@media (max-width: 899.98px) { .prose, .read, .ch-body { hyphens: auto; -webkit-hyphens: auto; } }
 
 /* placeholders and samples look like what they are */
 .sample {
   display: inline-flex; align-items: center;
-  font: 400 12px/1 var(--f-ui); letter-spacing: 0.01em; color: var(--ink-3); white-space: nowrap;
+  font: 400 var(--t-micro)/1 var(--f-ui); letter-spacing: 0.01em; color: var(--ink-3); white-space: nowrap;
   padding: 4px 7px; border: 1px dashed rgba(233, 229, 222, 0.3); border-radius: 4px;
   vertical-align: 0.18em;
 }
@@ -119,7 +159,7 @@ abbr { text-decoration: none; }
 #app { position: relative; z-index: 2; }
 .bar {
   position: fixed; z-index: 20; top: 16px; left: 0; right: 0;
-  padding: 0 var(--gut);
+  padding: 0 max(var(--gut), (100% - var(--max)) / 2);   /* E0 on both sides, as the page's column */
   display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
   pointer-events: none;
   transition: transform var(--d-3) var(--ease-out);
@@ -137,8 +177,9 @@ abbr { text-decoration: none; }
 html:not(.js) .bar::after, html.scrolled .bar::after, html.sheet-open .bar::after { opacity: 1; }
 .mark {
   justify-self: start; text-decoration: none;
-  font: 500 26px/1 var(--f-display); letter-spacing: -0.01em;
-  padding: 8px 4px 10px;
+  font: 500 var(--t-2)/1 var(--f-display); letter-spacing: -0.01em; white-space: nowrap;
+  /* the letters sit on E0; the padding only widens the target */
+  padding: 9px 6px 11px; margin-left: -6px;
 }
 .tabs {
   position: relative; display: flex; gap: 2px; padding: 4px;
@@ -150,7 +191,7 @@ html:not(.js) .bar::after, html.scrolled .bar::after, html.sheet-open .bar::afte
 .tabs a {
   position: relative; z-index: 1;
   padding: 0 18px; border-radius: 999px; min-height: 40px; display: inline-flex; align-items: center;
-  font: 500 var(--t-ui)/1 var(--f-ui);
+  font: 500 var(--t-tab)/1 var(--f-ui);
   color: var(--ink-3); text-decoration: none;
   transition: color var(--d-2);
 }
@@ -178,16 +219,19 @@ html:not(.js) .bar::after, html.scrolled .bar::after, html.sheet-open .bar::afte
 .page { display: block; padding: var(--bar-h) var(--gut) 0; background: var(--ground); overflow-x: clip; }
 .skip { position: absolute; z-index: 40; left: 12px; top: -60px; padding: 10px 14px; border-radius: 8px; background: var(--ink); color: var(--ground); font: 500 var(--t-ui)/1 var(--f-ui); text-decoration: none; }
 .skip:focus { top: 12px; }
+.skip { display: inline-flex; align-items: center; min-height: var(--hit); }
 .inner { max-width: var(--max); margin: 0 auto; }
 .two { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; }
-.vhead { padding: 40px 0 56px; }
-.vtitle { font: 400 var(--t-title)/var(--lh-title) var(--f-display); letter-spacing: -0.02em; margin: 14px 0 0 -0.03em; text-wrap: balance; }
-.vdek { margin-top: 24px; max-width: 30em; color: var(--ink-2); }
+.vhead { padding: var(--s-7) 0 var(--s-7); }
+.vtitle { font: 400 var(--t-title)/var(--lh-title) var(--f-display); letter-spacing: var(--tr-7); margin: var(--s-3) 0 0 -0.03em; text-wrap: balance; }
+.vdek { margin-top: var(--s-5); max-width: 30em; color: var(--ink-2); }
 .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--rule-2); }
 .sec-head h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: -0.012em; }
 .sec-head .more { font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
 .sec-head .more:hover { color: var(--ink); }
-footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 96px 0 72px; }
+footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--s-2) var(--s-5); padding: var(--s-9) 0 var(--s-8); }
+/* the foot's links are full targets on touch: the target grows to 44 px, the line does not */
+@media (pointer: coarse) { footer.foot a { position: relative; } footer.foot a::after { content: ""; position: absolute; inset: -14px 0; } }
 
 /* ---------- buttons ---------- */
 .links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 32px; }
@@ -285,6 +329,36 @@ img.blend { mix-blend-mode: plus-lighter; }
   transition: opacity var(--d-4) var(--ease-out); }
 @supports (mask-mode: luminance) { .fine .media .m-glint { opacity: 1; } .media.sweep .m-glint { opacity: 1; animation: m-sweep 1800ms var(--ease-move) both; } }
 @keyframes m-sweep { from { background-position: 0 0, 150% 0; } to { background-position: 0 0, -50% 0; } }
+
+/* ---------- screens (ADR-0015 item 5): one browser frame and one phone frame, on Home and on Work ----------
+   A browser frame: the product's real address in a quiet bar, a 12 px window corner, a hairline, a shadow
+   and the project's light. A phone frame: a slim dark rim, no drawn hardware; the screen's corner is the
+   rim's minus the rim. A capture is drawn at most at its file's pixels at the device's ratio (layout sweep)
+   and its frame fills the column it stands in; a phone alone is the shared phone width. */
+.fr-web {
+  position: relative; border-radius: var(--r-web); overflow: hidden; background: #0e0e10;
+  box-shadow: var(--shadow-frame), 0 1px 0 0 rgba(255, 255, 255, 0.06) inset, 0 0 140px -40px color-mix(in srgb, var(--pg, var(--edk)) 45%, transparent);
+}
+.fr-bar { position: relative; height: var(--frame-bar); display: flex; align-items: center; padding: 0 13px; background: #151517; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.fr-dots { display: flex; gap: 7px; }
+.fr-dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.13); }
+.fr-url { position: absolute; left: 50%; translate: -50% 0; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  padding: 3px 14px; border-radius: 6px; background: rgba(255, 255, 255, 0.05); font: 400 var(--t-micro)/1.4 var(--f-ui); color: var(--ink-3); letter-spacing: 0.01em; }
+.fr-view { position: relative; background: #0b0b0d; }
+.fr-view picture { display: contents; }
+.fr-view img, .fr-view video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.fr-phone {
+  border-radius: var(--r-phone); padding: var(--phone-rim); background: #08080a;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.6) inset, 0 30px 70px -16px rgba(0, 0, 0, 0.92), 0 0 90px -30px color-mix(in srgb, var(--pg, var(--edk)) 40%, transparent);
+}
+.fr-phone .fr-view { border-radius: calc(var(--r-phone) - var(--phone-rim)); overflow: hidden; }
+@media (max-width: 899.98px) {
+  :root { --frame-bar: 26px; }
+  .fr-bar { padding: 0 10px; }
+  .fr-dots { gap: 5px; }
+  .fr-dots i { width: 7px; height: 7px; }
+  .fr-url { padding: 2px 10px; }
+}
 
 /* ---------- side column (Log). Work's sections are styles/work.css, Home's index styles/home.css ---------- */
 .stagecol { position: relative; }
@@ -414,19 +488,18 @@ html.vt-sheet::view-transition-old(root), html.vt-sheet::view-transition-new(roo
 
 /* ---------- phone ---------- */
 @media (max-width: 899.98px) {
-  :root { --bar-h: 64px; --t-name: clamp(44px, 12.4vw, 64px); --t-title: clamp(42px, 11vw, 56px); }
-  body { font-size: 16px; }
-  .bar { top: 0; padding: 10px 12px; grid-template-columns: auto 1fr; gap: 10px; }
+  :root { --bar-h: 64px; --t-micro: 11px; --t-tab: 14px; --t-body: 16px; --t-read: 19px; }
+  .bar { top: 0; padding: 10px var(--gut); grid-template-columns: auto 1fr; gap: 10px; }
   .bar::before { top: 0; height: 84px; }
   .bar::after { top: 0; height: calc(var(--bar-h) + 28px); }
   .bar.tucked { transform: translateY(-100%); }
-  .mark { font-size: 24px; padding: 8px 2px 10px; }
+  .mark { padding: 10px 6px 12px; }
   .tabs { justify-self: end; }
-  .tabs a { padding: 0 13px; min-height: 38px; font-size: 14px; }
+  .tabs a { padding: 0 13px; min-height: 38px; }
   .bar-end { display: none; }
   .lg { display: none; } .sm { display: inline; }
   .two { grid-template-columns: 1fr; }
-  .vhead { padding: 22px 0 34px; }
+  .vhead { padding: var(--s-5) 0 var(--s-6); }
   .sheet-bar .crumb-w { display: none; }
 
   /* phones: the project is a page of its own, not a drawer (owner, 2026-10-09) */
@@ -452,6 +525,9 @@ html.vt-sheet::view-transition-old(root), html.vt-sheet::view-transition-new(roo
   .case-next { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 380px) { .tabs a { padding: 0 10px; } }
+/* 320 px: the mark and four tabs fit between the two E0 edges (288 px): tighter tab padding, never a
+   wrapped mark (the lead's 320 px check, 2026-10-11) */
+@media (max-width: 340px) { .bar { gap: 8px; } .tabs a { padding: 0 7px; } }
 
 /* ---------- reduced motion: the still twin (audit §4.4): ≤150 ms crossfades, no transforms ---------- */
 @media (prefers-reduced-motion: reduce) {
@@ -533,4 +609,10 @@ dialog.focus .case { overflow-x: clip; }
   .tabs:has(a:hover ~ a[aria-current="page"]) .ind::after, .tabs:has(a[aria-current="page"] ~ a:hover) .ind::after { translate: none; }
   html.accent-arrive .tabs a .ind::after { animation: none; }
   .mark:hover .dot { scale: none; }
+}
+
+/* touch: every target is at least 44 px (ADR-0015 item 6); the pill grows by 4 px, the bar does not */
+@media (pointer: coarse) {
+  .tabs { padding: 2px; }
+  .tabs a { min-height: var(--hit); }
 }

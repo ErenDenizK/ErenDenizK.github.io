@@ -47,9 +47,9 @@ test.describe('Home, desktop', () => {
       await expect(sec.locator('.ha-pname .wm')).toHaveAttribute('data-wordmark', p);
       await expect(sec.locator(`a.p-open[data-p="${p}"]`)).toHaveCount(1);
     }
-    await expect(page.locator('#home-recto .hs-web .hs-url')).toHaveText('erendenizk.github.io/recto');
-    await expect(page.locator('#home-recto .hs-web img')).toHaveAttribute('alt', /.+/);
-    await expect(page.locator('#home-english-prep .hs-phone img')).toHaveCount(1);
+    await expect(page.locator('#home-recto .fr-web .fr-url')).toHaveText('erendenizk.github.io/recto');
+    await expect(page.locator('#home-recto .fr-web img')).toHaveAttribute('alt', /.+/);
+    await expect(page.locator('#home-english-prep .fr-phone img')).toHaveCount(1);
     /* no screen is invented for a product without captures */
     await expect(page.locator('#home-eat-map figure')).toHaveCount(0);
     /* the record and the way on */
