@@ -162,9 +162,11 @@ if (bar) {
   let lastY = scrollY;
   addEventListener('scroll', () => {
     const y = scrollY;
+    /* Home holds the bar while its name docks into the mark, the first 60 % of a window (scripts/home.ts) */
     if (!mq.wide.matches && !root.classList.contains('sheet-open')) {
-      if (y > lastY + 6 && y > 90) bar.classList.add('tucked');
-      else if (y < lastY - 6 || y < 40) bar.classList.remove('tucked');
+      const hold = root.classList.contains('hb-hold') && y < innerHeight * 0.62;
+      if (!hold && y > lastY + 6 && y > 90) bar.classList.add('tucked');
+      else if (hold || y < lastY - 6 || y < 40) bar.classList.remove('tucked');
     }
     lastY = y;
   }, { passive: true });
