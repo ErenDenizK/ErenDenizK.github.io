@@ -73,8 +73,9 @@ test.describe('desktop', () => {
         return { tTop: t.top, tBot: t.bottom, x: (t.left + t.right) / 2, top: h.top, bot: h.bottom, y: scrollY, max: document.documentElement.scrollHeight - innerHeight,
           on: ms.findIndex((m) => m.classList.contains('on')), n: ms.length, f: ms.map((m) => +m.style.getPropertyValue('--f')) };
       });
+      /* the track draws itself in on a spring: wait for it rather than read it mid-flight on a slow machine */
+      await expect.poll(async () => { const t = await geo(); return t.tBot - t.tTop; }, { timeout: 5000, message: 'drawn' }).toBeGreaterThan(20);
       let g = await geo();
-      expect(g.tBot - g.tTop, 'drawn').toBeGreaterThan(20);
       if (look === 'b') { expect(g.top).toBeCloseTo(g.tTop, 0); expect(g.bot - g.top, 'the thumb is the share in view').toBeGreaterThanOrEqual(24); }
       if (look === 'a') { expect(g.n, 'one bead per screen').toBeGreaterThanOrEqual(2); expect(g.on).toBe(0); }
       if (look === 'd') expect(g.n, 'one segment').toBe(1);
