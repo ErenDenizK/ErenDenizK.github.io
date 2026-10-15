@@ -28,6 +28,7 @@ import { readFileSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseColor, flatten, wcagContrast, apca, toHex, toOklch } from './color.mjs';
+import { oneTheme, onePairs } from './one.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -212,6 +213,8 @@ export const PAIRS = [
   { scope: 'embassy', where: 'world accent light as a mark', text: 'var(--w-accent-light)', on: [G], role: 'nontext' },
 ];
 
+PAIRS.push(...onePairs());
+
 /* ---- 4. Reading the stylesheets ---- */
 
 const stripComments = (css) => css.replace(/\/\*[\s\S]*?\*\//g, '');
@@ -318,6 +321,8 @@ export function resolve(value, tokens, seen = new Set()) {
    Candidates whose tokens come out identical are measured once and reported under all their names. */
 export const THEMES = [
   { name: 'dark', scope: 'site', note: 'the current house theme (src/styles/global.css)', overrides: {} },
+  /* the two-page site on its lab page: its own token file and rows (one.mjs) */
+  ...[oneTheme()].filter(Boolean),
 ];
 
 const CANDIDATE_FILE = 'src/styles/lab-themes.css';
