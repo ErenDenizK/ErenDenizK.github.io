@@ -9,6 +9,11 @@
 @font-face { font-family: "Newsreader"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("../fonts/newsreader-latin.woff2") format("woff2");
   unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+2010-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032, U+2039-203A, U+20AC, U+2122; }
 @font-face { font-family: "Newsreader"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("../fonts/newsreader-tr.woff2") format("woff2"); unicode-range: U+011E-011F, U+0130, U+015E-015F; }
+/* the real italic (tools/fonts/subset.py): without it the browser slants the roman. Not preloaded; a page
+   downloads it only when it sets italic text (About, photo notes, em in the Record). */
+@font-face { font-family: "Newsreader"; font-style: italic; font-weight: 400 500; font-display: swap; src: url("../fonts/newsreader-italic-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+2010-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032, U+2039-203A, U+20AC, U+2122; }
+@font-face { font-family: "Newsreader"; font-style: italic; font-weight: 400 500; font-display: swap; src: url("../fonts/newsreader-italic-tr.woff2") format("woff2"); unicode-range: U+011E-011F, U+0130, U+015E-015F; }
 @font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Liberation Sans"), local("Helvetica"); size-adjust: 105%; ascent-override: 92%; descent-override: 23%; line-gap-override: 0%; }
 @font-face { font-family: "Newsreader Fallback"; src: local("Times New Roman"), local("Liberation Serif"), local("Times"); size-adjust: 100.5%; ascent-override: 73%; descent-override: 26.4%; line-gap-override: 0%; }
 

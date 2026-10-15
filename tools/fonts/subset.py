@@ -10,6 +10,10 @@ Axes are narrowed to the range the type system uses, and Latin is cut to Basic L
 Latin-1 and the punctuation the copy uses; the Turkish letters outside Latin-1 go in a
 second, tiny file (unicode-range picks it up only when the page contains them).
 
+Newsreader also has its italic (`newsreader-italic`): About, the photo notes and `em` in the Record
+set italic, and without the real face the browser slants the roman. It is not preloaded: no first
+screen sets italic, and `font-display: swap` shows the roman until it arrives.
+
 The wordmark faces (docs/research/2026-10-wordmarks.md) set product names only, in the weights the
 content's `wordmark` fields use; they are never preloaded and load only on a page that shows one.
 """
@@ -29,13 +33,17 @@ TR = 'U+011E-011F,U+0130,U+015E-015F'
 FACES = {
     'inter': {'axes': {'wght': (400, 600), 'opsz': (14, 32)}, 'file': 'opsz'},
     'newsreader': {'axes': {'wght': (400, 500), 'opsz': (16, 72)}, 'file': 'opsz'},
+    # the same face's italic, cut to the same axes (font-style: italic in global.css)
+    'newsreader-italic': {'axes': {'wght': (400, 500), 'opsz': (16, 72)}, 'file': 'opsz', 'src': 'newsreader', 'style': 'italic'},
     # wordmarks, one static weight each (src/lib/wordmarks.ts lists it): Recto, Eat Map
     'funnel-display': {'axes': {'wght': 600}, 'file': 'wght'},
     'nunito': {'axes': {'wght': 800}, 'file': 'wght'},
 }
 
 def build(face, sub, unicodes, out_name):
-    src = os.path.join(NM, face, 'files', f'{face}-{sub}-{FACES[face]["file"]}-normal.woff2')
+    spec = FACES[face]
+    family = spec.get('src', face)
+    src = os.path.join(NM, family, 'files', f'{family}-{sub}-{spec["file"]}-{spec.get("style", "normal")}.woff2')
     f = TTFont(src)
     opts = subset.Options()
     opts.flavor = 'woff2'

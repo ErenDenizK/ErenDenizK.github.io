@@ -17,7 +17,7 @@ npm ci
 npm run dev           # http://localhost:4321/
 npm run build         # dist/ (base "/" locally; on GitHub, the repository name decides)
 npm run check         # types and content schemas
-npm run verify        # worlds, check, test builds, size budget and every browser test
+npm run verify        # worlds, colour floors, check, test builds, size budget and every browser test
 ```
 
 The browser tests need Playwright's Chromium (`npx playwright install chromium`, or set
@@ -54,8 +54,8 @@ src/
                        presentations)
   styles/              global.css (tokens and layout), log.css, transitions.css, rail.css, showcase.css,
                        work.css, embassy.css, wordmarks.css
-  fonts/               subset Newsreader and Inter, and the wordmark faces Funnel Display and Nunito
-                       (tools/fonts/subset.py)
+  fonts/               subset Newsreader (roman and italic) and Inter, and the wordmark faces Funnel
+                       Display and Nunito (tools/fonts/subset.py)
   assets/photos/       graded photos (tools/photos/grade.mjs) and About's postcards (tools/photos/postcards.mjs)
 tools/                 generators: icons, link-preview cards and favicons, objects, illustrations, fonts,
                        photos (grading and postcards), captures (product screens and clips)
