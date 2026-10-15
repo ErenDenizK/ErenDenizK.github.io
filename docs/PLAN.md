@@ -12,8 +12,9 @@ plan follows the discussion of the reference study with the owner
 
 ## Where we are (2026-10-15)
 
-- Home is back to its pre-round version (revert `0f4a33a`); the measured type and screen system
-  (ADR-0015) went with it and waits to be re-applied once Home's direction is set.
+- Home is back to its pre-round version (reverts `416ba12` and `9962864`); the measured type and
+  screen system (ADR-0015) went with it (revert `0f4a33a`) and waits to be re-applied once Home's
+  direction is set.
 - Kept and live: Work direction A with frames (ADR-0014), About with spread postcards (ADR-0008),
   the Record with sample entries and the cassette recorder, the beads rail everywhere (ADR-0013),
   pre-rendered objects at 1° (ADR-0006).

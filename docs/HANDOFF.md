@@ -1,4 +1,4 @@
-# Handoff (2026-10-11)
+# Handoff (2026-10-11, updated 2026-10-15)
 
 Start here in a fresh session, after CLAUDE.md, `docs/brief.md`, `docs/PROJECT.md` (the reasons)
 and `docs/WORKFLOW.md` (how we work).
