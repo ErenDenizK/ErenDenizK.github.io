@@ -90,7 +90,7 @@ a.e-date:hover { color: var(--ink); text-decoration: underline; }
 
 /* a release: the version large in its project's colour, up to three items (readability research S2) */
 .r-name { font: 400 34px/1.08 var(--f-display); letter-spacing: -0.018em; color: color-mix(in srgb, var(--p) 88%, var(--ink)); font-variant-numeric: lining-nums; }
-.s-release .entry-title, .r-name .e-link { color: inherit; }
+.r-name .e-link { color: inherit; }
 .entry.s-release:hover .e-link { color: color-mix(in srgb, var(--p) 70%, #fff); }
 .r-title { margin-top: 6px; font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); color: var(--ink); }
 .r-items { margin-top: 12px; display: grid; gap: 4px; max-width: 34em; }
@@ -160,9 +160,6 @@ ins { text-decoration: none; color: var(--ink); }
 .thread:is(a):hover .t-n, .thread[aria-current="true"] .t-n { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; }
 .thread.dim { opacity: 0.45; }
 .thread:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
-.t-axis { display: block; width: 100%; height: 22px; margin-top: 6px; overflow: visible; }
-.t-axis text { font: 400 12px/1 var(--f-ui); fill: var(--ink-3); font-variant-numeric: tabular-nums; }
-.threads-note { margin-top: 12px; max-width: 26em; }
 
 /* ---------- one essay on its own page (§3.3, §7) ---------- */
 .post-wrap { display: grid; grid-template-columns: 180px minmax(0, 680px) 180px; justify-content: center; gap: 0 56px; padding-top: 40px; }
@@ -181,9 +178,6 @@ ins { text-decoration: none; color: var(--ink); }
 .post-dek { margin-top: 24px; color: var(--ink-2); max-width: 28em; }
 
 .post-body h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: -0.012em; color: var(--ink); margin: 1.9em 0 0.6em; scroll-margin-top: calc(var(--bar-h) + 24px); }
-.post-body .post-update { margin-top: 2.4em; }
-.post-update { font: 400 var(--t-ui)/var(--lh-ui) var(--f-ui); color: var(--ink-2); padding: 14px 0 14px 16px; border-left: 1px solid var(--rule-2); }
-.post-update b { font-weight: 500; color: var(--ink); }
 
 /* figures: two drawings, one per width; never a scaled-down wide one (tools/illustrations) */
 .fig { --fw: min(720px, calc(100vw - 2 * var(--gut))); width: var(--fw); margin: 2.4em calc((100% - var(--fw)) / 2); container-type: inline-size; }
