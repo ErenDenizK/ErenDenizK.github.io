@@ -305,7 +305,8 @@ const OPTIONS: [string, string, [string, string][]][] = [
   .h3-row:hover .h3-wm .icon, .h3-row:focus-visible .h3-wm .icon { color: var(--ink); translate: 3px 0; }
   .h3-meta { display: flex; align-items: center; gap: 6px; font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); color: var(--ink-3); font-variant-numeric: tabular-nums; }
   .h3-meta .icon { color: var(--pg); }
-  .h3-sum { margin-top: 2px; font-size: var(--t-ui); line-height: var(--lh-ui); color: var(--ink-2); max-width: 26em; text-wrap: pretty; }
+  /* the one line is body text, 16/17 px like every sentence on Home (charter §3.1: the body floor is 16) */
+  .h3-sum { margin-top: 2px; line-height: 1.5; color: var(--ink-2); max-width: 26em; text-wrap: pretty; }
   .h3-more { margin-top: 24px; }
   /* the foot keeps the strip gap above it and a shorter tail (local: the live foot is unchanged) */
   .h3 footer.foot { padding: var(--h3-gap) 0 48px; }
