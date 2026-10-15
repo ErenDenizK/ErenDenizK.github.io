@@ -7,7 +7,7 @@ technique decided by the agent (CLAUDE.md); the look of the plain variant (item 
 owner has seen it · **Supersedes** ADR-0011 items 3 (the project-page exception), 5, 7 and 11 and its
 "Not done, on purpose"; everything else in ADR-0011 stands · **Rests on:** ADR-0011,
 `docs/research/2026-10-site-audit.md` §2 (scrollbar map, B6, B7, B8, B11, B12, B13), §7 (the clock),
-`docs/PLAN.md` tracks 3 and 4, ADR-0007 (the sheet; cross-document view transitions)
+`docs/history/plan-2026-10-clean-restart.md` tracks 3 and 4, ADR-0007 (the sheet; cross-document view transitions)
 
 **Amendment 2026-10-10 (later): one look, not two.** The owner on a phone: "Does each page have its own
 different scrollbar? One is a line, another is a ladder?" Verified at 390 × 844: Home and the Record drew

@@ -1,7 +1,7 @@
 # Research: the Record's object (2026-10-09)
 
 **Status:** superseded 2026-10-10. C2 shipped, then the owner rejected the design; next: H2 again or
-a tape/cassette player (`docs/PLAN.md` track 8). **Decided 2026-10-10 (evening):** round 4's
+a tape/cassette player (`docs/history/plan-2026-10-clean-restart.md` track 8). **Decided 2026-10-10 (evening):** round 4's
 concept 2, the pocket cassette recorder (owner: "a tape / voice recorder, different from the
 earlier ones"), shipped the same day as `tools/objects/recorder.py` (see "Round 4" at the end).
 

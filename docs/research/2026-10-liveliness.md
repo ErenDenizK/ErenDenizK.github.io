@@ -1,7 +1,7 @@
 # Research: liveliness, how to bring E's life back without E's cost (2026-10-09)
 
 **Status:** current, open. Fed ADR-0009 (`?live`, parked until the real-time 3D decision); its §2
-measurement of the default stage is input to the stutter study (`docs/PLAN.md` track 7). Paths under
+measurement of the default stage is input to the stutter study (`docs/history/plan-2026-10-clean-restart.md` track 7). Paths under
 `scratchpad/` cited here were session scratch, not kept.
 
 Brief §7 (2026-10-09, after seeing v0): the owner misses prototype E's live, interactive

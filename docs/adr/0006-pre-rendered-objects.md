@@ -5,7 +5,7 @@ still first, the moving version behind it"); **real-time 3D on desktop declined 
 owner chose to stay pre-rendered and fix it (option a; brief log, 2026-10-11). Before that, **under
 review 2026-10-10:** the owner finds the
 objects stutter in tiny movements and may bring real-time 3D back on desktop once the performance
-difference is reported (brief, "Look, motion and objects"; `docs/PLAN.md` track 7); the stutter
+difference is reported (brief, "Look, motion and objects"; `docs/history/plan-2026-10-clean-restart.md` track 7); the stutter
 causes inside this pipeline were fixed on 2026-10-10 (amendment below), and the softness and "2.5D" look
 the same evening (second amendment). A new ADR would
 supersede item 7 and ADR-0001 item 2 · **Amends:** ADR-0005 items 2 and 3 ·

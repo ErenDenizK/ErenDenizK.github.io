@@ -1,7 +1,7 @@
 # ADR-0009: Live frames: one frame engine and one light, behind a flag
 
 **Status:** proposed (the owner A/Bs it on the live site behind `?live`, one page load at a time since
-2026-10-11; nothing changes without the flag); no verdict recorded, parked until the real-time 3D decision (2026-10-10, `docs/PLAN.md`
+2026-10-11; nothing changes without the flag); no verdict recorded, parked until the real-time 3D decision (2026-10-10, `docs/history/plan-2026-10-clean-restart.md`
 track 7) · **Amends:** ADR-0006 items 4 (interaction) and 6 (tiers); keeps items 1–3, 5 and 7 ·
 **Rests on:** brief §7 (2026-10-09 after v0: the owner misses prototype E's live, interactive
 animation on desktop; "if we render well, phones can get animation too");

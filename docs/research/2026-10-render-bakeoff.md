@@ -1,7 +1,7 @@
 # Research: render bake-off, real-time vs pre-rendered (2026-10-09)
 
 **Status:** current reference. The numbers behind ADR-0006; reread before any real-time 3D ADR
-(`docs/PLAN.md` track 7). Paths under `scratchpad/` cited here were session scratch, not kept.
+(`docs/history/plan-2026-10-clean-restart.md` track 7). Paths under `scratchpad/` cited here were session scratch, not kept.
 
 Track 2 of `docs/history/plan-2026-10-craft-round.md`. The owner's verdict on prototype E: the in-page three.js objects look worse than
 the Cycles renders. The brief makes lighting the bar and asks that the page match the render
