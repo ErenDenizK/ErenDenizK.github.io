@@ -3,6 +3,9 @@
 **Status:** proposed 2026-10-15; technique by the lead, taste lines wait on the owner. Postmortem
 step 2 (`docs/research/2026-10-quality-postmortem.md`, "What changes" 2). Every design brief quotes
 this file. Comps and lab pages are checked against it (`docs/WORKFLOW.md` §2).
+Round 2 (the owner's answers, 2026-10-15 night, `docs/history/brief-log.md`): theme Graphite,
+live since ADR-0016; no 1 s arrival limit; a real italic; captions and the Work transition go to
+lab pages; Home's size lines stay provisional until Home's prototypes.
 
 - **Kinds.** [T] is taste: it waits for the owner's yes or no (a Turkish summary goes with the
   gate-1 comps). [L] is technique: the lead decides it, and it holds now.
@@ -50,8 +53,8 @@ Widths 390, 768, 1180, 1440 px. Screenshots stay at the three sizes in CLAUDE.md
 
 | Measure | 390 | 768 | 1180 | 1440 | Kind, source |
 |---|---|---|---|---|---|
-| Largest text, Home | 34 | 39 | 45 | 48 | [T] Home was rejected as "too big" (O 2026-10-11 late); liked sites' largest median 48 [34-64], phone 35 (M, `ref` §3.1); CV homes 16-42 (M, `ref` §3.3) |
-| Largest text, Work, project, About | 45 | 58 | 71 | 80 | [T] ADR-0015 step t-7, today's page-title size. The research proposes 64 (`ref` §5.3; quiet pages cap at 36-64, M, §3.2). The owner sees both in the comps. |
+| Largest text, Home | 34 | 39 | 45 | 48 | [T] provisional (O 2026-10-15 night: ticked without a note); fixed only after the Home prototypes. Home was rejected as "too big" (O 2026-10-11 late); liked sites' largest median 48 [34-64], phone 35 (M, `ref` §3.1); CV homes 16-42 (M, `ref` §3.3) |
+| Largest text, Work, project, About | 45 | 58 | 71 | 80 | [T] provisional (O 2026-10-15 night, same). ADR-0015 step t-7, today's page-title size. The research proposes 64 (`ref` §5.3; quiet pages cap at 36-64, M, §3.2). The owner sees both in the comps. |
 | Largest text, Record | 34 | 41 | 48 | 52 | [L] ADR-0015 step t-5 (index and entry titles) |
 | Hard cap for any text | 48 | 64 | 80 | 80 | [T] nothing set as a poster (`ref` §7). A non-text mark (a wordmark image, an object) may be larger. |
 | Interface body, Inter | 16 | 16 | 17 | 17 | [L] ADR-0015; the library floor is 16 (M, `ref` §3.1) |
@@ -72,8 +75,10 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
   page reads as dull (O, Jakub and Arc notes, `ref` §4.1).
 - **Tracking** [L]: display -0.02 to -0.035em, body 0, labels +0.005em. Tokens only (18 literal
   values today, inventory §3.5). `ref` §3.2 measured -0.02 to -0.05em.
-- **Italic** [T]: none, until a real Newsreader italic is loaded. Today the browser slants the roman
-  on About (inventory §3.1). Loading the italic costs one font file.
+- **Italic** [L, O 2026-10-15 night "load a real italic"]: Newsreader's own italic, cut like the
+  roman (`tools/fonts/subset.py`, latin 85.5 KB and tr 5.5 KB). It is not preloaded: no first
+  screen sets italic, and a page downloads it only when it shows italic text (today About).
+  The browser never slants the roman (section 7, faux italic).
 - **Line length** [L]: reading prose 28em, about 66-72 characters (O 2026-10-09 "about 70";
   `read` T1, M). Interface sentences at most 34em; ledes at most 30em. On phones never under 35
   characters, so no text sits beside an image below 600 px (`ref` §4.3, Saul Leiter at 12, M).
@@ -109,8 +114,8 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
 
 ## 4. Colour
 
-- **Ground ladder** [L]. All grounds are tokens. Literal near-blacks go (9 today, inventory §1.2).
-  Starting values, before the theme lab and `npm run palette` set the final ones:
+- **Ground ladder** [L]. All grounds are tokens; the near-black literals of inventory §1.2 are
+  tokens since ADR-0016. Live values (`src/styles/global.css`):
 
   | Token | Value | Use | Reason |
   |---|---|---|---|
@@ -121,47 +126,53 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
 
   Pure black (#000) is never a ground for text. Pure white (#fff) is never text. (O 2026-10-12, Jakub
   note, `ref` §7; O 2026-10-15 "need not be pure"; `ref` §3.2: the strongest pages never do it.)
-- **Ink by role** [L]. One warm ink in five tones. Starting values measured on #121214 (M, 2026-10-15,
-  WCAG 2 and APCA 0.0.98G, the formulas of the palette check). Every value also passes its floor on
-  `--raised` and `--raised-2`. They are candidate A of the theme lab (`src/styles/lab-themes.css`,
-  `wip/colour`), except `--ink-2`: the lab sets it at the body floor (#d3cfc7); this file takes the
-  secondary role below, and the lab block changes to match before gate 1.
+- **Ink by role** [L]. One warm ink in five tones, live since ADR-0016, measured on #121214 (M,
+  2026-10-15, WCAG 2 and APCA 0.0.98G, the formulas of the palette check). Every value also passes
+  its floor on `--raised` and `--raised-2`. They are candidate A of the theme lab
+  (`src/styles/lab-themes.css`). `--ink-2` is the lab's #d3cfc7, not the earlier #c4bfb6: its
+  sentences (decks, ledes, 15 px summaries) are measured at the body floor in the palette check,
+  and #c4bfb6 is Lc 68 there (M, ADR-0016).
 
-  | Token | Role | Floor | Start value | Measured |
+  | Token | Role | Floor | Value | Measured |
   |---|---|---|---|---|
   | `--ink` | titles, interface | APCA Lc 75, at most about Lc 90 | #e8e3dd | 14.7:1, Lc 90 |
   | `--read` | reading prose | Lc 75 | #dedad2 | 13.4:1, Lc 84 |
-  | `--ink-2` | secondary sentences, 16 px and up, at most 2 lines | Lc 60 | #c4bfb6 | 10.2:1, Lc 68 |
+  | `--ink-2` | secondary sentences: decks, ledes, summaries | Lc 75 | #d3cfc7 | 12.1:1, Lc 77 |
   | `--ink-3` | labels, dates, captions | Lc 45 | #a19d96 | 6.9:1, Lc 49 |
   | `--ink-4` | non-text only: rules, underlines, idle marks | Lc 30, 3:1 | #827e78 | 4.6:1, Lc 33 |
 
   Lc 90 is APCA's advisory maximum on dark (R, `themes` §3). Long prose uses `--read`, not
-  `--ink`. Today ink-3 is Lc 38 and ink-4 is text at 2.93:1 (M, inventory §1.4). The Lc 60 secondary role is LC (one of the palette check's
-  two options): it keeps a visible step between primary and secondary text.
+  `--ink`. Before ADR-0016, ink-3 was Lc 38 and ink-4 was text at 2.93:1 (M, inventory §1.4). The
+  step between `--ink`, `--read` and `--ink-2` is small (OKLCH L 0.92, 0.89, 0.85): secondary
+  sentences separate by size and face as much as by colour (`themes` §A).
 - **Contrast floors** [L]. A pair passes only when both WCAG 2 and APCA pass: body Lc 75 and 4.5:1;
   large Lc 60 and 3:1 (WCAG-large); label Lc 45 and 4.5:1; non-text Lc 30 and 3:1. Reason: WCAG 2
   overrates contrast on dark grounds (M: ink-3 is 5.55:1 but Lc 38). The label floor is this
   project's choice, not APCA's: APCA Bronze puts Lc 45 at headlines and Lc 30 at incidental text,
   and its font table asks more for 13 px. Labels stay short, so they are spot-read, not read. Source of truth:
-  `npm run palette` (`tools/palette/`, branch `wip/colour`), every pair in its PAIRS table.
+  `npm run palette` (`tools/palette/`), every pair in its PAIRS table.
 - **One accent at a time** [L]. The page accent leads (edk blue Home, Log blue Record, gold About);
   on Work the product in view takes over. Never two product colours lit in one viewport. (`ref` §3.2,
   M; `read` C1)
 - **Product colours are light** [L]. Glow, marks, rules, large ink. One source per product
   (`content/projects/*.md`), generated into tokens; today Recto has three greens and English Prep
   two pinks (inventory §1.3). Eat Map rose (Lc 39) is never small text. A colour that must be ink
-  on a ground gets its own measured ink token.
+  on a ground gets its own measured ink: `accent.ink` and `accent.fill` in the product's content
+  (Eat Map: text #ff94a9, button fill #f2627b; its glow, beads and wordmark keep #eb4f6b); Record
+  links use `--log-ink` #a8d3ff (ADR-0016).
 - **No large saturated fields** [L] outside a product's own embassy (O, Antoine note, `ref` §2.4).
-- **Every page has light** [L]. One glow scale of three tokens replaces the 10-15 % literals
-  (inventory §2). Every house page carries at least the base pool. Reason: About is "too black,
-  too empty, soulless" (O 2026-10-15).
-- **Theme direction** [T]: open. Four candidates, named as on the lab page: A Graphite (one soft
-  dark theme), B Paper (light, objects in dark tiles), C Hybrid (dark presentation, paper reading),
-  D Moods (a button cycling dark rooms). The lab page `/lab/themes/` (built on `wip/colour`) shows
-  them with the real objects at gate 1. The letters in `themes` §10 differ; use the names. Fixed
-  for any choice [L]: objects stay on dark (section 6); a theme is a token block on
-  `html[data-theme]`, set by an inline head script before first paint, with its own `color-scheme`
-  and `theme-color`; the stage drops its `view-transition-name` during a theme change (`themes` §7).
+- **Every page has light** [L]. The aura colours each page from what the page shows; the grain
+  stays and eases reading; the ground stays black-ish (O 2026-10-15 night: aura, grain and noise
+  are the concept). One glow scale of three tokens replaces the 10-15 % literals (inventory §2).
+  The base step is live: `--glow-base` 11 % (Home object, Home plate, Record head, About). Every
+  house page carries at least the base pool. Reason: About is "too black, too empty, soulless"
+  (O 2026-10-15); its gold pool rose from 10 % to the base. The 404 page has no pool yet.
+- **Theme** [T, decided]: A Graphite, one dark theme (O 2026-10-15 night: "white tires the eyes";
+  an aura on white does not work). No white pages and no theme switch. The tokens live on `:root`
+  in `src/styles/global.css`; the theme-color meta and the web manifest read the ground from
+  `src/lib/theme.ts`, and a test keeps the two equal (ADR-0016). The lab page `/lab/themes/` stays
+  as the record of the four candidates (B Paper, C Hybrid and D Moods are closed). Objects stay
+  on dark (section 6).
 
 ## 5. Motion
 
@@ -173,7 +184,7 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
 | Page change, same depth | out 160, in 320 ms | `--ease-in` out, `--ease-out` in | [L] ADR-0007 |
 | Page change, deeper / back | 420 / 240 ms | same | [L] ADR-0007 |
 | Moving across the screen (stage, accent glide) | 480-720 ms | `--ease-move` | [L] as built |
-| Work card to project (shared element) | test band 450-1400 ms on phone and desktop; Back mirrors it | `--ease-move` | [T] O 2026-10-15 allows the long version; the loved model runs 1.38 s open, 1.63 s back (M, `ref` §4.2). The owner picks one value per platform on the lab page. |
+| Work card to project (shared element) | test band 450-1400 ms on phone and desktop; Back mirrors it | `--ease-move` | [T] O 2026-10-15 allows the long version; O 2026-10-15 night: chosen on a lab page, from options based on the liked examples. The loved model (Robin Noguier) is a shared element that never disappears, 1.38 s open, 1.63 s back (M, `ref` §4.2); the lab shows it beside the other methods of `ref` §4.2 and a short version. The owner picks one per platform. |
 
 - **Curves** [L]: two for what the visitor sees arrive and move, `--ease-out` (0.2, 0.7, 0.1, 1)
   and `--ease-move` (0.65, 0, 0.35, 1). `--ease-in` (0.4, 0, 1, 1) is only for exits. Five literal
@@ -187,14 +198,12 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
   last step. In a reading column the sequence ends at the heading; the prose is there at first
   paint. Sources: O 2026-10-15 ("elements that appear in sequence read better"); Anthony Fu, 90
   ms apart (M, `ref` §3.2).
-- **Arrival finishes within 1000 ms** of first paint [T]. The 1000 ms is the research's proposal,
-  not the owner's limit: calm personal sites settle in about 1 s (M, `ref` §4.1). Fixed [L]: arrival
+- **No arrival limit** [T, decided]: the owner set no 1 s limit; the longer effects stay (the
+  poster fallback 1400-1600 ms, the glint sweep 1800 ms, the ID card twist 1300 ms; inventory §5)
+  (O 2026-10-15 night). The 1000 ms of `ref` §4.1 was the research's proposal. Fixed [L]: arrival
   never blocks reading; no loading screen, intro or counter (O 2026-10-15). The first step starts
-  at 0 ms. Text is in the HTML, readable and clickable during the stagger. An element hidden for its entrance shows by itself
-  within 1000 ms if its script fails. Longer arrival effects shorten to fit: the poster fallback
-  (1400-1600 ms), the glint sweep (1800 ms), the ID card twist (1300 ms) (inventory §5).
-  These three are effects the owner sees today, so the comps show them before and after.
-  Exception: the Work transition band above.
+  at 0 ms. Text is in the HTML, readable and clickable during the stagger. An element hidden for
+  its entrance shows by itself within 1000 ms if its script fails.
 - **Reading text never moves** [L]. No per-paragraph fades and no scroll-linked effects inside a
   reading column (`read` M1). A Work or project chapter may reveal once as it scrolls in, at most
   720 ms (the top of the moving band), on a lab page first (postmortem item 6: scroll-linked work
@@ -236,9 +245,9 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
 - **Photos** [L]: still on the page; no hover distortion (`ref` §4.3). The only reveal is the
   postcard v2 burn-in below. Never stretched past their pixels (O 2026-10-10). One cat photo, never
   both. On phones one photo per row.
-- **Photo caption** [T]: a one-line factual caption (place, date, what it shows) is the research's
-  finding (`ref` §4.3), not the owner's choice. The owner rejected Darkroom's click caption
-  (O 2026-10-15).
+- **Photo caption** [T, to test]: two options go to a lab page, a one-line factual caption under
+  the photo (place, date, what it shows; `ref` §4.3) and a caption shown only in the enlarged view
+  (O 2026-10-15 night). The owner rejected Darkroom's click caption (O 2026-10-15).
 - **Postcard v2** [L, direction approved by O 2026-10-15]: the two-sided postcard with a designed
   back and frame. A click opens a large view (at most 90 % of the viewport; LC: the page stays
   visible at the edges, so the visitor is never lost). There the card flips and swings freely,
@@ -270,7 +279,9 @@ adopted by the lead as technique):
 
 Two tools prove the numbers; both join `npm run verify` (PLAN, Phase 1, measuring tools).
 **`npm run palette`** reads the `:root` tokens and every theme block, composites translucent
-layers on their ground, and fails when a PAIRS row is below its floor (section 4).
+layers on their ground, and fails when a PAIRS row is below its floor (section 4). `verify` and CI
+run it as `npm run palette:gate` (ADR-0016): the house theme fails the run; a miss inside a
+product's world (its `world.json`) is reported for the Family chat and the product.
 
 **Page probe** (to build). It runs every route at 390x844, 768x1024, 1180x820 (touch) and 1440x900,
 in normal and in reduced motion. It fails on:
@@ -284,7 +295,7 @@ in normal and in reduced motion. It fails on:
 | Home first screen | words 40-120; at most two buttons; the next strip's top above the fold |
 | Horizontal overflow; touch targets | none; 44 px on touch |
 | Images and media | drawn at most 1.15x the file's pixels |
-| Arrival | every finite animation started at first paint ends by the arrival limit (section 5; Work transition: its band); infinite ones are light loops or object idle motion only; no element in the first viewport at opacity 0 after the limit |
+| Arrival | text readable and clickable from first paint; infinite animations are light loops or object idle motion only; with the script blocked, no element in the first viewport at opacity 0 after 1000 ms (section 5) |
 | One language | the bar, gutter, ground token, label style and rail are the same on every route |
 | Reduced motion | no animation longer than 150 ms; no movement |
 | Computed text colours | each text node's colour on its ground meets its role's floor |
