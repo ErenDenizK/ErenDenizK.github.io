@@ -8,7 +8,7 @@ role: Direction, specs, review; built with AI agents
 started: { placeholder: to confirm }
 runsOn: iOS, built in Xcode
 stack: iOS · Xcode · Private
-accent: { color: "#eb4f6b", p2: "#4a1626", p3: "#ec5794" }
+accent: { color: "#eb4f6b", p2: "#4a1626", p3: "#ec5794", ink: "#ff94a9", fill: "#f2627b" }
 wordmark: { face: Nunito, weight: 800, tracking: -0.025 }
 object: eatmap
 og: eatmap

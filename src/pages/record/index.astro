@@ -9,7 +9,7 @@ import Media from '../../components/Media.astro';
 import Foot from '../../components/Foot.astro';
 import LogList from '../../components/LogList.astro';
 import YearStrip from '../../components/YearStrip.astro';
-import { getSite, getLog, getProjects, url, monYear, entriesFor, projectColor, PROJECT_LINKS_FROM } from '../../lib/site';
+import { getSite, getLog, getProjects, url, monYear, entriesFor, projectColor, inkVars, PROJECT_LINKS_FROM } from '../../lib/site';
 const site = await getSite();
 const entries = await getLog();
 const projects = await getProjects();
@@ -33,7 +33,7 @@ const thisYear = String(new Date().getUTCFullYear());
 
     {linked.length > 0 && (
       <nav class="rec-projects" id="rec-projects" aria-label="Show one project">
-        {linked.map((p) => <a href={`?project=${p.id}`} data-p={p.id} style={`--p: ${projectColor(p)}`}>{p.data.title}</a>)}
+        {linked.map((p) => <a href={`?project=${p.id}`} data-p={p.id} style={`--p: ${projectColor(p)}${inkVars(p)}`}>{p.data.title}</a>)}
         <a href={url('record/')} data-p="">Everything</a>
       </nav>
     )}
@@ -52,7 +52,7 @@ const thisYear = String(new Date().getUTCFullYear());
             <li class="entry s-release"><span class="e-mark" aria-hidden="true"></span><span class="e-date meta">Release</span><p>A version shipped, set in its project's colour.</p></li>
             <li class="entry s-essay"><span class="e-mark" aria-hidden="true"></span><span class="e-date meta">Essay</span><p>A longer piece with figures, on a page of its own.</p></li>
           </ul>
-          <p class="empty-colours meta">Each mark takes the colour of its project:{projects.map((p, i) => <>{i > 0 && ','} <span class="pj" style={`--p: ${projectColor(p)}`}>{p.data.title}</span></>)}; blue when it is about none.</p>
+          <p class="empty-colours meta">Each mark takes the colour of its project:{projects.map((p, i) => <>{i > 0 && ','} <span class="pj" style={`--p: ${projectColor(p)}${inkVars(p)}`}>{p.data.title}</span></>)}; blue when it is about none.</p>
         </div>
       </section>
     )}

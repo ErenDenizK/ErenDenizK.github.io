@@ -27,6 +27,11 @@ const accent = z.object({
   glow: z.string().regex(/^#[0-9a-f]{6}$/i).optional(),
   p2: z.string().regex(/^#[0-9a-f]{6}$/i).optional(),
   p3: z.string().regex(/^#[0-9a-f]{6}$/i).optional(),
+  /** The product's colour as text, where its light misses the text floor on the ground (npm run
+      palette; charter §4, ADR-0016). Unset: text mixes the light with the house ink, as before. */
+  ink: z.string().regex(/^#[0-9a-f]{6}$/i).optional(),
+  /** The fill of a button in the product's colour, where the light is too dark under the dark label. */
+  fill: z.string().regex(/^#[0-9a-f]{6}$/i).optional(),
 });
 
 const hex = z.string().regex(/^#[0-9a-f]{6}$/i);

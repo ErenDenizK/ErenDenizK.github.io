@@ -24,7 +24,7 @@ const d = p.data;
 const a = d.accent;
 const site = await getSite();
 const world = await getWorld(p.id);
-const vars = [`--p: ${a.color}`, a.glow && `--pg: ${a.glow}`, a.p2 && `--p2: ${a.p2}`, a.p3 && `--p3: ${a.p3}`, world && worldVars(world)].filter(Boolean).join('; ');
+const vars = [`--p: ${a.color}`, a.glow && `--pg: ${a.glow}`, a.p2 && `--p2: ${a.p2}`, a.p3 && `--p3: ${a.p3}`, a.ink && `--p-ink: ${a.ink}`, a.fill && `--p-fill: ${a.fill}`, world && worldVars(world)].filter(Boolean).join('; ');
 const thread = threads(allEntries, projects).rows.find((t) => t.project.id === p.id);
 /* Text the owner has not written stays in content as a placeholder and is left out here, so writing
    it later is all it takes for it to appear (owner, 2026-10-09: no "to come" tags on the site). */

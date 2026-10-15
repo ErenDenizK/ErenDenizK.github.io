@@ -32,7 +32,7 @@ const commonRole = [...roles].sort((a, b) => b[1] - a[1])[0]?.[0];
 const light = (p: Project) => p.data.accent.glow ?? p.data.accent.color;
 const vars = (p: Project) => {
   const a = p.data.accent;
-  return [`--p: ${a.color}`, `--pg: ${light(p)}`, a.p2 && `--p2: ${a.p2}`, a.p3 && `--p3: ${a.p3}`].filter(Boolean).join('; ');
+  return [`--p: ${a.color}`, `--pg: ${light(p)}`, a.p2 && `--p2: ${a.p2}`, a.p3 && `--p3: ${a.p3}`, a.ink && `--p-ink: ${a.ink}`, a.fill && `--p-fill: ${a.fill}`].filter(Boolean).join('; ');
 };
 const facts = (p: Project): [string, string, string?][] => {
   const d = p.data;

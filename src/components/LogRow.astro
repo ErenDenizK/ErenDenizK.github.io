@@ -6,7 +6,7 @@
    its own page (no opening in place); project names link to the project. The row's mark on the date
    spine takes its project's colour, Log blue when it has none (readability research C1–C2). */
 import { Picture } from 'astro:assets';
-import { url, entryPath, entrySlug, dayMon, iso, categoryLabel, readingMinutes, entryProjects, entryColors, projectColor, markFill, rowShape, releaseName, releaseItems, type LogEntry, type Project } from '../lib/site';
+import { url, entryPath, entrySlug, dayMon, iso, categoryLabel, readingMinutes, entryProjects, entryColors, projectColor, inkVars, markFill, rowShape, releaseName, releaseItems, type LogEntry, type Project } from '../lib/site';
 import drawings from '../../tools/illustrations/out/drawings.json';
 import { render } from 'astro:content';
 interface Props { e: LogEntry; projects: Project[]; compact?: boolean }
@@ -33,7 +33,7 @@ const extra = [
   ...(lastUpdate ? ['Updated ' + dayMon(lastUpdate)] : []),
 ];
 ---
-<li class:list={['entry', `s-${shape}`, { 'has-thumb': thumb }]} id={compact ? undefined : slug} data-slug={slug} data-kind={d.kind} data-shape={shape} data-date={iso(d.date)} data-projects={pj.map((p) => p.id).join(' ')} style={`--p: ${colors[0]}; --m: ${markFill(colors)}`}>
+<li class:list={['entry', `s-${shape}`, { 'has-thumb': thumb }]} id={compact ? undefined : slug} data-slug={slug} data-kind={d.kind} data-shape={shape} data-date={iso(d.date)} data-projects={pj.map((p) => p.id).join(' ')} style={`--p: ${colors[0]}${inkVars(pj[0])}; --m: ${markFill(colors)}`}>
   <span class="e-mark" aria-hidden="true"></span>
   {shape === 'note'
     ? <a class="e-date meta" href={href}><time datetime={iso(d.date)}>{dayMon(d.date)}</time><span class="vh">, note</span></a>
@@ -50,7 +50,7 @@ const extra = [
     {d.dek && <p class="e-dek">{d.dek}</p>}
     {items.length > 0 && <ul class="r-items">{items.map((t) => <li>{t}</li>)}</ul>}
     <p class="e-meta meta">
-      {pj.map((p, i) => <>{i > 0 && <span class="sep">·</span>}<a class="pj" href={url(`work/${p.id}/`)} style={`--p: ${projectColor(p)}`}>{p.data.title}</a></>)}
+      {pj.map((p, i) => <>{i > 0 && <span class="sep">·</span>}<a class="pj" href={url(`work/${p.id}/`)} style={`--p: ${projectColor(p)}${inkVars(p)}`}>{p.data.title}</a></>)}
       {extra.map((t, i) => <>{(pj.length > 0 || i > 0) && <span class="sep">·</span>}<span>{t}</span></>)}
     </p>
   </div>
