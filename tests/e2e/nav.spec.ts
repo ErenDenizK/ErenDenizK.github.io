@@ -178,7 +178,7 @@ test.describe('desktop', () => {
   });
 
   test('S16 a fast scroll through Work sections moves only the section in view', async ({ page }) => {
-    /* the old catalog's intent, for the page that grows downward (ADR-0009): sweeping past projects
+    /* the old catalog's intent, for the page that grows downward (ADR-0010): sweeping past projects
        never swaps or thrashes an object; only the section in view goes past its poster, at most one
        video plays, the others hold no decoders, and the stage and the accent follow the section */
     await page.goto('work/'); await settle(page, 1200);

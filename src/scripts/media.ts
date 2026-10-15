@@ -25,12 +25,8 @@
    ground-subtracted and drawn with plus-lighter inside .m-stage.
    Solo slots (data-solo; Work has one per project, ADR-0010): only the one the page focuses (focus())
    goes past its poster; the others keep the still, and a solo slot that loses focus or leaves the
-   screen gives back its videos and decoded frames at once.
-   Behind the opt-in flag (live/flag.ts, ADR-0009 proposed), the Home object and the Home showcase are
-   handed to the live frame engine instead (live/engine.ts, loaded only then); the droplet change
-   between tabs stays here. Without the flag nothing below changes. */
+   screen gives back its videos and decoded frames at once. */
 import { mq, reduce, motionOK, idle } from './env';
-import { liveOn, LIVE_SLOTS } from './live/flag';
 import { aim, cellFor, REST_MS } from './lean';
 
 type Source = { src: string; type?: string };
@@ -131,7 +127,7 @@ function float(el: Slot, on: boolean) {
   if (!on) { el.classList.add('float-off'); layers.forEach((l) => l._float?.pause()); return; }
   el.classList.remove('float-off');
   if (el.classList.contains('floating')) { layers.forEach((l) => { if (l._float && floatT0 !== null) l._float.startTime = floatT0; }); return; }
-  if (isLive(el) || !moving()) return;
+  if (!moving()) return;
   layers.forEach((l) => floatLayer(l, el));
   el.classList.add('floating');
 }
@@ -141,9 +137,6 @@ function float(el: Slot, on: boolean) {
 function claimVideo(v: HTMLVideoElement) { if (playing && playing !== v) { try { playing.pause(); } catch {} } playing = v; }
 function yieldVideo(v: HTMLVideoElement) { if (playing === v) playing = null; }
 export const api = { changes: 0, visible, playing: () => playing, show, play, refresh, arrive, leave, focus, focused: () => current, claimVideo, yieldVideo, refused: () => refused };
-const live = liveOn ? import('./live/engine') : null;
-live?.then((L) => L.init()).catch(() => {});
-const isLive = (el: Slot) => !!live && LIVE_SLOTS.has(el.dataset.slot || '');
 (window as any).MediaStage = api;
 
 function getManifest(url: string | null | undefined): Promise<Manifest | null> {
@@ -344,13 +337,6 @@ function wake(el: Slot) {
   fit(el);
   if (!enhancing || !moving() || layer.classList.contains('arriving')) return;
   float(el, true);
-  if (isLive(el)) {
-    getManifest(layer._manifest).then((m) => {
-      if (!m || el._layer !== layer || !visible.has(el) || document.hidden) return;
-      live!.then((L) => L.wake(el, layer, dirOf(layer._manifest!), m as any));
-    });
-    return;
-  }
   if (layer._idle) { if (!outranked(el)) start(layer._idle, showVideo(layer)).catch(() => {}); return; }
   getManifest(layer._manifest).then((m) => {
     if (!m || !layer.isConnected || el._layer !== layer || !visible.has(el) || benched(el) || layer.classList.contains('arriving')) return;
@@ -374,7 +360,6 @@ function wake(el: Slot) {
 }
 function sleep(el: Slot) {
   float(el, false);
-  if (isLive(el)) live!.then((L) => L.sleep(el));
   if (el.hasAttribute('data-solo')) { shed(el); return; }
   const gone = !el.offsetParent;
   el.querySelectorAll<Layer>('.m-layer').forEach((layer) => {
@@ -701,7 +686,6 @@ function toRest(v: HTMLVideoElement): Promise<void> {
 }
 function play(el: Slot, clip: string): boolean {
   const layer = el._layer;
-  if (isLive(el)) return false;            // the engine answers the pointer itself
   if (!layer || !moving() || layer._clip || layer._drop || !visible.has(el) || benched(el)) return false;
   const desk = desktopTier();
   /* the clip was rendered at the rest pose: a leaning object glides there first, and hops from it */
@@ -831,7 +815,6 @@ function aimSoon() { if (!raf) raf = requestAnimationFrame(aimAll); }
 function aimAll() {
   raf = 0;
   visible.forEach((el) => {
-    if (isLive(el)) return;
     const r = el.getBoundingClientRect();
     if (!r.width) return;
     const { mx, my } = ptrIn ? aim(r, px, py) : { mx: 0, my: 0 };
