@@ -1,0 +1,379 @@
+---
+/* Home prototype V1 "Index" (Phase 2 Home plan, section 3, V1): a hidden workbench, not linked from
+   anywhere, noindex, and out of the sitemap (astro.config.mjs filters /lab/). The live Home
+   (src/pages/index.astro) is not changed.
+
+   What it is: Anthony Fu's labelled proof rows with project chips and Paco Coursey's small name and
+   "Now" strip, in one column of at most 680 px on the bar's edge (E0). Strips: intro, proof rows,
+   Work as three text-only rows, Now, the Record, About and links, the foot. The gap between strips is
+   64 px below 900 px and 96 px from 900 px (charter §3.3).
+
+   Sizes (charter §3.1, Home cap 34/45/48 provisional): the name is ADR-0015 step t-4 (text at 1ad060e),
+   30 px at 360 to 42 px at 1440. Body 16/17 (one switch at 900 px), labels 13, wordmarks t-2 (22-26).
+   Colours are the Graphite tokens only. The page light is one edk pool behind the intro at the base
+   glow; a product's own light shows only around its row on hover, focus or press, one at a time.
+
+   Arrival (plan V1 table; charter §5): six steps in reading order, 70 ms apart, 400 ms each, rising
+   12 px (steps 0-1) or 8 px (steps 2-5). The animations are CSS with fill-mode backwards: nothing is
+   hidden by a script, the text is in the HTML, and if the script that adds .arrive fails, every word
+   simply shows. Reduced motion and ?still: no animation at all. The "anthony" preset runs the same
+   steps 90 ms apart, 1000 ms each.
+
+   Lab switches (query, read before first paint by the inline script below; the panel at the lower
+   left writes them):
+     ?obj=none|mark|small   none: the bar's mark is the only signature; mark (default): a tiny edk
+                            poster, 76/96 px, still; small: the edk object stage at the charter's
+                            Home object size (160/200/240/280), with its own idle loop, beside the
+                            column from 900 px. With small, the page light stays still.
+     ?timing=anthony        the Anthony Fu preset
+     ?it=1                  the lede's first sentence in Newsreader's real italic (Paco style)
+     ?draft=1               outlines every DRAFT string (labels and wording from the plan)
+     ?samples=0             hides the Record strip, as the live build with SAMPLES=0 does
+     ?still                 the reduced-motion twin (the site's own switch)
+     ?panel=0               hides the lab panel (for screenshots)
+   Without JavaScript the page shows obj=mark, fully visible, with no arrival. */
+import Base from '../../layouts/Base.astro';
+import Media from '../../components/Media.astro';
+import Thumb from '../../components/Thumb.astro';
+import Icon from '../../components/Icon.astro';
+import Foot from '../../components/Foot.astro';
+import Wordmark from '../../components/Wordmark.astro';
+import { getSite, getProjects, getLog, url, projectPath, entryPath, dayMonYear, iso, isPlaceholder } from '../../lib/site';
+
+const site = await getSite();
+const log = await getLog();
+const projects = (await getProjects()).filter((p) => p.data.group === 'directed');
+const k = site.kicker;
+const study = site.about.chapters.find((c) => c.id === 'study');
+const prep = study?.facts?.find((f) => f[0] === 'Prep year');
+const byHand = site.about.chapters.find((c) => c.id === 'work')?.tracks?.lanes[0];
+const pVars = (p: (typeof projects)[number]) => {
+  const a = p.data.accent;
+  return [`--p: ${a.color}`, `--pg: ${a.glow ?? a.color}`].join('; ');
+};
+/* the plan's meta line: status and version (and Eat Map's note); the start month stays on Work */
+const meta = (p: (typeof projects)[number]) => [p.data.status, !isPlaceholder(p.data.version) && p.data.version, p.data.statusNote].filter(Boolean).join(' · ');
+/* an untitled note shows its own first line, cut at one line by CSS; never an invented title (plan strip 5) */
+const firstLine = (body = '') => body.split('\n').map((s) => s.trim()).find(Boolean)?.replace(/[*_`#>[\]]/g, '') ?? '';
+const recent = log.slice(0, 3);
+const ledeSplit = site.lede.indexOf('. ');
+const lede1 = ledeSplit > 0 ? site.lede.slice(0, ledeSplit + 1) : site.lede;
+const lede2 = ledeSplit > 0 ? site.lede.slice(ledeSplit + 1) : '';
+const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedin as string);
+---
+<Base title="Home V1" tab="home" description="A workbench for the Home prototype V1, Index." noindex>
+  <div class="inner v1" id="v1" data-obj="mark">
+    <script is:inline>
+      /* before first paint: the lab switches (see the frontmatter) and the arrival class */
+      (function () {
+        var v = document.getElementById('v1'), d = v.dataset, q;
+        try { q = new URLSearchParams(location.search); } catch (e) { return; }
+        var o = q.get('obj');
+        if (o && /^(none|mark|small)$/.test(o)) d.obj = o;
+        if (q.get('timing') === 'anthony') d.timing = 'anthony';
+        if (q.get('it') === '1') d.it = '1';
+        if (q.get('draft') === '1') d.draft = '1';
+        if (q.get('samples') === '0') d.samples = '0';
+        if (q.get('panel') === '0') d.panel = '0';
+        var still = q.has('still') || matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!still) v.classList.add('arrive');
+        if (!still && d.obj !== 'small') v.classList.add('breathe');
+      })();
+    </script>
+
+    <header class="v1-intro">
+      <div class="v1-pool" aria-hidden="true"></div>
+      <div class="v1-opt v1-mark" data-opt="mark" aria-hidden="true"><Thumb obj="edk" size={96} class="v1-mk" /></div>
+      <div class="v1-id">
+        <h1 id="h-home" data-step="0">{site.name}</h1>
+        <p class="v1-lede" data-step="1"><span class="v1-l1">{lede1}</span>{lede2}</p>
+      </div>
+      <div class="v1-opt v1-small" data-opt="small"><Media obj="edk" slot="home" stage sizes="(min-width: 1300px) 280px, (min-width: 900px) 240px, (min-width: 600px) 200px, 160px" /></div>
+    </header>
+    <script is:inline>
+      /* only the chosen object stays in the page, so the media script never wakes a hidden stage */
+      (function () {
+        var v = document.getElementById('v1');
+        v.querySelectorAll('.v1-opt').forEach(function (el) { if (el.dataset.opt !== v.dataset.obj) el.remove(); });
+      })();
+    </script>
+
+    <!-- DRAFT (plan strip 2): the row labels "Studying at" and "Building", and the wording of the
+         "Studying at" row. The facts come from content/site.json (kicker, about facts and tracks). -->
+    <dl class="v1-proof" aria-label="Today">
+      <div class="v1-row" data-step="2">
+        <dt data-draft>Studying at</dt>
+        <dd data-draft>{k.study} at {k.school}, {k.year.toLowerCase()}</dd>
+      </div>
+      <div class="v1-row" data-step="3">
+        <dt data-draft>Building</dt>
+        <dd class="v1-chips">
+          {projects.map((p) => (
+            <a class="v1-chip p-open" href={url(projectPath(p))} data-p={p.id} data-title={p.data.title} style={pVars(p)}><Wordmark project={p} /></a>
+          ))}
+        </dd>
+      </div>
+      {byHand && (
+        <div class="v1-row" data-step="4">
+          <dt>{byHand.label}</dt>
+          <dd>{byHand.items.map((it, i) => <>{i > 0 && <span class="v1-sep" aria-hidden="true"> · </span>}{i > 0 && <span class="vh">, </span>}{it}</>)}</dd>
+        </div>
+      )}
+      {prep && (
+        <div class="v1-row" data-step="4">
+          <dt>{prep[0]}</dt>
+          <dd>{prep[1]}</dd>
+        </div>
+      )}
+    </dl>
+
+    <section class="v1-strip v1-work" aria-labelledby="h-work" data-step="5">
+      <h2 class="v1-label" id="h-work">{site.home.showcase.title}</h2>
+      <ul class="v1-list">
+        {projects.map((p) => (
+          <li>
+            <a class="v1-proj p-open" href={url(projectPath(p))} data-p={p.id} data-title={p.data.title} style={pVars(p)}>
+              <span class="v1-ph">
+                <span class="v1-wm"><Wordmark project={p} /></span>
+                <span class="meta v1-pm"><Icon name="dot" />{meta(p)}</span>
+              </span>
+              <span class="v1-sum">{p.data.summary}</span>
+              <Icon name="arrow-right" size={20} />
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="v1-more"><a class="btn" href={url('work/')}>{site.home.showcase.all} <Icon name="arrow-right" weight="medium" /></a></div>
+    </section>
+
+    <section class="v1-strip v1-now" aria-labelledby="h-now">
+      <h2 class="v1-label" id="h-now">{site.now.label}</h2>
+      <p>{site.now.text}</p>
+    </section>
+
+    {recent.length > 0 && (
+      <section class="v1-strip v1-rec" aria-labelledby="h-rec" data-v1-rec>
+        <h2 class="v1-label" id="h-rec">Latest in the record</h2>
+        <ul class="v1-list v1-entries">
+          {recent.map((e) => (
+            <li><a class="v1-entry" href={url(entryPath(e))}>
+              <span class="v1-et">{e.data.title ?? firstLine(e.body)}</span>
+              <time class="meta" datetime={iso(e.data.date)}>{dayMonYear(e.data.date)}</time>
+            </a></li>
+          ))}
+        </ul>
+        <div class="v1-links"><a class="qlink" href={url('record/')}>{site.log.title} <Icon name="arrow-right" /></a></div>
+      </section>
+    )}
+
+    <!-- DRAFT (plan strip 6): the link label "About me". The line above it is the ID card's back
+         (content/site.json about.card.back). -->
+    <section class="v1-strip v1-about" aria-labelledby="h-about">
+      <h2 class="v1-label" id="h-about">About</h2>
+      <p>{site.about.card.back}</p>
+      <div class="v1-links">
+        <a class="qlink" href={url('about/')} data-draft>About me <Icon name="arrow-right" /></a>
+        <a class="qlink" href={site.links.github} rel="me">GitHub <Icon name="arrow-up-right" /></a>
+        {linkedin && <a class="qlink" href={linkedin} rel="me">LinkedIn <Icon name="arrow-up-right" /></a>}
+      </div>
+    </section>
+
+    <Foot />
+  </div>
+
+  <details class="v1-lab" slot="after" id="v1-lab">
+    <summary>Lab</summary>
+    <div class="v1-lab-body">
+      <p class="meta">Home V1, Index. Not linked from the site.</p>
+      <dl>
+        <div><dt class="meta">Object</dt><dd data-k="obj" data-def="mark"><a href="?obj=none" data-v="none">None</a><a href="?obj=mark" data-v="mark">edk mark</a><a href="?obj=small" data-v="small">Small edk</a></dd></div>
+        <div><dt class="meta">Timing</dt><dd data-k="timing" data-def="charter"><a href="?" data-v="charter">Charter</a><a href="?timing=anthony" data-v="anthony">Anthony</a></dd></div>
+        <div><dt class="meta">Italic</dt><dd data-k="it" data-def="0"><a href="?" data-v="0">Off</a><a href="?it=1" data-v="1">Lede</a></dd></div>
+        <div><dt class="meta">Draft</dt><dd data-k="draft" data-def="0"><a href="?" data-v="0">Hidden</a><a href="?draft=1" data-v="1">Outlined</a></dd></div>
+        <div><dt class="meta">Samples</dt><dd data-k="samples" data-def="1"><a href="?" data-v="1">On</a><a href="?samples=0" data-v="0">Off</a></dd></div>
+        <div><dt class="meta">Motion</dt><dd data-k="still" data-def="0"><a href="?" data-v="0">Full</a><a href="?still" data-v="1">Reduced</a></dd></div>
+      </dl>
+      <button type="button" class="v1-replay" id="v1-replay">Replay the arrival</button>
+    </div>
+  </details>
+  <script is:inline slot="after">
+    /* the panel's links keep the other switches; the current value of each is marked */
+    (function () {
+      var q = new URLSearchParams(location.search), lab = document.getElementById('v1-lab'), v = document.getElementById('v1');
+      lab.querySelectorAll('dd[data-k]').forEach(function (dd) {
+        var k = dd.dataset.k, cur = k === 'still' ? (q.has('still') ? '1' : '0') : (q.get(k) || dd.dataset.def);
+        dd.querySelectorAll('a').forEach(function (a) {
+          var n = new URLSearchParams(location.search);
+          n.delete(k);
+          if (a.dataset.v !== dd.dataset.def) n.set(k, k === 'still' ? '' : a.dataset.v);
+          var s = n.toString().replace(/(^|&)still=(?=&|$)/, '$1still');
+          a.href = location.pathname + (s ? '?' + s : '');
+          if (a.dataset.v === cur) a.setAttribute('aria-current', 'true');
+        });
+      });
+      document.getElementById('v1-replay').addEventListener('click', function () {
+        if (!v.classList.contains('arrive')) return;
+        v.classList.remove('arrive'); void v.offsetWidth; v.classList.add('arrive');
+      });
+      /* the light loop pauses while the tab is hidden (charter §5) */
+      document.addEventListener('visibilitychange', function () { v.classList.toggle('paused', document.hidden); });
+    })();
+  </script>
+</Base>
+
+<style is:global>
+  /* ---- tokens of this prototype: ADR-0015 steps (text at 1ad060e) resolved for Home ---- */
+  .v1 {
+    --t-4: clamp(30px, calc(26px + 1.111vw), 42px);   /* the name: 30 at 360, 42 at 1440 */
+    --t-2: clamp(22px, calc(20.667px + 0.37vw), 26px); /* wordmarks in the Work rows */
+    --v1-body: 16px;
+    --v1-strip: 64px;
+    --v1-col: 680px;
+    --v1-gap: 70ms;
+    --v1-dur: 400ms;
+    position: relative;
+    font-size: var(--v1-body);
+  }
+  .v1[data-timing="anthony"] { --v1-gap: 90ms; --v1-dur: 1000ms; }
+  @media (min-width: 900px) { .v1 { --v1-body: 17px; --v1-strip: 96px; } }
+  .v1 > :not(.foot) { max-width: var(--v1-col); }
+
+  /* ---- intro: the name, one sentence; the page light behind it ---- */
+  .v1 .v1-intro { position: relative; padding-top: 24px; }
+  @media (min-width: 600px) { .v1 .v1-intro { padding-top: 48px; } }
+  .v1 .v1-pool {
+    position: absolute; z-index: 0; pointer-events: none;
+    left: -22%; top: calc(-1 * var(--bar-h) - 160px); width: min(1100px, 150vw); aspect-ratio: 1.35;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--edk) var(--glow-base), transparent), color-mix(in srgb, var(--edk) 4%, transparent) 55%, transparent 100%);
+  }
+  @media (max-width: 599.98px) { .v1 .v1-pool { left: -45%; top: calc(-1 * var(--bar-h) - 40px); width: 190vw; } }
+  .v1 .v1-id, .v1 .v1-opt { position: relative; }
+  .v1 h1 { font: 400 var(--t-4)/1.06 var(--f-display); letter-spacing: -0.02em; margin-left: -0.02em; text-wrap: balance; }
+  .v1 .v1-lede { margin-top: 16px; max-width: 30em; color: var(--ink-2); font-size: var(--v1-body); line-height: 1.55; text-wrap: pretty; }
+  .v1[data-it="1"] .v1-l1 { font: italic 400 1.12em/1 var(--f-display); color: var(--ink); letter-spacing: -0.005em; }
+
+  /* the tiny edk: above the name on phones (never beside text below 600 px), beside it from 600 px */
+  .v1 .v1-mark { width: 76px; height: 76px; margin: 0 0 12px -10px; }
+  .v1 .v1-mk-pic { display: contents; }
+  .v1 .v1-mk { display: block; width: 100%; height: 100%; object-fit: cover;
+    /* the letters span about 70 % of the square: the mask starts past them, so the e and the k are not dimmed */
+    -webkit-mask-image: radial-gradient(closest-side, #000 74%, transparent); mask-image: radial-gradient(closest-side, #000 74%, transparent); }
+  @media (min-width: 600px) {
+    .v1[data-obj="mark"] .v1-intro { display: grid; grid-template-columns: minmax(0, 1fr) 96px; column-gap: 32px; align-items: start; }
+    .v1[data-obj="mark"] .v1-id { grid-column: 1; grid-row: 1; }
+    .v1 .v1-mark { grid-column: 2; grid-row: 1; width: 96px; height: 96px; margin: -22px -12px 0 0; }
+  }
+
+  /* the small edk: under the intro below 900 px, beside the column from 900 px (outside the 680 px text) */
+  /* the stage is square and the letters sit in its middle third, so negative margins keep the empty part
+     of the box out of the layout (no transform: it would group the additive media) */
+  .v1 .v1-small { width: 160px; margin: -12px 0 -48px -14px; }
+  @media (min-width: 600px) { .v1 .v1-small { width: 200px; margin-bottom: -60px; } }
+  @media (min-width: 900px) {
+    .v1 { --v1-obj: clamp(240px, 20vw, 280px); }
+    .v1[data-obj="small"] > .v1-intro { max-width: none; display: grid; grid-template-columns: minmax(0, var(--v1-col)) var(--v1-obj); column-gap: 48px; align-items: start; }
+    .v1[data-obj="small"] .v1-id { grid-column: 1; grid-row: 1; }
+    /* the letters' middle on the middle of the name and the sentence (about 84 px down) */
+    .v1 .v1-small { grid-column: 2; grid-row: 1; width: 100%; margin: calc(84px - var(--v1-obj) / 2) 0 calc(-1 * var(--v1-obj) / 2); }
+  }
+
+  /* ---- proof rows: a label and one line each ---- */
+  .v1 .v1-proof { position: relative; margin-top: 40px; display: grid; gap: 14px; }
+  .v1 .v1-row { display: grid; gap: 2px; }
+  .v1 .v1-row dt { font: 500 var(--t-meta)/var(--lh-meta) var(--f-ui); letter-spacing: 0.005em; color: var(--ink-3); }
+  .v1 .v1-row dd { margin: 0; color: var(--ink); line-height: 1.5; max-width: 34em; text-wrap: pretty; }
+  @media (min-width: 600px) {
+    .v1 .v1-row { grid-template-columns: 112px minmax(0, 1fr); column-gap: 20px; align-items: baseline; }
+    .v1 .v1-row dt { padding-top: 1px; }
+  }
+  .v1 .v1-sep { color: var(--ink-4); }
+  .v1 .v1-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .v1 .v1-chip {
+    position: relative; display: inline-flex; align-items: center; height: 30px; padding: 0 10px; border-radius: 8px;
+    background: var(--raised); box-shadow: inset 0 0 0 1px var(--rule); text-decoration: none; font-size: var(--t-ui);
+    transition: background-color var(--d-1) var(--ease-out), box-shadow var(--d-1) var(--ease-out);
+  }
+  .v1 .v1-chip::after { content: ""; position: absolute; inset: -7px -3px; }   /* a 44 px hit area by padding, without a 44 px bed */
+  .v1 .v1-chip .wm { color: var(--ink); line-height: 1; }
+  .v1 .v1-chip:focus-visible, .v1 .v1-chip:active { background: var(--raised-2); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pg) 45%, transparent); }
+  @media (hover: hover) { .v1 .v1-chip:hover { background: var(--raised-2); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pg) 45%, transparent); } }
+  .v1 .v1-proof .v1-row:first-child dd { padding-top: 0; }
+  .v1 .v1-row:has(.v1-chips) { align-items: center; }
+
+  /* ---- strips ---- */
+  .v1 .v1-strip { position: relative; margin-top: var(--v1-strip); }
+  .v1 .v1-label { font: 500 var(--t-meta)/var(--lh-meta) var(--f-ui); letter-spacing: 0.005em; color: var(--ink-3); margin-bottom: 12px; }
+  .v1 .v1-now p, .v1 .v1-about > p { max-width: 34em; color: var(--ink-2); line-height: 1.55; text-wrap: pretty; }
+  .v1 .v1-list > li + li { border-top: 1px solid var(--rule); }
+  .v1 .v1-links { display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 8px; }
+
+  /* Work rows: wordmark and status, one line, a way in; the product's light only on hover, focus or press */
+  .v1 .v1-proj {
+    position: relative; z-index: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; row-gap: 6px; align-items: center;
+    padding: 18px 0; text-decoration: none; color: inherit;
+  }
+  .v1 .v1-proj::before {
+    content: ""; position: absolute; z-index: -1; inset: -12px -14%; pointer-events: none; opacity: 0;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--pg) var(--glow-base), transparent), transparent);
+    transition: opacity 200ms var(--ease-out);
+  }
+  .v1 .v1-proj:focus-visible::before, .v1 .v1-proj:active::before { opacity: 1; transition-duration: var(--d-1); }
+  @media (hover: hover) { .v1 .v1-proj:hover::before { opacity: 1; transition-duration: var(--d-1); } }
+  .v1 .v1-ph { grid-column: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+  .v1 .v1-wm { font-size: var(--t-2); line-height: 1.1; }
+  .v1 .v1-wm .wm { color: var(--ink); }
+  .v1 .v1-pm { display: inline-flex; align-items: center; gap: 6px; }
+  .v1 .v1-pm .icon { color: var(--p); }
+  .v1 .v1-sum { grid-column: 1; color: var(--ink-2); max-width: 34em; line-height: 1.5; text-wrap: pretty; }
+  .v1 .v1-proj > .icon { grid-column: 2; grid-row: 1 / span 2; color: var(--ink-3); transition: color var(--d-1), transform var(--d-2) var(--ease-out); }
+  .v1 .v1-proj:focus-visible > .icon, .v1 .v1-proj:active > .icon { color: var(--ink); }
+  @media (hover: hover) { .v1 .v1-proj:hover > .icon { color: var(--ink); transform: translateX(3px); } }
+  .v1 .v1-proj:focus-visible { outline-offset: 2px; }
+  .v1 .v1-more { margin-top: 20px; }
+
+  /* the Record: one line per entry, the date at the right */
+  .v1 .v1-entry { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: baseline; min-height: 48px; padding: 12px 0; text-decoration: none; }
+  .v1 .v1-et { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); }
+  .v1 .v1-entry:hover .v1-et { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; text-decoration-color: var(--ink-4); }
+  .v1[data-samples="0"] [data-v1-rec] { display: none; }
+
+  .v1 footer.foot { padding-top: var(--v1-strip); }
+
+  /* ---- arrival: reading order, CSS only, nothing hidden by a script ---- */
+  @keyframes v1-in { from { opacity: 0; transform: translateY(var(--rise, 8px)); } }
+  @keyframes v1-fade { from { opacity: 0; } }
+  .v1.arrive [data-step] { animation: v1-in var(--v1-dur) var(--ease-out) backwards; animation-delay: calc(var(--s, 0) * var(--v1-gap)); }
+  .v1 [data-step="0"] { --s: 0; --rise: 12px; }
+  .v1 [data-step="1"] { --s: 1; --rise: 12px; }
+  .v1 [data-step="2"] { --s: 2; }
+  .v1 [data-step="3"] { --s: 3; }
+  .v1 [data-step="4"] { --s: 4; }
+  .v1 [data-step="5"] { --s: 5; }
+  /* objects fade on the blended element itself, so no group forms around the additive media */
+  .v1.arrive .v1-mk, .v1.arrive .v1-small .m-stage { animation: v1-fade calc(var(--v1-dur) * 1.2) var(--ease-out) backwards; animation-delay: calc(5 * var(--v1-gap)); }
+  /* the page light breathes slowly (a light loop: 9 s, one per viewport); still with the small edk, which has its own idle */
+  @keyframes v1-breathe { from { opacity: 0.78; transform: scale(0.97); } to { opacity: 1; transform: scale(1.03); } }
+  .v1.breathe .v1-pool { animation: v1-breathe 9s ease-in-out infinite alternate; }
+  .v1.paused .v1-pool { animation-play-state: paused; }
+  @media (prefers-reduced-motion: reduce) {
+    .v1 [data-step], .v1 .v1-mk, .v1 .v1-small .m-stage, .v1 .v1-pool { animation: none !important; }
+    .v1 .v1-proj > .icon { transform: none !important; }
+  }
+
+  /* ---- lab only ---- */
+  .v1[data-draft="1"] [data-draft] { outline: 1px dashed var(--about); outline-offset: 3px; border-radius: 2px; }
+  .v1-lab { position: fixed; z-index: 30; left: 12px; bottom: 12px; max-width: calc(100vw - 24px); font: 400 var(--t-ui)/1.4 var(--f-ui); color: var(--ink-2); }
+  html:has(#v1[data-panel="0"]) .v1-lab { display: none; }
+  .v1-lab summary { align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; cursor: pointer; list-style: none;
+    background: var(--pill); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); box-shadow: inset 0 0 0 1px var(--pill-edge); }
+  .v1-lab summary::-webkit-details-marker { display: none; }
+  .v1-lab-body { margin-bottom: 8px; padding: 14px 16px; border-radius: 12px; background: var(--raised); box-shadow: inset 0 0 0 1px var(--rule-2); display: grid; gap: 10px; }
+  .v1-lab[open] { display: flex; flex-direction: column-reverse; }
+  .v1-lab dl { display: grid; gap: 6px; margin: 0; }
+  .v1-lab dl > div { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; gap: 8px; }
+  .v1-lab dd { margin: 0; display: flex; flex-wrap: wrap; gap: 4px; }
+  .v1-lab dd a { display: inline-flex; align-items: center; min-height: 32px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--ink-2); }
+  .v1-lab dd a:hover { background: var(--wash); color: var(--ink); }
+  .v1-lab dd a[aria-current] { background: var(--raised-2); color: var(--ink); }
+  .v1-replay { justify-self: start; min-height: 36px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--raised-2); color: var(--ink); cursor: pointer; }
+</style>
