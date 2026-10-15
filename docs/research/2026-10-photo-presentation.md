@@ -2,8 +2,9 @@
 
 **Status:** closed 2026-10-11 (late): the owner rejected the three alternatives as gimmicks and said the
 postcard is not required either; photo presentation is reopened (`2026-10-quality-postmortem.md`). The
-alternatives are still switchable on the live page (`/about/?photos=1|2|3`) until the owner decides
-whether to delete them. Rests on the owner's words (brief log, 2026-10-11
+alternatives were switchable on the live page (`/about/?photos=1|2|3`) until 2026-10-15, when their
+code was removed (`docs/history/removed-2026-10-15.md`; Darkroom's burn-in is kept in
+`docs/history/code/photo-darkroom/`). Rests on the owner's words (brief log, 2026-10-11
 evening): "try designs other than the postcard; it looks a little simple and cheap. I want a design that
 would win a design award." Earlier research on the postcard itself: `2026-10-about-and-postcards.md`
 (its table of techniques is not repeated here).
