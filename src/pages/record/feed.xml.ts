@@ -1,5 +1,6 @@
 /* One Atom feed for every kind (log.md §6.2–6.3): newest 50, full content, permanent tag: ids that do
-   not change if the domain does. Figures (inline SVG) are replaced by their caption and a link. */
+   not change if the domain does. Figures (inline SVG) are replaced by their caption and a link. Samples
+   are left out: they test the design and are not record, and a feed reader keeps an item once seen. */
 import type { APIRoute } from 'astro';
 import { getLog, getSite, abs, entryPath, entrySlug, entryTitle, iso, siteUpdated } from '../../lib/site';
 
@@ -7,7 +8,7 @@ const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 
 export const GET: APIRoute = async () => {
   const site = await getSite();
-  const entries = (await getLog()).slice(0, 50);
+  const entries = (await getLog()).filter((e) => !e.data.sample).slice(0, 50);
   const updatedOf = (e: (typeof entries)[number]) =>
     [e.data.date, ...e.data.updated.map((u) => u.date), ...e.data.corrections.map((c) => c.date)].sort((a, b) => b.getTime() - a.getTime())[0];
   const feedUpdated = entries.length ? entries.map(updatedOf).sort((a, b) => b.getTime() - a.getTime())[0] : siteUpdated();
