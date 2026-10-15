@@ -28,12 +28,13 @@ const modified = [d.date, ...d.updated.map((u) => u.date), ...d.corrections.map(
 const title = entryTitle(e);
 const meta = [d.kind === 'note' ? 'Note' : release ? 'Release' : d.kind === 'entry' ? 'Entry' : `Essay · ${readingMinutes(e.body)} min read`, categoryLabel(d.category)];
 const toc = d.kind === 'essay' ? headings.filter((h) => h.depth === 2) : [];
-const jsonld = d.kind === 'note' ? [] : [{
+/* A sample (written to test the design) is not record: noindex, and not marked up as an article. */
+const jsonld = d.kind === 'note' || d.sample ? [] : [{
   '@type': 'BlogPosting', headline: title, description: d.dek, datePublished: iso(d.date), dateModified: iso(modified),
   url: abs(entryPath(e)), author: { '@id': abs('#me') }, inLanguage: 'en',
 }];
 ---
-<Base title={title} tab="record" description={d.dek ?? title} type="article" published={d.date} modified={modified} og="home" jsonld={jsonld} accent={light} pageClass="page-post">
+<Base title={title} tab="record" description={d.dek ?? title} type={d.sample ? 'website' : 'article'} published={d.sample ? undefined : d.date} modified={d.sample ? undefined : modified} og="home" jsonld={jsonld} accent={light} pageClass="page-post" noindex={d.sample}>
   <div class="post-light" style={`--p: ${light}`} aria-hidden="true"></div>
   <div class:list={['inner post-wrap', { 'has-toc': toc.length > 0 }]}>
     <nav class="post-toc" aria-label="On this page">

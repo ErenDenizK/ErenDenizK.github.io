@@ -6,6 +6,9 @@ import { defineConfig } from '@playwright/test';
 
 const PORT = +(process.env.E2E_PORT ?? 4329), FIX = PORT + 1;
 export const BASE = process.env.BASE_PATH ?? '/Portfolio/';
+/** The fixture build, for the record's pages: tests on the site project reach it by absolute URL, so they
+    never depend on the sample entries in content/log. */
+export const FIXTURES_URL = `http://localhost:${FIX}${BASE}`;
 
 export default defineConfig({
   testDir: 'tests/e2e',
@@ -18,7 +21,7 @@ export default defineConfig({
   use: { browserName: 'chromium', deviceScaleFactor: 1 },
   projects: [
     { name: 'site', testIgnore: /fixtures\.spec/, use: { baseURL: `http://localhost:${PORT}${BASE}` } },
-    { name: 'fixtures', testMatch: /fixtures\.spec/, use: { baseURL: `http://localhost:${FIX}${BASE}` } },
+    { name: 'fixtures', testMatch: /fixtures\.spec/, use: { baseURL: FIXTURES_URL } },
   ],
   webServer: [
     { command: `node tests/serve.mjs dist ${PORT} ${BASE}`, url: `http://localhost:${PORT}${BASE}`, reuseExistingServer: !process.env.CI },
