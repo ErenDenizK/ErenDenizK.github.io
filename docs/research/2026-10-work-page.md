@@ -10,7 +10,7 @@ full catalogue, no duplication (2026-10-09); each project starts within its own 
 with large objects (2026-10-09); project views enter each app's world (embassies, 2026-10-09);
 objects alone are not enough: screenshots and the app's logo must be shown (2026-10-10).
 
-**Sources and method.** The current page was built from `dev` (967fd88) and screenshotted at
+**Sources and method.** The current page was built from `dev` (610b37d) and screenshotted at
 1440 × 900, 1180 × 820 (touch) and 390 × 844 (**M**, measured). The reference pages in §2 could not
 be opened from this session (the fetch tool had no DNS for them), so their techniques are
 **recollection (R)**, written from memory of the pages as they were in 2024–26, not re-checked.

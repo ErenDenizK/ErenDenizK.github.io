@@ -15,7 +15,7 @@ catalogue, with no duplication (2026-10-09); the edk glass letters are now sharp
 iPhone.
 
 **Evidence grades.** **M** measured here (Playwright on Chromium 1194 against a fresh build of `dev`
-@ f299911, or files on disk). **S** a web-search extract (the page itself was not opened). **R**
+@ e606754, or files on disk). **S** a web-search extract (the page itself was not opened). **R**
 recollection of a page as it was in 2024–26, not re-checked. **This session could not open any
 outside site:** the fetch tool has no DNS for them and the egress proxy refuses CONNECT (403) to every
 host except GitHub. So no reference page was timed or weighed live. The one reference measured is

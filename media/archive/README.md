@@ -21,10 +21,10 @@ Prototype E: "Log: a glass microphone (the log is dictated); a soft waveform pul
 at rest, goes on air while three soft accent rings ripple out round the head
 (`tools/objects/README.md`).
 
-**Made.** Modelled and rendered with the first six Blender objects on 2026-10-09 (`9ab096f`);
-pre-rendered for the site the same day (`86f1f8e`) and re-rendered with a floor shadow and a
-dimmer LED (`6e1d40c`). It was the object of v0's Log page, which became the Record page the
-same day (`8d0d230`).
+**Made.** Modelled and rendered with the first six Blender objects on 2026-10-09 (`088053f`);
+pre-rendered for the site the same day (`e05db4e`) and re-rendered with a floor shadow and a
+dimmer LED (`81be1c0`). It was the object of v0's Log page, which became the Record page the
+same day (`647a1cd`).
 
 **What the owner said.** After seeing v0, 2026-10-09: "the microphone looks too simple; rethink
 it from every angle." The Record object research (`docs/research/2026-10-record-object.md`)
@@ -34,7 +34,7 @@ ribbed core, no engineering a sound engineer would recognise". The family audit
 (`docs/research/2026-10-family-audit.md`, C3) found the objects "glossy, saturated, toy-like",
 "a blue microphone" among them.
 
-**Retired.** 2026-10-09, when the card file replaced it on the Record page (`1873f37`).
+**Retired.** 2026-10-09, when the card file replaced it on the Record page (`52fa9ae`).
 
 **Lessons.**
 - A symbol is not enough: an object should be a crafted thing in its subject's language, and
@@ -62,10 +62,10 @@ viewer and drops back with a small settle; its rising frames are a state axis, s
 lift it a little and an essay all the way (`tools/objects/README.md`).
 
 **Made.** Concept C of the Record object research, round 1, 2026-10-09: a card-catalogue tray,
-"the only one that is about text". Round 2 the same day simplified it to C2 (`5e73ebc`), which
-shipped on 2026-10-09 (`1873f37`), was encoded lighter for the phone and desktop budgets
-(`b4d54aa`, 2026-10-10), enlarged on the page (`97e27ed`) and given posters at each slot's width
-(`dbf301d`).
+"the only one that is about text". Round 2 the same day simplified it to C2 (`da5b43d`), which
+shipped on 2026-10-09 (`52fa9ae`), was encoded lighter for the phone and desktop budgets
+(`cda66ed`, 2026-10-10), enlarged on the page (`3655781`) and given posters at each slot's width
+(`bfacb2e`).
 
 **What the owner said.**
 - On round 1, 2026-10-09: "'detailed' meant looking better to the eye, not fine engineering
@@ -81,7 +81,7 @@ shipped on 2026-10-09 (`1873f37`), was encoded lighter for the phone and desktop
   level of fine detail, C very nice, tape a bit empty."
 
 **Retired.** 2026-10-10, when the pocket cassette recorder (`media/objects/recorder/`) took the
-Record page (`fd0f2f1`, `93791ef`). The owner accepted it on 2026-10-11: "the cassette recorder
+Record page (`7a05b2c`, `883e082`). The owner accepted it on 2026-10-11: "the cassette recorder
 is OK."
 
 **Lessons** (from the research, rounds 1 and 2).

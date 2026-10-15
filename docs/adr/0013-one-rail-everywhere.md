@@ -1,6 +1,6 @@
 # ADR-0013: One rail on every page and in the project sheet; the bar never moves
 
-**Status:** accepted 2026-10-11 (the beads chosen; the other looks and `?rail` removed in `01d8412`;
+**Status:** accepted 2026-10-11 (the beads chosen; the other looks and `?rail` removed in `45c80a6`;
 see the later 2026-10-11 amendment) · asked for by the owner (brief, "Look, motion and objects", 2026-10-10: "one consistent
 custom scrollbar on every page and in the project sheet"; on iPhone "only the custom one should show");
 technique decided by the agent (CLAUDE.md); the look of the plain variant (item 2) is proposed until the

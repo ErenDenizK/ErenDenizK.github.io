@@ -8,12 +8,12 @@ questions) and the newest file in `docs/journal/` (what happened last and why).
 
 - **Home:** reverted to the pre-round version (edk glass beside the name, product plate, now/latest).
   Home A and Home B were rejected (`docs/research/2026-10-quality-postmortem.md`). The owner liked
-  B's *structure* (compact, focused) but not its design. B's code is in history (merge 7d33e48),
-  A's in b107e51; neither is live.
-- **Reverted with Home:** the measured type and screen system (ADR-0015, merge 6d26667, reverted in
-  0f4a33a; the ADR text is at 16136f3). It was not
+  B's *structure* (compact, focused) but not its design. B's code is in history (merge 4e35977),
+  A's in 10b7826; neither is live.
+- **Reverted with Home:** the measured type and screen system (ADR-0015, merge e5611a7, reverted in
+  956cb6f; the ADR text is at 1ad060e). It was not
   rejected; it was undone only because it was built on Home A. Re-apply it to the restored Home
-  (revert the revert of 6d26667 and resolve the Home parts) once Home's direction is set.
+  (revert the revert of e5611a7 and resolve the Home parts) once Home's direction is set.
 - **Kept:** Work (ADR-0014, real screens in frames), About (letter with postcards; photo concepts
   behind `?photos=1|2|3`, which the owner calls gimmicks), Record (samples, cassette recorder),
   the beads rail everywhere (ADR-0013), sharp objects at 1° with phone spin loops, ID card entrance,

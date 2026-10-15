@@ -1,4 +1,4 @@
-# Site audit: erendenizk.github.io (dev @ 2ed9c0c), 2026-10-10
+# Site audit: erendenizk.github.io (dev @ c63ebc1), 2026-10-10
 
 > **Status:** current (2026-10-10): the clean-restart audit of every page; drove the clean-restart plan (`docs/history/plan-2026-10-clean-restart.md`) tracks 1-9. Scratchpad paths cited below are scratch, not kept.
 
@@ -260,7 +260,7 @@ Every `<img>` on every route at 1440@2×, 1180@2× and 390@3× was compared agai
 - **Where it was:** prototype D (`prototypes/d-quiet/index.html:393`, script `:641-644`, "Istanbul clock, a small fact
   of place") and prototype E, at the right end of the top bar: `<p class="clock mono">Istanbul <b id="clock">--:--</b></p>`
   (`prototypes/e-dark/index.html:583`, styles `:141-142`, hidden on phones `:489`, script `:1057-1060` using
-  `Intl.DateTimeFormat('en-GB', {hour, minute, timeZone: 'Europe/Istanbul'})`). Commits `b74eb6b` (D) and `3bb99ae` (E).
+  `Intl.DateTimeFormat('en-GB', {hour, minute, timeZone: 'Europe/Istanbul'})`). Commits `a9c4c39` (D) and `225137d` (E).
 - **Why it went:** the craft audit (`docs/research/2026-10-craft-audit.md:62`, P1.4 "Decoration that reads as template")
   removed it with the mono caps and glowing dots: *"a 2023–25 folio trope; it changes every visit and says nothing about
   the work."* Prototype F's spec lists it as removed (`prototypes/f/SPEC.md:22`). It never reached the Astro site.
