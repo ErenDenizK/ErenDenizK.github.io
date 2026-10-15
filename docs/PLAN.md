@@ -29,12 +29,12 @@ build tracks at a time.
 | 0 | licenses: MIT for code, content all rights reserved | done 2026-10-15 | |
 | 0 | research figures in `docs/research/references/img/` | done 2026-10-15 | |
 | 0 | CLAUDE.md: the approved rules of 2026-10-15 | done 2026-10-15 | |
-| 0 | test S18 in `nav.spec.ts` failed once under full-suite load (passed 12 of 12 alone) | open | make it robust or explain it |
+| 0 | test S18 in `nav.spec.ts` | done 2026-10-15: three timing races in the test fixed; 80 of 80 under heavy load | |
 | 0 | retired objects to `media/archive/` | done 2026-10-15 | |
 | 0 | `?live` engine and ADR-0009 | done 2026-10-15: engine removed, ADR-0009 rejected | |
-| 1 Foundations | design charter (`docs/design/charter.md`): limits per width, type scale, motion language (sequenced reveals, no loaders) | research done, plan | the owner reads a one-page Turkish summary |
-| 1 | colour system: measured palette for every pairing; soft grounds; theme study (refined dark, light, hybrid, a few colour themes) shown with the real objects and renders | research | comps of themes with objects, owner gate 1 |
-| 1 | measuring tools: a palette checker (WCAG 2 and APCA) and a page probe against the charter | plan | tools run in `npm run verify` |
+| 1 Foundations | design charter (`docs/design/charter.md`) | proposed 2026-10-15, critic-checked; taste lines [T] wait on the owner | owner gate: the [T] lines |
+| 1 | colour system and theme candidates A Graphite, B Paper, C Hybrid, D Moods at `/lab/themes/` (all 395 pairings pass) | lab built 2026-10-15 | owner gate 1: pick a candidate on phone and desktop; then align `--ink-2` (charter #c4bfb6 vs lab #d3cfc7) |
+| 1 | measuring tools: `npm run palette` (live: 26 of 104 pairings fail APCA, 3 fail WCAG) and `npm run palette:lab` | checker done 2026-10-15 | into `verify` once the chosen theme is live; a page probe after the charter |
 | 2 Home | Home planned strip by strip, top to bottom: what each strip says, how it is shown, where it links; the object decided inside the plan | plan | an outline and copy draft from the owner's facts, then comps |
 | 2 | re-apply ADR-0015 to the chosen Home | waiting on Home | |
 | 3 About | structure: keep "How I work", rework "who I am / where I study / photos", tidier writing like Home, light and aura back on the ground | waiting on Phase 1 | comps |
