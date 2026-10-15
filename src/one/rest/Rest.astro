@@ -1,0 +1,55 @@
+---
+/* The rest of Home: the person's part (design spec §3.4). The ground changes once, at the tear, from the
+   night ground to the paper, and the field turns sunset gold. The paper is a 2.2 % lift of ink over the
+   ground (it measures #171719 on the plain ground, the spec's --paper), so the aura and the grain still
+   show through it. Its top edge is torn: an irregular edge with a faint light fibre line, drawn at build
+   time from a fixed seed, so every build draws the same edge. The ID card hangs from that edge.
+   P1: the tear is a static edge; its motion over the last Work scene is P2 (spec §4.7). */
+import IdCard from './IdCard.astro';
+import Tracks from './Tracks.astro';
+import Path from './Path.astro';
+import Postcards from './Postcards.astro';
+import Now from './Now.astro';
+import RecordPointer from './RecordPointer.astro';
+import Contact from './Contact.astro';
+import Foot from '../Foot.astro';
+import { SETS, auraAttr, auraVars } from '../aura.mjs';
+
+/* the torn edge: points every 6 to 28 px, 14 to 30 px down, with an occasional deeper bite */
+let seed = 7;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const pts: [number, number][] = [];
+for (let x = 0; x < 1440; x += 6 + rnd() * 22) pts.push([x, 14 + rnd() * 16 + (rnd() < 0.12 ? rnd() * 10 : 0)]);
+pts.push([1440, 20]);
+const edge = pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(' L');
+const fill = `M0 44 L${edge} L1440 44 Z`;
+const fibre = `M${edge}`;
+---
+<section class="rest" data-part="rest" data-rail-accent={SETS.person[0]} data-aura={auraAttr(SETS.person)} style={auraVars(SETS.person)}>
+  <svg class="tear" viewBox="0 0 1440 44" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path class="t-fill" d={fill} />
+    <path class="t-fibre" d={fibre} />
+  </svg>
+  <div class="sheet">
+    <IdCard />
+    <Tracks />
+    <Path />
+    <Postcards />
+    <Now />
+    <RecordPointer />
+    <Contact />
+    <Foot />
+  </div>
+</section>
+
+<style>
+  .rest { --sheet: rgb(232 227 221 / 0.022); position: relative; margin-top: var(--part-gap); }
+  .tear { display: block; width: 100%; height: 44px; overflow: visible; }
+  .t-fill { fill: var(--sheet); }
+  .t-fibre { fill: none; stroke: var(--line-2); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .sheet { background: var(--sheet); padding: 0 var(--gut); margin-top: -1px; }
+  .sheet > :global(.strip) { margin-top: var(--strip-gap); }
+  .sheet > :global(.strip:first-child) { margin-top: 0; }
+  .sheet :global(.strip-label) { display: block; text-align: center; }
+  .sheet :global(.hushed) { --hush-c: var(--hush-paper); }
+</style>

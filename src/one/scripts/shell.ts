@@ -3,7 +3,7 @@
 import { initField } from './field';
 import { initArrive } from './arrive';
 import { initScrub } from './scrub';
-import { pauseField } from './bus';
+import { pauseField, motion } from './bus';
 import { initRail } from '../../scripts/rail';
 import { initClock } from '../../scripts/clock';
 
@@ -39,4 +39,15 @@ if (rest) {
   const go = () => import('./rest').then((m) => m.initRest());
   const io = new IntersectionObserver((e) => { if (e.some((x) => x.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: '150% 0px' });
   io.observe(rest);
+}
+
+/* the footer's glass object: its idle loop plays only while it is on screen and motion is welcome */
+const loop = document.querySelector<HTMLVideoElement>('video[data-loop]');
+if (loop && motion() === 'full' && !(navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData) {
+  new IntersectionObserver((e) => {
+    if (e[0].isIntersecting) {
+      if (loop.preload === 'none') { loop.preload = 'auto'; loop.load(); loop.addEventListener('playing', () => loop.classList.add('is-on'), { once: true }); }
+      loop.play().catch(() => {});
+    } else loop.pause();
+  }, { rootMargin: '10% 0px' }).observe(loop);
 }

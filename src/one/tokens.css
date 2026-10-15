@@ -83,8 +83,11 @@
   --e-print: 0 1px 2px rgb(0 0 0 / 0.5), 0 18px 40px -12px rgb(0 0 0 / 0.7);
   --e-lift: 0 2px 4px rgb(0 0 0 / 0.5), 0 40px 90px -24px rgb(0 0 0 / 0.8);
 
-  /* z-index map, shared by PART A and PART B */
-  --z-field: 0; --z-plate: 1; --z-grain: 5; --z-content: 10; --z-layer: 50;
+  /* z-index map, shared by PART A and PART B. The field and the plates sit at 0 and paint in document
+     order before main; main is no stacking context, so its content paints over them and a glass object's
+     plus-lighter reaches the real field. The grain lies over the content (as on the live site), under the
+     layer, the bar and the rail. */
+  --z-field: 0; --z-plate: 0; --z-content: 10; --z-grain: 40; --z-layer: 50;
   --z-bar: 60; --z-rail: 61; --z-capsule: 62; --z-big: 70;
 
   /* motion: durations */

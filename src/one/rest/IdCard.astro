@@ -1,0 +1,178 @@
+---
+/* The ID card (design spec §3.4 item 1; brief §7: "a digital ID card like event badges"), redrawn for
+   the two-page site with the owner's notes: the lanyard and the card are one pendulum that pivots at the
+   anchor on the torn paper edge (never a card turning under a still strap), and the back has a denser
+   surface (an interference sheen, like a disc, that moves with the tilt). It drops into view and swings
+   to rest on the family kit's settle spring. A mouse can pull it and let it swing; a click, a tap,
+   Enter or Space turns it over. The front carries no links: they live in Contact (spec §3.5).
+   Behaviour: scripts/idcard.ts. Still twins: reduced motion turns it by a crossfade and it hangs still;
+   without JavaScript the front stands alone. */
+import { getSite } from '../../lib/site';
+import p360a from '../../assets/photos/gate-card-360.avif?url';
+import p640a from '../../assets/photos/gate-card-640.avif?url';
+import p960a from '../../assets/photos/gate-card-960.avif?url';
+import p360w from '../../assets/photos/gate-card-360.webp?url';
+import p640w from '../../assets/photos/gate-card-640.webp?url';
+import p960w from '../../assets/photos/gate-card-960.webp?url';
+
+const site = await getSite();
+const card = site.about.card;
+const k = site.kicker;
+const strap = Array.from({ length: 10 }, () => site.mark).join('  ');
+---
+<section class="strip about" id="about" data-rail-sec="About">
+  <div class="idc" data-idcard role="group" aria-roledescription={card.label} aria-label={`${card.label}: ${site.name}`}>
+    <div class="pend" data-pend>
+      <div class="strap" aria-hidden="true"><span>{strap}</span></div>
+      <svg class="clip" viewBox="0 0 40 56" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="idc-metal" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#6f6a63" /><stop offset="0.35" stop-color="#d9d3ca" /><stop offset="0.6" stop-color="#9c968d" /><stop offset="1" stop-color="#57534d" />
+          </linearGradient>
+        </defs>
+        <rect x="9" y="1" width="22" height="13" rx="3" fill="url(#idc-metal)" />
+        <circle cx="20" cy="22" r="7" fill="none" stroke="url(#idc-metal)" stroke-width="2.6" />
+        <path d="M14.5 29.5 C 13 36, 13 44, 16 49 L 24 49 C 27 44, 27 36, 25.5 29.5" fill="none" stroke="url(#idc-metal)" stroke-width="2.6" stroke-linecap="round" />
+      </svg>
+      <div class="tilt" data-tilt>
+        <div class="card" data-card>
+          <div class="face front" data-face="front">
+            <div class="head"><span class="mk">{site.mark}</span><span class="iss">{card.issued}</span></div>
+            <picture class="photo">
+              <source type="image/avif" srcset={`${p360a} 360w, ${p640a} 640w, ${p960a} 960w`} sizes="(min-width: 700px) 252px, 218px" />
+              <img src={p640w} srcset={`${p360w} 360w, ${p640w} 640w, ${p960w} 960w`} sizes="(min-width: 700px) 252px, 218px" alt={site.about.selfie.alt} width="640" height="640" loading="lazy" decoding="async" draggable="false" />
+            </picture>
+            <p class="nm">{site.nameLines.map((l) => <span>{l}</span>)}</p>
+            <p class="role"><span>{k.study} · {k.school}</span><span>{k.year}</span></p>
+            <span class="seal" aria-hidden="true"></span>
+            <span class="glare" aria-hidden="true"></span>
+          </div>
+          <div class="face back" data-face="back" aria-hidden="true">
+            <div class="head"><span class="iss">{card.label}</span><span class="iss">{site.host}</span></div>
+            <span class="emboss" aria-hidden="true">{site.mark}</span>
+            <p class="line">{card.back}</p>
+            <span class="glare" aria-hidden="true"></span>
+          </div>
+          <button class="turn" type="button" data-turn aria-pressed="false" aria-label="Turn the card over"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h2 class="label strip-label">About</h2>
+  <p class="hint small"><span class="h-click">{card.hint.click}</span><span class="h-tap">{card.hint.tap}</span></p>
+</section>
+
+<style>
+  @property --turned { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+  @property --rx { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+  @property --ry { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+  .about { position: relative; display: grid; justify-items: center; padding-top: 0; }
+  .idc {
+    --w: 300px; --strap: 168px;
+    position: relative; width: var(--w); padding-top: var(--strap); container-type: inline-size;
+    user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+  }
+  /* the pendulum: lanyard, clip and card turn together about the anchor on the paper's edge */
+  .pend { position: relative; transform-origin: 50% calc(-1 * var(--strap)); rotate: var(--sw, 0deg); }
+  .strap {
+    position: absolute; left: 50%; bottom: calc(100% + 3cqi); width: 6.6cqi; height: calc(var(--strap) + 1px);
+    translate: -50% 0; overflow: hidden;
+    background: linear-gradient(90deg, #15130f, #221e19 50%, #15130f);
+    box-shadow: inset 1px 0 0 color-mix(in srgb, var(--person-1) 26%, transparent), inset -1px 0 0 color-mix(in srgb, var(--person-1) 26%, transparent);
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 56px); mask-image: linear-gradient(180deg, transparent, #000 56px);
+    display: flex; justify-content: center; align-items: flex-end;
+  }
+  .strap span {
+    writing-mode: vertical-rl; white-space: nowrap; padding-bottom: 8cqi;
+    font: 400 3.9cqi / 1 var(--f-serif); letter-spacing: 0.32em; color: color-mix(in srgb, var(--person-1) 46%, #5f5b55);
+  }
+  .clip { position: absolute; z-index: 2; left: 50%; top: -9.8cqi; width: 12cqi; translate: -50% 0; pointer-events: none; filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.5)); }
+
+  .tilt { perspective: 1100px; }
+  .card {
+    position: relative; display: grid; transform-style: preserve-3d;
+    --gx: 50%; --gy: 26%; --rx: 0deg; --ry: 0deg; --turned: 0deg;
+    transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--turned)));
+    transition: --turned var(--kl-glide, 710ms) var(--kl-glide-ease, ease-out),
+      --rx var(--tilt-t, 0ms) var(--ease-out), --ry var(--tilt-t, 0ms) var(--ease-out);
+  }
+  .card::before {
+    content: ""; position: absolute; left: 6%; right: 6%; top: 12%; bottom: -4%; border-radius: 8cqi; z-index: -1;
+    background: rgb(0 0 0 / 0.62); filter: blur(22px); transform: translateZ(-1px);
+  }
+  .face {
+    grid-area: 1 / 1; position: relative; aspect-ratio: 5 / 8; padding: 7cqi 7cqi 6cqi; display: flex; flex-direction: column;
+    border-radius: 5cqi; color: var(--ink); overflow: hidden;
+    background:
+      radial-gradient(120% 70% at 100% 0%, color-mix(in srgb, var(--person-1) 10%, transparent), transparent 60%),
+      linear-gradient(165deg, #1b1916, #100f0d 70%);
+    box-shadow: inset 0 0 0 1px rgb(255 245 232 / 0.08), inset 0 1px 0 rgb(255 245 232 / 0.09);
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    /* the slot the clip goes through, punched out of the card */
+    -webkit-mask: linear-gradient(#000 0 0), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='10'%3E%3Crect width='48' height='10' rx='5'/%3E%3C/svg%3E") 50% 3.4cqi / 15cqi 3.2cqi no-repeat;
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='10'%3E%3Crect width='48' height='10' rx='5'/%3E%3C/svg%3E") 50% 3.4cqi / 15cqi 3.2cqi no-repeat exclude;
+  }
+  /* a hairline foil edge in the sunset gold that shifts hue as the card turns */
+  .face::before {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: conic-gradient(from calc(150deg + var(--ry) * 4), #f3b886, #f6dcc4, #c9d4ff, #efb1cb, #f3b886); opacity: 0.55;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+  .back { transform: rotateY(180deg); }
+  /* the back: a denser surface, a fine interference sheen like a disc, which moves with the tilt */
+  .back::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; mix-blend-mode: screen; opacity: 0.2;
+    background:
+      repeating-conic-gradient(from calc(var(--ry) * 6) at 50% 62%, #f3b886 0deg, #c9d4ff 7deg, #9fe0d0 14deg, #efb1cb 21deg, #f3b886 28deg),
+      url("../../assets/photos/grain.png");
+    background-size: 100% 100%, 96px;
+    -webkit-mask: radial-gradient(circle at 50% 62%, transparent 8%, #000 9%, #000 46%, transparent 64%);
+    mask: radial-gradient(circle at 50% 62%, transparent 8%, #000 9%, #000 46%, transparent 64%);
+  }
+
+  .head { display: flex; justify-content: space-between; align-items: baseline; }
+  .mk { font: 500 7.4cqi / 1 var(--f-serif); letter-spacing: -0.01em; }
+  .iss { font: 500 3.9cqi / 1 var(--f-sans); letter-spacing: 0.04em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .photo { display: block; margin-top: 5cqi; }
+  .photo img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 2.4cqi; }
+  .nm { margin-top: 6cqi; font: 500 9.2cqi / 1 var(--f-serif); letter-spacing: -0.018em; }
+  .nm span, .role span { display: block; }
+  .role { margin-top: 3.4cqi; font: 400 4.2cqi / 1.4 var(--f-sans); color: var(--ink-2); }
+  .seal {
+    position: absolute; right: 7cqi; bottom: 6cqi; width: 8.4cqi; height: 8.4cqi; border-radius: 50%;
+    background: repeating-radial-gradient(circle, rgb(10 9 8 / 0.55) 0 0.5px, transparent 0.6px 2.4px),
+      conic-gradient(from calc(150deg + var(--ry) * 4), #f3b886, #f6dcc4, #c9d4ff, #efb1cb, #f3b886);
+    opacity: 0.72; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22);
+  }
+  .emboss {
+    margin-top: 14cqi; align-self: center; font: 500 34cqi / 0.8 var(--f-serif); letter-spacing: -0.03em;
+    color: rgb(233 229 222 / 0.05); text-shadow: 0 -1px 0 rgb(0 0 0 / 0.55), 0 1px 0 rgb(255 245 232 / 0.08);
+  }
+  .line { margin-top: auto; font: 400 8cqi / 1.14 var(--f-serif); letter-spacing: -0.015em; text-wrap: balance; text-align: center; }
+  .glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; mix-blend-mode: screen; opacity: var(--glare, 0.35);
+    background: radial-gradient(circle at var(--gx) var(--gy), rgb(255 244 230 / 0.18), rgb(255 244 230 / 0.04) 32%, transparent 58%); }
+  .turn { position: absolute; inset: 0; z-index: 3; border-radius: 5cqi; cursor: pointer; }
+  .turn:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+  :global(.idc.is-held) .turn { cursor: grabbing; }
+
+  .strip-label { margin-top: var(--s-6); }
+  .hint { margin-top: var(--s-2); color: var(--ink-3); text-align: center; }
+  .hint span { display: none; }
+  :global(html.fine) .hint .h-click, :global(html:not(.fine)) .hint .h-tap { display: inline; }
+  :global(html:not(.js)) .hint, :global(html:not(.js)) .back, :global(html:not(.js)) .turn { display: none; }
+
+  /* the face turned away is never seen, whatever the engine does with backface-visibility */
+  .card.is-turned .front, .card:not(.is-turned) .back { visibility: hidden; transition: visibility 0s linear calc(var(--kl-glide, 710ms) / 2); }
+  .card.is-turned .back, .card:not(.is-turned) .front { visibility: visible; transition: visibility 0s linear calc(var(--kl-glide, 710ms) / 2); }
+
+  @media (max-width: 699.98px) { .idc { --w: 260px; --strap: 136px; } }
+
+  /* reduced motion: it hangs still and turns by a 150 ms crossfade */
+  :global(html.still) .pend { rotate: none; }
+  :global(html.still) .card { transform: none; transition: none; }
+  :global(html.still) .face { backface-visibility: visible; transition: opacity 150ms linear, visibility 0s; }
+  :global(html.still) .back { transform: none; }
+  :global(html.still) .card.is-turned .front, :global(html.still) .card:not(.is-turned) .back { opacity: 0; }
+</style>

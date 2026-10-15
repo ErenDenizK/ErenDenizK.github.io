@@ -92,8 +92,10 @@ p { text-wrap: pretty; }
 }
 @supports (height: 100lvh) { .grain { min-height: 100lvh; } }
 /* main clips sideways itself: a clip on body is handed to the viewport, and a phone still widens its
-   layout viewport for what overflows (a hush wider than the column) */
-main { position: relative; z-index: var(--z-content); overflow-x: clip; }
+   layout viewport for what overflows (a hush wider than the column). main is no stacking context, so a
+   glass object's plus-lighter adds to the real field and plates under it (ADR-0006); the grain lies over
+   everything but the bar, as on the live site, so its z-index sits above the content's. */
+main { position: relative; overflow-x: clip; }
 
 /* ---------- the rail (ADR-0013, src/styles/rail.css, unchanged in look): its house names, pointed at
    this token set so the beads keep their timing and colour ---------- */
