@@ -1,0 +1,135 @@
+{
+ "slug": "rauno-freiberg",
+ "url": "https://rauno.me/",
+ "name": "Rauno Freiberg",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 6108,
+  "screens": 6.8,
+  "blockCount": 19,
+  "medianGap": 16,
+  "sections": [
+   {
+    "y": 69,
+    "gapBefore": null,
+    "h": 762,
+    "n": 19,
+    "chars": 369,
+    "links": 9,
+    "head": [
+     "720px DD",
+     "720px Craft",
+     "720px Projects",
+     "16px Craft Craft"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 59,
+   "blocks": 19,
+   "links": 9,
+   "text": [
+    "720px* DD",
+    "720px* Craft",
+    "720px* Projects",
+    "16px* Craft Craft",
+    "16px* Projects Projects",
+    "75px Make it fast. Make it beautiful. Make it consistent. Make it carefully",
+    "85px* Twitter",
+    "85px* 2023",
+    "32px Rauno Freiberg is an Estonian interaction designer working with Vercel",
+    "85px Rauno Freiberg",
+    "85px is an Estonian",
+    "85px interaction",
+    "85px Email",
+    "85px designer",
+    "85px Copied",
+    "85px working with Vercel",
+    "85px and Devouring Details",
+    "85px* 2022",
+    "85px* GitHub"
+   ]
+  },
+  "column": {
+   "left": 247,
+   "right": 8426
+  },
+  "check": {
+   "name": 180,
+   "role": 180,
+   "affiliation": null,
+   "projects": 69,
+   "writing": null,
+   "proof": null,
+   "contact": 176,
+   "now": null
+  },
+  "bg": "rgb(237, 237, 237)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 844,
+  "screens": 1,
+  "blockCount": 19,
+  "medianGap": 16,
+  "sections": [
+   {
+    "y": 292,
+    "gapBefore": null,
+    "h": 259,
+    "n": 19,
+    "chars": 369,
+    "links": 9,
+    "head": [
+     "720px DD",
+     "720px Craft",
+     "720px Projects",
+     "16px Craft Craft"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 59,
+   "blocks": 19,
+   "links": 9,
+   "text": [
+    "720px* DD",
+    "720px* Craft",
+    "720px* Projects",
+    "16px* Craft Craft",
+    "16px* Projects Projects",
+    "75px Make it fast. Make it beautiful. Make it consistent. Make it carefully",
+    "85px* Twitter",
+    "85px* 2023",
+    "32px Rauno Freiberg is an Estonian interaction designer working with Vercel",
+    "85px Rauno Freiberg",
+    "85px is an Estonian",
+    "85px interaction",
+    "85px Email",
+    "85px designer",
+    "85px Copied",
+    "85px working with Vercel",
+    "85px and Devouring Details",
+    "85px* 2022",
+    "85px* GitHub"
+   ]
+  },
+  "column": {
+   "left": 34,
+   "right": 2815
+  },
+  "check": {
+   "name": 330,
+   "role": 330,
+   "affiliation": null,
+   "projects": 292,
+   "writing": null,
+   "proof": null,
+   "contact": 329,
+   "now": null
+  },
+  "bg": "rgb(237, 237, 237)"
+ }
+}

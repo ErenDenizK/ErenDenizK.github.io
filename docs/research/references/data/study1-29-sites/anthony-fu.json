@@ -1,0 +1,78 @@
+{
+ "slug": "anthony-fu",
+ "url": "https://antfu.me/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp"
+  ],
+  "firstPaintS": 1.94,
+  "settleS": 1.76,
+  "continuous": false,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1.4,
+  "largestPx": 36,
+  "largestText": "Anthony Fu",
+  "largestFont": "Inter",
+  "largestWeight": "800",
+  "largestTracking": "normal",
+  "bodyPx": 16,
+  "bodyFont": "Inter",
+  "lineChars": 79,
+  "measurePx": 656,
+  "mediaPct": 0,
+  "firstScreenChars": 968,
+  "bg": "rgba(0, 0, 0, 0)",
+  "webAnimsRunning": 16,
+  "webAnimsInfinite": 1,
+  "webAnimMaxEndMs": 2260,
+  "palette": {
+   "tones": 5,
+   "chromatic": 0,
+   "bgHex": "#050505",
+   "inkPct": 8,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp"
+  ],
+  "firstPaintS": 2.79,
+  "settleS": 1.25,
+  "continuous": false,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 2,
+  "largestPx": 36,
+  "largestText": "Anthony Fu",
+  "largestFont": "Inter",
+  "largestWeight": "800",
+  "largestTracking": "normal",
+  "bodyPx": 16,
+  "bodyFont": "Inter",
+  "lineChars": 40,
+  "measurePx": 334,
+  "mediaPct": 2,
+  "firstScreenChars": 714,
+  "bg": "rgba(0, 0, 0, 0)",
+  "webAnimsRunning": 16,
+  "webAnimsInfinite": 1,
+  "webAnimMaxEndMs": 2260,
+  "palette": {
+   "tones": 6,
+   "chromatic": 0,
+   "bgHex": "#050505",
+   "inkPct": 16,
+   "chromaHex": []
+  }
+ }
+}

@@ -1,0 +1,261 @@
+{
+ "slug": "emil-kowalski",
+ "url": "https://emilkowal.ski/",
+ "name": "Emil Kowalski",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 2480,
+  "screens": 2.8,
+  "blockCount": 57,
+  "medianGap": 28,
+  "sections": [
+   {
+    "y": -38,
+    "gapBefore": null,
+    "h": 23,
+    "n": 3,
+    "chars": 153,
+    "links": 1,
+    "head": [
+     "14px My new course called aiforui.dev is in early access! Early a",
+     "14px My new course called aiforui.dev is in early access!",
+     "14px Early access has closed."
+    ]
+   },
+   {
+    "y": 117,
+    "gapBefore": 132,
+    "h": 40,
+    "n": 2,
+    "chars": 28,
+    "links": 1,
+    "head": [
+     "16px Emil Kowalski",
+     "16px Design Engineer"
+    ]
+   },
+   {
+    "y": 285,
+    "gapBefore": 128,
+    "h": 143,
+    "n": 3,
+    "chars": 210,
+    "links": 0,
+    "head": [
+     "16px Today",
+     "16px I work on the Web team at Linear. I like to build things for",
+     "16px Previously, I worked on the design team at Vercel."
+    ]
+   },
+   {
+    "y": 556,
+    "gapBefore": 128,
+    "h": 364,
+    "n": 11,
+    "chars": 256,
+    "links": 10,
+    "head": [
+     "16px Projects",
+     "16px aiforui.dev AI for Designers and Engineers.",
+     "16px aiforui.dev",
+     "16px AI for Designers and Engineers."
+    ]
+   },
+   {
+    "y": 1048,
+    "gapBefore": 128,
+    "h": 904,
+    "n": 31,
+    "chars": 1335,
+    "links": 30,
+    "head": [
+     "16px Writing",
+     "16px Friction as a Feature A natural filter for bad ideas.",
+     "16px Friction as a Feature",
+     "16px A natural filter for bad ideas."
+    ]
+   },
+   {
+    "y": 2068,
+    "gapBefore": 116,
+    "h": 132,
+    "n": 3,
+    "chars": 89,
+    "links": 0,
+    "head": [
+     "16px Newsletter",
+     "16px Exclusive, newsletter-only content once a month. No spam, no",
+     "16px Subscribe"
+    ]
+   },
+   {
+    "y": 2344,
+    "gapBefore": 144,
+    "h": 70,
+    "n": 4,
+    "chars": 86,
+    "links": 2,
+    "head": [
+     "16px More",
+     "16px You can see more of my work on Twitter and more of my code o",
+     "16px Twitter",
+     "16px GitHub"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 101,
+   "blocks": 19,
+   "links": 12,
+   "text": [
+    "14px My new course called aiforui.dev is in early access! Early access has ",
+    "14px* My new course called aiforui.dev is in early access!",
+    "14px Early access has closed.",
+    "16px* Emil Kowalski",
+    "16px Design Engineer",
+    "16px Today",
+    "16px I work on the Web team at Linear. I like to build things for designers",
+    "16px Previously, I worked on the design team at Vercel.",
+    "16px Projects",
+    "16px* aiforui.dev AI for Designers and Engineers.",
+    "16px* aiforui.dev",
+    "16px* AI for Designers and Engineers.",
+    "16px* Sonner",
+    "16px* An opinionated toast component for React.",
+    "16px* animations.dev A course on web animations.",
+    "16px* animations.dev",
+    "16px* A course on web animations.",
+    "16px* Vaul",
+    "16px* A drawer component for React."
+   ]
+  },
+  "column": {
+   "left": 386,
+   "right": 1054
+  },
+  "check": {
+   "name": 117,
+   "role": 141,
+   "affiliation": 333,
+   "projects": 333,
+   "writing": 1048,
+   "proof": null,
+   "contact": 2394,
+   "now": 285
+  },
+  "bg": "rgb(253, 253, 252)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 2242,
+  "screens": 2.7,
+  "blockCount": 55,
+  "medianGap": 28,
+  "sections": [
+   {
+    "y": -55,
+    "gapBefore": null,
+    "h": 40,
+    "n": 1,
+    "chars": 52,
+    "links": 1,
+    "head": [
+     "14px My new course called aiforui.dev is in early access!"
+    ]
+   },
+   {
+    "y": 119,
+    "gapBefore": 134,
+    "h": 40,
+    "n": 2,
+    "chars": 28,
+    "links": 1,
+    "head": [
+     "16px Emil Kowalski",
+     "16px Design Engineer"
+    ]
+   },
+   {
+    "y": 287,
+    "gapBefore": 128,
+    "h": 219,
+    "n": 3,
+    "chars": 210,
+    "links": 0,
+    "head": [
+     "16px Today",
+     "16px I work on the Web team at Linear. I like to build things for",
+     "16px Previously, I worked on the design team at Vercel."
+    ]
+   },
+   {
+    "y": 570,
+    "gapBefore": 64,
+    "h": 1448,
+    "n": 45,
+    "chars": 1680,
+    "links": 40,
+    "head": [
+     "16px Projects",
+     "16px aiforui.dev AI for Designers and Engineers.",
+     "16px aiforui.dev",
+     "16px AI for Designers and Engineers."
+    ]
+   },
+   {
+    "y": 2098,
+    "gapBefore": 80,
+    "h": 94,
+    "n": 4,
+    "chars": 86,
+    "links": 2,
+    "head": [
+     "16px More",
+     "16px You can see more of my work on Twitter and more of my code o",
+     "16px Twitter",
+     "16px GitHub"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 79,
+   "blocks": 16,
+   "links": 11,
+   "text": [
+    "14px* My new course called aiforui.dev is in early access!",
+    "16px* Emil Kowalski",
+    "16px Design Engineer",
+    "16px Today",
+    "16px I work on the Web team at Linear. I like to build things for designers",
+    "16px Previously, I worked on the design team at Vercel.",
+    "16px Projects",
+    "16px* aiforui.dev AI for Designers and Engineers.",
+    "16px* aiforui.dev",
+    "16px* AI for Designers and Engineers.",
+    "16px* Sonner",
+    "16px* An opinionated toast component for React.",
+    "16px* animations.dev A course on web animations.",
+    "16px* animations.dev",
+    "16px* A course on web animations.",
+    "16px* Vaul"
+   ]
+  },
+  "column": {
+   "left": 12,
+   "right": 378
+  },
+  "check": {
+   "name": 119,
+   "role": 143,
+   "affiliation": 331,
+   "projects": 331,
+   "writing": 942,
+   "proof": null,
+   "contact": 2148,
+   "now": 287
+  },
+  "bg": "rgb(253, 253, 252)"
+ }
+}

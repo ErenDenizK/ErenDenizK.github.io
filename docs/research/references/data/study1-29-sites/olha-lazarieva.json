@@ -1,0 +1,78 @@
+{
+ "slug": "olha-lazarieva",
+ "url": "https://www.olhalazarieva.com/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 7.56,
+  "settleS": 3.12,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 16.3,
+  "largestPx": 225,
+  "largestText": "c",
+  "largestFont": "Sofia Sans Condensed",
+  "largestWeight": "700",
+  "largestTracking": "-18.75px",
+  "bodyPx": 19.5,
+  "bodyFont": "Spline Sans Mono",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 0,
+  "firstScreenChars": 372,
+  "bg": "rgb(247, 247, 247)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 7,
+   "chromatic": 0,
+   "bgHex": "#f7f7f7",
+   "inkPct": 22,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp"
+  ],
+  "firstPaintS": 5.25,
+  "settleS": 4.91,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 1,
+  "largestPx": 111.7,
+  "largestText": "a",
+  "largestFont": "Sofia Sans Condensed",
+  "largestWeight": "700",
+  "largestTracking": "-8px",
+  "bodyPx": 20,
+  "bodyFont": "Spline Sans Mono",
+  "lineChars": 27,
+  "measurePx": 360,
+  "mediaPct": 1,
+  "firstScreenChars": 187,
+  "bg": "rgb(247, 247, 247)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 10,
+   "chromatic": 0,
+   "bgHex": "#f7f7f7",
+   "inkPct": 31,
+   "chromaHex": []
+  }
+ }
+}

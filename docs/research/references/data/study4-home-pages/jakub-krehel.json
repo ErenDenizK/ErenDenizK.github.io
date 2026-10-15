@@ -1,0 +1,244 @@
+{
+ "slug": "jakub-krehel",
+ "url": "https://jakub.kr/",
+ "name": "Jakub Krehel",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 2379,
+  "screens": 2.6,
+  "blockCount": 65,
+  "medianGap": 24,
+  "sections": [
+   {
+    "y": 96,
+    "gapBefore": null,
+    "h": 256,
+    "n": 11,
+    "chars": 645,
+    "links": 6,
+    "head": [
+     "16px Jakub Krehel",
+     "16px Design Engineer at Interfere",
+     "16px I’m a founding design engineer at Interfere (opens in a new ",
+     "16px Interfere (opens in a new tab)"
+    ]
+   },
+   {
+    "y": 416,
+    "gapBefore": 64,
+    "h": 342,
+    "n": 16,
+    "chars": 470,
+    "links": 15,
+    "head": [
+     "16px Projects",
+     "16px interfaces.dev Design engineering magazine (opens in a new t",
+     "16px interfaces.dev Design engineering magazine",
+     "16px interfaces.dev"
+    ]
+   },
+   {
+    "y": 854,
+    "gapBefore": 96,
+    "h": 858,
+    "n": 31,
+    "chars": 759,
+    "links": 30,
+    "head": [
+     "16px Writing",
+     "16px Notes 3 Short thoughts",
+     "16px Notes 3",
+     "16px Short thoughts"
+    ]
+   },
+   {
+    "y": 1848,
+    "gapBefore": 136,
+    "h": 194,
+    "n": 6,
+    "chars": 145,
+    "links": 0,
+    "head": [
+     "16px Interface Newsletter",
+     "16px New articles, resources and occasional newsletter-only conte",
+     "16px Subscribe Subscribe",
+     "16px Subscribe"
+    ]
+   },
+   {
+    "y": 2230,
+    "gapBefore": 188,
+    "h": 26,
+    "n": 1,
+    "chars": 8,
+    "links": 1,
+    "head": [
+     "16px index.md"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 161,
+   "blocks": 28,
+   "links": 21,
+   "text": [
+    "16px Jakub Krehel",
+    "16px Design Engineer at Interfere",
+    "16px I’m a founding design engineer at Interfere (opens in a new tab) , whe",
+    "16px* Interfere (opens in a new tab)",
+    "16px Previously, I worked at OpenSea and a few other (opens in a new tab) c",
+    "16px* other (opens in a new tab)",
+    "16px* @jakubkrehel (opens in a new tab)",
+    "16px* email",
+    "16px* GitHub (opens in a new tab)",
+    "16px If you’d like to know more, feel free to ask anything.",
+    "16px* ask anything",
+    "16px Projects",
+    "16px* interfaces.dev Design engineering magazine (opens in a new tab)",
+    "16px* interfaces.dev Design engineering magazine",
+    "16px* interfaces.dev",
+    "16px* Design engineering magazine",
+    "16px* loading.dev Loader library for React (opens in a new tab)",
+    "16px* loading.dev Loader library for React",
+    "16px* loading.dev",
+    "16px* Loader library for React",
+    "16px* /skills Skills for design engineers",
+    "16px* /skills",
+    "16px* Skills for design engineers",
+    "16px* oklch.fyi A guide to OKLCH colors (opens in a new tab)",
+    "16px* oklch.fyi A guide to OKLCH colors",
+    "16px* oklch.fyi",
+    "16px* A guide to OKLCH colors",
+    "16px Writing"
+   ]
+  },
+  "column": {
+   "left": 390,
+   "right": 1050
+  },
+  "check": {
+   "name": 96,
+   "role": 118,
+   "affiliation": 118,
+   "projects": 258,
+   "writing": 854,
+   "proof": null,
+   "contact": 258,
+   "now": null
+  },
+  "bg": "rgb(252, 252, 252)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 2269,
+  "screens": 2.7,
+  "blockCount": 65,
+  "medianGap": 24,
+  "sections": [
+   {
+    "y": 48,
+    "gapBefore": null,
+    "h": 750,
+    "n": 27,
+    "chars": 1115,
+    "links": 21,
+    "head": [
+     "16px Jakub Krehel",
+     "16px Design Engineer at Interfere",
+     "16px I’m a founding design engineer at Interfere (opens in a new ",
+     "16px Interfere (opens in a new tab)"
+    ]
+   },
+   {
+    "y": 862,
+    "gapBefore": 64,
+    "h": 858,
+    "n": 31,
+    "chars": 759,
+    "links": 30,
+    "head": [
+     "16px Writing",
+     "16px Notes 3 Short thoughts",
+     "16px Notes 3",
+     "16px Short thoughts"
+    ]
+   },
+   {
+    "y": 1792,
+    "gapBefore": 72,
+    "h": 220,
+    "n": 6,
+    "chars": 145,
+    "links": 0,
+    "head": [
+     "16px Interface Newsletter",
+     "16px New articles, resources and occasional newsletter-only conte",
+     "16px Subscribe Subscribe",
+     "16px Subscribe"
+    ]
+   },
+   {
+    "y": 2168,
+    "gapBefore": 156,
+    "h": 26,
+    "n": 1,
+    "chars": 8,
+    "links": 1,
+    "head": [
+     "16px index.md"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 160,
+   "blocks": 27,
+   "links": 21,
+   "text": [
+    "16px Jakub Krehel",
+    "16px Design Engineer at Interfere",
+    "16px I’m a founding design engineer at Interfere (opens in a new tab) , whe",
+    "16px* Interfere (opens in a new tab)",
+    "16px Previously, I worked at OpenSea and a few other (opens in a new tab) c",
+    "16px* other (opens in a new tab)",
+    "16px* @jakubkrehel (opens in a new tab)",
+    "16px* email",
+    "16px* GitHub (opens in a new tab)",
+    "16px If you’d like to know more, feel free to ask anything.",
+    "16px* ask anything",
+    "16px Projects",
+    "16px* interfaces.dev Design engineering magazine (opens in a new tab)",
+    "16px* interfaces.dev Design engineering magazine",
+    "16px* interfaces.dev",
+    "16px* Design engineering magazine",
+    "16px* loading.dev Loader library for React (opens in a new tab)",
+    "16px* loading.dev Loader library for React",
+    "16px* loading.dev",
+    "16px* Loader library for React",
+    "16px* /skills Skills for design engineers",
+    "16px* /skills",
+    "16px* Skills for design engineers",
+    "16px* oklch.fyi A guide to OKLCH colors (opens in a new tab)",
+    "16px* oklch.fyi A guide to OKLCH colors",
+    "16px* oklch.fyi",
+    "16px* A guide to OKLCH colors"
+   ]
+  },
+  "column": {
+   "left": 16,
+   "right": 374
+  },
+  "check": {
+   "name": 48,
+   "role": 70,
+   "affiliation": 70,
+   "projects": 262,
+   "writing": 862,
+   "proof": null,
+   "contact": 262,
+   "now": null
+  },
+  "bg": "rgb(252, 252, 252)"
+ }
+}

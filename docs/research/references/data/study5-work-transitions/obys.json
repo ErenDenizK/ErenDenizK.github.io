@@ -1,0 +1,26 @@
+{
+ "slug": "obys",
+ "url": "https://obys.agency/",
+ "found": {
+  "kind": "pattern",
+  "href": "https://obys.agency/work/makhno",
+  "top": -1254.18994140625,
+  "w": 131.984375,
+  "h": 131.984375
+ },
+ "clickedBy": "mouse",
+ "note": "click did not change URL within 200 ms",
+ "open": {
+  "urlFrom": "https://obys.agency/",
+  "urlTo": "https://obys.agency/",
+  "sameDocument": true,
+  "viewTransitions": 0,
+  "settleS": 2.86,
+  "frames": 290
+ },
+ "back": {
+  "urlTo": "about:blank",
+  "sameDocument": false,
+  "settleS": 0.02
+ }
+}

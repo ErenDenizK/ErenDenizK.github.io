@@ -1,0 +1,305 @@
+{
+ "slug": "jakub-krehel",
+ "url": "https://jakub.kr/",
+ "desktop": {
+  "anatomy": {
+   "libs": [
+    "nextjs"
+   ],
+   "canvases": [],
+   "videos": 0,
+   "fonts": [],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 16,
+     "family": "ui-sans-serif",
+     "weight": "500",
+     "lineHeight": "1.38",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 12,
+     "n": 1,
+     "sample": "Jakub Krehel"
+    },
+    {
+     "px": 16,
+     "family": "ui-sans-serif",
+     "weight": "450",
+     "lineHeight": "1.38",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 28,
+     "n": 1,
+     "sample": "Design Engineer at Interfere"
+    },
+    {
+     "px": 16,
+     "family": "ui-sans-serif",
+     "weight": "400",
+     "lineHeight": "1.63",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 581,
+     "n": 24,
+     "sample": "I’m a founding design engineer at"
+    },
+    {
+     "px": 16,
+     "family": "ui-sans-serif",
+     "weight": "450",
+     "lineHeight": "1.63",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 389,
+     "n": 21,
+     "sample": "Interfere"
+    },
+    {
+     "px": 16,
+     "family": "ui-sans-serif",
+     "weight": "500",
+     "lineHeight": "1.63",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 49,
+     "n": 5,
+     "sample": "Projects"
+    }
+   ],
+   "textColors": [
+    [
+     "lab(72.74 0 0)",
+     617
+    ],
+    [
+     "lab(93.04 0.0000298023 -0.0000119209)",
+     433
+    ],
+    [
+     "lab(3.6999 0 0)",
+     9
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(12, 12, 12)",
+     3365
+    ],
+    [
+     "lab(1.72225 0 0)",
+     36
+    ]
+   ],
+   "bodyBg": "rgb(12, 12, 12)",
+   "htmlBg": "rgba(0, 0, 0, 0)",
+   "transitions": [
+    [
+     "opacity, translate, scale | 0.2s | cubic-bezier(0, 0, 0.2, 1)",
+     15
+    ],
+    [
+     "color, background-color, border-color | 0.2s | ease",
+     6
+    ],
+    [
+     "transform, translate, scale | 0.3s | cubic-bezier(0, 0, 0.2, 1)",
+     3
+    ],
+    [
+     "color, background-color, border-color | 0.2s | ease-out",
+     1
+    ]
+   ],
+   "docScreens": 2.6,
+   "title": "Jakub Krehel",
+   "metaDesc": "Founding Design Engineer at Interfere"
+  },
+  "animsAtLoad": [],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "desktop-j00.webp",
+    "headings": [
+     "H1 16px: Jakub Krehel",
+     "H2 16px: Projects",
+     "H2 16px: Writing"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 1,
+    "y": 675,
+    "file": "desktop-j01.webp",
+    "headings": [
+     "H2 16px: Writing"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 2,
+    "y": 1350,
+    "file": "desktop-j02.webp",
+    "headings": [
+     "H2 16px: Interface Newsletter"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 3,
+    "y": 1437,
+    "file": "desktop-j03.webp",
+    "headings": [
+     "H2 16px: Interface Newsletter"
+    ],
+    "anims": 0
+   }
+  ],
+  "animsLate": []
+ },
+ "phone": {
+  "anatomy": {
+   "libs": [
+    "nextjs"
+   ],
+   "canvases": [],
+   "videos": 0,
+   "fonts": [],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 16,
+     "family": "ui-sans-serif",
+     "weight": "500",
+     "lineHeight": "1.38",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 12,
+     "n": 1,
+     "sample": "Jakub Krehel"
+    },
+    {
+     "px": 16,
+     "family": "ui-sans-serif",
+     "weight": "450",
+     "lineHeight": "1.38",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 28,
+     "n": 1,
+     "sample": "Design Engineer at Interfere"
+    },
+    {
+     "px": 16,
+     "family": "ui-sans-serif",
+     "weight": "400",
+     "lineHeight": "1.63",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 581,
+     "n": 24,
+     "sample": "I’m a founding design engineer at"
+    },
+    {
+     "px": 16,
+     "family": "ui-sans-serif",
+     "weight": "450",
+     "lineHeight": "1.63",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 389,
+     "n": 21,
+     "sample": "Interfere"
+    },
+    {
+     "px": 16,
+     "family": "ui-sans-serif",
+     "weight": "500",
+     "lineHeight": "1.63",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 49,
+     "n": 5,
+     "sample": "Projects"
+    }
+   ],
+   "textColors": [
+    [
+     "lab(72.74 0 0)",
+     617
+    ],
+    [
+     "lab(93.04 0.0000298023 -0.0000119209)",
+     433
+    ],
+    [
+     "lab(3.6999 0 0)",
+     9
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(12, 12, 12)",
+     858
+    ]
+   ],
+   "bodyBg": "rgb(12, 12, 12)",
+   "htmlBg": "rgba(0, 0, 0, 0)",
+   "transitions": [
+    [
+     "opacity, translate, scale | 0.2s | cubic-bezier(0, 0, 0.2, 1)",
+     15
+    ],
+    [
+     "color, background-color, border-color | 0.2s | ease",
+     6
+    ],
+    [
+     "transform, translate, scale | 0.3s | cubic-bezier(0, 0, 0.2, 1)",
+     3
+    ],
+    [
+     "color, background-color, border-color | 0.2s | ease-out",
+     1
+    ]
+   ],
+   "docScreens": 2.6,
+   "title": "Jakub Krehel",
+   "metaDesc": "Founding Design Engineer at Interfere"
+  },
+  "animsAtLoad": [],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "phone-j00.webp",
+    "headings": [
+     "H1 16px: Jakub Krehel",
+     "H2 16px: Projects",
+     "H2 16px: Writing"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 1,
+    "y": 760,
+    "file": "phone-j01.webp",
+    "headings": [
+     "H2 16px: Writing"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 2,
+    "y": 1357,
+    "file": "phone-j02.webp",
+    "headings": [
+     "H2 16px: Interface Newsletter"
+    ],
+    "anims": 0
+   }
+  ],
+  "animsLate": []
+ }
+}

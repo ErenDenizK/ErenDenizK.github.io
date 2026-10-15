@@ -1,0 +1,2165 @@
+{
+ "slug": "exat",
+ "url": "https://exat.hottype.co/",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "99.9936px",
+  "scrollBehavior": "auto",
+  "scrollbarWidth": "auto",
+  "smoothLib": true,
+  "maxWidths": [
+   [
+    "100%",
+    131
+   ],
+   [
+    "1439.91px",
+    20
+   ],
+   [
+    "1349.91px",
+    7
+   ],
+   [
+    "689.956px",
+    2
+   ],
+   [
+    "279.982px",
+    1
+   ],
+   [
+    "1221.92px",
+    1
+   ],
+   [
+    "333.979px",
+    1
+   ],
+   [
+    "334.969px",
+    1
+   ],
+   [
+    "1440px",
+    1
+   ],
+   [
+    "50%",
+    1
+   ],
+   [
+    "334.979px",
+    1
+   ]
+  ],
+  "grids": [
+   [
+    "40 cols · 34.9688px 34.9688px 34.9688px 34.9844px 34.9688px 34.9688px ",
+    3
+   ],
+   [
+    "7 cols · 206.281px 206.281px 206.281px 206.297px 206.281px 206.281px ",
+    1
+   ],
+   [
+    "5 cols · 52.2031px 52.2188px 52.2188px 52.2188px 52.2188px",
+    1
+   ],
+   [
+    "20 cols · 72px 72px 72px 72px 72px 72px 72px 72px 72px 72px 72px 72px ",
+    1
+   ],
+   [
+    "10 cols · 27.5156px 27.5156px 27.5156px 27.5156px 27.5156px 27.5156px ",
+    1
+   ],
+   [
+    "5 cols · 288.797px 288.797px 288.797px 288.797px 288.797px",
+    1
+   ],
+   [
+    "4 cols · 335px 335px 335px 335px",
+    1
+   ]
+  ],
+  "gaps": [
+   [
+    "19.9987px",
+    17
+   ],
+   [
+    "39.9974px",
+    10
+   ],
+   [
+    "32.9979px",
+    7
+   ],
+   [
+    "9.99936px",
+    5
+   ],
+   [
+    "11.9992px",
+    4
+   ],
+   [
+    "5px",
+    2
+   ],
+   [
+    "29.9981px",
+    1
+   ],
+   [
+    "4.99968px",
+    1
+   ],
+   [
+    "3.32979px",
+    1
+   ],
+   [
+    "57.9963px",
+    1
+   ],
+   [
+    "20.9987px",
+    1
+   ]
+  ],
+  "spacingY": [
+   [
+    "19.9987px",
+    46
+   ],
+   [
+    "4.99968px",
+    22
+   ],
+   [
+    "9.99936px",
+    21
+   ],
+   [
+    "-13.7991px",
+    21
+   ],
+   [
+    "13.7991px",
+    21
+   ],
+   [
+    "7.99949px",
+    13
+   ],
+   [
+    "-10.7993px",
+    12
+   ],
+   [
+    "10.7993px",
+    12
+   ],
+   [
+    "1.99987px",
+    10
+   ],
+   [
+    "79.9949px",
+    8
+   ],
+   [
+    "25.9983px",
+    8
+   ],
+   [
+    "-1.99987px",
+    8
+   ],
+   [
+    "13.9991px",
+    6
+   ],
+   [
+    "3.99974px",
+    5
+   ],
+   [
+    "49.9968px",
+    5
+   ],
+   [
+    "-21.5986px",
+    5
+   ]
+  ],
+  "spacingX": [
+   [
+    "19.9987px",
+    57
+   ],
+   [
+    "9.99936px",
+    21
+   ],
+   [
+    "5.99962px",
+    6
+   ],
+   [
+    "11.9992px",
+    5
+   ],
+   [
+    "49.9968px",
+    3
+   ],
+   [
+    "7.99949px",
+    2
+   ],
+   [
+    "14.999px",
+    2
+   ]
+  ],
+  "radii": [
+   [
+    "50%",
+    130
+   ]
+  ],
+  "shadows": [],
+  "effects": [
+   [
+    "clip-path: polygon(0px 0px, 100% 0px, 100% 0%, 0px ",
+    1
+   ],
+   [
+    "clip-path: polygon(0px 0%, 100% 0%, 100% 100%, 0% 1",
+    1
+   ],
+   [
+    "clip-path: url(\"#clip0_2429_89\")",
+    1
+   ]
+  ],
+  "cursors": [
+   [
+    "grabbing",
+    36
+   ],
+   [
+    "not-allowed",
+    3
+   ]
+  ],
+  "fixed": 2,
+  "sticky": 0,
+  "nav": [
+   "Get Font →"
+  ],
+  "viewTransitionNames": [
+   "root"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "00-style.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/layouts/type_tester/style.css?ver=23.04",
+   "bytes": 3371
+  },
+  {
+   "file": "01-style.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/layouts/stylistic_sets_section/style.css?ver=23.04",
+   "bytes": 9343
+  },
+  {
+   "file": "02-style.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/layouts/marquee_slider/style.css?ver=23.04",
+   "bytes": 698
+  },
+  {
+   "file": "03-style.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/layouts/languages_section/style.css?ver=23.04",
+   "bytes": 2740
+  },
+  {
+   "file": "04-style.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/layouts/about_section/style.css?ver=23.04",
+   "bytes": 5823
+  },
+  {
+   "file": "05-style.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/layouts/glyph_black_section/style.css?ver=23.04",
+   "bytes": 7032
+  },
+  {
+   "file": "06-style.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/layouts/main_hero/style.css?ver=23.04",
+   "bytes": 1656
+  },
+  {
+   "file": "07-style.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/layouts/styles_weights_section/style.css?ver=23.04",
+   "bytes": 11489
+  },
+  {
+   "file": "08-style.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/layouts/glyph_section/style.css?ver=23.04",
+   "bytes": 4082
+  },
+  {
+   "file": "09-main.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/dist/styles/main.css?ver=23.04",
+   "bytes": 11454
+  },
+  {
+   "file": "10-style.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/layouts/break_section/style.css?ver=23.04",
+   "bytes": 7182
+  },
+  {
+   "file": "11-splide.min.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/src/plugins/splide.min.css",
+   "bytes": 5002
+  },
+  {
+   "file": "12-slimselect.css",
+   "url": "https://da226de6.delivery.rocketcdn.me/wp-content/themes/exat-hot-type/src/plugins/slimselect.css",
+   "bytes": 9908
+  },
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 17625
+  }
+ ],
+ "css": {
+  "fontFaces": [
+   {
+    "family": "Exat Variable",
+    "file": "ExatVariable.woff2",
+    "weight": ""
+   },
+   {
+    "family": "Exat",
+    "file": "ExatCYR-Bold.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Exat Wide",
+    "file": "ExatCYRWide-Black.woff2",
+    "weight": "900"
+   },
+   {
+    "family": "Exat Condensed",
+    "file": "ExatCYRCondensed-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Exat Condensed",
+    "file": "ExatCYRCondensed-Bold.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Exat",
+    "file": "ExatCYR-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Exat Wide",
+    "file": "ExatCYRWide-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Exat",
+    "file": "ExatCYR-Medium.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "Exat Wide",
+    "file": "ExatCYRWide-Light.woff2",
+    "weight": "300"
+   },
+   {
+    "family": "Exat Wide",
+    "file": "ExatCYRWide-Medium.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "Exat Wide",
+    "file": "ExatCYRWide-ExtraBold.woff2",
+    "weight": "800"
+   },
+   {
+    "family": "Exat",
+    "file": "ExatCYR-Black.woff2",
+    "weight": "900"
+   },
+   {
+    "family": "Exat Condensed",
+    "file": "ExatCYRCondensed-Medium.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "Exat",
+    "file": "ExatCYR-Light.woff2",
+    "weight": "300"
+   },
+   {
+    "family": "Exat Wide",
+    "file": "ExatCYRWide-Bold.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Exat Condensed",
+    "file": "ExatCYRCondensed-ExtraLight.woff2",
+    "weight": "200"
+   },
+   {
+    "family": "Exat Wide",
+    "file": "ExatCYRWide-ExtraLight.woff2",
+    "weight": "200"
+   },
+   {
+    "family": "Exat",
+    "file": "ExatCYR-ExtraBold.woff2",
+    "weight": "800"
+   },
+   {
+    "family": "Exat",
+    "file": "ExatCYR-ExtraLight.woff2",
+    "weight": "200"
+   },
+   {
+    "family": "Exat Condensed",
+    "file": "ExatCYRCondensed-Light.woff2",
+    "weight": "300"
+   },
+   {
+    "family": "Exat Condensed",
+    "file": "ExatCYRCondensed-ExtraBold.woff2",
+    "weight": "800"
+   },
+   {
+    "family": "Exat Condensed",
+    "file": "ExatCYRCondensed-Black.woff2",
+    "weight": "900"
+   }
+  ],
+  "variables": {
+   "--foreground": "var(--black)",
+   "--background": "var(--orange-01)",
+   "--blue-03": "#0000cb",
+   "--blue-02": "#2546ff",
+   "--blue-01": "#5c92ff",
+   "--yellow-01": "#ffce2e",
+   "--yellow-02": "#ffae00",
+   "--orange-01": "#ff6200",
+   "--red-01": "#ff0b00",
+   "--pink": "#ff98fb",
+   "--green": "#1c7511",
+   "--black": "#1c1d1e",
+   "--white": "#eeefeb",
+   "--blue-00": "#beeeff",
+   "--ss-bg-color": "#ffffff",
+   "--ss-primary-color": "#5897fb",
+   "--ss-font-color": "#4d4d4d",
+   "--ss-font-placeholder-color": "#8d8d8d",
+   "--ss-disabled-color": "#dcdee2",
+   "--ss-border-color": "#dcdee2",
+   "--ss-highlight-color": "#fffb8c",
+   "--ss-success-color": "#00b755",
+   "--ss-error-color": "#dc3545",
+   "--ss-focus-color": "#5897fb",
+   "--ss-main-height": "30px",
+   "--ss-content-height": "300px",
+   "--ss-spacing-l": "7px",
+   "--ss-spacing-m": "5px",
+   "--ss-spacing-s": "3px",
+   "--ss-animation-timing": "0.2s",
+   "--wp--preset--aspect-ratio--square": "1",
+   "--wp--preset--aspect-ratio--4-3": "4/3",
+   "--wp--preset--aspect-ratio--3-4": "3/4",
+   "--wp--preset--aspect-ratio--3-2": "3/2",
+   "--wp--preset--aspect-ratio--2-3": "2/3",
+   "--wp--preset--aspect-ratio--16-9": "16/9",
+   "--wp--preset--aspect-ratio--9-16": "9/16",
+   "--wp--preset--color--black": "#000000",
+   "--wp--preset--color--cyan-bluish-gray": "#abb8c3",
+   "--wp--preset--color--white": "#ffffff",
+   "--wp--preset--color--pale-pink": "#f78da7",
+   "--wp--preset--color--vivid-red": "#cf2e2e",
+   "--wp--preset--color--luminous-vivid-orange": "#ff6900",
+   "--wp--preset--color--luminous-vivid-amber": "#fcb900",
+   "--wp--preset--color--light-green-cyan": "#7bdcb5",
+   "--wp--preset--color--vivid-green-cyan": "#00d084",
+   "--wp--preset--color--pale-cyan-blue": "#8ed1fc",
+   "--wp--preset--color--vivid-cyan-blue": "#0693e3",
+   "--wp--preset--color--vivid-purple": "#9b51e0",
+   "--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple": "linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%)",
+   "--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan": "linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%)",
+   "--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange": "linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%)",
+   "--wp--preset--gradient--luminous-vivid-orange-to-vivid-red": "linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%)",
+   "--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray": "linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%)",
+   "--wp--preset--gradient--cool-to-warm-spectrum": "linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 4",
+   "--wp--preset--gradient--blush-light-purple": "linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%)",
+   "--wp--preset--gradient--blush-bordeaux": "linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%",
+   "--wp--preset--gradient--luminous-dusk": "linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 10",
+   "--wp--preset--gradient--pale-ocean": "linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) ",
+   "--wp--preset--gradient--electric-grass": "linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%)",
+   "--wp--preset--gradient--midnight": "linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%)",
+   "--wp--preset--font-size--small": "13px",
+   "--wp--preset--font-size--medium": "20px",
+   "--wp--preset--font-size--large": "36px",
+   "--wp--preset--font-size--x-large": "42px",
+   "--wp--preset--spacing--20": "0.44rem",
+   "--wp--preset--spacing--30": "0.67rem",
+   "--wp--preset--spacing--40": "1rem",
+   "--wp--preset--spacing--50": "1.5rem",
+   "--wp--preset--spacing--60": "2.25rem",
+   "--wp--preset--spacing--70": "3.38rem",
+   "--wp--preset--spacing--80": "5.06rem",
+   "--wp--preset--shadow--natural": "6px 6px 9px rgba(0, 0, 0, 0.2)",
+   "--wp--preset--shadow--deep": "12px 12px 50px rgba(0, 0, 0, 0.4)",
+   "--wp--preset--shadow--sharp": "6px 6px 0px rgba(0, 0, 0, 0.2)",
+   "--wp--preset--shadow--outlined": "6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0)",
+   "--wp--preset--shadow--crisp": "6px 6px 0px rgb(0, 0, 0)",
+   "--wp--preset--dimension--25": "25%",
+   "--wp--preset--dimension--50": "50%",
+   "--wp--preset--dimension--75": "75%",
+   "--wp--preset--dimension--100": "100%"
+  },
+  "keyframes": {
+   "fadeInOut": "0%,40%{opacity:1}60%,100%{opacity:0}",
+   "splide-loading": "0%{transform:rotate(0)}to{transform:rotate(1turn)}",
+   "ss-valueIn": "0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}",
+   "ss-valueOut": "0%{transform:scale(1);opacity:1}100%{transform:scale(0);opacity:0}",
+   "zoom-start": " 0% { transform: scale(0.65); } 100% { transform: scale(1); } "
+  },
+  "easings": [
+   [
+    "ease",
+    24
+   ],
+   [
+    "linear",
+    16
+   ],
+   [
+    "ease-out",
+    4
+   ],
+   [
+    "cubic-bezier(0.84, 0.01, 0.18, 1)",
+    2
+   ]
+  ],
+  "durations": [
+   [
+    "200ms",
+    13
+   ],
+   [
+    "300ms",
+    4
+   ],
+   [
+    "150ms",
+    3
+   ],
+   [
+    "1s",
+    2
+   ],
+   [
+    "500ms",
+    2
+   ],
+   [
+    "800ms",
+    2
+   ],
+   [
+    ".2s",
+    1
+   ],
+   [
+    "15000ms",
+    1
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "screen and (max-width: 768px)and (orientation: portrait)",
+    21
+   ],
+   [
+    "screen and (min-width: 1441px)",
+    2
+   ],
+   [
+    "screen and (-ms-high-contrast:none)",
+    2
+   ],
+   [
+    "screen and (min-width: 768px)",
+    1
+   ],
+   [
+    "screen and (max-width: 768px) and (orientation: portrait)",
+    1
+   ]
+  ],
+  "reducedMotion": 0,
+  "colorScheme": 0,
+  "viewTransitions": 0,
+  "scrollTimelines": 0,
+  "containerQueries": 0,
+  "clamp": []
+ },
+ "anatomy": {
+  "libs": [
+   "gsap",
+   "ScrollTrigger",
+   "lenis"
+  ],
+  "canvases": [],
+  "videos": 9,
+  "fonts": [
+   "Exat Variable normal normal",
+   "Exat 200 normal",
+   "Exat 300 normal",
+   "Exat 400 normal",
+   "Exat 500 normal",
+   "Exat 700 normal",
+   "Exat 800 normal",
+   "Exat 900 normal",
+   "Exat Condensed 200 normal",
+   "Exat Condensed 300 normal",
+   "Exat Condensed 400 normal",
+   "Exat Condensed 500 normal",
+   "Exat Condensed 700 normal",
+   "Exat Condensed 800 normal",
+   "Exat Condensed 900 normal",
+   "Exat Wide 200 normal",
+   "Exat Wide 300 normal",
+   "Exat Wide 400 normal",
+   "Exat Wide 500 normal",
+   "Exat Wide 700 normal",
+   "Exat Wide 800 normal",
+   "Exat Wide 900 normal"
+  ],
+  "colorVars": {
+   "--wp--preset--color--black": "#000000",
+   "--wp--preset--color--cyan-bluish-gray": "#abb8c3",
+   "--wp--preset--color--white": "#ffffff",
+   "--wp--preset--color--pale-pink": "#f78da7",
+   "--wp--preset--color--vivid-red": "#cf2e2e",
+   "--wp--preset--color--luminous-vivid-orange": "#ff6900",
+   "--wp--preset--color--luminous-vivid-amber": "#fcb900",
+   "--wp--preset--color--light-green-cyan": "#7bdcb5",
+   "--wp--preset--color--vivid-green-cyan": "#00d084",
+   "--wp--preset--color--pale-cyan-blue": "#8ed1fc",
+   "--wp--preset--color--vivid-cyan-blue": "#0693e3",
+   "--wp--preset--color--vivid-purple": "#9b51e0"
+  },
+  "typeScale": [
+   {
+    "px": 654.1,
+    "family": "Exat Variable",
+    "weight": "400",
+    "lineHeight": "0.78",
+    "tracking": "-26.1651px",
+    "transform": "none",
+    "chars": 2,
+    "n": 1,
+    "sample": "Rẽ"
+   },
+   {
+    "px": 300,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.94",
+    "tracking": "-20.9987px",
+    "transform": "none",
+    "chars": 20,
+    "n": 10,
+    "sample": "28"
+   },
+   {
+    "px": 110,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.87",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 80,
+    "n": 1,
+    "sample": "EXAT 51 is the pioneering Croatian art and archi"
+   },
+   {
+    "px": 110,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.9",
+    "tracking": "-2.19986px",
+    "transform": "none",
+    "chars": 403,
+    "n": 7,
+    "sample": "Do bạch kim rất quý nên sẽ dùng để lắp vô xương."
+   },
+   {
+    "px": 106,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.88",
+    "tracking": "-2.11986px",
+    "transform": "none",
+    "chars": 64,
+    "n": 10,
+    "sample": "Exat"
+   },
+   {
+    "px": 90,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-3.59977px",
+    "transform": "none",
+    "chars": 104,
+    "n": 7,
+    "sample": "About font"
+   },
+   {
+    "px": 72,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.719954px",
+    "transform": "none",
+    "chars": 21,
+    "n": 3,
+    "sample": "Extensive"
+   },
+   {
+    "px": 72,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.78",
+    "tracking": "-0.719954px",
+    "transform": "none",
+    "chars": 55,
+    "n": 9,
+    "sample": "Design"
+   },
+   {
+    "px": 46,
+    "family": "Exat Condensed",
+    "weight": "200",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Condensed",
+    "weight": "300",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Condensed",
+    "weight": "400",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Condensed",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Condensed",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Condensed",
+    "weight": "800",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Condensed",
+    "weight": "900",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat",
+    "weight": "200",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat",
+    "weight": "300",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat",
+    "weight": "400",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat",
+    "weight": "800",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat",
+    "weight": "900",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Wide",
+    "weight": "200",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Wide",
+    "weight": "300",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Wide",
+    "weight": "400",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Wide",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Wide",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Wide",
+    "weight": "800",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 46,
+    "family": "Exat Wide",
+    "weight": "900",
+    "lineHeight": "1",
+    "tracking": "-0.459971px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 36,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.92",
+    "tracking": "-1.43991px",
+    "transform": "none",
+    "chars": 453,
+    "n": 78,
+    "sample": "Inspired"
+   },
+   {
+    "px": 36,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.9",
+    "tracking": "-1.43991px",
+    "transform": "none",
+    "chars": 49,
+    "n": 6,
+    "sample": "Uppercase,"
+   },
+   {
+    "px": 32,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-1.27992px",
+    "transform": "none",
+    "chars": 3860,
+    "n": 429,
+    "sample": "Abaza"
+   },
+   {
+    "px": 25,
+    "family": "Exat",
+    "weight": "400",
+    "lineHeight": "0.83",
+    "tracking": "-0.749952px",
+    "transform": "none",
+    "chars": 94,
+    "n": 14,
+    "sample": "modernism"
+   },
+   {
+    "px": 20,
+    "family": "Exat Condensed",
+    "weight": "200",
+    "lineHeight": "0.9",
+    "tracking": "-0.199987px",
+    "transform": "none",
+    "chars": 21,
+    "n": 1,
+    "sample": "Extra Light Condensed"
+   },
+   {
+    "px": 20,
+    "family": "Exat Condensed",
+    "weight": "300",
+    "lineHeight": "0.9",
+    "tracking": "-0.199987px",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Light Condensed"
+   },
+   {
+    "px": 20,
+    "family": "Exat Condensed",
+    "weight": "400",
+    "lineHeight": "0.9",
+    "tracking": "-0.199987px",
+    "transform": "none",
+    "chars": 17,
+    "n": 1,
+    "sample": "Regular Condensed"
+   },
+   {
+    "px": 20,
+    "family": "Exat Condensed",
+    "weight": "500",
+    "lineHeight": "0.9",
+    "tracking": "-0.199987px",
+    "transform": "none",
+    "chars": 16,
+    "n": 1,
+    "sample": "Medium Condensed"
+   },
+   {
+    "px": 20,
+    "family": "Exat Condensed",
+    "weight": "700",
+    "lineHeight": "0.9",
+    "tracking": "-0.199987px",
+    "transform": "none",
+    "chars": 14,
+    "n": 1,
+    "sample": "Bold Condensed"
+   },
+   {
+    "px": 20,
+    "family": "Exat Condensed",
+    "weight": "800",
+    "lineHeight": "0.9",
+    "tracking": "-0.199987px",
+    "transform": "none",
+    "chars": 20,
+    "n": 1,
+    "sample": "Extra Bold Condensed"
+   },
+   {
+    "px": 20,
+    "family": "Exat Condensed",
+    "weight": "900",
+    "lineHeight": "0.9",
+    "tracking": "-0.199987px",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Black Condensed"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(28, 29, 30)",
+    8681
+   ],
+   [
+    "rgb(238, 239, 235)",
+    5004
+   ],
+   [
+    "rgb(255, 152, 251)",
+    380
+   ],
+   [
+    "rgb(255, 11, 0)",
+    342
+   ],
+   [
+    "rgb(0, 0, 203)",
+    246
+   ],
+   [
+    "rgb(255, 98, 0)",
+    240
+   ],
+   [
+    "rgb(255, 206, 46)",
+    92
+   ],
+   [
+    "rgb(28, 117, 17)",
+    79
+   ],
+   [
+    "rgb(37, 70, 255)",
+    53
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(238, 239, 235)",
+    30035
+   ],
+   [
+    "rgb(28, 29, 30)",
+    24915
+   ],
+   [
+    "rgb(255, 98, 0)",
+    6796
+   ],
+   [
+    "rgb(255, 206, 46)",
+    2364
+   ],
+   [
+    "rgb(37, 70, 255)",
+    1507
+   ],
+   [
+    "rgb(0, 0, 203)",
+    1296
+   ],
+   [
+    "rgb(28, 117, 17)",
+    221
+   ],
+   [
+    "rgb(255, 174, 0)",
+    112
+   ]
+  ],
+  "bodyBg": "rgba(0, 0, 0, 0)",
+  "htmlBg": "rgb(28, 29, 30)",
+  "transitions": [
+   [
+    "opacity | 0.15s | ease",
+    66
+   ],
+   [
+    "transform | 0.2s | ease",
+    33
+   ],
+   [
+    "opacity | 0.2s | ease",
+    21
+   ],
+   [
+    "opacity, transform | 0.2s | ease",
+    15
+   ],
+   [
+    "all | 0.3s | ease",
+    7
+   ],
+   [
+    "transform | 0.8s | cubic-bezier(0.84, 0.01, 0.18, 1)",
+    5
+   ],
+   [
+    "all | 0.2s | ease",
+    4
+   ],
+   [
+    "opacity | 0.3s | ease",
+    4
+   ],
+   [
+    "background-color | 0.2s | ease",
+    3
+   ],
+   [
+    "transform | 0.5s | ease",
+    3
+   ]
+  ],
+  "docScreens": 33.4,
+  "title": "Exat - Hot Type",
+  "metaDesc": "Inspired by EXAT 51’s artistic and architectural endeavors, this typeface features clean lines and structural clarity. The Exat typeface captures the very essence of modernist ideas, striking a harmonious balance between form and function."
+ },
+ "animsAtLoad": [],
+ "hovers": [],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 36.72
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 1,
+   "y": 676,
+   "file": "desktop-j01.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 2,
+   "y": 1352,
+   "file": "desktop-j02.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 3,
+   "y": 2028,
+   "file": "desktop-j03.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 4,
+   "y": 2704,
+   "file": "desktop-j04.webp",
+   "headings": [
+    "H2 106px: Exat strikes a balance between form and function, neutrality and character."
+   ],
+   "anims": 0
+  },
+  {
+   "i": 5,
+   "y": 3380,
+   "file": "desktop-j05.webp",
+   "headings": [
+    "H2 106px: Exat strikes a balance between form and function, neutrality and character."
+   ],
+   "anims": 0
+  },
+  {
+   "i": 6,
+   "y": 4056,
+   "file": "desktop-j06.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 7,
+   "y": 4732,
+   "file": "desktop-j07.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 8,
+   "y": 5408,
+   "file": "desktop-j08.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 9,
+   "y": 6084,
+   "file": "desktop-j09.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 10,
+   "y": 6760,
+   "file": "desktop-j10.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 11,
+   "y": 7436,
+   "file": "desktop-j11.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 12,
+   "y": 8112,
+   "file": "desktop-j12.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 13,
+   "y": 8788,
+   "file": "desktop-j13.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 14,
+   "y": 9464,
+   "file": "desktop-j14.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 15,
+   "y": 10140,
+   "file": "desktop-j15.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 16,
+   "y": 10816,
+   "file": "desktop-j16.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 17,
+   "y": 11492,
+   "file": "desktop-j17.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 18,
+   "y": 12168,
+   "file": "desktop-j18.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 19,
+   "y": 12844,
+   "file": "desktop-j19.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 20,
+   "y": 13520,
+   "file": "desktop-j20.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 21,
+   "y": 14196,
+   "file": "desktop-j21.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 22,
+   "y": 14872,
+   "file": "desktop-j22.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 23,
+   "y": 15548,
+   "file": "desktop-j23.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 24,
+   "y": 16224,
+   "file": "desktop-j24.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 25,
+   "y": 16900,
+   "file": "desktop-j25.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 26,
+   "y": 17576,
+   "file": "desktop-j26.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 27,
+   "y": 18252,
+   "file": "desktop-j27.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 28,
+   "y": 18928,
+   "file": "desktop-j28.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 29,
+   "y": 19604,
+   "file": "desktop-j29.webp",
+   "headings": [],
+   "anims": 0
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [
+   "gsap",
+   "ScrollTrigger",
+   "lenis"
+  ],
+  "canvases": [],
+  "videos": 12,
+  "fonts": [
+   "Exat Variable normal normal",
+   "Exat 200 normal",
+   "Exat 300 normal",
+   "Exat 400 normal",
+   "Exat 500 normal",
+   "Exat 700 normal",
+   "Exat 800 normal",
+   "Exat 900 normal",
+   "Exat Condensed 200 normal",
+   "Exat Condensed 300 normal",
+   "Exat Condensed 400 normal",
+   "Exat Condensed 500 normal",
+   "Exat Condensed 700 normal",
+   "Exat Condensed 800 normal",
+   "Exat Condensed 900 normal",
+   "Exat Wide 200 normal",
+   "Exat Wide 300 normal",
+   "Exat Wide 400 normal",
+   "Exat Wide 500 normal",
+   "Exat Wide 700 normal",
+   "Exat Wide 800 normal",
+   "Exat Wide 900 normal"
+  ],
+  "colorVars": {
+   "--wp--preset--color--black": "#000000",
+   "--wp--preset--color--cyan-bluish-gray": "#abb8c3",
+   "--wp--preset--color--white": "#ffffff",
+   "--wp--preset--color--pale-pink": "#f78da7",
+   "--wp--preset--color--vivid-red": "#cf2e2e",
+   "--wp--preset--color--luminous-vivid-orange": "#ff6900",
+   "--wp--preset--color--luminous-vivid-amber": "#fcb900",
+   "--wp--preset--color--light-green-cyan": "#7bdcb5",
+   "--wp--preset--color--vivid-green-cyan": "#00d084",
+   "--wp--preset--color--pale-cyan-blue": "#8ed1fc",
+   "--wp--preset--color--vivid-cyan-blue": "#0693e3",
+   "--wp--preset--color--vivid-purple": "#9b51e0"
+  },
+  "typeScale": [
+   {
+    "px": 312,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.94",
+    "tracking": "-21.8403px",
+    "transform": "none",
+    "chars": 20,
+    "n": 10,
+    "sample": "28"
+   },
+   {
+    "px": 228.8,
+    "family": "Exat Variable",
+    "weight": "400",
+    "lineHeight": "0.78",
+    "tracking": "-9.15211px",
+    "transform": "none",
+    "chars": 2,
+    "n": 1,
+    "sample": "Rẽ"
+   },
+   {
+    "px": 56.2,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.9",
+    "tracking": "-3.36964px",
+    "transform": "none",
+    "chars": 403,
+    "n": 7,
+    "sample": "Do bạch kim rất quý nên sẽ dùng để lắp vô xương."
+   },
+   {
+    "px": 54.1,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.9",
+    "tracking": "-0.540807px",
+    "transform": "none",
+    "chars": 50,
+    "n": 8,
+    "sample": "Extensive"
+   },
+   {
+    "px": 54.1,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.9",
+    "tracking": "-2.16323px",
+    "transform": "none",
+    "chars": 26,
+    "n": 4,
+    "sample": "Design"
+   },
+   {
+    "px": 53,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.97",
+    "tracking": "-2.12163px",
+    "transform": "none",
+    "chars": 104,
+    "n": 7,
+    "sample": "About font"
+   },
+   {
+    "px": 48.9,
+    "family": "Exat",
+    "weight": "700",
+    "lineHeight": "0.87",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 80,
+    "n": 1,
+    "sample": "EXAT 51 is the pioneering Croatian art and archi"
+   },
+   {
+    "px": 44.7,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.88",
+    "tracking": "-0.894411px",
+    "transform": "none",
+    "chars": 64,
+    "n": 10,
+    "sample": "Exat"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Condensed",
+    "weight": "200",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Condensed",
+    "weight": "300",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Condensed",
+    "weight": "400",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Condensed",
+    "weight": "500",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Condensed",
+    "weight": "700",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Condensed",
+    "weight": "800",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Condensed",
+    "weight": "900",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat",
+    "weight": "200",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat",
+    "weight": "300",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat",
+    "weight": "400",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat",
+    "weight": "700",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat",
+    "weight": "800",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat",
+    "weight": "900",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Wide",
+    "weight": "200",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Wide",
+    "weight": "300",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Wide",
+    "weight": "400",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Wide",
+    "weight": "500",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Wide",
+    "weight": "700",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Wide",
+    "weight": "800",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 29.1,
+    "family": "Exat Wide",
+    "weight": "900",
+    "lineHeight": "0.9",
+    "tracking": "-0.291204px",
+    "transform": "none",
+    "chars": 34,
+    "n": 6,
+    "sample": "Fonts"
+   },
+   {
+    "px": 22.9,
+    "family": "Exat",
+    "weight": "500",
+    "lineHeight": "0.94",
+    "tracking": "-0.915211px",
+    "transform": "none",
+    "chars": 602,
+    "n": 79,
+    "sample": "Inspired"
+   },
+   {
+    "px": 20.8,
+    "family": "Exat Condensed",
+    "weight": "200",
+    "lineHeight": "0.9",
+    "tracking": "-0.208003px",
+    "transform": "none",
+    "chars": 21,
+    "n": 1,
+    "sample": "Extra Light Condensed"
+   },
+   {
+    "px": 20.8,
+    "family": "Exat Condensed",
+    "weight": "300",
+    "lineHeight": "0.9",
+    "tracking": "-0.208003px",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Light Condensed"
+   },
+   {
+    "px": 20.8,
+    "family": "Exat Condensed",
+    "weight": "400",
+    "lineHeight": "0.9",
+    "tracking": "-0.208003px",
+    "transform": "none",
+    "chars": 17,
+    "n": 1,
+    "sample": "Regular Condensed"
+   },
+   {
+    "px": 20.8,
+    "family": "Exat Condensed",
+    "weight": "500",
+    "lineHeight": "0.9",
+    "tracking": "-0.208003px",
+    "transform": "none",
+    "chars": 16,
+    "n": 1,
+    "sample": "Medium Condensed"
+   },
+   {
+    "px": 20.8,
+    "family": "Exat Condensed",
+    "weight": "700",
+    "lineHeight": "0.9",
+    "tracking": "-0.208003px",
+    "transform": "none",
+    "chars": 14,
+    "n": 1,
+    "sample": "Bold Condensed"
+   },
+   {
+    "px": 20.8,
+    "family": "Exat Condensed",
+    "weight": "800",
+    "lineHeight": "0.9",
+    "tracking": "-0.208003px",
+    "transform": "none",
+    "chars": 20,
+    "n": 1,
+    "sample": "Extra Bold Condensed"
+   },
+   {
+    "px": 20.8,
+    "family": "Exat Condensed",
+    "weight": "900",
+    "lineHeight": "0.9",
+    "tracking": "-0.208003px",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Black Condensed"
+   },
+   {
+    "px": 20.8,
+    "family": "Exat",
+    "weight": "200",
+    "lineHeight": "0.9",
+    "tracking": "-0.208003px",
+    "transform": "none",
+    "chars": 11,
+    "n": 1,
+    "sample": "Extra Light"
+   },
+   {
+    "px": 20.8,
+    "family": "Exat",
+    "weight": "300",
+    "lineHeight": "0.9",
+    "tracking": "-0.208003px",
+    "transform": "none",
+    "chars": 5,
+    "n": 1,
+    "sample": "Light"
+   },
+   {
+    "px": 20.8,
+    "family": "Exat",
+    "weight": "400",
+    "lineHeight": "0.9",
+    "tracking": "-0.208003px",
+    "transform": "none",
+    "chars": 7,
+    "n": 1,
+    "sample": "Regular"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(28, 29, 30)",
+    8650
+   ],
+   [
+    "rgb(238, 239, 235)",
+    5118
+   ],
+   [
+    "rgb(255, 152, 251)",
+    380
+   ],
+   [
+    "rgb(255, 11, 0)",
+    342
+   ],
+   [
+    "rgb(0, 0, 203)",
+    246
+   ],
+   [
+    "rgb(255, 98, 0)",
+    135
+   ],
+   [
+    "rgb(255, 206, 46)",
+    92
+   ],
+   [
+    "rgb(28, 117, 17)",
+    79
+   ],
+   [
+    "rgb(37, 70, 255)",
+    53
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(238, 239, 235)",
+    8028
+   ],
+   [
+    "rgb(28, 29, 30)",
+    7491
+   ],
+   [
+    "rgb(255, 98, 0)",
+    1356
+   ],
+   [
+    "rgb(255, 206, 46)",
+    544
+   ],
+   [
+    "rgb(37, 70, 255)",
+    504
+   ],
+   [
+    "rgb(0, 0, 203)",
+    329
+   ],
+   [
+    "rgb(255, 80, 0)",
+    233
+   ],
+   [
+    "rgb(28, 117, 17)",
+    61
+   ]
+  ],
+  "bodyBg": "rgba(0, 0, 0, 0)",
+  "htmlBg": "rgb(28, 29, 30)",
+  "transitions": [
+   [
+    "opacity | 0.15s | ease",
+    66
+   ],
+   [
+    "transform | 0.2s | ease",
+    33
+   ],
+   [
+    "opacity | 0.2s | ease",
+    21
+   ],
+   [
+    "opacity, transform | 0.2s | ease",
+    15
+   ],
+   [
+    "all | 0.3s | ease",
+    7
+   ],
+   [
+    "transform | 0.8s | cubic-bezier(0.84, 0.01, 0.18, 1)",
+    5
+   ],
+   [
+    "opacity | 0.3s | ease",
+    5
+   ],
+   [
+    "all | 0.2s | ease",
+    4
+   ],
+   [
+    "background-color | 0.2s | ease",
+    3
+   ],
+   [
+    "transform, opacity | 0.2s | ease",
+    2
+   ]
+  ],
+  "docScreens": 32.8,
+  "title": "Exat - Hot Type",
+  "metaDesc": "Inspired by EXAT 51’s artistic and architectural endeavors, this typeface features clean lines and structural clarity. The Exat typeface captures the very essence of modernist ideas, striking a harmonious balance between form and function."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 1,
+   "y": 760,
+   "file": "phone-j01.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 2,
+   "y": 1519,
+   "file": "phone-j02.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 3,
+   "y": 2279,
+   "file": "phone-j03.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 4,
+   "y": 3038,
+   "file": "phone-j04.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 5,
+   "y": 3798,
+   "file": "phone-j05.webp",
+   "headings": [
+    "H2 45px: Exat strikes a balance between form and function, neutrality and character."
+   ],
+   "anims": 13
+  },
+  {
+   "i": 6,
+   "y": 4558,
+   "file": "phone-j06.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 7,
+   "y": 5317,
+   "file": "phone-j07.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 8,
+   "y": 6077,
+   "file": "phone-j08.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 9,
+   "y": 6836,
+   "file": "phone-j09.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 10,
+   "y": 7596,
+   "file": "phone-j10.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 11,
+   "y": 8356,
+   "file": "phone-j11.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 12,
+   "y": 9115,
+   "file": "phone-j12.webp",
+   "headings": [],
+   "anims": 13
+  },
+  {
+   "i": 13,
+   "y": 9875,
+   "file": "phone-j13.webp",
+   "headings": [],
+   "anims": 13
+  }
+ ]
+}

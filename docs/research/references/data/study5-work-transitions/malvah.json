@@ -1,0 +1,26 @@
+{
+ "slug": "malvah",
+ "url": "https://www.malvah.co/",
+ "found": {
+  "kind": "image",
+  "href": "https://www.malvah.co/projects/pointblank",
+  "top": 6273.234375,
+  "w": 521.875,
+  "h": 521.875
+ },
+ "clickedBy": "mouse",
+ "note": "click did not change URL within 200 ms",
+ "open": {
+  "urlFrom": "https://www.malvah.co/",
+  "urlTo": "https://www.malvah.co/",
+  "sameDocument": true,
+  "viewTransitions": 0,
+  "settleS": 7.51,
+  "frames": 641
+ },
+ "back": {
+  "urlTo": "about:blank",
+  "sameDocument": false,
+  "settleS": 0.02
+ }
+}

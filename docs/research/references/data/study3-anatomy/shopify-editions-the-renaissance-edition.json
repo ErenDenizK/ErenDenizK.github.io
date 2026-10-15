@@ -1,0 +1,1431 @@
+{
+ "slug": "shopify-editions-the-renaissance-edition",
+ "url": "https://www.shopify.com/editions/winter2026",
+ "desktop": {
+  "anatomy": {
+   "libs": [
+    "lenis",
+    "three"
+   ],
+   "canvases": [
+    "webgl",
+    "webgl"
+   ],
+   "videos": 12,
+   "fonts": [
+    "Inter-Variable normal normal",
+    "NeueMontreal 700 normal",
+    "HWCigars 400 normal",
+    "ImperialScript 400 normal"
+   ],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 193.7,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "0.9",
+     "tracking": "-5.81052px",
+     "transform": "none",
+     "chars": 89,
+     "n": 12,
+     "sample": "Sidekick"
+    },
+    {
+     "px": 61.4,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "0.9",
+     "tracking": "-1.22737px",
+     "transform": "none",
+     "chars": 18,
+     "n": 1,
+     "sample": "Introducing Tinker"
+    },
+    {
+     "px": 43.8,
+     "family": "HWCigars",
+     "weight": "400",
+     "lineHeight": "0.96",
+     "tracking": "-2.18948px",
+     "transform": "none",
+     "chars": 1314,
+     "n": 36,
+     "sample": "The AI-powered Shopify expert who's just as obse"
+    },
+    {
+     "px": 32,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "0.95",
+     "tracking": "-0.96px",
+     "transform": "none",
+     "chars": 316,
+     "n": 14,
+     "sample": "Shopify Agentic Storefronts"
+    },
+    {
+     "px": 27.9,
+     "family": "HWCigars",
+     "weight": "400",
+     "lineHeight": "0.97",
+     "tracking": "-1.39737px",
+     "transform": "none",
+     "chars": 600,
+     "n": 6,
+     "sample": "Sidekick Pulse delivers personalized recommendat"
+    },
+    {
+     "px": 20,
+     "family": "HWCigars",
+     "weight": "400",
+     "lineHeight": "0.97",
+     "tracking": "-0.8px",
+     "transform": "none",
+     "chars": 1007,
+     "n": 10,
+     "sample": "Manage how your brand appears to the millions of"
+    },
+    {
+     "px": 18,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "0.95",
+     "tracking": "-0.36px",
+     "transform": "none",
+     "chars": 188,
+     "n": 17,
+     "sample": "Sidekick"
+    },
+    {
+     "px": 17,
+     "family": "HWCigars",
+     "weight": "400",
+     "lineHeight": "0.97",
+     "tracking": "-0.68px",
+     "transform": "none",
+     "chars": 46,
+     "n": 1,
+     "sample": "A new world of commerce. 150+ product updates."
+    },
+    {
+     "px": 14,
+     "family": "ui-sans-serif",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 20,
+     "n": 1,
+     "sample": "Skip to main content"
+    },
+    {
+     "px": 14,
+     "family": "Inter-Variable",
+     "weight": "500",
+     "lineHeight": "1",
+     "tracking": "-1%",
+     "transform": "none",
+     "chars": 65,
+     "n": 6,
+     "sample": "Shopify Editions"
+    },
+    {
+     "px": 14,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "1.1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 27592,
+     "n": 507,
+     "sample": "Custom analytics reports"
+    },
+    {
+     "px": 13,
+     "family": "Inter-Variable",
+     "weight": "500",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 339,
+     "n": 5,
+     "sample": "Create an app that recommends which products I n"
+    },
+    {
+     "px": 11,
+     "family": "Inter-Variable",
+     "weight": "500",
+     "lineHeight": "1",
+     "tracking": "0%",
+     "transform": "uppercase",
+     "chars": 5,
+     "n": 1,
+     "sample": "Clear"
+    },
+    {
+     "px": 11,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "1.1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 993,
+     "n": 65,
+     "sample": "© Shopify Inc"
+    },
+    {
+     "px": 11,
+     "family": "NeueMontreal",
+     "weight": "500",
+     "lineHeight": "1.1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 216,
+     "n": 12,
+     "sample": "Back to navigation"
+    },
+    {
+     "px": 10,
+     "family": "HWCigars",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 30,
+     "n": 2,
+     "sample": "Terms of Service"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(144, 144, 131)",
+     14484
+    ],
+    [
+     "rgb(92, 92, 78)",
+     5568
+    ],
+    [
+     "rgb(0, 0, 0)",
+     5402
+    ],
+    [
+     "rgb(247, 247, 238)",
+     3509
+    ],
+    [
+     "rgb(41, 41, 25)",
+     2474
+    ],
+    [
+     "rgb(255, 255, 255)",
+     657
+    ],
+    [
+     "rgb(220, 220, 208)",
+     400
+    ],
+    [
+     "rgb(48, 48, 48)",
+     339
+    ],
+    [
+     "rgb(42, 42, 42)",
+     5
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(0, 0, 0)",
+     77946
+    ],
+    [
+     "rgb(247, 247, 238)",
+     22229
+    ],
+    [
+     "rgb(220, 220, 208)",
+     5174
+    ],
+    [
+     "rgb(255, 255, 255)",
+     51
+    ],
+    [
+     "rgb(244, 244, 244)",
+     29
+    ]
+   ],
+   "bodyBg": "rgb(0, 0, 0)",
+   "htmlBg": "rgba(0, 0, 0, 0)",
+   "transitions": [
+    [
+     "color, background-color, border-color | 0.15s | cubic-bezier(0.4, 0, 0.2, 1)",
+     189
+    ],
+    [
+     "opacity | 0.3s | cubic-bezier(0.4, 0, 0.2, 1)",
+     147
+    ],
+    [
+     "stroke-dashoffset, stroke | 3s | cubic-bezier(0.34, 0.22, 0.47, 0.84)",
+     39
+    ],
+    [
+     "x1, y1, x2 | 0.3s | ease-out",
+     31
+    ],
+    [
+     "transform | 0.4s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+     20
+    ],
+    [
+     "transform | 0.5s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+     20
+    ],
+    [
+     "background-color, min-width | 0.2s | cubic-bezier(0, 0, 0.2, 1)",
+     20
+    ],
+    [
+     "opacity, scale | 0.3s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+     20
+    ],
+    [
+     "min-width, background-color | 0.05s | cubic-bezier(0, 0, 0.2, 1)",
+     20
+    ],
+    [
+     "grid-template-rows, opacity | 0.3s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+     20
+    ]
+   ],
+   "docScreens": 60.1,
+   "title": "Shopify Editions | Winter '26",
+   "metaDesc": "The commerce renaissance is here. Explore 150+ product updates across AI, retail, and more."
+  },
+  "animsAtLoad": [
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "desktop-j00.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition"
+    ],
+    "anims": 80
+   },
+   {
+    "i": 1,
+    "y": 675,
+    "file": "desktop-j01.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H2 194px: Sidekick"
+    ],
+    "anims": 40
+   },
+   {
+    "i": 2,
+    "y": 1350,
+    "file": "desktop-j02.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H2 194px: Sidekick"
+    ],
+    "anims": 25
+   },
+   {
+    "i": 3,
+    "y": 2025,
+    "file": "desktop-j03.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H2 194px: Sidekick"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 4,
+    "y": 2700,
+    "file": "desktop-j04.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 44px: Insights, proactively delivered"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 5,
+    "y": 3375,
+    "file": "desktop-j05.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 44px: Complexity, delegated"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 6,
+    "y": 4050,
+    "file": "desktop-j06.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 44px: Complexity, delegated"
+    ],
+    "anims": 24
+   },
+   {
+    "i": 7,
+    "y": 4725,
+    "file": "desktop-j07.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition"
+    ],
+    "anims": 22
+   },
+   {
+    "i": 8,
+    "y": 5400,
+    "file": "desktop-j08.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 44px: Designs, refined"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 9,
+    "y": 6075,
+    "file": "desktop-j09.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 44px: Designs, refined"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 10,
+    "y": 6750,
+    "file": "desktop-j10.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 11,
+    "y": 7425,
+    "file": "desktop-j11.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 44px: Tedious tasks, simplified"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 12,
+    "y": 8100,
+    "file": "desktop-j12.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 44px: Tedious tasks, simplified"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 13,
+    "y": 8775,
+    "file": "desktop-j13.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 14,
+    "y": 9450,
+    "file": "desktop-j14.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H2 194px: Agentic"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 15,
+    "y": 10125,
+    "file": "desktop-j15.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H2 194px: Agentic"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 16,
+    "y": 10800,
+    "file": "desktop-j16.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: Shopify Agentic Storefronts"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 17,
+    "y": 11475,
+    "file": "desktop-j17.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: Shopify Agentic Storefronts"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 18,
+    "y": 12150,
+    "file": "desktop-j18.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H2 194px: Online"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 19,
+    "y": 12825,
+    "file": "desktop-j19.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H2 194px: Online"
+    ],
+    "anims": 41
+   },
+   {
+    "i": 20,
+    "y": 13500,
+    "file": "desktop-j20.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: Test and time your launches with Rollouts"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 21,
+    "y": 14175,
+    "file": "desktop-j21.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 22,
+    "y": 14850,
+    "file": "desktop-j22.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: Shopify SimGym app"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 23,
+    "y": 15525,
+    "file": "desktop-j23.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 14px: Manage store details in the theme editor",
+     "H3 14px: Theme generation on mobile",
+     "H3 14px: Sell on WordPress"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 24,
+    "y": 16200,
+    "file": "desktop-j24.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 14px: Manage store details in the theme editor",
+     "H3 14px: Theme generation on mobile",
+     "H3 14px: Over 250 Horizon theme improvements",
+     "H3 14px: 2048 variants per product"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 25,
+    "y": 16875,
+    "file": "desktop-j25.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 14px: Autofill passcode on iOS 26",
+     "H3 14px: Faster customer login with Shop",
+     "H3 14px: Customer sign-in with social accounts",
+     "H3 14px: Customers can edit their email addresses"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 26,
+    "y": 17550,
+    "file": "desktop-j26.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 27,
+    "y": 18225,
+    "file": "desktop-j27.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H2 194px: Retail"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 28,
+    "y": 18900,
+    "file": "desktop-j28.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H2 194px: Retail"
+    ],
+    "anims": 27
+   },
+   {
+    "i": 29,
+    "y": 19575,
+    "file": "desktop-j29.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: Not your standard hub"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 30,
+    "y": 20250,
+    "file": "desktop-j30.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: Not your standard hub"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 31,
+    "y": 20925,
+    "file": "desktop-j31.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: Connections that never drop"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 32,
+    "y": 21600,
+    "file": "desktop-j32.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: Connections that never drop"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 33,
+    "y": 22275,
+    "file": "desktop-j33.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: Connections that never drop"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 34,
+    "y": 22950,
+    "file": "desktop-j34.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: The only hub with processing power"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 35,
+    "y": 23625,
+    "file": "desktop-j35.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 32px: The only hub with processing power"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 36,
+    "y": 24300,
+    "file": "desktop-j36.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 37,
+    "y": 24975,
+    "file": "desktop-j37.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 14px: POS Hub-compatible scanners",
+     "H3 14px: Subscriptions on POS"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 38,
+    "y": 25650,
+    "file": "desktop-j38.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 14px: Quick count with POS",
+     "H3 14px: POS customization in one editor",
+     "H3 14px: Same-day delivery with Uber Direct",
+     "H3 14px: Markets for retail"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 39,
+    "y": 26325,
+    "file": "desktop-j39.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition",
+     "H3 14px: QR code payments",
+     "H3 14px: Tap to Pay in more countries",
+     "H3 14px: Cartes Bancaires accepted on POS",
+     "H3 14px: Receive transfer shipments in-store"
+    ],
+    "anims": 19
+   }
+  ],
+  "animsLate": [
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSAnimation:nav-item-in|1000ms|delay 500|linear|1",
+   "CSSAnimation:nav-item-in|1000ms|delay 540|linear|1",
+   "CSSAnimation:nav-item-in|1000ms|delay 580|linear|1",
+   "CSSAnimation:nav-item-in|1000ms|delay 620|linear|1",
+   "CSSAnimation:nav-item-in|1000ms|delay 660|linear|1",
+   "CSSAnimation:load-lines|6000ms|delay 0|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 75|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 150|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 225|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 300|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 375|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 450|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 525|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 600|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 675|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 750|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 825|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 900|linear|1"
+  ]
+ },
+ "phone": {
+  "anatomy": {
+   "libs": [
+    "lenis",
+    "three"
+   ],
+   "canvases": [
+    "webgl",
+    "webgl"
+   ],
+   "videos": 12,
+   "fonts": [
+    "Inter-Variable normal normal",
+    "NeueMontreal 700 normal",
+    "HWCigars 400 normal",
+    "ImperialScript 400 normal"
+   ],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 72,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "0.9",
+     "tracking": "-2.16px",
+     "transform": "none",
+     "chars": 89,
+     "n": 12,
+     "sample": "Sidekick"
+    },
+    {
+     "px": 54,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "0.9",
+     "tracking": "-1.08px",
+     "transform": "none",
+     "chars": 18,
+     "n": 1,
+     "sample": "Introducing Tinker"
+    },
+    {
+     "px": 32,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "0.95",
+     "tracking": "-0.96px",
+     "transform": "none",
+     "chars": 316,
+     "n": 14,
+     "sample": "Shopify Agentic Storefronts"
+    },
+    {
+     "px": 28,
+     "family": "HWCigars",
+     "weight": "400",
+     "lineHeight": "0.96",
+     "tracking": "-1.4px",
+     "transform": "none",
+     "chars": 1314,
+     "n": 36,
+     "sample": "The AI-powered Shopify expert who's just as obse"
+    },
+    {
+     "px": 24,
+     "family": "PP Neue Montreal",
+     "weight": "700",
+     "lineHeight": "0.95",
+     "tracking": "-0.48px",
+     "transform": "none",
+     "chars": 89,
+     "n": 12,
+     "sample": "Sidekick"
+    },
+    {
+     "px": 24,
+     "family": "HWCigars",
+     "weight": "400",
+     "lineHeight": "0.97",
+     "tracking": "-1.2px",
+     "transform": "none",
+     "chars": 600,
+     "n": 6,
+     "sample": "Sidekick Pulse delivers personalized recommendat"
+    },
+    {
+     "px": 20,
+     "family": "HWCigars",
+     "weight": "400",
+     "lineHeight": "0.97",
+     "tracking": "-0.8px",
+     "transform": "none",
+     "chars": 1007,
+     "n": 10,
+     "sample": "Manage how your brand appears to the millions of"
+    },
+    {
+     "px": 18,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "0.95",
+     "tracking": "-0.36px",
+     "transform": "none",
+     "chars": 188,
+     "n": 17,
+     "sample": "Sidekick"
+    },
+    {
+     "px": 17,
+     "family": "HWCigars",
+     "weight": "400",
+     "lineHeight": "0.97",
+     "tracking": "-0.68px",
+     "transform": "none",
+     "chars": 46,
+     "n": 1,
+     "sample": "A new world of commerce. 150+ product updates."
+    },
+    {
+     "px": 16,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "1.1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 27869,
+     "n": 513,
+     "sample": "© Shopify Inc"
+    },
+    {
+     "px": 16,
+     "family": "Inter-Variable",
+     "weight": "500",
+     "lineHeight": "1",
+     "tracking": "0%",
+     "transform": "none",
+     "chars": 25,
+     "n": 3,
+     "sample": "Editions"
+    },
+    {
+     "px": 14,
+     "family": "ui-sans-serif",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 20,
+     "n": 1,
+     "sample": "Skip to main content"
+    },
+    {
+     "px": 14,
+     "family": "Inter-Variable",
+     "weight": "500",
+     "lineHeight": "1",
+     "tracking": "0%",
+     "transform": "none",
+     "chars": 40,
+     "n": 3,
+     "sample": "Shopify Editions"
+    },
+    {
+     "px": 14,
+     "family": "NeueMontreal",
+     "weight": "700",
+     "lineHeight": "1.1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 716,
+     "n": 59,
+     "sample": "Read help doc"
+    },
+    {
+     "px": 14,
+     "family": "NeueMontreal",
+     "weight": "500",
+     "lineHeight": "1.1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 216,
+     "n": 12,
+     "sample": "Back to navigation"
+    },
+    {
+     "px": 13,
+     "family": "Inter-Variable",
+     "weight": "500",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 339,
+     "n": 5,
+     "sample": "Create an app that recommends which products I n"
+    },
+    {
+     "px": 12,
+     "family": "HWCigars",
+     "weight": "400",
+     "lineHeight": "1.07",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 30,
+     "n": 2,
+     "sample": "Terms of Service"
+    },
+    {
+     "px": 11,
+     "family": "Inter-Variable",
+     "weight": "500",
+     "lineHeight": "1",
+     "tracking": "0%",
+     "transform": "uppercase",
+     "chars": 5,
+     "n": 1,
+     "sample": "Clear"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(144, 144, 131)",
+     14484
+    ],
+    [
+     "rgb(92, 92, 78)",
+     5568
+    ],
+    [
+     "rgb(0, 0, 0)",
+     5402
+    ],
+    [
+     "rgb(247, 247, 238)",
+     3555
+    ],
+    [
+     "rgb(41, 41, 25)",
+     2474
+    ],
+    [
+     "rgb(255, 255, 255)",
+     700
+    ],
+    [
+     "rgb(220, 220, 208)",
+     400
+    ],
+    [
+     "rgb(48, 48, 48)",
+     339
+    ],
+    [
+     "rgb(42, 42, 42)",
+     5
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(0, 0, 0)",
+     22007
+    ],
+    [
+     "rgb(247, 247, 238)",
+     12557
+    ],
+    [
+     "rgb(220, 220, 208)",
+     3329
+    ],
+    [
+     "oklab(0 0 0 / 0.05)",
+     602
+    ],
+    [
+     "rgb(255, 255, 255)",
+     486
+    ]
+   ],
+   "bodyBg": "rgb(0, 0, 0)",
+   "htmlBg": "rgba(0, 0, 0, 0)",
+   "transitions": [
+    [
+     "color, background-color, border-color | 0.15s | cubic-bezier(0.4, 0, 0.2, 1)",
+     189
+    ],
+    [
+     "opacity | 0.3s | cubic-bezier(0.4, 0, 0.2, 1)",
+     89
+    ],
+    [
+     "stroke-dashoffset, stroke | 3s | cubic-bezier(0.34, 0.22, 0.47, 0.84)",
+     39
+    ],
+    [
+     "x1, y1, x2 | 0.3s | ease-out",
+     32
+    ],
+    [
+     "transform | 0.4s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+     20
+    ],
+    [
+     "transform | 0.5s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+     20
+    ],
+    [
+     "background-color, min-width | 0.2s | cubic-bezier(0, 0, 0.2, 1)",
+     20
+    ],
+    [
+     "opacity, scale | 0.3s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+     20
+    ],
+    [
+     "min-width, background-color | 0.05s | cubic-bezier(0, 0, 0.2, 1)",
+     20
+    ],
+    [
+     "grid-template-rows, opacity | 0.3s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+     20
+    ]
+   ],
+   "docScreens": 65.6,
+   "title": "Shopify Editions | Winter '26",
+   "metaDesc": "The commerce renaissance is here. Explore 150+ product updates across AI, retail, and more."
+  },
+  "animsAtLoad": [
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+   "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "phone-j00.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 32px: The Renaissance Edition"
+    ],
+    "anims": 79
+   },
+   {
+    "i": 1,
+    "y": 760,
+    "file": "phone-j01.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 72px: Sidekick"
+    ],
+    "anims": 39
+   },
+   {
+    "i": 2,
+    "y": 1519,
+    "file": "phone-j02.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 72px: Sidekick",
+     "H3 28px: Insights, proactively delivered"
+    ],
+    "anims": 25
+   },
+   {
+    "i": 3,
+    "y": 2279,
+    "file": "phone-j03.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26"
+    ],
+    "anims": 26
+   },
+   {
+    "i": 4,
+    "y": 3038,
+    "file": "phone-j04.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H3 28px: Complexity, delegated"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 5,
+    "y": 3798,
+    "file": "phone-j05.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 6,
+    "y": 4558,
+    "file": "phone-j06.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 7,
+    "y": 5317,
+    "file": "phone-j07.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H3 28px: Designs, refined"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 8,
+    "y": 6077,
+    "file": "phone-j08.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 9,
+    "y": 6836,
+    "file": "phone-j09.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 10,
+    "y": 7596,
+    "file": "phone-j10.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H3 28px: Tedious tasks, simplified"
+    ],
+    "anims": 20
+   },
+   {
+    "i": 11,
+    "y": 8356,
+    "file": "phone-j11.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 12,
+    "y": 9115,
+    "file": "phone-j12.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26"
+    ],
+    "anims": 18
+   },
+   {
+    "i": 13,
+    "y": 9875,
+    "file": "phone-j13.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 72px: Agentic"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 14,
+    "y": 10634,
+    "file": "phone-j14.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 72px: Agentic",
+     "H3 32px: Shopify Agentic Storefronts"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 15,
+    "y": 11394,
+    "file": "phone-j15.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26"
+    ],
+    "anims": 19
+   },
+   {
+    "i": 16,
+    "y": 12154,
+    "file": "phone-j16.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H2 72px: Online"
+    ],
+    "anims": 21
+   },
+   {
+    "i": 17,
+    "y": 12913,
+    "file": "phone-j17.webp",
+    "headings": [
+     "H1 14px: Shopify Editions Winter '26",
+     "H3 32px: Test and time your launches with Rollouts",
+     "H3 32px: Shopify SimGym app"
+    ],
+    "anims": 41
+   }
+  ],
+  "animsLate": [
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSTransition:stroke-dashoffset|3000ms|delay 0|cubic-bezier(0.34, 0.22, 0.47, 0.84)|1",
+   "CSSAnimation:load-lines|6000ms|delay 0|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 75|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 150|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 225|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 300|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 375|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 450|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 525|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 600|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 675|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 750|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 825|linear|1",
+   "CSSAnimation:stagger-fade-in|600ms|delay 900|linear|1",
+   "CSSAnimation:opacityPulse|2000ms|delay 0|linear|Infinity",
+   "CSSAnimation:opacityPulse|2000ms|delay 0|linear|Infinity",
+   "CSSAnimation:opacityPulse|2000ms|delay 0|linear|Infinity",
+   "CSSAnimation:opacityPulse|2000ms|delay 0|linear|Infinity",
+   "CSSAnimation:opacityPulse|2000ms|delay 0|linear|Infinity",
+   "CSSAnimation:media-entrance|300ms|delay 0|linear|1"
+  ]
+ }
+}

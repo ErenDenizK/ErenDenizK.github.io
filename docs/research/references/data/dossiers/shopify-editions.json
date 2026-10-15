@@ -1,0 +1,1875 @@
+{
+ "slug": "shopify-editions",
+ "url": "https://www.shopify.com/editions/winter2026",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "16px",
+  "scrollBehavior": "auto",
+  "scrollbarWidth": "auto",
+  "smoothLib": true,
+  "maxWidths": [
+   [
+    "100%",
+    158
+   ],
+   [
+    "75%",
+    64
+   ],
+   [
+    "80%",
+    14
+   ],
+   [
+    "66.666%",
+    3
+   ],
+   [
+    "1680px",
+    2
+   ],
+   [
+    "1100px",
+    2
+   ],
+   [
+    "640px",
+    1
+   ],
+   [
+    "336px",
+    1
+   ],
+   [
+    "300px",
+    1
+   ]
+  ],
+  "grids": [
+   [
+    "5 cols · 80.4062px 80.4062px 80.4062px 80.4062px 80.4062px",
+    130
+   ],
+   [
+    "12 cols · 80.4062px 80.4062px 80.4062px 80.4062px 80.4062px 80.4062px ",
+    14
+   ],
+   [
+    "14 cols · subgrid [] [] [] [] [] [] [] [] [] [] [] [] []",
+    12
+   ],
+   [
+    "12 cols · 80.4062px 80.4062px 80.4062px 80.4062px 80.4062px 80.4219px ",
+    12
+   ],
+   [
+    "12 cols · 81.7969px 81.7969px 81.7969px 81.7969px 81.7969px 81.7969px ",
+    9
+   ],
+   [
+    "5 cols · 81.7969px 81.7969px 81.7969px 81.7969px 81.7969px",
+    7
+   ],
+   [
+    "12 cols · 95px 95px 95px 95px 95px 95px 95px 95px 95px 95px 95px 95px",
+    3
+   ],
+   [
+    "12 cols · 81.7969px 81.7969px 81.7969px 81.7969px 81.7969px 81.8125px ",
+    2
+   ]
+  ],
+  "gaps": [
+   [
+    "10px 14.4px",
+    137
+   ],
+   [
+    "5px",
+    75
+   ],
+   [
+    "64px 14.4px",
+    25
+   ],
+   [
+    "4px",
+    21
+   ],
+   [
+    "10px",
+    20
+   ],
+   [
+    "30px 14.4px",
+    13
+   ],
+   [
+    "2px",
+    12
+   ],
+   [
+    "12px",
+    6
+   ],
+   [
+    "8px",
+    2
+   ],
+   [
+    "24px",
+    1
+   ],
+   [
+    "20px",
+    1
+   ],
+   [
+    "0px 14.4px",
+    1
+   ]
+  ],
+  "spacingY": [
+   [
+    "10px",
+    186
+   ],
+   [
+    "8px",
+    136
+   ],
+   [
+    "3px",
+    118
+   ],
+   [
+    "15px",
+    87
+   ],
+   [
+    "40px",
+    29
+   ],
+   [
+    "60px",
+    27
+   ],
+   [
+    "2px",
+    24
+   ],
+   [
+    "20px",
+    21
+   ],
+   [
+    "80px",
+    13
+   ],
+   [
+    "12px",
+    12
+   ],
+   [
+    "5px",
+    9
+   ],
+   [
+    "99px",
+    8
+   ],
+   [
+    "130px",
+    8
+   ],
+   [
+    "13px",
+    7
+   ],
+   [
+    "4px",
+    5
+   ],
+   [
+    "100px",
+    5
+   ]
+  ],
+  "spacingX": [
+   [
+    "8px",
+    116
+   ],
+   [
+    "15px",
+    80
+   ],
+   [
+    "14.4px",
+    76
+   ],
+   [
+    "5px",
+    69
+   ],
+   [
+    "3px",
+    59
+   ],
+   [
+    "16px",
+    27
+   ],
+   [
+    "13px",
+    14
+   ],
+   [
+    "12px",
+    11
+   ],
+   [
+    "20px",
+    6
+   ],
+   [
+    "14px",
+    2
+   ]
+  ],
+  "radii": [
+   [
+    "3px",
+    118
+   ],
+   [
+    "2px",
+    59
+   ],
+   [
+    "12px",
+    14
+   ],
+   [
+    "8px",
+    13
+   ],
+   [
+    "3.35544e+07px",
+    8
+   ],
+   [
+    "4px",
+    7
+   ],
+   [
+    "6px",
+    5
+   ]
+  ],
+  "shadows": [
+   [
+    "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+    7
+   ]
+  ],
+  "effects": [
+   [
+    "backdrop-filter: blur(8px)",
+    5
+   ]
+  ],
+  "cursors": [],
+  "fixed": 4,
+  "sticky": 4,
+  "nav": [
+   "Skip to main content",
+   "Shopify Editions\nWinter '26",
+   "Spring ’26",
+   "Summer ’25",
+   "Winter '25",
+   "View all Editions",
+   "Shopify.com",
+   "Start for free",
+   "Sidekick",
+   "Agentic",
+   "Online",
+   "Retail",
+   "Marketing",
+   "Checkout"
+  ],
+  "viewTransitionNames": [
+   "root",
+   "navigation",
+   "video-modal-background",
+   "video-container",
+   "video-close-button"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "00-fonts-latin-CzfLCQn_.css",
+   "url": "https://cdn.shopify.com/oxygen-v2/47215/49013/102837/4586840/assets/fonts-latin-CzfLCQn_.css",
+   "bytes": 1055
+  },
+  {
+   "file": "01-tailwind-G-N6aznT.css",
+   "url": "https://cdn.shopify.com/oxygen-v2/47215/49013/102837/4586840/assets/tailwind-G-N6aznT.css",
+   "bytes": 129725
+  },
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 578
+  }
+ ],
+ "css": {
+  "fontFaces": [
+   {
+    "family": "NeueMontreal",
+    "file": "3ee238256136fcfdfca35decbd44d0d4.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "HWCigars",
+    "file": "49a57a6e59f6a50f0627418abeb58fec.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "ImperialScript",
+    "file": "389d4f8566b3b9cbe083b682c7fabf06.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-Variable",
+    "file": "5949cd393a8375a896fd0a9b74307666.woff2?v=1738959228",
+    "weight": ""
+   }
+  ],
+  "variables": {
+   "--font-sans": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Se",
+   "--font-mono": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Couri",
+   "--color-red-100": "oklch(93.6% .032 17.717)",
+   "--color-red-200": "oklch(88.5% .062 18.334)",
+   "--color-red-300": "oklch(80.8% .114 19.571)",
+   "--color-red-400": "oklch(70.4% .191 22.216)",
+   "--color-red-500": "oklch(63.7% .237 25.331)",
+   "--color-red-600": "oklch(57.7% .245 27.325)",
+   "--color-red-700": "oklch(50.5% .213 27.518)",
+   "--color-red-800": "oklch(44.4% .177 26.899)",
+   "--color-yellow-100": "oklch(97.3% .071 103.193)",
+   "--color-yellow-200": "oklch(94.5% .129 101.54)",
+   "--color-yellow-300": "oklch(90.5% .182 98.111)",
+   "--color-yellow-400": "oklch(85.2% .199 91.936)",
+   "--color-yellow-800": "oklch(47.6% .114 61.907)",
+   "--color-green-100": "oklch(96.2% .044 156.743)",
+   "--color-green-200": "oklch(92.5% .084 155.995)",
+   "--color-green-300": "oklch(87.1% .15 154.449)",
+   "--color-green-400": "oklch(79.2% .209 151.711)",
+   "--color-green-800": "oklch(44.8% .119 151.328)",
+   "--color-blue-500": "oklch(62.3% .214 259.815)",
+   "--color-blue-600": "oklch(54.6% .245 262.881)",
+   "--color-gray-100": "oklch(96.7% .003 264.542)",
+   "--color-gray-800": "oklch(27.8% .033 256.848)",
+   "--color-gray-900": "oklch(21% .034 264.665)",
+   "--color-black": "#000",
+   "--color-white": "#fff",
+   "--spacing": ".25rem",
+   "--container-2xl": "42rem",
+   "--container-4xl": "56rem",
+   "--text-xs": ".75rem",
+   "--text-xs--line-height": "calc(1 / .75)",
+   "--text-sm": ".875rem",
+   "--text-sm--line-height": "calc(1.25 / .875)",
+   "--text-base": "1rem",
+   "--text-base--line-height": "1.5",
+   "--font-weight-normal": "400",
+   "--font-weight-medium": "500",
+   "--font-weight-semibold": "600",
+   "--font-weight-bold": "700",
+   "--tracking-wider": ".05em",
+   "--radius-xs": ".125rem",
+   "--radius-sm": ".25rem",
+   "--radius-md": ".375rem",
+   "--radius-lg": ".5rem",
+   "--radius-xl": ".75rem",
+   "--ease-in": "cubic-bezier(.4, 0, 1, 1)",
+   "--ease-out": "cubic-bezier(0, 0, .2, 1)",
+   "--ease-in-out": "cubic-bezier(.4, 0, .2, 1)",
+   "--blur-sm": "8px",
+   "--aspect-video": "16 / 9",
+   "--default-transition-duration": ".15s",
+   "--default-transition-timing-function": "cubic-bezier(.4, 0, .2, 1)",
+   "--default-font-family": "var(--font-sans)",
+   "--default-mono-font-family": "var(--font-mono)",
+   "--spacing-grid-spacing": "12px",
+   "--orbital-dot-glow-blur": "20px",
+   "--orbital-dot-glow-opacity": ".8",
+   "--orbital-dot-focus-outline-width": "2px",
+   "--orbital-dot-focus-outline-opacity": ".5",
+   "--orbital-dot-focus-outline-offset": "4px",
+   "--orbital-dot-z-front": "16",
+   "--skill-tag-dynamic-scale": "2.1",
+   "--fade-out-duration": ".52s",
+   "--fade-out-easing": "cubic-bezier(.25, .46, .45, .94)",
+   "--lines-duration": "3s",
+   "--lines-easing": "cubic-bezier(.34, .22, .47, .84)",
+   "--lines-complete-duration": "1s",
+   "--lines-complete-easing": "cubic-bezier(.72, .16, .19, .96)",
+   "--lines-loading-duration": "6s",
+   "--lines-loading-easing": "cubic-bezier(.45, .28, .34, .84)",
+   "--fade-initial-delay": ".2s",
+   "--slide-duration": ".6s",
+   "--slide-delay": "calc(var(--fade-initial-delay) + var(--fade-out-duration))",
+   "--slide-easing": "cubic-bezier(.72, .16, .19, .96)",
+   "--scroll-state-duration": ".6s",
+   "--scroll-state-easing": "cubic-bezier(.41, .19, .13, .95)",
+   "--hover-interaction-duration": ".3s",
+   "--stagger-fade-in-delay": "75ms"
+  },
+  "keyframes": {
+   "orbit-path": "0%{offset-distance:0%;z-index:var(--orbital-dot-z-front)}57.99%{z-index:var(--orbital-dot-z-front)}58%{offset-distance:58%;z-index:var(--orbital-dot-z-behind)}91.99%{z-index:var(--orbital-dot-z-behind)}92%{offset-distance:92%;z-index:var(--orbital-dot-z-front)",
+   "show-close-button": "to{opacity:1}",
+   "emoji-rise": "0%{transform:translate(-50%) translateY(0) scale(var(--random-scale,1));opacity:1}70%{opacity:1}to{transform:translate(-50%) translateY(-200px) scale(var(--random-scale,1));opacity:0}",
+   "line-fade": "0%{stroke:#ffffffbf}to{stroke:#ffffff26}",
+   "fade-in": "0%{opacity:0}to{opacity:1}",
+   "stagger-fade-in": "0%{opacity:0}to{opacity:1}",
+   "load-lines": "to{stroke-dashoffset:.2px}",
+   "slide": "0%{transform:translate(-898px)}",
+   "search-loading-rotate": "0%{transform:rotate(0)}to{transform:rotate(360deg)}",
+   "search-loading-stroke": "0%{stroke-dashoffset:135px}5%{stroke-dashoffset:135px}50%{stroke-dashoffset:84px}97%{stroke-dashoffset:45px}to{stroke-dashoffset:45px}",
+   "timeline-start": "0%{opacity:0;translate:0 75cqw;rotate:x -90deg;scale:1.5}to{opacity:1;translate:0;rotate:x 0deg;scale:1}",
+   "nav-item-in": "0%{opacity:0;transform:translateY(-100%)}to{opacity:1;transform:translateY(100%)}",
+   "media-entrance": "0%{opacity:0}to{opacity:1}",
+   "opacityPulse": "0%,to{opacity:1}50%{opacity:.5}"
+  },
+  "easings": [
+   [
+    "ease",
+    43
+   ],
+   [
+    "ease-in-out",
+    16
+   ],
+   [
+    "ease-out",
+    11
+   ],
+   [
+    "linear",
+    10
+   ],
+   [
+    "ease-in",
+    4
+   ],
+   [
+    "cubic-bezier(.34,1.56,.64,1)",
+    3
+   ],
+   [
+    "cubic-bezier(.4, 0, .2, 1)",
+    2
+   ],
+   [
+    "cubic-bezier(.34, 1.56, .64, 1)",
+    2
+   ],
+   [
+    "cubic-bezier(.72, .16, .19, .96)",
+    2
+   ],
+   [
+    "cubic-bezier(.4, 0, 1, 1)",
+    1
+   ],
+   [
+    "cubic-bezier(0, 0, .2, 1)",
+    1
+   ],
+   [
+    "cubic-bezier(.6,-.28,.74,.05)",
+    1
+   ],
+   [
+    "cubic-bezier(.13,.46,.15,.92)",
+    1
+   ],
+   [
+    "cubic-bezier(.25, .46, .45, .94)",
+    1
+   ]
+  ],
+  "durations": [
+   [
+    ".3s",
+    17
+   ],
+   [
+    "0s",
+    3
+   ],
+   [
+    ".6s",
+    2
+   ],
+   [
+    "1s",
+    2
+   ],
+   [
+    "2s",
+    2
+   ],
+   [
+    ".15s",
+    1
+   ],
+   [
+    "3s",
+    1
+   ],
+   [
+    ".75s",
+    1
+   ],
+   [
+    "50ms",
+    1
+   ],
+   [
+    ".2s",
+    1
+   ],
+   [
+    ".5s",
+    1
+   ],
+   [
+    ".7s",
+    1
+   ],
+   [
+    "5s",
+    1
+   ],
+   [
+    ".4s",
+    1
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "(min-width:48.0625rem)",
+    42
+   ],
+   [
+    "(min-width:58.75rem)",
+    15
+   ],
+   [
+    "(hover:hover)",
+    13
+   ],
+   [
+    "(prefers-reduced-motion:no-preference)",
+    5
+   ],
+   [
+    "(min-width:67.5rem)",
+    4
+   ],
+   [
+    "(min-width:769px)",
+    4
+   ],
+   [
+    "(min-width:940px)",
+    4
+   ],
+   [
+    "(forced-colors:active)",
+    3
+   ],
+   [
+    "(prefers-reduced-motion:reduce)",
+    3
+   ],
+   [
+    "not all and (min-width:58.75rem)",
+    2
+   ],
+   [
+    "(min-width:18.75rem)",
+    2
+   ],
+   [
+    "(min-width:23.4375rem)",
+    2
+   ],
+   [
+    "(min-width:40rem)",
+    2
+   ],
+   [
+    "(min-width:80rem)",
+    2
+   ],
+   [
+    "(min-width:105rem)",
+    2
+   ],
+   [
+    "(min-width:107rem)",
+    2
+   ],
+   [
+    "(width >= (hover: hover))",
+    1
+   ],
+   [
+    "(width >= (min-height: 600px) and (max-height: 810px) and (min-width: 600px))",
+    1
+   ],
+   [
+    "(width >= (orientation: landscape) and (max-height: 400px))",
+    1
+   ],
+   [
+    "(width >= (orientation: landscape) and (max-height: 600px))",
+    1
+   ]
+  ],
+  "reducedMotion": 9,
+  "colorScheme": 0,
+  "viewTransitions": 15,
+  "scrollTimelines": 0,
+  "containerQueries": 2,
+  "clamp": [
+   [
+    "clamp(6rem,75.7895px + 2.63158vw,7.5rem)",
+    3
+   ],
+   [
+    "clamp(4.375rem,48.1053px + 2.85088vw,6rem)",
+    2
+   ],
+   [
+    "clamp(3.375rem,45.579px + 1.09649vw,4rem)",
+    2
+   ],
+   [
+    "clamp(2rem,18.5263px + 1.75439vw,3rem)",
+    2
+   ],
+   [
+    "clamp(12px, 1vw, 16px)",
+    1
+   ],
+   [
+    "clamp(10px,4vh,20px))",
+    1
+   ],
+   [
+    "clamp(6rem,75.7895px + 2.63158vw,7.5rem)}}.drop-cap:not(:lang(jp))",
+    1
+   ],
+   [
+    "clamp(4.375rem,48.1053px + 2.85088vw,6rem)}}.drop-cap:not(:lang(jp)",
+    1
+   ],
+   [
+    "clamp(7.5rem,86.3158px + 4.38597vw,10rem)",
+    1
+   ],
+   [
+    "clamp(7.5rem,35.7895px + 10.9649vw,13.75rem)",
+    1
+   ]
+  ]
+ },
+ "anatomy": {
+  "libs": [
+   "lenis",
+   "three"
+  ],
+  "canvases": [
+   "webgl",
+   "webgl"
+  ],
+  "videos": 12,
+  "fonts": [
+   "Inter-Variable normal normal",
+   "NeueMontreal 700 normal",
+   "HWCigars 400 normal",
+   "ImperialScript 400 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 193.7,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "0.9",
+    "tracking": "-5.81052px",
+    "transform": "none",
+    "chars": 89,
+    "n": 12,
+    "sample": "Sidekick"
+   },
+   {
+    "px": 61.4,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "0.9",
+    "tracking": "-1.22737px",
+    "transform": "none",
+    "chars": 18,
+    "n": 1,
+    "sample": "Introducing Tinker"
+   },
+   {
+    "px": 43.8,
+    "family": "HWCigars",
+    "weight": "400",
+    "lineHeight": "0.96",
+    "tracking": "-2.18948px",
+    "transform": "none",
+    "chars": 1314,
+    "n": 36,
+    "sample": "The AI-powered Shopify expert who's just as obse"
+   },
+   {
+    "px": 32,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "0.95",
+    "tracking": "-0.96px",
+    "transform": "none",
+    "chars": 316,
+    "n": 14,
+    "sample": "Shopify Agentic Storefronts"
+   },
+   {
+    "px": 27.9,
+    "family": "HWCigars",
+    "weight": "400",
+    "lineHeight": "0.97",
+    "tracking": "-1.39737px",
+    "transform": "none",
+    "chars": 600,
+    "n": 6,
+    "sample": "Sidekick Pulse delivers personalized recommendat"
+   },
+   {
+    "px": 20,
+    "family": "HWCigars",
+    "weight": "400",
+    "lineHeight": "0.97",
+    "tracking": "-0.8px",
+    "transform": "none",
+    "chars": 1007,
+    "n": 10,
+    "sample": "Manage how your brand appears to the millions of"
+   },
+   {
+    "px": 18,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "0.95",
+    "tracking": "-0.36px",
+    "transform": "none",
+    "chars": 188,
+    "n": 17,
+    "sample": "Sidekick"
+   },
+   {
+    "px": 17,
+    "family": "HWCigars",
+    "weight": "400",
+    "lineHeight": "0.97",
+    "tracking": "-0.68px",
+    "transform": "none",
+    "chars": 46,
+    "n": 1,
+    "sample": "A new world of commerce. 150+ product updates."
+   },
+   {
+    "px": 14,
+    "family": "ui-sans-serif",
+    "weight": "400",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 20,
+    "n": 1,
+    "sample": "Skip to main content"
+   },
+   {
+    "px": 14,
+    "family": "Inter-Variable",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-1%",
+    "transform": "none",
+    "chars": 65,
+    "n": 6,
+    "sample": "Shopify Editions"
+   },
+   {
+    "px": 14,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "1.1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 27592,
+    "n": 507,
+    "sample": "Custom analytics reports"
+   },
+   {
+    "px": 13,
+    "family": "Inter-Variable",
+    "weight": "500",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 339,
+    "n": 5,
+    "sample": "Create an app that recommends which products I n"
+   },
+   {
+    "px": 11,
+    "family": "Inter-Variable",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "0%",
+    "transform": "uppercase",
+    "chars": 5,
+    "n": 1,
+    "sample": "Clear"
+   },
+   {
+    "px": 11,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "1.1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 993,
+    "n": 65,
+    "sample": "© Shopify Inc"
+   },
+   {
+    "px": 11,
+    "family": "NeueMontreal",
+    "weight": "500",
+    "lineHeight": "1.1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 216,
+    "n": 12,
+    "sample": "Back to navigation"
+   },
+   {
+    "px": 10,
+    "family": "HWCigars",
+    "weight": "400",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 30,
+    "n": 2,
+    "sample": "Terms of Service"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(144, 144, 131)",
+    14484
+   ],
+   [
+    "rgb(92, 92, 78)",
+    5568
+   ],
+   [
+    "rgb(0, 0, 0)",
+    5402
+   ],
+   [
+    "rgb(247, 247, 238)",
+    3509
+   ],
+   [
+    "rgb(41, 41, 25)",
+    2474
+   ],
+   [
+    "rgb(255, 255, 255)",
+    657
+   ],
+   [
+    "rgb(220, 220, 208)",
+    400
+   ],
+   [
+    "rgb(48, 48, 48)",
+    339
+   ],
+   [
+    "rgb(42, 42, 42)",
+    5
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(0, 0, 0)",
+    77946
+   ],
+   [
+    "rgb(247, 247, 238)",
+    22229
+   ],
+   [
+    "rgb(220, 220, 208)",
+    5174
+   ],
+   [
+    "rgb(255, 255, 255)",
+    51
+   ],
+   [
+    "rgb(244, 244, 244)",
+    29
+   ]
+  ],
+  "bodyBg": "rgb(0, 0, 0)",
+  "htmlBg": "rgba(0, 0, 0, 0)",
+  "transitions": [
+   [
+    "color, background-color, border-color | 0.15s | cubic-bezier(0.4, 0, 0.2, 1)",
+    189
+   ],
+   [
+    "opacity | 0.3s | cubic-bezier(0.4, 0, 0.2, 1)",
+    147
+   ],
+   [
+    "stroke-dashoffset, stroke | 3s | cubic-bezier(0.34, 0.22, 0.47, 0.84)",
+    39
+   ],
+   [
+    "x1, y1, x2 | 0.3s | ease-out",
+    31
+   ],
+   [
+    "transform | 0.4s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+    20
+   ],
+   [
+    "transform | 0.5s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+    20
+   ],
+   [
+    "background-color, min-width | 0.2s | cubic-bezier(0, 0, 0.2, 1)",
+    20
+   ],
+   [
+    "opacity, scale | 0.3s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+    20
+   ],
+   [
+    "min-width, background-color | 0.05s | cubic-bezier(0, 0, 0.2, 1)",
+    20
+   ],
+   [
+    "grid-template-rows, opacity | 0.3s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+    20
+   ]
+  ],
+  "docScreens": 60.1,
+  "title": "Shopify Editions | Winter '26",
+  "metaDesc": "The commerce renaissance is here. Explore 150+ product updates across AI, retail, and more."
+ },
+ "animsAtLoad": [
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|400ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1",
+  "CSSTransition:transform|500ms|delay 0|cubic-bezier(0.34, 1.56, 0.64, 1)|1"
+ ],
+ "hovers": [
+  {
+   "i": 0,
+   "tag": "SPAN",
+   "text": "",
+   "w": 220,
+   "h": 45.796875,
+   "file": "clip-hover-0.webp",
+   "maxChangePct": 42.58
+  },
+  {
+   "i": 1,
+   "tag": "DIV",
+   "text": "",
+   "w": 71.625,
+   "h": 28.796875,
+   "file": "clip-hover-1.webp",
+   "maxChangePct": 37.14
+  },
+  {
+   "i": 2,
+   "tag": "A",
+   "text": "",
+   "w": 220,
+   "h": 45.796875,
+   "file": "clip-hover-2.webp",
+   "maxChangePct": 42.47
+  },
+  {
+   "i": 3,
+   "tag": "DIV",
+   "text": "",
+   "w": 113.65625,
+   "h": 28.796875,
+   "file": "clip-hover-3.webp",
+   "maxChangePct": 43.27
+  }
+ ],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 87.34
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition"
+   ],
+   "anims": 25
+  },
+  {
+   "i": 1,
+   "y": 675,
+   "file": "desktop-j01.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H2 194px: Sidekick"
+   ],
+   "anims": 19
+  },
+  {
+   "i": 2,
+   "y": 1350,
+   "file": "desktop-j02.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H2 194px: Sidekick"
+   ],
+   "anims": 25
+  },
+  {
+   "i": 3,
+   "y": 2025,
+   "file": "desktop-j03.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H2 194px: Sidekick"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 4,
+   "y": 2700,
+   "file": "desktop-j04.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 44px: Insights, proactively delivered"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 5,
+   "y": 3375,
+   "file": "desktop-j05.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 44px: Complexity, delegated"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 6,
+   "y": 4050,
+   "file": "desktop-j06.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 44px: Complexity, delegated"
+   ],
+   "anims": 27
+  },
+  {
+   "i": 7,
+   "y": 4725,
+   "file": "desktop-j07.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition"
+   ],
+   "anims": 22
+  },
+  {
+   "i": 8,
+   "y": 5400,
+   "file": "desktop-j08.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 44px: Designs, refined"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 9,
+   "y": 6075,
+   "file": "desktop-j09.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 44px: Designs, refined"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 10,
+   "y": 6750,
+   "file": "desktop-j10.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 11,
+   "y": 7425,
+   "file": "desktop-j11.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 44px: Tedious tasks, simplified"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 12,
+   "y": 8100,
+   "file": "desktop-j12.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 44px: Tedious tasks, simplified"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 13,
+   "y": 8775,
+   "file": "desktop-j13.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition"
+   ],
+   "anims": 19
+  },
+  {
+   "i": 14,
+   "y": 9450,
+   "file": "desktop-j14.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H2 194px: Agentic"
+   ],
+   "anims": 19
+  },
+  {
+   "i": 15,
+   "y": 10125,
+   "file": "desktop-j15.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H2 194px: Agentic"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 16,
+   "y": 10800,
+   "file": "desktop-j16.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 32px: Shopify Agentic Storefronts"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 17,
+   "y": 11475,
+   "file": "desktop-j17.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 32px: Shopify Agentic Storefronts"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 18,
+   "y": 12150,
+   "file": "desktop-j18.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H2 194px: Online"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 19,
+   "y": 12825,
+   "file": "desktop-j19.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H2 194px: Online"
+   ],
+   "anims": 41
+  },
+  {
+   "i": 20,
+   "y": 13500,
+   "file": "desktop-j20.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 32px: Test and time your launches with Rollouts"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 21,
+   "y": 14175,
+   "file": "desktop-j21.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 22,
+   "y": 14850,
+   "file": "desktop-j22.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 32px: Shopify SimGym app"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 23,
+   "y": 15525,
+   "file": "desktop-j23.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 14px: Manage store details in the theme editor",
+    "H3 14px: Theme generation on mobile",
+    "H3 14px: Sell on WordPress"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 24,
+   "y": 16200,
+   "file": "desktop-j24.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 14px: Manage store details in the theme editor",
+    "H3 14px: Theme generation on mobile",
+    "H3 14px: Over 250 Horizon theme improvements",
+    "H3 14px: 2048 variants per product"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 25,
+   "y": 16875,
+   "file": "desktop-j25.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 14px: Autofill passcode on iOS 26",
+    "H3 14px: Faster customer login with Shop",
+    "H3 14px: Customer sign-in with social accounts",
+    "H3 14px: Customers can edit their email addresses"
+   ],
+   "anims": 19
+  },
+  {
+   "i": 26,
+   "y": 17550,
+   "file": "desktop-j26.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition"
+   ],
+   "anims": 19
+  },
+  {
+   "i": 27,
+   "y": 18225,
+   "file": "desktop-j27.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H2 194px: Retail"
+   ],
+   "anims": 19
+  },
+  {
+   "i": 28,
+   "y": 18900,
+   "file": "desktop-j28.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H2 194px: Retail"
+   ],
+   "anims": 27
+  },
+  {
+   "i": 29,
+   "y": 19575,
+   "file": "desktop-j29.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition",
+    "H3 32px: Not your standard hub"
+   ],
+   "anims": 19
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [
+   "lenis",
+   "three"
+  ],
+  "canvases": [
+   "webgl",
+   "webgl"
+  ],
+  "videos": 12,
+  "fonts": [
+   "Inter-Variable normal normal",
+   "NeueMontreal 700 normal",
+   "HWCigars 400 normal",
+   "ImperialScript 400 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 72,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "0.9",
+    "tracking": "-2.16px",
+    "transform": "none",
+    "chars": 89,
+    "n": 12,
+    "sample": "Sidekick"
+   },
+   {
+    "px": 54,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "0.9",
+    "tracking": "-1.08px",
+    "transform": "none",
+    "chars": 18,
+    "n": 1,
+    "sample": "Introducing Tinker"
+   },
+   {
+    "px": 32,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "0.95",
+    "tracking": "-0.96px",
+    "transform": "none",
+    "chars": 316,
+    "n": 14,
+    "sample": "Shopify Agentic Storefronts"
+   },
+   {
+    "px": 28,
+    "family": "HWCigars",
+    "weight": "400",
+    "lineHeight": "0.96",
+    "tracking": "-1.4px",
+    "transform": "none",
+    "chars": 1314,
+    "n": 36,
+    "sample": "The AI-powered Shopify expert who's just as obse"
+   },
+   {
+    "px": 24,
+    "family": "PP Neue Montreal",
+    "weight": "700",
+    "lineHeight": "0.95",
+    "tracking": "-0.48px",
+    "transform": "none",
+    "chars": 89,
+    "n": 12,
+    "sample": "Sidekick"
+   },
+   {
+    "px": 24,
+    "family": "HWCigars",
+    "weight": "400",
+    "lineHeight": "0.97",
+    "tracking": "-1.2px",
+    "transform": "none",
+    "chars": 600,
+    "n": 6,
+    "sample": "Sidekick Pulse delivers personalized recommendat"
+   },
+   {
+    "px": 20,
+    "family": "HWCigars",
+    "weight": "400",
+    "lineHeight": "0.97",
+    "tracking": "-0.8px",
+    "transform": "none",
+    "chars": 1007,
+    "n": 10,
+    "sample": "Manage how your brand appears to the millions of"
+   },
+   {
+    "px": 18,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "0.95",
+    "tracking": "-0.36px",
+    "transform": "none",
+    "chars": 188,
+    "n": 17,
+    "sample": "Sidekick"
+   },
+   {
+    "px": 17,
+    "family": "HWCigars",
+    "weight": "400",
+    "lineHeight": "0.97",
+    "tracking": "-0.68px",
+    "transform": "none",
+    "chars": 46,
+    "n": 1,
+    "sample": "A new world of commerce. 150+ product updates."
+   },
+   {
+    "px": 16,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "1.1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 27869,
+    "n": 513,
+    "sample": "© Shopify Inc"
+   },
+   {
+    "px": 16,
+    "family": "Inter-Variable",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "0%",
+    "transform": "none",
+    "chars": 25,
+    "n": 3,
+    "sample": "Editions"
+   },
+   {
+    "px": 14,
+    "family": "ui-sans-serif",
+    "weight": "400",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 20,
+    "n": 1,
+    "sample": "Skip to main content"
+   },
+   {
+    "px": 14,
+    "family": "Inter-Variable",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "0%",
+    "transform": "none",
+    "chars": 40,
+    "n": 3,
+    "sample": "Shopify Editions"
+   },
+   {
+    "px": 14,
+    "family": "NeueMontreal",
+    "weight": "700",
+    "lineHeight": "1.1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 716,
+    "n": 59,
+    "sample": "Read help doc"
+   },
+   {
+    "px": 14,
+    "family": "NeueMontreal",
+    "weight": "500",
+    "lineHeight": "1.1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 216,
+    "n": 12,
+    "sample": "Back to navigation"
+   },
+   {
+    "px": 13,
+    "family": "Inter-Variable",
+    "weight": "500",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 339,
+    "n": 5,
+    "sample": "Create an app that recommends which products I n"
+   },
+   {
+    "px": 12,
+    "family": "HWCigars",
+    "weight": "400",
+    "lineHeight": "1.07",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 30,
+    "n": 2,
+    "sample": "Terms of Service"
+   },
+   {
+    "px": 11,
+    "family": "Inter-Variable",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "0%",
+    "transform": "uppercase",
+    "chars": 5,
+    "n": 1,
+    "sample": "Clear"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(144, 144, 131)",
+    14484
+   ],
+   [
+    "rgb(92, 92, 78)",
+    5568
+   ],
+   [
+    "rgb(0, 0, 0)",
+    5402
+   ],
+   [
+    "rgb(247, 247, 238)",
+    3555
+   ],
+   [
+    "rgb(41, 41, 25)",
+    2474
+   ],
+   [
+    "rgb(255, 255, 255)",
+    700
+   ],
+   [
+    "rgb(220, 220, 208)",
+    400
+   ],
+   [
+    "rgb(48, 48, 48)",
+    339
+   ],
+   [
+    "rgb(42, 42, 42)",
+    5
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(0, 0, 0)",
+    22007
+   ],
+   [
+    "rgb(247, 247, 238)",
+    12557
+   ],
+   [
+    "rgb(220, 220, 208)",
+    3329
+   ],
+   [
+    "oklab(0 0 0 / 0.05)",
+    602
+   ],
+   [
+    "rgb(255, 255, 255)",
+    486
+   ]
+  ],
+  "bodyBg": "rgb(0, 0, 0)",
+  "htmlBg": "rgba(0, 0, 0, 0)",
+  "transitions": [
+   [
+    "color, background-color, border-color | 0.15s | cubic-bezier(0.4, 0, 0.2, 1)",
+    189
+   ],
+   [
+    "opacity | 0.3s | cubic-bezier(0.4, 0, 0.2, 1)",
+    89
+   ],
+   [
+    "stroke-dashoffset, stroke | 3s | cubic-bezier(0.34, 0.22, 0.47, 0.84)",
+    39
+   ],
+   [
+    "x1, y1, x2 | 0.3s | ease-out",
+    32
+   ],
+   [
+    "transform | 0.4s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+    20
+   ],
+   [
+    "transform | 0.5s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+    20
+   ],
+   [
+    "background-color, min-width | 0.2s | cubic-bezier(0, 0, 0.2, 1)",
+    20
+   ],
+   [
+    "opacity, scale | 0.3s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+    20
+   ],
+   [
+    "min-width, background-color | 0.05s | cubic-bezier(0, 0, 0.2, 1)",
+    20
+   ],
+   [
+    "grid-template-rows, opacity | 0.3s | cubic-bezier(0.34, 1.56, 0.64, 1)",
+    20
+   ]
+  ],
+  "docScreens": 65.6,
+  "title": "Shopify Editions | Winter '26",
+  "metaDesc": "The commerce renaissance is here. Explore 150+ product updates across AI, retail, and more."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 32px: The Renaissance Edition"
+   ],
+   "anims": 79
+  },
+  {
+   "i": 1,
+   "y": 760,
+   "file": "phone-j01.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 72px: Sidekick"
+   ],
+   "anims": 39
+  },
+  {
+   "i": 2,
+   "y": 1519,
+   "file": "phone-j02.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 72px: Sidekick",
+    "H3 28px: Insights, proactively delivered"
+   ],
+   "anims": 25
+  },
+  {
+   "i": 3,
+   "y": 2279,
+   "file": "phone-j03.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26"
+   ],
+   "anims": 26
+  },
+  {
+   "i": 4,
+   "y": 3038,
+   "file": "phone-j04.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H3 28px: Complexity, delegated"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 5,
+   "y": 3798,
+   "file": "phone-j05.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 6,
+   "y": 4558,
+   "file": "phone-j06.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 7,
+   "y": 5317,
+   "file": "phone-j07.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H3 28px: Designs, refined"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 8,
+   "y": 6077,
+   "file": "phone-j08.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 9,
+   "y": 6836,
+   "file": "phone-j09.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26"
+   ],
+   "anims": 21
+  },
+  {
+   "i": 10,
+   "y": 7596,
+   "file": "phone-j10.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H3 28px: Tedious tasks, simplified"
+   ],
+   "anims": 20
+  },
+  {
+   "i": 11,
+   "y": 8356,
+   "file": "phone-j11.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26"
+   ],
+   "anims": 19
+  },
+  {
+   "i": 12,
+   "y": 9115,
+   "file": "phone-j12.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26"
+   ],
+   "anims": 18
+  },
+  {
+   "i": 13,
+   "y": 9875,
+   "file": "phone-j13.webp",
+   "headings": [
+    "H1 14px: Shopify Editions Winter '26",
+    "H2 72px: Agentic"
+   ],
+   "anims": 18
+  }
+ ]
+}

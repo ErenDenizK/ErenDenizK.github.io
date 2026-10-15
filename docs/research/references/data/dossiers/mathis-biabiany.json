@@ -1,0 +1,1377 @@
+{
+ "slug": "mathis-biabiany",
+ "url": "https://www.mathis-biabiany.fr/",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "16px",
+  "scrollBehavior": "auto",
+  "scrollbarWidth": "thin",
+  "smoothLib": false,
+  "maxWidths": [
+   [
+    "100%",
+    28
+   ],
+   [
+    "374.4px",
+    1
+   ]
+  ],
+  "grids": [
+   [
+    "1 cols · 1290.25px",
+    3
+   ],
+   [
+    "1 cols · 46px",
+    2
+   ],
+   [
+    "2 cols · 435.453px 687.781px",
+    1
+   ],
+   [
+    "1 cols · 435.453px",
+    1
+   ],
+   [
+    "1 cols · 145px",
+    1
+   ]
+  ],
+  "gaps": [
+   [
+    "7.8px",
+    3
+   ],
+   [
+    "54px",
+    2
+   ],
+   [
+    "29.52px",
+    1
+   ],
+   [
+    "86.4px",
+    1
+   ],
+   [
+    "73.44px",
+    1
+   ],
+   [
+    "9px",
+    1
+   ],
+   [
+    "2.5px",
+    1
+   ],
+   [
+    "6px",
+    1
+   ]
+  ],
+  "spacingY": [
+   [
+    "28.8px",
+    28
+   ],
+   [
+    "21.6px",
+    24
+   ],
+   [
+    "15.84px",
+    6
+   ],
+   [
+    "12px",
+    4
+   ],
+   [
+    "108px",
+    3
+   ],
+   [
+    "10px",
+    2
+   ],
+   [
+    "5px",
+    2
+   ],
+   [
+    "8px",
+    2
+   ],
+   [
+    "7px",
+    2
+   ],
+   [
+    "46.8px",
+    1
+   ],
+   [
+    "54px",
+    1
+   ],
+   [
+    "180px",
+    1
+   ],
+   [
+    "-68.5176px",
+    1
+   ],
+   [
+    "-169.439px",
+    1
+   ],
+   [
+    "-207.187px",
+    1
+   ],
+   [
+    "-275.11px",
+    1
+   ]
+  ],
+  "spacingX": [
+   [
+    "74.88px",
+    10
+   ],
+   [
+    "31.68px",
+    4
+   ],
+   [
+    "16px",
+    2
+   ],
+   [
+    "5px",
+    2
+   ],
+   [
+    "115.2px",
+    2
+   ],
+   [
+    "14px",
+    2
+   ],
+   [
+    "12px",
+    2
+   ]
+  ],
+  "radii": [
+   [
+    "20px",
+    29
+   ],
+   [
+    "999px",
+    8
+   ],
+   [
+    "50%",
+    3
+   ],
+   [
+    "2.46px / 2.47px",
+    2
+   ],
+   [
+    "8px",
+    1
+   ]
+  ],
+  "shadows": [],
+  "effects": [
+   [
+    "filter: brightness(1) saturate(1)",
+    28
+   ],
+   [
+    "backdrop-filter: blur(10px)",
+    3
+   ],
+   [
+    "filter: blur(7px)",
+    2
+   ],
+   [
+    "backdrop-filter: blur(8px) saturate(1.1)",
+    2
+   ],
+   [
+    "mix-blend-mode: difference",
+    1
+   ]
+  ],
+  "cursors": [],
+  "fixed": 15,
+  "sticky": 1,
+  "nav": [],
+  "viewTransitionNames": [
+   "root"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "00-useIsMobile.DVvcIXYH.css",
+   "url": "https://www.mathis-biabiany.fr/_nuxt/useIsMobile.DVvcIXYH.css",
+   "bytes": 664
+  },
+  {
+   "file": "01-entry.fBZSIsH_.css",
+   "url": "https://www.mathis-biabiany.fr/_nuxt/entry.fBZSIsH_.css",
+   "bytes": 44091
+  },
+  {
+   "file": "02-index.DYJ0BQwK.css",
+   "url": "https://www.mathis-biabiany.fr/_nuxt/index.DYJ0BQwK.css",
+   "bytes": 4053
+  },
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 28495
+  }
+ ],
+ "css": {
+  "fontFaces": [
+   {
+    "family": "Fustat",
+    "file": "uDpTwsR_fJfK67nG7gXO0V_fu4BDcH04ZSQWPTjxeI8-LnDIZYX8ZO0Hh1Ps",
+    "weight": "500"
+   },
+   {
+    "family": "Fustat Fallback: Helvetica Neue",
+    "file": "",
+    "weight": ""
+   },
+   {
+    "family": "Fustat Fallback: Arial",
+    "file": "",
+    "weight": ""
+   },
+   {
+    "family": "Fustat Fallback: BlinkMacSystemFont",
+    "file": "",
+    "weight": ""
+   },
+   {
+    "family": "Fustat",
+    "file": "NHoGekzhD4a1YxAqgk6B_Ya2UJCIpSJWkN03sj6qmtk-_TAEHguIRYkpYsGO",
+    "weight": "500"
+   },
+   {
+    "family": "Fustat Fallback: Noto Sans",
+    "file": "",
+    "weight": ""
+   },
+   {
+    "family": "Fustat Fallback: Segoe UI",
+    "file": "",
+    "weight": ""
+   }
+  ],
+  "variables": {
+   "--nav-font-size": "clamp(14px,1.05vw,21px)",
+   "--nav-letter-spacing": "-.025em",
+   "--pm-bg": "#f3f1ea",
+   "--pm-text": "#141414",
+   "--pm-muted": "hsla(0,0%,8%,.42)",
+   "--pm-faint": "hsla(0,0%,8%,.12)",
+   "--pm-gutter": "clamp(20px,5.2vw,100px)",
+   "--pm-showreel-pad": "clamp(60px,12vh,160px)",
+   "--pile-card-w": "min(380px,26vw)",
+   "--pm-underline-dur": ".22s",
+   "--pm-underline-gap": ".08em",
+   "--pm-underline-thickness": "max(1px,.03em)",
+   "--pd-bg": "#f3f1ea",
+   "--pd-text": "#141414",
+   "--pd-muted": "hsla(0,0%,8%,.42)",
+   "--pd-gutter": "20px",
+   "--pd-media-top": "clamp(92px,14vh,156px)",
+   "--pm-sound-bottom": "calc(clamp(20px, 3.7vh, 40px) + env(safe-area-inset-bottom, 0px))",
+   "--pm-sound-left": "calc(clamp(20px, 2vw, 40px) + env(safe-area-inset-left, 0px))"
+  },
+  "keyframes": {
+   "pm-about-pile-in": "0%{opacity:0;transform:translate(calc(var(--pile-x, 0)*var(--pile-card-w)),calc(var(--pile-y, 0)*var(--pile-card-h) + 16px)) rotate(calc(var(--pile-r, 0deg) - 6deg)) scale(.82)}",
+   "pm-menu-content-in": "0%{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}",
+   "pm-sound-bar-377bdc33": "0%{transform:scaleY(.17)}to{transform:scaleY(1)}",
+   "orientation-lock-nudge-4f7d0042": "0%,to{transform:rotate(90deg)}40%,60%{transform:rotate(0)}",
+   "mask-exit-attn": " 0% { opacity: 1; box-shadow: 0 0 0 0 rgba(243, 241, 234, 0.55); } 100% { opacity: 0; box-shadow: 0 0 0 18px rgba(243, 241, 234, 0); } "
+  },
+  "easings": [
+   [
+    "ease",
+    57
+   ],
+   [
+    "cubic-bezier(.22,1,.36,1)",
+    8
+   ],
+   [
+    "cubic-bezier(0.165, 0.84, 0.44, 1)",
+    5
+   ],
+   [
+    "cubic-bezier(.65,0,.35,1)",
+    4
+   ],
+   [
+    "cubic-bezier(.76,0,.24,1)",
+    2
+   ],
+   [
+    "cubic-bezier(.4,0,.6,1)",
+    2
+   ],
+   [
+    "ease-in-out",
+    2
+   ],
+   [
+    "cubic-bezier(0.645, 0.045, 0.355, 1)",
+    2
+   ],
+   [
+    "cubic-bezier(.2,.9,.25,1.15)",
+    1
+   ],
+   [
+    "ease-out",
+    1
+   ]
+  ],
+  "durations": [
+   [
+    ".25s",
+    8
+   ],
+   [
+    ".2s",
+    7
+   ],
+   [
+    ".35s",
+    7
+   ],
+   [
+    ".3s",
+    6
+   ],
+   [
+    ".4s",
+    4
+   ],
+   [
+    ".45s",
+    3
+   ],
+   [
+    ".18s",
+    2
+   ],
+   [
+    ".28s",
+    2
+   ],
+   [
+    "1.6s",
+    2
+   ],
+   [
+    ".15s",
+    1
+   ],
+   [
+    ".42s",
+    1
+   ],
+   [
+    ".62s",
+    1
+   ],
+   [
+    ".48s",
+    1
+   ],
+   [
+    ".55s",
+    1
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "(prefers-reduced-motion:reduce)",
+    15
+   ],
+   [
+    "(hover:hover)and (pointer:fine)",
+    4
+   ],
+   [
+    "(hover:none)",
+    2
+   ],
+   [
+    "(max-width:620px)",
+    2
+   ],
+   [
+    "(prefers-reduced-motion: reduce)",
+    2
+   ],
+   [
+    "(min-width:741px)",
+    1
+   ],
+   [
+    "(min-width:741px)and (max-width:900px)",
+    1
+   ],
+   [
+    "(min-width:741px)and (max-height:780px)",
+    1
+   ],
+   [
+    "(max-width:740px)",
+    1
+   ],
+   [
+    "(hover:none)and (pointer:coarse),(max-width:740px)",
+    1
+   ],
+   [
+    "(max-width: 740px)",
+    1
+   ]
+  ],
+  "reducedMotion": 17,
+  "colorScheme": 0,
+  "viewTransitions": 0,
+  "scrollTimelines": 0,
+  "containerQueries": 0,
+  "clamp": [
+   [
+    "clamp(56px, 6.25vw, 120px)",
+    4
+   ],
+   [
+    "clamp(13px,1.04vw,20px)",
+    3
+   ],
+   [
+    "clamp(20px, 2vw, 40px)",
+    3
+   ],
+   [
+    "clamp(14px,1.05vw,21px)",
+    2
+   ],
+   [
+    "clamp(20px,2vw,40px)",
+    2
+   ],
+   [
+    "clamp(9px,.68vw,13px)",
+    2
+   ],
+   [
+    "clamp(20px, 3.7vh, 40px) + env(safe-area-inset-bottom, 0px))",
+    2
+   ],
+   [
+    "clamp(20px, 2vw, 40px) + env(safe-area-inset-left, 0px))",
+    2
+   ],
+   [
+    "clamp(12px,.9vw,14px)",
+    2
+   ],
+   [
+    "clamp(22px,5.5vw,28px)",
+    2
+   ]
+  ]
+ },
+ "anatomy": {
+  "libs": [
+   "three"
+  ],
+  "canvases": [
+   "other"
+  ],
+  "videos": 5,
+  "fonts": [
+   "Fustat Fallback: Segoe UI normal normal",
+   "Fustat 500 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 190.5,
+    "family": "Fustat",
+    "weight": "700",
+    "lineHeight": "0.9",
+    "tracking": "-6.66792px",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Mathis Biabiany"
+   },
+   {
+    "px": 112.3,
+    "family": "Fustat",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "-3.3696px",
+    "transform": "none",
+    "chars": 25,
+    "n": 2,
+    "sample": "Let’s build"
+   },
+   {
+    "px": 90,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-2.7px",
+    "transform": "none",
+    "chars": 18,
+    "n": 1,
+    "sample": "Crafting immersive"
+   },
+   {
+    "px": 30,
+    "family": "Fustat",
+    "weight": "700",
+    "lineHeight": "1.1",
+    "tracking": "-0.89856px",
+    "transform": "none",
+    "chars": 414,
+    "n": 28,
+    "sample": "De Bijenkorf Magical Forest"
+   },
+   {
+    "px": 16,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Skip to content"
+   },
+   {
+    "px": 15.8,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1.55",
+    "tracking": "-0.1584px",
+    "transform": "none",
+    "chars": 1332,
+    "n": 19,
+    "sample": "Hi, I'm Mathis! A"
+   },
+   {
+    "px": 15.8,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.1584px",
+    "transform": "none",
+    "chars": 43,
+    "n": 6,
+    "sample": "Gobelins"
+   },
+   {
+    "px": 15.1,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.378px",
+    "transform": "none",
+    "chars": 40,
+    "n": 5,
+    "sample": "Creative Technologist"
+   },
+   {
+    "px": 15,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1.35",
+    "tracking": "-0.14976px",
+    "transform": "none",
+    "chars": 87,
+    "n": 1,
+    "sample": "I combine design, motion and real-time 3D into e"
+   },
+   {
+    "px": 15,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.14976px",
+    "transform": "none",
+    "chars": 570,
+    "n": 26,
+    "sample": "WebGL / E-Commerce"
+   },
+   {
+    "px": 15,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 10,
+    "n": 4,
+    "sample": "Mail"
+   },
+   {
+    "px": 13,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.1296px",
+    "transform": "none",
+    "chars": 19,
+    "n": 2,
+    "sample": "Music by"
+   },
+   {
+    "px": 13,
+    "family": "Fustat",
+    "weight": "600",
+    "lineHeight": "1",
+    "tracking": "1.82px",
+    "transform": "uppercase",
+    "chars": 55,
+    "n": 3,
+    "sample": "click to open the project"
+   },
+   {
+    "px": 11,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "1.54px",
+    "transform": "uppercase",
+    "chars": 19,
+    "n": 2,
+    "sample": "Showreel"
+   },
+   {
+    "px": 11,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "1.76px",
+    "transform": "uppercase",
+    "chars": 2,
+    "n": 1,
+    "sample": "LD"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(20, 20, 20)",
+    1997
+   ],
+   [
+    "rgba(20, 20, 20, 0.42)",
+    558
+   ],
+   [
+    "rgb(255, 255, 255)",
+    65
+   ],
+   [
+    "rgb(243, 241, 234)",
+    26
+   ],
+   [
+    "rgb(34, 34, 34)",
+    18
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(243, 241, 234)",
+    17716
+   ],
+   [
+    "rgba(20, 20, 20, 0.08)",
+    3987
+   ],
+   [
+    "rgb(242, 237, 227)",
+    1296
+   ],
+   [
+    "rgba(0, 0, 0, 0.28)",
+    784
+   ]
+  ],
+  "bodyBg": "rgb(243, 241, 234)",
+  "htmlBg": "rgb(243, 241, 234)",
+  "transitions": [
+   [
+    "filter, transform | 0.18s | ease",
+    28
+   ],
+   [
+    "opacity, transform | 0.2s | ease",
+    5
+   ],
+   [
+    "opacity | 0.25s | ease",
+    4
+   ],
+   [
+    "opacity | 0.15s | ease",
+    4
+   ],
+   [
+    "transform | 0.45s | cubic-bezier(0.22, 1, 0.36, 1)",
+    4
+   ],
+   [
+    "opacity | 0.3s | ease",
+    3
+   ],
+   [
+    "top, transform | 0.42s | cubic-bezier(0.65, 0, 0.35, 1)",
+    2
+   ],
+   [
+    "opacity, transform | 0.4s | ease",
+    2
+   ],
+   [
+    "background, color | 0.3s | ease",
+    2
+   ],
+   [
+    "background | 0.3s | ease",
+    2
+   ]
+  ],
+  "docScreens": 13.7,
+  "title": "Mathis Biabiany — Mathis Biabiany",
+  "metaDesc": "Mathis Biabiany is a creative technologist crafting immersive, real-time 3D experiences for brands like Cartier, Coca-Cola and Adidas. Selected work and experiments."
+ },
+ "animsAtLoad": [],
+ "hovers": [
+  {
+   "i": 0,
+   "tag": "DIV",
+   "text": "Projects\nLabs",
+   "w": 222.25,
+   "h": 48.96875,
+   "file": "clip-hover-0.webp",
+   "maxChangePct": 0.36
+  },
+  {
+   "i": 1,
+   "tag": "BUTTON",
+   "text": "Labs",
+   "w": 95.15625,
+   "h": 38.96875,
+   "file": "clip-hover-1.webp",
+   "maxChangePct": 1.95
+  },
+  {
+   "i": 3,
+   "tag": "BUTTON",
+   "text": "",
+   "w": 46,
+   "h": 46,
+   "file": "clip-hover-3.webp",
+   "maxChangePct": 31.86
+  },
+  {
+   "i": 4,
+   "tag": "A",
+   "text": "Music by\nApalonBeats",
+   "w": 157.4375,
+   "h": 28.953125,
+   "file": "clip-hover-4.webp",
+   "maxChangePct": 4.13
+  }
+ ],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 33.18
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [
+    "H1 191px: Mathis Biabiany"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 1,
+   "y": 676,
+   "file": "desktop-j01.webp",
+   "headings": [],
+   "anims": 4
+  },
+  {
+   "i": 2,
+   "y": 1352,
+   "file": "desktop-j02.webp",
+   "headings": [],
+   "anims": 4
+  },
+  {
+   "i": 3,
+   "y": 2028,
+   "file": "desktop-j03.webp",
+   "headings": [],
+   "anims": 4
+  },
+  {
+   "i": 4,
+   "y": 2704,
+   "file": "desktop-j04.webp",
+   "headings": [
+    "H3 30px: De Bijenkorf Magical Forest",
+    "H3 30px: Lightsaber ↗",
+    "H3 30px: Christmas XP 2018 ↗",
+    "H3 30px: Christmas XP 2017 ↗"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 5,
+   "y": 3380,
+   "file": "desktop-j05.webp",
+   "headings": [
+    "H3 30px: ALONEWITHME.AI",
+    "H3 30px: West Lafayette",
+    "H3 30px: Christmas XP 2017 ↗",
+    "H3 30px: Christmas XP 2016 ↗"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 6,
+   "y": 4056,
+   "file": "desktop-j06.webp",
+   "headings": [
+    "H3 30px: Coca-Cola Starlight",
+    "H3 30px: Adidas Speedfactory",
+    "H3 30px: A year with Cartier"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 7,
+   "y": 4732,
+   "file": "desktop-j07.webp",
+   "headings": [
+    "H3 30px: Vans In-Store AR Experience",
+    "H3 30px: WLDLGHT",
+    "H3 30px: Resn's Little Helper"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 8,
+   "y": 5408,
+   "file": "desktop-j08.webp",
+   "headings": [
+    "H3 30px: Tokyo VJ",
+    "H3 30px: Tsuki 8"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 9,
+   "y": 6084,
+   "file": "desktop-j09.webp",
+   "headings": [
+    "H3 30px: Cerebrium",
+    "H3 30px: Dala",
+    "H3 30px: HP Sound in Color"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 10,
+   "y": 6760,
+   "file": "desktop-j10.webp",
+   "headings": [
+    "H3 30px: Delicious Moment"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 11,
+   "y": 7436,
+   "file": "desktop-j11.webp",
+   "headings": [
+    "H3 30px: Portfolio 2018",
+    "H3 30px: Holt Renfrew",
+    "H3 30px: Célia Lopez"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 12,
+   "y": 8112,
+   "file": "desktop-j12.webp",
+   "headings": [
+    "H3 30px: Adidas Originals NMD"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 13,
+   "y": 8788,
+   "file": "desktop-j13.webp",
+   "headings": [
+    "H3 30px: Olivier Ouendeno V1",
+    "H3 30px: Nordy Portrait"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 14,
+   "y": 9464,
+   "file": "desktop-j14.webp",
+   "headings": [
+    "H3 30px: Darker Lights",
+    "H3 30px: 4 Miles"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 15,
+   "y": 10140,
+   "file": "desktop-j15.webp",
+   "headings": [
+    "H3 30px: Olivier Ouendeno"
+   ],
+   "anims": 4
+  },
+  {
+   "i": 16,
+   "y": 10816,
+   "file": "desktop-j16.webp",
+   "headings": [],
+   "anims": 4
+  },
+  {
+   "i": 17,
+   "y": 11403,
+   "file": "desktop-j17.webp",
+   "headings": [
+    "H2 24px: Let’s build something wild"
+   ],
+   "anims": 4
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [
+   "three"
+  ],
+  "canvases": [
+   "other"
+  ],
+  "videos": 6,
+  "fonts": [
+   "Fustat Fallback: Segoe UI normal normal",
+   "Fustat 500 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 58.5,
+    "family": "Fustat",
+    "weight": "700",
+    "lineHeight": "0.95",
+    "tracking": "-2.0475px",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Mathis Biabiany"
+   },
+   {
+    "px": 44,
+    "family": "Fustat",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "-1.32px",
+    "transform": "none",
+    "chars": 25,
+    "n": 2,
+    "sample": "Let’s build"
+   },
+   {
+    "px": 22,
+    "family": "Fustat",
+    "weight": "700",
+    "lineHeight": "1.1",
+    "tracking": "-0.66px",
+    "transform": "none",
+    "chars": 414,
+    "n": 28,
+    "sample": "De Bijenkorf Magical Forest"
+   },
+   {
+    "px": 17.2,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1.5",
+    "tracking": "-0.1716px",
+    "transform": "none",
+    "chars": 1332,
+    "n": 19,
+    "sample": "Hi, I'm Mathis! A"
+   },
+   {
+    "px": 17.2,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.1716px",
+    "transform": "none",
+    "chars": 43,
+    "n": 6,
+    "sample": "Gobelins"
+   },
+   {
+    "px": 16,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Skip to content"
+   },
+   {
+    "px": 15,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.3px",
+    "transform": "none",
+    "chars": 21,
+    "n": 1,
+    "sample": "Creative Technologist"
+   },
+   {
+    "px": 13,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1.35",
+    "tracking": "-0.13px",
+    "transform": "none",
+    "chars": 87,
+    "n": 1,
+    "sample": "I combine design, motion and real-time 3D into e"
+   },
+   {
+    "px": 13,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "-0.13px",
+    "transform": "none",
+    "chars": 12,
+    "n": 2,
+    "sample": "Projects"
+   },
+   {
+    "px": 13,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 10,
+    "n": 4,
+    "sample": "Mail"
+   },
+   {
+    "px": 11,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "1.54px",
+    "transform": "uppercase",
+    "chars": 19,
+    "n": 2,
+    "sample": "Showreel"
+   },
+   {
+    "px": 11,
+    "family": "Fustat",
+    "weight": "500",
+    "lineHeight": "1",
+    "tracking": "1.76px",
+    "transform": "uppercase",
+    "chars": 2,
+    "n": 1,
+    "sample": "LD"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(20, 20, 20)",
+    1959
+   ],
+   [
+    "rgb(243, 241, 234)",
+    26
+   ],
+   [
+    "rgb(255, 255, 255)",
+    10
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(243, 241, 234)",
+    4045
+   ],
+   [
+    "rgba(20, 20, 20, 0.08)",
+    1932
+   ],
+   [
+    "rgb(20, 20, 20)",
+    69
+   ],
+   [
+    "rgba(0, 0, 0, 0.28)",
+    69
+   ]
+  ],
+  "bodyBg": "rgb(243, 241, 234)",
+  "htmlBg": "rgb(243, 241, 234)",
+  "transitions": [
+   [
+    "filter, transform | 0.18s | ease",
+    28
+   ],
+   [
+    "opacity, transform | 0.2s | ease",
+    5
+   ],
+   [
+    "opacity | 0.25s | ease",
+    4
+   ],
+   [
+    "opacity | 0.15s | ease",
+    4
+   ],
+   [
+    "transform | 0.45s | cubic-bezier(0.22, 1, 0.36, 1)",
+    4
+   ],
+   [
+    "background | 0.3s | ease",
+    3
+   ],
+   [
+    "top, transform | 0.42s | cubic-bezier(0.65, 0, 0.35, 1)",
+    2
+   ],
+   [
+    "opacity, transform | 0.4s | ease",
+    2
+   ],
+   [
+    "background, color | 0.3s | ease",
+    2
+   ],
+   [
+    "width | 0.18s | ease",
+    2
+   ]
+  ],
+  "docScreens": 12.3,
+  "title": "Mathis Biabiany — Mathis Biabiany",
+  "metaDesc": "Mathis Biabiany is a creative technologist crafting immersive, real-time 3D experiences for brands like Cartier, Coca-Cola and Adidas. Selected work and experiments."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [
+    "H1 59px: Mathis Biabiany"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 1,
+   "y": 380,
+   "file": "phone-j01.webp",
+   "headings": [
+    "H1 59px: Mathis Biabiany"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 2,
+   "y": 760,
+   "file": "phone-j02.webp",
+   "headings": [
+    "H3 22px: De Bijenkorf Magical Forest",
+    "H3 22px: Lightsaber ↗"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 3,
+   "y": 1140,
+   "file": "phone-j03.webp",
+   "headings": [
+    "H3 22px: De Bijenkorf Magical Forest",
+    "H3 22px: ALONEWITHME.AI",
+    "H3 22px: Lightsaber ↗",
+    "H3 22px: Christmas XP 2018 ↗"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 4,
+   "y": 1520,
+   "file": "phone-j04.webp",
+   "headings": [
+    "H3 22px: ALONEWITHME.AI",
+    "H3 22px: West Lafayette",
+    "H3 22px: Coca-Cola Starlight",
+    "H3 22px: Christmas XP 2018 ↗",
+    "H3 22px: Christmas XP 2017 ↗",
+    "H3 22px: Christmas XP 2016 ↗"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 5,
+   "y": 1900,
+   "file": "phone-j05.webp",
+   "headings": [
+    "H3 22px: West Lafayette",
+    "H3 22px: Coca-Cola Starlight",
+    "H3 22px: Adidas Speedfactory",
+    "H3 22px: Christmas XP 2017 ↗",
+    "H3 22px: Christmas XP 2016 ↗"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 6,
+   "y": 2280,
+   "file": "phone-j06.webp",
+   "headings": [
+    "H3 22px: Coca-Cola Starlight",
+    "H3 22px: Adidas Speedfactory",
+    "H3 22px: A year with Cartier",
+    "H3 22px: Christmas XP 2016 ↗"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 7,
+   "y": 2660,
+   "file": "phone-j07.webp",
+   "headings": [
+    "H3 22px: Adidas Speedfactory",
+    "H3 22px: A year with Cartier",
+    "H3 22px: Vans In-Store AR Experience"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 8,
+   "y": 3040,
+   "file": "phone-j08.webp",
+   "headings": [
+    "H3 22px: Vans In-Store AR Experience",
+    "H3 22px: WLDLGHT",
+    "H3 22px: Resn's Little Helper"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 9,
+   "y": 3420,
+   "file": "phone-j09.webp",
+   "headings": [
+    "H3 22px: WLDLGHT",
+    "H3 22px: Resn's Little Helper",
+    "H3 22px: Tokyo VJ"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 10,
+   "y": 3800,
+   "file": "phone-j10.webp",
+   "headings": [
+    "H3 22px: Resn's Little Helper",
+    "H3 22px: Tokyo VJ",
+    "H3 22px: Tsuki 8"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 11,
+   "y": 4180,
+   "file": "phone-j11.webp",
+   "headings": [
+    "H3 22px: Tsuki 8",
+    "H3 22px: Cerebrium",
+    "H3 22px: Dala"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 12,
+   "y": 4560,
+   "file": "phone-j12.webp",
+   "headings": [
+    "H3 22px: Cerebrium",
+    "H3 22px: Dala",
+    "H3 22px: HP Sound in Color"
+   ],
+   "anims": 0
+  },
+  {
+   "i": 13,
+   "y": 4940,
+   "file": "phone-j13.webp",
+   "headings": [
+    "H3 22px: Dala",
+    "H3 22px: HP Sound in Color",
+    "H3 22px: Delicious Moment"
+   ],
+   "anims": 0
+  }
+ ]
+}

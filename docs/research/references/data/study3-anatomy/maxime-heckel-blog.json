@@ -1,0 +1,471 @@
+{
+ "slug": "maxime-heckel-blog",
+ "url": "https://blog.maximeheckel.com/",
+ "desktop": {
+  "anatomy": {
+   "libs": [
+    "three",
+    "nextjs"
+   ],
+   "canvases": [
+    "webgl"
+   ],
+   "videos": 0,
+   "fonts": [
+    "inter 100 900 normal",
+    "inter 100 900 italic",
+    "inter Fallback normal normal",
+    "DepartureMono normal normal"
+   ],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 24,
+     "family": "inter",
+     "weight": "510",
+     "lineHeight": "1.2",
+     "tracking": "-0.528px",
+     "transform": "none",
+     "chars": 41,
+     "n": 1,
+     "sample": "Experiments and essays on the modern web."
+    },
+    {
+     "px": 16,
+     "family": "inter",
+     "weight": "500",
+     "lineHeight": "1.75",
+     "tracking": "-0.25px",
+     "transform": "none",
+     "chars": 329,
+     "n": 5,
+     "sample": "Hi I’m"
+    },
+    {
+     "px": 16,
+     "family": "inter",
+     "weight": "560",
+     "lineHeight": "1.75",
+     "tracking": "0.3px",
+     "transform": "none",
+     "chars": 55,
+     "n": 2,
+     "sample": "Maxime"
+    },
+    {
+     "px": 16,
+     "family": "inter",
+     "weight": "500",
+     "lineHeight": "1.75",
+     "tracking": "0.3px",
+     "transform": "none",
+     "chars": 65,
+     "n": 1,
+     "sample": "interactive playgrounds, visualization, and deta"
+    },
+    {
+     "px": 14,
+     "family": "inter",
+     "weight": "560",
+     "lineHeight": "1.75",
+     "tracking": "0.3px",
+     "transform": "none",
+     "chars": 19,
+     "n": 4,
+     "sample": "Index"
+    },
+    {
+     "px": 14,
+     "family": "DepartureMono",
+     "weight": "560",
+     "lineHeight": "1.75",
+     "tracking": "-1px",
+     "transform": "none",
+     "chars": 36,
+     "n": 9,
+     "sample": "2026"
+    },
+    {
+     "px": 14,
+     "family": "inter",
+     "weight": "500",
+     "lineHeight": "1.75",
+     "tracking": "0.3px",
+     "transform": "none",
+     "chars": 2622,
+     "n": 60,
+     "sample": "Shading Motion"
+    },
+    {
+     "px": 13,
+     "family": "DepartureMono",
+     "weight": "400",
+     "lineHeight": "1.75",
+     "tracking": "-1px",
+     "transform": "uppercase",
+     "chars": 360,
+     "n": 60,
+     "sample": "Aug 18"
+    }
+   ],
+   "textColors": [
+    [
+     "oklch(0.6665 0.04 262.04)",
+     2982
+    ],
+    [
+     "oklch(0.7716 0.028 262.04)",
+     394
+    ],
+    [
+     "oklch(0.9366 0.027 262.04)",
+     151
+    ]
+   ],
+   "bgColors": [
+    [
+     "oklch(0.1468 0.01 262.04)",
+     15739
+    ],
+    [
+     "oklch(0.1292 0.005 262.04)",
+     9334
+    ],
+    [
+     "oklch(0.1468 0.01 262.04 / 0.9)",
+     138
+    ]
+   ],
+   "bodyBg": "oklch(0.1468 0.01 262.04)",
+   "htmlBg": "rgba(0, 0, 0, 0)",
+   "transitions": [
+    [
+     "color | 0.15s | ease-in-out",
+     240
+    ],
+    [
+     "opacity | 0.25s | ease-in-out",
+     129
+    ],
+    [
+     "border-color, color | 0.3s | ease",
+     9
+    ],
+    [
+     "all | 0.5s | ease",
+     3
+    ],
+    [
+     "background | 0.3s | ease-in-out",
+     1
+    ]
+   ],
+   "docScreens": 6.4,
+   "title": "The Blog of Maxime Heckel",
+   "metaDesc": "Hi I'm Maxime, and this is my blog. In here, you'll find all the articles I wished I had when I was learning about web development, shaders, real-time 3D on the web, and more.  Each piece I write aims to dive deep into the topics I'm passionate about, while also making complex topics more accessible through interactive playgrounds, visualization, and well detailed walkthroughs. My goal is to give you the tools and intuition to explore further on your own."
+  },
+  "animsAtLoad": [
+   "CSSAnimation:fade-in|600ms|delay 0|linear|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "desktop-j00.webp",
+    "headings": [
+     "H1 24px: Experiments and essays on the modern web."
+    ],
+    "anims": 1
+   },
+   {
+    "i": 1,
+    "y": 675,
+    "file": "desktop-j01.webp",
+    "headings": [],
+    "anims": 98
+   },
+   {
+    "i": 2,
+    "y": 1350,
+    "file": "desktop-j02.webp",
+    "headings": [],
+    "anims": 53
+   },
+   {
+    "i": 3,
+    "y": 2025,
+    "file": "desktop-j03.webp",
+    "headings": [],
+    "anims": 22
+   },
+   {
+    "i": 4,
+    "y": 2700,
+    "file": "desktop-j04.webp",
+    "headings": [],
+    "anims": 7
+   },
+   {
+    "i": 5,
+    "y": 3375,
+    "file": "desktop-j05.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 6,
+    "y": 4050,
+    "file": "desktop-j06.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 7,
+    "y": 4725,
+    "file": "desktop-j07.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 8,
+    "y": 4817,
+    "file": "desktop-j08.webp",
+    "headings": [],
+    "anims": 1
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:fade-in|600ms|delay 0|linear|1"
+  ]
+ },
+ "phone": {
+  "anatomy": {
+   "libs": [
+    "three",
+    "nextjs"
+   ],
+   "canvases": [
+    "webgl"
+   ],
+   "videos": 0,
+   "fonts": [
+    "inter 100 900 normal",
+    "inter 100 900 italic",
+    "inter Fallback normal normal",
+    "DepartureMono normal normal",
+    "DepartureMono Fallback normal normal"
+   ],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 24,
+     "family": "inter",
+     "weight": "510",
+     "lineHeight": "1.2",
+     "tracking": "-0.528px",
+     "transform": "none",
+     "chars": 41,
+     "n": 1,
+     "sample": "Experiments and essays on the modern web."
+    },
+    {
+     "px": 16,
+     "family": "inter",
+     "weight": "500",
+     "lineHeight": "1.75",
+     "tracking": "-0.25px",
+     "transform": "none",
+     "chars": 329,
+     "n": 5,
+     "sample": "Hi I’m"
+    },
+    {
+     "px": 16,
+     "family": "inter",
+     "weight": "560",
+     "lineHeight": "1.75",
+     "tracking": "0.3px",
+     "transform": "none",
+     "chars": 55,
+     "n": 2,
+     "sample": "Maxime"
+    },
+    {
+     "px": 16,
+     "family": "inter",
+     "weight": "500",
+     "lineHeight": "1.75",
+     "tracking": "0.3px",
+     "transform": "none",
+     "chars": 65,
+     "n": 1,
+     "sample": "interactive playgrounds, visualization, and deta"
+    },
+    {
+     "px": 14,
+     "family": "inter",
+     "weight": "560",
+     "lineHeight": "1.75",
+     "tracking": "0.3px",
+     "transform": "none",
+     "chars": 19,
+     "n": 4,
+     "sample": "Index"
+    },
+    {
+     "px": 14,
+     "family": "DepartureMono",
+     "weight": "560",
+     "lineHeight": "1.75",
+     "tracking": "-1px",
+     "transform": "none",
+     "chars": 36,
+     "n": 9,
+     "sample": "2026"
+    },
+    {
+     "px": 14,
+     "family": "inter",
+     "weight": "500",
+     "lineHeight": "1.75",
+     "tracking": "0.3px",
+     "transform": "none",
+     "chars": 2622,
+     "n": 60,
+     "sample": "Shading Motion"
+    },
+    {
+     "px": 13,
+     "family": "DepartureMono",
+     "weight": "400",
+     "lineHeight": "1.75",
+     "tracking": "-1px",
+     "transform": "uppercase",
+     "chars": 360,
+     "n": 60,
+     "sample": "Aug 18"
+    }
+   ],
+   "textColors": [
+    [
+     "oklch(0.6665 0.04 262.04)",
+     2982
+    ],
+    [
+     "oklch(0.7716 0.028 262.04)",
+     394
+    ],
+    [
+     "oklch(0.9366 0.027 262.04)",
+     151
+    ]
+   ],
+   "bgColors": [
+    [
+     "oklch(0.1468 0.01 262.04)",
+     5196
+    ],
+    [
+     "oklch(0.1292 0.005 262.04)",
+     3048
+    ],
+    [
+     "oklch(0.1468 0.01 262.04 / 0.9)",
+     37
+    ]
+   ],
+   "bodyBg": "oklch(0.1468 0.01 262.04)",
+   "htmlBg": "rgba(0, 0, 0, 0)",
+   "transitions": [
+    [
+     "border-color, color | 0.3s | ease",
+     9
+    ],
+    [
+     "all | 0.5s | ease",
+     3
+    ],
+    [
+     "background | 0.3s | ease-in-out",
+     1
+    ]
+   ],
+   "docScreens": 8.2,
+   "title": "The Blog of Maxime Heckel",
+   "metaDesc": "Hi I'm Maxime, and this is my blog. In here, you'll find all the articles I wished I had when I was learning about web development, shaders, real-time 3D on the web, and more.  Each piece I write aims to dive deep into the topics I'm passionate about, while also making complex topics more accessible through interactive playgrounds, visualization, and well detailed walkthroughs. My goal is to give you the tools and intuition to explore further on your own."
+  },
+  "animsAtLoad": [
+   "CSSAnimation:fade-in|600ms|delay 0|linear|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "phone-j00.webp",
+    "headings": [
+     "H1 24px: Experiments and essays on the modern web."
+    ],
+    "anims": 1
+   },
+   {
+    "i": 1,
+    "y": 760,
+    "file": "phone-j01.webp",
+    "headings": [],
+    "anims": 113
+   },
+   {
+    "i": 2,
+    "y": 1519,
+    "file": "phone-j02.webp",
+    "headings": [],
+    "anims": 73
+   },
+   {
+    "i": 3,
+    "y": 2279,
+    "file": "phone-j03.webp",
+    "headings": [],
+    "anims": 34
+   },
+   {
+    "i": 4,
+    "y": 3038,
+    "file": "phone-j04.webp",
+    "headings": [],
+    "anims": 19
+   },
+   {
+    "i": 5,
+    "y": 3798,
+    "file": "phone-j05.webp",
+    "headings": [],
+    "anims": 6
+   },
+   {
+    "i": 6,
+    "y": 4558,
+    "file": "phone-j06.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 7,
+    "y": 5317,
+    "file": "phone-j07.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 8,
+    "y": 6062,
+    "file": "phone-j08.webp",
+    "headings": [],
+    "anims": 1
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:fade-in|600ms|delay 0|linear|1"
+  ]
+ }
+}

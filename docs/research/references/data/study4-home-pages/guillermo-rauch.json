@@ -1,0 +1,214 @@
+{
+ "slug": "guillermo-rauch",
+ "url": "https://rauchg.com/",
+ "name": "Guillermo Rauch",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 964,
+  "screens": 1.1,
+  "blockCount": 57,
+  "medianGap": 9,
+  "sections": [
+   {
+    "y": 30,
+    "gapBefore": null,
+    "h": 23,
+    "n": 3,
+    "chars": 29,
+    "links": 2,
+    "head": [
+     "18px Guillermo Rauch",
+     "12px About",
+     "12px Follow me"
+    ]
+   },
+   {
+    "y": 100,
+    "gapBefore": 47,
+    "h": 540,
+    "n": 52,
+    "chars": 794,
+    "links": 52,
+    "head": [
+     "14px 2025 The AI Cloud 52,557",
+     "14px The AI Cloud",
+     "12px 2025",
+     "12px 52,557"
+    ]
+   },
+   {
+    "y": 924,
+    "gapBefore": 284,
+    "h": 17,
+    "n": 2,
+    "chars": 13,
+    "links": 2,
+    "head": [
+     "12px @rauchg",
+     "12px Source"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 143,
+   "blocks": 55,
+   "links": 54,
+   "text": [
+    "18px Guillermo Rauch",
+    "12px* About",
+    "12px* Follow me",
+    "14px* 2025 The AI Cloud 52,557",
+    "14px* The AI Cloud",
+    "12px* 2025",
+    "12px* 52,557",
+    "14px* 2021 Making the web. Faster. 107,484",
+    "14px* Making the web. Faster.",
+    "12px* 2021",
+    "12px* 107,484",
+    "14px* 2020 Next for Vercel 63,124",
+    "14px* Next for Vercel",
+    "12px* 2020",
+    "12px* 63,124",
+    "14px* Books people re-read 42,807",
+    "14px* Books people re-read",
+    "12px* 42,807",
+    "14px* Develop, preview, test 35,525",
+    "14px* Develop, preview, test",
+    "12px* 35,525",
+    "14px* Static hoisting 41,501",
+    "14px* Static hoisting",
+    "12px* 41,501",
+    "14px* An ode to code golf 20,412",
+    "14px* An ode to code golf",
+    "12px* 20,412",
+    "14px* Vercel 58,958",
+    "14px* Vercel",
+    "12px* 58,958",
+    "14px* 2019 in review 68,932",
+    "14px* 2019 in review",
+    "12px* 68,932",
+    "14px* 2017 It's hard to forego efficiency 48,656",
+    "14px* It's hard to forego efficiency",
+    "12px* 2017",
+    "12px* 48,656",
+    "14px* 2016 in review 47,294",
+    "14px* 2016 in review",
+    "12px* 47,294"
+   ]
+  },
+  "column": {
+   "left": 408,
+   "right": 1032
+  },
+  "check": {
+   "name": 30,
+   "role": null,
+   "affiliation": 924,
+   "projects": null,
+   "writing": null,
+   "proof": null,
+   "contact": 34,
+   "now": null
+  },
+  "bg": "rgba(0, 0, 0, 0)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 908,
+  "screens": 1.1,
+  "blockCount": 57,
+  "medianGap": 9,
+  "sections": [
+   {
+    "y": 19,
+    "gapBefore": null,
+    "h": 589,
+    "n": 55,
+    "chars": 823,
+    "links": 54,
+    "head": [
+     "16px Guillermo Rauch",
+     "12px About",
+     "12px Follow me",
+     "14px 2025 The AI Cloud 52,557"
+    ]
+   },
+   {
+    "y": 868,
+    "gapBefore": 260,
+    "h": 17,
+    "n": 2,
+    "chars": 13,
+    "links": 2,
+    "head": [
+     "12px @rauchg",
+     "12px Source"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 143,
+   "blocks": 55,
+   "links": 54,
+   "text": [
+    "16px Guillermo Rauch",
+    "12px* About",
+    "12px* Follow me",
+    "14px* 2025 The AI Cloud 52,557",
+    "14px* The AI Cloud",
+    "12px* 2025",
+    "12px* 52,557",
+    "14px* 2021 Making the web. Faster. 107,484",
+    "14px* Making the web. Faster.",
+    "12px* 2021",
+    "12px* 107,484",
+    "14px* 2020 Next for Vercel 63,124",
+    "14px* Next for Vercel",
+    "12px* 2020",
+    "12px* 63,124",
+    "14px* Books people re-read 42,807",
+    "14px* Books people re-read",
+    "12px* 42,807",
+    "14px* Develop, preview, test 35,525",
+    "14px* Develop, preview, test",
+    "12px* 35,525",
+    "14px* Static hoisting 41,501",
+    "14px* Static hoisting",
+    "12px* 41,501",
+    "14px* An ode to code golf 20,412",
+    "14px* An ode to code golf",
+    "12px* 20,412",
+    "14px* Vercel 58,958",
+    "14px* Vercel",
+    "12px* 58,958",
+    "14px* 2019 in review 68,932",
+    "14px* 2019 in review",
+    "12px* 68,932",
+    "14px* 2017 It's hard to forego efficiency 48,656",
+    "14px* It's hard to forego efficiency",
+    "12px* 2017",
+    "12px* 48,656",
+    "14px* 2016 in review 47,294",
+    "14px* 2016 in review",
+    "12px* 47,294"
+   ]
+  },
+  "column": {
+   "left": 24,
+   "right": 366
+  },
+  "check": {
+   "name": 19,
+   "role": null,
+   "affiliation": 868,
+   "projects": null,
+   "writing": null,
+   "proof": null,
+   "contact": 22,
+   "now": null
+  },
+  "bg": "rgba(0, 0, 0, 0)"
+ }
+}

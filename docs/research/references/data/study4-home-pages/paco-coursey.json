@@ -1,0 +1,224 @@
+{
+ "slug": "paco-coursey",
+ "url": "https://paco.me/",
+ "name": "Paco Coursey",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 1424,
+  "screens": 1.6,
+  "blockCount": 33,
+  "medianGap": 28,
+  "sections": [
+   {
+    "y": 128,
+    "gapBefore": null,
+    "h": 168,
+    "n": 5,
+    "chars": 244,
+    "links": 2,
+    "head": [
+     "16px Paco Coursey",
+     "16px Crafting interfaces. Building polished software and web expe",
+     "16px Linear",
+     "16px In the past I’ve developed the Vercel design system, website"
+    ]
+   },
+   {
+    "y": 360,
+    "gapBefore": 64,
+    "h": 340,
+    "n": 17,
+    "chars": 364,
+    "links": 7,
+    "head": [
+     "14px Building",
+     "14px Projects",
+     "14px Writing",
+     "16px Craft"
+    ]
+   },
+   {
+    "y": 768,
+    "gapBefore": 68,
+    "h": 480,
+    "n": 9,
+    "chars": 636,
+    "links": 3,
+    "head": [
+     "16px Now",
+     "16px Developing skill through doing, guiltlessly exploring passio",
+     "16px All I want to do is build websites. Typography, motion desig",
+     "16px Enjoying deep, dark, boring dance music: songs that set the "
+    ]
+   },
+   {
+    "y": 1390,
+    "gapBefore": 142,
+    "h": 20,
+    "n": 2,
+    "chars": 14,
+    "links": 0,
+    "head": [
+     "14px Find flow.",
+     "14px 2026"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 103,
+   "blocks": 24,
+   "links": 9,
+   "text": [
+    "16px Paco Coursey",
+    "16px Crafting interfaces. Building polished software and web experiences. E",
+    "16px* Linear",
+    "16px In the past I’ve developed the Vercel design system, website, and dash",
+    "16px* Vercel",
+    "14px Building",
+    "14px Projects",
+    "14px Writing",
+    "16px* Craft",
+    "16px* ⌘K",
+    "16px* React Hook Getter Pattern",
+    "16px Implementing interfaces and interactions.",
+    "16px Composable command menu React component.",
+    "16px Simple, efficient React state hook in 50 lines.",
+    "16px* Writer",
+    "16px* Redesign 2021",
+    "16px Plain text editor with a focus on performance.",
+    "16px Return to simplicity.",
+    "16px* Next Themes",
+    "16px* All writing",
+    "16px Perfect dark mode in Next.js apps.",
+    "16px Infrequent thoughts on design and code.",
+    "16px Now",
+    "16px Developing skill through doing, guiltlessly exploring passion and inte"
+   ]
+  },
+  "column": {
+   "left": 400,
+   "right": 1040
+  },
+  "check": {
+   "name": 128,
+   "role": 511,
+   "affiliation": 1220,
+   "projects": 360,
+   "writing": 360,
+   "proof": null,
+   "contact": 403,
+   "now": 768
+  },
+  "bg": "rgb(255, 255, 255)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 1576,
+  "screens": 1.9,
+  "blockCount": 33,
+  "medianGap": 28,
+  "sections": [
+   {
+    "y": 64,
+    "gapBefore": null,
+    "h": 252,
+    "n": 5,
+    "chars": 244,
+    "links": 2,
+    "head": [
+     "16px Paco Coursey",
+     "16px Crafting interfaces. Building polished software and web expe",
+     "16px Linear",
+     "16px In the past I’ve developed the Vercel design system, website"
+    ]
+   },
+   {
+    "y": 380,
+    "gapBefore": 64,
+    "h": 340,
+    "n": 17,
+    "chars": 364,
+    "links": 7,
+    "head": [
+     "14px Building",
+     "14px Projects",
+     "14px Writing",
+     "16px Craft"
+    ]
+   },
+   {
+    "y": 788,
+    "gapBefore": 68,
+    "h": 676,
+    "n": 9,
+    "chars": 636,
+    "links": 3,
+    "head": [
+     "16px Now",
+     "16px Developing skill through doing, guiltlessly exploring passio",
+     "16px All I want to do is build websites. Typography, motion desig",
+     "16px Enjoying deep, dark, boring dance music: songs that set the "
+    ]
+   },
+   {
+    "y": 1542,
+    "gapBefore": 78,
+    "h": 20,
+    "n": 2,
+    "chars": 14,
+    "links": 0,
+    "head": [
+     "14px Find flow.",
+     "14px 2026"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 88,
+   "blocks": 23,
+   "links": 9,
+   "text": [
+    "16px Paco Coursey",
+    "16px Crafting interfaces. Building polished software and web experiences. E",
+    "16px* Linear",
+    "16px In the past I’ve developed the Vercel design system, website, and dash",
+    "16px* Vercel",
+    "14px Building",
+    "14px Projects",
+    "14px Writing",
+    "16px* Craft",
+    "16px* ⌘K",
+    "16px* React Hook Getter Pattern",
+    "16px Implementing interfaces and interactions.",
+    "16px Composable command menu React component.",
+    "16px Simple, efficient React state hook in 50 lines.",
+    "16px* Writer",
+    "16px* Redesign 2021",
+    "16px Plain text editor with a focus on performance.",
+    "16px Return to simplicity.",
+    "16px* Next Themes",
+    "16px* All writing",
+    "16px Perfect dark mode in Next.js apps.",
+    "16px Infrequent thoughts on design and code.",
+    "16px Now"
+   ]
+  },
+  "column": {
+   "left": 24,
+   "right": 664
+  },
+  "check": {
+   "name": 64,
+   "role": 531,
+   "affiliation": 1436,
+   "projects": 380,
+   "writing": 380,
+   "proof": null,
+   "contact": 423,
+   "now": 788
+  },
+  "bg": "rgb(255, 255, 255)"
+ }
+}

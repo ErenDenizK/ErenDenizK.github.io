@@ -1,0 +1,259 @@
+{
+ "slug": "robin-noguier",
+ "url": "https://www.robin-noguier.com/",
+ "desktop": {
+  "anatomy": {
+   "libs": [
+    "nextjs"
+   ],
+   "canvases": [
+    "webgl"
+   ],
+   "videos": 0,
+   "fonts": [
+    "eksell_rm_large normal normal",
+    "eksell_rm_small normal normal",
+    "silka_rm 400 italic",
+    "silka_rm 700 normal",
+    "silka_rm 400 normal"
+   ],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 135,
+     "family": "eksell_rm_large",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 6,
+     "n": 2,
+     "sample": "Fun"
+    },
+    {
+     "px": 20,
+     "family": "silka_rm",
+     "weight": "400",
+     "lineHeight": "1.6",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 90,
+     "n": 1,
+     "sample": "Designing a new video-only dating app 💖 with Br"
+    },
+    {
+     "px": 16,
+     "family": "silka_rm",
+     "weight": "700",
+     "lineHeight": "1.5",
+     "tracking": "2px",
+     "transform": "uppercase",
+     "chars": 15,
+     "n": 1,
+     "sample": "Open case study"
+    },
+    {
+     "px": 14,
+     "family": "silka_rm",
+     "weight": "700",
+     "lineHeight": "1.5",
+     "tracking": "2px",
+     "transform": "uppercase",
+     "chars": 16,
+     "n": 2,
+     "sample": "OBIN NOGUIE"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(255, 255, 255)",
+     121
+    ],
+    [
+     "rgb(213, 222, 221)",
+     3
+    ],
+    [
+     "rgba(0, 0, 0, 0)",
+     3
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(0, 0, 0)",
+     1296
+    ],
+    [
+     "rgb(61, 102, 129)",
+     1296
+    ]
+   ],
+   "bodyBg": "rgb(0, 0, 0)",
+   "htmlBg": "rgb(0, 0, 0)",
+   "transitions": [
+    [
+     "transform | 0.2s | ease-in-out",
+     1
+    ]
+   ],
+   "docScreens": 1,
+   "title": "Robin Noguier - Interactive Designer",
+   "metaDesc": "Robin Noguier is an interactive designer working on apps and websites for startups, brands, and entrepreneurs."
+  },
+  "animsAtLoad": [],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "desktop-j00.webp",
+    "headings": [
+     "H1 135px: Fun",
+     "H1 135px: Fun"
+    ],
+    "anims": 0
+   }
+  ],
+  "animsLate": []
+ },
+ "phone": {
+  "anatomy": {
+   "libs": [
+    "nextjs"
+   ],
+   "canvases": [],
+   "videos": 0,
+   "fonts": [
+    "eksell_rm_small normal normal",
+    "silka_rm 700 normal",
+    "eksell_rm_large normal normal",
+    "silka_rm 400 italic",
+    "silka_rm 400 normal"
+   ],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 58.5,
+     "family": "eksell_rm_large",
+     "weight": "400",
+     "lineHeight": "1.1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 62,
+     "n": 9,
+     "sample": "Fun"
+    },
+    {
+     "px": 16,
+     "family": "silka_rm",
+     "weight": "400",
+     "lineHeight": "1.6",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 959,
+     "n": 9,
+     "sample": "Designing a new video-only dating app 💖 with Br"
+    },
+    {
+     "px": 14,
+     "family": "silka_rm",
+     "weight": "700",
+     "lineHeight": "1.5",
+     "tracking": "1px",
+     "transform": "uppercase",
+     "chars": 151,
+     "n": 11,
+     "sample": "Open case study"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(255, 255, 255)",
+     888
+    ],
+    [
+     "rgb(13, 13, 13)",
+     222
+    ],
+    [
+     "rgb(185, 150, 110)",
+     11
+    ],
+    [
+     "rgb(102, 255, 222)",
+     10
+    ],
+    [
+     "rgb(254, 52, 72)",
+     9
+    ],
+    [
+     "rgb(255, 246, 231)",
+     8
+    ],
+    [
+     "rgb(204, 186, 142)",
+     6
+    ],
+    [
+     "rgb(255, 111, 100)",
+     6
+    ],
+    [
+     "rgb(210, 210, 210)",
+     5
+    ],
+    [
+     "rgb(255, 247, 148)",
+     4
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(61, 102, 129)",
+     987
+    ],
+    [
+     "rgb(204, 204, 204)",
+     648
+    ],
+    [
+     "rgb(0, 0, 0)",
+     329
+    ]
+   ],
+   "bodyBg": "rgb(0, 0, 0)",
+   "htmlBg": "rgb(0, 0, 0)",
+   "transitions": [
+    [
+     "opacity | 0.2s | ease-out",
+     49
+    ],
+    [
+     "transform | 0.2s | ease-in-out",
+     9
+    ]
+   ],
+   "docScreens": 1,
+   "title": "Robin Noguier - Interactive Designer",
+   "metaDesc": "Robin Noguier is an interactive designer working on apps and websites for startups, brands, and entrepreneurs."
+  },
+  "animsAtLoad": [],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "phone-j00.webp",
+    "headings": [
+     "H1 59px: Fun",
+     "H1 59px: Esperanto",
+     "H1 59px: Blurr",
+     "H1 59px: Ueno",
+     "H1 59px: Airbnb",
+     "H1 59px: Google"
+    ],
+    "anims": 0
+   }
+  ],
+  "animsLate": []
+ }
+}

@@ -1,0 +1,1408 @@
+{
+ "slug": "anime-js",
+ "url": "https://animejs.com/",
+ "desktop": {
+  "anatomy": {
+   "libs": [
+    "three"
+   ],
+   "canvases": [
+    "webgl",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other"
+   ],
+   "videos": 0,
+   "fonts": [
+    "Mono 400 normal",
+    "DIN 100 900 oblique 0deg 12deg"
+   ],
+   "colorVars": {
+    "--hex-black-1": "#252423",
+    "--hex-black-2": "#252423",
+    "--hex-black-3": "#252423",
+    "--hex-black-4": "#262422",
+    "--hex-black-5": "#262422",
+    "--hex-black-6": "#262422",
+    "--hex-black-7": "#262422",
+    "--hex-black-8": "#262422",
+    "--hex-white-1": "#f6f4f2",
+    "--hex-white-2": "#cccac8",
+    "--hex-white-3": "#85827e",
+    "--hex-white-4": "#706d6a",
+    "--hex-white-5": "#5b5855",
+    "--hex-white-6": "#4a4745",
+    "--hex-white-7": "#3b3936",
+    "--hex-white-8": "#2c2a28",
+    "--hex-red-1": "#ff4b4b",
+    "--hex-red-2": "#d44343",
+    "--hex-red-3": "#883534",
+    "--hex-red-4": "#723130",
+    "--hex-red-5": "#5c2d2c",
+    "--hex-red-6": "#4b2a29",
+    "--hex-red-7": "#3c2726",
+    "--hex-red-8": "#2c2523",
+    "--hex-corail-1": "#ff7d36",
+    "--hex-corail-2": "#d46b32",
+    "--hex-corail-3": "#884c2b",
+    "--hex-corail-4": "#724329",
+    "--hex-corail-5": "#5c3a27",
+    "--hex-corail-6": "#4b3325",
+    "--hex-corail-7": "#3c2d24",
+    "--hex-corail-8": "#2c2623",
+    "--hex-orange-1": "#ffa828",
+    "--hex-orange-2": "#d48e27",
+    "--hex-orange-3": "#885f25",
+    "--hex-orange-4": "#725224",
+    "--hex-orange-5": "#5c4524",
+    "--hex-orange-6": "#4b3b23",
+    "--hex-orange-7": "#3c3123",
+    "--hex-orange-8": "#2c2822",
+    "--hex-yellow-1": "#ffcc2a",
+    "--hex-yellow-2": "#d4ab28",
+    "--hex-yellow-3": "#887026",
+    "--hex-yellow-4": "#725f25",
+    "--hex-yellow-5": "#5c4e24",
+    "--hex-yellow-6": "#4b4123",
+    "--hex-yellow-7": "#3c3523",
+    "--hex-yellow-8": "#2c2922",
+    "--hex-citrus-1": "#f9f640",
+    "--hex-citrus-2": "#cfcc3a",
+    "--hex-citrus-3": "#85832f",
+    "--hex-citrus-4": "#706e2c",
+    "--hex-citrus-5": "#5b5929",
+    "--hex-citrus-6": "#4a4827",
+    "--hex-citrus-7": "#3b3a25",
+    "--hex-citrus-8": "#2c2b23",
+    "--hex-lime-1": "#b7ff54",
+    "--hex-lime-2": "#9ad34a",
+    "--hex-lime-3": "#678738",
+    "--hex-lime-4": "#587133"
+   },
+   "typeScale": [
+    {
+     "px": 52,
+     "family": "DIN",
+     "weight": "700",
+     "lineHeight": "0.87",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 149,
+     "n": 10,
+     "sample": "Intuitive API"
+    },
+    {
+     "px": 52,
+     "family": "DIN",
+     "weight": "700",
+     "lineHeight": "0.95",
+     "tracking": "-1.3px",
+     "transform": "none",
+     "chars": 15,
+     "n": 1,
+     "sample": "Start animating"
+    },
+    {
+     "px": 40,
+     "family": "DIN",
+     "weight": "800",
+     "lineHeight": "0.95",
+     "tracking": "-0.5px",
+     "transform": "none",
+     "chars": 58,
+     "n": 4,
+     "sample": "The complete"
+    },
+    {
+     "px": 20,
+     "family": "DIN",
+     "weight": "600",
+     "lineHeight": "1.25",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 953,
+     "n": 21,
+     "sample": "fast"
+    },
+    {
+     "px": 16,
+     "family": "DIN",
+     "weight": "600",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 23,
+     "n": 2,
+     "sample": "Bundle size"
+    },
+    {
+     "px": 16,
+     "family": "Mono",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 8,
+     "n": 2,
+     "sample": "27.13"
+    },
+    {
+     "px": 16,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 2,
+     "n": 1,
+     "sample": "KB"
+    },
+    {
+     "px": 16,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "-0.24px",
+     "transform": "none",
+     "chars": 36,
+     "n": 2,
+     "sample": "Support the project,"
+    },
+    {
+     "px": 14,
+     "family": "Mono",
+     "weight": "400",
+     "lineHeight": "1.25",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 83,
+     "n": 12,
+     "sample": "npm i animejs"
+    },
+    {
+     "px": 14,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 16,
+     "n": 1,
+     "sample": "Become a sponsor"
+    },
+    {
+     "px": 14,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 96,
+     "n": 1,
+     "sample": "No API? Give your agent the data anyway. Turn pu"
+    },
+    {
+     "px": 12,
+     "family": "Mono",
+     "weight": "600",
+     "lineHeight": "2",
+     "tracking": "0.12px",
+     "transform": "uppercase",
+     "chars": 672,
+     "n": 50,
+     "sample": "Docs"
+    },
+    {
+     "px": 12,
+     "family": "Mono",
+     "weight": "600",
+     "lineHeight": "4",
+     "tracking": "0.12px",
+     "transform": "uppercase",
+     "chars": 10,
+     "n": 1,
+     "sample": "Learn more"
+    },
+    {
+     "px": 12,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 12,
+     "n": 1,
+     "sample": "Sponsored by"
+    },
+    {
+     "px": 12,
+     "family": "Mono",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 1006,
+     "n": 172,
+     "sample": "animate"
+    },
+    {
+     "px": 12,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "1.25",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 73,
+     "n": 11,
+     "sample": "Timer"
+    },
+    {
+     "px": 12,
+     "family": "Mono",
+     "weight": "600",
+     "lineHeight": "normal",
+     "tracking": "0.12px",
+     "transform": "uppercase",
+     "chars": 55,
+     "n": 6,
+     "sample": "Sponsors"
+    },
+    {
+     "px": 11.9,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 14,
+     "n": 1,
+     "sample": "ads via Carbon"
+    },
+    {
+     "px": 9.6,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 9,
+     "n": 1,
+     "sample": "TestMu AI"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(180, 177, 175)",
+     926
+    ],
+    [
+     "rgb(213, 211, 209)",
+     825
+    ],
+    [
+     "rgb(171, 178, 191)",
+     449
+    ],
+    [
+     "rgb(97, 174, 238)",
+     255
+    ],
+    [
+     "rgb(53, 52, 50)",
+     221
+    ],
+    [
+     "rgb(152, 195, 121)",
+     213
+    ],
+    [
+     "rgb(209, 154, 102)",
+     79
+    ],
+    [
+     "rgb(48, 46, 45)",
+     58
+    ],
+    [
+     "rgb(147, 144, 141)",
+     56
+    ],
+    [
+     "rgb(97, 94, 91)",
+     35
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(37, 36, 35)",
+     31220
+    ],
+    [
+     "rgb(48, 46, 45)",
+     508
+    ],
+    [
+     "rgb(183, 255, 84)",
+     78
+    ],
+    [
+     "rgb(53, 52, 50)",
+     26
+    ],
+    [
+     "rgb(42, 41, 40)",
+     23
+    ]
+   ],
+   "bodyBg": "rgb(37, 36, 35)",
+   "htmlBg": "rgb(37, 36, 35)",
+   "transitions": [
+    [
+     "transform | 0.5s | ease-out",
+     50
+    ],
+    [
+     "filter | 0.125s | ease",
+     49
+    ],
+    [
+     "transform | 0.125s | ease-out",
+     38
+    ],
+    [
+     "color | 0.1s | ease-out",
+     21
+    ],
+    [
+     "opacity, color | 0.125s | ease",
+     9
+    ]
+   ],
+   "docScreens": 23.5,
+   "title": "Anime.js | JavaScript Animation Engine",
+   "metaDesc": "A fast, multipurpose and lightweight JavaScript animation library"
+  },
+  "animsAtLoad": [
+   "CSSAnimation:carbon-fade-in|400ms|delay 0|linear|1",
+   "CSSAnimation:carbon-fade-in|400ms|delay 0|linear|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "desktop-j00.webp",
+    "headings": [
+     "H1 12px: ",
+     "H2 64px: All-in-one animation engine. All-in-one animation engine.",
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 1,
+    "y": 675,
+    "file": "desktop-j01.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 2,
+    "y": 1350,
+    "file": "desktop-j02.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 3,
+    "y": 2025,
+    "file": "desktop-j03.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 4,
+    "y": 2700,
+    "file": "desktop-j04.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 5,
+    "y": 3375,
+    "file": "desktop-j05.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 6,
+    "y": 4050,
+    "file": "desktop-j06.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 7,
+    "y": 4725,
+    "file": "desktop-j07.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 8,
+    "y": 5400,
+    "file": "desktop-j08.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 9,
+    "y": 6075,
+    "file": "desktop-j09.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: Intuitive API",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 10,
+    "y": 6750,
+    "file": "desktop-j10.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: Intuitive API",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 11,
+    "y": 7425,
+    "file": "desktop-j11.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: Enhanced transforms",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 12,
+    "y": 8100,
+    "file": "desktop-j12.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: Scroll Observer",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 13,
+    "y": 8775,
+    "file": "desktop-j13.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: Scroll Observer",
+     "H2 52px: Advanced staggering",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 14,
+    "y": 9450,
+    "file": "desktop-j14.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: Advanced staggering",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 15,
+    "y": 10125,
+    "file": "desktop-j15.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: SVG toolset",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 16,
+    "y": 10800,
+    "file": "desktop-j16.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: Springs and draggable",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 17,
+    "y": 11475,
+    "file": "desktop-j17.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: Springs and draggable",
+     "H2 52px: Runs like clockwork",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 18,
+    "y": 12150,
+    "file": "desktop-j18.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: Runs like clockwork",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 19,
+    "y": 12825,
+    "file": "desktop-j19.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 52px: Responsive animations",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 20,
+    "y": 13500,
+    "file": "desktop-j20.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 21,
+    "y": 14175,
+    "file": "desktop-j21.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 22,
+    "y": 14850,
+    "file": "desktop-j22.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 23,
+    "y": 15525,
+    "file": "desktop-j23.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 24,
+    "y": 16200,
+    "file": "desktop-j24.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 25,
+    "y": 16875,
+    "file": "desktop-j25.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 26,
+    "y": 17550,
+    "file": "desktop-j26.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H2 52px: Our sponsors",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 27,
+    "y": 18225,
+    "file": "desktop-j27.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 28,
+    "y": 18900,
+    "file": "desktop-j28.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 29,
+    "y": 19575,
+    "file": "desktop-j29.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H2 52px: Start animating",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 30,
+    "y": 20242,
+    "file": "desktop-j30.webp",
+    "headings": [
+     "H2 40px: The complete animator's toolbox",
+     "H2 40px: A lightweight and modular API",
+     "H3 16px: Bundle size",
+     "H3 16px: Funding goal"
+    ],
+    "anims": 2
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:carbon-fade-in|400ms|delay 0|linear|1",
+   "CSSAnimation:carbon-fade-in|400ms|delay 0|linear|1"
+  ]
+ },
+ "phone": {
+  "anatomy": {
+   "libs": [
+    "three"
+   ],
+   "canvases": [
+    "webgl",
+    "other",
+    "other",
+    "other",
+    "other",
+    "other"
+   ],
+   "videos": 0,
+   "fonts": [
+    "Mono 400 normal",
+    "DIN 100 900 oblique 0deg 12deg"
+   ],
+   "colorVars": {
+    "--hex-black-1": "#252423",
+    "--hex-black-2": "#252423",
+    "--hex-black-3": "#252423",
+    "--hex-black-4": "#262422",
+    "--hex-black-5": "#262422",
+    "--hex-black-6": "#262422",
+    "--hex-black-7": "#262422",
+    "--hex-black-8": "#262422",
+    "--hex-white-1": "#f6f4f2",
+    "--hex-white-2": "#cccac8",
+    "--hex-white-3": "#85827e",
+    "--hex-white-4": "#706d6a",
+    "--hex-white-5": "#5b5855",
+    "--hex-white-6": "#4a4745",
+    "--hex-white-7": "#3b3936",
+    "--hex-white-8": "#2c2a28",
+    "--hex-red-1": "#ff4b4b",
+    "--hex-red-2": "#d44343",
+    "--hex-red-3": "#883534",
+    "--hex-red-4": "#723130",
+    "--hex-red-5": "#5c2d2c",
+    "--hex-red-6": "#4b2a29",
+    "--hex-red-7": "#3c2726",
+    "--hex-red-8": "#2c2523",
+    "--hex-corail-1": "#ff7d36",
+    "--hex-corail-2": "#d46b32",
+    "--hex-corail-3": "#884c2b",
+    "--hex-corail-4": "#724329",
+    "--hex-corail-5": "#5c3a27",
+    "--hex-corail-6": "#4b3325",
+    "--hex-corail-7": "#3c2d24",
+    "--hex-corail-8": "#2c2623",
+    "--hex-orange-1": "#ffa828",
+    "--hex-orange-2": "#d48e27",
+    "--hex-orange-3": "#885f25",
+    "--hex-orange-4": "#725224",
+    "--hex-orange-5": "#5c4524",
+    "--hex-orange-6": "#4b3b23",
+    "--hex-orange-7": "#3c3123",
+    "--hex-orange-8": "#2c2822",
+    "--hex-yellow-1": "#ffcc2a",
+    "--hex-yellow-2": "#d4ab28",
+    "--hex-yellow-3": "#887026",
+    "--hex-yellow-4": "#725f25",
+    "--hex-yellow-5": "#5c4e24",
+    "--hex-yellow-6": "#4b4123",
+    "--hex-yellow-7": "#3c3523",
+    "--hex-yellow-8": "#2c2922",
+    "--hex-citrus-1": "#f9f640",
+    "--hex-citrus-2": "#cfcc3a",
+    "--hex-citrus-3": "#85832f",
+    "--hex-citrus-4": "#706e2c",
+    "--hex-citrus-5": "#5b5929",
+    "--hex-citrus-6": "#4a4827",
+    "--hex-citrus-7": "#3b3a25",
+    "--hex-citrus-8": "#2c2b23",
+    "--hex-lime-1": "#b7ff54",
+    "--hex-lime-2": "#9ad34a",
+    "--hex-lime-3": "#678738",
+    "--hex-lime-4": "#587133"
+   },
+   "typeScale": [
+    {
+     "px": 40,
+     "family": "DIN",
+     "weight": "700",
+     "lineHeight": "0.87",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 12,
+     "n": 1,
+     "sample": "Our sponsors"
+    },
+    {
+     "px": 40,
+     "family": "DIN",
+     "weight": "700",
+     "lineHeight": "0.95",
+     "tracking": "-1px",
+     "transform": "none",
+     "chars": 15,
+     "n": 1,
+     "sample": "Start animating"
+    },
+    {
+     "px": 32,
+     "family": "DIN",
+     "weight": "800",
+     "lineHeight": "0.95",
+     "tracking": "-0.4px",
+     "transform": "none",
+     "chars": 58,
+     "n": 4,
+     "sample": "The complete"
+    },
+    {
+     "px": 32,
+     "family": "DIN",
+     "weight": "700",
+     "lineHeight": "0.87",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 137,
+     "n": 9,
+     "sample": "Intuitive API"
+    },
+    {
+     "px": 20,
+     "family": "Mono",
+     "weight": "600",
+     "lineHeight": "2",
+     "tracking": "0.13px",
+     "transform": "uppercase",
+     "chars": 37,
+     "n": 6,
+     "sample": "Docs"
+    },
+    {
+     "px": 16,
+     "family": "DIN",
+     "weight": "600",
+     "lineHeight": "1.25",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 953,
+     "n": 21,
+     "sample": "fast"
+    },
+    {
+     "px": 16,
+     "family": "DIN",
+     "weight": "600",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 23,
+     "n": 2,
+     "sample": "Bundle size"
+    },
+    {
+     "px": 16,
+     "family": "Mono",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 8,
+     "n": 2,
+     "sample": "27.13"
+    },
+    {
+     "px": 16,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 2,
+     "n": 1,
+     "sample": "KB"
+    },
+    {
+     "px": 16,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 36,
+     "n": 2,
+     "sample": "Support the project,"
+    },
+    {
+     "px": 14,
+     "family": "Mono",
+     "weight": "400",
+     "lineHeight": "1.25",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 70,
+     "n": 11,
+     "sample": "timer"
+    },
+    {
+     "px": 14,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 16,
+     "n": 1,
+     "sample": "Become a sponsor"
+    },
+    {
+     "px": 13,
+     "family": "Mono",
+     "weight": "600",
+     "lineHeight": "3.69",
+     "tracking": "0.13px",
+     "transform": "uppercase",
+     "chars": 10,
+     "n": 1,
+     "sample": "Learn more"
+    },
+    {
+     "px": 13,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 12,
+     "n": 1,
+     "sample": "Sponsored by"
+    },
+    {
+     "px": 13,
+     "family": "Mono",
+     "weight": "600",
+     "lineHeight": "1.85",
+     "tracking": "0.13px",
+     "transform": "uppercase",
+     "chars": 649,
+     "n": 46,
+     "sample": "Per property parameters"
+    },
+    {
+     "px": 13,
+     "family": "Mono",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 1006,
+     "n": 172,
+     "sample": "animate"
+    },
+    {
+     "px": 13,
+     "family": "Mono",
+     "weight": "600",
+     "lineHeight": "normal",
+     "tracking": "0.13px",
+     "transform": "uppercase",
+     "chars": 55,
+     "n": 6,
+     "sample": "Sponsors"
+    },
+    {
+     "px": 9.6,
+     "family": "DIN",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 9,
+     "n": 1,
+     "sample": "TestMu AI"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(213, 211, 209)",
+     825
+    ],
+    [
+     "rgb(180, 177, 175)",
+     758
+    ],
+    [
+     "rgb(171, 178, 191)",
+     449
+    ],
+    [
+     "rgb(97, 174, 238)",
+     255
+    ],
+    [
+     "rgb(53, 52, 50)",
+     221
+    ],
+    [
+     "rgb(152, 195, 121)",
+     213
+    ],
+    [
+     "rgb(209, 154, 102)",
+     79
+    ],
+    [
+     "rgb(48, 46, 45)",
+     58
+    ],
+    [
+     "rgb(147, 144, 141)",
+     42
+    ],
+    [
+     "rgb(97, 94, 91)",
+     35
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(37, 36, 35)",
+     8529
+    ],
+    [
+     "rgb(48, 46, 45)",
+     501
+    ],
+    [
+     "rgb(183, 255, 84)",
+     24
+    ]
+   ],
+   "bodyBg": "rgb(37, 36, 35)",
+   "htmlBg": "rgb(37, 36, 35)",
+   "transitions": [
+    [
+     "transform | 0.5s | ease-out",
+     50
+    ],
+    [
+     "filter | 0.125s | ease",
+     49
+    ],
+    [
+     "transform | 0.125s | ease-out",
+     38
+    ],
+    [
+     "color | 0.1s | ease-out",
+     21
+    ],
+    [
+     "opacity, color | 0.125s | ease",
+     9
+    ]
+   ],
+   "docScreens": 23.7,
+   "title": "Anime.js | JavaScript Animation Engine",
+   "metaDesc": "A fast, multipurpose and lightweight JavaScript animation library"
+  },
+  "animsAtLoad": [],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "phone-j00.webp",
+    "headings": [
+     "H1 13px: ",
+     "H2 40px: All-in-one animation engine. All-in-one animation engine.",
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 1,
+    "y": 760,
+    "file": "phone-j01.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 2,
+    "y": 1519,
+    "file": "phone-j02.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 3,
+    "y": 2279,
+    "file": "phone-j03.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 4,
+    "y": 3038,
+    "file": "phone-j04.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 5,
+    "y": 3798,
+    "file": "phone-j05.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 6,
+    "y": 4558,
+    "file": "phone-j06.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 7,
+    "y": 5317,
+    "file": "phone-j07.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 8,
+    "y": 6077,
+    "file": "phone-j08.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 9,
+    "y": 6836,
+    "file": "phone-j09.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 10,
+    "y": 7596,
+    "file": "phone-j10.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 11,
+    "y": 8356,
+    "file": "phone-j11.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 12,
+    "y": 9115,
+    "file": "phone-j12.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 13,
+    "y": 9875,
+    "file": "phone-j13.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 14,
+    "y": 10634,
+    "file": "phone-j14.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 15,
+    "y": 11394,
+    "file": "phone-j15.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 16,
+    "y": 12154,
+    "file": "phone-j16.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   },
+   {
+    "i": 17,
+    "y": 12913,
+    "file": "phone-j17.webp",
+    "headings": [
+     "H2 32px: The complete animator's toolbox",
+     "H2 32px: Intuitive API",
+     "H2 32px: Enhanced transforms",
+     "H2 32px: Scroll Observer",
+     "H2 32px: Advanced staggering",
+     "H2 32px: SVG toolset"
+    ],
+    "anims": 0
+   }
+  ],
+  "animsLate": []
+ }
+}

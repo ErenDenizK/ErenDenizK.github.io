@@ -1,0 +1,1915 @@
+{
+ "slug": "notion-calendar",
+ "url": "https://www.notion.com/product/calendar",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "16px",
+  "scrollBehavior": "smooth",
+  "scrollbarWidth": "auto",
+  "smoothLib": false,
+  "maxWidths": [
+   [
+    "512px",
+    18
+   ],
+   [
+    "calc(100% + 64px)",
+    9
+   ],
+   [
+    "100%",
+    9
+   ],
+   [
+    "800px",
+    7
+   ],
+   [
+    "750px",
+    5
+   ],
+   [
+    "1274px",
+    1
+   ],
+   [
+    "540px",
+    1
+   ],
+   [
+    "270px",
+    1
+   ],
+   [
+    "1380px",
+    1
+   ],
+   [
+    "268.8px",
+    1
+   ]
+  ],
+  "grids": [
+   [
+    "1 cols · 1440px",
+    1
+   ],
+   [
+    "3 cols · 476.891px 406.203px 476.906px",
+    1
+   ],
+   [
+    "12 cols · 63.3281px 63.3281px 63.3281px 63.3281px 63.3281px 63.3281px ",
+    1
+   ],
+   [
+    "7 cols · [full-start] 64px [content-start] 1252px [content-end] 64px ",
+    1
+   ],
+   [
+    "12 cols · 82.3281px 82.3281px 82.3281px 82.3281px 82.3281px 82.3281px ",
+    1
+   ],
+   [
+    "4 cols · 188.656px 188.672px 188.672px 188.672px",
+    1
+   ],
+   [
+    "1 cols · 58.2031px",
+    1
+   ],
+   [
+    "1 cols · 79.7656px",
+    1
+   ]
+  ],
+  "gaps": [
+   [
+    "0px 8px",
+    23
+   ],
+   [
+    "30px",
+    20
+   ],
+   [
+    "8px",
+    8
+   ],
+   [
+    "16px",
+    4
+   ],
+   [
+    "12px",
+    4
+   ],
+   [
+    "4px",
+    1
+   ],
+   [
+    "normal 24px",
+    1
+   ],
+   [
+    "40px 24px",
+    1
+   ],
+   [
+    "16px normal",
+    1
+   ],
+   [
+    "80px 24px",
+    1
+   ],
+   [
+    "normal 16px",
+    1
+   ]
+  ],
+  "spacingY": [
+   [
+    "24px",
+    65
+   ],
+   [
+    "5px",
+    64
+   ],
+   [
+    "3px",
+    46
+   ],
+   [
+    "10px",
+    18
+   ],
+   [
+    "14.94px",
+    18
+   ],
+   [
+    "8px",
+    15
+   ],
+   [
+    "4px",
+    14
+   ],
+   [
+    "16px",
+    10
+   ],
+   [
+    "-32px",
+    8
+   ],
+   [
+    "12px",
+    4
+   ],
+   [
+    "14px",
+    2
+   ],
+   [
+    "64px",
+    2
+   ],
+   [
+    "20px",
+    2
+   ],
+   [
+    "1px",
+    2
+   ],
+   [
+    "9px",
+    2
+   ],
+   [
+    "575.984px",
+    1
+   ]
+  ],
+  "spacingX": [
+   [
+    "32px",
+    40
+   ],
+   [
+    "8px",
+    39
+   ],
+   [
+    "16px",
+    25
+   ],
+   [
+    "14px",
+    14
+   ],
+   [
+    "10px",
+    10
+   ],
+   [
+    "20px",
+    3
+   ],
+   [
+    "24px",
+    2
+   ],
+   [
+    "125px",
+    2
+   ],
+   [
+    "36px",
+    2
+   ],
+   [
+    "12px",
+    1
+   ]
+  ],
+  "radii": [
+   [
+    "12px",
+    42
+   ],
+   [
+    "8px",
+    31
+   ],
+   [
+    "6.5px",
+    17
+   ],
+   [
+    "4px",
+    5
+   ],
+   [
+    "12px 12px 0px 0px",
+    2
+   ],
+   [
+    "1px",
+    1
+   ],
+   [
+    "5px",
+    1
+   ],
+   [
+    "6px",
+    1
+   ],
+   [
+    "9999.01px",
+    1
+   ]
+  ],
+  "shadows": [
+   [
+    "rgba(0, 0, 0, 0.01) 0px 0.175px 1.041px 0px, rgba(0, 0, 0, 0.02) 0px 0.8px 2.925",
+    2
+   ],
+   [
+    "rgba(0, 0, 0, 0) 0px 1px 0px 0px",
+    1
+   ],
+   [
+    "rgba(0, 0, 0, 0.04) 0px 4px 18px 0px, rgba(0, 0, 0, 0.027) 0px 2.025px 7.84688px",
+    1
+   ]
+  ],
+  "effects": [
+   [
+    "filter: drop-shadow(rgba(0, 0, 0, 0.25) 0px 2px 2px)",
+    1
+   ],
+   [
+    "clip-path: url(\"#_R_2dkbm_-clip\")",
+    1
+   ]
+  ],
+  "cursors": [],
+  "fixed": 0,
+  "sticky": 1,
+  "nav": [
+   "Notion – Home",
+   "Capture",
+   "Find",
+   "Automate",
+   "Pricing",
+   "Request a demo",
+   "Log in",
+   "Get Notion Calendar free",
+   "Features",
+   "What's New",
+   "Notion AI",
+   "Pricing",
+   "Request a demo",
+   "Download"
+  ],
+  "viewTransitionNames": [
+   "root"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "00-1y0cfoy3el6s0.css",
+   "url": "https://www.notion.com/_next/static/chunks/1y0cfoy3el6s0.css",
+   "bytes": 5905
+  },
+  {
+   "file": "01-25ytp5cuoqnet.css",
+   "url": "https://www.notion.com/_next/static/chunks/25ytp5cuoqnet.css",
+   "bytes": 40274
+  },
+  {
+   "file": "02-1dvkjbpbi165u.css",
+   "url": "https://www.notion.com/_next/static/chunks/1dvkjbpbi165u.css",
+   "bytes": 111764
+  },
+  {
+   "file": "03-2pa5uqxjg6nkc.css",
+   "url": "https://www.notion.com/_next/static/chunks/2pa5uqxjg6nkc.css",
+   "bytes": 1133
+  },
+  {
+   "file": "04-3nr739qv1y-ex.css",
+   "url": "https://www.notion.com/_next/static/chunks/3nr739qv1y-ex.css",
+   "bytes": 161051
+  },
+  {
+   "file": "05-0t685hilv_dw-.css",
+   "url": "https://www.notion.com/_next/static/chunks/0t685hilv_dw-.css",
+   "bytes": 96946
+  },
+  {
+   "file": "06-3fd-g_c-ep-nm.css",
+   "url": "https://www.notion.com/_next/static/chunks/3fd-g_c-ep-nm.css",
+   "bytes": 121919
+  },
+  {
+   "file": "07-0na2tebws-njp.css",
+   "url": "https://www.notion.com/_next/static/chunks/0na2tebws-njp.css",
+   "bytes": 16191
+  },
+  {
+   "file": "08-2o06cf5p0a066.css",
+   "url": "https://www.notion.com/_next/static/chunks/2o06cf5p0a066.css",
+   "bytes": 122649
+  },
+  {
+   "file": "09-3fvqzxxbb-88y.css",
+   "url": "https://www.notion.com/_next/static/chunks/3fvqzxxbb-88y.css",
+   "bytes": 124219
+  },
+  {
+   "file": "10-43y1_o2uo4w39.css",
+   "url": "https://www.notion.com/_next/static/chunks/43y1_o2uo4w39.css",
+   "bytes": 126671
+  },
+  {
+   "file": "11-3suwd3stara0h.css",
+   "url": "https://www.notion.com/_next/static/chunks/3suwd3stara0h.css",
+   "bytes": 312465
+  },
+  {
+   "file": "12-1tfiub1kjj4_h.css",
+   "url": "https://www.notion.com/_next/static/chunks/1tfiub1kjj4_h.css",
+   "bytes": 121154
+  },
+  {
+   "file": "13-0858yrfhbdykw.css",
+   "url": "https://www.notion.com/_next/static/chunks/0858yrfhbdykw.css",
+   "bytes": 112911
+  },
+  {
+   "file": "14-transcend.css",
+   "url": "https://www.notion.com/front-static/external/transcend/transcend.css?v=1.0.15",
+   "bytes": 22748
+  },
+  {
+   "file": "15-player.css",
+   "url": "https://f.vimeocdn.com/p/4.46.126/css/player.css",
+   "bytes": 238277
+  },
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 604
+  }
+ ],
+ "css": {
+  "fontFaces": [
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-SemiBold.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "Lyon Text",
+    "file": "LyonText-BoldItalic-Web.43p__d3n3-6dl.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Regular-math.1a6t35xyuxi20.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Medium-i18n.2323dzohbvk8n.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-BoldItalic-math.2k5m59rf5np05.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-SemiBold-math.0a6v2_nx97nws.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "Noto Sans Hebrew",
+    "file": "noto-sans-hebrew.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-BoldItalic.3u147tw2czjpe.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Permanent Marker",
+    "file": "permanent-marker.2w80xws-no70m.woff",
+    "weight": "400"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Italic-i18n.13ttwp5t-mbd7.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Medium.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Bold-i18n.007-piztngqyv.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Italic-math.22b8zyjp-fmrg.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Regular-i18n.00ioyd906d58c.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-SemiBoldItalic-i18n.19mbftanf92cw.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "iA Writer Mono",
+    "file": "iAWriterMonoS-Bold.24l13l5t-k6l6.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "Lyon Text",
+    "file": "LyonText-Regular-Web.0v5-4d-mnyixl.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-SemiBold-i18n.0v6npia89qig-.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Bold-math.14rbjwnmavhus.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-MediumItalic-math.0q1zkx9qhcer0.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-MediumItalic.2g12c_dh0rad3.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-SemiBoldItalic.275kiy_6teqt3.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "iA Writer Mono",
+    "file": "iAWriterMonoS-BoldItalic.0ynr3dgi_pqnx.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "Lyon Text",
+    "file": "LyonText-Bold-Web.0in0_uzbwp45c.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-BoldItalic-i18n.428p1llnba081.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "iA Writer Mono",
+    "file": "iAWriterMonoS-Regular.1tzvrla_jnz37.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Italic.2vb9zej_iju_y.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Bold.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-Medium-math.3h5a0h0lxvtg-.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-SemiBoldItalic-math.0-zip_tvxb4gj.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "Noto Sans Arabic",
+    "file": "noto-sans-arabic.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "NotionInter",
+    "file": "NotionInter-MediumItalic-i18n.3c5zkal8qq863.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "Lyon Text",
+    "file": "LyonText-RegularItalic-Web.0zuwj30rz6x75.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "iA Writer Mono",
+    "file": "iAWriterMonoS-Italic.2wurv2__1kp41.woff2",
+    "weight": "400"
+   }
+  ],
+  "variables": {
+   "--tile-height": "80px",
+   "--tile-border-radius": "6.5px",
+   "--tile-border-width": "10px",
+   "--tile-border-color": "#19a0ea",
+   "--tile-background-color": "#e1f9ff",
+   "--layout-gutter-and-vw-remainder": "calc(var(--layout-gutter) + max(0px, (100vw - var(--layout-max)) / 2))",
+   "--tatami-border-radius-0": "0",
+   "--tatami-border-radius-200": ".25rem",
+   "--tatami-border-radius-300": "0.3125rem",
+   "--tatami-border-radius-400": ".375rem",
+   "--tatami-border-radius-500": ".5rem",
+   "--tatami-border-radius-600": ".625rem",
+   "--tatami-border-radius-700": "0.75rem",
+   "--tatami-border-radius-800": ".875rem",
+   "--tatami-border-radius-900": "1rem",
+   "--tatami-border-radius-round": "624.938rem",
+   "--tatami-border-width-1": "var(--tatami-dimension-thickness-1)",
+   "--tatami-border-style-solid": "solid",
+   "--tatami-border-style-dashed": "dashed",
+   "--tatami-color-gray-100": "#f9f9f8",
+   "--tatami-color-gray-200": "#f6f5f4",
+   "--tatami-color-gray-300": "#dfdcd9",
+   "--tatami-color-gray-400": "#a39e98",
+   "--tatami-color-gray-500": "#78736f",
+   "--tatami-color-gray-600": "#615d59",
+   "--tatami-color-gray-700": "#494744",
+   "--tatami-color-gray-800": "#31302e",
+   "--tatami-color-gray-900": "#191918",
+   "--tatami-color-red-100": "#fef3f1",
+   "--tatami-color-red-200": "#fdd3cd",
+   "--tatami-color-red-300": "#ff8b7c",
+   "--tatami-color-red-400": "#f77463",
+   "--tatami-color-red-500": "#f64932",
+   "--tatami-color-red-600": "#e32d14",
+   "--tatami-color-red-700": "#b01601",
+   "--tatami-color-red-800": "#6f0d00",
+   "--tatami-color-red-900": "#4f0900",
+   "--tatami-color-orange-100": "#fff5ed",
+   "--tatami-color-orange-200": "#ffdec4",
+   "--tatami-color-orange-300": "#ffad71",
+   "--tatami-color-orange-400": "#ff8a33",
+   "--tatami-color-orange-500": "#ff6d00",
+   "--tatami-color-orange-600": "#dd5b00",
+   "--tatami-color-orange-700": "#ab4a00",
+   "--tatami-color-orange-800": "#793400",
+   "--tatami-color-orange-900": "#532200",
+   "--tatami-color-yellow-100": "#fff5e0",
+   "--tatami-color-yellow-200": "#ffe4af",
+   "--tatami-color-yellow-300": "#ffd786",
+   "--tatami-color-yellow-400": "#ffc95e",
+   "--tatami-color-yellow-500": "#ffb110",
+   "--tatami-color-yellow-600": "#e89d01",
+   "--tatami-color-yellow-700": "#c78600",
+   "--tatami-color-yellow-800": "#a16c00",
+   "--tatami-color-yellow-900": "#704b00",
+   "--tatami-color-teal-100": "#f2fafa",
+   "--tatami-color-teal-200": "#bde6e4",
+   "--tatami-color-teal-300": "#83cbc9",
+   "--tatami-color-teal-400": "#2a9d99",
+   "--tatami-color-teal-500": "#27918d",
+   "--tatami-color-teal-600": "#0a7b77",
+   "--tatami-color-teal-700": "#126764",
+   "--tatami-color-teal-800": "#0a4d4b",
+   "--tatami-color-teal-900": "#042b29",
+   "--tatami-color-blue-100": "#f2f9ff",
+   "--tatami-color-blue-200": "#e6f3fe",
+   "--tatami-color-blue-300": "#93cdfe",
+   "--tatami-color-blue-400": "#62aef0",
+   "--tatami-color-blue-500": "#097fe8",
+   "--tatami-color-blue-600": "#0075de",
+   "--tatami-color-blue-700": "#005bab",
+   "--tatami-color-blue-800": "#00396b",
+   "--tatami-color-blue-900": "#002a4f",
+   "--tatami-color-purple-100": "#f8f5fc",
+   "--tatami-color-purple-200": "#eadbfa",
+   "--tatami-color-purple-300": "#d6b6f6",
+   "--tatami-color-purple-400": "#ad6ded",
+   "--tatami-color-purple-500": "#9849e8",
+   "--tatami-color-purple-600": "#7237ae",
+   "--tatami-color-purple-700": "#562983",
+   "--tatami-color-purple-800": "#391c57",
+   "--tatami-color-purple-900": "#1c0e2c",
+   "--tatami-color-green-100": "#f0faf2",
+   "--tatami-color-green-200": "#d0f4d8",
+   "--tatami-color-green-300": "#abe5b8",
+   "--tatami-color-green-400": "#68ce7e",
+   "--tatami-color-green-500": "#1aae39",
+   "--tatami-color-green-600": "#14832b",
+   "--tatami-color-green-700": "#0f6220",
+   "--tatami-color-green-800": "#0a4216",
+   "--tatami-color-green-900": "#05210b",
+   "--tatami-color-pink-100": "#fff5fc",
+   "--tatami-color-pink-200": "#ffcdf1",
+   "--tatami-color-pink-300": "#ffb5eb",
+   "--tatami-color-pink-400": "#ff83dd",
+   "--tatami-color-pink-500": "#ff64c8",
+   "--tatami-color-pink-600": "#d13f9d",
+   "--tatami-color-pink-700": "#9d2472",
+   "--tatami-color-pink-800": "#6c1b4f",
+   "--tatami-color-pink-900": "#481034",
+   "--tatami-color-brown-100": "#fcf8f5",
+   "--tatami-color-brown-200": "#ebd5c5",
+   "--tatami-color-brown-300": "#d9b79f",
+   "--tatami-color-brown-400": "#b18164",
+   "--tatami-color-brown-500": "#9c7054",
+   "--tatami-color-brown-600": "#885d3d",
+   "--tatami-color-brown-700": "#744d2d",
+   "--tatami-color-brown-800": "#654124",
+   "--tatami-color-brown-900": "#523410",
+   "--tatami-color-black": "#000",
+   "--tatami-color-white": "#ffffff",
+   "--tatami-color-alpha-black-100": "#0000000d",
+   "--tatami-color-alpha-black-200": "#0000001a",
+   "--tatami-color-alpha-black-300": "#0003",
+   "--tatami-color-alpha-black-400": "#0000004d",
+   "--tatami-color-alpha-black-500": "#0000008a",
+   "--tatami-color-alpha-black-600": "#00000096",
+   "--tatami-color-alpha-black-700": "#000000bf",
+   "--tatami-color-alpha-black-800": "#000000e5",
+   "--tatami-color-alpha-black-900": "#000000f2",
+   "--tatami-color-alpha-white-100": "#ffffff0d",
+   "--tatami-color-alpha-white-200": "#ffffff1a",
+   "--tatami-color-alpha-white-300": "#fff3",
+   "--tatami-color-alpha-white-400": "#ffffff4d",
+   "--tatami-color-alpha-white-500": "#ffffff80",
+   "--tatami-color-alpha-white-600": "#ffffffa8",
+   "--tatami-color-alpha-white-700": "#ffffffbf",
+   "--tatami-color-alpha-white-800": "#ffffffd9",
+   "--tatami-color-alpha-white-900": "#fffffff2",
+   "--tatami-color-transparent": "#fff0",
+   "--tatami-color-campaigns-agents-launch-blue-200": "#2537b1",
+   "--tatami-color-campaigns-agents-launch-blue-300": "#607df6",
+   "--tatami-color-campaigns-agents-launch-blue-400": "#455dd3",
+   "--tatami-color-campaigns-agents-launch-blue-500": "#394ea3",
+   "--tatami-color-campaigns-agents-launch-blue-600": "#213183",
+   "--tatami-color-campaigns-agents-launch-blue-900": "#02093a",
+   "--tatami-color-campaigns-agents-launch-yellow": "#fefcd5",
+   "--tatami-color-campaigns-dev-platform-dos-blue": "#1313ba",
+   "--tatami-color-campaigns-dev-platform-dos-black": "#0a0a5d",
+   "--tatami-color-campaigns-dev-platform-dos-neon": "#6666fd",
+   "--tatami-color-campaigns-dev-platform-dos-slate": "#7171a8",
+   "--tatami-color-campaigns-dev-platform-dos-lavender": "#cbcbef",
+   "--tatami-color-campaigns-dev-platform-dos-gray": "#f6f6fc",
+   "--tatami-color-campaigns-dev-platform-dos-white": "var(--tatami-color-white)",
+   "--tatami-color-campaigns-dev-platform-dos-alpha-blue": "#1313baa8",
+   "--tatami-color-campaigns-dev-platform-dos-alpha-white": "var(--tatami-color-alpha-white-700)",
+   "--tatami-color-campaigns-dev-platform-dos-alpha-lavender": "#cbcbef70",
+   "--tatami-color-campaigns-dev-platform-dos-alpha-gray": "#f6f6fc70",
+   "--tatami-dimension-spacing-0": "0",
+   "--tatami-dimension-spacing-4": ".25rem"
+  },
+  "keyframes": {
+   "fadeIn": "0%{opacity:0}100%{opacity:1}",
+   "fadeOut": "0%{opacity:1}to{opacity:0}",
+   "scaleIn": "0%{transform:scale(.975)}to{transform:scale(1)}",
+   "scaleOut": "0%{transform:scale(1)}to{transform:scale(.975)}",
+   "popIn": "0%{opacity:0;transform:scale(.75)}to{opacity:1;transform:scale(1)}",
+   "rotate": "100%{transform:rotate(360deg)}",
+   "globalNavigation-module-scss-module__HWB10a__navShadowScrolled": "0%{box-shadow:0 1px #0000}to{box-shadow:0 1px var(--tatami-color-border-base)}",
+   "globalNavigation-module-scss-module__HWB10a__fadeIn": "0%{opacity:0}to{opacity:1}",
+   "globalNavigation-module-scss-module__HWB10a__fadeOut": "0%{opacity:1}to{opacity:0}",
+   "globalNavigation-module-scss-module__HWB10a__slideDown": "0%{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}",
+   "globalNavigation-module-scss-module__HWB10a__aimnV2NavBgHeroExit": "0%{--aimn-v2-nav-bg:var(--tatami-color-gray-100)}to{--aimn-v2-nav-bg:var(--tatami-color-background-base)}",
+   "globalNavigation-module-scss-module__HWB10a__devPlatformNavTokensHeroExit": "0%{--tatami-color-interaction-focus-ring:var(--tatami-color-campaigns-dev-platform-dos-alpha-white);--tatami-color-text-normal:var(--tatami-color-white);--tatami-color-text-muted:var(--tatami-color-alpha-white-700);--tatami-color-border-base:var(--tatami-color",
+   "globalNavigation-module-scss-module__HWB10a__devPlatformNavBgHeroExit": "0%{--dev-platform-nav-bg:transparent}to{--dev-platform-nav-bg:var(--tatami-color-background-base)}",
+   "globalNavigation-module-scss-module__HWB10a__devPlatformNavBgScrolled": "0%{--dev-platform-nav-bg:transparent}to{--dev-platform-nav-bg:var(--tatami-color-campaigns-dev-platform-dos-blue)}",
+   "loadingDots-module-scss-module__uDuUmW__pulse": "0%{opacity:.2}to{opacity:.75}",
+   "modal-module-scss-module__DBQchW__backgroundFadeOut": "0%{opacity:1}to{opacity:0}",
+   "spin": "to{transform:rotate(360deg)}",
+   "index-module-scss-module__HZmsMG__pulse": "0%{transform:scale(.9)}70%{transform:scale(1);box-shadow:0 0 0 16px #2383e200}to{transform:scale(.9);box-shadow:0 0 #2383e200}",
+   "popover-module-scss-module__njy5Hq__popoverFadeIn": "0%{opacity:0}",
+   "popover-module-scss-module__njy5Hq__popoverSlideDown": "0%{opacity:0;translate:0 calc(-1*var(--tatami-dimension-spacing-8))}",
+   "popover-module-scss-module__njy5Hq__popoverSlideUp": "0%{opacity:0;translate:0 var(--tatami-dimension-spacing-8)}",
+   "aimnPreviewAnnotations-module-scss-module__C0tKKa__aimnPreviewAnnotationEnter": "0%{opacity:0;transform:translateY(var(--tatami-dimension-spacing-4))}to{opacity:1;transform:translateY(0)}",
+   "decagonProspectChatWidget-module-scss-module__a-54rG__decagonProspectChatPillPopIn": "0%{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}",
+   "TemplateModal-module-scss-module__84zNEa__backgroundFadeOut": "0%{opacity:1}to{opacity:0}",
+   "buffer": "100%{transform:translateX(-10px)}",
+   "throb": "0%,100%{background-color:#555}50%{background-color:#444}",
+   "wiggle": "0%{transform:translateY(10px)}20%{transform:translateY(0)}40%,80%{transform:translateX(8px)}60%{transform:translateX(-8px)}100%{transform:translateX(0)}",
+   "pulse": "50%{transform:scale(.9)}",
+   "dash": "0%{stroke-dasharray:1,200;stroke-dashoffset:0}50%{stroke-dasharray:89,200;stroke-dashoffset:-35px}100%{stroke-dasharray:89,200;stroke-dashoffset:-135px}",
+   "scaleAnimation": "0%{transform:scale(.9,.9)}100%{transform:scale(1,1)}",
+   "LikeButton_module_heartbeat__3908feee": "0%{transform:scale(1)}10%{transform:scale(1)}20%{transform:scale(1.3)}30%{transform:scale(1.1)}40%{transform:scale(1.3)}100%{transform:scale(1)}",
+   "ShareButton_module_takeoff__26260904": "0%{transform:translate(0,0)}20%{transform:translate(-3px,3px)}40%{transform:translate(2px,-2px)}60%{transform:translate(-1px,1px)}80%{transform:translate(.5px,-.5px)}100%{transform:translate(0,0)}",
+   "EmbedButton_module_embedPop__dece8678": "0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}",
+   "WatchLaterButton_module_pop__238c6c3b": "0%{transform:scale(1)}10%{transform:scale(1.15)}100%{transform:scale(1)}",
+   "TinyProgressBar_module_buffer__c04d36b1": "100%{transform:translateX(-10px)}",
+   "ShareSheet_module_backdropFadeIn__5ab8a323": "from{opacity:0}to{opacity:1}",
+   "ShareSheet_module_backdropFadeOut__5ab8a323": "from{opacity:1}to{opacity:0}",
+   "ShareSheet_module_modalSlideIn__5ab8a323": "from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}"
+  },
+  "easings": [
+   [
+    "ease-in-out",
+    88
+   ],
+   [
+    "linear",
+    57
+   ],
+   [
+    "ease-out",
+    45
+   ],
+   [
+    "ease-in",
+    22
+   ],
+   [
+    "ease",
+    12
+   ],
+   [
+    "cubic-bezier(.645,.045,.355,1)",
+    6
+   ],
+   [
+    "cubic-bezier(.86, 0, .07, 1)",
+    2
+   ],
+   [
+    "cubic-bezier(.76, 0, .24, 1)",
+    2
+   ],
+   [
+    "cubic-bezier(.45, 0, .55, 1)",
+    2
+   ],
+   [
+    "cubic-bezier(.645, .045, .355, 1)",
+    2
+   ],
+   [
+    "cubic-bezier(.5, 0, .5, 1)",
+    2
+   ],
+   [
+    "cubic-bezier(.42, 0, 1, 1)",
+    2
+   ],
+   [
+    "cubic-bezier(0, 0, .58, 1)",
+    2
+   ],
+   [
+    "cubic-bezier(0, 0, 1, 1)",
+    2
+   ]
+  ],
+  "durations": [
+   [
+    ".2s",
+    31
+   ],
+   [
+    "150ms",
+    25
+   ],
+   [
+    ".25s",
+    23
+   ],
+   [
+    "250ms",
+    22
+   ],
+   [
+    ".15s",
+    18
+   ],
+   [
+    ".1s",
+    13
+   ],
+   [
+    "0s",
+    9
+   ],
+   [
+    ".4s",
+    7
+   ],
+   [
+    "1s",
+    6
+   ],
+   [
+    ".3s",
+    5
+   ],
+   [
+    "160ms",
+    4
+   ],
+   [
+    ".5s",
+    3
+   ],
+   [
+    "40ms",
+    3
+   ],
+   [
+    ".175s",
+    2
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "(min-width:600px)",
+    277
+   ],
+   [
+    "(min-width:840px)",
+    254
+   ],
+   [
+    "(min-width:1080px)",
+    253
+   ],
+   [
+    "(min-width:1280px)",
+    179
+   ],
+   [
+    "(min-width:1440px)",
+    169
+   ],
+   [
+    "(min-width:600px) and (min-width:600px)",
+    25
+   ],
+   [
+    "(prefers-reduced-motion:reduce)",
+    13
+   ],
+   [
+    "(max-width:299px),(max-height:169px)",
+    12
+   ],
+   [
+    "(min-width:375px)",
+    7
+   ],
+   [
+    "(prefers-reduced-motion)",
+    5
+   ],
+   [
+    "(hover:hover)",
+    4
+   ],
+   [
+    "(min-width:300px) and (max-width:375px)",
+    4
+   ],
+   [
+    "(min-width:960px) and (min-height:430px)",
+    4
+   ],
+   [
+    "(max-width:839px)",
+    3
+   ],
+   [
+    "(max-width:414px),(max-height:168px)",
+    3
+   ],
+   [
+    "screen and (min-height:400px)",
+    2
+   ],
+   [
+    "(min-width:1200px)",
+    2
+   ],
+   [
+    "screen and (min-width:712px)",
+    2
+   ],
+   [
+    "screen and (min-width:1080px)",
+    2
+   ],
+   [
+    "(min-width:960px)",
+    2
+   ]
+  ],
+  "reducedMotion": 20,
+  "colorScheme": 0,
+  "viewTransitions": 0,
+  "scrollTimelines": 14,
+  "containerQueries": 39,
+  "clamp": [
+   [
+    "clamp(24px,7vw,28px)",
+    2
+   ],
+   [
+    "clamp(64px,18vw,72px)",
+    2
+   ],
+   [
+    "clamp(300px,100vh - 200px,800px)",
+    1
+   ],
+   [
+    "clamp(19px, calc(-.0854167 * calc(100vw - 500 * 1px) + 60px), 60px)",
+    1
+   ],
+   [
+    "clamp(-104px, calc(.125 * calc(100vw - 500 * 1px) + -104px), -44px)",
+    1
+   ],
+   [
+    "clamp(21px, calc(.4 * calc(100vw - 500 * 1px) + 21px), 213px)",
+    1
+   ],
+   [
+    "clamp(-77px, calc(-.154839 * calc(100vw - 980 * 1px) + 19px), 19px)",
+    1
+   ],
+   [
+    "clamp(-44px, calc(.172581 * calc(100vw - 980 * 1px) + -44px), 63px)",
+    1
+   ],
+   [
+    "clamp(213px, calc(.653226 * calc(100vw - 980 * 1px) + 213px)",
+    1
+   ],
+   [
+    "clamp(100px,8.54167vw + 57.2917px,141px)",
+    1
+   ]
+  ]
+ },
+ "anatomy": {
+  "libs": [
+   "nextjs"
+  ],
+  "canvases": [],
+  "videos": 0,
+  "fonts": [
+   "NotionInter 400 normal",
+   "NotionInter 500 normal",
+   "NotionInter 600 normal",
+   "NotionInter 700 normal",
+   "Lyon Text 400 normal"
+  ],
+  "colorVars": {
+   "--tatami-color-gray-100": "#f9f9f8",
+   "--tatami-color-gray-200": "#f6f5f4",
+   "--tatami-color-gray-300": "#dfdcd9",
+   "--tatami-color-gray-400": "#a39e98",
+   "--tatami-color-gray-500": "#78736f",
+   "--tatami-color-gray-600": "#615d59",
+   "--tatami-color-gray-700": "#494744",
+   "--tatami-color-gray-800": "#31302e",
+   "--tatami-color-gray-900": "#191918",
+   "--tatami-color-red-100": "#fef3f1",
+   "--tatami-color-red-200": "#fdd3cd",
+   "--tatami-color-red-300": "#ff8b7c",
+   "--tatami-color-red-400": "#f77463",
+   "--tatami-color-red-500": "#f64932",
+   "--tatami-color-red-600": "#e32d14",
+   "--tatami-color-red-700": "#b01601",
+   "--tatami-color-red-800": "#6f0d00",
+   "--tatami-color-red-900": "#4f0900",
+   "--tatami-color-orange-100": "#fff5ed",
+   "--tatami-color-orange-200": "#ffdec4",
+   "--tatami-color-orange-300": "#ffad71",
+   "--tatami-color-orange-400": "#ff8a33",
+   "--tatami-color-orange-500": "#ff6d00",
+   "--tatami-color-orange-600": "#dd5b00",
+   "--tatami-color-orange-700": "#ab4a00",
+   "--tatami-color-orange-800": "#793400",
+   "--tatami-color-orange-900": "#532200",
+   "--tatami-color-yellow-100": "#fff5e0",
+   "--tatami-color-yellow-200": "#ffe4af",
+   "--tatami-color-yellow-300": "#ffd786",
+   "--tatami-color-yellow-400": "#ffc95e",
+   "--tatami-color-yellow-500": "#ffb110",
+   "--tatami-color-yellow-600": "#e89d01",
+   "--tatami-color-yellow-700": "#c78600",
+   "--tatami-color-yellow-800": "#a16c00",
+   "--tatami-color-yellow-900": "#704b00",
+   "--tatami-color-teal-100": "#f2fafa",
+   "--tatami-color-teal-200": "#bde6e4",
+   "--tatami-color-teal-300": "#83cbc9",
+   "--tatami-color-teal-400": "#2a9d99",
+   "--tatami-color-teal-500": "#27918d",
+   "--tatami-color-teal-600": "#0a7b77",
+   "--tatami-color-teal-700": "#126764",
+   "--tatami-color-teal-800": "#0a4d4b",
+   "--tatami-color-teal-900": "#042b29",
+   "--tatami-color-blue-100": "#f2f9ff",
+   "--tatami-color-blue-200": "#e6f3fe",
+   "--tatami-color-blue-300": "#93cdfe",
+   "--tatami-color-blue-400": "#62aef0",
+   "--tatami-color-blue-500": "#097fe8",
+   "--tatami-color-blue-600": "#0075de",
+   "--tatami-color-blue-700": "#005bab",
+   "--tatami-color-blue-800": "#00396b",
+   "--tatami-color-blue-900": "#002a4f",
+   "--tatami-color-purple-100": "#f8f5fc",
+   "--tatami-color-purple-200": "#eadbfa",
+   "--tatami-color-purple-300": "#d6b6f6",
+   "--tatami-color-purple-400": "#ad6ded",
+   "--tatami-color-purple-500": "#9849e8",
+   "--tatami-color-purple-600": "#7237ae"
+  },
+  "typeScale": [
+   {
+    "px": 64,
+    "family": "NotionInter",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "-2.12501px",
+    "transform": "none",
+    "chars": 10,
+    "n": 1,
+    "sample": "It’s time."
+   },
+   {
+    "px": 42,
+    "family": "NotionInter",
+    "weight": "700",
+    "lineHeight": "1.14",
+    "tracking": "-1.5px",
+    "transform": "none",
+    "chars": 171,
+    "n": 5,
+    "sample": "Time management, simplified."
+   },
+   {
+    "px": 42,
+    "family": "NotionInter",
+    "weight": "600",
+    "lineHeight": "1.14",
+    "tracking": "-1.5px",
+    "transform": "none",
+    "chars": 19,
+    "n": 1,
+    "sample": "Questions & answers"
+   },
+   {
+    "px": 22,
+    "family": "NotionInter",
+    "weight": "500",
+    "lineHeight": "1.27",
+    "tracking": "-0.25px",
+    "transform": "none",
+    "chars": 123,
+    "n": 1,
+    "sample": "All of your commitments, now in one place. Meet "
+   },
+   {
+    "px": 18,
+    "family": "NotionInter",
+    "weight": "700",
+    "lineHeight": "1.56",
+    "tracking": "-0.125px",
+    "transform": "none",
+    "chars": 397,
+    "n": 20,
+    "sample": "See your schedule at a glance"
+   },
+   {
+    "px": 16,
+    "family": "NotionInter",
+    "weight": "600",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 182,
+    "n": 4,
+    "sample": "Notion Calendar"
+   },
+   {
+    "px": 16,
+    "family": "NotionInter",
+    "weight": "500",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 82,
+    "n": 6,
+    "sample": "Get Notion Calendar free"
+   },
+   {
+    "px": 16,
+    "family": "NotionInter",
+    "weight": "400",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 2154,
+    "n": 26,
+    "sample": "Join meetings directly from the menu bar so you "
+   },
+   {
+    "px": 16,
+    "family": "Lyon Text",
+    "weight": "400",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 53,
+    "n": 2,
+    "sample": "We shape our tools,"
+   },
+   {
+    "px": 14,
+    "family": "NotionInter",
+    "weight": "500",
+    "lineHeight": "1.43",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 319,
+    "n": 30,
+    "sample": "Product"
+   },
+   {
+    "px": 14,
+    "family": "NotionInter",
+    "weight": "400",
+    "lineHeight": "1.43",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 55,
+    "n": 3,
+    "sample": "Marshall McLuhan"
+   },
+   {
+    "px": 12,
+    "family": "NotionInter",
+    "weight": "500",
+    "lineHeight": "1.33",
+    "tracking": "0.125px",
+    "transform": "none",
+    "chars": 33,
+    "n": 4,
+    "sample": "Product"
+   }
+  ],
+  "textColors": [
+   [
+    "rgba(0, 0, 0, 0.898)",
+    2927
+   ],
+   [
+    "rgba(0, 0, 0, 0.95)",
+    441
+   ],
+   [
+    "rgba(0, 0, 0, 0.54)",
+    88
+   ],
+   [
+    "rgb(25, 25, 24)",
+    58
+   ],
+   [
+    "rgb(255, 255, 255)",
+    48
+   ],
+   [
+    "rgb(0, 117, 222)",
+    24
+   ],
+   [
+    "rgba(0, 0, 0, 0.59)",
+    12
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(255, 255, 255)",
+    13837
+   ],
+   [
+    "rgb(246, 245, 244)",
+    4668
+   ],
+   [
+    "rgb(242, 249, 255)",
+    65
+   ],
+   [
+    "rgb(254, 243, 241)",
+    65
+   ],
+   [
+    "rgb(255, 245, 224)",
+    65
+   ],
+   [
+    "rgb(249, 249, 248)",
+    43
+   ]
+  ],
+  "bodyBg": "rgb(255, 255, 255)",
+  "htmlBg": "rgb(255, 255, 255)",
+  "transitions": [
+   [
+    "background-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+    33
+   ],
+   [
+    "text-decoration-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+    24
+   ],
+   [
+    "background-color, border-color | 0.15s | ease-in-out",
+    20
+   ],
+   [
+    "opacity, transform | 0.25s | linear",
+    17
+   ],
+   [
+    "background-color | 0.15s | ease",
+    5
+   ],
+   [
+    "outline-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+    3
+   ],
+   [
+    "transform | 0.1s | ease-in-out",
+    3
+   ],
+   [
+    "transform | 0.3s | ease",
+    1
+   ],
+   [
+    "box-shadow | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+    1
+   ],
+   [
+    "opacity | 0.15s | ease-in-out",
+    1
+   ]
+  ],
+  "docScreens": 9.4,
+  "title": "Notion Calendar",
+  "metaDesc": "Beautifully designed and fully integrated with Notion and Google Calendar."
+ },
+ "animsAtLoad": [
+  "CSSAnimation:globalNavigation-module-scss-module__HWB10a__navShadowScrolled|NaNms|delay 0|linear|1"
+ ],
+ "hovers": [],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 39.47
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [
+    "H1 64px: It’s time."
+   ],
+   "anims": 1
+  },
+  {
+   "i": 1,
+   "y": 675,
+   "file": "desktop-j01.webp",
+   "headings": [
+    "H2 42px: Time management, simplified.",
+    "H2 18px: See your schedule at a glance"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 2,
+   "y": 1350,
+   "file": "desktop-j02.webp",
+   "headings": [
+    "H2 18px: See your schedule at a glance",
+    "H2 18px: Built-in scheduling",
+    "H2 18px: Work across time zones"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 3,
+   "y": 2025,
+   "file": "desktop-j03.webp",
+   "headings": [
+    "H2 18px: Built-in scheduling",
+    "H2 18px: Work across time zones",
+    "H2 18px: Modern design",
+    "H2 18px: Available in 12 languages"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 4,
+   "y": 2700,
+   "file": "desktop-j04.webp",
+   "headings": [
+    "H2 18px: Modern design",
+    "H2 18px: Available in 12 languages",
+    "H2 42px: Fully integrated with your Notion workspace."
+   ],
+   "anims": 1
+  },
+  {
+   "i": 5,
+   "y": 3375,
+   "file": "desktop-j05.webp",
+   "headings": [
+    "H2 42px: Fully integrated with your Notion workspace.",
+    "H2 18px: Manage your time and work, together."
+   ],
+   "anims": 1
+  },
+  {
+   "i": 6,
+   "y": 4050,
+   "file": "desktop-j06.webp",
+   "headings": [
+    "H2 18px: Connect and create Notion docs",
+    "H2 18px: Update project timelines",
+    "H2 42px: Work and life, playing nice."
+   ],
+   "anims": 1
+  },
+  {
+   "i": 7,
+   "y": 4725,
+   "file": "desktop-j07.webp",
+   "headings": [
+    "H2 42px: Work and life, playing nice.",
+    "H2 18px: See all your commitments in the same place"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 8,
+   "y": 5400,
+   "file": "desktop-j08.webp",
+   "headings": [
+    "H2 18px: Connect multiple calendars",
+    "H2 18px: No more double bookings",
+    "H2 18px: Easy-to-use mobile app",
+    "H2 42px: Designed to work with your favorite tools."
+   ],
+   "anims": 1
+  },
+  {
+   "i": 9,
+   "y": 6075,
+   "file": "desktop-j09.webp",
+   "headings": [
+    "H2 42px: Designed to work with your favorite tools.",
+    "H2 18px: Notion",
+    "H2 18px: Google Calendar",
+    "H2 18px: Google Meet",
+    "H2 18px: Zoom",
+    "H2 18px: Apple Calendar"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 10,
+   "y": 6750,
+   "file": "desktop-j10.webp",
+   "headings": [
+    "H2 42px: Get Notion Calendar for free.",
+    "H3 18px: Desktop App",
+    "H3 18px: Mobile App"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 11,
+   "y": 7425,
+   "file": "desktop-j11.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 12,
+   "y": 7551,
+   "file": "desktop-j12.webp",
+   "headings": [],
+   "anims": 1
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [
+   "nextjs"
+  ],
+  "canvases": [],
+  "videos": 0,
+  "fonts": [
+   "NotionInter 400 normal",
+   "NotionInter 500 normal",
+   "NotionInter 600 normal",
+   "NotionInter 700 normal"
+  ],
+  "colorVars": {
+   "--tatami-color-gray-100": "#f9f9f8",
+   "--tatami-color-gray-200": "#f6f5f4",
+   "--tatami-color-gray-300": "#dfdcd9",
+   "--tatami-color-gray-400": "#a39e98",
+   "--tatami-color-gray-500": "#78736f",
+   "--tatami-color-gray-600": "#615d59",
+   "--tatami-color-gray-700": "#494744",
+   "--tatami-color-gray-800": "#31302e",
+   "--tatami-color-gray-900": "#191918",
+   "--tatami-color-red-100": "#fef3f1",
+   "--tatami-color-red-200": "#fdd3cd",
+   "--tatami-color-red-300": "#ff8b7c",
+   "--tatami-color-red-400": "#f77463",
+   "--tatami-color-red-500": "#f64932",
+   "--tatami-color-red-600": "#e32d14",
+   "--tatami-color-red-700": "#b01601",
+   "--tatami-color-red-800": "#6f0d00",
+   "--tatami-color-red-900": "#4f0900",
+   "--tatami-color-orange-100": "#fff5ed",
+   "--tatami-color-orange-200": "#ffdec4",
+   "--tatami-color-orange-300": "#ffad71",
+   "--tatami-color-orange-400": "#ff8a33",
+   "--tatami-color-orange-500": "#ff6d00",
+   "--tatami-color-orange-600": "#dd5b00",
+   "--tatami-color-orange-700": "#ab4a00",
+   "--tatami-color-orange-800": "#793400",
+   "--tatami-color-orange-900": "#532200",
+   "--tatami-color-yellow-100": "#fff5e0",
+   "--tatami-color-yellow-200": "#ffe4af",
+   "--tatami-color-yellow-300": "#ffd786",
+   "--tatami-color-yellow-400": "#ffc95e",
+   "--tatami-color-yellow-500": "#ffb110",
+   "--tatami-color-yellow-600": "#e89d01",
+   "--tatami-color-yellow-700": "#c78600",
+   "--tatami-color-yellow-800": "#a16c00",
+   "--tatami-color-yellow-900": "#704b00",
+   "--tatami-color-teal-100": "#f2fafa",
+   "--tatami-color-teal-200": "#bde6e4",
+   "--tatami-color-teal-300": "#83cbc9",
+   "--tatami-color-teal-400": "#2a9d99",
+   "--tatami-color-teal-500": "#27918d",
+   "--tatami-color-teal-600": "#0a7b77",
+   "--tatami-color-teal-700": "#126764",
+   "--tatami-color-teal-800": "#0a4d4b",
+   "--tatami-color-teal-900": "#042b29",
+   "--tatami-color-blue-100": "#f2f9ff",
+   "--tatami-color-blue-200": "#e6f3fe",
+   "--tatami-color-blue-300": "#93cdfe",
+   "--tatami-color-blue-400": "#62aef0",
+   "--tatami-color-blue-500": "#097fe8",
+   "--tatami-color-blue-600": "#0075de",
+   "--tatami-color-blue-700": "#005bab",
+   "--tatami-color-blue-800": "#00396b",
+   "--tatami-color-blue-900": "#002a4f",
+   "--tatami-color-purple-100": "#f8f5fc",
+   "--tatami-color-purple-200": "#eadbfa",
+   "--tatami-color-purple-300": "#d6b6f6",
+   "--tatami-color-purple-400": "#ad6ded",
+   "--tatami-color-purple-500": "#9849e8",
+   "--tatami-color-purple-600": "#7237ae"
+  },
+  "typeScale": [
+   {
+    "px": 42,
+    "family": "NotionInter",
+    "weight": "700",
+    "lineHeight": "1.14",
+    "tracking": "-1.5px",
+    "transform": "none",
+    "chars": 10,
+    "n": 1,
+    "sample": "It’s time."
+   },
+   {
+    "px": 32,
+    "family": "NotionInter",
+    "weight": "700",
+    "lineHeight": "1.25",
+    "tracking": "-0.75px",
+    "transform": "none",
+    "chars": 171,
+    "n": 5,
+    "sample": "Time management, simplified."
+   },
+   {
+    "px": 32,
+    "family": "NotionInter",
+    "weight": "600",
+    "lineHeight": "1.25",
+    "tracking": "-0.75px",
+    "transform": "none",
+    "chars": 19,
+    "n": 1,
+    "sample": "Questions & answers"
+   },
+   {
+    "px": 18,
+    "family": "NotionInter",
+    "weight": "500",
+    "lineHeight": "1.56",
+    "tracking": "-0.125px",
+    "transform": "none",
+    "chars": 123,
+    "n": 1,
+    "sample": "All of your commitments, now in one place. Meet "
+   },
+   {
+    "px": 18,
+    "family": "NotionInter",
+    "weight": "700",
+    "lineHeight": "1.56",
+    "tracking": "-0.125px",
+    "transform": "none",
+    "chars": 397,
+    "n": 20,
+    "sample": "See your schedule at a glance"
+   },
+   {
+    "px": 16,
+    "family": "NotionInter",
+    "weight": "600",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 182,
+    "n": 4,
+    "sample": "Notion Calendar"
+   },
+   {
+    "px": 16,
+    "family": "NotionInter",
+    "weight": "500",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 78,
+    "n": 6,
+    "sample": "Get Notion Calendar free"
+   },
+   {
+    "px": 16,
+    "family": "NotionInter",
+    "weight": "400",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 2154,
+    "n": 26,
+    "sample": "Join meetings directly from the menu bar so you "
+   },
+   {
+    "px": 14,
+    "family": "NotionInter",
+    "weight": "500",
+    "lineHeight": "1.43",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 276,
+    "n": 25,
+    "sample": "Get Notion Calendar free"
+   },
+   {
+    "px": 14,
+    "family": "NotionInter",
+    "weight": "400",
+    "lineHeight": "1.43",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 39,
+    "n": 2,
+    "sample": "Cookie settings"
+   },
+   {
+    "px": 12,
+    "family": "NotionInter",
+    "weight": "500",
+    "lineHeight": "1.33",
+    "tracking": "0.125px",
+    "transform": "none",
+    "chars": 33,
+    "n": 4,
+    "sample": "Product"
+   }
+  ],
+  "textColors": [
+   [
+    "rgba(0, 0, 0, 0.898)",
+    2884
+   ],
+   [
+    "rgba(0, 0, 0, 0.95)",
+    388
+   ],
+   [
+    "rgba(0, 0, 0, 0.54)",
+    72
+   ],
+   [
+    "rgb(25, 25, 24)",
+    54
+   ],
+   [
+    "rgb(255, 255, 255)",
+    48
+   ],
+   [
+    "rgb(0, 117, 222)",
+    24
+   ],
+   [
+    "rgba(0, 0, 0, 0.59)",
+    12
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(255, 255, 255)",
+    4329
+   ],
+   [
+    "rgb(246, 245, 244)",
+    2199
+   ]
+  ],
+  "bodyBg": "rgb(255, 255, 255)",
+  "htmlBg": "rgb(255, 255, 255)",
+  "transitions": [
+   [
+    "background-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+    33
+   ],
+   [
+    "text-decoration-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+    24
+   ],
+   [
+    "background-color, border-color | 0.15s | ease-in-out",
+    20
+   ],
+   [
+    "opacity, transform | 0.25s | linear",
+    17
+   ],
+   [
+    "background-color | 0.15s | ease",
+    5
+   ],
+   [
+    "outline-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+    3
+   ],
+   [
+    "transform | 0.1s | ease-in-out",
+    3
+   ],
+   [
+    "transform | 0.3s | ease",
+    1
+   ],
+   [
+    "box-shadow | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+    1
+   ],
+   [
+    "opacity | 0.15s | ease-in-out",
+    1
+   ]
+  ],
+  "docScreens": 12.1,
+  "title": "Notion Calendar",
+  "metaDesc": "Beautifully designed and fully integrated with Notion and Google Calendar."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [
+    "H1 42px: It’s time."
+   ],
+   "anims": 1
+  },
+  {
+   "i": 1,
+   "y": 760,
+   "file": "phone-j01.webp",
+   "headings": [
+    "H2 32px: Time management, simplified.",
+    "H2 18px: See your schedule at a glance",
+    "H2 18px: Built-in scheduling"
+   ],
+   "anims": 2
+  },
+  {
+   "i": 2,
+   "y": 1519,
+   "file": "phone-j02.webp",
+   "headings": [
+    "H2 18px: Built-in scheduling",
+    "H2 18px: Work across time zones"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 3,
+   "y": 2279,
+   "file": "phone-j03.webp",
+   "headings": [
+    "H2 18px: Modern design",
+    "H2 18px: Available in 12 languages"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 4,
+   "y": 3038,
+   "file": "phone-j04.webp",
+   "headings": [
+    "H2 32px: Fully integrated with your Notion workspace.",
+    "H2 18px: Manage your time and work, together."
+   ],
+   "anims": 2
+  },
+  {
+   "i": 5,
+   "y": 3798,
+   "file": "phone-j05.webp",
+   "headings": [
+    "H2 18px: Manage your time and work, together.",
+    "H2 18px: Connect and create Notion docs",
+    "H2 18px: Update project timelines"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 6,
+   "y": 4558,
+   "file": "phone-j06.webp",
+   "headings": [
+    "H2 18px: Update project timelines",
+    "H2 32px: Work and life, playing nice.",
+    "H2 18px: See all your commitments in the same place"
+   ],
+   "anims": 2
+  },
+  {
+   "i": 7,
+   "y": 5317,
+   "file": "phone-j07.webp",
+   "headings": [
+    "H2 18px: See all your commitments in the same place",
+    "H2 18px: Connect multiple calendars",
+    "H2 18px: No more double bookings",
+    "H2 18px: Easy-to-use mobile app"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 8,
+   "y": 6077,
+   "file": "phone-j08.webp",
+   "headings": [
+    "H2 18px: Easy-to-use mobile app",
+    "H2 32px: Designed to work with your favorite tools.",
+    "H2 18px: Notion",
+    "H2 18px: Google Calendar"
+   ],
+   "anims": 2
+  },
+  {
+   "i": 9,
+   "y": 6836,
+   "file": "phone-j09.webp",
+   "headings": [
+    "H2 18px: Google Meet",
+    "H2 18px: Zoom",
+    "H2 18px: Apple Calendar",
+    "H2 18px: Other providers"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 10,
+   "y": 7596,
+   "file": "phone-j10.webp",
+   "headings": [
+    "H2 32px: Get Notion Calendar for free.",
+    "H3 18px: Desktop App"
+   ],
+   "anims": 2
+  },
+  {
+   "i": 11,
+   "y": 8356,
+   "file": "phone-j11.webp",
+   "headings": [
+    "H3 18px: Mobile App"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 12,
+   "y": 9115,
+   "file": "phone-j12.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 13,
+   "y": 9343,
+   "file": "phone-j13.webp",
+   "headings": [],
+   "anims": 1
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+{
+ "slug": "phantom",
+ "url": "https://www.phantom.land/",
+ "found": {
+  "kind": "pattern",
+  "href": "https://www.phantom.land/projects/casamigos-world-cup-2026",
+  "top": 509,
+  "w": 928,
+  "h": 45
+ },
+ "clickedBy": "mouse",
+ "note": "click did not change URL within 200 ms",
+ "open": {
+  "urlFrom": "https://www.phantom.land/",
+  "urlTo": "https://www.phantom.land/",
+  "sameDocument": true,
+  "viewTransitions": 0,
+  "settleS": 0.0,
+  "frames": 776
+ },
+ "back": {
+  "urlTo": "about:blank",
+  "sameDocument": false,
+  "settleS": 0.03
+ }
+}

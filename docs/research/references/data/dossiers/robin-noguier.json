@@ -1,0 +1,403 @@
+{
+ "slug": "robin-noguier",
+ "url": "https://www.robin-noguier.com/",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "16px",
+  "scrollBehavior": "auto",
+  "scrollbarWidth": "auto",
+  "smoothLib": false,
+  "maxWidths": [
+   [
+    "580px",
+    1
+   ]
+  ],
+  "grids": [],
+  "gaps": [],
+  "spacingY": [
+   [
+    "5px",
+    18
+   ],
+   [
+    "52px",
+    2
+   ],
+   [
+    "191.3px",
+    2
+   ],
+   [
+    "13.104px",
+    2
+   ],
+   [
+    "34px",
+    1
+   ],
+   [
+    "-0.016px",
+    1
+   ]
+  ],
+  "spacingX": [
+   [
+    "40px",
+    9
+   ],
+   [
+    "90px",
+    8
+   ]
+  ],
+  "radii": [
+   [
+    "4px",
+    9
+   ]
+  ],
+  "shadows": [],
+  "effects": [
+   [
+    "clip-path: inset(0px 0px 0px 0%)",
+    1
+   ],
+   [
+    "clip-path: polygon(0px 0px, 88.6068% 0%, 88.6068% 2",
+    1
+   ]
+  ],
+  "cursors": [],
+  "fixed": 2,
+  "sticky": 0,
+  "nav": [],
+  "viewTransitionNames": [
+   "root"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 19393
+  }
+ ],
+ "css": {
+  "fontFaces": [],
+  "variables": {},
+  "keyframes": {},
+  "easings": [
+   [
+    "linear",
+    24
+   ],
+   [
+    "ease-out",
+    8
+   ],
+   [
+    "ease-in-out",
+    6
+   ]
+  ],
+  "durations": [
+   [
+    ".1s",
+    32
+   ],
+   [
+    "0.2s",
+    6
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "all and (min-height:625px)",
+    3
+   ],
+   [
+    "all and (orientation:landscape) and (max-device-width:375px)",
+    1
+   ],
+   [
+    "all and (orientation:landscape)",
+    1
+   ],
+   [
+    "(hover:hover)",
+    1
+   ]
+  ],
+  "reducedMotion": 0,
+  "colorScheme": 0,
+  "viewTransitions": 0,
+  "scrollTimelines": 0,
+  "containerQueries": 0,
+  "clamp": []
+ },
+ "anatomy": {
+  "libs": [
+   "nextjs"
+  ],
+  "canvases": [
+   "webgl"
+  ],
+  "videos": 0,
+  "fonts": [
+   "silka_rm 400 italic",
+   "eksell_rm_large normal normal",
+   "eksell_rm_small normal normal",
+   "silka_rm 400 normal",
+   "silka_rm 700 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 135,
+    "family": "eksell_rm_large",
+    "weight": "400",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 6,
+    "n": 2,
+    "sample": "Fun"
+   },
+   {
+    "px": 20,
+    "family": "silka_rm",
+    "weight": "400",
+    "lineHeight": "1.6",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 90,
+    "n": 1,
+    "sample": "Designing a new video-only dating app 💖 with Br"
+   },
+   {
+    "px": 16,
+    "family": "silka_rm",
+    "weight": "700",
+    "lineHeight": "1.5",
+    "tracking": "2px",
+    "transform": "uppercase",
+    "chars": 15,
+    "n": 1,
+    "sample": "Open case study"
+   },
+   {
+    "px": 14,
+    "family": "silka_rm",
+    "weight": "700",
+    "lineHeight": "1.5",
+    "tracking": "2px",
+    "transform": "uppercase",
+    "chars": 16,
+    "n": 2,
+    "sample": "OBIN NOGUIE"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(255, 255, 255)",
+    121
+   ],
+   [
+    "rgb(213, 222, 221)",
+    3
+   ],
+   [
+    "rgba(0, 0, 0, 0)",
+    3
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(0, 0, 0)",
+    1296
+   ],
+   [
+    "rgb(61, 102, 129)",
+    1296
+   ]
+  ],
+  "bodyBg": "rgb(0, 0, 0)",
+  "htmlBg": "rgb(0, 0, 0)",
+  "transitions": [
+   [
+    "transform | 0.2s | ease-in-out",
+    1
+   ]
+  ],
+  "docScreens": 1,
+  "title": "Robin Noguier - Interactive Designer",
+  "metaDesc": "Robin Noguier is an interactive designer working on apps and websites for startups, brands, and entrepreneurs."
+ },
+ "animsAtLoad": [],
+ "hovers": [
+  {
+   "i": 0,
+   "tag": "A",
+   "text": "OPEN CASE STUDY",
+   "w": 201.84375,
+   "h": 24,
+   "file": "clip-hover-0.webp",
+   "maxChangePct": 0.56
+  }
+ ],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 19.7
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [
+    "H1 135px: Google",
+    "H1 135px: Google"
+   ],
+   "anims": 0
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [
+   "nextjs"
+  ],
+  "canvases": [],
+  "videos": 0,
+  "fonts": [
+   "silka_rm 700 normal",
+   "eksell_rm_large normal normal",
+   "eksell_rm_small normal normal",
+   "silka_rm 400 normal",
+   "silka_rm 400 italic"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 58.5,
+    "family": "eksell_rm_large",
+    "weight": "400",
+    "lineHeight": "1.1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 62,
+    "n": 9,
+    "sample": "Fun"
+   },
+   {
+    "px": 16,
+    "family": "silka_rm",
+    "weight": "400",
+    "lineHeight": "1.6",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 959,
+    "n": 9,
+    "sample": "Designing a new video-only dating app 💖 with Br"
+   },
+   {
+    "px": 14,
+    "family": "silka_rm",
+    "weight": "700",
+    "lineHeight": "1.5",
+    "tracking": "1px",
+    "transform": "uppercase",
+    "chars": 151,
+    "n": 11,
+    "sample": "Open case study"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(255, 255, 255)",
+    888
+   ],
+   [
+    "rgb(13, 13, 13)",
+    222
+   ],
+   [
+    "rgb(185, 150, 110)",
+    11
+   ],
+   [
+    "rgb(102, 255, 222)",
+    10
+   ],
+   [
+    "rgb(254, 52, 72)",
+    9
+   ],
+   [
+    "rgb(255, 246, 231)",
+    8
+   ],
+   [
+    "rgb(204, 186, 142)",
+    6
+   ],
+   [
+    "rgb(255, 111, 100)",
+    6
+   ],
+   [
+    "rgb(210, 210, 210)",
+    5
+   ],
+   [
+    "rgb(255, 247, 148)",
+    4
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(61, 102, 129)",
+    987
+   ],
+   [
+    "rgb(204, 204, 204)",
+    648
+   ],
+   [
+    "rgb(0, 0, 0)",
+    329
+   ]
+  ],
+  "bodyBg": "rgb(0, 0, 0)",
+  "htmlBg": "rgb(0, 0, 0)",
+  "transitions": [
+   [
+    "opacity | 0.2s | ease-out",
+    49
+   ],
+   [
+    "transform | 0.2s | ease-in-out",
+    9
+   ]
+  ],
+  "docScreens": 1,
+  "title": "Robin Noguier - Interactive Designer",
+  "metaDesc": "Robin Noguier is an interactive designer working on apps and websites for startups, brands, and entrepreneurs."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [
+    "H1 59px: Fun",
+    "H1 59px: Esperanto",
+    "H1 59px: Blurr",
+    "H1 59px: Ueno",
+    "H1 59px: Airbnb",
+    "H1 59px: Google"
+   ],
+   "anims": 0
+  }
+ ]
+}

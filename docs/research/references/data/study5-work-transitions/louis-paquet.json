@@ -1,0 +1,17 @@
+{
+ "slug": "louis-paquet",
+ "url": "https://louispaquet.com/",
+ "open": {
+  "urlFrom": "https://louispaquet.com/",
+  "urlTo": "https://louispaquet.com/",
+  "sameDocument": true,
+  "viewTransitions": 0,
+  "settleS": 0.0,
+  "frames": 54
+ },
+ "back": {
+  "urlTo": "about:blank",
+  "sameDocument": false,
+  "settleS": 0.0
+ }
+}

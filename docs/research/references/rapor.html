@@ -1,0 +1,636 @@
+<title>Referans Araştırması</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an editorial review sheet. One 68ch reading column; site studies widen to a two-part
+   plate (images left, measured anatomy right). Quiet graphite neutrals with a cool white-blue
+   accent borrowed from the portfolio's own "edk" light. */
+:root {
+  --bg: #f6f6f4; --surface: #ffffff; --line: #e1e2e0; --ink: #1d1f22; --ink-2: #555a61; --ink-3: #8a8f96;
+  --accent: #3d6fb6; --accent-soft: #e8eff9; --quote: #f0efe9;
+  --good: #2f7d4e; --bad: #b2453f;
+  --display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --body: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #131416; --surface: #1a1c1f; --line: #2b2e33; --ink: #e8e9eb; --ink-2: #a7acb3; --ink-3: #737981;
+  --accent: #9cc0f0; --accent-soft: #1d2735; --quote: #1f2023; --good: #7fcf9c; --bad: #ef9a94; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #131416; --surface: #1a1c1f; --line: #2b2e33; --ink: #e8e9eb; --ink-2: #a7acb3; --ink-3: #737981;
+  --accent: #9cc0f0; --accent-soft: #1d2735; --quote: #1f2023; --good: #7fcf9c; --bad: #ef9a94; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16.5px; line-height: 1.62; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: max(16px, 4vw); padding-block: 56px 120px; }
+.col { max-width: 68ch; }
+a { color: var(--accent); text-underline-offset: 3px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.04; letter-spacing: -.01em; }
+h2 { font-size: clamp(27px, 3vw, 34px); line-height: 1.12; margin-top: 72px; padding-top: 22px; border-top: 1px solid var(--line); }
+h3 { font-size: 24px; line-height: 1.2; }
+p { margin: 0; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.stack { display: grid; gap: 14px; }
+.lede { font-size: 19px; color: var(--ink-2); }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; margin-top: 22px; }
+.toc a { color: var(--ink-2); text-decoration: none; border-bottom: 1px solid var(--line); }
+.toc a:hover { color: var(--ink); }
+ol.key, ul.plain { margin: 0; padding-left: 1.2em; display: grid; gap: 10px; }
+ol.key li::marker { font-family: var(--mono); color: var(--accent); font-size: 14px; }
+b, strong { font-weight: 600; }
+.tag { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .05em; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; color: var(--ink-3); vertical-align: 2px; }
+.src { font-size: 13.5px; color: var(--ink-3); }
+
+.criteria { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 14px; margin-top: 20px; }
+.crit { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 6px; align-content: start; }
+.crit .n { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+.crit h4 { margin: 0; font-family: var(--display); font-weight: 500; font-size: 20px; }
+.crit p { font-size: 14.5px; color: var(--ink-2); }
+
+.evidence { display: grid; gap: 0; margin-top: 18px; border-top: 1px solid var(--line); }
+.ev { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr); gap: 4px 22px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.ev .num { font-family: var(--display); font-size: 28px; line-height: 1.05; color: var(--ink); }
+.ev .num small { display: block; font-family: var(--body); font-size: 12.5px; color: var(--ink-3); margin-top: 4px; }
+.ev p { font-size: 15px; color: var(--ink-2); }
+@media (max-width: 620px) { .ev { grid-template-columns: 1fr; } }
+
+.site { margin-top: 56px; display: grid; gap: 18px; }
+.site header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.site header h3 { font-size: 30px; }
+.site header .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+.site header a { font-size: 14px; }
+blockquote.yours { margin: 0; background: var(--quote); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 12px 16px; font-family: var(--display); font-size: 19px; line-height: 1.4; font-style: italic; }
+blockquote.yours cite { display: block; font-family: var(--mono); font-style: normal; font-size: 11.5px; color: var(--ink-3); margin-top: 6px; letter-spacing: .04em; }
+.plate { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+@media (max-width: 860px) { .plate { grid-template-columns: 1fr; } }
+.shots { display: grid; gap: 10px; }
+.shots.two { grid-template-columns: 1fr 1fr; }
+figure { margin: 0; display: grid; gap: 5px; }
+figure img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); }
+figure.phone img { max-width: 220px; justify-self: start; }
+figcaption { font-size: 12.5px; color: var(--ink-3); }
+.anat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 4px 16px; font-size: 14px; }
+.anat dl { display: grid; grid-template-columns: minmax(0, 6.2rem) minmax(0, 1fr); margin: 0; }
+.anat dt, .anat dd { padding: 9px 0; border-bottom: 1px solid var(--line); margin: 0; }
+.anat dt { font-family: var(--mono); font-size: 11.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); padding-top: 11px; }
+.anat dd { color: var(--ink); }
+.anat dl > :nth-last-child(-n+2) { border-bottom: 0; }
+.anat code, code { font-family: var(--mono); font-size: 12.5px; background: var(--accent-soft); border-radius: 4px; padding: 0 4px; overflow-wrap: anywhere; }
+.sw { display: inline-block; width: 11px; height: 11px; border-radius: 3px; border: 1px solid var(--line); vertical-align: -1px; margin-right: 3px; }
+.why { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px 26px; }
+.why h4 { margin: 0 0 4px; font-size: 13px; font-family: var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+.why ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; font-size: 15px; }
+.why .take h4 { color: var(--accent); }
+
+.brief { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; margin-top: 18px; }
+.brief .crit p { font-size: 14px; }
+
+.patterns { display: grid; gap: 0; margin-top: 16px; border-top: 1px solid var(--line); }
+.pat { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: 4px 24px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.pat h4 { margin: 0; font-family: var(--display); font-weight: 500; font-size: 20px; line-height: 1.2; }
+.pat h4 span { display: block; font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); font-weight: 400; margin-top: 4px; }
+.pat p { font-size: 15px; color: var(--ink-2); }
+@media (max-width: 680px) { .pat { grid-template-columns: 1fr; } }
+
+.blueprint { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 16px; margin-top: 18px; }
+.bp { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: grid; gap: 10px; align-content: start; }
+.bp h4 { margin: 0; font-family: var(--display); font-weight: 500; font-size: 23px; }
+.bp ol { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; font-size: 15px; }
+.formula { background: var(--accent-soft); border-radius: 10px; padding: 14px 18px; font-size: 15.5px; display: grid; gap: 8px; }
+.formula .ex { font-family: var(--display); font-size: 19px; }
+.formula .no { color: var(--ink-3); text-decoration: line-through; text-decoration-thickness: 1px; }
+
+.q { display: grid; gap: 14px; margin-top: 18px; counter-reset: q; }
+.q > div { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+.q > div::before { counter-increment: q; content: "Soru " counter(q); display: block; font-family: var(--mono); font-size: 11.5px; color: var(--accent); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+.q p + p { margin-top: 6px; color: var(--ink-2); font-size: 15px; }
+footer.note { margin-top: 72px; font-size: 13.5px; color: var(--ink-3); border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+<style>
+table.m { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+table.m th, table.m td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.m th { font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+table.m td:first-child { font-weight: 500; }
+table.m tr.hl td { background: var(--accent-soft); }
+.tw { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.fulls { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 12px; margin-top: 16px; align-items: start; }
+.fulls figure img { max-height: 520px; object-fit: cover; object-position: top; }
+.order { display: grid; gap: 0; margin-top: 16px; border-left: 2px solid var(--accent); padding-left: 18px; }
+.order > div { padding: 8px 0; display: grid; grid-template-columns: minmax(0, 10rem) minmax(0, 1fr); gap: 4px 18px; }
+.order b { font-family: var(--display); font-weight: 500; font-size: 18px; }
+.order span { font-size: 15px; color: var(--ink-2); }
+@media (max-width: 620px) { .order > div { grid-template-columns: 1fr; } }
+.answers { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; margin-top: 18px; }
+.answers .crit p.a { color: var(--ink); font-size: 15px; }
+.mock { background: #141517; color: #d9dadc; border-radius: 12px; padding: 26px 28px; font-family: var(--body); display: grid; gap: 22px; max-width: 760px; border: 1px solid #2a2c30; }
+.mock .strip { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); gap: 4px 22px; }
+.mock .lab { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #7b8088; padding-top: 3px; }
+.mock .big { font-family: var(--display); font-size: 30px; line-height: 1.15; color: #eceef1; }
+.mock .t { font-size: 15px; color: #b7bbc1; }
+.mock .t b { color: #eceef1; font-weight: 500; }
+.mock .row { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid #2a2c30; padding: 7px 0; font-size: 14.5px; }
+.mock .row:last-child { border-bottom: 1px solid #2a2c30; }
+.mock .row i { font-style: normal; color: #7b8088; font-size: 13px; }
+.mock .ph { color: #7b8088; font-style: italic; }
+@media (max-width: 560px) { .mock .strip { grid-template-columns: 1fr; } .mock { padding: 20px 18px; } }
+</style>
+<style>.vote-like{color:var(--good);font-weight:500}.vote-dislike{color:var(--bad);font-weight:500} table.m td.note{white-space:normal;min-width:22rem;color:var(--ink-2)}</style>
+<div class="wrap">
+<header class="col stack">
+  <div class="eyebrow">Tasarım İnceleme · final raporu · 12–14 Ekim 2026</div>
+  <h1>Referans araştırması: tüm bulgular</h1>
+  <p class="lede">Eren Deniz Kuyucaklıoğlu'nun portfolyosu için yapılan tasarım araştırmasının tamamı: hangi siteler incelendi, neler ölçüldü, sahibi neyi beğendi ve neden, araştırma ne diyor ve bütün bunlardan hangi saptamalar çıkıyor. Bu rapor bir karar belgesi değil; portfolyo geliştirilirken başvurulacak kanıt arşivi.</p>
+  <nav class="toc" aria-label="İçindekiler">
+    <a href="#ozet">Özet</a><a href="#yontem">Yöntem</a><a href="#olcut">Ölçütler</a><a href="#oylar">Oylar</a><a href="#kanit">Araştırma</a>
+    <a href="#c1">1 · 29 site</a><a href="#c2">2 · 127 site</a><a href="#c3">3 · Sevilen 12 site</a><a href="#kalip">Ortak kalıplar</a>
+    <a href="#c4">4 · Ana sayfalar</a><a href="#c5">5 · Work geçişleri</a><a href="https://claude.ai/artifact/V1SZ4t9nfRH7TuxVw3tdva">Ek · Beğenilen 16 sitenin dosyası</a><a href="#saptama">Saptamalar</a><a href="#sinir">Sınırlar</a><a href="#dosya">Dosyalar</a>
+  </nav>
+</header>
+
+<h2 id="ozet">Özet</h2>
+<div class="col">
+<ol class="key">
+  <li><b>Ne yapıldı:</b> 3 günde 5 çalışma. 29 site ilk ölçümle incelendi; 3 ajanın bulduğu ödüllü ve çok konuşulmuş sitelerle 127 sitelik bir seçki kuruldu; sahibi 31 siteye oy ve not verdi; en çok sevilen 12 site baştan sona söküldü; sade kişisel ana sayfalar (13) ve galeriden sayfaya geçişler (14 galeri) ayrıca ölçüldü.</li>
+  <li><b>Sahibin zevki:</b> işe alım önce gelir; ana sayfa kısa, net, CV gibi; açılış gösterisi yok; Work zengin, etkileşimli, ürün gibi; ürün adım adım ve kullanıcıyı satarak anlatılır. En sevilenler: Shopify Editions ve Dia.</li>
+  <li><b>Ölçümün söylediği:</b> sevilen ürün sayfaları aynı iskeleti kullanıyor (vaat cümlesi, bölüm başına tek fikir, sabit dizin); hareket kısa ve tutarlı (arayüz 150–300 ms, sahne 400–1000 ms); metin ve zemin saf siyah ya da saf beyaz değil.</li>
+  <li><b>Sade kişisel ana sayfalar</b> 1,1–2,8 ekran uzunluğunda, tek dar sütunda (600–670 px), aynı sırayla: ad ve rol, bugün, işler, yazılar, şu sıralar, bağlantılar.</li>
+  <li><b>Work geçişi:</b> sahibinin tarif ettiği "görsel kendi sayfasına akıyor" etkisi Robin Noguier'de: ortak öğe geçişi, açılış 1,4 sn, dönüş 1,6 sn, sayfa yeniden yüklenmeden.</li>
+  <li><b>Ek dosya:</b> beğenilen ya da olumlu not düşülen 16 sitenin her biri için ayrıntılı dosya (<a href="begenilenler.html">begenilenler.html</a>; çevrimiçi: <a href="https://claude.ai/artifact/V1SZ4t9nfRH7TuxVw3tdva">Beğenilen Siteler Dosyası</a>): ilk analiz, kısa hareketli kayıtlar, sayfa akışı ve CSS'ten okunan fontlar, ölçüler, renkler, boşluklar, hareket süreleri ve eğrileri.</li>
+  <li><b>Araştırma kanıtı:</b> işe alımcı ilk taramaya yaklaşık 7,4 sn ayırıyor; bakış süresinin %74'ü ilk iki ekranda geçiyor; "kullanıcıyı harika yap" ilkesinin kaynağı Kathy Sierra.</li>
+</ol>
+</div>
+
+<h2 id="yontem">Kapsam ve yöntem</h2>
+<div class="evidence">
+  <div class="ev"><div class="num">2 boyut<small>her sitede</small></div><p>Masaüstü 1440×900 (1×) ve telefon 390×844 (2×, iPhone tarayıcı kimliğiyle; gerçek Safari değil). Sahibinin bilgisayarındaki Chrome, Playwright ile otomatik sürüldü.</p></div>
+  <div class="ev"><div class="num">Görüntü<small>ne yakalandı</small></div><p>İlk ekran, belirleyici kaydırma konumları, ilk 3 saniyenin animasyonu (ilk boyamadan itibaren, saniyede 10 kare), fare tekerleğiyle kaydırma kaydı; sevilen 12 site için sayfanın uçtan uca kaydırılmış kareleri; 4 galeride tıklamadan itibaren geçiş kaydı.</p></div>
+  <div class="ev"><div class="num">Ölçü<small>tarayıcıdan okunan</small></div><p>Yüklenen fontlar, tüm yazı ölçeği (boyut, ağırlık, satır aralığı, harf aralığı), satır uzunluğu, renkler ve CSS renk değişkenleri, her geçiş ve animasyonun süresi ve yumuşama eğrisi, kullanılan kütüphaneler (GSAP, Lenis, Three.js…), sayfa uzunluğu, bölüm yapısı, ilk ekrandaki kelime sayısı, açılış hareketinin süresi (karelerin durduğu an), ekrandaki renk sayısı.</p></div>
+  <div class="ev"><div class="num">Gizlilik<small>yakalamadan önce</small></div><p>E-posta, telefon numarası ve "bana yaz" satırları sayfada bulanıklaştırıldıktan sonra görüntü alındı; ölçüm dosyalarındaki metinlerden de silindi. Giriş yapılmadı, form gönderilmedi, çerez onayı verilmedi (bannerlar yalnızca gizlendi).</p></div>
+</div>
+<h2 id="olcut">Sahibin ölçütleri</h2>
+<p class="col lede">Sahibin 12 Ekim sesli notundan, seçki notlarından ve 14 Ekim notlarından. 14 Ekim maddeleri sahibin görüşleridir, karar değildir; kararlar portfolyonun geliştirilmesinde verilir. Tam ve tarihli metin: <code>data/owner-criteria.tr.md</code>.</p>
+<div class="criteria">
+  <div class="crit"><span class="n">1 · birincil</span><h4>İşe alım</h4><p>Ana sayfa ilk bakışta "neden bu kişi?" sorusunu cevaplar: ne biliyor, ne yaptı, neye odaklanıyor. En hızlı yoldan.</p></div>
+  <div class="crit"><span class="n">2 · ikincil</span><h4>Tanışma</h4><p>"Bak bu benim sitem" dendiğinde karşı taraf "ha, bunlarla ilgileniyorsun, şunları yapmışsın" diyebilmeli.</p></div>
+  <div class="crit"><span class="n">3</span><h4>Okunabilir estetik</h4><p>Göz yormayan, tekdüze olmayan, nokta atışı anlatım. "Hayalleri gerçeğe dönüştürüyorum" gibi süslü cümleler yok.</p></div>
+  <div class="crit"><span class="n">4</span><h4>Merak</h4><p>Her kaydırmada "devamında ne var?" hissi. Düz metin ve düz fotoğraf dizisi değil.</p></div>
+  <div class="crit"><span class="n">5</span><h4>Sayfa görevleri</h4><p>Ana sayfa sade ve CV mantığında. Work etkileşimli, animasyonlu, ürün odaklı: ziyaretçi derine inmeyi seçtiği yerde zenginlik.</p></div>
+  <div class="crit"><span class="n">6</span><h4>Ürün vizyonu</h4><p>Ürünü adım adım, hızlı, kafa karıştırmadan anlatmak; ve ürünü değil, ürünle daha iyi olan kullanıcıyı satmak.</p></div>
+  <div class="crit"><span class="n">7 · 14 Ekim · görüş</span><h4>Açılış anına mesafeli</h4><p>Büyük açılış anı ve 1–2 saniyelik "hızlı vitrin sonra küçülme" için: "bence hiç uygun değil"; işe alan kişi için "daha direkt bir şey olması daha iyi olabilir".</p></div>
+  <div class="crit"><span class="n">8 · 14 Ekim · görüş</span><h4>Ana sayfa derli toplu</h4><p>"Tek sayfa simple olanlardaki netliği istiyorum", Dia'daki gibi "ben buyum"; "uzun mu kısa mı emin değilim"; "herhalde şerit şerit... düşünüyor olabilirim"; işler kısmı Work'e bir yönlendirme olabilir.</p></div>
+  <div class="crit"><span class="n">9 · 14 Ekim · görüş</span><h4>Work geçişi</h4><p>Yan yana ya da alt alta işler; tıklayınca görsel akıcı biçimde açılıp kendi sayfasına tamamlanıyor, yeni sayfa açılmış gibi hissettirmiyor: "Work'e de öyle bir şey isterim muhtemelen."</p></div>
+  <div class="crit"><span class="n">10 · 14 Ekim · görüş</span><h4>Açık tema düğmesi</h4><p>"Galiba sitenin genel yapısına uymuyor"; bölüm bölüm farklı zemin olabilir; "burayı portfolyoya bırakmak da mantıklı olabilir". "Şu sıralar" bölümü: "olabilir tabii ki de".</p></div>
+</div>
+
+<h2 id="oylar">Sahibin oyları ve notları</h2>
+<p class="col lede">Seçkide 31 site işaretlendi: 15 beğeni, 16 beğenmeme. Notlar sahibin kendi sözleri, olduğu gibi.</p>
+<div class="tw"><table class="m"><thead><tr><th>Site</th><th>Oy</th><th>Not</th></tr></thead><tbody><tr><td>Anime.js</td><td class="vote-like">beğendi</td><td class="note">çok güzel basit bir akış adım adım ürünü açıklıyor tek bir referans etrafında kendini çeşitlendiriyor güzel, biz de ürün showcaselerken kullanabiliriz</td></tr><tr><td>Anthony Fu</td><td class="vote-like">beğendi</td><td class="note">çok temiz kendini açıklıyor ben buyum bunları yapıyorum harika</td></tr><tr><td>Antoine Wodniack</td><td class="vote-like">beğendi</td><td class="note">renk göz yoruyor ama animasyon yazı ve font, work&#x27;ün sunuluş biçimi baya güzel bir showcase</td></tr><tr><td>Arc</td><td class="vote-like">beğendi</td><td class="note">bence biraz daha sönük ama minimalist ok</td></tr><tr><td>Dia (The Browser Company)</td><td class="vote-like">beğendi</td><td class="note">BAYILDIM minimalist harika bir özet, ürünü harika tanıtıyor ve gösteriyor asla sıkıcı değil, animasyonlar ve genel sunum adım adım çok basit ve açıklayıcı ürünü güzel pazarlıyor</td></tr><tr><td>Exat (Hot Type)</td><td class="vote-like">beğendi</td><td class="note">çok güzel ama bizimle alakası pek yok</td></tr><tr><td>Jakub Krehel</td><td class="vote-like">beğendi</td><td class="note">ilk sayfa çok sade spark diyebileceğim bir hissi yok ama işleri projeleri ve yazılarının içeriği ve sunumu baya güzel ve ilham verici, sadece tek siyah beyaz bence göz yorucu</td></tr><tr><td>Jhey Tompkins</td><td class="vote-like">beğendi</td><td class="note">hiçbir şey içermiyor ama sadelik ve şıklık var nötr&#x27;üm ama hitap etmiyor</td></tr><tr><td>Mathis Biabiany</td><td class="vote-like">beğendi</td><td class="note">yavaş ve kötü optimizasyon ama arka planda yaptığı ve özellikle 3d işleri inanılmaz iyi duruyor ama bizlik bir yanı şuan yok</td></tr><tr><td>Maxime Heckel</td><td class="vote-like">beğendi</td><td class="note">çok bir havası yok, tüm işlerini sunuyor ve güzel güzel açıklıyor ama üzerine çok da okumak için bir sebep vermiyro çok teknik kalıyor</td></tr><tr><td>Notion Calendar</td><td class="vote-like">beğendi</td><td class="note">basit güzel akıcı anlatıyor</td></tr><tr><td>Playdate (Panic)</td><td class="vote-like">beğendi</td><td class="note">renk tasarım canlı göze çarpıyor bakması stili güzel</td></tr><tr><td>Robin Noguier</td><td class="vote-like">beğendi</td><td class="note">ilk sunum ve sunumdan içeriğe geçişi çok akıcı bayıldım, ama birkaç şeyi sunuyor ama kendisini sunmuyor, portfolyo&#x27;nun kendisi için değil ancak work kısmında iş görebilir</td></tr><tr><td>Shopify Editions, Renaissance</td><td class="vote-like">beğendi</td><td class="note">BAYILDIM, sunum aşırı güzel animasyonlar ve görseller mükemmel, hiçbir noktada sıkıcılarşmıyor harika bir kompozisyon harika bir akış renk okunabilirlik propozisyon animasyonlar harika bayıldım</td></tr><tr><td>Stripe</td><td class="vote-like">beğendi</td><td class="note">—</td></tr><tr><td>Bruno Simon</td><td class="vote-dislike">beğenmedi</td><td class="note">kötü</td></tr><tr><td>Bézier</td><td class="vote-dislike">beğenmedi</td><td class="note">bize hitap etmiyor</td></tr><tr><td>Chungi Yoo</td><td class="vote-dislike">beğenmedi</td><td class="note">avaraj</td></tr><tr><td>Cowboy</td><td class="vote-dislike">beğenmedi</td><td class="note">bize hitap etmiyor</td></tr><tr><td>Craig Mod</td><td class="vote-dislike">beğenmedi</td><td class="note">okunaksız ve ucuz</td></tr><tr><td>Cyd Stumpel</td><td class="vote-dislike">beğenmedi</td><td class="note">konsept güzel ama eski kaldı pek modern değil</td></tr><tr><td>Daylight Computer</td><td class="vote-dislike">beğenmedi</td><td class="note">yorucu uzun uzun, hızlı ve açık değil</td></tr><tr><td>Eduard Bodak</td><td class="vote-dislike">beğenmedi</td><td class="note">güzel gösteriyor ama iyi açıklamıyor</td></tr><tr><td>Frank Chimero</td><td class="vote-dislike">beğenmedi</td><td class="note">oki ama bizlik değil vasat</td></tr><tr><td>Henry Heffernan</td><td class="vote-dislike">beğenmedi</td><td class="note">ok ama bizle alakası yok</td></tr><tr><td>Jesse Zhou</td><td class="vote-dislike">beğenmedi</td><td class="note">evet uzun sürüyor vakit alıyor</td></tr><tr><td>Josh W. Comeau</td><td class="vote-dislike">beğenmedi</td><td class="note">göz alıcı bir tarafı yok</td></tr><tr><td>Louis Paquet</td><td class="vote-dislike">beğenmedi</td><td class="note">basitliği güzel her şey açık ve net, ama işlerini görebilmek için teker teker yüksek bütçeli sayfalar açmak optimal bir yol değil</td></tr><tr><td>Lynn Fisher</td><td class="vote-dislike">beğenmedi</td><td class="note">—</td></tr><tr><td>Merouane Bali</td><td class="vote-dislike">beğenmedi</td><td class="note">bu yoldan vazgeçtim güzel ama çok bir hiring ya da pazarlama noktası yok, sanırsam kendini iyi hızlı efektif ve modern pazarlama tanıtma çok önemli</td></tr><tr><td>Scout Motors</td><td class="vote-dislike">beğenmedi</td><td class="note">render&#x27;ları kötü ucuz ve cilasız hissettiriyor</td></tr></tbody></table></div>
+<h2 id="kanit">Araştırma ne diyor</h2>
+<p class="col lede">Ayrı bir araştırmacı işe alım, okunabilirlik ve ürün pazarlaması sorularını kaynaklarıyla inceledi. Kesin olanlarla zayıf olanlar ayrıldı; ayrıntı <code>data/research-sources.md</code>'de.</p>
+<div class="evidence">
+  <div class="ev"><div class="num">7,4 sn<small>ilk özgeçmiş taraması</small></div><p>Ladders göz izleme çalışması (2018). Sade düzen, net başlıklar, en üstte bir özet cümlesi en iyi sonucu verdi; kalabalık, çok sütunlu, uzun cümleli olanlar en kötüsünü. Tek bir sektör çalışması, örneklem belirtilmemiş: büyüklük doğru, rakam kesin değil. <a href="https://www.hrdive.com/news/recruiters-spend-74-seconds-looking-at-your-resume/541582/">HR Dive</a></p></div>
+  <div class="ev"><div class="num">%57 · %74<small>ilk ekran · ilk iki ekran</small></div><p>Nielsen Norman Group, 2018: sayfaya bakış süresinin %57'si ilk ekranda, %74'ü ilk iki ekranda geçiyor. Kanıt ilk iki ekranda olmalı. <a href="https://www.nngroup.com/articles/scrolling-and-attention/">NN/g</a></p></div>
+  <div class="ev"><div class="num">"Sahte zemin"<small>tam ekran açılış riski</small></div><p>Tam ekran bir açılış ve güçlü yatay ayırıcılar sayfayı "bitmiş" gösterir; bir çalışmada 8 kişiden 6'sı aşağıdaki içeriği kaçırdı. Çözüm: sonraki bölüm ilk ekranın altından görünsün. <a href="https://www.nngroup.com/articles/illusion-of-completeness/">NN/g</a></p></div>
+  <div class="ev"><div class="num">3–5 proje<small>derin vaka çalışması</small></div><p>204 işe alım yöneticisiyle anket: az ama derin proje; her birinde sorun, adayın rolü, kısıtlar, kararlar, sonuç. Taranabilir yazı. (Anket UX rolleri için; yapı mühendisliğe de taşınıyor.) <a href="https://www.nngroup.com/articles/ux-design-portfolios/">NN/g</a></p></div>
+  <div class="ev"><div class="num">50–75 karakter<small>satır uzunluğu</small></div><p>Baymard Enstitüsü; metin boyutu için Butterick 15–25 px öneriyor. Sevdiğin sitelerde gövde metni 14–20 px arasında (Playdate 28,5 px ile istisna). <a href="https://baymard.com/blog/line-length-readability">Baymard</a> · <a href="https://practicaltypography.com/point-size.html">Butterick</a></p></div>
+  <div class="ev"><div class="num">#121212 · %87<small>koyu tema zemini · metin</small></div><p>Google Material, koyu temada saf siyah yerine #121212 kullanıyor, metni %87 beyazla veriyor; çok yüksek karşıtlığın ve doygun renklerin koyu zeminde "titreştiğini" söylüyor. Sahibin yorgunluk gözlemine uyuyor; doğrudan bilimsel kanıtı ince. <a href="https://medium.com/androiddevelopers/dark-theme-with-mdc-4c6fc357d956">Android Developers</a></p></div>
+  <div class="ev"><div class="num">Mario'yu göster<small>kullanıcıyı pazarlamak</small></div><p>Kathy Sierra: "Etkileyici bir ürün yapma, kullanıcılarını etkileyici yap"; sınavı: ideal bir kullanıcı yorumu ürünü değil, kullanıcının artık ne yapabildiğini anlatır. Samuel Hulick: ateş çiçeğini anlatma, ateş topu atan Mario'yu göster. "İnsanlar ürün değil, kendilerinin daha iyi bir versiyonunu alır" cümlesi Zander Nethercutt'a ait. <a href="http://businessofsoftware.org/2013/03/kathy-sierra-on-designing-for-badass/">Sierra</a> · <a href="https://www.heavybit.com/library/article/samuel-hulick-elements-of-user-onboarding">Hulick</a> · <a href="https://zander.substack.com/p/people-dont-buy-products-they-buy">Nethercutt</a></p></div>
+</div>
+
+<h2 id="c1">Çalışma 1 · 29 site, ilk ölçümler (12 Ekim)</h2>
+<p class="col lede">Kişisel markalar, ürün sayfaları ve fotoğraf siteleri. Her site masaüstünde ve telefonda yakalandı, ilk 3 saniyesi kaydedildi, yazı boyutları, satır uzunluğu, ilk ekranın doluluğu, renk sayısı ve açılış süresi ölçüldü.</p>
+<figure style="margin-top:16px"><img src="img/study1-29-sites.webp" alt="29 sitenin masaüstü ilk ekranları" loading="lazy"><figcaption>29 sitenin masaüstü ilk ekranı.</figcaption></figure>
+<div class="tw"><table class="m">
+  <thead><tr><th>Site</th><th>Tür</th><th>İlk 3 saniyede izlenimi yaratan</th><th>En büyük / gövde</th><th>Açılış</th></tr></thead>
+  <tbody>
+    <tr><td>Rauno Freiberg</td><td>kişisel</td><td>Beyaz kartta tek cümlelik biyografi, arkasında büyüyen sarı daire</td><td>720 (harf kartları) / 14</td><td>≈1,6 sn</td></tr>
+    <tr><td>Paco Coursey</td><td>kişisel</td><td>#1a1a1a üstünde yalnızca metin, yukarıdan aşağı yumuşak beliriş</td><td>17 / 16</td><td>≈0,7–1 sn</td></tr>
+    <tr><td>Emil Kowalski</td><td>kişisel</td><td>Beyaz sayfa, tek sütun 16 px metin, hareket yok</td><td>16 / 16</td><td>0</td></tr>
+    <tr><td>Brian Lovin</td><td>kişisel</td><td>Saf siyah, avatar, bir cümle, listeler</td><td>24 / 20</td><td>≈1 sn</td></tr>
+    <tr><td>Guillermo Rauch</td><td>kişisel</td><td>Yıllara göre yazı listesi, sağda okunma sayıları</td><td>18 / 14</td><td>0</td></tr>
+    <tr><td>Anthony Fu</td><td>kişisel</td><td>Satır satır beliren metin, kenarlarda soluk çizgiler</td><td>36 / 16</td><td>≈1,2–1,8 sn</td></tr>
+    <tr><td>Lee Robinson</td><td>kişisel</td><td>Sıcak siyahta serif metin, sağda tek renkli illüstrasyon</td><td>47 / 17</td><td>0</td></tr>
+    <tr><td>Dennis Snellenberg</td><td>kişisel</td><td>2 sn "Hello" yükleme, portre, 216 px kayan isim</td><td>216 / 17</td><td>≈2 sn + döngü</td></tr>
+    <tr><td>Gianluca Gradogna</td><td>kişisel</td><td>0–100 sayaç, sonra koyu fotoğraflar üstünde beyaz kart</td><td>48 / 24</td><td>≈3 sn + döngü</td></tr>
+    <tr><td>Matthieu Givelet</td><td>kişisel</td><td>Yüzde yükleme, ismin içinde küçük görsel</td><td>52 / 22</td><td>≈3 sn + döngü</td></tr>
+    <tr><td>Olha Lazarieva</td><td>kişisel</td><td>Uzun yükleme, dönen 3B yazı halkası</td><td>225 / 20</td><td>≈5 sn + döngü</td></tr>
+    <tr><td>Bruno Simon</td><td>kişisel</td><td>Parlayan halkada kendini kuran oyuncak dünya</td><td>metin yok</td><td>≈2–3 sn + döngü</td></tr>
+    <tr><td>Lusion</td><td>stüdyo</td><td>000→100 sayaç, çerçeveli kartta 3B nesneler</td><td>36 / 13</td><td>&gt;3 sn + döngü</td></tr>
+    <tr><td>Igloo Inc.</td><td>marka</td><td>Noktalardan buzdan iglo kuruluyor, içten aydınlanan sahne</td><td>metin yok</td><td>≈2 sn + döngü</td></tr>
+    <tr><td>Apple MacBook Pro</td><td>ürün</td><td>Siyahtan ışıkla beliren gümüş kenar, küçük başlık</td><td>80 / 17</td><td>≈1 sn + video</td></tr>
+    <tr><td>Apple Final Cut Pro</td><td>ürün</td><td>Gerçek uygulama ekranı Mac, iPad ve ekranda tek kompozisyon</td><td>80 / 17</td><td>≈5–6 sn (video)</td></tr>
+    <tr><td>Linear</td><td>ürün</td><td>Bulanıktan netleşen başlık, altında gerçek boyutta uygulama</td><td>64 / 15</td><td>≈1 sn</td></tr>
+    <tr><td>Vercel</td><td>ürün</td><td>Arkasından gelen ışıkla siyahtan beliren üçgen</td><td>64 / 14</td><td>≈0,9 sn</td></tr>
+    <tr><td>Raycast</td><td>ürün</td><td>Başlığın arkasında açan kırmızı cam şekil</td><td>64 / 14</td><td>≈2,2 sn</td></tr>
+    <tr><td>Things 3</td><td>ürün</td><td>Ortada uygulama ikonu, hafif perspektifte gerçek ekranlar</td><td>24 / 18</td><td>≈1 sn</td></tr>
+    <tr><td>Teenage Engineering OP-1</td><td>ürün</td><td>Düz zeminde cihaz fotoğrafı, kaydırdıkça tuşlara yaklaşma</td><td>53 / 19</td><td>≈0,4 sn</td></tr>
+    <tr><td>Family</td><td>ürün</td><td>Kayan başlık, etrafında beliren renkli karakterler</td><td>68 / 17</td><td>≈1,8 sn</td></tr>
+    <tr><td>Gradogna, Through this lens</td><td>fotoğraf</td><td>Bölümlü fotoğraf denemesi: yer adı, koordinat, tek fotoğraf</td><td>90 / 14</td><td>≈3 sn + döngü</td></tr>
+    <tr><td>Rinko Kawauchi</td><td>fotoğraf</td><td>Ekranın üçte ikisinde tek fotoğraf, yavaş geçişler</td><td>14 / 14</td><td>yavaş geçiş döngüsü</td></tr>
+    <tr><td>Cereal</td><td>fotoğraf</td><td>Numaralı, eşit boyutlu küçük fotoğraflardan dizin</td><td>12 / 12</td><td>≈1,5–2 sn</td></tr>
+    <tr><td>Vivian Maier</td><td>fotoğraf</td><td>Kenardan kenara siyah-beyaz fotoğraf ızgarası</td><td>12 / 10</td><td>0 (yavaş yükleme)</td></tr>
+    <tr><td>Saul Leiter Foundation</td><td>fotoğraf</td><td>Solda fotoğraf, sağda kısa metin</td><td>29 / 15</td><td>≈1,1 sn</td></tr>
+    <tr><td>Alec Soth</td><td>fotoğraf</td><td>Turuncu bantta birinci ağızdan cümle, sergi fotoğrafları</td><td>38 / 14</td><td>yok</td></tr>
+    <tr><td>The Atlantic, Photography</td><td>fotoğraf</td><td>Önce fotoğraf, sonra serif başlık ve tarih (yalnızca telefon)</td><td>44 / 18</td><td>yok</td></tr>
+  </tbody>
+</table></div>
+<p class="src" style="margin-top:8px">Satır başına tam ölçümler (doluluk, renk sayısı, satır uzunluğu, telefon değerleri) ve her sitenin karşılaştırma görüntüsü: <code>data/study1-29-sites/</code> ve repodaki ilk çalışma dokümanı.</p>
+<div class="col stack" style="margin-top:18px">
+  <h3>Bu çalışmadan çıkan on teknik</h3>
+  <ol class="key">
+    <li>En büyük yazıyı sınırla; büyük olan nesne ya da ekran olsun (ürün siteleri en fazla 64 px).</li>
+    <li>Giriş bir ışığın yükselmesi olsun, bir şeyin içeri uçması değil (Vercel, MacBook, Igloo).</li>
+    <li>Açılış yaklaşık bir saniyede bitsin; yükleme ekranı yok (yüklemeli siteler 2–5 sn kaybettiriyor).</li>
+    <li>Ekran başına tek vurgu rengi (Linear, Vercel ve sade kişisel siteler sıfır doygun renk kullanıyor).</li>
+    <li>Metin ağırlıklı yerde yumuşak siyah (#1a1a1a civarı), ışığın konu olduğu yerde gerçek siyah.</li>
+    <li>Gerçek ekranlar gerçek boyutta, sayfanın kendi karanlığında (Linear, Raycast, Final Cut Pro).</li>
+    <li>Fotoğraf eksiltilerek sunulur: büyük görsel, küçük yazı, kısa olgusal açıklama, en fazla yavaş geçiş.</li>
+    <li>Gövde 15–18 px, satır 35–60 karakter.</li>
+    <li>Kaydırma nesneyi yaklaştırsın, efekt eklemesin (Teenage Engineering OP-1).</li>
+    <li>Tarihli, kesin bir liste kendi başına bir marka ifadesidir (Rauch, Lee Robinson).</li>
+  </ol>
+</div>
+
+<h2 id="c2">Çalışma 2 · 127 sitelik seçki (12 Ekim)</h2>
+<div class="col stack">
+  <p class="lede">Üç ajan paralel çalıştı: ödüllüler (Awwwards Yılın ve Ayın Sitesi, 2025 yıllık ödülleri; CSS Design Awards Yılın Sitesi 2024–2025; Webby En İyi Ana Sayfa ve En İyi Görsel Tasarım), çok konuşulan ürün ve marka sayfaları (Apple Design Award 2023–2026 kazanan ve finalistlerinin siteleri dahil), övülen portfolyo ve stüdyolar. Her adresin canlı olduğu doğrulandı.</p>
+  <p><b>Sayılar:</b> 98 yeni site ve ilk çalışmanın 29 sitesi; toplam 127. Kategoriler: 54 ürün, 30 portfolyo, 17 editoryal ve fotoğraf, 16 stüdyo, 10 marka. Bot korumasına takılan ya da açılmayan 5 site çıkarıldı: Locomotive, Reuters Graphics, FOLLOW.ART, Cartier, Nothing. FWA otomatik tarayıcıyı reddettiği için oradan site alınamadı. Bazı sitelerin dayanağı yalnızca bir galeri özelliği (Framer, Superhuman, Ramp, Polestar, Pentagram, Collins).</p>
+  <p><b>Seçki:</b> sahibi her sitenin masaüstü, kaydırma, telefon ve ilk 3 saniye görüntülerine bakıp 31 siteye oy ve not verdi (<a href="https://claude.ai/artifact/1CHkxD94pf1fYe2EB72J4k">Referans Seçkisi</a>).</p>
+</div>
+<div class="stack" style="margin-top:14px">
+  <figure><img src="img/picker-product.webp" alt="Seçkideki ürün sitelerinin ilk ekranları" loading="lazy"><figcaption>Ürün siteleri (Shopify Editions'ın karesi, sitenin açılış çerçevesini gösteriyor; asıl sayfa Çalışma 3'te).</figcaption></figure>
+  <div class="shots two">
+    <figure><img src="img/picker-portfolio.webp" alt="Seçkideki portfolyolar" loading="lazy"><figcaption>Portfolyolar.</figcaption></figure>
+    <figure><img src="img/picker-studio.webp" alt="Seçkideki stüdyolar" loading="lazy"><figcaption>Stüdyolar.</figcaption></figure>
+    <figure><img src="img/picker-brand.webp" alt="Seçkideki markalar" loading="lazy"><figcaption>Markalar.</figcaption></figure>
+    <figure><img src="img/picker-editorial.webp" alt="Seçkideki editoryal ve fotoğraf siteleri" loading="lazy"><figcaption>Editoryal ve fotoğraf.</figcaption></figure>
+  </div>
+</div>
+<h2 id="c3">Çalışma 3 · Sevilen 12 sitenin anatomisi (12 Ekim)</h2>
+<p class="col lede">Her sitede önce sahibin notu, sonra ölçülenler, sonra neden işe yaradığı ve çıkarım. Ölçümler 1440×900 masaüstünde, sayfanın tamamı kaydırılarak alındı.</p>
+
+<!-- SHOPIFY -->
+<section class="site" id="shopify">
+  <header><h3>Shopify Editions, Renaissance</h3><span class="meta">ürün güncellemeleri · 60 ekran uzunluğunda</span><a href="https://www.shopify.com/editions/winter2026">siteyi aç</a></header>
+  <blockquote class="yours">BAYILDIM. Sunum aşırı güzel, animasyonlar ve görseller mükemmel, hiçbir noktada sıkıcılaşmıyor; harika kompozisyon, akış, renk, okunabilirlik, oranlar.<cite>SAHİBİN NOTU</cite></blockquote>
+  <div class="plate">
+    <div class="shots">
+      <figure><img src="img/shopify-dj02.webp" alt="Sidekick bölüm açılışı: Rönesans tablosu, maske takmış figür, üstünde dev Sidekick yazısı" loading="lazy"><figcaption>Bölüm açılışı: bir tablo ve tek kelime (194 px). Solda I–XII bölüm dizini hep sabit.</figcaption></figure>
+      <div class="shots two">
+        <figure><img src="img/shopify-dj04.webp" alt="Krem sayfada kaligrafik baş harfle başlayan serif başlık ve kısa açıklama" loading="lazy"><figcaption>Yırtık kâğıtla krem sayfaya geçiş; başlık kaligrafik bir baş harfle açılıyor.</figcaption></figure>
+        <figure><img src="img/shopify-dj05.webp" alt="Yelpaze gibi açılmış gerçek arayüz kartları" loading="lazy"><figcaption>Sonra gerçek ürün ekranları, yaylanarak yerleşiyor.</figcaption></figure>
+      </div>
+    </div>
+    <div class="anat"><dl>
+      <dt>Fontlar</dt><dd><b>Neue Montreal</b> 700 (bölüm kelimesi), <b>HW Cigars</b> serif (başlık ve metin), <b>Imperial Script</b> (baş harf süsü), Inter (arayüz). Dört ses, her birinin tek görevi var.</dd>
+      <dt>Tip ölçeği</dt><dd>194 / 61 / 44 / 32 / 28 / 20 / 17 / 14 px. Telefonda en büyük 72 px.</dd>
+      <dt>Renk</dt><dd><span class="sw" style="background:#000"></span>siyah tablolar ve <span class="sw" style="background:#f7f7ee"></span><code>#f7f7ee</code> krem sayfalar dönüşümlü. Gövde metni saf siyah değil: <span class="sw" style="background:#909083"></span><code>#909083</code>, <span class="sw" style="background:#5c5c4e"></span><code>#5c5c4e</code> zeytin grileri.</dd>
+      <dt>Hareket</dt><dd>Kart girişleri 400–500 ms, hafif taşan yay: <code>cubic-bezier(.34,1.56,.64,1)</code>. Çizgi çizimleri 3 s. Arayüz renk geçişleri 150 ms. Yumuşak kaydırma: Lenis.</dd>
+      <dt>Teknoloji</dt><dd>Lenis, Three.js (2 WebGL tuvali), 12 video.</dd>
+    </dl></div>
+  </div>
+  <div class="why">
+    <div><h4>Neden işe yarıyor</h4><ul>
+      <li><b>Ritim:</b> her bölüm aynı üç vuruşla geliyor: tablo ve tek kelime, kısa vaat, gerçek ekran. Tahmin edilebilir yapı, değişen görsel. Uzunluğa rağmen yormamasının sebebi bu.</li>
+      <li><b>Yön bulma:</b> solda sabit I–XII dizini nerede olduğunu ve ne kaldığını hep gösteriyor. Daylight'ta sahibin "uzun ve yorucu" bulduğu şey tam olarak bu dizinin yokluğu.</li>
+      <li><b>Karşıtlık ama yumuşak:</b> metin hiçbir yerde saf siyah ya da saf beyaz değil; zemin de saf beyaz değil.</li>
+      <li><b>Başlıklar sonuç söylüyor:</b> "Insights, proactively delivered", "Complexity, delegated". Özellik adı değil, okurun kazancı.</li>
+    </ul></div>
+    <div class="take"><h4>Çıkarım</h4><ul>
+      <li>Work için <b>bölüm ritmi</b>: her proje kendi "tablosuyla" (bizde: cam nesne ve ürün rengi ışığı) açılsın, sonra sakin bir içerik sayfası gelsin.</li>
+      <li>Uzun sayfada <b>sabit, numaralı dizin</b>: bizdeki boncuk kaydırma çubuğu (ADR-0013) zaten bunun tohumu.</li>
+      <li>Gövde metninde <b>saf beyaz yerine sıcak gri</b>.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- DIA -->
+<section class="site" id="dia">
+  <header><h3>Dia</h3><span class="meta">The Browser Company · 7 ekran</span><a href="https://www.diabrowser.com/">siteyi aç</a></header>
+  <blockquote class="yours">BAYILDIM. Minimalist, harika bir özet; ürünü harika tanıtıyor ve gösteriyor, asla sıkıcı değil. Adım adım, çok basit ve açıklayıcı; ürünü güzel pazarlıyor.<cite>SAHİBİN NOTU</cite></blockquote>
+  <div class="plate">
+    <div class="shots">
+      <figure><img src="img/dia-dj01.webp" alt="Solda 01 02 03 numaralı adımlar, etkin olan koyu; sağda tarayıcı içinde The Friday Brief görseli" loading="lazy"><figcaption>Numaralı adımlar: etkin olan koyu, diğerleri soluk; sağdaki görsel adıma göre değişiyor.</figcaption></figure>
+      <div class="shots two">
+        <figure><img src="img/dia-dj00.webp" alt="Sarı zemin üstünde Dia yazısı ve tarayıcı penceresi" loading="lazy"><figcaption>Açılış: vaat cümlesi + gerçek tarayıcı penceresi.</figcaption></figure>
+        <figure><img src="img/dia-dj04.webp" alt="Built for how you actually work başlıklı özellik kartları" loading="lazy"><figcaption>Altı kart: her biri bir iş durumu.</figcaption></figure>
+      </div>
+    </div>
+    <div class="anat"><dl>
+      <dt>Fontlar</dt><dd><b>Exposure</b> (başlık), <b>ABC Oracle</b> (metin, 300–400), <b>ABC Favorit Mono</b> (BÜYÜK HARF etiketler, 13 px, 1,3 px aralık). Üç ses: başlık, metin, etiket.</dd>
+      <dt>Tip ölçeği</dt><dd>48 / 39 / 24 / 22 / 20 / 16 / 14 / 13 px. Gövde 20 px, satır 1,5. En büyük yazı yalnızca 48 px.</dd>
+      <dt>Renk</dt><dd>Zemin <span class="sw" style="background:#fbfaf6"></span><code>#fbfaf6</code> (kırık beyaz). Metin tek renk siyah ama üç opaklıkta: %85 başlık, %70 metin, %60 ikincil. Tek vurgu sarı <span class="sw" style="background:#ffcb30"></span>.</dd>
+      <dt>Hareket</dt><dd>Neredeyse yalnızca 200–300 ms, tek eğri: <code>cubic-bezier(.4,0,.2,1)</code>. Açılışta gösteri yok.</dd>
+      <dt>Teknoloji</dt><dd>Next.js, Three.js (1 tuval), 4 video. 7 ekran: sevdiğin ürün sayfalarının en kısası.</dd>
+    </dl></div>
+  </div>
+  <div class="why">
+    <div><h4>Neden işe yarıyor</h4><ul>
+      <li><b>Kullanıcıyı satıyor:</b> başlık tarayıcıyı değil günü vaat ediyor: "A better workday". Adımlar da hep okurun eylemi: "Start your day two steps ahead", "Find the answer without hunting it down".</li>
+      <li><b>Bir anda tek şey:</b> numaralı adım listesi aynı anda bir özelliği öne çıkarıyor, diğerlerini sakin tutuyor. Okurken neye bakacağını hiç düşünmüyorsun.</li>
+      <li><b>Hiyerarşi opaklıkla:</b> renk değil siyahın tonları; sayfa sakin kalıyor ama okuma sırası net.</li>
+      <li><b>Hep orada bir eylem:</b> "Download Dia for free" düğmesi alt ortada sabit.</li>
+    </ul></div>
+    <div class="take"><h4>Çıkarım</h4><ul>
+      <li>Her proje sayfasında <b>"Dia adımları"</b>: 3 numaralı adım, solda kısa cümle, sağda gerçek ekran.</li>
+      <li>Bir kişinin vaat cümlesi de bir <b>kazanç cümlesi</b> olabilir: okurun onunla ne kazandığı.</li>
+      <li>Yazı hiyerarşisini <b>tek rengin opaklıklarıyla</b> kur: bizim koyu zeminde beyazın %92 / %70 / %50'si.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ANIME -->
+<section class="site" id="anime">
+  <header><h3>Anime.js</h3><span class="meta">JavaScript animasyon kütüphanesi · 23 ekran</span><a href="https://animejs.com/">siteyi aç</a></header>
+  <blockquote class="yours">Çok güzel, basit bir akış; ürünü adım adım açıklıyor, tek bir öğenin etrafında kendini çeşitlendiriyor. Biz de ürün vitrininde kullanabiliriz.<cite>SAHİBİN NOTU</cite></blockquote>
+  <div class="plate">
+    <div class="shots">
+      <figure><img src="img/anime-dj00.webp" alt="Koyu zeminde renkli halka ve içinde kırmızı nokta dalgası" loading="lazy"><figcaption>Tek öğe: renkli halka. Her bölümde içi değişiyor.</figcaption></figure>
+      <div class="shots two">
+        <figure><img src="img/anime-dj10.webp" alt="Intuitive API başlığı, halkanın içinde dönen kırmızı kare ve sağ altta kod" loading="lazy"><figcaption>"Intuitive API": halkada kare, yanında o kareyi oynatan gerçek kod.</figcaption></figure>
+        <figure><img src="img/anime-dj14.webp" alt="Advanced staggering başlığı, halkada mavi nokta dizisi" loading="lazy"><figcaption>Her özelliğin kendi rengi: kırmızı, turuncu, mavi, yeşil.</figcaption></figure>
+      </div>
+    </div>
+    <div class="anat"><dl>
+      <dt>Fontlar</dt><dd><b>DIN</b> (başlıklar 700–800, metin 400–600) ve bir <b>Mono</b> (kod ve etiketler).</dd>
+      <dt>Tip ölçeği</dt><dd>52 / 40 / 20 / 16 / 14 / 12 px. Başlık satır aralığı çok sıkı: 0,87–0,95.</dd>
+      <dt>Renk</dt><dd>Zemin sıcak kömür <span class="sw" style="background:#252423"></span><code>#252423</code>, metin <span class="sw" style="background:#d5d3d1"></span><code>#d5d3d1</code> ve <span class="sw" style="background:#b4b1af"></span><code>#b4b1af</code>: saf siyah ve saf beyaz yok. Her özellik bölümü kendi vurgu rengini taşıyor.</dd>
+      <dt>Hareket</dt><dd>Sayfanın kendisi ürünün demosu: animasyonları anime.js çiziyor. Arayüzde 125–500 ms, <code>ease-out</code>.</dd>
+      <dt>Teknoloji</dt><dd>Three.js (makine çizimi), 5 canvas.</dd>
+    </dl></div>
+  </div>
+  <div class="why">
+    <div><h4>Neden işe yarıyor</h4><ul>
+      <li><b>Sabit bir sahne, değişen içerik:</b> halka hep aynı yerde, göz yeniden yönlenmek zorunda kalmıyor; her bölümde yalnızca halkanın içi değişiyor.</li>
+      <li><b>Göster, sonra kanıtla:</b> önce animasyon, hemen yanında onu yapan 5 satır kod. Ürün kendini kanıtlıyor.</li>
+      <li><b>Renk anlam taşıyor:</b> her özellik bir renk; renk süs değil, işaret.</li>
+    </ul></div>
+    <div class="take"><h4>Çıkarım</h4><ul>
+      <li>Work'te <b>tek sabit sahne</b>: cam nesne yerinde kalsın, proje değiştikçe ışığı ve içindeki ekran değişsin.</li>
+      <li><b>Ürün renkleri işaret olarak</b> (Recto limon, English Prep sakura, Eat Map gül): bölüm değiştikçe ışık rengi değişsin, bir anda tek renk.</li>
+      <li>Teknik bir proje için <b>"göster + kısa kod"</b> ikilisi mühendis okuyucuya doğrudan hitap eder.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- NOTION -->
+<section class="site" id="notion">
+  <header><h3>Notion Calendar</h3><span class="meta">takvim uygulaması · 9 ekran</span><a href="https://www.notion.com/product/calendar">siteyi aç</a></header>
+  <blockquote class="yours">Basit, güzel, akıcı anlatıyor.<cite>SAHİBİN NOTU</cite></blockquote>
+  <div class="plate">
+    <div class="shots two">
+      <figure><img src="img/notion-dj00.webp" alt="It's time başlığı, takvim ikonu ve altında uygulama ekranı" loading="lazy"><figcaption>İki kelimelik vaat, ikon, gerçek ekran.</figcaption></figure>
+      <figure><img src="img/notion-dj03.webp" alt="İki sütun kart: Built-in scheduling, Work across time zones" loading="lazy"><figcaption>Kartlar: kısa başlık, bir cümle, ekran parçası.</figcaption></figure>
+    </div>
+    <div class="anat"><dl>
+      <dt>Fontlar</dt><dd><b>Inter</b> (Notion'a özel kesim) 400–700; tek bir alıntıda <b>Lyon Text</b> serif.</dd>
+      <dt>Tip ölçeği</dt><dd>64 / 42 / 22 / 18 / 16 / 14 / 12 px. Gövde 16 px, satır 1,5.</dd>
+      <dt>Renk</dt><dd>Beyaz ve <span class="sw" style="background:#f6f5f4"></span><code>#f6f5f4</code> dönüşümlü bant; metin siyahın %90'ı. Pastel minik ikonlar tek renk kaynağı.</dd>
+      <dt>Hareket</dt><dd>200 ms renk geçişleri; neredeyse hiç sahne animasyonu yok.</dd>
+    </dl></div>
+  </div>
+  <div class="why">
+    <div><h4>Neden işe yarıyor</h4><ul>
+      <li>Dört tema başlığı ("Time management, simplified", "Work and life, playing nice"), her birinin altında gerçek ekranlı kartlar: <b>iki seviyeli düzen</b>, kaybolmak imkânsız.</li>
+      <li>Başlıklar sonuç, kart başlıkları özellik: önce neden, sonra nasıl.</li>
+    </ul></div>
+    <div class="take"><h4>Çıkarım</h4><ul>
+      <li>Proje sayfasında <b>iki seviye</b>: "ne kazandırır" başlığı, altında "nasıl yapıldı" kartları. İşe alım yöneticisinin istediği vaka yapısına (sorun, rol, kararlar, sonuç) da birebir oturur.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ROBIN -->
+<section class="site" id="robin">
+  <header><h3>Robin Noguier</h3><span class="meta">etkileşim tasarımcısı · tek ekran, WebGL karusel</span><a href="https://www.robin-noguier.com/">siteyi aç</a></header>
+  <blockquote class="yours">İlk sunum ve sunumdan içeriğe geçişi çok akıcı, bayıldım. Ama birkaç şeyi sunuyor, kendisini sunmuyor; portfolyonun kendisi için değil, Work kısmında iş görebilir.<cite>SAHİBİN NOTU</cite></blockquote>
+  <div class="plate">
+    <div class="shots">
+      <figure><img src="img/robin-case-study-sheet.webp" alt="Sekiz karelik dizi: kavisli görsel düzleşip proje sayfasında yerine kayıyor, mavi zemin açık griye dönüyor" loading="lazy"><figcaption>"Open case study" tıklandığında: kavisli görsel düzleşiyor, proje sayfasındaki yerine kayıyor; mavi zemin açık griye siliniyor; başlık yerinde kalıyor. (Soldan sağa, yukarıdan aşağı, yaklaşık 2 saniye.)</figcaption></figure>
+      <figure><img src="img/robin-case-study.webp" alt="Aynı geçişin animasyonu" loading="lazy"><figcaption>Aynı geçiş, hareketli.</figcaption></figure>
+    </div>
+    <div class="anat"><dl>
+      <dt>Fontlar</dt><dd><b>Eksell Display</b> (proje adı, 135 px), <b>Silka</b> (metin 20 px, etiketler 14–16 px BÜYÜK HARF, 2 px aralık).</dd>
+      <dt>Düzen</dt><dd>Tek ekran. Kaydırma sayfayı değil karuseli çeviriyor. Her projede tek kelimelik ad, tek cümle, tek düğme.</dd>
+      <dt>Renk</dt><dd>Her projenin kendi zemin rengi (ör. <span class="sw" style="background:#3d6681"></span><code>#3d6681</code>), proje sayfasında açık griye dönüşüyor.</dd>
+      <dt>Teknoloji</dt><dd>Next.js, WebGL (kavisli görsel düzlemi).</dd>
+    </dl></div>
+  </div>
+  <div class="why">
+    <div><h4>Neden işe yarıyor</h4><ul>
+      <li><b>Ortak öğe geçişi:</b> göz tıkladığı nesneyi hiç kaybetmiyor; yeni sayfa "yüklenmiyor", önceki sayfanın içinden açılıyor.</li>
+      <li>Proje adı tek kelime ve büyük; açıklama tek cümle: karar vermek için yeterli, fazlası yok.</li>
+    </ul></div>
+    <div class="take"><h4>Çıkarım</h4><ul>
+      <li>Work'te proje kartından proje sayfasına <b>ortak öğe geçişi</b>: cam nesne ya da uygulama ekranı kendi yerine aksın. Tarayıcıların View Transitions özelliğiyle WebGL'siz yapılabilir; hareket azaltma tercihinde düz geçiş.</li>
+      <li>Sahibin uyarısı geçerli: bu bir <b>Work</b> deseni. Ana sayfada kişi önce gelir.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ANTOINE -->
+<section class="site" id="antoine">
+  <header><h3>Antoine Wodniack</h3><span class="meta">yaratıcı geliştirici · Webby 2025 En İyi Ana Sayfa</span><a href="https://wodniack.dev/">siteyi aç</a></header>
+  <blockquote class="yours">Renk göz yoruyor ama animasyon, yazı ve font, işin sunuluş biçimi baya güzel bir vitrin.<cite>SAHİBİN NOTU</cite></blockquote>
+  <div class="plate">
+    <div class="shots">
+      <figure><img src="img/antoine-dj08.webp" alt="WORK harflerinden oluşan duvarın önünde yüzen proje ekranları" loading="lazy"><figcaption>Work: harflerden bir duvar, önünde projelerin gerçek ekranları süzülüyor.</figcaption></figure>
+      <figure><img src="img/antoine-dj01.webp" alt="Kırmızı zeminde CREATIVE DEVELOPER başlığı ve ince serif tanıtım metni" loading="lazy"><figcaption>Tanıtım: iri yoğun başlık ve ince serif metin karşıtlığı.</figcaption></figure>
+    </div>
+    <div class="anat"><dl>
+      <dt>Fontlar</dt><dd><b>Bigger Display</b> 700 (138 px, BÜYÜK HARF, satır 0,82), <b>Editorial New</b> 200 (ince serif, 32 px tanıtım), <b>Fraktion Mono</b> (etiketler).</dd>
+      <dt>Renk</dt><dd>Zemin <span class="sw" style="background:#f40c3f"></span><code>#f40c3f</code> doygun kırmızı, ekranın büyük kısmında; metin <span class="sw" style="background:#160000"></span><code>#160000</code>. Gözün yorulmasının sebebi bu: geniş alanda doygun renk.</dd>
+      <dt>Hareket</dt><dd>Sahne geçişleri 0,8–1 s: <code>cubic-bezier(.23,1,.32,1)</code> (hızlı başlayıp yumuşak duran) ve maske açılışı <code>cubic-bezier(.86,0,.07,1)</code>. Lenis yumuşak kaydırma. 34 video.</dd>
+    </dl></div>
+  </div>
+  <div class="why">
+    <div><h4>Neden işe yarıyor</h4><ul>
+      <li><b>Yazı karşıtlığı:</b> çok kalın ve çok ince yan yana; büyüklük değil karşıtlık dikkat çekiyor.</li>
+      <li>İşler küçük resim değil, <b>gerçek ekranlar halinde hareket ediyor</b>: vitrin canlı.</li>
+      <li>Ödüller bir liste değil, sayfanın parçası: kanıt tasarıma işlenmiş.</li>
+    </ul></div>
+    <div class="take"><h4>Çıkarım</h4><ul>
+      <li>Kalın ve ince <b>yazı karşıtlığı</b> (bizim serif ve sans çiftimizle), ama doygun zemin rengi yok: renk ışık olarak kalsın.</li>
+      <li>Work'te projeler <b>hareketli gerçek ekranlarla</b> görünsün, statik küçük resimle değil.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ANTHONY + JAKUB -->
+<section class="site" id="kisisel">
+  <header><h3>Anthony Fu ve Jakub Krehel</h3><span class="meta">iki sade kişisel site · 1,4 ve 2,6 ekran</span></header>
+  <blockquote class="yours">Anthony Fu: çok temiz, kendini açıklıyor: ben buyum, bunları yapıyorum, harika. Jakub Krehel: ilk sayfa çok sade, kıvılcım yok; ama işlerinin ve yazılarının içeriği ve sunumu ilham verici; tek siyah-beyaz göz yorucu.<cite>SAHİBİN NOTLARI</cite></blockquote>
+  <div class="plate">
+    <div class="shots two">
+      <figure><img src="img/antfu-dj00.webp" alt="Anthony Fu ana sayfası: isim, tek cümle tanım, Working at / Creator of / Core team of satırları ve logolar" loading="lazy"><figcaption>Anthony Fu: "Working at", "Creator of", "Core team of" satırları, logolarla.</figcaption></figure>
+      <figure><img src="img/jakub-dj00.webp" alt="Jakub Krehel: koyu zeminde tek boyutta metin ve proje listesi" loading="lazy"><figcaption>Jakub Krehel: her şey 16 px, tek ağırlık ailesi.</figcaption></figure>
+    </div>
+    <div class="anat"><dl>
+      <dt>Anthony</dt><dd><b>Inter</b> 800 isim (36 px) + Inter 400 metin (16 px, satır 1,75) + <b>DM Mono</b>. Metin <span class="sw" style="background:#bbbbbb"></span><code>#bbb</code>, vurgu beyaz. Açılışta satırlar 90 ms arayla, her biri 1 s içinde beliriyor.</dd>
+      <dt>Jakub</dt><dd>Yalnızca sistem fontu, <b>her yazı 16 px</b>. Zemin <span class="sw" style="background:#0c0c0c"></span><code>#0c0c0c</code>, metin açık gri ve neredeyse beyaz. Saf siyah-beyaz değil; ama boyut, ağırlık ve renk farkı neredeyse yok.</dd>
+    </dl></div>
+  </div>
+  <div class="why">
+    <div><h4>Neden işe yarıyor (ya da yaramıyor)</h4><ul>
+      <li>Anthony'nin sırrı <b>yapı</b>: "Working at / Creator of / Core team of / Maintaining" satırları 5 saniyede bir CV özeti veriyor. Sahibin "CV mantığı" dediği şeyin en kısa hali.</li>
+      <li>Jakub'da yorgunluğun sebebi renk değil <b>tekdüzelik</b>: tek boyut, tek ağırlık, hiyerarşi yok. Gözün tutunacak bir yeri olmuyor.</li>
+    </ul></div>
+    <div class="take"><h4>Çıkarım</h4><ul>
+      <li>Ana sayfada <b>Anthony tarzı yapısal satırlar</b>: "Studying at YTU", "Building Recto, English Prep, Eat Map", "Focused on ...". Etiket + kanıt.</li>
+      <li>Sade olmak tek boyut demek değil: <b>en az üç seviye</b> (başlık, metin, etiket) ve bir parça ışık.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- BRIEF OTHERS -->
+<section class="site" id="digerleri">
+  <header><h3>Kısaca: Stripe, Arc, Playdate, Mathis Biabiany, Maxime Heckel</h3></header>
+  <div class="brief">
+    <div class="crit"><h4>Stripe</h4><p>Tek font ailesi: <b>Söhne</b>, neredeyse her yerde 300 ağırlık; hiyerarşi yalnızca boyutla (56 / 48 / 32 / 26 / 22 / 18 / 16 px). Hareket eğrisi <code>cubic-bezier(.25,1,.5,1)</code>, 300 ms. Kanıt bandı: "135+ para birimi" gibi rakamlar.</p></div>
+    <div class="crit"><h4>Arc <span class="tag">biraz sönük ama minimal</span></h4><p>Yuvarlak köşeli <b>Marlin Soft</b> başlıklar; açık krem <code>#fffcec</code> zemin. Kendi sitesinde bile Dia'ya yönlendiriyor: ürün geçişi anlatımın parçası.</p></div>
+    <div class="crit"><h4>Playdate <span class="tag">canlı, stil güzel</span></h4><p>Tek font, <b>Roobert</b>; gövde 28,5 px (çok iri ve okunaklı). Display-P3 geniş gamut sarı ve mor; sevdiğin canlılığın kaynağı bu.</p></div>
+    <div class="crit"><h4>Mathis Biabiany <span class="tag">3B iyi, yavaş</span></h4><p>Tek font, <b>Fustat</b>; isim 190 px. Projeye "tıkla aç" etiketi. Yavaşlık WebGL ve 5 videonun aynı anda yüklenmesinden.</p></div>
+    <div class="crit"><h4>Maxime Heckel <span class="tag">teknik, hava yok</span></h4><p>En büyük yazı 24 px; neredeyse her şey 14–16 px. <b>oklch</b> renkli lacivert zemin, doğru teknik tercih. Ama vaat cümlesi yok, okumak için bir sebep sunulmuyor (sahibin teşhisi).</p></div>
+  </div>
+</section>
+
+<h2 id="kalip">Ortak kalıplar</h2>
+<p class="col lede">Sevilenlerde tekrar eden, beğenilmeyenlerde eksik olan sekiz şey. Her birinin yanında nerede gördüğümüz var.</p>
+<div class="patterns">
+  <div class="pat"><h4>Vaat cümlesi<span>Dia · Stripe · Notion · Shopify</span></h4><p>İlk ekranda tek cümle: kullanıcının kazancı. Ürünün adı ya da teknik tanımı ikinci sırada.</p></div>
+  <div class="pat"><h4>Bölüm başına tek fikir<span>Dia · Notion · Anime.js · Shopify</span></h4><p>Kısa başlık, tek satır açıklama, tek gerçek görsel. Okur her ekranda tek bir şey öğreniyor.</p></div>
+  <div class="pat"><h4>Sabit dizin<span>Shopify I–XII · Dia 01–03 · Notion temaları</span></h4><p>Uzun sayfada nerede olduğunu gösteren, hep görünen küçük bir liste. Uzunluğu yorucu olmaktan çıkarıyor.</p></div>
+  <div class="pat"><h4>Sabit sahne, değişen içerik<span>Anime.js halkası · Dia görsel alanı · Robin karuseli</span></h4><p>Göz aynı yere bakmaya devam ediyor; değişen yalnızca içerik. Merak duygusunu yaratan şey bu: "şimdi buraya ne gelecek?"</p></div>
+  <div class="pat"><h4>Gerçek ekran, kanıtla birlikte<span>Anime.js kodu · Stripe rakamları · Shopify arayüzleri</span></h4><p>Çizim ya da süs değil, ürünün kendisi. Mümkünse yanında onu doğrulayan küçük bir kanıt.</p></div>
+  <div class="pat"><h4>Üç sesli yazı sistemi<span>Dia · Antoine · Arc · Anime.js · Shopify</span></h4><p>Bir başlık yüzü, bir metin yüzü, bir mono etiket yüzü. Etiketler küçük, BÜYÜK HARF, harf aralıklı.</p></div>
+  <div class="pat"><h4>Yumuşatılmış karşıtlık<span>Shopify #909083 · Dia %85/%70/%60 · Anime #252423</span></h4><p>Zemin de metin de saf siyah ya da saf beyaz değil. Hiyerarşi tek rengin opaklıklarıyla.</p></div>
+  <div class="pat"><h4>Kısa ve tutarlı hareket<span>150–300 ms arayüz · 400–1000 ms sahne</span></h4><p>Her sitede bir ya da iki yumuşama eğrisi. Uzun yükleme ekranı ve gösterişli açılış yok. Hareket bir şey açıklamak için var.</p></div>
+</div>
+
+<h2 id="c4">Çalışma 4 · CV gibi ana sayfalar (14 Ekim)</h2>
+<p class="col lede">1440×900 masaüstü ve 390×844 telefon. "Bölüm": sayfada belirgin boşlukla ayrılan bloklar. "İlk ekran": kaydırmadan görünen kelime sayısı.</p>
+<div class="tw"><table class="m">
+  <thead><tr><th>Site</th><th>Masaüstü</th><th>Telefon</th><th>Bölüm</th><th>Bölüm arası</th><th>Metin sütunu</th><th>İlk ekran</th><th>En büyük yazı</th><th>Sahibin notu</th></tr></thead>
+  <tbody>
+    <tr class="hl"><td>Anthony Fu</td><td>1,4 ekran</td><td>2,0</td><td>4</td><td>65 px</td><td>656 px</td><td>160 kelime</td><td>36 px</td><td>beğendi</td></tr>
+    <tr><td>Lee Robinson</td><td>1,4</td><td>1,9</td><td>3</td><td>58 px</td><td>600 px</td><td>121</td><td>42 px</td><td>—</td></tr>
+    <tr><td>Guillermo Rauch</td><td>1,1</td><td>1,1</td><td>3</td><td>165 px</td><td>624 px</td><td>143</td><td>18 px</td><td>—</td></tr>
+    <tr><td>Paco Coursey</td><td>1,6</td><td>1,9</td><td>4</td><td>68 px</td><td>640 px</td><td>103</td><td>16 px</td><td>—</td></tr>
+    <tr><td>Brian Lovin</td><td>1,7</td><td>2,6</td><td>3</td><td>121 px</td><td>640 px</td><td>48</td><td>24 px</td><td>—</td></tr>
+    <tr class="hl"><td>Louis Paquet</td><td>2,6</td><td>3,3</td><td>4</td><td>100 px</td><td>444 px</td><td>67</td><td>18 px</td><td>sadeliği güzel</td></tr>
+    <tr class="hl"><td>Jakub Krehel</td><td>2,6</td><td>2,7</td><td>5</td><td>116 px</td><td>660 px</td><td>161</td><td>16 px</td><td>içerik ilham verici</td></tr>
+    <tr><td>Emil Kowalski</td><td>2,8</td><td>2,7</td><td>7</td><td>128 px</td><td>668 px</td><td>101</td><td>16 px</td><td>—</td></tr>
+    <tr class="hl"><td>Dia (ürün)</td><td>7,4</td><td>8,7</td><td>10</td><td>531 px</td><td>tam genişlik</td><td>20</td><td>39 px</td><td>bayıldı</td></tr>
+  </tbody>
+</table></div>
+<div class="col stack" style="margin-top:16px">
+  <p><b>Okuma:</b> sade kişisel sitelerin metni tek bir dar sütunda (600–670 px, yaklaşık 65–75 karakter) ve ortada duruyor. İlk ekranda yaklaşık 50–160 kelime var; yani ilk bakışta kim olduğun, nerede olduğun ve ne yaptığın okunuyor. En büyük yazı 16–42 px; büyüklük yok, düzen var.</p>
+  <p><b>Dia farklı çalışıyor:</b> ilk ekranda yalnızca 20 kelime var: bir vaat cümlesi ve ürünün resmi. Ürün sayfası için doğru, kişi sayfası için tek başına yetmez. Sahibin tarif ettiği ana sayfa ikisinin birleşimi: Dia'nın "ben buyum" çerçevesi ve sade sitelerin CV netliği.</p>
+</div>
+
+<h2 id="sira">Sıralama: hepsi aynı sırayı izliyor</h2>
+<p class="col lede">Sekiz sade sitenin bölüm sırasını tek tek çıkardım. Kelimeler değişiyor, sıra değişmiyor.</p>
+<div class="order col">
+  <div><b>1 · Ad ve rol</b><span>Tek satır: "Emil Kowalski · Design Engineer", "Louis Paquet · Digital Creative Director". Çoğunda sayfanın ilk 130 pikselinde.</span></div>
+  <div><b>2 · Bugün</b><span>Bir iki cümle: şu an nerede, ne yapıyor. "I work on the Web team at Linear", "Working at Vercel". İşe alan kişinin ilk aradığı bilgi.</span></div>
+  <div><b>3 · İşler</b><span>Proje listesi: her satırda ad + tek cümle. Anthony Fu'da "Creator of / Core team of / Maintaining" satırları.</span></div>
+  <div><b>4 · Yazılar</b><span>Tarihli liste. Bizde bunun karşılığı Record.</span></div>
+  <div><b>5 · Şu sıralar / kişisel</b><span>İsteğe bağlı: Paco'nun "Now"u, Emil'in "Today"i.</span></div>
+  <div><b>6 · Bağlantılar</b><span>GitHub, LinkedIn, iletişim. En sonda ya da sabit köşede.</span></div>
+</div>
+
+<h2 id="serit">Şeritler: iki biçim</h2>
+<div class="plate" style="margin-top:16px">
+  <figure><img src="img/louis-first.webp" alt="Louis Paquet ilk ekranı: solda About ve Latest work etiketleri, sağda metin ve proje listesi" loading="lazy"><figcaption>Louis Paquet: <b>etiket solda, içerik sağda.</b> Her şey 18 px; bölümler arası 100 px; projeler okla biten tek satırlar. Not: her proje müşterinin kendi sitesini yeni sekmede açıyor; sahibin "tek tek ağır sayfalar açmak" notunun sebebi bu.</figcaption></figure>
+  <div class="stack">
+    <div class="fulls" style="grid-template-columns: repeat(3, minmax(0,1fr)); margin-top:0">
+      <figure><img src="img/full-emil-kowalski.webp" alt="Emil Kowalski tam sayfa" loading="lazy"><figcaption>Emil: <b>etiket üstte</b> (Today, Projects, Writing), aralar eşit 128 px.</figcaption></figure>
+      <figure><img src="img/full-paco-coursey.webp" alt="Paco Coursey tam sayfa" loading="lazy"><figcaption>Paco: projeler <b>üç sütunda</b> (Building / Projects / Writing).</figcaption></figure>
+      <figure><img src="img/full-anthony-fu.webp" alt="Anthony Fu tam sayfa" loading="lazy"><figcaption>Anthony: tanıtım ve <b>yapısal satırlar</b> tek blokta.</figcaption></figure>
+    </div>
+    <p class="src">Hepsi tek renk zemin; sınırlar çizgiyle değil boşlukla çiziliyor. Şeridi ayıran şey sabit boşluk ve küçük, gri etiket.</p>
+  </div>
+</div>
+
+<h2 id="uzun">Kısa mı, uzun mu: Lee Robinson'ın cevabı</h2>
+<div class="plate" style="margin-top:16px">
+  <div class="shots two">
+    <figure><img src="img/lee-default.webp" alt="Lee Robinson kısa biyografi" loading="lazy"><figcaption>"Default": yaklaşık 1.000 karakter.</figcaption></figure>
+    <figure><img src="img/lee-long.webp" alt="Lee Robinson uzun biyografi, çocukluk fotoğrafıyla" loading="lazy"><figcaption>"Long": yaklaşık 5.400 karakter, fotoğraflı hikâye. Aynı sayfa.</figcaption></figure>
+  </div>
+  <div class="stack">
+    <p>Biyografinin üstünde iki küçük sekme var. Varsayılan kısa: işe alan kişi için. "Uzun" tıklanınca aynı yerde hikâye açılıyor: çocukluk, roketler, fotoğraflar. Tanışma okuru için.</p>
+    <p><b>Anlamı:</b> kısa hal işe alan kişiye, uzun hal tanışma okuruna hitap ediyor; aynı ihtiyacı bir About sayfası da karşılayabilir.</p>
+  </div>
+</div>
+
+<h2 id="c5">Çalışma 5 · Work geçişleri: görsel kendi sayfasına akıyor (14 Ekim)</h2>
+<p class="col lede">14 sitenin galerisini denedim. Dördünde geçiş temiz kaydedildi; diğerlerinde tıklama ya bir katmana takıldı ya da proje başka siteye gidiyordu. Üç farklı yöntem çıktı.</p>
+<div class="site" style="margin-top:24px">
+  <header><h3>Robin Noguier: ortak öğe</h3><span class="meta">aynı belge · açılış 1,4 sn · dönüş 1,6 sn</span></header>
+  <div class="plate">
+    <figure><img src="img/robin-noguier-open-sheet.webp" alt="Robin Noguier açılış geçişi kare kare" loading="lazy"><figcaption>Açılış: görsel düzleşip yeni sayfadaki yerine kayıyor, zemin rengi değişiyor, başlık yerinde kalıyor.</figcaption></figure>
+    <figure><img src="img/robin-noguier-back-sheet.webp" alt="Robin Noguier dönüş geçişi kare kare" loading="lazy"><figcaption>Dönüş: yatay bir perde, karusel aynı projede açılıyor. Geldiğin yere dönüyorsun.</figcaption></figure>
+  </div>
+</div>
+<div class="site">
+  <header><h3>basement.studio: görsel yerinde kalıyor</h3><span class="meta">aynı belge · 1,7 sn</span></header>
+  <figure><img src="img/basement-studio-open-sheet.webp" alt="basement.studio açılış geçişi kare kare" loading="lazy"><figcaption>Kartın görseli üstte kalıyor, sayfa etrafında değişiyor: solda proje bilgileri (müşteri, yıl, tür), altta "More Projects". Robin kadar akıcı değil ama bağlam kopmuyor.</figcaption></figure>
+</div>
+<div class="site">
+  <header><h3>14islands: soluklaşma</h3><span class="meta">aynı belge · 2,9 sn</span></header>
+  <figure><img src="img/14islands-open-sheet.webp" alt="14islands açılış geçişi kare kare" loading="lazy"><figcaption>Fareyle üstüne gelince sıvı bir leke açılıyor; tıklayınca sayfa beyaza soluyor ve proje sayfası geliyor. Güzel ama "yeni sayfa açıldı" hissi var; sahibin tarif ettiği şey değil.</figcaption></figure>
+</div>
+<div class="col stack" style="margin-top:22px">
+  <p><b>Ortak bulgu:</b> üçü de sayfayı yeniden yüklemiyor (aynı belge içinde adres değişiyor) ve hiçbiri tarayıcının View Transitions özelliğini kullanmıyor; hepsi kendi JavaScript ve WebGL kodlarıyla yapılmış. Portfolyo sitesinde ise bu özellik zaten kullanılıyor (ADR-0007: her sekme ayrı sayfa, geçişler tarayıcının çapraz belge geçişiyle). Robin'in etkisi bu altyapıyla yapılabilir: Work'teki kartın görseli ve proje sayfasının üstündeki görsel aynı adı taşır, tarayıcı birini diğerine dönüştürür. Ayrı bir yönlendirici yazmaya gerek yok.</p>
+  <p class="src">Desteği: Chrome 126+, Safari 18.2+. Desteklemeyen tarayıcı sayfayı anında açar; hareket azaltma tercihinde de geçiş kapanır. Bu, sitenin "her efektin durağan ikizi" kuralına uyuyor.</p>
+</div>
+
+<h2 id="saptama">Saptamalar: araştırmanın portfolyo için söyledikleri</h2>
+<p class="col lede">Sahibin notları, ölçümler ve araştırma birlikte okunduğunda ortaya çıkan ilk analiz sonuçları. Her birinin dayanağı yanında. Bunlar karar değil; portfolyo geliştirilirken sahibi tarafından yeniden değerlendirilecek.</p>
+<div class="patterns">
+  <div class="pat"><h4>Ana sayfa işe alımı cevaplar<span>sahibin ölçütü · 7,4 sn · %74 ilk iki ekran</span></h4><p>İlk bakışta kim olduğu, nerede olduğu, ne yaptığı ve neye odaklandığı okunur; kanıt (işler) ilk iki ekranda görünür.</p></div>
+  <div class="pat"><h4>Ana sayfa kısa ve şeritli<span>Çalışma 4 · 8 sade site</span></h4><p>Sevilen sade siteler 1,1–2,8 ekran; 3–7 bölüm; her bölüm küçük bir etiket ve içerik; bölümler arası boşluk sabit; tek dar sütun (600–670 px).</p></div>
+  <div class="pat"><h4>Sıra değişmez<span>Çalışma 4</span></h4><p>Ad ve rol → bugün (bir iki cümle) → işler → yazılar → şu sıralar (isteğe bağlı, kısa) → bağlantılar.</p></div>
+  <div class="pat"><h4>Açılış gösterisi yok<span>ölçüm · sahibin 14 Ekim görüşü</span></h4><p>Sevilen sade sitelerin hiçbirinde açılış anı ya da yükleme ekranı yok; en fazla satırların 1 saniyede belirmesi. Beğenilmeyenlerin çoğunda 2–5 saniyelik yükleme var.</p></div>
+  <div class="pat"><h4>Dil doğrudan<span>sahibin ölçütü · Ladders · NN/g</span></h4><p>Kısa, kesin cümleler; süslü öz tanım yok. Başlıklar tek başına mesaj taşır (taranabilir okuma).</p></div>
+  <div class="pat"><h4>Göz yorulmaz<span>Çalışma 3 · Material · Baymard</span></h4><p>Zemin ve metin saf siyah ya da saf beyaz değil; hiyerarşi boyut, ağırlık ve tek rengin opaklıklarıyla; gövde 15–20 px, satır 50–75 karakter; geniş alanda doygun renk yok; tekdüzelik (tek boyut, tek ağırlık) yorgunluk yaratır.</p></div>
+  <div class="pat"><h4>Work zengin ve akıcı<span>sahibin ölçütü · Çalışma 5</span></h4><p>Galeri, gerçek ve hareketli ekranlar; tıklanan görsel kendi sayfasına akar (ortak öğe geçişi), geri dönüş tersine işler; yeni sayfa açıldı hissi yoktur.</p></div>
+  <div class="pat"><h4>Ürün adım adım ve kullanıcıyla anlatılır<span>Dia · Notion · Anime.js · Sierra</span></h4><p>Vaat cümlesi, bölüm başına tek fikir ve gerçek ekran, sabit dizin; başlık ürünü değil kullanıcının artık ne yapabildiğini söyler.</p></div>
+  <div class="pat"><h4>Hareket ölçülü<span>Çalışma 3</span></h4><p>Arayüz geçişleri 150–300 ms, sahne geçişleri 400–1000 ms; site başına bir iki yumuşama eğrisi; her efektin hareketsiz karşılığı.</p></div>
+  <div class="pat"><h4>Açık tema düğmesi açık bir soru<span>sahibin 14 Ekim görüşü</span></h4><p>Sahibine göre "galiba" siyah zemin ve nesneler yapısına uymuyor; bölüm bölüm farklı zemin bir olasılık; karar portfolyoya kalabilir.</p></div>
+</div>
+
+<h2 id="sinir">Sınırlar</h2>
+<div class="col">
+<ul class="plain">
+  <li>Telefon görüntüleri Chrome'un iPhone taklidi; gerçek Safari değil.</li>
+  <li>Süreler ağa bağlı; döngülü sayfalarda iki ölçüm arasında ±1 sn fark görüldü. Rakamlar siteler arası karşılaştırma içindir, şartname değil.</li>
+  <li>WebGL siteleri başsız Chrome'da gerçek bir ekran kartından daha yavaş açılabilir.</li>
+  <li>Chrome'a verilen GPU ayarları (12 Ekim) bazı sitelerin açılışını bozdu (Shopify'da fark edildi); ayar kaldırıldı ve sevilen 12 site yeniden ölçüldü. Seçkideki ilk ekranlardan bazıları bu yüzden açılış çerçevesini gösteriyor olabilir.</li>
+  <li>Work geçişlerinde 14 galeriden 4'ü temiz kaydedildi; diğerlerinde tıklama bir katmana takıldı ya da proje başka bir siteye gidiyordu.</li>
+  <li>Araştırmadaki bazı kaynaklar özet ya da sektör çalışması (Ladders 7,4 sn); güven düzeyleri <code>data/research-sources.md</code>'de.</li>
+</ul>
+</div>
+
+<h2 id="dosya">Dosyalar</h2>
+<div class="col">
+<ul class="plain">
+  <li><code>rapor.html</code>: bu rapor (Türkçe); <code>report.md</code>: aynı içerik İngilizce, geliştirme reposu için.</li>
+  <li><code>begenilenler.html</code>: beğenilen 16 sitenin ayrıntılı dosyası (Türkçe); <code>liked-sites.md</code>: aynısı İngilizce. Kayıtlar ve kareler <code>img-dossiers/</code>, ham veri ve sitelerin CSS dosyaları <code>data/dossiers/</code>.</li>
+  <li><code>img/</code>: rapordaki bütün görseller.</li>
+  <li><code>data/study1-29-sites/</code>: ilk çalışmanın site başına ölçümleri.</li>
+  <li><code>data/picker/</code>: 127 sitenin listesi ve kaynakları (<code>sites_all.json</code>, <code>awards.json</code>, <code>products.json</code>, <code>portfolios.json</code>), çıkarılan siteler (<code>blocked.json</code>) ve sahibin 31 oyu ve notu (<code>votes.json</code>).</li>
+  <li><code>data/study3-anatomy/</code>: sevilen 12 sitenin anatomisi (fontlar, yazı ölçeği, renkler, geçişler, kaydırma durakları).</li>
+  <li><code>data/study4-home-pages/</code>: 13 ana sayfanın bölüm yapısı ve ilk ekran envanteri.</li>
+  <li><code>data/study5-work-transitions/</code>: galeri geçiş denemeleri (başarılı ve başarısız).</li>
+  <li><code>data/research-sources.md</code>: araştırma notları ve kaynakları; <code>data/owner-criteria.tr.md</code>: sahibin ölçütleri, tarihli.</li>
+  <li>Yayımlanmış sürümler: <a href="https://claude.ai/artifact/5vVohMohG5zLmSrh456jjB">bu rapor</a>, <a href="https://claude.ai/artifact/V1SZ4t9nfRH7TuxVw3tdva">Beğenilen Siteler Dosyası</a>, <a href="https://claude.ai/artifact/4wVp8Z7iviqCMTkUfhzSZM">Beğeni Analizi</a>, <a href="https://claude.ai/artifact/SqC8mBKtvbK4hdF1cL48dV">Ana Sayfa ve Work</a>, <a href="https://claude.ai/artifact/1CHkxD94pf1fYe2EB72J4k">Referans Seçkisi</a>.</li>
+</ul>
+</div>
+
+<footer class="note">
+  Hazırlayan: tasarım inceleme çalışması, Eren Deniz Kuyucaklıoğlu'nun bilgisayarında, 12–14 Ekim 2026. Araçlar ve ham yakalamalar arşivde: <code>reference-research/</code> (araçlar <code>tools/</code>, 127 sitenin tüm görüntüleri <code>library/captures/</code>).
+</footer>
+</div>

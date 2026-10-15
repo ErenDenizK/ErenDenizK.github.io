@@ -1,0 +1,76 @@
+{
+ "slug": "igloo-inc",
+ "url": "https://www.igloo.inc/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp"
+  ],
+  "firstPaintS": 7.6,
+  "settleS": 2.14,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1,
+  "largestPx": 0,
+  "largestText": "",
+  "largestFont": "",
+  "largestWeight": "",
+  "largestTracking": "",
+  "bodyPx": 0,
+  "bodyFont": "",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 0,
+  "firstScreenChars": 0,
+  "bg": "rgb(160, 165, 177)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 8,
+   "chromatic": 0,
+   "bgHex": "#4f5564",
+   "inkPct": 85,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp"
+  ],
+  "firstPaintS": 2.74,
+  "settleS": 7.4,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 1,
+  "largestPx": 0,
+  "largestText": "",
+  "largestFont": "",
+  "largestWeight": "",
+  "largestTracking": "",
+  "bodyPx": 0,
+  "bodyFont": "",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 0,
+  "firstScreenChars": 0,
+  "bg": "rgb(160, 165, 177)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 7,
+   "chromatic": 0,
+   "bgHex": "#575d6c",
+   "inkPct": 83,
+   "chromaHex": []
+  }
+ }
+}

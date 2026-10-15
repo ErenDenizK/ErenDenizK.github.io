@@ -1,0 +1,82 @@
+{
+ "slug": "rinko-kawauchi",
+ "url": "http://rinkokawauchi.com/en/",
+ "group": "photo",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp"
+  ],
+  "firstPaintS": 4.72,
+  "settleS": 6.86,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1,
+  "largestPx": 14,
+  "largestText": "News",
+  "largestFont": "Adobe Garamond W01",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 0,
+  "bodyFont": "",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 68,
+  "firstScreenChars": 79,
+  "bg": "rgb(234, 238, 238)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 7,
+   "chromatic": 2,
+   "bgHex": "#eaeeee",
+   "inkPct": 72,
+   "chromaHex": [
+    "#2d3648",
+    "#3f4d68"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp"
+  ],
+  "firstPaintS": 4.43,
+  "settleS": 8.73,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 1,
+  "largestPx": 15,
+  "largestText": "Menu",
+  "largestFont": "Adobe Garamond W01",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 0,
+  "bodyFont": "",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 24,
+  "firstScreenChars": 4,
+  "bg": "rgb(234, 238, 238)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 8,
+   "chromatic": 2,
+   "bgHex": "#eaeeee",
+   "inkPct": 26,
+   "chromaHex": [
+    "#17253c",
+    "#263756"
+   ]
+  }
+ }
+}

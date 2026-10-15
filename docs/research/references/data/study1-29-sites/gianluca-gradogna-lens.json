@@ -1,0 +1,82 @@
+{
+ "slug": "gianluca-gradogna-lens",
+ "url": "https://gianlucagradogna.com/through-this-lens",
+ "group": "photo",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp"
+  ],
+  "firstPaintS": 2.04,
+  "settleS": 6.23,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1,
+  "largestPx": 90,
+  "largestText": "Through",
+  "largestFont": "LZ",
+  "largestWeight": "500",
+  "largestTracking": "-2.69983px",
+  "bodyPx": 14,
+  "bodyFont": "Neue-Montreal",
+  "lineChars": 47,
+  "measurePx": 340,
+  "mediaPct": 6,
+  "firstScreenChars": 121,
+  "bg": "rgba(0, 0, 0, 0)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 3,
+   "chromatic": 1,
+   "bgHex": "#ffffff",
+   "inkPct": 8,
+   "chromaHex": [
+    "#31473d"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.74,
+  "settleS": 8.91,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 33.2,
+  "largestPx": 41.4,
+  "largestText": "Through",
+  "largestFont": "LZ",
+  "largestWeight": "500",
+  "largestTracking": "-1.24312px",
+  "bodyPx": 14.6,
+  "bodyFont": "Neue-Montreal",
+  "lineChars": 52,
+  "measurePx": 351,
+  "mediaPct": 9,
+  "firstScreenChars": 121,
+  "bg": "rgba(0, 0, 0, 0)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 6,
+   "chromatic": 1,
+   "bgHex": "#ffffff",
+   "inkPct": 11,
+   "chromaHex": [
+    "#422e34"
+   ]
+  }
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "slug": "matthieu-givelet",
+ "url": "https://matthieugivelet.com/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp"
+  ],
+  "firstPaintS": 2.37,
+  "settleS": 7.81,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 2.3,
+  "largestPx": 51.8,
+  "largestText": "Front-end developer and",
+  "largestFont": "GT Standard",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 22.3,
+  "bodyFont": "GT Standard",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 11,
+  "firstScreenChars": 229,
+  "bg": "rgba(0, 0, 0, 0)",
+  "webAnimsRunning": 27,
+  "webAnimsInfinite": 4,
+  "webAnimMaxEndMs": 1760,
+  "palette": {
+   "tones": 6,
+   "chromatic": 0,
+   "bgHex": "#ffffff",
+   "inkPct": 12,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp"
+  ],
+  "firstPaintS": 1.56,
+  "settleS": 8.0,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 2.3,
+  "largestPx": 27.3,
+  "largestText": "Front-end developer and",
+  "largestFont": "GT Standard",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 12.9,
+  "bodyFont": "GT Standard",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 14,
+  "firstScreenChars": 216,
+  "bg": "rgba(0, 0, 0, 0)",
+  "webAnimsRunning": 26,
+  "webAnimsInfinite": 4,
+  "webAnimMaxEndMs": 1760,
+  "palette": {
+   "tones": 8,
+   "chromatic": 0,
+   "bgHex": "#ffffff",
+   "inkPct": 18,
+   "chromaHex": []
+  }
+ }
+}

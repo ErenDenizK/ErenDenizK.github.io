@@ -1,0 +1,23 @@
+{
+ "slug": "basement-studio",
+ "url": "https://basement.studio/",
+ "found": {
+  "href": "https://basement.studio/showcase/vercel-ship-a-home-for-innovation",
+  "top": 2481.0625,
+  "w": 816.328125,
+  "h": 459.171875
+ },
+ "open": {
+  "urlFrom": "https://basement.studio/",
+  "urlTo": "https://basement.studio/showcase/vercel-ship-a-home-for-innovation",
+  "sameDocument": true,
+  "viewTransitions": 0,
+  "settleS": 1.71,
+  "frames": 437
+ },
+ "back": {
+  "urlTo": "https://basement.studio/",
+  "sameDocument": true,
+  "settleS": 4.47
+ }
+}

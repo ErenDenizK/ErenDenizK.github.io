@@ -1,0 +1,233 @@
+{
+ "slug": "anthony-fu",
+ "url": "https://antfu.me/",
+ "name": "Anthony Fu",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 1230,
+  "screens": 1.4,
+  "blockCount": 52,
+  "medianGap": 20,
+  "sections": [
+   {
+    "y": 33,
+    "gapBefore": null,
+    "h": 24,
+    "n": 4,
+    "chars": 25,
+    "links": 4,
+    "head": [
+     "16px Talks",
+     "16px Blog",
+     "16px Projects",
+     "16px Sponsors"
+    ]
+   },
+   {
+    "y": 130,
+    "gapBefore": 73,
+    "h": 552,
+    "n": 29,
+    "chars": 1109,
+    "links": 22,
+    "head": [
+     "36px Anthony Fu",
+     "16px Hey! I’m Anthony Fu, a fanatical open sourceror and design e",
+     "16px Working at Vercel / Nuxt Creator of Vitest Slidev VueUse Uno",
+     "16px Vercel"
+    ]
+   },
+   {
+    "y": 747,
+    "gapBefore": 65,
+    "h": 118,
+    "n": 10,
+    "chars": 129,
+    "links": 6,
+    "head": [
+     "16px Find me on",
+     "16px GitHub Bluesky Discord Server Twitter 中文推 日本語",
+     "16px GitHub",
+     "16px Bluesky"
+    ]
+   },
+   {
+    "y": 930,
+    "gapBefore": 65,
+    "h": 236,
+    "n": 9,
+    "chars": 330,
+    "links": 5,
+    "head": [
+     "16px If you enjoy my work and find them useful, consider sponsor ",
+     "16px Sponsor the Ecosystem How does this work?",
+     "16px Sponsor the Ecosystem",
+     "14px How does this work?"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 160,
+   "blocks": 43,
+   "links": 32,
+   "text": [
+    "16px* Talks",
+    "16px* Blog",
+    "16px* Projects",
+    "16px* Sponsors",
+    "36px Anthony Fu",
+    "16px Hey! I’m Anthony Fu, a fanatical open sourceror and design engineer.",
+    "16px Working at Vercel / Nuxt Creator of Vitest Slidev VueUse UnoCSS Elk Ty",
+    "16px* Vercel",
+    "16px* Nuxt",
+    "16px* Vitest",
+    "16px* Slidev",
+    "16px* VueUse",
+    "16px* UnoCSS",
+    "16px* Elk",
+    "16px* Type Challenges",
+    "16px* Vue",
+    "16px* Nuxt",
+    "16px* Vite",
+    "16px* Shiki",
+    "16px* Twoslash",
+    "16px* ESLint Stylistic",
+    "16px Dreaming up cool ideas and making them come true is where my passion l",
+    "16px* full projects list here",
+    "16px I give talks and write blog posts about open source, coding, etc. I am",
+    "16px* talks",
+    "16px* blog posts",
+    "16px (in Mandarin)",
+    "16px* YouTube",
+    "16px* 哔哩哔哩",
+    "16px* 100.antfu.me",
+    "16px Outside of programming, I enjoy doing photography and traveling. I pos",
+    "16px* photos on this page",
+    "16px* hardware/software I use",
+    "16px Find me on",
+    "16px GitHub Bluesky Discord Server Twitter 中文推 日本語",
+    "16px* GitHub",
+    "16px* Bluesky",
+    "16px* Discord Server",
+    "16px* Twitter",
+    "16px* 中文推"
+   ]
+  },
+  "column": {
+   "left": 392,
+   "right": 1048
+  },
+  "check": {
+   "name": 130,
+   "role": 202,
+   "affiliation": 250,
+   "projects": 35,
+   "writing": 35,
+   "proof": 250,
+   "contact": 253,
+   "now": null
+  },
+  "bg": "rgba(0, 0, 0, 0)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 1678,
+  "screens": 2,
+  "blockCount": 48,
+  "medianGap": 20,
+  "sections": [
+   {
+    "y": 128,
+    "gapBefore": null,
+    "h": 863,
+    "n": 29,
+    "chars": 1109,
+    "links": 22,
+    "head": [
+     "36px Anthony Fu",
+     "16px Hey! I’m Anthony Fu, a fanatical open sourceror and design e",
+     "16px Working at Vercel / Nuxt Creator of Vitest Slidev VueUse Uno",
+     "16px Vercel"
+    ]
+   },
+   {
+    "y": 1056,
+    "gapBefore": 65,
+    "h": 155,
+    "n": 10,
+    "chars": 129,
+    "links": 6,
+    "head": [
+     "16px Find me on",
+     "16px GitHub Bluesky Discord Server Twitter 中文推 日本語",
+     "16px GitHub",
+     "16px Bluesky"
+    ]
+   },
+   {
+    "y": 1276,
+    "gapBefore": 65,
+    "h": 338,
+    "n": 9,
+    "chars": 330,
+    "links": 5,
+    "head": [
+     "16px If you enjoy my work and find them useful, consider sponsor ",
+     "16px Sponsor the Ecosystem How does this work?",
+     "16px Sponsor the Ecosystem",
+     "14px How does this work?"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 106,
+   "blocks": 26,
+   "links": 20,
+   "text": [
+    "36px Anthony Fu",
+    "16px Hey! I’m Anthony Fu, a fanatical open sourceror and design engineer.",
+    "16px Working at Vercel / Nuxt Creator of Vitest Slidev VueUse UnoCSS Elk Ty",
+    "16px* Vercel",
+    "16px* Nuxt",
+    "16px* Vitest",
+    "16px* Slidev",
+    "16px* VueUse",
+    "16px* UnoCSS",
+    "16px* Elk",
+    "16px* Type Challenges",
+    "16px* Vue",
+    "16px* Nuxt",
+    "16px* Vite",
+    "16px* Shiki",
+    "16px* Twoslash",
+    "16px* ESLint Stylistic",
+    "16px Dreaming up cool ideas and making them come true is where my passion l",
+    "16px* full projects list here",
+    "16px I give talks and write blog posts about open source, coding, etc. I am",
+    "16px* talks",
+    "16px* blog posts",
+    "16px (in Mandarin)",
+    "16px* YouTube",
+    "16px* 哔哩哔哩",
+    "16px* 100.antfu.me"
+   ]
+  },
+  "column": {
+   "left": 28,
+   "right": 362
+  },
+  "check": {
+   "name": 128,
+   "role": 200,
+   "affiliation": 276,
+   "projects": 276,
+   "writing": 662,
+   "proof": 276,
+   "contact": 279,
+   "now": null
+  },
+  "bg": "rgba(0, 0, 0, 0)"
+ }
+}

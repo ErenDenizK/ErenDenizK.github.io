@@ -1,0 +1,92 @@
+{
+ "slug": "raycast",
+ "url": "https://www.raycast.com/",
+ "group": "product",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.94,
+  "settleS": 2.24,
+  "continuous": false,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 17.8,
+  "largestPx": 64,
+  "largestText": "Your shortcut to everything.",
+  "largestFont": "Inter",
+  "largestWeight": "600",
+  "largestTracking": "normal",
+  "bodyPx": 14,
+  "bodyFont": "Inter",
+  "lineChars": 32,
+  "measurePx": 700,
+  "mediaPct": 0,
+  "firstScreenChars": 259,
+  "bg": "rgb(7, 8, 10)",
+  "webAnimsRunning": 29,
+  "webAnimsInfinite": 8,
+  "webAnimMaxEndMs": 5000,
+  "palette": {
+   "tones": 8,
+   "chromatic": 6,
+   "bgHex": "#07090a",
+   "inkPct": 34,
+   "chromaHex": [
+    "#d73d56",
+    "#122839",
+    "#cb6478",
+    "#822633",
+    "#805064"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.81,
+  "settleS": 7.0,
+  "continuous": false,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 18.5,
+  "largestPx": 36,
+  "largestText": "Your shortcut to everything.",
+  "largestFont": "Inter",
+  "largestWeight": "600",
+  "largestTracking": "normal",
+  "bodyPx": 14,
+  "bodyFont": "Inter",
+  "lineChars": 29,
+  "measurePx": 342,
+  "mediaPct": 0,
+  "firstScreenChars": 208,
+  "bg": "rgb(7, 8, 10)",
+  "webAnimsRunning": 25,
+  "webAnimsInfinite": 4,
+  "webAnimMaxEndMs": 5000,
+  "palette": {
+   "tones": 12,
+   "chromatic": 8,
+   "bgHex": "#07080a",
+   "inkPct": 36,
+   "chromaHex": [
+    "#d41a2e",
+    "#d62d43",
+    "#d7465e",
+    "#c57988",
+    "#810c16"
+   ]
+  }
+ }
+}

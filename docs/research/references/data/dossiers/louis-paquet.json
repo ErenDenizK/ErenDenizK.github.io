@@ -1,0 +1,421 @@
+{
+ "slug": "louis-paquet",
+ "url": "https://louispaquet.com/",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "18px",
+  "scrollBehavior": "auto",
+  "scrollbarWidth": "auto",
+  "smoothLib": false,
+  "maxWidths": [],
+  "grids": [
+   [
+    "3 cols · 450px 450px 450px",
+    1
+   ],
+   [
+    "3 cols · 444px 444px 444px",
+    1
+   ]
+  ],
+  "gaps": [
+   [
+    "16px",
+    31
+   ],
+   [
+    "18px",
+    2
+   ],
+   [
+    "100px 27px",
+    1
+   ],
+   [
+    "13.5px",
+    1
+   ]
+  ],
+  "spacingY": [
+   [
+    "9px",
+    62
+   ],
+   [
+    "25px",
+    3
+   ],
+   [
+    "27px",
+    2
+   ],
+   [
+    "100px",
+    1
+   ]
+  ],
+  "spacingX": [
+   [
+    "27px",
+    4
+   ]
+  ],
+  "radii": [
+   [
+    "50%",
+    4
+   ]
+  ],
+  "shadows": [],
+  "effects": [
+   [
+    "filter: blur(7px)",
+    2
+   ]
+  ],
+  "cursors": [],
+  "fixed": 0,
+  "sticky": 1,
+  "nav": [],
+  "viewTransitionNames": [
+   "root"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "00-app-A8F7Ge64.css",
+   "url": "https://louispaquet.com/assets/app-A8F7Ge64.css",
+   "bytes": 9328
+  },
+  {
+   "file": "01-css2.css",
+   "url": "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+   "bytes": 4775
+  },
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 578
+  }
+ ],
+ "css": {
+  "fontFaces": [
+   {
+    "family": "Inter",
+    "file": "UcCm3FwrK3iLTcvnUwsT9nA2.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCm3FwrK3iLTcvnUwoT9nA2.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCm3FwrK3iLTcvnUwcT9nA2.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCo3FwrK3iLTcvsYwYL8g.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCo3FwrK3iLTcvhYwYL8g.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCo3FwrK3iLTcvuYwYL8g.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCm3FwrK3iLTcvnUwQT9g.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCm3FwrK3iLTcvnUwgT9nA2.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCo3FwrK3iLTcvmYwYL8g.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCo3FwrK3iLTcvtYwYL8g.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCo3FwrK3iLTcvvYwYL8g.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCm3FwrK3iLTcvnUwAT9nA2.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCm3FwrK3iLTcvnUwkT9nA2.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Inter",
+    "file": "UcCo3FwrK3iLTcviYwY.woff2",
+    "weight": "100 900"
+   }
+  ],
+  "variables": {
+   "--color-black": "#1f1f1f",
+   "--color-white": "#E0DEDA",
+   "--color-red": "#8B2635",
+   "--color-green": "#D3EFBD",
+   "--grid-columns": "6",
+   "--grid-margin": "1.5rem"
+  },
+  "keyframes": {},
+  "easings": [
+   [
+    "ease-out",
+    7
+   ],
+   [
+    "cubic-bezier(.215, .61, .355, 1)",
+    1
+   ]
+  ],
+  "durations": [
+   [
+    ".5s",
+    4
+   ],
+   [
+    "1s",
+    1
+   ],
+   [
+    ".3s",
+    1
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "screen and (min-width: 1024px)",
+    13
+   ],
+   [
+    "screen and (max-width: 1023px)",
+    2
+   ],
+   [
+    "(prefers-color-scheme: light)",
+    1
+   ]
+  ],
+  "reducedMotion": 0,
+  "colorScheme": 1,
+  "viewTransitions": 0,
+  "scrollTimelines": 0,
+  "containerQueries": 0,
+  "clamp": []
+ },
+ "anatomy": {
+  "libs": [],
+  "canvases": [],
+  "videos": 0,
+  "fonts": [
+   "Inter 100 900 normal"
+  ],
+  "colorVars": {
+   "--color-black": "#1f1f1f",
+   "--color-white": "#E0DEDA",
+   "--color-red": "#8B2635",
+   "--color-green": "#D3EFBD"
+  },
+  "typeScale": [
+   {
+    "px": 18,
+    "family": "Inter",
+    "weight": "650",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 1089,
+    "n": 14,
+    "sample": "Louis Paquet"
+   },
+   {
+    "px": 18,
+    "family": "Inter",
+    "weight": "650",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "capitalize",
+    "chars": 485,
+    "n": 31,
+    "sample": "Cossette"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(31, 31, 31)",
+    1574
+   ]
+  ],
+  "bgColors": [],
+  "bodyBg": "rgba(0, 0, 0, 0)",
+  "htmlBg": "rgb(224, 222, 218)",
+  "transitions": [
+   [
+    "opacity | 1s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+    31
+   ],
+   [
+    "opacity | 0.3s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+    4
+   ],
+   [
+    "opacity | 0.5s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+    1
+   ]
+  ],
+  "docScreens": 2.6,
+  "title": "Louis Paquet — Digital Creative Director and Designer",
+  "metaDesc": "Louis Paquet is a Digital Creative Director and designer based in Montréal. He crafts websites that blend strong design, clever animation, and smooth, user-friendly experiences."
+ },
+ "animsAtLoad": [],
+ "hovers": [],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 17.3
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 1,
+   "y": 675,
+   "file": "desktop-j01.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 2,
+   "y": 1350,
+   "file": "desktop-j02.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 3,
+   "y": 1397,
+   "file": "desktop-j03.webp",
+   "headings": [],
+   "anims": 0
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [],
+  "canvases": [],
+  "videos": 0,
+  "fonts": [],
+  "colorVars": {
+   "--color-black": "#1f1f1f",
+   "--color-white": "#E0DEDA",
+   "--color-red": "#8B2635",
+   "--color-green": "#D3EFBD"
+  },
+  "typeScale": [
+   {
+    "px": 18,
+    "family": "Inter",
+    "weight": "650",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 1089,
+    "n": 14,
+    "sample": "Louis Paquet"
+   },
+   {
+    "px": 18,
+    "family": "Inter",
+    "weight": "650",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "capitalize",
+    "chars": 485,
+    "n": 31,
+    "sample": "Cossette"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(31, 31, 31)",
+    1574
+   ]
+  ],
+  "bgColors": [],
+  "bodyBg": "rgba(0, 0, 0, 0)",
+  "htmlBg": "rgb(224, 222, 218)",
+  "transitions": [
+   [
+    "opacity | 1s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+    31
+   ],
+   [
+    "opacity | 0.3s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+    4
+   ],
+   [
+    "opacity | 0.5s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+    1
+   ]
+  ],
+  "docScreens": 3.3,
+  "title": "Louis Paquet — Digital Creative Director and Designer",
+  "metaDesc": "Louis Paquet is a Digital Creative Director and designer based in Montréal. He crafts websites that blend strong design, clever animation, and smooth, user-friendly experiences."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 1,
+   "y": 760,
+   "file": "phone-j01.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 2,
+   "y": 1519,
+   "file": "phone-j02.webp",
+   "headings": [],
+   "anims": 0
+  },
+  {
+   "i": 3,
+   "y": 1929,
+   "file": "phone-j03.webp",
+   "headings": [],
+   "anims": 0
+  }
+ ]
+}

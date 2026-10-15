@@ -1,0 +1,819 @@
+{
+ "slug": "antoine-wodniack",
+ "url": "https://wodniack.dev/",
+ "desktop": {
+  "anatomy": {
+   "libs": [
+    "lenis"
+   ],
+   "canvases": [
+    "other",
+    "other"
+   ],
+   "videos": 34,
+   "fonts": [
+    "Bigger Display 700 normal",
+    "Editorial New 400 normal",
+    "Editorial New 200 normal",
+    "Fraktion Mono 400 normal",
+    "Fraktion Mono 700 normal"
+   ],
+   "colorVars": {
+    "--color-primary": "#f40c3f",
+    "--color-secondary": "#160000",
+    "--color-shadow": "#540000",
+    "--color-white": "#fff0eb"
+   },
+   "typeScale": [
+    {
+     "px": 138,
+     "family": "Bigger Display",
+     "weight": "700",
+     "lineHeight": "0.82",
+     "tracking": "-0.4px",
+     "transform": "uppercase",
+     "chars": 8,
+     "n": 1,
+     "sample": "awwwards"
+    },
+    {
+     "px": 105,
+     "family": "Bigger Display",
+     "weight": "700",
+     "lineHeight": "0.82",
+     "tracking": "-0.4px",
+     "transform": "uppercase",
+     "chars": 8,
+     "n": 2,
+     "sample": "fwa"
+    },
+    {
+     "px": 36,
+     "family": "Editorial New",
+     "weight": "200",
+     "lineHeight": "1.13",
+     "tracking": "-0.4px",
+     "transform": "none",
+     "chars": 231,
+     "n": 10,
+     "sample": "2025 Webby Awards Winner"
+    },
+    {
+     "px": 32,
+     "family": "Editorial New",
+     "weight": "200",
+     "lineHeight": "1.5",
+     "tracking": "-0.4px",
+     "transform": "none",
+     "chars": 430,
+     "n": 6,
+     "sample": "I collaborate with agencies and designers to cra"
+    },
+    {
+     "px": 20,
+     "family": "Editorial New",
+     "weight": "200",
+     "lineHeight": "2.4",
+     "tracking": "-0.4px",
+     "transform": "none",
+     "chars": 58,
+     "n": 2,
+     "sample": "Coding globally from France."
+    },
+    {
+     "px": 20,
+     "family": "Editorial New",
+     "weight": "400",
+     "lineHeight": "2.4",
+     "tracking": "-0.4px",
+     "transform": "none",
+     "chars": 7,
+     "n": 1,
+     "sample": "Hire me"
+    },
+    {
+     "px": 20,
+     "family": "Editorial New",
+     "weight": "200",
+     "lineHeight": "1.3",
+     "tracking": "-0.4px",
+     "transform": "none",
+     "chars": 64,
+     "n": 6,
+     "sample": "(SOTD x 16)"
+    },
+    {
+     "px": 14,
+     "family": "Fraktion Mono",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "0.7px",
+     "transform": "uppercase",
+     "chars": 16,
+     "n": 3,
+     "sample": "About"
+    },
+    {
+     "px": 12,
+     "family": "Fraktion Mono",
+     "weight": "700",
+     "lineHeight": "2",
+     "tracking": "1.2px",
+     "transform": "uppercase",
+     "chars": 11,
+     "n": 2,
+     "sample": "About"
+    },
+    {
+     "px": 11,
+     "family": "Fraktion Mono",
+     "weight": "700",
+     "lineHeight": "1",
+     "tracking": "1.65px",
+     "transform": "uppercase",
+     "chars": 864,
+     "n": 68,
+     "sample": "Generous Branding"
+    },
+    {
+     "px": 8,
+     "family": "Fraktion Mono",
+     "weight": "400",
+     "lineHeight": "1.4",
+     "tracking": "-0.4px",
+     "transform": "uppercase",
+     "chars": 62,
+     "n": 1,
+     "sample": "but why rush? Please wait… indefinitely Please w"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(22, 0, 0)",
+     884
+    ],
+    [
+     "rgb(244, 12, 63)",
+     875
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(244, 12, 63)",
+     86208
+    ],
+    [
+     "rgb(22, 0, 0)",
+     3098
+    ]
+   ],
+   "bodyBg": "rgb(244, 12, 63)",
+   "htmlBg": "rgb(22, 0, 0)",
+   "transitions": [
+    [
+     "translate, scale | 1s | cubic-bezier(0.23, 1, 0.32, 1)",
+     10
+    ],
+    [
+     "clip-path | 0.8s | cubic-bezier(0.86, 0, 0.07, 1)",
+     10
+    ],
+    [
+     "scale | 0.6s | cubic-bezier(0.55, 0.055, 0.675, 0.19)",
+     2
+    ],
+    [
+     "scale | 0.8s | cubic-bezier(0.55, 0.055, 0.675, 0.19)",
+     2
+    ],
+    [
+     "scale | 1s | cubic-bezier(0.23, 1, 0.32, 1)",
+     1
+    ],
+    [
+     "scale | 1.2s | cubic-bezier(0.23, 1, 0.32, 1)",
+     1
+    ],
+    [
+     "clip-path | 0.6s | cubic-bezier(0.86, 0, 0.07, 1)",
+     1
+    ],
+    [
+     "scale | 0.5s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+     1
+    ],
+    [
+     "scale, opacity | 0.2s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+     1
+    ]
+   ],
+   "docScreens": 24.4,
+   "title": "AW - Creative Developer Freelance - France",
+   "metaDesc": "Creative Developer with 15+ years and 140+ projects, specializing in animation-driven, high-impact websites. Partnering with designers to craft memorable UX."
+  },
+  "animsAtLoad": [
+   "CSSAnimation:s-hero-move-to-left|1000ms|delay 0|linear|1",
+   "CSSAnimation:s-hero-move-to-bottom|1000ms|delay 0|linear|1",
+   "CSSAnimation:s-hero-move-to-right|1000ms|delay 0|linear|1",
+   "CSSAnimation:rotate|10000ms|delay 0|linear|Infinity"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "desktop-j00.webp",
+    "headings": [
+     "H1 216px: C R E A T I V E D E V E L O P E R"
+    ],
+    "anims": 4
+   },
+   {
+    "i": 1,
+    "y": 676,
+    "file": "desktop-j01.webp",
+    "headings": [
+     "H1 216px: C R E A T I V E D E V E L O P E R",
+     "H2 12px: ABOUT"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 2,
+    "y": 1352,
+    "file": "desktop-j02.webp",
+    "headings": [
+     "H2 12px: AWARDS"
+    ],
+    "anims": 5
+   },
+   {
+    "i": 3,
+    "y": 2028,
+    "file": "desktop-j03.webp",
+    "headings": [],
+    "anims": 2
+   },
+   {
+    "i": 4,
+    "y": 2704,
+    "file": "desktop-j04.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 5,
+    "y": 3380,
+    "file": "desktop-j05.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 6,
+    "y": 4056,
+    "file": "desktop-j06.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 7,
+    "y": 4732,
+    "file": "desktop-j07.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 8,
+    "y": 5408,
+    "file": "desktop-j08.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 9,
+    "y": 6084,
+    "file": "desktop-j09.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 10,
+    "y": 6760,
+    "file": "desktop-j10.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 11,
+    "y": 7436,
+    "file": "desktop-j11.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 12,
+    "y": 8112,
+    "file": "desktop-j12.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 13,
+    "y": 8788,
+    "file": "desktop-j13.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 14,
+    "y": 9464,
+    "file": "desktop-j14.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 15,
+    "y": 10140,
+    "file": "desktop-j15.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 16,
+    "y": 10816,
+    "file": "desktop-j16.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 17,
+    "y": 11492,
+    "file": "desktop-j17.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 18,
+    "y": 12168,
+    "file": "desktop-j18.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 19,
+    "y": 12844,
+    "file": "desktop-j19.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 20,
+    "y": 13520,
+    "file": "desktop-j20.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 21,
+    "y": 14196,
+    "file": "desktop-j21.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 22,
+    "y": 14872,
+    "file": "desktop-j22.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 23,
+    "y": 15548,
+    "file": "desktop-j23.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 24,
+    "y": 16224,
+    "file": "desktop-j24.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 25,
+    "y": 16900,
+    "file": "desktop-j25.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 26,
+    "y": 17576,
+    "file": "desktop-j26.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 27,
+    "y": 18252,
+    "file": "desktop-j27.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 28,
+    "y": 18928,
+    "file": "desktop-j28.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 29,
+    "y": 19604,
+    "file": "desktop-j29.webp",
+    "headings": [],
+    "anims": 61
+   },
+   {
+    "i": 30,
+    "y": 20280,
+    "file": "desktop-j30.webp",
+    "headings": [],
+    "anims": 61
+   },
+   {
+    "i": 31,
+    "y": 20956,
+    "file": "desktop-j31.webp",
+    "headings": [],
+    "anims": 61
+   },
+   {
+    "i": 32,
+    "y": 21044,
+    "file": "desktop-j32.webp",
+    "headings": [],
+    "anims": 61
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:rotate|10000ms|delay 0|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 100|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 240|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 690|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 200|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 650|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 160|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 610|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 200|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 340|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 790|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 300|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 750|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 260|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 710|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 300|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 440|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 890|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 400|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 850|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 360|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 810|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 400|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 540|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 990|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 500|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 950|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 460|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 910|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 100|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 240|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 1690|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 200|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 1650|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 160|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 1610|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 200|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 340|linear|Infinity",
+   "CSSAnimation:s-cta-char-toggle|2000ms|delay 1790|linear|Infinity",
+   "CSSAnimation:s-cta-char-up-down|2000ms|delay 300|linear|Infinity"
+  ]
+ },
+ "phone": {
+  "anatomy": {
+   "libs": [
+    "lenis"
+   ],
+   "canvases": [
+    "other",
+    "other"
+   ],
+   "videos": 34,
+   "fonts": [
+    "Bigger Display 700 normal",
+    "Editorial New 400 normal",
+    "Editorial New 200 normal",
+    "Fraktion Mono 400 normal",
+    "Fraktion Mono 700 normal"
+   ],
+   "colorVars": {
+    "--color-primary": "#f40c3f",
+    "--color-secondary": "#160000",
+    "--color-shadow": "#540000",
+    "--color-white": "#fff0eb"
+   },
+   "typeScale": [
+    {
+     "px": 64,
+     "family": "Bigger Display",
+     "weight": "700",
+     "lineHeight": "0.82",
+     "tracking": "-0.4px",
+     "transform": "uppercase",
+     "chars": 8,
+     "n": 2,
+     "sample": "fwa"
+    },
+    {
+     "px": 56,
+     "family": "Bigger Display",
+     "weight": "700",
+     "lineHeight": "0.82",
+     "tracking": "-0.4px",
+     "transform": "uppercase",
+     "chars": 8,
+     "n": 1,
+     "sample": "awwwards"
+    },
+    {
+     "px": 24,
+     "family": "Editorial New",
+     "weight": "200",
+     "lineHeight": "1.5",
+     "tracking": "-0.4px",
+     "transform": "none",
+     "chars": 430,
+     "n": 6,
+     "sample": "I collaborate with agencies and designers to cra"
+    },
+    {
+     "px": 20,
+     "family": "Editorial New",
+     "weight": "400",
+     "lineHeight": "2.4",
+     "tracking": "-0.4px",
+     "transform": "none",
+     "chars": 7,
+     "n": 1,
+     "sample": "Hire me"
+    },
+    {
+     "px": 18.4,
+     "family": "Editorial New",
+     "weight": "200",
+     "lineHeight": "1.13",
+     "tracking": "-0.4px",
+     "transform": "none",
+     "chars": 231,
+     "n": 10,
+     "sample": "2025 Webby Awards Winner"
+    },
+    {
+     "px": 17.6,
+     "family": "Editorial New",
+     "weight": "200",
+     "lineHeight": "1.3",
+     "tracking": "-0.4px",
+     "transform": "none",
+     "chars": 64,
+     "n": 6,
+     "sample": "(SOTD x 16)"
+    },
+    {
+     "px": 12,
+     "family": "Fraktion Mono",
+     "weight": "700",
+     "lineHeight": "2",
+     "tracking": "1.2px",
+     "transform": "uppercase",
+     "chars": 11,
+     "n": 2,
+     "sample": "About"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(22, 0, 0)",
+     748
+    ],
+    [
+     "rgb(244, 12, 63)",
+     11
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(244, 12, 63)",
+     20627
+    ],
+    [
+     "rgb(22, 0, 0)",
+     664
+    ]
+   ],
+   "bodyBg": "rgb(244, 12, 63)",
+   "htmlBg": "rgb(22, 0, 0)",
+   "transitions": [
+    [
+     "translate, scale | 1s | cubic-bezier(0.23, 1, 0.32, 1)",
+     10
+    ],
+    [
+     "clip-path | 0.8s | cubic-bezier(0.86, 0, 0.07, 1)",
+     10
+    ],
+    [
+     "scale | 0.6s | cubic-bezier(0.55, 0.055, 0.675, 0.19)",
+     2
+    ],
+    [
+     "scale | 0.8s | cubic-bezier(0.55, 0.055, 0.675, 0.19)",
+     2
+    ],
+    [
+     "scale | 1s | cubic-bezier(0.23, 1, 0.32, 1)",
+     1
+    ],
+    [
+     "scale | 1.2s | cubic-bezier(0.23, 1, 0.32, 1)",
+     1
+    ],
+    [
+     "clip-path | 0.6s | cubic-bezier(0.86, 0, 0.07, 1)",
+     1
+    ],
+    [
+     "scale | 0.5s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+     1
+    ],
+    [
+     "scale, opacity | 0.2s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+     1
+    ]
+   ],
+   "docScreens": 22.8,
+   "title": "AW - Creative Developer Freelance - France",
+   "metaDesc": "Creative Developer with 15+ years and 140+ projects, specializing in animation-driven, high-impact websites. Partnering with designers to craft memorable UX."
+  },
+  "animsAtLoad": [
+   "CSSAnimation:s-hero-move-to-left|1000ms|delay 0|linear|1",
+   "CSSAnimation:s-hero-move-to-right|1000ms|delay 0|linear|1",
+   "CSSAnimation:rotate|10000ms|delay 0|linear|Infinity"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "phone-j00.webp",
+    "headings": [
+     "H1 109px: C R E A T I V E D E V E L O P E R",
+     "H2 12px: ABOUT"
+    ],
+    "anims": 3
+   },
+   {
+    "i": 1,
+    "y": 379,
+    "file": "phone-j01.webp",
+    "headings": [
+     "H1 109px: C R E A T I V E D E V E L O P E R",
+     "H2 12px: ABOUT"
+    ],
+    "anims": 4
+   },
+   {
+    "i": 2,
+    "y": 759,
+    "file": "phone-j02.webp",
+    "headings": [
+     "H1 109px: C R E A T I V E D E V E L O P E R",
+     "H2 12px: ABOUT"
+    ],
+    "anims": 5
+   },
+   {
+    "i": 3,
+    "y": 1139,
+    "file": "phone-j03.webp",
+    "headings": [
+     "H2 12px: AWARDS"
+    ],
+    "anims": 6
+   },
+   {
+    "i": 4,
+    "y": 1519,
+    "file": "phone-j04.webp",
+    "headings": [
+     "H2 12px: AWARDS"
+    ],
+    "anims": 3
+   },
+   {
+    "i": 5,
+    "y": 1899,
+    "file": "phone-j05.webp",
+    "headings": [],
+    "anims": 4
+   },
+   {
+    "i": 6,
+    "y": 2279,
+    "file": "phone-j06.webp",
+    "headings": [],
+    "anims": 2
+   },
+   {
+    "i": 7,
+    "y": 2659,
+    "file": "phone-j07.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 8,
+    "y": 3039,
+    "file": "phone-j08.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 9,
+    "y": 3419,
+    "file": "phone-j09.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 10,
+    "y": 3799,
+    "file": "phone-j10.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 11,
+    "y": 4179,
+    "file": "phone-j11.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 12,
+    "y": 4559,
+    "file": "phone-j12.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 13,
+    "y": 4939,
+    "file": "phone-j13.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 14,
+    "y": 5319,
+    "file": "phone-j14.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 15,
+    "y": 5699,
+    "file": "phone-j15.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 16,
+    "y": 6079,
+    "file": "phone-j16.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 17,
+    "y": 6459,
+    "file": "phone-j17.webp",
+    "headings": [],
+    "anims": 1
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:rotate|10000ms|delay 0|linear|Infinity"
+  ]
+ }
+}

@@ -1,0 +1,91 @@
+{
+ "slug": "alec-soth",
+ "url": "https://alecsoth.com/",
+ "group": "photo",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 3.55,
+  "settleS": 5.15,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 15.1,
+  "largestPx": 37.9,
+  "largestText": "Alec Soth",
+  "largestFont": "Helvetica Neue",
+  "largestWeight": "700",
+  "largestTracking": "0.24px",
+  "bodyPx": 13.6,
+  "bodyFont": "Helvetica Neue",
+  "lineChars": 94,
+  "measurePx": 960,
+  "mediaPct": 38,
+  "firstScreenChars": 168,
+  "bg": "rgb(255, 255, 255)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 14,
+   "chromatic": 5,
+   "bgHex": "#ffffff",
+   "inkPct": 70,
+   "chromaHex": [
+    "#efa537",
+    "#4f3c38",
+    "#9f7a69",
+    "#f3ba66",
+    "#7d3638"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 2.87,
+  "settleS": 7.85,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 13.1,
+  "largestPx": 31.2,
+  "largestText": "Menu",
+  "largestFont": "Helvetica Neue",
+  "largestWeight": "700",
+  "largestTracking": "0.24px",
+  "bodyPx": 13.6,
+  "bodyFont": "Helvetica Neue",
+  "lineChars": 43,
+  "measurePx": 358,
+  "mediaPct": 43,
+  "firstScreenChars": 355,
+  "bg": "rgb(255, 255, 255)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 15,
+   "chromatic": 4,
+   "bgHex": "#ffffff",
+   "inkPct": 70,
+   "chromaHex": [
+    "#efa537",
+    "#f6cc8e",
+    "#922933",
+    "#f0bb6e"
+   ]
+  }
+ }
+}

@@ -1,0 +1,898 @@
+{
+ "slug": "notion-calendar",
+ "url": "https://www.notion.com/product/calendar",
+ "desktop": {
+  "anatomy": {
+   "libs": [
+    "nextjs"
+   ],
+   "canvases": [],
+   "videos": 0,
+   "fonts": [
+    "NotionInter 400 normal",
+    "NotionInter 500 normal",
+    "NotionInter 600 normal",
+    "NotionInter 700 normal",
+    "Lyon Text 400 normal"
+   ],
+   "colorVars": {
+    "--tatami-color-gray-100": "#f9f9f8",
+    "--tatami-color-gray-200": "#f6f5f4",
+    "--tatami-color-gray-300": "#dfdcd9",
+    "--tatami-color-gray-400": "#a39e98",
+    "--tatami-color-gray-500": "#78736f",
+    "--tatami-color-gray-600": "#615d59",
+    "--tatami-color-gray-700": "#494744",
+    "--tatami-color-gray-800": "#31302e",
+    "--tatami-color-gray-900": "#191918",
+    "--tatami-color-red-100": "#fef3f1",
+    "--tatami-color-red-200": "#fdd3cd",
+    "--tatami-color-red-300": "#ff8b7c",
+    "--tatami-color-red-400": "#f77463",
+    "--tatami-color-red-500": "#f64932",
+    "--tatami-color-red-600": "#e32d14",
+    "--tatami-color-red-700": "#b01601",
+    "--tatami-color-red-800": "#6f0d00",
+    "--tatami-color-red-900": "#4f0900",
+    "--tatami-color-orange-100": "#fff5ed",
+    "--tatami-color-orange-200": "#ffdec4",
+    "--tatami-color-orange-300": "#ffad71",
+    "--tatami-color-orange-400": "#ff8a33",
+    "--tatami-color-orange-500": "#ff6d00",
+    "--tatami-color-orange-600": "#dd5b00",
+    "--tatami-color-orange-700": "#ab4a00",
+    "--tatami-color-orange-800": "#793400",
+    "--tatami-color-orange-900": "#532200",
+    "--tatami-color-yellow-100": "#fff5e0",
+    "--tatami-color-yellow-200": "#ffe4af",
+    "--tatami-color-yellow-300": "#ffd786",
+    "--tatami-color-yellow-400": "#ffc95e",
+    "--tatami-color-yellow-500": "#ffb110",
+    "--tatami-color-yellow-600": "#e89d01",
+    "--tatami-color-yellow-700": "#c78600",
+    "--tatami-color-yellow-800": "#a16c00",
+    "--tatami-color-yellow-900": "#704b00",
+    "--tatami-color-teal-100": "#f2fafa",
+    "--tatami-color-teal-200": "#bde6e4",
+    "--tatami-color-teal-300": "#83cbc9",
+    "--tatami-color-teal-400": "#2a9d99",
+    "--tatami-color-teal-500": "#27918d",
+    "--tatami-color-teal-600": "#0a7b77",
+    "--tatami-color-teal-700": "#126764",
+    "--tatami-color-teal-800": "#0a4d4b",
+    "--tatami-color-teal-900": "#042b29",
+    "--tatami-color-blue-100": "#f2f9ff",
+    "--tatami-color-blue-200": "#e6f3fe",
+    "--tatami-color-blue-300": "#93cdfe",
+    "--tatami-color-blue-400": "#62aef0",
+    "--tatami-color-blue-500": "#097fe8",
+    "--tatami-color-blue-600": "#0075de",
+    "--tatami-color-blue-700": "#005bab",
+    "--tatami-color-blue-800": "#00396b",
+    "--tatami-color-blue-900": "#002a4f",
+    "--tatami-color-purple-100": "#f8f5fc",
+    "--tatami-color-purple-200": "#eadbfa",
+    "--tatami-color-purple-300": "#d6b6f6",
+    "--tatami-color-purple-400": "#ad6ded",
+    "--tatami-color-purple-500": "#9849e8",
+    "--tatami-color-purple-600": "#7237ae"
+   },
+   "typeScale": [
+    {
+     "px": 64,
+     "family": "NotionInter",
+     "weight": "700",
+     "lineHeight": "1",
+     "tracking": "-2.12501px",
+     "transform": "none",
+     "chars": 10,
+     "n": 1,
+     "sample": "It’s time."
+    },
+    {
+     "px": 42,
+     "family": "NotionInter",
+     "weight": "700",
+     "lineHeight": "1.14",
+     "tracking": "-1.5px",
+     "transform": "none",
+     "chars": 171,
+     "n": 5,
+     "sample": "Time management, simplified."
+    },
+    {
+     "px": 42,
+     "family": "NotionInter",
+     "weight": "600",
+     "lineHeight": "1.14",
+     "tracking": "-1.5px",
+     "transform": "none",
+     "chars": 19,
+     "n": 1,
+     "sample": "Questions & answers"
+    },
+    {
+     "px": 22,
+     "family": "NotionInter",
+     "weight": "500",
+     "lineHeight": "1.27",
+     "tracking": "-0.25px",
+     "transform": "none",
+     "chars": 123,
+     "n": 1,
+     "sample": "All of your commitments, now in one place. Meet "
+    },
+    {
+     "px": 18,
+     "family": "NotionInter",
+     "weight": "700",
+     "lineHeight": "1.56",
+     "tracking": "-0.125px",
+     "transform": "none",
+     "chars": 397,
+     "n": 20,
+     "sample": "See your schedule at a glance"
+    },
+    {
+     "px": 16,
+     "family": "NotionInter",
+     "weight": "600",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 182,
+     "n": 4,
+     "sample": "Notion Calendar"
+    },
+    {
+     "px": 16,
+     "family": "NotionInter",
+     "weight": "500",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 82,
+     "n": 6,
+     "sample": "Get Notion Calendar free"
+    },
+    {
+     "px": 16,
+     "family": "NotionInter",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 2154,
+     "n": 26,
+     "sample": "Join meetings directly from the menu bar so you "
+    },
+    {
+     "px": 16,
+     "family": "Lyon Text",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 53,
+     "n": 2,
+     "sample": "We shape our tools,"
+    },
+    {
+     "px": 14,
+     "family": "NotionInter",
+     "weight": "500",
+     "lineHeight": "1.43",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 319,
+     "n": 30,
+     "sample": "Product"
+    },
+    {
+     "px": 14,
+     "family": "NotionInter",
+     "weight": "400",
+     "lineHeight": "1.43",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 55,
+     "n": 3,
+     "sample": "Marshall McLuhan"
+    },
+    {
+     "px": 12,
+     "family": "NotionInter",
+     "weight": "500",
+     "lineHeight": "1.33",
+     "tracking": "0.125px",
+     "transform": "none",
+     "chars": 33,
+     "n": 4,
+     "sample": "Product"
+    }
+   ],
+   "textColors": [
+    [
+     "rgba(0, 0, 0, 0.898)",
+     2927
+    ],
+    [
+     "rgba(0, 0, 0, 0.95)",
+     441
+    ],
+    [
+     "rgba(0, 0, 0, 0.54)",
+     88
+    ],
+    [
+     "rgb(25, 25, 24)",
+     58
+    ],
+    [
+     "rgb(255, 255, 255)",
+     48
+    ],
+    [
+     "rgb(0, 117, 222)",
+     24
+    ],
+    [
+     "rgba(0, 0, 0, 0.59)",
+     12
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(255, 255, 255)",
+     13837
+    ],
+    [
+     "rgb(246, 245, 244)",
+     4668
+    ],
+    [
+     "rgb(242, 249, 255)",
+     65
+    ],
+    [
+     "rgb(254, 243, 241)",
+     65
+    ],
+    [
+     "rgb(255, 245, 224)",
+     65
+    ],
+    [
+     "rgb(249, 249, 248)",
+     43
+    ]
+   ],
+   "bodyBg": "rgb(255, 255, 255)",
+   "htmlBg": "rgb(255, 255, 255)",
+   "transitions": [
+    [
+     "background-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+     33
+    ],
+    [
+     "text-decoration-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+     24
+    ],
+    [
+     "background-color, border-color | 0.15s | ease-in-out",
+     20
+    ],
+    [
+     "opacity, transform | 0.25s | linear",
+     17
+    ],
+    [
+     "background-color | 0.15s | ease",
+     5
+    ],
+    [
+     "outline-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+     3
+    ],
+    [
+     "transform | 0.1s | ease-in-out",
+     3
+    ],
+    [
+     "transform | 0.3s | ease",
+     1
+    ],
+    [
+     "box-shadow | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+     1
+    ],
+    [
+     "opacity | 0.15s | ease-in-out",
+     1
+    ]
+   ],
+   "docScreens": 9.4,
+   "title": "Notion Calendar",
+   "metaDesc": "Beautifully designed and fully integrated with Notion and Google Calendar."
+  },
+  "animsAtLoad": [
+   "CSSAnimation:globalNavigation-module-scss-module__HWB10a__navShadowScrolled|NaNms|delay 0|linear|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "desktop-j00.webp",
+    "headings": [
+     "H1 64px: It’s time."
+    ],
+    "anims": 1
+   },
+   {
+    "i": 1,
+    "y": 675,
+    "file": "desktop-j01.webp",
+    "headings": [
+     "H2 42px: Time management, simplified.",
+     "H2 18px: See your schedule at a glance"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 2,
+    "y": 1350,
+    "file": "desktop-j02.webp",
+    "headings": [
+     "H2 18px: See your schedule at a glance",
+     "H2 18px: Built-in scheduling",
+     "H2 18px: Work across time zones"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 3,
+    "y": 2025,
+    "file": "desktop-j03.webp",
+    "headings": [
+     "H2 18px: Built-in scheduling",
+     "H2 18px: Work across time zones",
+     "H2 18px: Modern design",
+     "H2 18px: Available in 12 languages"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 4,
+    "y": 2700,
+    "file": "desktop-j04.webp",
+    "headings": [
+     "H2 18px: Modern design",
+     "H2 18px: Available in 12 languages",
+     "H2 42px: Fully integrated with your Notion workspace."
+    ],
+    "anims": 1
+   },
+   {
+    "i": 5,
+    "y": 3375,
+    "file": "desktop-j05.webp",
+    "headings": [
+     "H2 42px: Fully integrated with your Notion workspace.",
+     "H2 18px: Manage your time and work, together."
+    ],
+    "anims": 1
+   },
+   {
+    "i": 6,
+    "y": 4050,
+    "file": "desktop-j06.webp",
+    "headings": [
+     "H2 18px: Connect and create Notion docs",
+     "H2 18px: Update project timelines",
+     "H2 42px: Work and life, playing nice."
+    ],
+    "anims": 1
+   },
+   {
+    "i": 7,
+    "y": 4725,
+    "file": "desktop-j07.webp",
+    "headings": [
+     "H2 42px: Work and life, playing nice.",
+     "H2 18px: See all your commitments in the same place"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 8,
+    "y": 5400,
+    "file": "desktop-j08.webp",
+    "headings": [
+     "H2 18px: Connect multiple calendars",
+     "H2 18px: No more double bookings",
+     "H2 18px: Easy-to-use mobile app",
+     "H2 42px: Designed to work with your favorite tools."
+    ],
+    "anims": 1
+   },
+   {
+    "i": 9,
+    "y": 6075,
+    "file": "desktop-j09.webp",
+    "headings": [
+     "H2 42px: Designed to work with your favorite tools.",
+     "H2 18px: Notion",
+     "H2 18px: Google Calendar",
+     "H2 18px: Google Meet",
+     "H2 18px: Zoom",
+     "H2 18px: Apple Calendar"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 10,
+    "y": 6750,
+    "file": "desktop-j10.webp",
+    "headings": [
+     "H2 42px: Get Notion Calendar for free.",
+     "H3 18px: Desktop App",
+     "H3 18px: Mobile App"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 11,
+    "y": 7425,
+    "file": "desktop-j11.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 12,
+    "y": 7551,
+    "file": "desktop-j12.webp",
+    "headings": [],
+    "anims": 1
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:globalNavigation-module-scss-module__HWB10a__navShadowScrolled|NaNms|delay 0|linear|1"
+  ]
+ },
+ "phone": {
+  "anatomy": {
+   "libs": [
+    "nextjs"
+   ],
+   "canvases": [],
+   "videos": 0,
+   "fonts": [
+    "NotionInter 400 normal",
+    "NotionInter 500 normal",
+    "NotionInter 600 normal",
+    "NotionInter 700 normal"
+   ],
+   "colorVars": {
+    "--tatami-color-gray-100": "#f9f9f8",
+    "--tatami-color-gray-200": "#f6f5f4",
+    "--tatami-color-gray-300": "#dfdcd9",
+    "--tatami-color-gray-400": "#a39e98",
+    "--tatami-color-gray-500": "#78736f",
+    "--tatami-color-gray-600": "#615d59",
+    "--tatami-color-gray-700": "#494744",
+    "--tatami-color-gray-800": "#31302e",
+    "--tatami-color-gray-900": "#191918",
+    "--tatami-color-red-100": "#fef3f1",
+    "--tatami-color-red-200": "#fdd3cd",
+    "--tatami-color-red-300": "#ff8b7c",
+    "--tatami-color-red-400": "#f77463",
+    "--tatami-color-red-500": "#f64932",
+    "--tatami-color-red-600": "#e32d14",
+    "--tatami-color-red-700": "#b01601",
+    "--tatami-color-red-800": "#6f0d00",
+    "--tatami-color-red-900": "#4f0900",
+    "--tatami-color-orange-100": "#fff5ed",
+    "--tatami-color-orange-200": "#ffdec4",
+    "--tatami-color-orange-300": "#ffad71",
+    "--tatami-color-orange-400": "#ff8a33",
+    "--tatami-color-orange-500": "#ff6d00",
+    "--tatami-color-orange-600": "#dd5b00",
+    "--tatami-color-orange-700": "#ab4a00",
+    "--tatami-color-orange-800": "#793400",
+    "--tatami-color-orange-900": "#532200",
+    "--tatami-color-yellow-100": "#fff5e0",
+    "--tatami-color-yellow-200": "#ffe4af",
+    "--tatami-color-yellow-300": "#ffd786",
+    "--tatami-color-yellow-400": "#ffc95e",
+    "--tatami-color-yellow-500": "#ffb110",
+    "--tatami-color-yellow-600": "#e89d01",
+    "--tatami-color-yellow-700": "#c78600",
+    "--tatami-color-yellow-800": "#a16c00",
+    "--tatami-color-yellow-900": "#704b00",
+    "--tatami-color-teal-100": "#f2fafa",
+    "--tatami-color-teal-200": "#bde6e4",
+    "--tatami-color-teal-300": "#83cbc9",
+    "--tatami-color-teal-400": "#2a9d99",
+    "--tatami-color-teal-500": "#27918d",
+    "--tatami-color-teal-600": "#0a7b77",
+    "--tatami-color-teal-700": "#126764",
+    "--tatami-color-teal-800": "#0a4d4b",
+    "--tatami-color-teal-900": "#042b29",
+    "--tatami-color-blue-100": "#f2f9ff",
+    "--tatami-color-blue-200": "#e6f3fe",
+    "--tatami-color-blue-300": "#93cdfe",
+    "--tatami-color-blue-400": "#62aef0",
+    "--tatami-color-blue-500": "#097fe8",
+    "--tatami-color-blue-600": "#0075de",
+    "--tatami-color-blue-700": "#005bab",
+    "--tatami-color-blue-800": "#00396b",
+    "--tatami-color-blue-900": "#002a4f",
+    "--tatami-color-purple-100": "#f8f5fc",
+    "--tatami-color-purple-200": "#eadbfa",
+    "--tatami-color-purple-300": "#d6b6f6",
+    "--tatami-color-purple-400": "#ad6ded",
+    "--tatami-color-purple-500": "#9849e8",
+    "--tatami-color-purple-600": "#7237ae"
+   },
+   "typeScale": [
+    {
+     "px": 42,
+     "family": "NotionInter",
+     "weight": "700",
+     "lineHeight": "1.14",
+     "tracking": "-1.5px",
+     "transform": "none",
+     "chars": 10,
+     "n": 1,
+     "sample": "It’s time."
+    },
+    {
+     "px": 32,
+     "family": "NotionInter",
+     "weight": "700",
+     "lineHeight": "1.25",
+     "tracking": "-0.75px",
+     "transform": "none",
+     "chars": 171,
+     "n": 5,
+     "sample": "Time management, simplified."
+    },
+    {
+     "px": 32,
+     "family": "NotionInter",
+     "weight": "600",
+     "lineHeight": "1.25",
+     "tracking": "-0.75px",
+     "transform": "none",
+     "chars": 19,
+     "n": 1,
+     "sample": "Questions & answers"
+    },
+    {
+     "px": 18,
+     "family": "NotionInter",
+     "weight": "500",
+     "lineHeight": "1.56",
+     "tracking": "-0.125px",
+     "transform": "none",
+     "chars": 123,
+     "n": 1,
+     "sample": "All of your commitments, now in one place. Meet "
+    },
+    {
+     "px": 18,
+     "family": "NotionInter",
+     "weight": "700",
+     "lineHeight": "1.56",
+     "tracking": "-0.125px",
+     "transform": "none",
+     "chars": 397,
+     "n": 20,
+     "sample": "See your schedule at a glance"
+    },
+    {
+     "px": 16,
+     "family": "NotionInter",
+     "weight": "600",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 182,
+     "n": 4,
+     "sample": "Notion Calendar"
+    },
+    {
+     "px": 16,
+     "family": "NotionInter",
+     "weight": "500",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 78,
+     "n": 6,
+     "sample": "Get Notion Calendar free"
+    },
+    {
+     "px": 16,
+     "family": "NotionInter",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 2154,
+     "n": 26,
+     "sample": "Join meetings directly from the menu bar so you "
+    },
+    {
+     "px": 14,
+     "family": "NotionInter",
+     "weight": "500",
+     "lineHeight": "1.43",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 276,
+     "n": 25,
+     "sample": "Get Notion Calendar free"
+    },
+    {
+     "px": 14,
+     "family": "NotionInter",
+     "weight": "400",
+     "lineHeight": "1.43",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 39,
+     "n": 2,
+     "sample": "Cookie settings"
+    },
+    {
+     "px": 12,
+     "family": "NotionInter",
+     "weight": "500",
+     "lineHeight": "1.33",
+     "tracking": "0.125px",
+     "transform": "none",
+     "chars": 33,
+     "n": 4,
+     "sample": "Product"
+    }
+   ],
+   "textColors": [
+    [
+     "rgba(0, 0, 0, 0.898)",
+     2884
+    ],
+    [
+     "rgba(0, 0, 0, 0.95)",
+     388
+    ],
+    [
+     "rgba(0, 0, 0, 0.54)",
+     72
+    ],
+    [
+     "rgb(25, 25, 24)",
+     54
+    ],
+    [
+     "rgb(255, 255, 255)",
+     48
+    ],
+    [
+     "rgb(0, 117, 222)",
+     24
+    ],
+    [
+     "rgba(0, 0, 0, 0.59)",
+     12
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(255, 255, 255)",
+     4329
+    ],
+    [
+     "rgb(246, 245, 244)",
+     2199
+    ]
+   ],
+   "bodyBg": "rgb(255, 255, 255)",
+   "htmlBg": "rgb(255, 255, 255)",
+   "transitions": [
+    [
+     "background-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+     33
+    ],
+    [
+     "text-decoration-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+     24
+    ],
+    [
+     "background-color, border-color | 0.15s | ease-in-out",
+     20
+    ],
+    [
+     "opacity, transform | 0.25s | linear",
+     17
+    ],
+    [
+     "background-color | 0.15s | ease",
+     5
+    ],
+    [
+     "outline-color | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+     3
+    ],
+    [
+     "transform | 0.1s | ease-in-out",
+     3
+    ],
+    [
+     "transform | 0.3s | ease",
+     1
+    ],
+    [
+     "box-shadow | 0.2s | cubic-bezier(0.42, 0, 1, 1)",
+     1
+    ],
+    [
+     "opacity | 0.15s | ease-in-out",
+     1
+    ]
+   ],
+   "docScreens": 12.1,
+   "title": "Notion Calendar",
+   "metaDesc": "Beautifully designed and fully integrated with Notion and Google Calendar."
+  },
+  "animsAtLoad": [
+   "CSSAnimation:globalNavigation-module-scss-module__HWB10a__navShadowScrolled|NaNms|delay 0|linear|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "phone-j00.webp",
+    "headings": [
+     "H1 42px: It’s time."
+    ],
+    "anims": 1
+   },
+   {
+    "i": 1,
+    "y": 760,
+    "file": "phone-j01.webp",
+    "headings": [
+     "H2 32px: Time management, simplified.",
+     "H2 18px: See your schedule at a glance",
+     "H2 18px: Built-in scheduling"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 2,
+    "y": 1519,
+    "file": "phone-j02.webp",
+    "headings": [
+     "H2 18px: Built-in scheduling",
+     "H2 18px: Work across time zones"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 3,
+    "y": 2279,
+    "file": "phone-j03.webp",
+    "headings": [
+     "H2 18px: Modern design",
+     "H2 18px: Available in 12 languages"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 4,
+    "y": 3038,
+    "file": "phone-j04.webp",
+    "headings": [
+     "H2 32px: Fully integrated with your Notion workspace.",
+     "H2 18px: Manage your time and work, together."
+    ],
+    "anims": 2
+   },
+   {
+    "i": 5,
+    "y": 3798,
+    "file": "phone-j05.webp",
+    "headings": [
+     "H2 18px: Manage your time and work, together.",
+     "H2 18px: Connect and create Notion docs",
+     "H2 18px: Update project timelines"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 6,
+    "y": 4558,
+    "file": "phone-j06.webp",
+    "headings": [
+     "H2 18px: Update project timelines",
+     "H2 32px: Work and life, playing nice.",
+     "H2 18px: See all your commitments in the same place"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 7,
+    "y": 5317,
+    "file": "phone-j07.webp",
+    "headings": [
+     "H2 18px: See all your commitments in the same place",
+     "H2 18px: Connect multiple calendars",
+     "H2 18px: No more double bookings",
+     "H2 18px: Easy-to-use mobile app"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 8,
+    "y": 6077,
+    "file": "phone-j08.webp",
+    "headings": [
+     "H2 18px: Easy-to-use mobile app",
+     "H2 32px: Designed to work with your favorite tools.",
+     "H2 18px: Notion",
+     "H2 18px: Google Calendar"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 9,
+    "y": 6836,
+    "file": "phone-j09.webp",
+    "headings": [
+     "H2 18px: Google Meet",
+     "H2 18px: Zoom",
+     "H2 18px: Apple Calendar",
+     "H2 18px: Other providers"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 10,
+    "y": 7596,
+    "file": "phone-j10.webp",
+    "headings": [
+     "H2 32px: Get Notion Calendar for free.",
+     "H3 18px: Desktop App"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 11,
+    "y": 8356,
+    "file": "phone-j11.webp",
+    "headings": [
+     "H3 18px: Mobile App"
+    ],
+    "anims": 1
+   },
+   {
+    "i": 12,
+    "y": 9115,
+    "file": "phone-j12.webp",
+    "headings": [],
+    "anims": 1
+   },
+   {
+    "i": 13,
+    "y": 9343,
+    "file": "phone-j13.webp",
+    "headings": [],
+    "anims": 1
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:globalNavigation-module-scss-module__HWB10a__navShadowScrolled|NaNms|delay 0|linear|1"
+  ]
+ }
+}

@@ -1,0 +1,625 @@
+{
+ "slug": "notion-calendar",
+ "url": "https://www.notion.com/product/calendar",
+ "name": "Notion Calendar",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 8451,
+  "screens": 9.4,
+  "blockCount": 90,
+  "medianGap": 33,
+  "sections": [
+   {
+    "y": 22,
+    "gapBefore": null,
+    "h": 20,
+    "n": 6,
+    "chars": 67,
+    "links": 4,
+    "head": [
+     "14px Product",
+     "14px Resources",
+     "14px Pricing",
+     "14px Request a demo"
+    ]
+   },
+   {
+    "y": 248,
+    "gapBefore": 206,
+    "h": 100,
+    "n": 2,
+    "chars": 25,
+    "links": 0,
+    "head": [
+     "16px Notion Calendar",
+     "64px It’s time."
+    ]
+   },
+   {
+    "y": 464,
+    "gapBefore": 116,
+    "h": 36,
+    "n": 2,
+    "chars": 44,
+    "links": 2,
+    "head": [
+     "16px Get Notion Calendar free",
+     "16px Download for Windows"
+    ]
+   },
+   {
+    "y": 1476,
+    "gapBefore": 976,
+    "h": 81,
+    "n": 2,
+    "chars": 119,
+    "links": 0,
+    "head": [
+     "18px See your schedule at a glance",
+     "16px Join meetings directly from the menu bar so you can stay foc"
+    ]
+   },
+   {
+    "y": 2183,
+    "gapBefore": 626,
+    "h": 81,
+    "n": 4,
+    "chars": 221,
+    "links": 0,
+    "head": [
+     "18px Built-in scheduling",
+     "18px Work across time zones",
+     "16px Send your availability and scheduling link to let others boo",
+     "16px Thoughtfully collaborate with global teams as you visualize "
+    ]
+   },
+   {
+    "y": 2742,
+    "gapBefore": 478,
+    "h": 105,
+    "n": 4,
+    "chars": 235,
+    "links": 0,
+    "head": [
+     "18px Modern design",
+     "18px Available in 12 languages",
+     "16px Use command menu and shortcuts for efficient workflows.",
+     "16px Supports English, Japanese, Korean, French, German, Spanish,"
+    ]
+   },
+   {
+    "y": 3641,
+    "gapBefore": 794,
+    "h": 81,
+    "n": 2,
+    "chars": 143,
+    "links": 0,
+    "head": [
+     "18px Manage your time and work, together.",
+     "16px See deadlines and project timelines alongside your calendar "
+    ]
+   },
+   {
+    "y": 4342,
+    "gapBefore": 620,
+    "h": 81,
+    "n": 4,
+    "chars": 229,
+    "links": 0,
+    "head": [
+     "18px Connect and create Notion docs",
+     "18px Update project timelines",
+     "16px With info from Notion right in your calendar, you’ll always ",
+     "16px Just drag and drop to edit Notion database items without lea"
+    ]
+   },
+   {
+    "y": 5081,
+    "gapBefore": 658,
+    "h": 57,
+    "n": 2,
+    "chars": 104,
+    "links": 0,
+    "head": [
+     "18px See all your commitments in the same place",
+     "16px No more accidental conflicts between work and personal event"
+    ]
+   },
+   {
+    "y": 5819,
+    "gapBefore": 681,
+    "h": 105,
+    "n": 6,
+    "chars": 242,
+    "links": 0,
+    "head": [
+     "18px Connect multiple calendars",
+     "18px No more double bookings",
+     "18px Easy-to-use mobile app",
+     "16px Easily sync work and personal calendars."
+    ]
+   },
+   {
+    "y": 6361,
+    "gapBefore": 437,
+    "h": 85,
+    "n": 6,
+    "chars": 195,
+    "links": 0,
+    "head": [
+     "18px Notion",
+     "18px Google Calendar",
+     "18px Google Meet",
+     "16px Bring in important dates across workspaces into one calendar"
+    ]
+   },
+   {
+    "y": 6569,
+    "gapBefore": 123,
+    "h": 84,
+    "n": 6,
+    "chars": 199,
+    "links": 0,
+    "head": [
+     "18px Other providers",
+     "18px Zoom",
+     "18px Apple Calendar",
+     "16px Add a custom link from other popular conferencing services."
+    ]
+   },
+   {
+    "y": 6934,
+    "gapBefore": 281,
+    "h": 144,
+    "n": 4,
+    "chars": 94,
+    "links": 1,
+    "head": [
+     "16px Unlock a better way to manage your time and life.",
+     "16px Get Notion Calendar free",
+     "18px Desktop App",
+     "18px Mobile App"
+    ]
+   },
+   {
+    "y": 7408,
+    "gapBefore": 330,
+    "h": 36,
+    "n": 4,
+    "chars": 38,
+    "links": 4,
+    "head": [
+     "16px macOS",
+     "16px Windows",
+     "16px Apple App Store",
+     "16px Google Play"
+    ]
+   },
+   {
+    "y": 7652,
+    "gapBefore": 208,
+    "h": 225,
+    "n": 4,
+    "chars": 186,
+    "links": 0,
+    "head": [
+     "42px Questions & answers",
+     "16px Which calendar provider(s) is Notion Calendar compatible wit",
+     "16px Is Notion Calendar available on mobile devices?",
+     "16px Does Notion Calendar bring Google Calendar sync to Notion?"
+    ]
+   },
+   {
+    "y": 8135,
+    "gapBefore": 258,
+    "h": 283,
+    "n": 32,
+    "chars": 395,
+    "links": 23,
+    "head": [
+     "12px Product",
+     "12px Resources",
+     "12px Company",
+     "12px Notion for"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 23,
+   "blocks": 10,
+   "links": 6,
+   "text": [
+    "14px Product",
+    "14px Resources",
+    "14px* Pricing",
+    "14px* Request a demo",
+    "14px* Log in",
+    "14px* Get Notion Calendar free",
+    "16px Notion Calendar",
+    "64px It’s time.",
+    "16px* Get Notion Calendar free",
+    "16px* Download for Windows"
+   ]
+  },
+  "column": {
+   "left": 208,
+   "right": 1198
+  },
+  "check": {
+   "name": 22,
+   "role": 8240,
+   "affiliation": 1476,
+   "projects": 1509,
+   "writing": null,
+   "proof": null,
+   "contact": null,
+   "now": null
+  },
+  "bg": "rgb(255, 255, 255)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 10187,
+  "screens": 12.1,
+  "blockCount": 83,
+  "medianGap": 24,
+  "sections": [
+   {
+    "y": 22,
+    "gapBefore": null,
+    "h": 20,
+    "n": 1,
+    "chars": 24,
+    "links": 1,
+    "head": [
+     "14px Get Notion Calendar free"
+    ]
+   },
+   {
+    "y": 248,
+    "gapBefore": 206,
+    "h": 84,
+    "n": 2,
+    "chars": 25,
+    "links": 0,
+    "head": [
+     "16px Notion Calendar",
+     "42px It’s time."
+    ]
+   },
+   {
+    "y": 468,
+    "gapBefore": 136,
+    "h": 84,
+    "n": 2,
+    "chars": 40,
+    "links": 2,
+    "head": [
+     "16px Get Notion Calendar free",
+     "16px Download for iOS"
+    ]
+   },
+   {
+    "y": 1181,
+    "gapBefore": 629,
+    "h": 105,
+    "n": 2,
+    "chars": 119,
+    "links": 0,
+    "head": [
+     "18px See your schedule at a glance",
+     "16px Join meetings directly from the menu bar so you can stay foc"
+    ]
+   },
+   {
+    "y": 1574,
+    "gapBefore": 288,
+    "h": 105,
+    "n": 2,
+    "chars": 112,
+    "links": 0,
+    "head": [
+     "18px Built-in scheduling",
+     "16px Send your availability and scheduling link to let others boo"
+    ]
+   },
+   {
+    "y": 2050,
+    "gapBefore": 371,
+    "h": 105,
+    "n": 2,
+    "chars": 109,
+    "links": 0,
+    "head": [
+     "18px Work across time zones",
+     "16px Thoughtfully collaborate with global teams as you visualize "
+    ]
+   },
+   {
+    "y": 2526,
+    "gapBefore": 371,
+    "h": 81,
+    "n": 2,
+    "chars": 68,
+    "links": 0,
+    "head": [
+     "18px Modern design",
+     "16px Use command menu and shortcuts for efficient workflows."
+    ]
+   },
+   {
+    "y": 2978,
+    "gapBefore": 371,
+    "h": 129,
+    "n": 2,
+    "chars": 167,
+    "links": 0,
+    "head": [
+     "18px Available in 12 languages",
+     "16px Supports English, Japanese, Korean, French, German, Spanish,"
+    ]
+   },
+   {
+    "y": 3778,
+    "gapBefore": 671,
+    "h": 133,
+    "n": 2,
+    "chars": 143,
+    "links": 0,
+    "head": [
+     "18px Manage your time and work, together.",
+     "16px See deadlines and project timelines alongside your calendar "
+    ]
+   },
+   {
+    "y": 4197,
+    "gapBefore": 286,
+    "h": 105,
+    "n": 2,
+    "chars": 126,
+    "links": 0,
+    "head": [
+     "18px Connect and create Notion docs",
+     "16px With info from Notion right in your calendar, you’ll always "
+    ]
+   },
+   {
+    "y": 4608,
+    "gapBefore": 306,
+    "h": 105,
+    "n": 2,
+    "chars": 103,
+    "links": 0,
+    "head": [
+     "18px Update project timelines",
+     "16px Just drag and drop to edit Notion database items without lea"
+    ]
+   },
+   {
+    "y": 5319,
+    "gapBefore": 606,
+    "h": 109,
+    "n": 2,
+    "chars": 104,
+    "links": 0,
+    "head": [
+     "18px See all your commitments in the same place",
+     "16px No more accidental conflicts between work and personal event"
+    ]
+   },
+   {
+    "y": 5721,
+    "gapBefore": 293,
+    "h": 81,
+    "n": 2,
+    "chars": 66,
+    "links": 0,
+    "head": [
+     "18px Connect multiple calendars",
+     "16px Easily sync work and personal calendars."
+    ]
+   },
+   {
+    "y": 5908,
+    "gapBefore": 106,
+    "h": 81,
+    "n": 2,
+    "chars": 71,
+    "links": 0,
+    "head": [
+     "18px No more double bookings",
+     "16px Auto-block busy slots across all your calendars."
+    ]
+   },
+   {
+    "y": 6096,
+    "gapBefore": 107,
+    "h": 105,
+    "n": 2,
+    "chars": 105,
+    "links": 0,
+    "head": [
+     "18px Easy-to-use mobile app",
+     "16px View your schedule at a glance and add events quickly with i"
+    ]
+   },
+   {
+    "y": 6607,
+    "gapBefore": 406,
+    "h": 81,
+    "n": 2,
+    "chars": 67,
+    "links": 0,
+    "head": [
+     "18px Notion",
+     "16px Bring in important dates across workspaces into one calendar"
+    ]
+   },
+   {
+    "y": 6798,
+    "gapBefore": 110,
+    "h": 81,
+    "n": 2,
+    "chars": 75,
+    "links": 0,
+    "head": [
+     "18px Google Calendar",
+     "16px Connect Google Calendar with your existing Notion workspace."
+    ]
+   },
+   {
+    "y": 6989,
+    "gapBefore": 110,
+    "h": 81,
+    "n": 2,
+    "chars": 53,
+    "links": 0,
+    "head": [
+     "18px Google Meet",
+     "16px Available by default with Google Calendar."
+    ]
+   },
+   {
+    "y": 7180,
+    "gapBefore": 110,
+    "h": 81,
+    "n": 2,
+    "chars": 57,
+    "links": 0,
+    "head": [
+     "18px Zoom",
+     "16px Create new Zoom meetings directly in Notion Calendar."
+    ]
+   },
+   {
+    "y": 7371,
+    "gapBefore": 110,
+    "h": 81,
+    "n": 2,
+    "chars": 68,
+    "links": 0,
+    "head": [
+     "18px Apple Calendar",
+     "16px Create new Apple Calendar meetings directly in Notion."
+    ]
+   },
+   {
+    "y": 7558,
+    "gapBefore": 106,
+    "h": 81,
+    "n": 2,
+    "chars": 74,
+    "links": 0,
+    "head": [
+     "18px Other providers",
+     "16px Add a custom link from other popular conferencing services."
+    ]
+   },
+   {
+    "y": 7940,
+    "gapBefore": 301,
+    "h": 164,
+    "n": 3,
+    "chars": 84,
+    "links": 1,
+    "head": [
+     "16px Unlock a better way to manage your time and life.",
+     "16px Get Notion Calendar free",
+     "18px Desktop App"
+    ]
+   },
+   {
+    "y": 8355,
+    "gapBefore": 251,
+    "h": 36,
+    "n": 2,
+    "chars": 12,
+    "links": 2,
+    "head": [
+     "16px macOS",
+     "16px Windows"
+    ]
+   },
+   {
+    "y": 8451,
+    "gapBefore": 60,
+    "h": 28,
+    "n": 1,
+    "chars": 10,
+    "links": 0,
+    "head": [
+     "18px Mobile App"
+    ]
+   },
+   {
+    "y": 8731,
+    "gapBefore": 252,
+    "h": 84,
+    "n": 2,
+    "chars": 26,
+    "links": 2,
+    "head": [
+     "16px Apple App Store",
+     "16px Google Play"
+    ]
+   },
+   {
+    "y": 9013,
+    "gapBefore": 198,
+    "h": 287,
+    "n": 4,
+    "chars": 186,
+    "links": 0,
+    "head": [
+     "32px Questions & answers",
+     "16px Which calendar provider(s) is Notion Calendar compatible wit",
+     "16px Is Notion Calendar available on mobile devices?",
+     "16px Does Notion Calendar bring Google Calendar sync to Notion?"
+    ]
+   },
+   {
+    "y": 9597,
+    "gapBefore": 297,
+    "h": 578,
+    "n": 30,
+    "chars": 325,
+    "links": 23,
+    "head": [
+     "12px Product",
+     "12px Resources",
+     "14px Features",
+     "14px Customer stories"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 15,
+   "blocks": 5,
+   "links": 3,
+   "text": [
+    "14px* Get Notion Calendar free",
+    "16px Notion Calendar",
+    "42px It’s time.",
+    "16px* Get Notion Calendar free",
+    "16px* Download for iOS"
+   ]
+  },
+  "column": {
+   "left": 16,
+   "right": 348
+  },
+  "check": {
+   "name": 22,
+   "role": 9922,
+   "affiliation": 1181,
+   "projects": 1214,
+   "writing": null,
+   "proof": null,
+   "contact": null,
+   "now": null
+  },
+  "bg": "rgb(255, 255, 255)"
+ }
+}
