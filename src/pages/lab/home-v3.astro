@@ -1,0 +1,388 @@
+---
+/* Home prototype V3 "Statement" (Phase 2 Home plan, section 3 V3; learns from Dia): a hidden workbench,
+   noindex, not linked from anywhere and out of the sitemap (astro.config.mjs filters /lab/). The live
+   Home (src/pages/index.astro) is not changed.
+   Strips: 1 intro (the name, one statement in --h3-home, the role line, the live lede; the object beside
+   it from 900 px, outside the 680 px text column, and under the text on phones), 3 Work (three rows with
+   a real still screen; Eat Map has no screens, so its object sits in a dark tile of the same box),
+   4 Now, 5 Record (the newest three entries; hidden when there are none), 6 About and links, 7 the foot.
+   Strip 2 (proof rows) is dropped in V3: the role line and the rows carry it.
+   Every word is real content from content/ except the DRAFT strings, which are marked with an HTML
+   comment and with data-draft (the lab panel outlines them). The lab panel at the end switches the
+   options by query, so the owner compares them on one page:
+     ?obj=mark|small|none    the edk object (default), the YTU gate photo as a small still, or nothing
+     ?st=a|b|c               the statement (A is the live ID-card line)
+     ?shots=full|two         phone screens at the full column or at two thirds of it
+     ?timing=charter|anthony 70 ms apart and 400 ms each, or 90 ms apart and 1000 ms each
+     ?samples=0              hide the Record list (as the live Home does when no real entry exists)
+     ?draft=1                outline the DRAFT strings
+     ?still                  the still twin: no arrival, no moving media (reduced motion looks the same)
+   Without JavaScript the page shows the defaults, complete and with nothing hidden. */
+import Base from '../../layouts/Base.astro';
+import Media from '../../components/Media.astro';
+import Thumb from '../../components/Thumb.astro';
+import Icon from '../../components/Icon.astro';
+import Foot from '../../components/Foot.astro';
+import Wordmark from '../../components/Wordmark.astro';
+import { Picture } from 'astro:assets';
+import { getWorld, shot, type Shot } from '../../lib/world';
+import { getSite, getProjects, getLog, url, projectPath, entryPath, iso, dayMonYear, isPlaceholder, statusLine, type Project, type LogEntry } from '../../lib/site';
+import gate360a from '../../assets/photos/gate-card-360.avif?url';
+import gate360w from '../../assets/photos/gate-card-360.webp?url';
+import gate640a from '../../assets/photos/gate-card-640.avif?url';
+import gate640w from '../../assets/photos/gate-card-640.webp?url';
+
+const site = await getSite();
+const log = await getLog();
+const projects = (await getProjects()).filter((p) => p.data.group === 'directed');
+const k = site.kicker;
+/* the live lede, split at its sentence boundary: B and C already say the first sentence */
+const [lede1, ...ledeRest] = site.lede.split(/(?<=\.)\s+/);
+const lede2 = ledeRest.join(' ');
+const STATEMENTS = [
+  ['a', site.about.card.back, false],
+  ['b', 'I study Computer Engineering and build products by directing AI agents.', true],
+  ['c', 'First-year Computer Engineering student. I build products by directing AI agents.', true],
+] as const;
+
+/* each row's still: the project's first wide screen (content order), none for a product without captures */
+async function still(p: Project): Promise<Shot | null> {
+  const w = await getWorld(p.id);
+  if (!w) return null;
+  for (const c of p.data.captures) {
+    try { const s = shot(p.id, w, c); if (s.frame === 'wide') return s; } catch { /* a signature or phone id */ }
+  }
+  return null;
+}
+const rows = await Promise.all(projects.map(async (p) => ({ p, s: await still(p) })));
+const light = (p: Project) => p.data.accent.glow ?? p.data.accent.color;
+const shotWidths = (s: Shot) => [400, 560, 720, 1080].filter((x) => x <= s.img.width);
+
+/* the newest three entries; an untitled note shows its own first line, never an invented title */
+const plain = (md = '') => (md.split('\n').find((l) => l.trim()) ?? '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/[*_`#>]/g, '').trim();
+const recent = log.slice(0, 3).map((e: LogEntry) => ({ e, title: e.data.title ?? plain(e.body), note: !e.data.title }));
+const hasLinkedIn = !isPlaceholder(site.links.linkedin);
+const OPTIONS: [string, string, [string, string][]][] = [
+  ['obj', 'Object', [['mark', 'edk'], ['small', 'Photo'], ['none', 'None']]],
+  ['st', 'Statement', [['a', 'A'], ['b', 'B'], ['c', 'C']]],
+  ['shots', 'Phone screens', [['full', 'Full column'], ['two', 'Two thirds']]],
+  ['timing', 'Timing', [['charter', '70 / 400 ms'], ['anthony', '90 / 1000 ms']]],
+  ['samples', 'Record list', [['1', 'Samples'], ['0', 'Hidden']]],
+  ['draft', 'DRAFT lines', [['0', 'Plain'], ['1', 'Outlined']]],
+  ['still', 'Motion', [['0', 'Arrival'], ['1', 'Still twin']]],
+];
+---
+<Base title="Home V3" tab="home" description="A workbench for the Home prototype V3, Statement." noindex>
+  {/* before first paint: the options named in the address, and the arrival class (never with reduced
+      motion or ?still; the animation itself is CSS, so an element shows by itself if this script fails) */}
+  <script is:inline>
+    (function () {
+      var d = document.documentElement, q = new URLSearchParams(location.search);
+      var ok = { obj: /^(mark|small|none)$/, st: /^(a|b|c)$/, shots: /^(full|two)$/, timing: /^(charter|anthony)$/, samples: /^(0|1)$/, draft: /^(0|1)$/ };
+      for (var n in ok) { var v = q.get(n); if (v && ok[n].test(v)) d.setAttribute('data-h3-' + n, v); }
+      var still = q.has('still') && q.get('still') !== '0';
+      if (still) d.setAttribute('data-h3-still', '1');
+      if (!still && !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('h3-go');
+    })();
+  </script>
+  <div class="inner h3">
+    <div class="h3-pool" aria-hidden="true"></div>
+
+    {/* ---- strip 1: the intro ---- */}
+    <div class="h3-intro">
+      <div class="h3-text">
+        <h1 class="h3-name" id="h-home" data-s="0">{site.name}</h1>
+        {STATEMENTS.map(([id, text, draft]) => (
+          <>
+            {draft && <Fragment set:html={`<!-- DRAFT: statement ${id.toUpperCase()} (Home plan V3) -->`} />}
+            <p class="h3-st" data-st={id} data-s="1" data-draft={draft ? '' : undefined}>{text}</p>
+          </>
+        ))}
+        <div class="h3-who" data-s="2">
+          <p class="h3-role">{k.study} · <span class="lg">{k.school}</span><abbr class="sm" title={k.school}>{k.schoolShort}</abbr> · {k.year}</p>
+          <p class="h3-lede"><span class="h3-lede-1">{lede1} </span>{lede2}</p>
+        </div>
+      </div>
+      <div class="h3-obj" data-s="3" aria-hidden="true">
+        <div class="h3-o h3-o-mark"><Media obj="edk" slot="home" sizes="(min-width: 900px) 280px, 160px" priority /></div>
+        <div class="h3-o h3-o-small">
+          <picture>
+            <source type="image/avif" srcset={`${gate360a} 360w, ${gate640a} 640w`} sizes="(min-width: 900px) 240px, 160px" />
+            <img src={gate640w} srcset={`${gate360w} 360w, ${gate640w} 640w`} sizes="(min-width: 900px) 240px, 160px" width="640" height="640" alt="" loading="lazy" decoding="async" />
+          </picture>
+        </div>
+      </div>
+    </div>
+
+    {/* ---- strip 3: Work ---- */}
+    <section class="h3-strip h3-work" aria-labelledby="h3-work">
+      <Fragment set:html="<!-- DRAFT: the strip label (Home plan V3) -->" />
+      <h2 class="h3-label" id="h3-work" data-s="4" data-draft>{site.home.showcase.title}</h2>
+      <ul class="h3-rows">
+        {rows.map(({ p, s }, i) => (
+          <li data-s={i === 0 ? '4' : '5'}>
+            <a class="h3-row p-open" href={url(projectPath(p))} data-p={p.id} data-title={p.data.title} style={`--pg: ${light(p)}`}>
+              <span class="h3-shot" aria-hidden={s ? undefined : 'true'}>
+                {s ? (
+                  <span class="h3-frame">
+                    <span class="h3-fbar" aria-hidden="true"><i></i><i></i><i></i></span>
+                    <span class="h3-fview" style={`aspect-ratio: ${s.img.width} / ${s.img.height}`}>
+                      <Picture src={s.img} alt={s.alt} widths={shotWidths(s)} sizes="(min-width: 700px) 280px, 92vw" formats={['avif', 'webp']} quality={70} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+                    </span>
+                  </span>
+                ) : (
+                  <span class="h3-tile"><Thumb obj={p.data.object} size={176} class="h3-tile-obj" /></span>
+                )}
+              </span>
+              <span class="h3-rtext">
+                <span class="h3-wm"><Wordmark project={p} /><Icon name="arrow-right" size={20} /></span>
+                <span class="h3-meta"><Icon name="dot" />{statusLine(p)}{p.data.statusNote && ` · ${p.data.statusNote}`}</span>
+                <span class="h3-sum">{p.data.summary}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="h3-more" data-s="5"><a class="btn" href={url('work/')}>{site.home.showcase.all} <Icon name="arrow-right" weight="medium" /></a></div>
+    </section>
+
+    {/* ---- strip 4: Now ---- */}
+    <section class="h3-strip h3-now" aria-labelledby="h3-now" data-s="5">
+      <h2 class="h3-label" id="h3-now">{site.now.label}</h2>
+      <p class="h3-body">{site.now.text}</p>
+    </section>
+
+    {/* ---- strip 5: Record (hidden when no entry exists: unwritten sections are hidden) ---- */}
+    {recent.length > 0 && (
+      <section class="h3-strip h3-rec" aria-labelledby="h3-rec" data-s="5">
+        <Fragment set:html="<!-- DRAFT: the strip label (Home plan V3) -->" />
+        <h2 class="h3-label" id="h3-rec" data-draft>Record</h2>
+        <ol class="h3-entries">
+          {recent.map(({ e, title, note }) => (
+            <li><a href={url(entryPath(e))} class:list={['h3-entry', { 'is-note': note }]}><span class="h3-et">{title}</span><time class="h3-ed" datetime={iso(e.data.date)}>{dayMonYear(e.data.date)}</time></a></li>
+          ))}
+        </ol>
+        <a class="qlink h3-all" href={url('record/')}>{site.log.title} <Icon name="arrow-right" /></a>
+      </section>
+    )}
+
+    {/* ---- strip 6: About and links ---- */}
+    <section class="h3-strip h3-out" aria-labelledby="h3-out" data-s="5">
+      <Fragment set:html="<!-- DRAFT: the strip label and the About link label (Home plan V3) -->" />
+      <h2 class="h3-label" id="h3-out" data-draft>Elsewhere</h2>
+      <p class="h3-body h3-card">{site.about.card.back}</p>
+      <div class="h3-links">
+        <a class="qlink" href={url('about/')} data-draft>About me <Icon name="arrow-right" /></a>
+        <a class:list={['qlink', 'h3-rec-alt', { 'is-on': recent.length === 0 }]} href={url('record/')}>{site.log.title} <Icon name="arrow-right" /></a>
+        <a class="qlink" href={site.links.github} rel="me">GitHub <Icon name="arrow-up-right" /></a>
+        {hasLinkedIn && <a class="qlink" href={site.links.linkedin as string} rel="me">LinkedIn <Icon name="arrow-up-right" /></a>}
+      </div>
+    </section>
+
+    <div data-s="5"><Foot /></div>
+
+    {/* ---- the lab panel: links work without JavaScript; the script keeps the other options ---- */}
+    <aside class="h3-lab" aria-labelledby="h3-lab">
+      <h2 class="h3-label" id="h3-lab">Lab · Home V3, Statement · not linked from the site</h2>
+      <dl>
+        {OPTIONS.map(([key, label, opts]) => (
+          <div><dt class="meta">{label}</dt><dd>{opts.map(([v, t], j) => <a href={`?${key}=${v}`} data-k={key} data-v={v} aria-current={j === 0 ? 'true' : undefined}>{t}</a>)}</dd></div>
+        ))}
+      </dl>
+      <button type="button" class="h3-replay" data-replay hidden>Replay the arrival</button>
+    </aside>
+  </div>
+</Base>
+
+<script>
+  /* the lab panel keeps the other options when one changes, marks the current ones, and replays the
+     arrival; once the sequence has ended the arrival class goes, so nothing stays a group */
+  const d = document.documentElement;
+  const q = new URLSearchParams(location.search);
+  document.querySelectorAll<HTMLAnchorElement>('.h3-lab a[data-k]').forEach((a, _, all) => {
+    const k = a.dataset.k!, v = a.dataset.v!;
+    const cur = q.get(k) ?? (k === 'still' && q.has('still') ? '1' : null);
+    const first = [...all].find((x) => x.dataset.k === k) === a;
+    const on = cur ? cur === v || (k === 'still' && cur === '' && v === '1') : first;
+    if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    const n = new URLSearchParams(q);
+    if (k === 'still' && v === '0') n.delete('still'); else n.set(k, v);
+    a.href = '?' + n.toString();
+  });
+  const ms = () => (d.dataset.h3Timing === 'anthony' ? 2000 : 1500);
+  let t = window.setTimeout(() => d.classList.remove('h3-go'), ms());
+  const sweep = () => window.setTimeout(() => {
+    const el = document.querySelector('.h3-o-mark .media');
+    const M = (window as any).MediaStage;
+    if (el && M && d.classList.contains('h3-go') && getComputedStyle(el.parentElement!).display !== 'none') M.arrive(el);
+  }, d.dataset.h3Timing === 'anthony' ? 1270 : 690);
+  if (d.classList.contains('h3-go')) sweep();
+  const replay = document.querySelector<HTMLButtonElement>('[data-replay]');
+  if (replay && !d.dataset.h3Still && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    replay.hidden = false;
+    replay.addEventListener('click', () => {
+      clearTimeout(t);
+      scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+      d.classList.remove('h3-go'); void d.offsetWidth; d.classList.add('h3-go');
+      sweep();
+      t = window.setTimeout(() => d.classList.remove('h3-go'), ms());
+    });
+  }
+</script>
+
+<style is:global>
+  /* Sizes: two page-local display tokens, linear from 360 to 1440 px (charter §3.1): the statement at
+     34 / 39 / 45 / 48 px (the provisional Home cap) and the name at 22 / 25 / 26 px. Everything else is a
+     global token. The text column is at most 680 px and starts at the bar's edge (E0). */
+  .h3 {
+    --h3-home: clamp(33px, calc(28.8px + 1.334vw), 48px);
+    --h3-name: clamp(22px, calc(20.65px + 0.37vw), 26px);
+    --h3-col: 680px;
+    --h3-gap: 96px;                 /* between strips (charter §3.3) */
+    --h3-obj: clamp(200px, calc(58.5px + 15.38vw), 280px);   /* 240 at 1180, 280 at 1440 (charter §6) */
+    position: relative;
+  }
+  .h3 > :not(.h3-pool) { position: relative; }
+  /* the page light: edk blue at the base level behind the object's place; with the edk object its own
+     glow is the pool, so this one is not drawn twice */
+  .h3-pool { position: absolute; z-index: 0; left: calc(var(--h3-col) - 8%); top: calc(-1 * var(--bar-h) - 14%); width: min(78vmin, 760px); aspect-ratio: 1; pointer-events: none;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--edk) var(--glow-base), transparent), color-mix(in srgb, var(--edk) 4%, transparent) 55%, transparent); }
+  html:not([data-h3-obj]) .h3-pool, html[data-h3-obj="mark"] .h3-pool { display: none; }
+
+  /* ---- strip 1 ---- */
+  .h3-intro { display: grid; grid-template-columns: minmax(0, var(--h3-col)) var(--h3-obj); column-gap: clamp(40px, 4.4vw, 72px); align-items: center; padding: 40px 0 0; }
+  .h3-name { font: 400 var(--h3-name)/1.2 var(--f-display); letter-spacing: -0.012em; color: var(--ink); }
+  .h3-st { margin-top: 18px; max-width: 15em; font: 400 var(--h3-home)/1.06 var(--f-display); letter-spacing: -0.02em; color: var(--ink); text-wrap: balance; margin-left: -0.03em; }
+  .h3-st:not([data-st="a"]) { display: none; }
+  html[data-h3-st="b"] .h3-st[data-st="a"], html[data-h3-st="c"] .h3-st[data-st="a"] { display: none; }
+  html[data-h3-st="b"] .h3-st[data-st="b"], html[data-h3-st="c"] .h3-st[data-st="c"] { display: block; }
+  html[data-h3-st="b"] .h3-lede-1, html[data-h3-st="c"] .h3-lede-1 { display: none; }
+  .h3-who { margin-top: 24px; }
+  .h3-role { font: 500 var(--t-meta)/var(--lh-meta) var(--f-ui); letter-spacing: 0.005em; color: var(--ink-3); }
+  .h3-lede { margin-top: 12px; max-width: 30em; color: var(--ink-2); text-wrap: pretty; }
+  .h3-obj { justify-self: center; width: var(--h3-obj); }
+  .h3-o { display: none; }
+  html:not([data-h3-obj]) .h3-o-mark, html[data-h3-obj="mark"] .h3-o-mark { display: block; }
+  html[data-h3-obj="small"] .h3-o-small { display: block; }
+  html[data-h3-obj="none"] .h3-intro { grid-template-columns: minmax(0, var(--h3-col)); }
+  html[data-h3-obj="none"] .h3-obj { display: none; }
+  .h3-o-mark .media { width: 100%; }
+  .h3-o-small { width: min(100%, 240px); margin: 0 auto; }
+  .h3-o-small img { display: block; width: 100%; height: auto; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--rule), 0 24px 60px -30px rgba(0, 0, 0, 0.8); }
+
+  /* ---- strips ---- */
+  .h3-strip { margin-top: var(--h3-gap); max-width: var(--h3-col); }
+  .h3-label { font: 500 var(--t-meta)/var(--lh-meta) var(--f-ui); letter-spacing: 0.005em; color: var(--ink-3); }
+  .h3-body { margin-top: 12px; max-width: 34em; color: var(--ink-2); text-wrap: pretty; }
+
+  /* ---- strip 3: rows with a real still screen ---- */
+  .h3-rows { margin-top: 16px; display: grid; gap: 8px; }
+  .h3-row { position: relative; isolation: isolate; display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 32px; align-items: center; padding: 8px 0; text-decoration: none; color: inherit; }
+  /* the product's own light, only around the row in hover, focus or press, one at a time (charter §4) */
+  .h3-row::before { content: ""; position: absolute; z-index: -1; left: -14%; right: 30%; top: -40%; bottom: -40%; pointer-events: none; opacity: 0;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--pg) var(--glow-base), transparent), transparent);
+    transition: opacity var(--d-2) var(--ease-in); }
+  .h3-row:hover::before, .h3-row:focus-visible::before, .h3-row:active::before { opacity: 1; transition: opacity var(--d-1) var(--ease-out); }
+  .h3-row:focus-visible { outline-offset: 6px; border-radius: 12px; }
+  .h3-shot { display: block; }
+  .h3-frame { display: block; overflow: hidden; border-radius: 10px; background: var(--frame); box-shadow: inset 0 0 0 1px var(--rule), 0 24px 50px -30px rgba(0, 0, 0, 0.9); }
+  /* a lighter browser bar than Work's 32 px: at 280 px the frame names the platform and stays out of the way */
+  .h3-fbar { display: flex; gap: 5px; align-items: center; height: 18px; padding: 0 9px; background: var(--frame-bar); border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+  .h3-fbar i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.13); }
+  .h3-fview { display: block; position: relative; background: var(--frame-view); }
+  .h3-fview picture { display: contents; }
+  .h3-fview img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* a product without screens: its object in a dark tile of the same box, never a made-up screen */
+  .h3-tile { display: grid; place-items: center; overflow: hidden; aspect-ratio: 280 / 194; border-radius: 10px; background: var(--ground-deep); box-shadow: inset 0 0 0 1px var(--rule); }
+  .h3-tile-obj-pic { display: contents; }
+  .h3-tile-obj { width: 54%; height: auto; aspect-ratio: 1;
+    -webkit-mask-image: radial-gradient(closest-side, #000 55%, rgba(0, 0, 0, 0.6) 76%, transparent); mask-image: radial-gradient(closest-side, #000 55%, rgba(0, 0, 0, 0.6) 76%, transparent); }
+  .h3-rtext { display: grid; gap: 6px; align-content: center; }
+  .h3-wm { display: flex; align-items: center; gap: 10px; font-size: var(--t-h3); line-height: 1.1; }
+  /* the name in its own face, in the house ink: a product's colour is only its small dot and its light */
+  .h3-wm .wm { color: var(--ink); }
+  .h3-wm .icon { color: var(--ink-3); transition: color var(--d-1), translate var(--d-2) var(--ease-out); }
+  .h3-row:hover .h3-wm .icon, .h3-row:focus-visible .h3-wm .icon { color: var(--ink); translate: 3px 0; }
+  .h3-meta { display: flex; align-items: center; gap: 6px; font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .h3-meta .icon { color: var(--pg); }
+  .h3-sum { margin-top: 2px; font-size: var(--t-ui); line-height: var(--lh-ui); color: var(--ink-2); max-width: 26em; text-wrap: pretty; }
+  .h3-more { margin-top: 24px; }
+  /* the foot keeps the strip gap above it and a shorter tail (local: the live foot is unchanged) */
+  .h3 footer.foot { padding: var(--h3-gap) 0 48px; }
+
+  /* ---- strip 5: the record ---- */
+  .h3-entries { margin-top: 12px; border-top: 1px solid var(--rule); }
+  .h3-entry { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: baseline; min-height: 48px; padding: 12px 0; border-bottom: 1px solid var(--rule); text-decoration: none; }
+  .h3-et { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); }
+  .h3-entry:hover .h3-et { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; text-decoration-color: var(--ink-4); }
+  .h3-ed { font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); color: var(--ink-3); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .h3-all { margin-top: 8px; }
+  html[data-h3-samples="0"] .h3-rec { display: none; }
+
+  /* ---- strip 6 ---- */
+  .h3-links { display: flex; flex-wrap: wrap; gap: 4px 24px; margin-top: 12px; }
+  .h3-rec-alt:not(.is-on) { display: none; }
+  html[data-h3-samples="0"] .h3-rec-alt { display: inline-flex; }
+  /* statement A already says the ID-card line */
+  html:not([data-h3-st]) .h3-card, html[data-h3-st="a"] .h3-card { display: none; }
+
+  /* ---- DRAFT outlines (lab only) ---- */
+  html[data-h3-draft="1"] [data-draft] { outline: 1px dashed color-mix(in srgb, var(--edk) 70%, transparent); outline-offset: 4px; border-radius: 2px; }
+
+  /* ---- the lab panel ---- */
+  .h3-lab { margin: 8px 0 72px; padding: 20px 24px 22px; border-radius: 12px; background: var(--raised); box-shadow: inset 0 0 0 1px var(--rule); max-width: var(--h3-col); }
+  .h3-lab dl { display: grid; gap: 10px; margin-top: 14px; }
+  .h3-lab dl > div { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; align-items: center; }
+  .h3-lab dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .h3-lab dd a { display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 999px; font: 400 var(--t-meta)/1 var(--f-ui); color: var(--ink-2); text-decoration: none; background: var(--raised-2); }
+  .h3-lab dd a[aria-current] { background: var(--ink); color: var(--ground); }
+  .h3-replay { margin-top: 16px; min-height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--raised-2); color: var(--ink); font: 500 var(--t-meta)/1 var(--f-ui); cursor: pointer; }
+  .rail-touch .h3-lab dd a { min-height: 44px; }
+
+  /* ---- the arrival (plan V3; charter §5): six steps in reading order, rise at most 12 px. Text is in the
+     HTML; html.h3-go exists only with JavaScript, without reduced motion and without ?still. The object
+     fades on its additive stage itself (.m-stage, .m-shadow), never on a wrapper, so it is never a box. ---- */
+  .h3 { --h3-step: 70ms; --h3-dur: 400ms; --h3-odur: var(--d-4); }
+  html[data-h3-timing="anthony"] .h3 { --h3-step: 90ms; --h3-dur: 1000ms; --h3-odur: 1000ms; }
+  html.h3-go .h3 [data-s] { animation: h3-in var(--h3-dur) var(--ease-out) both; animation-delay: calc(var(--h3-step) * var(--s-i, 0)); }
+  html.h3-go .h3 [data-s="0"] { --s-i: 0; --rise: 12px; }
+  html.h3-go .h3 [data-s="1"] { --s-i: 1; --rise: 12px; }
+  html.h3-go .h3 [data-s="2"] { --s-i: 2; --rise: 8px; }
+  html.h3-go .h3 [data-s="4"] { --s-i: 4; --rise: 12px; --h3-dur: var(--h3-odur); }
+  html.h3-go .h3 [data-s="5"] { --s-i: 5; --rise: 8px; }
+  html.h3-go .h3 [data-s="3"] { animation: none; }
+  html.h3-go .h3-o-mark .m-stage, html.h3-go .h3-o-mark .m-shadow, html.h3-go .h3-o-small { animation: h3-obj var(--h3-odur) var(--ease-out) both; animation-delay: calc(var(--h3-step) * 3); }
+  html.h3-go .h3-pool { animation: h3-fade var(--h3-odur) var(--ease-out) both; }
+  @keyframes h3-in { from { opacity: 0; translate: 0 var(--rise, 8px); } }
+  @keyframes h3-obj { from { opacity: 0; scale: 0.97; } }
+  @keyframes h3-fade { from { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    html.h3-go .h3 [data-s], html.h3-go .h3-o-mark .m-stage, html.h3-go .h3-o-mark .m-shadow, html.h3-go .h3-o-small, html.h3-go .h3-pool { animation: none; }
+    .h3-row:hover .h3-wm .icon { translate: none; }
+  }
+
+  /* ---- 700-899 px: rows stay side by side; the object goes under the text ---- */
+  @media (max-width: 899.98px) {
+    .h3 { --h3-gap: 64px; --h3-obj: 160px; }
+    .h3-intro { grid-template-columns: minmax(0, 1fr); padding-top: 24px; }
+    .h3-st { margin-top: 12px; }
+    .h3-who { margin-top: 20px; }
+    /* the edk render fills the middle of its square: the empty top and bottom of the box are given back,
+       and its letters line up with the text edge */
+    .h3-obj { justify-self: start; margin-top: 4px; }
+    .h3-o-mark { margin: -40px 0 -44px -14px; }
+    html[data-h3-obj="small"] .h3-obj { margin-top: 24px; }
+    .h3-o-small { width: 160px; margin: 0; }
+    .h3-pool { left: 20%; top: calc(-1 * var(--bar-h)); width: 110vw; }
+  }
+  /* ---- phones: one column, the screen above its text (no text beside an image below 600 px) ---- */
+  @media (max-width: 699.98px) {
+    .h3-row { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 8px 0 12px; }
+    .h3-row::before { left: -20%; right: -20%; top: -10%; bottom: -10%; }
+    .h3-rows { gap: 28px; }
+    html[data-h3-shots="two"] .h3-shot { width: 66.67%; }
+    .h3-fbar { height: 20px; }
+    .h3-lab { padding: 18px 16px 20px; }
+    .h3-lab dl > div { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  }
+</style>
