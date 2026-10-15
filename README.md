@@ -40,6 +40,8 @@ content/               everything a visitor reads: data, not code (ADR-0002)
 media/objects/<name>/  pre-rendered objects and their manifest.json (tools/objects, ADR-0006); folder
                        names drop the hyphen of the project slug (`englishprep` for `english-prep`,
                        `eatmap` for `eat-map`): a project names its folder in `object`
+media/archive/         retired objects (the microphone, the card file), kept for what they taught;
+                       never published or loaded by the site (media/archive/README.md)
 src/
   content.config.ts    the schemas: a bad field fails the build
   pages/               routes: /, /work/, /work/<slug>/, /record/, /record/<year>/<slug>/, /about/, 404, feed;

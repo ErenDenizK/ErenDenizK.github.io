@@ -3,7 +3,8 @@
 Scripts that build the site's glass objects in headless Blender. Since ADR-0006 the site ships
 pre-rendered Cycles frames and clips: each object script models the object, `frames.py` renders its
 poster, lean grid and clips, and `encode.py` writes them with a `manifest.json` into
-`media/objects/<name>/` ("Pre-rendered media" below). The folder name is the object's, set in a
+`media/objects/<name>/` ("Pre-rendered media" below), or, for a retired object, into
+`media/archive/objects/<name>/` (`media/archive/README.md`). The folder name is the object's, set in a
 project's `object` field (`englishprep`, `eatmap`), not the project slug.
 
 The scripts began with Prototype E (ADR-0005, `prototypes/e-dark/SPEC.md` "Objects"), and they can
@@ -21,8 +22,8 @@ experiments:
 | `englishprep.py` | sakura glass speech bubble with "Aa" | `bubble`, `A`, `a`, `reply`, `dots` |
 | `eatmap.py` | rose glass map pin over a ceramic plate | `pin`, `plate` |
 | `recorder.py` | the Record (since 2026-10-10): a pocket cassette recorder, the cassette behind a clear door, the record key and lamp in Record blue | `body`, `bezel`, `door`, `cassette`, `label`, `reel_left`, `reel_right`, `key_rec`, `key_play`, `key_stop`, `wheel`, `led` |
-| `record.py` | the Record's second object: a glass card file, blue year dividers, one card drawn from the back | `tray`, `glow`, `cards`, `dividers`, `card` |
-| `log.py` | glass studio microphone (the Record's first object; see below) | `head`, `core`, `band`, `neck`, `stem`, `base`, `led` |
+| `record.py` | retired: the Record's second object, a glass card file, blue year dividers, one card drawn from the back (media in `media/archive/objects/record/`) | `tray`, `glow`, `cards`, `dividers`, `card` |
+| `log.py` | retired: glass studio microphone, the Record's first object (media in `media/archive/objects/log/`; see below) | `head`, `core`, `band`, `neck`, `stem`, `base`, `led` |
 | `about.py` | round gold-wire glasses | `rim_left`, `rim_right`, `bridge`, `temple_left`, `temple_right`, `lens_left`, `lens_right` |
 | `calib.py` | chrome, clay and glass balls (rig check only) | `chrome`, `clay`, `glass` |
 
@@ -253,14 +254,20 @@ brighter than in Cycles. Shadows in the page are approximations of the catcher's
 
 `recorder.py` is round 4's concept 2 (docs/research/2026-10-record-object.md, "Round 4"),
 simplified for a 120 px read, and is what the Record page shows since 2026-10-10. `record.py`, the
-card file it replaced, stays with its media in `media/objects/record/`, unused. `record.py` is
+card file it replaced, is retired; its media is archived in `media/archive/objects/record/`. `record.py` is
 `concepts/record_c2.py` (the same research, round 2) with the chosen defaults fixed. That
 research's concepts, `record_a.py`, `record_b.py`, `record_b2.py`, `record_c.py`, `record_c2.py` and
 `record_h2.py`, are kept in `concepts/` so its variants can be re-rendered; they import `common.py`
 and `record_kit.py` from this folder (`recorder.py` uses the kit too, so it stays here).
-`media/objects/log/` (the microphone) and `media/objects/record/` stay in place but nothing on the
-site uses them any more: swapping the Record's object is only another object folder
-and the one `obj` on `src/pages/record/index.astro`.
+The microphone (`log.py`) and the card file (`record.py`) are retired: their media moved on
+2026-10-15 to `media/archive/objects/log/` and `media/archive/objects/record/`, outside
+`media/objects/`, so nothing on the site loads or publishes them. `media/archive/README.md` keeps
+what each was and why the owner retired it. Both scripts stay here because `frames.py` runs an
+object's script from this folder; `encode.py` writes a retired object into the archive by default.
+The concept scripts in `concepts/` never wrote to `media/`: like every modelling script they write
+a GLB and a poster to `--out` (default `prototypes/e-dark/objects/`, a closed folder, so pass
+`--out` to a scratch folder). Swapping the Record's object is only another object folder and the
+one `obj` on `src/pages/record/index.astro`.
 
 `concepts/make_recto.py` and `concepts/turntable.py` are the 2026-10-08 research test
 (`docs/research/2026-10-3d-objects.md`), kept for reference; `recto.py` replaces the object.

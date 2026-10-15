@@ -38,9 +38,8 @@ plan follows the discussion of the reference study with the owner
 - Home: its character, its hero object (the study in `docs/research/hero-study/` is undecided; edk
   alone is "too simple"), the "now" line.
 - Clean-up that needs the owner: the photo concepts behind `?photos=1|2|3`; the `?live` engine and
-  ADR-0009; the sample entries on the live site; the retired objects `media/objects/log/` and
-  `record/`; the unused metro and cat photos in the public repo; a LICENSE; the merged remote branch
-  `claude/portfolio-site-design-n38jml`.
+  ADR-0009; the sample entries on the live site; the unused metro and cat photos in the public
+  repo; a LICENSE; the merged remote branch `claude/portfolio-site-design-n38jml`.
 - The research archive: whether the reports' third-party screenshots may enter the public repo.
 - Look checks: ADR-0010 (Work sections) and ADR-0012 (embassies), still proposed; ADR-0002 (content
   first), accepted by practice.
