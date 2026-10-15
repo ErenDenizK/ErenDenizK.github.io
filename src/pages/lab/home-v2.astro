@@ -46,7 +46,9 @@ const prep = site.about.chapters.find((c: { id: string }) => c.id === 'study')?.
 const about = site.about.card.back;
 
 /* one small real screen per product: the capture the row shows (plan V2; Eat Map has none yet) */
-const PICK: Record<string, string> = { recto: 'markup-palette', 'english-prep': 'home' };
+/* Recto shows its Library, not the white sample page: on the dark Home a white screen is the brightest
+   thing in the first view (owner, 2026-10-15 night: white tires the eyes) */
+const PICK: Record<string, string> = { recto: 'library', 'english-prep': 'home' };
 const rows = await Promise.all(projects.map(async (p) => {
   const w = await getWorld(p.id);
   const id = PICK[p.id];
