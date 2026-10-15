@@ -23,7 +23,10 @@ const OUT = path.join(ROOT, 'src/assets/photos');
 const WIDTHS = [480, 760, 1080];
 
 const site = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/site.json'), 'utf8'));
-const stems = [...new Set((site.about.chapters ?? []).flatMap((c) => (c.photos ?? []).map((p) => p.photo)))];
+const stems = [...new Set([
+  ...(site.about.chapters ?? []).flatMap((c) => (c.photos ?? []).map((p) => p.photo)),
+  ...(site.home?.postcards ?? []).map((p) => p.photo),   // the two-page Home (lab page /lab/one/)
+])];
 
 // files from an earlier run that no chapter names any more
 for (const f of fs.readdirSync(OUT)) {

@@ -21,6 +21,17 @@
     "full": 1932,
     "tone": "#cf966e"
   },
+  "metro-platform": {
+    "width": 2576,
+    "height": 1932,
+    "widths": [
+      480,
+      760,
+      1080
+    ],
+    "full": 2576,
+    "tone": "#cfb16e"
+  },
   "park-through-lens": {
     "width": 1500,
     "height": 2000,
