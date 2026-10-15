@@ -1,15 +1,18 @@
-# Hero objects
+# Objects
 
-Scripts that build the hero objects for Prototype E (ADR-0005, `prototypes/e-dark/SPEC.md`
-"Objects") in headless Blender and write, into `prototypes/e-dark/objects/`:
+Scripts that build the site's glass objects in headless Blender. Since ADR-0006 the site ships
+pre-rendered Cycles frames and clips: each object script models the object, `frames.py` renders its
+poster, lean grid and clips, and `encode.py` writes them with a `manifest.json` into
+`media/objects/<name>/` ("Pre-rendered media" below). The folder name is the object's, set in a
+project's `object` field (`englishprep`, `eatmap`), not the project slug.
+
+The scripts began with Prototype E (ADR-0005, `prototypes/e-dark/SPEC.md` "Objects"), and they can
+still write the real-time path into `prototypes/e-dark/objects/`, kept as source and for
+experiments:
 
 - `<name>.glb`: the real-time object, meshopt-compressed, with named parts for animation;
-- `<name>-poster.webp` (1200²) and `<name>-poster-600.webp`: the Cycles render, the still twin
-  for phones, reduced motion and no WebGL;
+- `<name>-poster.webp` (1200²) and `<name>-poster-600.webp`: the Cycles render;
 - `compare-<name>.png`: the poster beside the GLB rendered in three.js with `rig.js`.
-
-Since ADR-0006 the site ships pre-rendered frames and clips instead (`frames.py`, `encode.py`,
-"Pre-rendered media" below); the GLBs stay as source and for experiments.
 
 | Script | Object | Parts (children of the root node of the same name) |
 |---|---|---|

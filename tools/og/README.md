@@ -32,8 +32,10 @@ packages (default: this folder). Playwright comes from `PLAYWRIGHT_PATH` or
 overviews to `docs/research/assets/2026-10-og-*.webp`.
 
 A new project or log entry is a new object in `cards.json`, never a code change (ADR-0002).
-In Level 2 the site build should produce this file from the content collections and call
-`build.mjs`, then write versioned names (`og/recto.v2.jpg`) so platform caches see a new URL.
+The build already publishes each card under a content-hashed name (`og/<id>.<sha8>.jpg`,
+`src/lib/files.mjs`), so platform caches see a new URL whenever a card changes. Still open for a
+later level: producing `cards.json` from the content collections, so a project's status and summary
+are not repeated here by hand.
 
 ## Output
 
@@ -89,5 +91,5 @@ skipped by `sheet.mjs` unless `--variants` is passed.
   had neither. The ICO plus PNGs cover every browser.
 - The mock frames are generic; real-device checks (LinkedIn Post Inspector, WhatsApp to self,
   iMessage, Slack) need the site to be live.
-- Sample text: the log entry and every `sample.postText` are placeholders, as in
-  `prototypes/CONTENT.md`; Eat Map's line waits for the owner.
+- Sample text: the log entry and every `sample.postText` are placeholders (the site's
+  own lines are in `content/site.json`); Eat Map's line waits for the owner.
