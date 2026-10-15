@@ -70,7 +70,6 @@ const projects = defineCollection({
     group: z.enum(['directed', 'by-hand']).default('directed'),
     status: z.enum(['Live', 'Public beta', 'In development', 'Paused', 'Archived']),
     statusNote: z.string().optional(),
-    teaserMeta: z.string().optional(),
     version: textOrPlaceholder.optional(),
     role: z.string(),
     /** YYYY-MM, or a placeholder while the owner confirms it. */
@@ -84,7 +83,6 @@ const projects = defineCollection({
     /** Link-preview card id in tools/og/out/<og>.jpg; defaults to the home card. */
     og: z.string().optional(),
     summary: z.string(),
-    summaryPlaceholder: z.string().optional(),
     links: z.array(z.object({ label: z.string(), href: z.url(), kind: z.enum(['live', 'code', 'other']) })).default([]),
     linksNote: z.string().optional(),
     /** Real screens from world.json, laid out in the embassy as the product lays them out

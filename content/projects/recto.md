@@ -2,7 +2,6 @@
 title: Recto
 order: 1
 featured: true
-teaserMeta: Public beta
 status: Public beta
 version: 1.0.0-beta
 role: Direction, specs, review; built with AI agents
