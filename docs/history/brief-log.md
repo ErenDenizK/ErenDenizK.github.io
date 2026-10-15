@@ -528,3 +528,41 @@ The owner's words, translated from Turkish.
 7. The Work transition: choose on a lab page, basing the options on the liked examples.
 8. Load a real italic.
 9. Photo captions: test a one-line caption and a caption shown only in the enlarged view.
+
+### 2026-10-15, late night (new direction: two pages)
+
+Dictated, Turkish. Condensed; the owner's words in quotes.
+
+1. All content stays the same; only the page system changes. Two pages only: **Home** and
+   **Record** ("ana ve blog gibi"). Both run on one shared set of design tokens.
+2. Think of it as a redesign from scratch, inside the same logic: keep some mechanisms, above all
+   the cards. The aura stays.
+3. Home is sequential, top to bottom, and **everything is centred**: nothing shifts left or right.
+4. **Top of Home:** a short brief, simple and explanatory like Anthony Fu, "like the current B
+   example".
+5. **Then Work**, scrolling down: modelled on Robin Noguier and Antoine Wodniack, more interactive.
+   The visitor scrolls quickly through the projects, frame by frame. Images may come in when a
+   project is clicked, or move side by side; not aligned in threes, each different, "as if inside
+   a rotating cylinder". On click the image grows with an animation into the project's
+   presentation. Presentations follow Dia and Notion (the examples in the design documents),
+   presented professionally.
+6. **Then the rest**, reviewed.
+7. **Full fluid motion everywhere:** no windows that open and close; every object very alive and
+   professional.
+8. The visitor sees everything important at first sight and discovers the details slowly while
+   scrolling down; less confusion between horizontal pages; everything vertical and fixed; one
+   page feels much fuller.
+9. Fonts, colours, spacing and density keep one proportion and order on desktop and phone; every
+   detail follows the finest design rules and is audited.
+10. The owner favours slow animations and content loading in one by one while scrolling to the
+    end. Long animations are fine unless extremely long: "doldur her yere" (fill them in
+    everywhere). Show motion-design mastery; install HyperFrames or an alternative if needed to
+    build the animations, presentations and motion graphics.
+11. Background liveliness and colour: Shopify (Editions) is very valuable: alive on every scroll,
+    every page innovative. The five examples named (Anthony Fu, Robin Noguier, Antoine Wodniack,
+    Dia / Notion, Shopify) are "top tier".
+12. Forget the old technical features for now; keep full creativity and design expertise; the
+    needed assets can be adapted later. With a clean head, make a fully original work that shows
+    the craft: every feature, from scrolling to clicks, thought through, interactive and animated.
+13. First make sure everything is examined in full; ask the questions; evaluate this idea
+    objectively against the research.
