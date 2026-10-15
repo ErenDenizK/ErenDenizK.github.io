@@ -8,6 +8,10 @@ Astro 7 (static), on GitHub Pages. Every page is complete HTML without JavaScrip
 adds the moving objects, the project sheet and the transitions. Decisions are in
 [docs/adr/](docs/adr/), research in [docs/research/](docs/research/).
 
+The site is moving to two pages, Home and Record, with one shared token set (the owner's direction of
+2026-10-15; [brief log](docs/history/brief-log.md), last two sections). The routes, components and
+styles below describe the live four-page site until the new Home replaces it. Content stays the same.
+
 ## Run it
 
 Node 22.12 or later.
@@ -40,18 +44,18 @@ content/               everything a visitor reads: data, not code (ADR-0002)
 media/objects/<name>/  pre-rendered objects and their manifest.json (tools/objects, ADR-0006); folder
                        names drop the hyphen of the project slug (`englishprep` for `english-prep`,
                        `eatmap` for `eat-map`): a project names its folder in `object`
-media/archive/         retired objects (the microphone, the card file), kept for what they taught;
-                       never published or loaded by the site (media/archive/README.md)
+media/archive/         retired objects (the microphone, the card file) and the depth maps of the
+                       ?photos trial, kept for what they taught; never published or loaded by the
+                       site (media/archive/README.md)
 src/
   content.config.ts    the schemas: a bad field fails the build
   pages/               routes: /, /work/, /work/<slug>/, /record/, /record/<year>/<slug>/, /about/, 404, feed;
-                       lab/ holds hidden component workbenches (noindex, not in the sitemap)
+                       lab/ holds hidden workbenches (postcard, themes; noindex, not in the sitemap)
   components/          Media (the object stage), ProjectCase, LogRow, Figure, Icon, IdCard, Postcard, ...
   scripts/             media.ts (stage), lean.ts (where an object looks), sheet.ts (project sheet),
                        log.ts, card3d.ts (cards), postcard.ts (About's postcards), reel.ts (Work's
                        capture reels), clock.ts (Istanbul time in the bar), site.ts, rail.ts (scroll
-                       rail), embassy.ts, accent.ts, env.ts, photos/ (the trial ?photos
-                       presentations)
+                       rail), embassy.ts, accent.ts, env.ts
   styles/              global.css (tokens and layout), log.css, transitions.css, rail.css, showcase.css,
                        work.css, embassy.css, wordmarks.css
   fonts/               subset Newsreader (roman and italic) and Inter, and the wordmark faces Funnel

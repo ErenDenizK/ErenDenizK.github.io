@@ -106,10 +106,12 @@ the journal.
 
 ## 6. Quality bars
 
-- **The owner's words first**, then the design charter (`docs/design/charter.md`, limits per width
-  measured from the reference study), then the ADRs.
+- **The owner's words first**, then the design charter (`docs/design/charter.md`: what holds for the
+  two-page site; the per-width numbers of the four-page site are archived in
+  `docs/history/charter-2026-10-15.md` and are not inherited), then the ADRs that are not superseded.
 - **Measured, not guessed.** Colours are solved against contrast rules (WCAG 2 and APCA) for every
-  pairing in every theme; type sizes, line lengths and motion durations come from the charter.
+  pairing in every theme; type sizes, line lengths and motion durations come from the new token set
+  and are written into the charter before they are used.
 - **Both platforms.** A phone when the owner shares the site in person; a computer when an employer
   or a teacher opens it. Every change is looked at in both.
 - **Every effect has a still twin**: reduced motion, no JS, no WebGL and phones get a complete page.

@@ -16,25 +16,26 @@ employer: **presentation first**, then **a public record** that shows steady wor
 | Decision | Why | Source |
 |---|---|---|
 | Dark, quiet, minimal; colour arrives as light, never as paint | The owner's taste from the first round ("minimal, elegant, unique"); it lets each product's own colour carry meaning | brief; ADR-0003 |
-| **Restraint over spectacle** | The rejected home round (2026-10-11): oversized type and effects read as "contrived, not professional". "Wow" here means craft and precision, not size | postmortem |
-| Pages have jobs: Home presents the brand and vision, Work shows the products, About introduces the person, Record is the log | The owner found About drawing more attention than Home; each page needs one job | brief 2026-10-10 |
+| **Restraint in size, richness in motion** | The rejected home round (2026-10-11): oversized type and effects read as "contrived, not professional", so "wow" means craft and precision, not size. Since 2026-10-15 (late night) the owner asks for slow, rich, fluid motion everywhere and a generous aura; size restraint still holds | postmortem; brief log 2026-10-15 |
+| **Two pages: Home and Record**, one shared token set, one tab between them. Home runs top to bottom, centred: a short brief, then the projects as photo frames that grow into their presentation inside the same UI, then the rest (the cards, photos, now, links). Every fact lives in one place | The owner, 2026-10-15 (late night): the visitor sees everything important at first sight, with less confusion between pages side by side; everything vertical; one page feels much fuller. It replaced "pages have jobs" (2026-10-10) | brief log 2026-10-15 |
 | Content is data (`content/`); a project or entry never needs code | The site must stay cheap to grow for four years | ADR-0002 |
 | Glass objects are **pre-rendered** (Blender Cycles), not real-time 3D | Real-time glass looked like blue plastic in a side-by-side and costs GPU and battery; pre-rendered looks like the real thing | ADR-0006; research/2026-10-realtime-3d |
 | Objects use a 1° pose grid, exact frames, whole device pixels | The "2.5D, blurry, stuttering" look came from blended 2° frames and sub-pixel scaling; measured and fixed | ADR-0006 amendments |
 | Every effect has a still twin (reduced motion, no JS, no WebGL, phones) | Accessibility and robustness; a page must be complete without the effect | CLAUDE.md |
 | One custom scrollbar (the beads) everywhere, never the native bar | Owner's request; a consistent element of identity | ADR-0013 |
-| Real screenshots in platform frames on Work; the products keep their own wordmarks and colours | "Three objects don't show what the apps are"; each product keeps its character | ADR-0014; family kit |
+| Real screenshots of each product; the products keep their own wordmarks and colours | "Three objects don't show what the apps are"; each product keeps its character. The Work page that framed them (ADR-0014) is superseded; the screens stay as content | ADR-0014; family kit |
 | The apps share an origin but are never flattened into one style | The owner: each keeps its differences and meets the others at a common point | docs/design/family.md |
 | `dev` deploys; only the owner merges into `main` | The owner publishes from the development branch and releases by hand; same rule in every repo | ADR-0004; family-kit/SESSIONS.md |
 | Facts come from the owner only; drafts are marked; no invented achievements | The site is evidence; one invented claim costs its credibility | brief; log-entry skill |
 | No email, no strangers' faces, photo metadata stripped | Privacy (KVKK and plain decency) | brief |
 
-## What is live (2026-10-11)
+## What is live (2026-10-15)
 
-Home (the pre-round version), Work with real screens, About as a letter with postcards, the Record
-with sample entries and the cassette-recorder object, the beads rail, sharp objects with phone spin
-loops, the ID card with its entrance, the Istanbul clock. Open: Home's new direction and hero object,
-the photo presentation, the measured type system (to re-apply), real content. See `docs/HANDOFF.md`.
+The four-page site still runs: Home (the pre-round version), Work with real screens, About as a letter
+with postcards, the Record with sample entries and the cassette-recorder object, the beads rail, sharp
+objects with phone spin loops, the ID card with its entrance, the Istanbul clock, the Graphite theme.
+It stays live until the new two-page Home replaces it; it is not the model for new work. See
+`docs/HANDOFF.md`.
 
 ## What we learned (not rules; reasons)
 
@@ -56,11 +57,11 @@ Words the docs use without defining them.
 
 | Term | Meaning | Where |
 |---|---|---|
-| **Embassy** | A project view that enters the product's own world (its ground, light, colours and real screens) inside the portfolio's frame | ADR-0012 |
+| **Embassy** | A project view that enters the product's own world (its ground, light, colours and real screens) inside the portfolio's frame. Superseded 2026-10-15 with the project sheet; the presentation is re-made inside Home | ADR-0012 |
 | **`world.json`** | A product's world as data (`content/projects/<slug>/world.json`), following the family kit's `world.schema.json`; `npm run worlds` checks it | ADR-0012 |
-| **Droplet** | The shared glass droplet every object melts into and out of when the tab changes, so one clip per object covers every pair | ADR-0006 item 5, ADR-0007 |
+| **Droplet** | The shared glass droplet every object melts into and out of when the tab changes, so one clip per object covers every pair. Superseded 2026-10-15: two pages have no object per tab | ADR-0006 item 5, ADR-0007 |
 | **Lean grid** | The pre-rendered stills an object leans through as the pointer or the phone moves (33 yaw × 3 pitch at 1°) | ADR-0006 |
-| **The beads** | The one custom scrollbar on every page and in the project sheet, from the owner's sketch | ADR-0013 |
+| **The beads** | The one custom scrollbar on every page, from the owner's sketch; it stays under the two-page direction | ADR-0013 |
 | **Lab page** | A hidden workbench under `src/pages/lab/` (noindex, not linked, out of the sitemap); new designs go there before they replace a live page | ADR-0008; postmortem |
 | **`?live`** | A former URL switch for the live-frame engine; the owner rejected it on 2026-10-15 and the code is gone | ADR-0009 |
 | **The board** | The claude.ai artifact "Portfolyo Tahtası", where the owner answers questions; it keeps every answer in its own database | `docs/HANDOFF.md` |
