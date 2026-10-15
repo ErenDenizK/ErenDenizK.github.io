@@ -566,3 +566,34 @@ Dictated, Turkish. Condensed; the owner's words in quotes.
     the craft: every feature, from scrolling to clicks, thought through, interactive and animated.
 13. First make sure everything is examined in full; ask the questions; evaluate this idea
     objectively against the research.
+
+### 2026-10-15, late night (second message: the line, frames, clean-up)
+
+Dictated, Turkish; the message was sent twice. Condensed.
+
+1. Run many agents when needed, in a controlled way. About a day and a half of the weekly limit
+   is left; work only on this project.
+2. Check the old files, docs, helper guidance and CLAUDE.md: old design tokens there must not get
+   in the way of the new direction. Shared assets stay: the ID card and the photos (reimplemented
+   if needed). The scroll bar is good. A tab switches between the two pages.
+3. Nothing repeats two or three times anywhere on the page; every piece of information sits in its
+   one right place. The opening intro may summarise everything.
+4. Use the aura in a modern way, not a limited one. Lots of design and drawing, own illustrations;
+   the 3D models exist, but 2D art on several layers (2.5D backgrounds) over the simplicity may be
+   better and more elegant.
+5. The cylinder was misunderstood. Think of each project as a photo frame or a set of photo
+   frames, elegantly animated, stacked or side by side. Click: the paper grows and takes the
+   visitor into the project inside the same UI, without a new tab; more interactive, maybe a
+   rotation; while the photo comes to the front, the other images and the project texts come with
+   it. Antoine Wodniack and Robin Noguier have this.
+6. Project presentations: Notion and Dia have measured sizes and layouts, written in the research.
+   Read the reference documents in full, write an explanation of every line, read every HTML file
+   (they hold a lot of brief) and accept those briefs.
+7. Shopify is the most elegant in every respect. The videos should be in the research; evaluate
+   them, frame by frame if needed; ask for them if missing.
+8. Build the production line yourself (agents, methods), so the work sits in a system; clean the
+   old troublesome things for the new line.
+9. Do not ask about every small decision; show something faster. Ask only when the owner's
+   decisions leave a gap. The project slowed down circling failed prototypes; copying even one of
+   the liked references well would give a good result; be creative.
+10. Desktop and phone may be different designs; do not force one scheme on both.
