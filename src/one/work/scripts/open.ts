@@ -7,6 +7,7 @@
 import type { Deck, Proj } from './deck';
 import { motion, emit, pauseField } from './bus';
 import { initStepper, type Stepper } from './stepper';
+import { spin } from './loops';
 
 type VT = { finished: Promise<void>; updateCallbackDone: Promise<void>; skipTransition(): void };
 const root = document.documentElement;
@@ -94,6 +95,7 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
     clipT = window.setTimeout(() => playHero(l), 300);
   }
   function playHero(l: HTMLElement) {
+    spin(l.querySelector<HTMLElement>('.hero-object'), phone());
     const v = l.querySelector<HTMLVideoElement>('.hero-video');
     if (!v || motion() !== 'full') return;
     v.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => { s.src = s.dataset.src!; s.removeAttribute('data-src'); });

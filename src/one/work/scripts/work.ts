@@ -4,6 +4,7 @@ import { initDeck } from './deck';
 import { initOpen } from './open';
 import { initStepper } from './stepper';
 import { motion } from './bus';
+import { spin } from './loops';
 
 export function initWork() {
   const sec = document.getElementById('work');
@@ -16,6 +17,7 @@ export function initStatic() {
   const pres = document.querySelector<HTMLElement>('.pres-page');
   if (!pres) return;
   const steps = initStepper(pres.querySelector('[data-steps]'), window);
+  spin(pres.querySelector<HTMLElement>('.hero-object'), matchMedia('(max-width: 699.98px)').matches);
   const v = pres.querySelector<HTMLVideoElement>('.hero-video');
   if (v && motion() === 'full') {
     setTimeout(() => {

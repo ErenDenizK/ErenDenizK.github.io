@@ -159,11 +159,15 @@
 .pg { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--paper); pointer-events: none; }
 .pg-pool { position: absolute; width: 512px; height: 512px; left: 50%; top: 50%; margin: -256px 0 0 -256px; border-radius: 50%; mix-blend-mode: plus-lighter; }
 .pg-p1 { background: radial-gradient(closest-side, color-mix(in srgb, var(--a1) 28%, transparent), transparent); transform: translate(0, -46vh) scale(2.6, 1.6); }
-.pg-p2 { background: radial-gradient(closest-side, color-mix(in srgb, var(--a3) 30%, transparent), transparent); transform: translate(-42vw, 8vh) scale(1.6, 1.8); }
-.pg-p3 { background: radial-gradient(closest-side, color-mix(in srgb, var(--a2) 20%, transparent), transparent); transform: translate(42vw, 4vh) scale(1.5, 1.8); }
+.pg-p2 { background: radial-gradient(closest-side, color-mix(in srgb, var(--a3) 22%, transparent), transparent); transform: translate(-42vw, 8vh) scale(1.6, 1.8); }
+.pg-p3 { background: radial-gradient(closest-side, color-mix(in srgb, var(--a2) 18%, transparent), transparent); transform: translate(42vw, 4vh) scale(1.5, 1.8); }
 .pg-grain { position: absolute; inset: 0; background: url("../../assets/photos/grain.png") repeat; background-size: 128px; }
 .pb { position: relative; padding-bottom: 0; }
 .pres .hush { inset: -70px -120px; }
+/* every text block of a presentation can sit over a pool of its light: each carries the hush (spec 2.6) */
+.pres :is(.facts, .p-outcome, .st-txt, .p-nums, .p-quote, .p-next-title) { position: relative; isolation: isolate; }
+.pres :is(.facts, .p-outcome, .st-txt, .p-nums, .p-quote, .p-next-title)::before { content: ""; position: absolute; inset: -60px -100px; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, var(--hush), rgb(18 18 20 / 0)); }
 
 .ph { position: relative; padding-top: calc(var(--bar-h) + 20px); text-align: center; }
 .ph-stage { position: relative; width: var(--hero-w); margin: 0 auto; }
@@ -185,7 +189,7 @@
 .p-title { width: fit-content; margin: var(--s-3) auto; font-size: var(--fs-title); line-height: 1; font-weight: inherit; outline: none; }
 .p-title .wm { color: var(--wm-c, var(--ink)); }
 .p-promise { width: fit-content; max-width: 30em; margin: 0 auto; font: 400 var(--fs-lede)/1.5 var(--f-sans); letter-spacing: -.005em; color: var(--ink-2); text-wrap: balance; }
-.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); max-width: calc(var(--w-wide) + 2 * var(--gut)); margin: var(--s-8) auto 0; padding: 0 var(--gut); text-align: center; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); max-width: calc(var(--w-wide) + 2 * var(--gut)); margin: var(--s-9) auto 0; padding: 0 var(--gut); text-align: center; }
 .facts dt { margin-bottom: var(--s-1); }
 .facts dd { margin: 0; font: 400 var(--fs-small)/1.5 var(--f-sans); color: var(--ink); text-wrap: balance; }
 
@@ -239,7 +243,7 @@
 .p-how h2 { margin-bottom: var(--s-5); font-weight: 500; }
 .how-card { position: relative; text-align: left; padding: var(--s-6) var(--s-6) 0; border-radius: var(--r-card); background: var(--raised); box-shadow: var(--e-card); margin-bottom: 96px; }
 .how-list { columns: 2; column-gap: var(--s-7); }
-.how-list li { break-inside: avoid; padding: 0 0 var(--s-4); font: 400 var(--fs-body)/1.55 var(--f-sans); color: var(--ink-2); text-wrap: pretty; }
+.how-list li { break-inside: avoid; padding: 0 0 var(--s-4); font: 400 var(--fs-body)/1.55 var(--f-sans); color: var(--ink); text-wrap: pretty; }
 .how-crop { display: block; width: min(560px, 76%); aspect-ratio: 16 / 6; margin: var(--s-5) auto -96px; overflow: hidden; border-radius: var(--r-screen) var(--r-screen) 0 0;
   box-shadow: var(--e-lift), 0 0 0 1px rgb(255 255 255 / .07); rotate: -1.2deg; }
 .how-crop img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
@@ -266,11 +270,16 @@
   .pres { --hero-w: calc(100vw - 32px); }
   .ph { padding-top: calc(var(--bar-h) + 12px); }
   .side, .ph-obj { display: none; }
+  /* on a phone the text column is the whole width: the pools keep to the corners */
+  .pg-p1 { transform: translate(0, -44vh) scale(1.4, 1.2); }
+  .pg-p2 { transform: translate(-58vw, 44vh) scale(1, 1.1); }
+  .pg-p3 { transform: translate(58vw, -10vh) scale(.9, 1.1); }
   .hero[data-phone-frame] { aspect-ratio: 1; }
   .hero[data-phone-frame] :is(.hero-img, .pr-img) { object-position: var(--pfx, 50%) var(--pfy, 0%); }
   .ph-head { margin-top: var(--s-5); }
   .p-title { margin: var(--s-2) auto; }
   .facts { grid-template-columns: 1fr 1fr; max-width: 390px; gap: var(--s-4) var(--s-5); margin-top: var(--s-6); }
+  .facts div:nth-child(odd):last-child { grid-column: 1 / -1; }
   .p-outcome { margin: var(--s-8) auto var(--s-7); }
   .p-nums { gap: var(--s-6); margin-top: var(--s-8); }
   .p-quote, .p-how { margin-top: var(--s-8); }
