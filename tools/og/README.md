@@ -26,9 +26,9 @@ node sheet.mjs --variants             # contact sheets -> out/sheets/
 ```
 
 `--fonts <dir>` points at another directory whose `node_modules` has the two Fontsource
-packages (default: this folder). Playwright comes from `PLAYWRIGHT_PATH` or
-`/opt/node-tools/node_modules`. Other flags: `build.mjs --only recto,about`, `--no-icons`,
-`--png` (also keep the lossless screenshot); `sheet.mjs --docs` copies the chat, posts and icons
+packages (default: this folder). Playwright comes from the repo's own `node_modules` (installed
+with `@playwright/test`), or from `PLAYWRIGHT_PATH`. Other flags: `build.mjs --only recto,about`,
+`--no-icons`, `--png` (also keep the lossless screenshot); `sheet.mjs --docs` copies the chat, posts and icons
 overviews to `docs/research/assets/2026-10-og-*.webp`.
 
 A new project or log entry is a new object in `cards.json`, never a code change (ADR-0002).

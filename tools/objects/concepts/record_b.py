@@ -6,12 +6,13 @@ reel_right (clear glass flanges on spun hubs), pack_left and pack_right (the wou
 tape (the run across the heads), guides (two steel posts), heads (brushed head cover), led
 (the record lamp, dim at rest, on air in the interaction). The interaction turns both reels
 and moves a little tape from left to right while the lamp is lit.
-Run: <venv>/bin/python tools/objects/record_b.py [--out DIR] [--samples N]"""
+Run: <venv>/bin/python tools/objects/concepts/record_b.py [--out DIR] [--samples N]"""
 import math
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# common and record_kit live one folder up, in tools/objects/
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import common as C  # noqa: E402
 import record_kit as K  # noqa: E402
 

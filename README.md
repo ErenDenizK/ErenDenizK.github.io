@@ -24,7 +24,9 @@ The browser tests need Playwright's Chromium (`npx playwright install chromium`,
 `PLAYWRIGHT_BROWSERS_PATH`). `npm run build:test` builds the site under the non-root base `/Portfolio/`
 on purpose, to catch base-path bugs (the live site is at `/`), and a second copy with fixture log entries; `npm test` serves both like
 Pages and runs the navigation suite, the log templates, axe, and the screenshot matrix (written to
-`tests/shots/`). `npm run budget` checks first paint (at most 200 KB per page).
+`tests/shots/`). `npm run budget` checks first paint (at most 200 KB per page). The photo tools
+(`tools/photos`) use `sharp`, which is not a direct dependency: it arrives with Astro (an optional
+dependency of `astro`), so `npm ci` installs it.
 
 ## Where things are
 
@@ -131,4 +133,5 @@ the owner said. The slug never changes once published.
 
 Work happens on `dev`; CI (`.github/workflows/ci.yml`) runs every gate on each push. Pushes to
 `dev` deploy the live site during the build-up (`.github/workflows/deploy.yml`, ADR-0004
-amendment), so run `npm run verify` first; only the owner touches `main`.
+amendment), once CI has passed on them (ADR-0004 note 2026-10-15), so run `npm run verify` first;
+only the owner touches `main`.

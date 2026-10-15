@@ -6,13 +6,14 @@ Parts (root "record_c"): tray (clear glass drawer), cards (the stack), dividers 
 glass year tabs), card (the drawn card with its ink), rod (the catalogue rod and its knob),
 plate (steel label holder and pull on the front), follower (the steel block at the back).
 The interaction draws the card up out of the stack and lets it settle back.
-Run: <venv>/bin/python tools/objects/record_c.py [--out DIR] [--samples N]"""
+Run: <venv>/bin/python tools/objects/concepts/record_c.py [--out DIR] [--samples N]"""
 import math
 import os
 import random
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# common and record_kit live one folder up, in tools/objects/
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import common as C  # noqa: E402
 import record_kit as K  # noqa: E402
 

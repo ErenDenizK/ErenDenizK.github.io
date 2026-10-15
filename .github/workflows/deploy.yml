@@ -1,19 +1,20 @@
 # Deploys the site to GitHub Pages. Since 2026-10-09 the owner publishes from dev during the
 # build-up (ADR-0004 amendment); main still only changes by the owner's hand.
+# Since 2026-10-15 dev deploys only after its gates pass (ADR-0004 note 2026-10-15): ci.yml calls
+# this workflow from its own run, after the check job, so a red push to dev never reaches the site.
+# A push to main (the owner's merge) and a manual run still deploy directly.
 # Pages settings: Source = GitHub Actions. The base path follows the repository name
 # (astro.config.mjs): the repo is ErenDenizK.github.io, so the live site is at /.
 name: deploy
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
   workflow_dispatch:
+  workflow_call:
 permissions:
   contents: read
   pages: write
   id-token: write
-concurrency:
-  group: pages
-  cancel-in-progress: false
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,6 +26,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

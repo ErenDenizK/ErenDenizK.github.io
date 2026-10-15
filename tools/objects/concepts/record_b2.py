@@ -12,13 +12,14 @@ hubs), pack_left and pack_right (the wound tape, blue light), tape (the run betw
 blue light: part "window".
 The interaction lights the lamp, turns both reels and moves a little tape from left to right:
 pack_left shrinks a hair and pack_right grows by as much.
-Run: <venv>/bin/python tools/objects/record_b2.py [--out DIR] [--samples N]"""
+Run: <venv>/bin/python tools/objects/concepts/record_b2.py [--out DIR] [--samples N]"""
 import math
 import os
 import random
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# common and record_kit live one folder up, in tools/objects/
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import common as C  # noqa: E402
 import record_kit as K  # noqa: E402
 

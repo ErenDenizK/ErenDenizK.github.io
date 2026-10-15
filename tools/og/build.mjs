@@ -4,7 +4,7 @@
 //
 // --fonts names a directory whose node_modules holds @fontsource-variable/newsreader and
 // @fontsource-variable/inter (default: tools/og). Playwright is resolved from
-// PLAYWRIGHT_PATH or /opt/node-tools/node_modules. Nothing here ships with the site.
+// the repo's node_modules or PLAYWRIGHT_PATH. Nothing here ships with the site.
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -19,7 +19,8 @@ const out = path.join(here, 'out');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const fontsDir = path.resolve(arg('--fonts', here));
 const only = arg('--only', '') ? arg('--only').split(',') : null;
-const require = createRequire(path.join(process.env.PLAYWRIGHT_PATH || '/opt/node-tools/node_modules', '/'));
+// Playwright: the repo's own node_modules (it comes with @playwright/test), or PLAYWRIGHT_PATH.
+const require = createRequire(process.env.PLAYWRIGHT_PATH ? path.join(process.env.PLAYWRIGHT_PATH, '/') : import.meta.url);
 const { chromium } = require('playwright');
 
 const MAX_BYTES = 200 * 1024;

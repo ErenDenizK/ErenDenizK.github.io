@@ -8,12 +8,13 @@ capsule (the diaphragm), valve (the tube and its socket, heater glowing), mount 
 collars and cords), stand (yoke, rod and base), cable (plug and lead), led (on-air lamp).
 The interaction: the lamp goes on air, the heater brightens and the mic rocks once in its
 cords.
-Run: <venv>/bin/python tools/objects/record_a.py [--out DIR] [--samples N]"""
+Run: <venv>/bin/python tools/objects/concepts/record_a.py [--out DIR] [--samples N]"""
 import math
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# common and record_kit live one folder up, in tools/objects/
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import common as C  # noqa: E402
 import record_kit as K  # noqa: E402
 

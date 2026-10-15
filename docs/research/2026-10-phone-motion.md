@@ -66,7 +66,7 @@ retag (the same `--retag` recipe, one line in `clip.mjs`).
 package, blocks and pulses along buses, and no turning letters in its code (E: no rotation over
 time, no 3D type). The turning glass letters the owner remembers are most likely prototype E's
 `edk` (three.js, whose idle added a slow spin and float to the letters) or the 2026-10-08
-turntable test (`tools/objects/turntable.py`). This file takes the request as written, "turning,
+turntable test (`tools/objects/concepts/turntable.py`). This file takes the request as written, "turning,
 moving objects like spinning letters", and the owner should confirm which one they meant.
 
 **What reads as alive (E, from the liveliness research and the shots here).**

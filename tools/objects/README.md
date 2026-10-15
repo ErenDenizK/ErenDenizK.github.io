@@ -254,11 +254,13 @@ brighter than in Cycles. Shadows in the page are approximations of the catcher's
 `recorder.py` is round 4's concept 2 (docs/research/2026-10-record-object.md, "Round 4"),
 simplified for a 120 px read, and is what the Record page shows since 2026-10-10. `record.py`, the
 card file it replaced, stays with its media in `media/objects/record/`, unused. `record.py` is
-`record_c2.py` (the same research, round 2) with the chosen defaults fixed; `record_a.py`, `record_b.py`, `record_b2.py`, `record_c.py`, `record_c2.py`,
-`record_h2.py` and `record_kit.py` are that research's concepts, kept so its variants can be
-re-rendered. `media/objects/log/` (the microphone) and `media/objects/record/` stay in place but
-nothing on the site uses them any more: swapping the Record's object is only another object folder
+`concepts/record_c2.py` (the same research, round 2) with the chosen defaults fixed. That
+research's concepts, `record_a.py`, `record_b.py`, `record_b2.py`, `record_c.py`, `record_c2.py` and
+`record_h2.py`, are kept in `concepts/` so its variants can be re-rendered; they import `common.py`
+and `record_kit.py` from this folder (`recorder.py` uses the kit too, so it stays here).
+`media/objects/log/` (the microphone) and `media/objects/record/` stay in place but nothing on the
+site uses them any more: swapping the Record's object is only another object folder
 and the one `obj` on `src/pages/record/index.astro`.
 
-`make_recto.py` and `turntable.py` are the 2026-10-08 research test (`docs/research/
-2026-10-3d-objects.md`), kept for reference; `recto.py` replaces the object.
+`concepts/make_recto.py` and `concepts/turntable.py` are the 2026-10-08 research test
+(`docs/research/2026-10-3d-objects.md`), kept for reference; `recto.py` replaces the object.
