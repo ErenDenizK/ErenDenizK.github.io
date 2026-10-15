@@ -206,6 +206,12 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   research and the lead's judgement, never ugly with the objects and renders. Black need not be
   pure black nor white pure white; every colour and text tone is measured against contrast rules,
   never guessed. (2026-10-15)
+- **Theme: Graphite** (candidate A): one dark theme, softened, every pairing measured. No white
+  pages: white tires the eyes and does not carry the aura. Aura, grain and noise are the concept:
+  the aura colours the page from what the page shows, the grain eases reading. (2026-10-15, night)
+- No one-second limit on the arrival; the longer effects stay. A real italic face. The Work
+  transition is chosen on a lab page from options based on the liked examples. (2026-10-15, night)
+- Taste is never asked without something to look at: prototypes first. (2026-10-15, night)
 - Liked as is: the buttons, the clock, the scrollbar, the fonts; the presentation part should be
   more controlled. (2026-10-15)
 - A design-award feel on every page. (2026-10-11, evening) Type and screen sizes are measured

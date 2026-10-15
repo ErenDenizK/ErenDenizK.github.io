@@ -505,3 +505,26 @@ The owner's words, translated from Turkish.
    try). Use the documentation standard written for aircraft manuals (Simplified Technical
    English) in places the owner does not need to read; questions to the owner keep their plain
    explanations.
+
+### 2026-10-15, night (answers on the decision board, round 2)
+
+- **Aura, grain and noise are the concept.** The aura makes the ground beautiful; the grain gives a
+  slightly rough, natural texture that eases reading, above all in some parts. The page's colour
+  comes from the aura, and the aura comes from what the page shows. The black ground stays. This is
+  good as it is.
+- **Theme: A, Graphite.** White tires the eyes; the hybrid's switch to white, and an aura on white,
+  have problems; "we may be happier without white".
+- **Process:** the owner did not expect the theme question first, and some questions were asked
+  without showing anything. Home needs more prototyping and better examples before its questions.
+- Some answers were ticked only so the copy button would work; the notes are what count.
+  Answers without a note are provisional.
+1. Theme A (Graphite).
+2. Home's largest text 48 px desktop / 34 px phone (ticked, no note: provisional).
+3. Other pages' largest text 80 px desktop / 45 px phone (ticked, no note: provisional).
+4. Home's shape: not understood; Home needs prototypes, modelled on the minimal, simple, direct
+   examples.
+5. Home object: decide in the plan, seeing it.
+6. No 1-second limit on the arrival; the longer effects stay.
+7. The Work transition: choose on a lab page, basing the options on the liked examples.
+8. Load a real italic.
+9. Photo captions: test a one-line caption and a caption shown only in the enlarged view.
