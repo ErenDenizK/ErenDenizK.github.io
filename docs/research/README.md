@@ -18,13 +18,13 @@ intent in `docs/brief.md`. Figures live in `assets/`.
 
 | File | Status | What |
 |---|---|---|
-| [2026-10-site-audit.md](2026-10-site-audit.md) | current (2026-10-10) | The clean-restart audit of every page |
-| [2026-10-work-page.md](2026-10-work-page.md) | current | The Work page; direction A chosen 2026-10-11 and on `dev` (ADR-0014) |
-| [2026-10-about-and-postcards.md](2026-10-about-and-postcards.md) | current, partly replaced | About as a personal page and photos as postcards; the pile is gone, photo presentation reopened |
+| [2026-10-site-audit.md](2026-10-site-audit.md) | history since 2026-10-15 | The clean-restart audit of every page of the four-page site |
+| [2026-10-work-page.md](2026-10-work-page.md) | superseded 2026-10-15 | The Work page; direction A chosen 2026-10-11 and on `dev` (ADR-0014); Work moves into Home under the two-page direction |
+| [2026-10-about-and-postcards.md](2026-10-about-and-postcards.md) | partly superseded 2026-10-15 | About as a personal page and photos as postcards; the About page goes under the two-page direction, the postcard technique holds |
 | [2026-10-phone-motion.md](2026-10-phone-motion.md) | current | Turning pre-rendered objects on phones; built |
 | [2026-10-media.md](2026-10-media.md) | current | Pre-rendered media and photography on the dark ground; budget and codecs |
 | [2026-10-readability.md](2026-10-readability.md) | current | Reading on screens; built into the Record, Part D feeds the log-entry skill |
-| [2026-10-craft-audit.md](2026-10-craft-audit.md) | current, partly reversed | Craft audit of prototype E; the type and motion systems |
+| [2026-10-craft-audit.md](2026-10-craft-audit.md) | history since 2026-10-15 | Craft audit of prototype E; the type and motion systems of the four-page site |
 | [2026-10-icons.md](2026-10-icons.md) | current | The icon system; `tools/icons` matches it |
 | [2026-10-link-previews.md](2026-10-link-previews.md) | current | Link previews, icons and structured data; built (`tools/og`) |
 | [2026-10-wordmarks.md](2026-10-wordmarks.md) | current | Product wordmarks and Home's hierarchy; accepted and built |
