@@ -23,7 +23,14 @@
    fades on its own image, and the live object fades on its own .m-stage.
 
    Lab switches (the panel after the foot writes them; each also works typed into the address):
-   ?obj=none|mark|small, ?t=charter|anthony, ?reveal=scroll, ?draft=1, ?samples=0, ?align=center, ?still. */
+   ?obj=none|mark|small, ?t=charter|anthony, ?reveal=scroll, ?draft=1, ?samples=0, ?still, and
+     ?aura=live|lit|rich  the page light (src/styles/lab-aura.css): live is today's single pool, lit
+                          (default) a visible edk pool right of the name and each product's light beside
+                          its small screen, rich the same, stronger
+     ?col=left|centre     the column on the bar's edge, or centred in the page (default; the old
+                          ?align=center still means centre)
+   Without JavaScript the page shows the defaults; the panel's Aura and Column links then work by their
+   #aura-* and #col-* targets. */
 import { Picture } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
@@ -34,6 +41,7 @@ import Wordmark from '../../components/Wordmark.astro';
 import { getWorld, shot, type Shot } from '../../lib/world';
 import { getSite, getProjects, getLog, url, projectPath, entryPath, entryTitle, dayMonYear, iso, isPlaceholder, statusLine, inkVars, type LogEntry } from '../../lib/site';
 import '../../styles/work.css';
+import '../../styles/lab-aura.css';
 
 const site = await getSite();
 const k = site.kicker;
@@ -54,7 +62,7 @@ const rows = await Promise.all(projects.map(async (p) => {
   const id = PICK[p.id];
   const s: Shot | null = w && id ? shot(p.id, w, { id }) : null;
   const a = p.data.accent;
-  return { p, s, vars: `--p: ${a.color}; --pg: ${a.glow ?? a.color}${inkVars(p)}` };
+  return { p, s, vars: `--p: ${a.color}; --pg: ${a.glow ?? a.color}${inkVars(p)}`, lights: `--pg: ${a.glow ?? a.color}${a.p3 ? `; --p3: ${a.p3}` : ''}` };
 }));
 /* 176 px at 2x on desktop, two thirds of the column on tablets and phones (up to 3x) */
 const SHOT_W = [360, 480, 720];
@@ -82,13 +90,29 @@ const TIMES = [['charter', 'Charter, 70 / 400 ms'], ['anthony', 'Anthony, 90 / 1
         if (q.get('reveal') === 'scroll') d.dataset.hv2Reveal = 'scroll';
         if (q.get('draft') === '1') d.dataset.hv2Draft = '';
         if (q.get('samples') === '0') d.dataset.hv2Samples = '0';
-        if (q.get('align') === 'center') d.dataset.hv2Align = 'center';
         if (!q.has('still') && !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('hv2-in');
       } catch (e) {}
     })();
   </script>
-  <div class="inner hv2" id="hv2">
-    <div class="hv2-aura" aria-hidden="true"></div>
+  <div class="inner hv2 ha-root" id="hv2" data-aura="lit" data-col="centre">
+    {/* targets for the panel's Aura and Column links without JavaScript (lab-aura.css) */}
+    <i class="ha-ta" id="aura-live" hidden></i><i class="ha-ta" id="aura-lit" hidden></i><i class="ha-ta" id="aura-rich" hidden></i>
+    <i class="ha-tc" id="col-left" hidden></i><i class="ha-tc" id="col-centre" hidden></i>
+    <script is:inline>
+      /* before first paint: the light and the column named in the address (?align=center is the old name
+         of the centred column); the light breathes (9 s) unless the live edk has its own idle loop */
+      (function () {
+        try {
+          var h = document.getElementById('hv2'), d = document.documentElement, q = new URLSearchParams(location.search);
+          var a = q.get('aura'), c = q.get('col') || (q.get('align') === 'center' ? 'centre' : null);
+          if (a && /^(live|lit|rich)$/.test(a)) h.dataset.aura = a;
+          if (c && /^(left|centre)$/.test(c)) h.dataset.col = c;
+          if (d.classList.contains('hv2-in') && d.dataset.hv2Obj !== 'small') h.classList.add('ha-breathe');
+        } catch (e) {}
+      })();
+    </script>
+    <div class="ha-edk" aria-hidden="true"></div>
+    <div class="hv2-aura ha-old" aria-hidden="true"></div>
     <div class="hv2-col">
 
       <div class="strip s-intro" data-rail-sec="Eren Deniz">
@@ -115,8 +139,9 @@ const TIMES = [['charter', 'Charter, 70 / 400 ms'], ['anthony', 'Anthony, 90 / 1
         <h2 class="s-label" id="h-work" data-a data-a-k="fade" style="--a: 1">Work</h2>
         <div class="s-body">
           <ul class="w-rows">
-            {rows.map(({ p, s, vars }, i) => (
-              <li>
+            {rows.map(({ p, s, vars, lights }, i) => (
+              <li class="ha-row" style={lights}>
+                <span class="ha-p" aria-hidden="true"></span>
                 <a class="row p-open" href={url(projectPath(p))} data-p={p.id} data-title={p.data.title} style={vars}>
                   <span class="row-light" aria-hidden="true"></span>
                   {s ? (
@@ -192,7 +217,8 @@ const TIMES = [['charter', 'Charter, 70 / 400 ms'], ['anthony', 'Anthony, 90 / 1
       <div class="lab-g"><span class="meta">Below the fold</span><a data-k="reveal" data-v="" href="?">With the last step</a><a data-k="reveal" data-v="scroll" href="?reveal=scroll">Reveal once in view</a></div>
       <div class="lab-g"><span class="meta">Draft lines</span><a data-k="draft" data-v="" href="?">Plain</a><a data-k="draft" data-v="1" href="?draft=1">Outlined</a></div>
       <div class="lab-g"><span class="meta">Record</span><a data-k="samples" data-v="" href="?">Samples shown</a><a data-k="samples" data-v="0" href="?samples=0">As with no real entry</a></div>
-      <div class="lab-g"><span class="meta">Column</span><a data-k="align" data-v="" href="?">On the bar's edge</a><a data-k="align" data-v="center" href="?align=center">Centred</a></div>
+      <div class="lab-g"><span class="meta">Aura</span><a data-k="aura" data-v="live" href="?aura=live#aura-live">Live, today's level</a><a data-k="aura" data-v="" href="?aura=lit#aura-lit">Lit</a><a data-k="aura" data-v="rich" href="?aura=rich#aura-rich">Rich</a></div>
+      <div class="lab-g"><span class="meta">Column</span><a data-k="col" data-v="left" href="?col=left#col-left">On the bar's edge</a><a data-k="col" data-v="" href="?col=centre#col-centre">Centred</a></div>
       <div class="lab-g"><span class="meta">Motion</span><a data-k="still" data-v="" href="?">Arrival</a><a data-k="still" data-v="1" href="?still">Still (the reduced-motion twin)</a><button type="button" class="lab-replay" hidden>Replay the arrival</button></div>
     </aside>
   </div>
@@ -213,6 +239,16 @@ const TIMES = [['charter', 'Charter, 70 / 400 ms'], ['anthony', 'Anthony, 90 / 1
     const def = k === 'obj' ? 'none' : k === 't' ? 'charter' : '';
     if (cur === v || (!q.has(k) && v === def)) a.setAttribute('aria-current', 'true');
   });
+  /* the old name of the centred column: the panel's Column links replace it */
+  document.querySelectorAll<HTMLAnchorElement>('.hv2-lab a[data-k="col"]').forEach((a) => {
+    const u = new URL(a.href);
+    u.searchParams.delete('align');
+    a.href = u.pathname + u.search;
+    if (q.get('align') === 'center' && !q.has('col')) a.toggleAttribute('aria-current', a.dataset.v === '');
+  });
+  /* the light loop pauses while the tab is hidden (charter §5) */
+  const hv2 = document.getElementById('hv2');
+  document.addEventListener('visibilitychange', () => hv2?.classList.toggle('ha-paused', document.hidden));
   const replay = document.querySelector<HTMLButtonElement>('.lab-replay');
   if (replay && d.classList.contains('hv2-in')) {
     replay.hidden = false;
@@ -252,8 +288,27 @@ const TIMES = [['charter', 'Charter, 70 / 400 ms'], ['anthony', 'Anthony, 90 / 1
     background: radial-gradient(closest-side, color-mix(in srgb, var(--edk) var(--glow-base), transparent), color-mix(in srgb, var(--edk) 4%, transparent) 55%, transparent 100%);
   }
   .hv2-col { position: relative; max-width: var(--hv2-col); padding-top: 48px; }
-  :global(html[data-hv2-align="center"]) .hv2-col { margin-inline: auto; }
-  :global(html[data-hv2-align="center"]) .hv2-aura { left: 50%; translate: -50% 0; }
+
+  /* the column (?col): on the bar's edge (--ha-c 0) or centred in the page (--ha-c 1) */
+  .hv2[data-col="left"]:not(:has(> .ha-tc:target)), .hv2:has(> #col-left:target) { --ha-c: 0; }
+  .hv2[data-col="centre"]:not(:has(> .ha-tc:target)), .hv2:has(> #col-centre:target) { --ha-c: 1; }
+  .hv2 { --hv2-cl: max(0px, calc((100% - var(--hv2-col)) / 2 * var(--ha-c, 0))); }
+  .hv2-col, .hv2-lab, .hv2 > :global(footer.foot) { margin-left: var(--hv2-cl); }
+  .hv2-aura { margin-left: var(--hv2-cl); }
+
+  /* the page light at lit and rich (lab-aura.css): the edk pool right of the name, in the part of the
+     page the column leaves empty; each product's pool at its small screen, centred on the frame's right
+     edge so it spills into the empty third beside the screen (and, from 1180 px, left into the label
+     column), never onto the row's text at full strength. Phones: the edk pool is a flat band behind the
+     name and the role line, clear of the lede. */
+  .hv2 { --ha-ex: calc(var(--hv2-cl) + min(100%, var(--hv2-col)) + 170px); --ha-ey: 64px; --ha-ew: 1100px; --ha-eh: 820px; }
+  .hv2 .ha-p { --ha-px: 66.7%; --ha-py: 115px; --ha-pw: 560px; --ha-ph: 400px; --ha-pk: 1.4; }
+  @media (min-width: 1180px) { .hv2 .ha-p { --ha-px: -40px; --ha-py: 65px; --ha-pw: 520px; --ha-ph: 380px; } }
+  @media (max-width: 899.98px) { .hv2 { --ha-ew: 900px; --ha-eh: 700px; } }
+  @media (max-width: 767.98px) {
+    .hv2 { --ha-ex: 72%; --ha-ey: 20px; --ha-ew: 680px; --ha-eh: 280px; }
+    .hv2 .ha-p { --ha-py: 85px; --ha-pw: 440px; --ha-ph: 300px; }
+  }
 
   /* strips: the label above its content on phones, a 152 px label column from 768 px */
   .strip { display: block; }
@@ -299,7 +354,8 @@ const TIMES = [['charter', 'Charter, 70 / 400 ms'], ['anthony', 'Anthony, 90 / 1
   .row-light { position: absolute; inset: -40px -64px; border-radius: 50%; pointer-events: none; opacity: 0;
     background: radial-gradient(closest-side, color-mix(in srgb, var(--pg) var(--glow-base), transparent), color-mix(in srgb, var(--pg) 3%, transparent) 60%, transparent);
     transition: opacity 200ms var(--ease-out); }
-  .row:hover .row-light, .row:focus-visible .row-light, .row:active .row-light { opacity: 1; transition-duration: var(--d-1); }
+  /* at lit and rich the row's own pool rises instead (lab-aura.css), so this light is for live only */
+  .row:hover .row-light, .row:focus-visible .row-light, .row:active .row-light { opacity: var(--ha-live); transition-duration: var(--d-1); }
   .row-shot { display: block; width: 66.667%; }
   @media (min-width: 768px) { .row-shot { width: min(336px, 66.667%); } }
   .row-text { display: grid; gap: 6px; align-content: start; }
@@ -344,7 +400,6 @@ const TIMES = [['charter', 'Charter, 70 / 400 ms'], ['anthony', 'Anthony, 90 / 1
 
   /* the foot sits on the column's edge too */
   .hv2 :global(footer.foot) { max-width: var(--hv2-col); padding-top: var(--hv2-gap); }
-  :global(html[data-hv2-align="center"]) .hv2 :global(footer.foot) { margin-inline: auto; }
 
   /* DRAFT outlines (lab switch) */
   :global(html[data-hv2-draft]) .hv2 [data-draft] { outline: 1px dashed var(--ink-4); outline-offset: 4px; border-radius: 2px; }
@@ -369,8 +424,7 @@ const TIMES = [['charter', 'Charter, 70 / 400 ms'], ['anthony', 'Anthony, 90 / 1
   }
 
   /* the lab panel, after the foot */
-  .hv2-lab { max-width: var(--hv2-col); margin: 0 0 96px; padding: 24px; border-radius: 12px; background: var(--raised); display: grid; gap: 14px; }
-  :global(html[data-hv2-align="center"]) .hv2-lab { margin-inline: auto; }
+  .hv2-lab { max-width: var(--hv2-col); margin-top: 0; margin-bottom: 96px; padding: 24px; border-radius: 12px; background: var(--raised); display: grid; gap: 14px; }
   .lab-g { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
   .lab-g .meta { flex: 0 0 120px; }
   .lab-g a, .lab-replay { display: inline-flex; align-items: center; min-height: 44px; font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-2); text-decoration: none; }

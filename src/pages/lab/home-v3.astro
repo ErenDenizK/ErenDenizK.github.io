@@ -17,13 +17,21 @@
      ?samples=0              hide the Record list (as the live Home does when no real entry exists)
      ?draft=1                outline the DRAFT strings
      ?still                  the still twin: no arrival, no moving media (reduced motion looks the same)
-   Without JavaScript the page shows the defaults, complete and with nothing hidden. */
+     ?aura=live|lit|rich     the page light (src/styles/lab-aura.css): live is today's light (the object's
+                             own glow), lit (default) a visible edk pool around the object and each
+                             product's light around its screen, rich the same, stronger
+     ?col=split|left|centre  split (default): the text column on the bar's edge and the object centred in
+                             the right half; left: everything in the column on the bar's edge, the object
+                             under the lede; centre: the column centred, the object in the right margin
+   Without JavaScript the page shows the defaults, complete and with nothing hidden; the panel's Aura and
+   Column links then work by their #aura-* and #col-* targets. */
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
 import Thumb from '../../components/Thumb.astro';
 import Icon from '../../components/Icon.astro';
 import Foot from '../../components/Foot.astro';
 import Wordmark from '../../components/Wordmark.astro';
+import '../../styles/lab-aura.css';
 import { Picture } from 'astro:assets';
 import { getWorld, shot, type Shot } from '../../lib/world';
 import { getSite, getProjects, getLog, url, projectPath, entryPath, iso, dayMonYear, isPlaceholder, statusLine, type Project, type LogEntry } from '../../lib/site';
@@ -56,6 +64,7 @@ async function still(p: Project): Promise<Shot | null> {
 }
 const rows = await Promise.all(projects.map(async (p) => ({ p, s: await still(p) })));
 const light = (p: Project) => p.data.accent.glow ?? p.data.accent.color;
+const lights = (p: Project) => `--pg: ${light(p)}${p.data.accent.p3 ? `; --p3: ${p.data.accent.p3}` : ''}`;
 const shotWidths = (s: Shot) => [400, 560, 720, 1080].filter((x) => x <= s.img.width);
 
 /* the newest three entries; an untitled note shows its own first line, never an invented title */
@@ -63,6 +72,8 @@ const plain = (md = '') => (md.split('\n').find((l) => l.trim()) ?? '').replace(
 const recent = log.slice(0, 3).map((e: LogEntry) => ({ e, title: e.data.title ?? plain(e.body), note: !e.data.title }));
 const hasLinkedIn = !isPlaceholder(site.links.linkedin);
 const OPTIONS: [string, string, [string, string][]][] = [
+  ['aura', 'Aura', [['lit', 'Lit'], ['live', 'Live'], ['rich', 'Rich']]],
+  ['col', 'Column', [['split', 'Split'], ['left', 'Left'], ['centre', 'Centre']]],
   ['obj', 'Object', [['mark', 'edk'], ['small', 'Photo'], ['none', 'None']]],
   ['st', 'Statement', [['a', 'A'], ['b', 'B'], ['c', 'C']]],
   ['shots', 'Phone screens', [['full', 'Full column'], ['two', 'Two thirds']]],
@@ -85,12 +96,28 @@ const OPTIONS: [string, string, [string, string][]][] = [
       if (!still && !matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('h3-go');
     })();
   </script>
-  <div class="inner h3">
-    <div class="h3-pool" aria-hidden="true"></div>
+  <div class="inner h3 ha-root" id="h3" data-aura="lit" data-col="split">
+    {/* targets for the panel's Aura and Column links without JavaScript (lab-aura.css) */}
+    <i class="ha-ta" id="aura-live" hidden></i><i class="ha-ta" id="aura-lit" hidden></i><i class="ha-ta" id="aura-rich" hidden></i>
+    <i class="ha-tc" id="col-split" hidden></i><i class="ha-tc" id="col-left" hidden></i><i class="ha-tc" id="col-centre" hidden></i>
+    <script is:inline>
+      /* before first paint: the light and the column named in the address; the light breathes (9 s) only
+         when no live object has its own idle loop, and never with reduced motion or ?still */
+      (function () {
+        var h = document.getElementById('h3'), d = document.documentElement, q = new URLSearchParams(location.search);
+        var a = q.get('aura'), c = q.get('col');
+        if (a && /^(live|lit|rich)$/.test(a)) h.dataset.aura = a;
+        if (c && /^(split|left|centre)$/.test(c)) h.dataset.col = c;
+        var o = d.getAttribute('data-h3-obj');
+        if (d.classList.contains('h3-go') && o && o !== 'mark') h.classList.add('ha-breathe');
+      })();
+    </script>
+    <div class="h3-pool ha-old" aria-hidden="true"></div>
 
     {/* ---- strip 1: the intro ---- */}
     <div class="h3-intro">
       <div class="h3-text">
+        <div class="ha-edk ha-at-name" aria-hidden="true"></div>
         <h1 class="h3-name" id="h-home" data-s="0">{site.name}</h1>
         {/* the role sits right under the name, so name and role are in the top 130 px of content (charter §3.4) */}
         <p class="h3-role" data-s="0">{k.study} · <span class="lg">{k.school}</span><abbr class="sm" title={k.school}>{k.schoolShort}</abbr> · {k.year}</p>
@@ -105,6 +132,7 @@ const OPTIONS: [string, string, [string, string][]][] = [
         </div>
       </div>
       <div class="h3-obj" data-s="3" aria-hidden="true">
+        <div class="ha-edk ha-at-obj"></div>
         <div class="h3-o h3-o-mark"><Media obj="edk" slot="home" sizes="(min-width: 900px) 280px, 160px" priority /></div>
         <div class="h3-o h3-o-small">
           <picture>
@@ -121,7 +149,8 @@ const OPTIONS: [string, string, [string, string][]][] = [
       <h2 class="h3-label" id="h3-work" data-s="4" data-draft>{site.home.showcase.title}</h2>
       <ul class="h3-rows">
         {rows.map(({ p, s }, i) => (
-          <li data-s={i === 0 ? '4' : '5'}>
+          <li class="ha-row" data-s={i === 0 ? '4' : '5'} style={lights(p)}>
+            <span class="ha-p" aria-hidden="true"></span><span class="ha-p ha-far" aria-hidden="true"></span>
             <a class="h3-row p-open" href={url(projectPath(p))} data-p={p.id} data-title={p.data.title} style={`--pg: ${light(p)}`}>
               <span class="h3-shot" aria-hidden={s ? undefined : 'true'}>
                 {s ? (
@@ -186,8 +215,9 @@ const OPTIONS: [string, string, [string, string][]][] = [
     <aside class="h3-lab" aria-labelledby="h3-lab">
       <h2 class="h3-label" id="h3-lab">Lab · Home V3, Statement · not linked from the site</h2>
       <dl>
+        {/* Aura and Column also carry a #target, so they work without JavaScript */}
         {OPTIONS.map(([key, label, opts]) => (
-          <div><dt class="meta">{label}</dt><dd>{opts.map(([v, t], j) => <a href={`?${key}=${v}`} data-k={key} data-v={v} aria-current={j === 0 ? 'true' : undefined}>{t}</a>)}</dd></div>
+          <div><dt class="meta">{label}</dt><dd>{opts.map(([v, t], j) => <a href={`?${key}=${v}${key === 'aura' || key === 'col' ? `#${key}-${v}` : ''}`} data-k={key} data-v={v} aria-current={j === 0 ? 'true' : undefined}>{t}</a>)}</dd></div>
         ))}
       </dl>
       <button type="button" class="h3-replay" data-replay hidden>Replay the arrival</button>
@@ -210,6 +240,9 @@ const OPTIONS: [string, string, [string, string][]][] = [
     if (k === 'still' && v === '0') n.delete('still'); else n.set(k, v);
     a.href = '?' + n.toString();
   });
+  /* the light loop pauses while the tab is hidden (charter §5) */
+  const h3 = document.getElementById('h3');
+  document.addEventListener('visibilitychange', () => h3?.classList.toggle('ha-paused', document.hidden));
   const ms = () => (d.dataset.h3Timing === 'anthony' ? 2000 : 1500);
   let t = window.setTimeout(() => d.classList.remove('h3-go'), ms());
   const sweep = () => window.setTimeout(() => {
@@ -250,6 +283,64 @@ const OPTIONS: [string, string, [string, string][]][] = [
     background: radial-gradient(closest-side, color-mix(in srgb, var(--edk) var(--glow-base), transparent), color-mix(in srgb, var(--edk) 4%, transparent) 55%, transparent); }
   html:not([data-h3-obj]) .h3-pool, html[data-h3-obj="mark"] .h3-pool { display: none; }
 
+  /* ---- the column (?col). split (default): the text column on the bar's edge, the object centred in the
+     right half. left: everything in the column on the bar's edge, the object under the lede. centre: the
+     column centred, the object in the right margin from 1240 px (the width where E1's index column
+     unfolds) and under the lede below it. Under 900 px the three are the same phone layout. ---- */
+  .h3[data-col="centre"]:not(:has(> .ha-tc:target)), .h3:has(> #col-centre:target) { --ha-c: 1; }
+  .h3 { --h3-cl: max(0px, calc((100% - var(--h3-col)) / 2 * var(--ha-c, 0))); }
+  .h3-text, .h3-obj { position: relative; }
+  @media (min-width: 900px) {
+    .h3[data-col="split"]:not(:has(> .ha-tc:target)) .h3-intro, .h3:has(> #col-split:target) .h3-intro { grid-template-columns: minmax(0, var(--h3-col)) minmax(var(--h3-obj), 1fr); }
+    .h3[data-col="left"]:not(:has(> .ha-tc:target)) .h3-intro, .h3:has(> #col-left:target) .h3-intro,
+    .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .h3-intro, .h3:has(> #col-centre:target) .h3-intro { grid-template-columns: minmax(0, 1fr); max-width: var(--h3-col); margin-left: var(--h3-cl); }
+    /* under the lede at 200 px; the render fills the middle of its square, so the empty top and bottom of
+       the box are given back and its letters line up with the text edge (as under 900 px) */
+    .h3[data-col="left"]:not(:has(> .ha-tc:target)) .h3-obj, .h3:has(> #col-left:target) .h3-obj,
+    .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .h3-obj, .h3:has(> #col-centre:target) .h3-obj { --h3-obj: 200px; justify-self: start; margin-top: 4px; }
+    .h3[data-col="left"]:not(:has(> .ha-tc:target)) .h3-o-mark, .h3:has(> #col-left:target) .h3-o-mark,
+    .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .h3-o-mark, .h3:has(> #col-centre:target) .h3-o-mark { margin: -50px 0 -55px -18px; }
+    .h3[data-col="left"]:not(:has(> .ha-tc:target)) .h3-o-small, .h3:has(> #col-left:target) .h3-o-small,
+    .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .h3-o-small, .h3:has(> #col-centre:target) .h3-o-small { margin: 24px 0 0; }
+  }
+  @media (min-width: 1240px) {
+    .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .h3-intro, .h3:has(> #col-centre:target) .h3-intro { grid-template-columns: minmax(0, 1fr) minmax(0, var(--h3-col)) minmax(0, 1fr); column-gap: 24px; max-width: none; margin-left: 0; }
+    .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .h3-text, .h3:has(> #col-centre:target) .h3-text { grid-column: 2; grid-row: 1; }
+    .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .h3-obj, .h3:has(> #col-centre:target) .h3-obj { grid-column: 3; grid-row: 1; justify-self: center; width: min(var(--h3-obj), 100%); --h3-obj: clamp(200px, calc(58.5px + 15.38vw), 280px); margin: 0; }
+    .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .h3-o-mark, .h3:has(> #col-centre:target) .h3-o-mark { margin: 0; }
+    .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .h3-o-small, .h3:has(> #col-centre:target) .h3-o-small { margin: 0 auto; }
+  }
+  .h3 > :is(.h3-strip, .h3-lab) { margin-left: var(--h3-cl); }
+
+  /* ---- the page light at lit and rich (lab-aura.css): the edk pool around the object, in the half or
+     the margin the text leaves empty (beside it, flat and to the right, when the object sits under the
+     lede); with no object, a pool right of the name. Each product's pool sits behind its screen, so the
+     frame covers the brightest part and the light spills around it like light from the screen. ---- */
+  .h3 .ha-at-obj { --ha-ex: 50%; --ha-ey: 50%; --ha-ew: 960px; --ha-eh: 900px; }
+  .h3 .ha-at-name { display: none; --ha-ex: calc(100% + 200px); --ha-ey: 110px; --ha-ew: 1100px; --ha-eh: 860px; }
+  html[data-h3-obj="none"] .h3 .ha-at-name { display: block; }
+  /* the screen covers the pool's centre, so the light around it is raised by --ha-pk; with the split
+     column a second, softer pool carries each product's light into the right half beside its row */
+  .h3 .ha-p { --ha-px: 60px; --ha-pw: 600px; --ha-ph: 440px; --ha-pk: 1.6; }
+  .h3 .ha-far { --ha-px: calc(100% + 240px); --ha-pw: 720px; --ha-ph: 440px; --ha-pk: 1; }
+  .h3[data-col="left"]:not(:has(> .ha-tc:target)) .ha-far, .h3:has(> #col-left:target) .ha-far,
+  .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .ha-far, .h3:has(> #col-centre:target) .ha-far { display: none; }
+  @media (max-width: 899.98px) { .h3 .ha-far { display: none; } }
+  @media (min-width: 900px) {
+    .h3[data-col="left"]:not(:has(> .ha-tc:target)) .ha-at-obj, .h3:has(> #col-left:target) .ha-at-obj { --ha-ex: calc(50% + 280px); --ha-ey: calc(50% + 36px); --ha-ew: 900px; --ha-eh: 280px; }
+  }
+  @media (min-width: 900px) and (max-width: 1239.98px) {
+    .h3[data-col="centre"]:not(:has(> .ha-tc:target)) .ha-at-obj, .h3:has(> #col-centre:target) .ha-at-obj { --ha-ex: calc(50% + 280px); --ha-ey: calc(50% + 36px); --ha-ew: 900px; --ha-eh: 280px; }
+  }
+  @media (max-width: 899.98px) {
+    .h3 .ha-at-obj { --ha-ex: calc(50% + 150px); --ha-ey: calc(50% + 24px); --ha-ew: 600px; --ha-eh: 220px; }
+    .h3 .ha-at-name { --ha-ex: 66%; --ha-ey: -24px; --ha-ew: 680px; --ha-eh: 300px; }
+  }
+  @media (max-width: 699.98px) {
+    .h3 .ha-p { --ha-px: 50%; --ha-py: 130px; --ha-pw: 560px; --ha-ph: 420px; }
+    html[data-h3-shots="two"] .h3 .ha-p { --ha-px: 33.3%; --ha-py: 92px; --ha-pw: 440px; --ha-ph: 340px; }
+  }
+
   /* ---- strip 1 ---- */
   .h3-intro { display: grid; grid-template-columns: minmax(0, var(--h3-col)) var(--h3-obj); column-gap: clamp(40px, 4.4vw, 72px); align-items: center; padding: 40px 0 0; }
   .h3-name { font: 400 var(--h3-name)/1.2 var(--f-display); letter-spacing: -0.012em; color: var(--ink); }
@@ -283,7 +374,8 @@ const OPTIONS: [string, string, [string, string][]][] = [
   .h3-row::before { content: ""; position: absolute; z-index: -1; left: -14%; right: 30%; top: -40%; bottom: -40%; pointer-events: none; opacity: 0;
     background: radial-gradient(closest-side, color-mix(in srgb, var(--pg) var(--glow-base), transparent), transparent);
     transition: opacity var(--d-2) var(--ease-in); }
-  .h3-row:hover::before, .h3-row:focus-visible::before, .h3-row:active::before { opacity: 1; transition: opacity var(--d-1) var(--ease-out); }
+  /* at lit and rich the row's own pool rises instead (lab-aura.css), so this light is for live only */
+  .h3-row:hover::before, .h3-row:focus-visible::before, .h3-row:active::before { opacity: var(--ha-live); transition: opacity var(--d-1) var(--ease-out); }
   .h3-row:focus-visible { outline-offset: 6px; border-radius: 12px; }
   .h3-shot { display: block; }
   .h3-frame { display: block; overflow: hidden; border-radius: 10px; background: var(--frame); box-shadow: inset 0 0 0 1px var(--rule), 0 24px 50px -30px rgba(0, 0, 0, 0.9); }

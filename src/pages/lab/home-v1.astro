@@ -31,13 +31,20 @@
      ?samples=0             hides the Record strip, as the live build with SAMPLES=0 does
      ?still                 the reduced-motion twin (the site's own switch)
      ?panel=0               hides the lab panel (for screenshots)
-   Without JavaScript the page shows obj=mark, fully visible, with no arrival. */
+     ?aura=live|lit|rich    the page light (src/styles/lab-aura.css): live is today's single pool, lit
+                            (default) a visible edk pool right of the name and each product's light at its
+                            row, rich the same, stronger. The pools sit right of the text column (left of
+                            it for English Prep with the centred column), never at full strength behind text.
+     ?col=left|centre       the text column on the bar's edge (E0), or centred in the page (default)
+   Without JavaScript the page shows obj=mark, aura=lit and the centred column, fully visible, with no
+   arrival; the panel's Aura and Column links then work by their #aura-* and #col-* targets. */
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
 import Thumb from '../../components/Thumb.astro';
 import Icon from '../../components/Icon.astro';
 import Foot from '../../components/Foot.astro';
 import Wordmark from '../../components/Wordmark.astro';
+import '../../styles/lab-aura.css';
 import { getSite, getProjects, getLog, url, projectPath, entryPath, dayMonYear, iso, isPlaceholder } from '../../lib/site';
 
 const site = await getSite();
@@ -49,7 +56,7 @@ const prep = study?.facts?.find((f) => f[0] === 'Prep year');
 const byHand = site.about.chapters.find((c) => c.id === 'work')?.tracks?.lanes[0];
 const pVars = (p: (typeof projects)[number]) => {
   const a = p.data.accent;
-  return [`--p: ${a.color}`, `--pg: ${a.glow ?? a.color}`].join('; ');
+  return [`--p: ${a.color}`, `--pg: ${a.glow ?? a.color}`, a.p3 && `--p3: ${a.p3}`].filter(Boolean).join('; ');
 };
 /* the plan's meta line: status and version (and Eat Map's note); the start month stays on Work */
 const meta = (p: (typeof projects)[number]) => [p.data.status, !isPlaceholder(p.data.version) && p.data.version, p.data.statusNote].filter(Boolean).join(' · ');
@@ -62,7 +69,11 @@ const lede2 = ledeSplit > 0 ? site.lede.slice(ledeSplit + 1) : '';
 const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedin as string);
 ---
 <Base title="Home V1" tab="home" description="A workbench for the Home prototype V1, Index." noindex>
-  <div class="inner v1" id="v1" data-obj="mark">
+  <div class="inner v1 ha-root" id="v1" data-obj="mark" data-aura="lit" data-col="centre">
+    {/* targets for the panel's links without JavaScript (lab-aura.css) */}
+    <i class="ha-ta" id="aura-live" hidden></i><i class="ha-ta" id="aura-lit" hidden></i><i class="ha-ta" id="aura-rich" hidden></i>
+    <i class="ha-tc" id="col-left" hidden></i><i class="ha-tc" id="col-centre" hidden></i>
+    <div class="ha-edk" aria-hidden="true"></div>
     <script is:inline>
       /* before first paint: the lab switches (see the frontmatter) and the arrival class */
       (function () {
@@ -75,14 +86,17 @@ const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedi
         if (q.get('draft') === '1') d.draft = '1';
         if (q.get('samples') === '0') d.samples = '0';
         if (q.get('panel') === '0') d.panel = '0';
+        var a = q.get('aura'), c = q.get('col');
+        if (a && /^(live|lit|rich)$/.test(a)) d.aura = a;
+        if (c && /^(left|centre)$/.test(c)) d.col = c;
         var still = q.has('still') || matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (!still) v.classList.add('arrive');
-        if (!still && d.obj !== 'small') v.classList.add('breathe');
+        if (!still && d.obj !== 'small') v.classList.add('breathe', 'ha-breathe');
       })();
     </script>
 
     <header class="v1-intro">
-      <div class="v1-pool" aria-hidden="true"></div>
+      <div class="v1-pool ha-old" aria-hidden="true"></div>
       <div class="v1-opt v1-mark" data-opt="mark" aria-hidden="true"><Thumb obj="edk" size={96} class="v1-mk" /></div>
       <div class="v1-id">
         <h1 id="h-home" data-step="0">{site.name}</h1>
@@ -131,7 +145,8 @@ const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedi
       <h2 class="v1-label" id="h-work">{site.home.showcase.title}</h2>
       <ul class="v1-list">
         {projects.map((p) => (
-          <li>
+          <li class="ha-row" style={pVars(p)}>
+            <span class="ha-p" aria-hidden="true"></span>
             <a class="v1-proj p-open" href={url(projectPath(p))} data-p={p.id} data-title={p.data.title} style={pVars(p)}>
               <span class="v1-ph">
                 <span class="v1-wm"><Wordmark project={p} /></span>
@@ -186,6 +201,8 @@ const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedi
     <div class="v1-lab-body">
       <p class="meta">Home V1, Index. Not linked from the site.</p>
       <dl>
+        <div><dt class="meta">Aura</dt><dd data-k="aura" data-def="lit"><a href="?aura=live#aura-live" data-v="live">Live</a><a href="?aura=lit#aura-lit" data-v="lit">Lit</a><a href="?aura=rich#aura-rich" data-v="rich">Rich</a></dd></div>
+        <div><dt class="meta">Column</dt><dd data-k="col" data-def="centre"><a href="?col=left#col-left" data-v="left">Left</a><a href="?col=centre#col-centre" data-v="centre">Centre</a></dd></div>
         <div><dt class="meta">Object</dt><dd data-k="obj" data-def="mark"><a href="?obj=none" data-v="none">None</a><a href="?obj=mark" data-v="mark">edk mark</a><a href="?obj=small" data-v="small">Small edk</a></dd></div>
         <div><dt class="meta">Timing</dt><dd data-k="timing" data-def="charter"><a href="?" data-v="charter">Charter</a><a href="?timing=anthony" data-v="anthony">Anthony</a></dd></div>
         <div><dt class="meta">Italic</dt><dd data-k="it" data-def="0"><a href="?" data-v="0">Off</a><a href="?it=1" data-v="1">Lede</a></dd></div>
@@ -216,7 +233,7 @@ const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedi
         v.classList.remove('arrive'); void v.offsetWidth; v.classList.add('arrive');
       });
       /* the light loop pauses while the tab is hidden (charter §5) */
-      document.addEventListener('visibilitychange', function () { v.classList.toggle('paused', document.hidden); });
+      document.addEventListener('visibilitychange', function () { v.classList.toggle('paused', document.hidden); v.classList.toggle('ha-paused', document.hidden); });
     })();
   </script>
 </Base>
@@ -236,7 +253,7 @@ const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedi
   }
   .v1[data-timing="anthony"] { --v1-gap: 90ms; --v1-dur: 1000ms; }
   @media (min-width: 900px) { .v1 { --v1-body: 17px; --v1-strip: 96px; } }
-  .v1 > :not(.foot) { max-width: var(--v1-col); }
+  .v1 > :not(.foot, .ha-edk) { max-width: var(--v1-col); }
 
   /* ---- intro: the name, one sentence; the page light behind it ---- */
   .v1 .v1-intro { position: relative; padding-top: 24px; }
@@ -247,6 +264,32 @@ const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedi
     background: radial-gradient(closest-side, color-mix(in srgb, var(--edk) var(--glow-base), transparent), color-mix(in srgb, var(--edk) 4%, transparent) 55%, transparent 100%);
   }
   @media (max-width: 599.98px) { .v1 .v1-pool { left: -45%; top: calc(-1 * var(--bar-h) - 40px); width: 190vw; } }
+
+  /* ---- the column (?col): on the bar's edge (--ha-c 0) or centred in the page (--ha-c 1) ---- */
+  .v1[data-col="left"]:not(:has(> .ha-tc:target)), .v1:has(> #col-left:target) { --ha-c: 0; }
+  .v1[data-col="centre"]:not(:has(> .ha-tc:target)), .v1:has(> #col-centre:target) { --ha-c: 1; }
+  .v1 { --ha-cl: max(0px, calc((100% - var(--v1-col)) / 2 * var(--ha-c, 0))); }
+  .v1 > :is(.v1-intro, .v1-proof, .v1-strip) { margin-left: var(--ha-cl); }
+
+  /* ---- the page light at lit and rich (lab-aura.css): the edk pool beside the name, right of the
+     column, in the half the column leaves empty; each product's pool right of its row (English Prep's
+     on the left when the column is centred, so the light alternates). Phones: the edk pool in the band
+     beside the mark, above the name, and the product pools at the right edge. ---- */
+  .v1 { --ha-ex: calc(var(--ha-cl) + min(100%, var(--v1-col)) + 150px); --ha-ey: 64px; --ha-ew: 1180px; --ha-eh: 860px; }
+  .v1 .ha-p { --ha-px: calc(100% + 130px); --ha-pw: 700px; --ha-ph: 440px; }
+  /* the small edk brings its own glow beside the name, so the pool moves further out */
+  @media (min-width: 900px) { .v1[data-obj="small"] { --ha-ex: calc(var(--ha-cl) + min(100%, var(--v1-col)) + 300px); } }
+  @media (min-width: 1180px) {
+    .v1 .v1-list > .ha-row:nth-child(2) > .ha-p { --ha-px: calc((100% + 130px) * (1 - var(--ha-c, 0)) - 220px * var(--ha-c, 0)); }
+  }
+  @media (max-width: 899.98px) { .v1 { --ha-ew: 920px; --ha-eh: 720px; } .v1 .ha-p { --ha-px: calc(100% + 40px); --ha-pw: 520px; --ha-ph: 360px; } }
+  @media (max-width: 599.98px) {
+    /* a wide, flat pool in the band beside the mark, above the name; without the mark the name is at the
+       top, so the pool rises behind the bar */
+    .v1 { --ha-ex: 66%; --ha-ey: 52px; --ha-ew: 680px; --ha-eh: 300px; }
+    .v1:not([data-obj="mark"]) { --ha-ey: -24px; }
+    .v1 .ha-p { --ha-px: calc(100% + 10px); --ha-pw: 380px; --ha-ph: 300px; }
+  }
   .v1 .v1-id, .v1 .v1-opt { position: relative; }
   .v1 h1 { font: 400 var(--t-4)/1.06 var(--f-display); letter-spacing: -0.02em; margin-left: -0.02em; text-wrap: balance; }
   .v1 .v1-lede { margin-top: 16px; max-width: 30em; color: var(--ink-2); font-size: var(--v1-body); line-height: 1.55; text-wrap: pretty; }
@@ -275,6 +318,12 @@ const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedi
     .v1[data-obj="small"] .v1-id { grid-column: 1; grid-row: 1; }
     /* the letters' middle on the middle of the name and the sentence (about 84 px down) */
     .v1 .v1-small { grid-column: 2; grid-row: 1; width: 100%; margin: calc(84px - var(--v1-obj) / 2) 0 calc(-1 * var(--v1-obj) / 2); }
+  }
+  /* a centred column leaves room beside it for the small edk only from 1360 px; below that it sits under
+     the intro, as it does under 900 px */
+  @media (min-width: 900px) and (max-width: 1359.98px) {
+    .v1[data-obj="small"][data-col="centre"]:not(:has(> .ha-tc:target)) > .v1-intro, .v1[data-obj="small"]:has(> #col-centre:target) > .v1-intro { display: block; max-width: var(--v1-col); }
+    .v1[data-obj="small"][data-col="centre"]:not(:has(> .ha-tc:target)) .v1-small, .v1[data-obj="small"]:has(> #col-centre:target) .v1-small { width: 200px; margin: -12px 0 -60px -14px; }
   }
 
   /* ---- proof rows: a label and one line each ---- */
@@ -317,8 +366,9 @@ const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedi
     background: radial-gradient(closest-side, color-mix(in srgb, var(--pg) var(--glow-base), transparent), transparent);
     transition: opacity 200ms var(--ease-out);
   }
-  .v1 .v1-proj:focus-visible::before, .v1 .v1-proj:active::before { opacity: 1; transition-duration: var(--d-1); }
-  @media (hover: hover) { .v1 .v1-proj:hover::before { opacity: 1; transition-duration: var(--d-1); } }
+  /* at lit and rich the row's own pool rises instead (lab-aura.css), so this light is for live only */
+  .v1 .v1-proj:focus-visible::before, .v1 .v1-proj:active::before { opacity: var(--ha-live); transition-duration: var(--d-1); }
+  @media (hover: hover) { .v1 .v1-proj:hover::before { opacity: var(--ha-live); transition-duration: var(--d-1); } }
   .v1 .v1-ph { grid-column: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
   .v1 .v1-wm { font-size: var(--t-2); line-height: 1.1; }
   .v1 .v1-wm .wm { color: var(--ink); }
