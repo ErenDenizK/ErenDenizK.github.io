@@ -1,9 +1,9 @@
 # Research: what the site must contain, and how (2026-10-08)
 
 **Status:** current, with owner overrides. Use it for the reader analysis and §18 (the AI tells).
-The owner overrode: email (no email, 2026-10-09), the CV link (no CV on 2026-10-08; About is now a
-mini CV, document open, 2026-10-10), both themes (dark only, 2026-10-08), and no "now" page has been
-asked for.
+The owner overrode: email (no email, 2026-10-09), the CV link (no CV on 2026-10-08; on 2026-10-10 About became an
+about-me article, no document), both themes (dark only, 2026-10-08), and the "now" page (Home has a
+"now" line; in the reference study notes of 2026-10-12..14 the owner said a now section "could be").
 
 Twenty questions a portfolio has to answer for its three readers: hiring (recruiters,
 hiring managers, Microsoft), engineers, and friends. Each answer says how strong its ground

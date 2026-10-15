@@ -1,7 +1,8 @@
 # Home hero object: concept study (2026-10-11)
 
-**Status:** scratch study for the lead; nothing in the repo changed. Renders in `out/` (1200, 360,
-120 px) and `sheet.webp`. The look is the owner's to judge; technique notes are the agent's.
+**Status:** undecided. A scratch study for the lead, copied into the repo on 2026-10-11; only these
+notes, the two scripts and `contact-sheet.webp` were kept (the renders in `out/`, `sheet.webp` under
+that name and `tools/objects/kedi.py` were not). The look is the owner's to judge; technique notes are the agent's.
 **Ask (owner, 2026-10-11):** "edk" next to the name is too simple a move; a flashier, cooler, more
 innovative object; something mascot-like could make sense, but evaluate it.
 **Fixed constraints:** pre-rendered Cycles glass on #0A0A0B (ADR-0006), the house rig

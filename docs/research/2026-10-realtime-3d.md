@@ -1,6 +1,6 @@
 # Study: should desktop go back to real-time 3D? (2026-10-10)
 
-> **Status:** current (2026-10-10): stutter diagnosis and real-time 3D study; the owner decides (PLAN track 7). Scratchpad paths cited below are scratch, not kept.
+> **Status:** closed 2026-10-11: the owner chose option (a), stay pre-rendered and fix it (brief log, 2026-10-11). Written 2026-10-10 as the stutter diagnosis and real-time 3D study (clean-restart plan track 7). The four figures were not kept. Scratchpad paths cited below are scratch, not kept.
 
 ## Özet (sahibi için, sade dil)
 
@@ -65,8 +65,8 @@ The eye tracks a slowly moving object (smooth pursuit) and expects edges to slid
 fade between fixed positions about four times a second. That reads exactly as "tiny stuttering
 movements". Recto (68–325) and Record (77–373) show the same 4–5:1 pulse.
 
-![idle frames 0, 1, 3: the k's arm doubles as the blend moves away from an exact pose](../3dperf/stutter/idle-ghosting.png)
-![sharpness per frame: idle (blue) pulses, spin (green) does not](../3dperf/stutter/sharpness.png)
+(figure not kept: idle frames 0, 1, 3; the k's arm doubles as the blend moves away from an exact pose)
+(figure not kept: sharpness per frame; idle pulses, spin does not)
 
 **2. The lean is the same crossfade, driven by the hand [C, code].** `media.ts` `draw()` sums
 the four nearest **half-size** frames with `lighter`; moving the pointer across half the window
@@ -175,8 +175,8 @@ here, and E's whole-page scene was another ~3× on top.
 
 ### 2.5 Look [M]
 
-![Shipped Cycles poster (left) vs real time (right), centre pose](../3dperf/rt/compare-centre.png)
-![Cycles grid frame at yaw +8 (left) vs real time at yaw +8 (right)](../3dperf/rt/compare-yaw8.png)
+(figure not kept: shipped Cycles poster vs real time, centre pose)
+(figure not kept: Cycles grid frame vs real time, both at yaw +8)
 
 Seen: the real-time letters read as **solid frosted blue plastic or anodised metal**: bright,
 even faces, no see-through, no inner edges refracted through the front, no total internal

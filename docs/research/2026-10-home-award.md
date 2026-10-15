@@ -1,6 +1,7 @@
 # Research: an award-level Home (2026-10-11)
 
-**Status:** current, open. Nothing here is built. It feeds the two Home prototypes (`wip/home-a`, the
+**Status:** closed 2026-10-11: Home A and Home B were built, rejected and reverted; the owner liked B's
+compact structure, not its design (see `2026-10-quality-postmortem.md`). As written, it fed the two Home prototypes (`wip/home-a`, the
 cinematic object stage, and `wip/home-b`, the living editorial index) and the owner's choice. The
 three concept frames in §4 are static mocks made from the site's own assets, not designs to ship.
 

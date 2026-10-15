@@ -1,8 +1,7 @@
 # Research: the Work page (2026-10-10)
 
-**Status:** current. Direction A ("the stage") is built on `wip/work` and recorded in ADR-0014;
-directions B and C exist only as static mock screenshots for the owner to compare. The look is
-proposed until the owner has seen it.
+**Status:** current. Direction A ("the stage") is on `dev` and recorded in ADR-0014; the owner chose
+it on 2026-10-11 and kept the frames. Directions B and C exist only as static mock screenshots.
 
 **Why:** brief, "Projects and Work" (2026-10-10, evening): "My projects page is a bit empty. There
 are only three 3D objects and they don't really show what each app is. Do a comprehensive study of
