@@ -88,7 +88,8 @@ every world against the schema, the kit's light rules and contrast through the l
 without a world keeps the house ground. Swapping a capture is a file and a line, never code.
 
 Anything the owner has not written yet is `{ placeholder: "owner to write" }`: it stays in the
-content and is left out of the site entirely; writing the text is all it takes for it to appear. A test fails the build if a placeholder ever shows.
+content and is left out of the site entirely; writing the text is all it takes for it to appear. A
+test fails the build if a placeholder ever shows.
 
 ### A log entry
 
