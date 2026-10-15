@@ -1,6 +1,6 @@
 # ADR-0003: Direction D, quiet type and one living object
 
-**Status:** accepted 2026-10-08 by the owner · **Rests on:** brief §2.1, §5; ADR-0002;
+**Status:** **To be reviewed in the new ADR:** the two-page direction (2026-10-15, late night) asks for full fluid motion and a generous aura; quiet type (nothing too big) still holds. Earlier status: accepted 2026-10-08 by the owner · **Rests on:** brief §2.1, §5; ADR-0002;
 `prototypes/` A–D
 
 ## Context

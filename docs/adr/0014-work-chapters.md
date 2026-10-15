@@ -1,6 +1,6 @@
 # ADR-0014: Work shows each product's real screens in a platform frame, stepped in a pinned chapter
 
-**Status:** accepted 2026-10-11 (owner: "Work: direction A, the stage. Frames: keep"; brief log,
+**Status:** **Superseded by the two-page direction (2026-10-15); a new ADR follows.** The stepped, pinned chapters of the Work page go with the Work page; the real screens stay as content (brief log, 2026-10-15, late night). Earlier status: accepted 2026-10-11 (owner: "Work: direction A, the stage. Frames: keep"; brief log,
 2026-10-11) · technique decided by the agent (CLAUDE.md: "decide technique yourself and record it"); the
 look is proposed until the owner has seen it (direction A of `docs/research/2026-10-work-page.md`, with
 B and C as mock screenshots beside it) · **Amends** ADR-0010 items 1 and 3 (a chapter may be taller than

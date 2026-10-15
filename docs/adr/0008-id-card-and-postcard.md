@@ -1,6 +1,6 @@
 # ADR-0008: The About ID card and the postcard are CSS 3D objects with a small spring loop
 
-**Status:** accepted 2026-10-10 (owner: "very good"; the rope was asked for and built). Items 7 and 8 were
+**Status:** **Holds under the two-page direction** for the technique (2026-10-15: keep the cards, reimplement as needed); their place on an About page goes, the cards move to Home. Earlier status: accepted 2026-10-10 (owner: "very good"; the rope was asked for and built). Items 7 and 8 were
 amended 2026-10-10 evening (About as an article; postcards in public). The desktop card was made
 calmer on 2026-10-10 (amendment below; the owner's look check is pending). The front-first fix and the
 entrance were added 2026-10-11 (amendment below). Technique decided by the agent (CLAUDE.md) · **Rests on:** brief §7 (2026-10-09 after v0: "About
