@@ -1,6 +1,6 @@
 # Study: should desktop go back to real-time 3D? (2026-10-10)
 
-> **Status:** closed 2026-10-11: the owner chose option (a), stay pre-rendered and fix it (brief log, 2026-10-11). Written 2026-10-10 as the stutter diagnosis and real-time 3D study (clean-restart plan track 7). The four figures were not kept. Scratchpad paths cited below are scratch, not kept.
+> **Status:** closed 2026-10-11: the owner chose option (a), stay pre-rendered and fix it (brief log, 2026-10-11). Written 2026-10-10 as the stutter diagnosis and real-time 3D study (clean-restart plan track 7). The four figures were not kept. Scratchpad paths cited below are scratch, not kept. The `?live` engine it cites is gone: the owner rejected ADR-0009 on 2026-10-15 and its code was removed.
 
 ## Özet (sahibi için, sade dil)
 

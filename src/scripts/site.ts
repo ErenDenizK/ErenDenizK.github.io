@@ -27,7 +27,7 @@ initReels();
 const ownCase = document.querySelector('#main article.case');
 if (ownCase) initEmbassy(ownCase);
 
-/* Work: one section per project (ADR-0009). The section crossing the middle of the window is the one
+/* Work: one section per project (ADR-0010). The section crossing the middle of the window is the one
    in view: its object becomes the page's stage (the one that moves, melts on a tab change and carries
    the view-transition name) and the page accent takes its light (accent.ts). Above the first section
    the accent stays Work's own. Scrolling is never taken over: this only reads the position. */

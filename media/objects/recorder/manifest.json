@@ -545,19 +545,6 @@
     }
    }
   },
-  "live": {
-   "normalsGrid": 269521,
-   "normalsRest": 3029,
-   "clipNormals": 0,
-   "states": 172333,
-   "restFull": 11853,
-   "tiers": {
-    "phoneLive": 36509,
-    "desktopLite": 870891,
-    "desktopFull": 1149236
-   },
-   "note": "desktop tiers add full-size grid frames on demand at rest (lean/full, about 10 KB each)"
-  },
   "spin": {
    "av1": 147700,
    "hevc": 153573,
@@ -568,60 +555,6 @@
     "av1": 147700,
     "hevc": 153573,
     "h264": 164189
-   }
-  }
- },
- "normals": {
-  "scale": 0.5,
-  "w": 392,
-  "h": 344,
-  "encoding": "R, G = camera-space normal x (right), y (up) as n * 0.5 + 0.5; z = sqrt(1 - x^2 - y^2); B unused (0); the ground is (0.5, 0.5); gate light by the beauty frame",
-  "rows": [
-   {
-    "src": "live/normals-r0.avif",
-    "type": "image/avif",
-    "bytes": 96384,
-    "row": 0,
-    "frames": 33
-   },
-   {
-    "src": "live/normals-r1.avif",
-    "type": "image/avif",
-    "bytes": 87366,
-    "row": 1,
-    "frames": 33
-   },
-   {
-    "src": "live/normals-r2.avif",
-    "type": "image/avif",
-    "bytes": 85771,
-    "row": 2,
-    "frames": 33
-   }
-  ],
-  "rest": {
-   "src": "live/normals-rest.avif",
-   "type": "image/avif",
-   "bytes": 3029
-  }
- },
- "states": {
-  "interact": {
-   "axis": "time",
-   "fps": 30,
-   "frames": 36,
-   "crop": {
-    "x": 142,
-    "y": 206,
-    "w": 772,
-    "h": 660
-   },
-   "half": {
-    "w": 386,
-    "h": 330,
-    "src": "live/clip-half.avif",
-    "type": "image/avif",
-    "bytes": 172333
    }
   }
  },

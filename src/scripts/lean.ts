@@ -1,5 +1,4 @@
-/* Where an object looks, shared by the media stage (media.ts) and the live frame engine
-   (live/engine.ts), so both answer the pointer the same way (site audit 2026-10-10 §4: the object
+/* Where an object looks, for the media stage (media.ts) (site audit 2026-10-10 §4: the object
    leaned toward the pointer anywhere on the page, so it was almost always turned and the reach for
    "See the work" turned it too).
 

@@ -29,7 +29,7 @@ intent in `docs/brief.md`. Figures live in `assets/`.
 | [2026-10-link-previews.md](2026-10-link-previews.md) | current | Link previews, icons and structured data; built (`tools/og`) |
 | [2026-10-wordmarks.md](2026-10-wordmarks.md) | current | Product wordmarks and Home's hierarchy; accepted and built |
 | [2026-10-logo-tooling.md](2026-10-logo-tooling.md) | current, open | Logo design with an agent and its tools; app logos are needed |
-| [2026-10-liveliness.md](2026-10-liveliness.md) | current, open | Liveliness without E's cost; fed ADR-0009 (`?live`), whose fate is with the owner |
+| [2026-10-liveliness.md](2026-10-liveliness.md) | closed 2026-10-15 | Liveliness without E's cost; fed ADR-0009 (`?live`), rejected 2026-10-15 and removed |
 | [2026-10-3d-quality.md](2026-10-3d-quality.md) | current reference | How live 3D sites stay premium; matters only if real-time 3D returns |
 | [2026-10-render-bakeoff.md](2026-10-render-bakeoff.md) | current reference | Real time vs pre-rendered: the numbers behind ADR-0006 |
 | [hero-study/notes.md](hero-study/notes.md) | undecided | Home hero object concepts (cat, triplet block, dot), with a contact sheet |

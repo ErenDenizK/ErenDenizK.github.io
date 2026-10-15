@@ -1,7 +1,7 @@
 # Research: liveliness, how to bring E's life back without E's cost (2026-10-09)
 
-**Status:** current, open. Fed ADR-0009 (`?live`); the real-time 3D decision was made on 2026-10-11
-(option a: stay pre-rendered), and ADR-0009's fate is with the owner; its §2
+**Status:** closed 2026-10-15. Fed ADR-0009 (`?live`), which the owner rejected on 2026-10-15
+(pre-rendered kept, option a); the engine's code was removed. Its §2
 measurement of the default stage is input to the stutter study (`docs/history/plan-2026-10-clean-restart.md` track 7). Paths under
 `scratchpad/` cited here were session scratch, not kept.
 

@@ -33,15 +33,12 @@ test.describe('reading on a phone', () => {
     for (const r of await rowsReadable(page)) expect(r.main, r.slug).toBeGreaterThan(r.list - 40);
   });
 
-  test('a release opened from Home reads at full width, with no live-frames chip', async ({ page }) => {
-    await page.goto(fixture());
-    await page.evaluate(() => localStorage.setItem('edk-live', '1'));   // an old stored flag
+  test('a release opened from Home reads at full width', async ({ page }) => {
     await page.goto(fixture('work/recto/'));
     const row = page.locator('#in-the-record .entry.s-release').first();
     await row.scrollIntoViewIfNeeded();
     const w = await row.locator('.r-title, .r-name').first().evaluate((e) => e.getBoundingClientRect().width);
     expect(w).toBeGreaterThan(250);
-    await expect(page.locator('.live-chip')).toHaveCount(0);
     /* and its own page */
     await row.locator('.e-link').click();
     await expect(page).toHaveURL(/\/record\/\d{4}\//);
