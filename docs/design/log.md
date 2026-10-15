@@ -1,7 +1,18 @@
 # Log: information design (2026-10-09)
 
 What the log is made of, how its index groups and scales, how entries are addressed and fed,
-how figures are drawn, and what never appears. **Status: accepted 2026-10-09.** Owner's answers to §11: title "The record"; notes in full in
+how figures are drawn, and what never appears.
+
+**Under the two-page direction (2026-10-15, late night):** the Record is one of the two pages, so the
+information design here holds: the three kinds, addresses and feeds, append-only, the date spine and
+year strip, figures, what never appears, and the reading type of §12.1 (21 px, 19 px on phones,
+1.55, weight 430, 28em). Not inherited: the sizes named by the old tokens (`--t-h2`, `--t-h3`,
+`--t-title`, Newsreader 25, 27 and 34 px, the 64 px date gutter, the 680 px column); the new
+shared token set re-makes them. §5.5 (Home's "Latest" row) and the threads "in each project's
+view" (§5.4) follow the new Home, where the projects now live. "The nav tab" below is the one
+tab that switches between Home and the Record.
+
+**Status: accepted 2026-10-09.** Owner's answers to §11: title "The record"; notes in full in
 the list; threads beside the log and inside each project's view; at most one hand mark.
 **Amended 2026-10-09 (Record redesign), accepted by the owner:** the readability research
 (`research/2026-10-readability.md` §8–§11) replaces the threads beside the log with a date spine and

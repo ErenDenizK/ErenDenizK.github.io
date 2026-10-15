@@ -3,7 +3,7 @@
 **Status:** accepted 2026-10-15 for the theme (owner, round 2: "Theme A, Graphite"); technique decided
 by the lead (CLAUDE.md: "decide technique yourself and record it") · **Rests on:** brief, "Current
 intent" (2026-10-15, night: Graphite; no white pages; aura, grain and noise are the concept; a real
-italic), `docs/design/charter.md` §3.2, §4, §8, the Phase 1 reports of 2026-10-15 (theme lab,
+italic), `docs/design/charter.md` §3.2, §4, §8 (archived 2026-10-15 as `docs/history/charter-2026-10-15.md`; §3, §4 and §8 of the new `docs/design/charter.md` keep these rules), the Phase 1 reports of 2026-10-15 (theme lab,
 inventory, objects on light, palette check), ADR-0006 (objects are drawn additively)
 
 ## Context
