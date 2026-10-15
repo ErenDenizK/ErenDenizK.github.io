@@ -75,7 +75,7 @@ const cards = list.map((p, i) => {
                 </div>
                 <p class="b-credit">{t.credit} · {site.name}</p>
                 <div class="b-addr">
-                  <span class="b-stamp" style={`background-image: url("${c.stamp}")`}></span>
+                  <span class="b-stamp" style={`--stamp: url("${c.stamp}")`}></span>
                   <svg class="b-mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
                     <defs><path id={`pc-ring-${c.i}`} d="M50 50 m-36 0 a36 36 0 1 1 72 0 a36 36 0 1 1 -72 0" /></defs>
                     <circle cx="50" cy="50" r="44" /><circle cx="50" cy="50" r="27" />
@@ -136,7 +136,8 @@ const cards = list.map((p, i) => {
   .pc-big[open] { display: flex; }
   .pc-big::backdrop { background: rgb(18 18 20 / 0.7); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .big-stage { perspective: 1600px; }
-  .big-cap { color: var(--ink-2); max-width: 34em; padding: 0 var(--gut); }
+  .big-cap { color: var(--ink-3); max-width: 34em; padding: 0 var(--gut); }
+  .big-cap :global(.note) { display: block; color: var(--ink-2); }
   .big-hint { color: var(--ink-3); }
   .big-hint span { display: none; }
   :global(html.fine) .big-hint .h-fine, :global(html:not(.fine)) .big-hint .h-touch { display: inline; }
@@ -151,8 +152,9 @@ const cards = list.map((p, i) => {
     transform-style: preserve-3d; cursor: pointer; touch-action: manipulation;
     transform: rotateZ(calc(var(--pc-sw) * 0.35)) rotateY(calc(var(--pc-turn) + var(--pc-sw)));
     transition: --pc-turn var(--kl-glide, 710ms) var(--kl-glide-ease, ease-out);
-    view-transition-name: pc-hero;
   }
+  /* named only while it morphs: a view-transition-name flattens the 3D turn */
+  .pc-big .big-card.is-hero { view-transition-name: pc-hero; }
   .pc-big .big-card.is-held { cursor: grabbing; }
   .pc-big .big-face {
     grid-area: 1 / 1; position: relative; border-radius: 3px; overflow: hidden;
@@ -173,7 +175,7 @@ const cards = list.map((p, i) => {
       repeating-linear-gradient(0deg, rgb(58 50 42 / 0.025) 0 1px, transparent 1px 3px),
       radial-gradient(120% 90% at 20% 0%, #f1ebdf, #e6ddcc 70%);
   }
-  .pc-big .b-head { grid-column: 1 / -1; font: 500 11px / 1 var(--f-sans); letter-spacing: 0.32em; text-transform: uppercase; text-align: center; color: rgb(58 50 42 / 0.72); margin-bottom: 6%; }
+  .pc-big .b-head { grid-column: 1 / -1; font: 500 11px / 1 var(--f-sans); letter-spacing: 0.32em; text-transform: uppercase; text-align: center; color: rgb(58 50 42 / 0.78); margin-bottom: 6%; }
   .pc-big .b-msg { grid-column: 1; align-self: center; }
   .pc-big .b-note { font: italic 400 clamp(17px, 2.3vh, 22px) / 1.45 var(--f-serif); color: #23304a; text-wrap: pretty; }
   .pc-big .b-from { margin-top: 1em; font: italic 500 clamp(17px, 2.3vh, 22px) / 1 var(--f-serif); color: #23304a; }
@@ -183,15 +185,20 @@ const cards = list.map((p, i) => {
   }
   .pc-big .b-credit { writing-mode: vertical-rl; rotate: 180deg; white-space: nowrap; text-indent: 0; display: flex; align-items: center; justify-content: flex-start; padding-top: 8%; overflow: visible; }
   .pc-big .b-addr { grid-column: 3; grid-row: 2; position: relative; display: grid; grid-template-rows: auto 1fr; }
+  /* the stamp: a white paper with a perforated edge (the bites only along the edge: a solid inner field
+     plus a row of holes on every side), the photograph printed inside it */
   .pc-big .b-stamp {
-    justify-self: end; width: 26%; aspect-ratio: 4 / 5; background-size: cover; background-position: center;
-    /* perforations: a row of bites along every edge */
-    -webkit-mask: radial-gradient(circle at 50% 50%, transparent 2.2px, #000 2.6px) -4px -4px / 8px 8px;
-    mask: radial-gradient(circle at 50% 50%, transparent 2.2px, #000 2.6px) -4px -4px / 8px 8px;
-    outline: 4px solid #f6f1e6; outline-offset: -4px; filter: saturate(0.85) contrast(1.05);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+    position: relative; justify-self: end; width: 30%; aspect-ratio: 4 / 5; background-color: #f6f1e6;
+    -webkit-mask: linear-gradient(#000 0 0) 50% 50% / calc(100% - 8px) calc(100% - 8px) no-repeat,
+      radial-gradient(circle at 50% 50%, transparent 2.1px, #000 2.5px) -4px -4px / 8px 8px;
+    mask: linear-gradient(#000 0 0) 50% 50% / calc(100% - 8px) calc(100% - 8px) no-repeat,
+      radial-gradient(circle at 50% 50%, transparent 2.1px, #000 2.5px) -4px -4px / 8px 8px;
+    filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.18));
   }
-  .pc-big .b-mark { position: absolute; right: 14%; top: 4%; width: 34%; fill: none; stroke: color-mix(in srgb, #f3b886 55%, #8a4a2e); stroke-width: 1.1; opacity: 0.8; rotate: -12deg; }
+  .pc-big .b-stamp::before {
+    content: ""; position: absolute; inset: 7px; background: var(--stamp) center / cover; filter: saturate(0.85) contrast(1.05);
+  }
+  .pc-big .b-mark { position: absolute; right: 20%; top: 9%; width: 36%; fill: none; stroke: color-mix(in srgb, #f3b886 55%, #8a4a2e); stroke-width: 1.1; opacity: 0.8; rotate: -12deg; }
   .pc-big .b-mark text { fill: color-mix(in srgb, #f3b886 55%, #8a4a2e); stroke: none; font: 600 7.4px / 1 var(--f-sans); letter-spacing: 1.4px; }
   .pc-big .b-mark .waves { stroke-width: 0.9; }
   .pc-big .b-lines { align-self: end; display: grid; gap: 0; }

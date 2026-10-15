@@ -18,7 +18,8 @@
   --ground-deep: #0d0d0f;
   --raised: #1a1a1d;
   --raised-2: #232327;
-  --paper: #17171a;            /* the person's part, after the tear */
+  --paper: #17171a;            /* the person's part, after the tear: what the lift below measures on the ground */
+  --paper-lift: rgb(232 227 221 / 0.022);   /* the paper as a lift, so the aura and the grain show through it */
   --paper-2: #1d1d21;          /* one step above the paper: cards on it */
 
   /* inks: Dia's dark ladder 100 / 80 / 60 / 40 as solid measured colours */

@@ -40,9 +40,12 @@ export function initPostcards() {
       cap.hidden = !(document.documentElement.dataset.cap === 'large' && c);
       if (!dlg.open) dlg.showModal();
       open = pc;
-      wire(stage.querySelector<HTMLElement>('[data-big-card]')!);
+      const big = stage.querySelector<HTMLElement>('[data-big-card]')!;
+      big.classList.add('is-hero');
+      wire(big);
     });
-    busy?.finished.finally(() => { busy = null; });
+    const named = () => stage.querySelector('[data-big-card]')?.classList.remove('is-hero');
+    if (busy) busy.finished.finally(() => { busy = null; named(); }); else named();
     if (!pushed) { history.pushState({ ...(history.state || {}), postcard: cards.indexOf(pc) }, ''); pushed = true; }
   };
 
@@ -54,6 +57,7 @@ export function initPostcards() {
     /* the large card returns face up, so the morph lands on the photograph */
     big?.classList.remove('is-turned');
     big?.style.setProperty('--pc-turn', '0deg');
+    big?.classList.add('is-hero');
     busy = vt(() => {
       dlg.close();
       stage.replaceChildren();
