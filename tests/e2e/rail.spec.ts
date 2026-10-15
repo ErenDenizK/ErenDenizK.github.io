@@ -7,7 +7,7 @@
    platform indicator hidden so it never overlaps, a sheet on tap), the sheet's own rail, and the Istanbul
    clock in the bar. The essay's rail (replacing its contents list) is checked in fixtures.spec.ts. */
 import { test, expect, type Page } from '@playwright/test';
-import { desktop, tablet, phone, settle } from './helpers';
+import { desktop, tablet, phone, settle, fixture } from './helpers';
 
 /* classic scrollbars (as on Windows, Linux, macOS "Always"), so a bar that comes and goes would move the page */
 test.use({ launchOptions: { ignoreDefaultArgs: ['--hide-scrollbars'] } });
@@ -49,7 +49,7 @@ test.describe('desktop', () => {
   });
 
   test('every route has the rail and no native bar', async ({ page }) => {
-    for (const path of ['', 'work/', 'record/', 'about/', 'work/recto/', 'work/english-prep/', 'work/eat-map/', 'record/2026/', 'lab/postcard/']) {
+    for (const path of ['', 'work/', 'record/', 'about/', 'work/recto/', 'work/english-prep/', 'work/eat-map/', fixture('record/2026/'), 'lab/postcard/']) {
       await page.goto(path + '?still'); await settle(page, 200);
       const r = await rail(page);
       expect(r, `/${path}`).toMatchObject({ on: true, bar: 'none', gutter: 0 });
@@ -101,7 +101,7 @@ test.describe('desktop', () => {
 
   test('the bar never moves between pages', async ({ page }) => {
     const at: Record<string, number[]> = {};
-    for (const path of ['', 'work/', 'record/', 'about/', 'work/recto/', 'record/2026/', 'nope/']) {
+    for (const path of ['', 'work/', 'record/', 'about/', 'work/recto/', fixture('record/2026/'), 'nope/']) {
       await page.goto(path + '?still'); await settle(page, 200);
       at['/' + path] = await page.evaluate(() => [document.documentElement.clientWidth, ...['.mark', '.tabs', '.bar-end a[rel="me"]'].map((q) => Math.round(document.querySelector(q)!.getBoundingClientRect().left))]);
     }
@@ -335,9 +335,10 @@ for (const [size, opts] of [['desktop', desktop], ['phone', phone]] as const) {
   test(`no native scrollbar anywhere (${size})`, async ({ browser }) => {
     const ctx = await browser.newContext(opts);
     const page = await ctx.newPage();
-    for (const path of ['', 'about/', 'work/', 'record/', 'record/2026/', 'work/recto/', 'record/2026/sample-essay-agents/', 'record/2026/sample-release-recto/', 'lab/postcard/', 'nope/']) {
+    /* the year page, an essay and a release on the fixture build, so the check never depends on the samples */
+    for (const path of ['', 'about/', 'work/', 'record/', fixture('record/2026/'), 'work/recto/', fixture('record/2026/fixture-essay/'), fixture('record/2026/fixture-release/'), 'lab/postcard/', 'nope/']) {
       await page.goto(path + '?still'); await settle(page, 200);
-      for (const s of await scrollers(page)) expect(s, `/${path} ${s.el}`).toMatchObject({ sw: 'none', bar: 0 });
+      for (const s of await scrollers(page)) expect(s, `${path} ${s.el}`).toMatchObject({ sw: 'none', bar: 0 });
     }
     if (size === 'desktop') {
       await page.goto('work/?still'); await settle(page, 300);

@@ -1,9 +1,16 @@
 import { expect, type Page } from '@playwright/test';
+import { FIXTURES_URL } from '../../playwright.config';
 
 export const desktop = { viewport: { width: 1440, height: 900 } };
 export const tablet = { viewport: { width: 1180, height: 820 }, hasTouch: true };
 export const phone = { viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true };
 export const PROJECTS = ['recto', 'english-prep', 'eat-map'];
+/** A page of the fixture build (tests/fixtures/log): the record's rows and entry pages are tested there, not
+    on the sample entries, which the owner may remove. */
+export const fixture = (path = '') => FIXTURES_URL + path;
+/** The fixture build's entries with a page of their own (tests/fixtures/log/2026/). */
+export const FIXTURE_ENTRIES = ['fixture-entry', 'fixture-essay', 'fixture-plain', 'fixture-release',
+  'n-2026-08-27', 'n-2026-09-12', 'n-2026-10-01'];
 export const TABS = { home: '', work: 'work', record: 'record', about: 'about' } as const;
 
 /** What is on screen, read in the page. */

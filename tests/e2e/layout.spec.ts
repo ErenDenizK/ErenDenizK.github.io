@@ -11,13 +11,13 @@
    Each page is scrolled through first so lazy content renders. ?still keeps the frames deterministic;
    motion never changes layout. */
 import { test, expect, type Page } from '@playwright/test';
-import { settle, PROJECTS } from './helpers';
+import { settle, fixture, PROJECTS, FIXTURE_ENTRIES } from './helpers';
 
-const ENTRIES = ['sample-entry-eat-map', 'sample-entry-two-tracks', 'sample-essay-agents', 'sample-note-photo',
-  'sample-note-prep-rail', 'sample-note-quiz', 'sample-note-recto-worker', 'sample-release-recto'];
-/* The lab page is unlinked and noindex, so not swept. */
-const ROUTES = ['', 'work/', 'about/', ...PROJECTS.map((p) => `work/${p}/`), 'record/', 'record/2026/',
-  ...ENTRIES.map((e) => `record/2026/${e}/`), 'nope/'];
+/* The lab page is unlinked and noindex, so not swept. The record's rows and entry pages are swept on the
+   fixture build (every kind and shape, whatever content/log holds), and its index and Recto's page there too,
+   so their lists have rows. */
+const ROUTES = ['', 'work/', 'about/', ...PROJECTS.map((p) => `work/${p}/`), 'record/', 'nope/',
+  ...['record/', 'record/2026/', 'work/recto/', ...FIXTURE_ENTRIES.map((e) => `record/2026/${e}/`)].map(fixture)];
 
 /* A stretch up to 15 % is not visible at 3x (a 780 px phone capture drawn 292 css px wide on a 430 phone).
    KNOWN_SOFT are masters captured at 1x: no markup can add pixels they do not have. TODO(captures):
@@ -150,7 +150,7 @@ for (const [label, size] of SIZES) {
       for (const path of ROUTES) {
         await page.goto(path + '?still'); await settle(page, 250);
         await scrollThrough(page);
-        for (const f of await audit(page, isPhone)) fails.push(`${label} /${path}: ${f}`);
+        for (const f of await audit(page, isPhone)) fails.push(`${label} ${path.startsWith('http') ? path : '/' + path}: ${f}`);
       }
       /* the sheet, opened from Home and from Work (on a phone the link may open the page instead) */
       for (const from of ['', 'work/']) {
