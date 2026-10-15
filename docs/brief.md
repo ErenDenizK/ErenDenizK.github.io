@@ -17,7 +17,8 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   English prep year by passing YTÜ's prep exam with full marks (corrected 2026-10-11). Learns the fundamentals on their own (CS50 and similar
   courses, camps), drawn to the low level: processors, embedded systems, the machine's own
   language. Ships products by directing AI agents and treats that as a second discipline. Aims
-  to work abroad; a company like Microsoft is the kind of target. (2026-10-08)
+  to work abroad; a company like Microsoft is the kind of target. (2026-10-08) Neither "work
+  abroad" nor "a company like Microsoft" appears on the page. (2026-10-11, afternoon)
 
 ### What the site is for
 
@@ -38,32 +39,42 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 - Hosting, private repositories and open-sourcing AI-built projects: research for later.
   (2026-10-08)
 - The owner publishes from `dev` during the build-up; `main` merges stay the owner's call.
-  (2026-10-09)
+  (2026-10-09) Every project has two branches, `main` and a development branch; all development
+  happens on the development branch, the owner merges into `main` by hand, and publishing from
+  the development branch is fine. (2026-10-11, evening)
 
 ### Home
 
 - Home is a better introduction: it presents a product, an identity, a brand, and conveys the
   vision. Its layout is good because it is as simple as possible, just not flashy enough.
-  None of the recent Home designs were liked. (2026-10-10)
+  (2026-10-10) Home feels very empty: it must be a stunning opening page, the most important one.
+  (2026-10-11, evening)
+- The Home round built from that (Home A and Home B) was rejected: B was preferred for its
+  structure, more compact and more focused, but as design both were very bad (everything too
+  big, not professional, contrived, many bugs on the phone). Home was reverted to the previous
+  version. (2026-10-11, late)
 - Home is a showcase, Work the full catalogue; no duplication. The lead project is chosen by
   hand (`featured`, Recto now) and sold by a Home-only pitch line the owner writes.
   (2026-10-09)
 - The product plate (variant A) and wordmarks (Recto in Funnel Display, English Prep's own
   `english prep.`, Eat Map in Nunito) are accepted. (2026-10-09)
 - The "edk" object is good as Home's object; something more personal may be tried, never a
-  processor. (2026-10-09) It is buggy at times and not clean. (2026-10-10)
+  processor. (2026-10-09) It is buggy at times and not clean. (2026-10-10) Just "edk" beside
+  the name is too simple a move: find a better hero object; something mascot-like could make
+  sense, but evaluate it. (2026-10-11, night)
 - A photo on Home is possible. (2026-10-10)
 
 ### About
 
 - About is an "about me" article, not a CV: who I am, where I study, how I work, what I do at
-  school, my software side; more photos in the postcard style; the ID card keeps the current photo.
-  Home stays as it is for now. (2026-10-10, evening)
+  school, my software side; more photos; the ID card keeps the current photo.
+  (2026-10-10, evening) How the photos are shown is open again (see Photos). (2026-10-11, late)
+- About is good. (2026-10-11, afternoon) Its copy never quotes the owner directly; the lead
+  writes a fitting line in their own words for now. (2026-10-11)
 - About introduces the owner directly: detailed information in a mini-CV style. Resolved the same
   evening: an article, no document (line above). (2026-10-10; on 2026-10-08 the owner
   had said no CV and no work-authorisation line "for now".)
-- The owner likes About's system: the ID card with written descriptions under it. The recent
-  About designs draw too much attention and were not liked. (2026-10-10)
+- The owner likes About's system: the ID card with written descriptions under it. (2026-10-10)
 - Content: YTU, Computer Engineering, year one, prep exam passed with full marks, prep year skipped (corrected 2026-10-11); personal photographs. (2026-10-08)
 - Links: GitHub and LinkedIn only, no email (2026-10-09). LinkedIn:
   `https://www.linkedin.com/in/eren-d-kuyucakl%C4%B1o%C4%9Flu-7037b433a` (2026-10-09).
@@ -71,12 +82,12 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   card is playable and good but goes wild: it should be calmer; extreme input gets extreme
   reactions. (2026-10-10)
 - The Istanbul + clock detail comes back; the owner liked it. (2026-10-10)
-- Postcards (hover, flip) for photo entries later. (2026-10-09)
 
 ### Projects and Work
 
 - Work feels empty: three objects do not show what each app is. A comprehensive study to make
-  it the site's strongest page. (2026-10-10, evening)
+  it the site's strongest page. (2026-10-10, evening) Direction A, the stage, is chosen; frames
+  stay (Work framed, inside the project view bare). (2026-10-11)
 - Three serious projects, all in active development: Recto (browser-only PDF editor,
   `ErenDenizK/recto`, public), English Prep (study app for Turkish university English
   proficiency exams, `ErenDenizK/english-prep`, public), Eat Map (iOS app, `ErenDenizK/eatmap`,
@@ -114,9 +125,9 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 - First entries: why I built this site; the two-track education; my university; the projects.
   (2026-10-08)
 - Sample entries (note, entry, release, essay) exist for testing, tagged `sample`, dropped with
-  `SAMPLES=0`. (2026-10-10)
-- The Record object's design is disliked: try H2 (the recorder) again or a tape/cassette player
-  (2026-10-10). It also looked too small on phones (2026-10-10, phone check).
+  `SAMPLES=0`. (2026-10-10) The samples are good. (2026-10-11, afternoon)
+- The Record object is a tape / voice recorder, different from the earlier ones (2026-10-10,
+  evening); the cassette recorder is OK. (2026-10-11)
 
 ### Photos
 
@@ -125,12 +136,17 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   stretch a low-resolution derivative across a large area. More will come. Of the two cat photos
   use one, never both. Photos may sit in different spots (a photo card, the ID card, ...); About
   fits best, Home is possible. (2026-10-10)
+- Metro photos: never used. (2026-10-11)
+- The postcard concept is not required. Wanted: a modern, innovative, elegant, professional way
+  to present the photos, beautiful in every respect; not a simple gimmick. (2026-10-11, late)
 - 2.5D photo: not now; wait for a photo that suits it. (2026-10-09)
 
 ### Look, motion and objects
 
-- Objects look blurry, "like 2.5D", as if bugged: measure and fix. (2026-10-10, evening)
-- Record object: a tape / voice recorder, different from the earlier ones. (2026-10-10, evening)
+- Objects look blurry, "like 2.5D", as if bugged: measure and fix. (2026-10-10, evening) The
+  sharpness fix is OK. (2026-10-11)
+- edk looks great on the phone; give the other objects the same kind of interaction.
+  (2026-10-11, afternoon)
 - Direction D (ADR-0003) but dark: a black ground; aura, photographs or glass possible, none
   mandatory. Minimal, elegant, unique. (2026-10-08) Grain stays. (2026-10-09)
 - Colours: Recto lime, English Prep sakura, Eat Map rose `#eb4f6b`, edk cool white-blue,
@@ -141,22 +157,24 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   (2026-10-09)
 - One object per tab that changes into the next; objects must look as good as the Blender
   render, lighting is the bar; each may have its own animation. (2026-10-09)
-- The pre-rendered objects do not look good: they stutter in tiny movements. Desktop may return
-  to real-time 3D once the performance difference is reported to the owner, who will plan from
-  it. (2026-10-10; on 2026-10-09 real-time 3D had felt heavy and pre-rendering was chosen.)
+- Objects stay pre-rendered and get fixed (option a); real-time 3D on desktop is not taken up.
+  (2026-10-11; on 2026-10-10 the stutter in tiny movements had reopened the question.)
 - On phones: turning, moving pre-rendered objects like prototype A's spinning letters; no white
   flash while scrolling. (2026-10-10, phone check)
 - Per-page light atmosphere, yes. Radical per-page systems ("worlds") are shelved: they broke
   the site's unity. (2026-10-10)
 - Scrollbar: one consistent custom scrollbar on every page and in the project sheet (the second
-  window); some pages still show the native bar (2026-10-10). On phones too, and on iPhone only
-  the custom one should show (2026-10-10, phone check). The focus view never scrolls sideways
+  window), on phones too (2026-10-10); never a native bar anywhere (2026-10-11). Its look is the
+  beads, from the owner's sketch. (2026-10-11, afternoon) The focus view never scrolls sideways
   (2026-10-09).
 - Icons at the objects' quality bar, never emoji. (2026-10-09)
 - Link previews: home card split (name left, edk right); About card shows the gate selfie;
   favicon "e" at 16/32 px, "edk" from 48 px. (2026-10-09)
 - Unwritten sections are hidden until written; no visible placeholders. (2026-10-09)
 - Copy and slogans can improve, as the last step. (2026-10-10)
+- A design-award feel on every page. (2026-10-11, evening) Type and screen sizes are measured
+  from research kept under control; nothing uncontrolled: every size, alignment and interaction
+  is designed deliberately. (2026-10-11, night)
 
 ### Family
 
@@ -172,8 +190,12 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   CLAUDE.md, ADRs and docs; keep an evaluation board; report regularly. (2026-10-10)
 - Review everything with its purpose, its reason and a designer's discipline. (2026-10-10)
 - The agent leads (plans, research, agents, tooling, stack); the owner gives direction, taste
-  and final say. Step by step, no deadline. (2026-10-08)
+  and final say. Step by step, no deadline. (2026-10-08) "Read the tasks and answers fully,
+  assign agents across branches, set up the system: you are the boss of this work." (2026-10-11)
+- Before any new task after the rejected Home round: a detailed analysis of why the output was
+  so bad. (2026-10-11, late)
 - Desktop first: the owner tests desktop until it is right, then phones. Both matter.
   (2026-10-09)
+- The 2026-10-11 rounds were tested on the phone only. (2026-10-11, afternoon)
 - The owner cannot read research files closely: every question comes with a short plain brief
   of the situation first. (2026-10-10)
