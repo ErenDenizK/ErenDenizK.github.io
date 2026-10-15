@@ -25,7 +25,11 @@ build tracks at a time.
 | Phase | Track | Station | Next check |
 |---|---|---|---|
 | 0 Housekeeping | branches: `main` + `dev` only | waiting on the owner | the owner deletes `claude/portfolio-site-design-n38jml` on GitHub (the proxy refuses deletes here) |
-| 0 | commit authorship: owner as author, Claude as co-author | future commits done; past commits wait on Q1 | Q1 |
+| 0 | commit authorship: owner as author, Claude as signed committer | done 2026-10-15: past commits rewritten (trees and dates kept), cited hashes remapped | the owner sets `dev` as the default branch on GitHub |
+| 0 | licenses: MIT for code, content all rights reserved | done 2026-10-15 | |
+| 0 | research figures in `docs/research/references/img/` | done 2026-10-15 | |
+| 0 | CLAUDE.md: the approved rules of 2026-10-15 | done 2026-10-15 | |
+| 0 | test S18 in `nav.spec.ts` failed once under full-suite load (passed 12 of 12 alone) | open | make it robust or explain it |
 | 0 | retired objects to `media/archive/` | done 2026-10-15 | |
 | 0 | `?live` engine and ADR-0009 | done 2026-10-15: engine removed, ADR-0009 rejected | |
 | 1 Foundations | design charter (`docs/design/charter.md`): limits per width, type scale, motion language (sequenced reveals, no loaders) | research done, plan | the owner reads a one-page Turkish summary |
@@ -41,23 +45,15 @@ build tracks at a time.
 | 6 Polish | phone and desktop pass, performance, accessibility, budgets | continuous | |
 | always | clean-up station (WORKFLOW §5) at each round's end | | journal report |
 
-## Open questions for the owner (2026-10-15 batch)
+## Open questions for the owner
 
-Put to the owner as numbered questions with Turkish briefs (board artifact and chat):
+The 2026-10-15 batch is answered (brief log, 2026-10-15, evening). Owner actions left:
 
-1. Rewrite past commits to the owner's name (dev only; `main` is untouched; hashes change; other
-   sessions must re-sync).
-2. Contribution graph: GitHub counts commits only on the default branch (`main`): make `dev` the default
-   branch, or the owner merges `dev` into `main` regularly.
-3. Remove the never-used metro photos and the second cat photo from the repo (and, with Q1, from
-   history).
-4. Retire the `?live` engine (ADR-0009 rejected). Answered 2026-10-15: yes; done.
-5. A LICENSE: code open (MIT), photos, renders and text all rights reserved.
-6. The reference reports' 64 third-party screenshots (4 MB) into the public repo, so agents can see the
-   references.
-7. Agent pace: keep two at a time, or more in research and review stations.
-8. Proposed CLAUDE.md changes (listed on the board): approve, change or drop each.
-9. Reporting: a short chat summary at each milestone plus a board for decisions; anything else?
+- Set `dev` as the default branch on GitHub (Settings, Default branch).
+- Delete the remote branch `claude/portfolio-site-design-n38jml` (Branches page); the proxy refuses
+  deletes from here.
+- Any other session or clone of this repo (Family chat, the owner's computer): re-sync to the
+  rewritten `dev` (`git fetch && git reset --hard origin/dev` on a clean tree).
 
 Older, still open: Recto logo (Penpot, Dengeli as one candidate); Eat Map screens, colours and mark
 (Family / Eat Map chat); English Prep improvements; the first `main` release; ADR-0010 and ADR-0012
