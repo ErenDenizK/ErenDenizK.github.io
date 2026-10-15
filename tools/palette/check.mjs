@@ -12,6 +12,8 @@
 //   npm run palette -- --theme dark          one theme
 //   npm run palette -- --md report.md        also write a Markdown report
 //   npm run palette -- --no-worlds           skip the product worlds (embassy themes)
+//   npm run palette -- --candidates          only the theme lab's candidates (npm run palette:lab)
+//   npm run palette -- --all                 the live theme, the worlds and the candidates
 //
 // Limits, stated so nobody over-reads a green run:
 // - Only pairings in PAIRS are measured. A new text rule needs a new row.
@@ -76,6 +78,12 @@ export const ROLES = {
     source:
       'APCA Bronze: Lc 30 for semantic non-text such as icons and indicators (Lc 15 is the absolute floor). WCAG 1.4.11 asks 3:1.',
   },
+  logo: {
+    lc: 30,
+    wcag: 3,
+    source:
+      'A wordmark in its own colour. WCAG 1.4.3 exempts logotypes; the project keeps the non-text floor (APCA Lc 30, 3:1) so the name is still seen as a mark.',
+  },
   decor: { lc: 0, wcag: 0, source: 'Decorative: no requirement. Measured so its values are on record.' },
 };
 
@@ -118,9 +126,17 @@ export function tableLc(px, weight) {
    scope  'site' (house pages) or 'embassy' (inside a product's world); default 'site'
    each   'project' repeats the row once per project, with --p (accent colour), --pg (the project's
           light: glow, else colour) and --pa set for it; 'accent' repeats it per page accent
-   A rule not listed here is not checked. Adding a text rule means adding its row. */
+   A rule not listed here is not checked. Adding a text rule means adding its row.
+
+   Literal colours in the stylesheets are written here as var(--name, literal). The live theme does not
+   declare those names, so the literal is measured, as before. A theme candidate (section 6) declares
+   them, so the same row measures the candidate. The names are the tokens a theme would need before it
+   could ship: --pill, --btn, --frame-bar and the rest replace literals in global.css and work.css.
+   Product text takes --p-ink (the product's ink in that theme) when the theme gives one. */
 const G = 'var(--ground)';
-const TAB_GLASS = [G, 'rgba(22, 22, 25, 0.66)'];
+const TAB_GLASS = [G, 'var(--pill, rgba(22, 22, 25, 0.66))'];
+/* product text: the theme's ink for the product, else today's mix */
+const PINK = (mix) => `var(--p-ink, ${mix})`;
 export const PAIRS = [
   // reading
   { where: 'body text (Inter)', text: 'var(--ink)', on: [G], px: 17, weight: 400, role: 'body' },
@@ -130,48 +146,52 @@ export const PAIRS = [
   { where: 'decks: .vdek, .post-dek, .e-dek, .tr-items, colophon', text: 'var(--ink-2)', on: [G], px: 17, weight: 400, role: 'body' },
   { where: '.ab-intro .lede', text: 'var(--ink-2)', on: [G], px: 21, weight: 400, role: 'body' },
   { where: 'summaries: .sc-what, .w-what, .also-sum, .r-items, .w-cap', text: 'var(--ink-2)', on: [G], px: 15, weight: 400, role: 'body' },
-  { where: 'links in the Record (.read a)', text: 'var(--log)', on: [G], px: 21, weight: 430, role: 'body' },
-  { where: '::selection', text: 'var(--ground)', on: [G, 'rgba(233, 229, 222, 0.85)'], px: 17, weight: 400, role: 'body' },
+  { where: 'links in the Record (.read a)', text: 'var(--log-ink, var(--log))', on: [G], px: 21, weight: 430, role: 'body' },
+  { where: '::selection', text: 'var(--ground)', on: [G, 'var(--sel, rgba(233, 229, 222, 0.85))'], px: 17, weight: 400, role: 'body' },
 
   // large and bold
   { where: '.vtitle', text: 'var(--ink)', on: [G], px: 46, weight: 400, role: 'large' },
-  { where: '.tr-label (About, lane 1)', text: 'color-mix(in srgb, var(--about) 75%, var(--ink))', on: [G], px: 25, weight: 400, role: 'large' },
-  { where: '.r-name (release name)', text: 'color-mix(in srgb, var(--p) 88%, var(--ink))', on: [G], px: 34, weight: 400, role: 'large', each: 'project' },
-  { where: '.post-version', text: 'color-mix(in srgb, var(--p) 88%, var(--ink))', on: [G], px: 25, weight: 400, role: 'large', each: 'project' },
-  { where: '.post-next b', text: 'color-mix(in srgb, var(--p) 80%, var(--ink))', on: [G], px: 17, weight: 600, role: 'large', each: 'project' },
+  { where: '.tr-label (About, lane 1)', text: 'color-mix(in srgb, var(--about-ink, var(--about)) 75%, var(--ink))', on: [G], px: 25, weight: 400, role: 'large' },
+  { where: '.r-name (release name)', text: PINK('color-mix(in srgb, var(--p) 88%, var(--ink))'), on: [G], px: 34, weight: 400, role: 'large', each: 'project' },
+  { where: '.post-version', text: PINK('color-mix(in srgb, var(--p) 88%, var(--ink))'), on: [G], px: 25, weight: 400, role: 'large', each: 'project' },
+  { where: '.post-next b', text: PINK('color-mix(in srgb, var(--p) 80%, var(--ink))'), on: [G], px: 17, weight: 600, role: 'large', each: 'project' },
 
   // labels and navigation
   { where: 'UI links: .bar-end a, .qlink, .copy-link, .more', text: 'var(--ink-2)', on: [G], px: 15, weight: 400, role: 'label' },
-  { where: '.sheet-bar .crumb b', text: 'var(--ink-2)', on: [G, 'rgba(10, 10, 11, 0.95)'], px: 15, weight: 400, role: 'label' },
+  { where: '.sheet-bar .crumb b', text: 'var(--ink-2)', on: [G, 'var(--sheet-bar, rgba(10, 10, 11, 0.95))'], px: 15, weight: 400, role: 'label' },
   { where: '.w-facts dd', text: 'var(--ink-2)', on: [G], px: 14, weight: 400, role: 'label' },
   { where: '.dp-place (meta size)', text: 'var(--ink-2)', on: [G], px: 13, weight: 400, role: 'label' },
   { where: '.toc a, .post-toc a, .clock (place)', text: 'var(--ink-3)', on: [G], px: 15, weight: 400, role: 'label' },
   { where: '.tabs a (not current), on the pill', text: 'var(--ink-3)', on: TAB_GLASS, px: 15, weight: 500, role: 'label' },
-  { where: '.tabs a[aria-current], on the pill', text: 'color-mix(in oklab, var(--accent) 18%, var(--ink))', on: [...TAB_GLASS, 'rgba(255, 255, 255, 0.075)'], px: 15, weight: 500, role: 'label', each: 'accent' },
+  { where: '.tabs a[aria-current], on the pill', text: 'color-mix(in oklab, var(--accent) 18%, var(--ink))', on: [...TAB_GLASS, 'var(--pill-on, rgba(255, 255, 255, 0.075))'], px: 15, weight: 500, role: 'label', each: 'accent' },
   { where: '.rail-i (titles), on the rail panel', text: 'var(--ink-3)', on: [G, 'var(--rail-panel)'], px: 14, weight: 400, role: 'label' },
   { where: '.meta (dates, captions, figcaptions)', text: 'var(--ink-3)', on: [G], px: 13, weight: 400, role: 'label' },
   { where: '12 px labels: .sample, .ym-l, .dp-tech, .dp-hint', text: 'var(--ink-3)', on: [G], px: 12, weight: 400, role: 'label' },
-  { where: '.fr-url (frame address bar)', text: 'var(--ink-3)', on: ['#151517', 'rgba(255, 255, 255, 0.05)'], px: 12, weight: 400, role: 'label' },
+  { where: '.fr-url (frame address bar)', text: 'var(--fr-url-ink, var(--ink-3))', on: ['var(--frame-bar, #151517)', 'var(--frame-url, rgba(255, 255, 255, 0.05))'], px: 12, weight: 400, role: 'label' },
   { where: '.ym-more', text: 'var(--ink-3)', on: [G], px: 10, weight: 500, role: 'label' },
-  { where: '.w-cap-of (caption counter)', text: 'var(--ink-4)', on: [G], px: 15, weight: 400, role: 'label' },
-  { where: 'About labels: .now-label, .ch-n, .tl-when.is-now', text: 'var(--about)', on: [G], px: 13, weight: 400, role: 'label' },
-  { where: '.pj (project name in meta)', text: 'color-mix(in srgb, var(--pg) 86%, var(--ink))', on: [G], px: 13, weight: 400, role: 'label', each: 'project' },
-  { where: '.ab-status', text: 'color-mix(in srgb, var(--pa) 60%, var(--ink-3))', on: [G], px: 13, weight: 400, role: 'label', each: 'project' },
-  { where: '.w-cap-n (capture number)', text: 'var(--p)', on: [G], px: 15, weight: 400, role: 'label', each: 'project' },
-  { where: '.pf-no (contact-sheet number)', text: 'color-mix(in srgb, var(--about) 82%, #d94a2b)', on: [G], px: 11, weight: 600, role: 'label' },
-  { where: '.btn label', text: '#0b0b0c', on: ['var(--ink)'], px: 15, weight: 500, role: 'label' },
-  { where: '.btn:hover label', text: '#0b0b0c', on: ['#fff8ee'], px: 15, weight: 500, role: 'label' },
-  { where: '.btn.tint label', text: '#0b0b0c', on: ['var(--p)'], px: 15, weight: 500, role: 'label', each: 'project' },
+  { where: '.w-cap-of (caption counter)', text: 'var(--w-cap-of, var(--ink-4))', on: [G], px: 15, weight: 400, role: 'label' },
+  { where: 'About labels: .now-label, .ch-n, .tl-when.is-now', text: 'var(--about-ink, var(--about))', on: [G], px: 13, weight: 400, role: 'label' },
+  { where: '.pj (project name in meta)', text: PINK('color-mix(in srgb, var(--pg) 86%, var(--ink))'), on: [G], px: 13, weight: 400, role: 'label', each: 'project' },
+  { where: '.ab-status', text: 'color-mix(in srgb, var(--p-ink, var(--pa)) 60%, var(--ink-3))', on: [G], px: 13, weight: 400, role: 'label', each: 'project' },
+  { where: '.w-cap-n (capture number)', text: PINK('var(--p)'), on: [G], px: 15, weight: 400, role: 'label', each: 'project' },
+  { where: '.pf-no (contact-sheet number)', text: 'color-mix(in srgb, var(--about-ink, var(--about)) 82%, #d94a2b)', on: [G], px: 11, weight: 600, role: 'label' },
+  { where: '.btn label', text: 'var(--btn-ink, #0b0b0c)', on: ['var(--btn, var(--ink))'], px: 15, weight: 500, role: 'label' },
+  { where: '.btn:hover label', text: 'var(--btn-ink, #0b0b0c)', on: ['var(--btn-hover, #fff8ee)'], px: 15, weight: 500, role: 'label' },
+  { where: '.btn.tint label', text: 'var(--btn-ink-tint, var(--btn-ink, #0b0b0c))', on: ['var(--p-fill, var(--p))'], px: 15, weight: 500, role: 'label', each: 'project' },
   { where: '.skip link', text: 'var(--ground)', on: ['var(--ink)'], px: 15, weight: 500, role: 'label' },
   { where: 'postcard: .pc-note, .pc-from (hand)', text: 'var(--hand)', on: ['var(--paper)'], px: 13, weight: 400, role: 'label', vars: { '--hand': '#23304a', '--paper': '#e9e2d4' } },
   { where: 'postcard: paper ink', text: '#3a322a', on: ['#e9e2d4'], px: 13, weight: 400, role: 'label' },
   { where: 'postcard: printed caption (0.72)', text: 'rgba(58, 50, 42, 0.72)', on: ['#e9e2d4'], px: 8, weight: 500, role: 'label' },
-  { where: 'postcard: printed edge (0.55)', text: 'rgba(58, 50, 42, 0.55)', on: ['#e9e2d4'], px: 6.5, weight: 500, role: 'label' },
+  { where: 'postcard: printed edge (0.55)', text: 'var(--pc-edge, rgba(58, 50, 42, 0.55))', on: ['#e9e2d4'], px: 6.5, weight: 500, role: 'label' },
+
+  // a product's name in its own face and colour (components/Wordmark.astro). WCAG 1.4.3 exempts logotypes,
+  // so the floor is the non-text one: the name must still be seen as a mark on the ground.
+  { where: 'wordmark (.wm) in its colour', text: 'var(--wm-ink, var(--wm))', on: [G], px: 34, weight: 600, role: 'logo', each: 'project' },
 
   // non-text
   { where: ':focus-visible outline', text: 'var(--focus)', on: [G], role: 'nontext' },
   { where: 'rail: dash ahead (--rail-idle)', text: 'var(--rail-idle)', on: [G], role: 'nontext' },
-  { where: 'rail: bead / mark in an accent', text: 'var(--a)', on: [G], role: 'nontext', each: 'accent' },
+  { where: 'rail: bead / mark in an accent', text: 'var(--a-ink, var(--a))', on: [G], role: 'nontext', each: 'accent' },
   { where: 'link underline at rest (--ink-4)', text: 'var(--ink-4)', on: [G], role: 'nontext', note: 'SC 1.4.11 may not apply: the link text itself also differs from its neighbours only by the underline' },
 
   // decorative
@@ -285,12 +305,59 @@ export function resolve(value, tokens, seen = new Set()) {
 
 /* ---- 6. Themes ----
 
-   A theme is a name, a scope and a set of token overrides on top of the stylesheet tokens. The theme
-   lab adds candidates here (or passes them in through runThemes). The product worlds are themes too:
-   their overrides are the world's tokens plus embassy.css's re-pointing of the house names. */
+   A theme is a name, a scope and a set of token overrides on top of the stylesheet tokens. The product
+   worlds are themes too: their overrides are the world's tokens plus embassy.css's re-pointing of the
+   house names.
+
+   Theme candidates come from the theme lab's stylesheet (CANDIDATE_FILE, used only by the hidden page
+   src/pages/lab/themes.astro). A candidate is a top-level rule whose selector is
+     :root:has(#lab-t[data-t="<name>"])              the candidate's page tokens
+     :root:has(#lab-t[data-t="<name>"]) .lab-<scope>  a surface inside it (a paper band, a dark island)
+   One rule may list several such selectors. A surface theme is its candidate's tokens plus its own.
+   Candidates whose tokens come out identical are measured once and reported under all their names. */
 export const THEMES = [
   { name: 'dark', scope: 'site', note: 'the current house theme (src/styles/global.css)', overrides: {} },
 ];
+
+const CANDIDATE_FILE = 'src/styles/lab-themes.css';
+const CANDIDATE_SELECTOR = /^:root:has\(#lab-t\[data-t="([\w-]+)"\]\)(?:\s+\.lab-([\w-]+))?$/;
+
+/** The theme candidates in the lab stylesheet, as themes. */
+export function readCandidates() {
+  const path = join(ROOT, CANDIDATE_FILE);
+  if (!existsSync(path)) return [];
+  const page = new Map();
+  const surface = new Map();
+  for (const rule of topLevelRules(stripComments(readFileSync(path, 'utf8')))) {
+    for (const sel of rule.selector.split(',').map((x) => x.trim().replace(/\s+/g, ' '))) {
+      const m = sel.match(CANDIDATE_SELECTOR);
+      if (!m) continue;
+      const props = Object.fromEntries(Object.entries(customProps(rule.body)).filter(([k]) => !k.startsWith('--lab-')));
+      if (!Object.keys(props).length) continue; // a rule that only draws (no tokens) is not a theme
+      const key = m[2] ? `${m[1]}/${m[2]}` : m[1];
+      const into = m[2] ? surface : page;
+      into.set(key, { ...(into.get(key) ?? {}), ...props });
+    }
+  }
+  const themes = [...page].map(([name, overrides]) => ({ name: `cand:${name}`, overrides }));
+  for (const [key, own] of surface) {
+    const base = page.get(key.split('/')[0]) ?? {};
+    themes.push({ name: `cand:${key}`, overrides: { ...base, ...own } });
+  }
+  /* merge candidates with the same tokens */
+  const seen = new Map();
+  for (const t of themes) {
+    const sig = JSON.stringify(Object.entries(t.overrides).sort());
+    if (seen.has(sig)) seen.get(sig).names.push(t.name);
+    else seen.set(sig, { ...t, names: [t.name] });
+  }
+  return [...seen.values()].map((t) => ({
+    name: t.names.join(' = '),
+    scope: 'site',
+    note: `theme candidate (${CANDIDATE_FILE})`,
+    overrides: t.overrides,
+  }));
+}
 
 /** Projects and their accents, read from content/projects/*.md front matter. */
 function readProjects() {
@@ -300,8 +367,10 @@ function readProjects() {
     .map((f) => {
       const src = readFileSync(join(dir, f), 'utf8');
       const line = src.match(/^accent:\s*\{([^}]*)\}/m)?.[1] ?? '';
-      const field = (k) => line.match(new RegExp(`${k}:\\s*"([^"]+)"`))?.[1];
-      return { id: f.replace(/\.mdx?$/, ''), color: field('color'), glow: field('glow') };
+      const wm = src.match(/^wordmark:\s*\{([^}]*)\}/m)?.[1] ?? '';
+      const field = (k, l = line) => l.match(new RegExp(`\\b${k}:\\s*"([^"]+)"`))?.[1];
+      const color = field('color');
+      return { id: f.replace(/\.mdx?$/, ''), color, glow: field('glow'), wordmark: field('color', wm) ?? color };
     })
     .filter((p) => p.color);
 }
@@ -342,16 +411,28 @@ function worldThemes(embassy) {
 
 const ACCENTS = ['--edk', '--recto', '--recto-glow', '--prep', '--iris', '--lagoon', '--eat', '--eat-pink', '--log', '--about'];
 
+/* Product colours by theme: a candidate names a product's ink (text and marks), its button fill and its
+   wordmark colour with these prefixes, e.g. --recto-ink, --eat-fill, --prep-wm. */
+const PRODUCT_TOKEN = { recto: '--recto', 'english-prep': '--prep', 'eat-map': '--eat' };
+
 /** Expands `each` rows into concrete rows with their extra variables. */
-function expand(pair, theme, projects) {
+function expand(pair, theme, projects, tokens) {
+  const has = (name) => tokens[name] !== undefined;
   if (pair.each === 'project')
-    return projects.map((p) => ({
-      ...pair,
-      where: `${pair.where} [${p.id}]`,
-      vars: { ...pair.vars, '--p': p.color, '--pg': p.glow ?? p.color, '--pa': p.color },
-    }));
+    return projects.map((p) => {
+      const pre = PRODUCT_TOKEN[p.id];
+      const vars = { ...pair.vars, '--p': p.color, '--pg': p.glow ?? p.color, '--pa': p.color, '--wm': p.wordmark === 'ink' ? 'var(--ink)' : p.wordmark };
+      if (pre && has(`${pre}-ink`)) vars['--p-ink'] = `var(${pre}-ink)`;
+      if (pre && has(`${pre}-fill`)) vars['--p-fill'] = `var(${pre}-fill)`;
+      if (pre && has(`${pre}-wm`)) vars['--wm-ink'] = `var(${pre}-wm)`;
+      return { ...pair, where: `${pair.where} [${p.id}]`, vars };
+    });
   if (pair.each === 'accent')
-    return ACCENTS.map((a) => ({ ...pair, where: `${pair.where} [${a}]`, vars: { ...pair.vars, '--accent': `var(${a})`, '--a': `var(${a})` } }));
+    return ACCENTS.map((a) => {
+      const vars = { ...pair.vars, '--accent': `var(${a})`, '--a': `var(${a})` };
+      if (has(`${a}-ink`)) vars['--a-ink'] = `var(${a}-ink)`;
+      return { ...pair, where: `${pair.where} [${a}]`, vars };
+    });
   if (pair.each === 'stop')
     return (theme.stops ?? []).map((s, i) => ({ ...pair, where: `${pair.where} [${i + 1}: ${s}]`, vars: { ...pair.vars, '--stop': s } }));
   return [pair];
@@ -366,7 +447,7 @@ function measure(pair, tokens) {
   const lc = apca(text, ground);
   const role = ROLES[pair.role];
   const large = pair.px !== undefined && isWcagLarge(pair.px, pair.weight);
-  const needWcag = pair.role === 'nontext' || pair.role === 'decor' ? role.wcag : large ? 3 : role.wcag;
+  const needWcag = ['nontext', 'logo', 'decor'].includes(pair.role) ? role.wcag : large ? 3 : role.wcag;
   const ok = Math.abs(lc) >= role.lc && ratio >= needWcag;
   const table = pair.px !== undefined && pair.role !== 'decor' ? tableLc(pair.px, pair.weight) : undefined;
   return { ...pair, textHex: toHex(text), groundHex: toHex(ground), ratio, lc, needLc: role.lc, needWcag, ok, table, textAlpha: textRaw.a };
@@ -377,7 +458,7 @@ export function runTheme(theme, base, projects) {
   const rows = [];
   for (const pair of PAIRS) {
     if ((pair.scope ?? 'site') !== theme.scope) continue;
-    for (const p of expand(pair, theme, projects)) {
+    for (const p of expand(pair, theme, projects, tokens)) {
       try {
         rows.push(measure(p, tokens));
       } catch (e) {
@@ -480,11 +561,11 @@ function markdown(results, base, origin, pure) {
 
 /* ---- 10. Main ---- */
 
-export function runAll({ themeFilter, worlds = true, extraThemes = [] } = {}) {
+export function runAll({ themeFilter, worlds = true, live = true, candidates = false, extraThemes = [] } = {}) {
   const { tokens: base, origin, embassy } = readTokens();
   const projects = readProjects();
-  let themes = [...THEMES, ...extraThemes, ...(worlds ? worldThemes(embassy) : [])];
-  if (themeFilter) themes = themes.filter((t) => t.name === themeFilter);
+  let themes = [...(live ? THEMES : []), ...extraThemes, ...(worlds ? worldThemes(embassy) : []), ...(candidates ? readCandidates() : [])];
+  if (themeFilter) themes = themes.filter((t) => t.name.split(' = ').includes(themeFilter));
   const results = themes.map((t) => runTheme(t, base, projects));
   return { results, base, origin, projects };
 }
@@ -495,7 +576,15 @@ function main() {
     const i = args.indexOf(k);
     return i >= 0 ? args[i + 1] : undefined;
   };
-  const { results, base, origin } = runAll({ themeFilter: opt('--theme'), worlds: !args.includes('--no-worlds') });
+  /* --candidates: only the theme lab's candidates; --all: the live theme, the worlds and the candidates */
+  const only = args.includes('--candidates');
+  const all = args.includes('--all');
+  const { results, base, origin } = runAll({
+    themeFilter: opt('--theme'),
+    live: !only,
+    worlds: !only && !args.includes('--no-worlds'),
+    candidates: only || all || !!opt('--theme')?.startsWith('cand:'),
+  });
   if (!results.length) {
     console.error('no theme matched');
     process.exit(2);

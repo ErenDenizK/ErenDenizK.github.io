@@ -1,0 +1,504 @@
+/* Theme candidates for the theme lab (src/pages/lab/themes.astro, Phase 1 "Foundations").
+   Only the hidden lab page imports this file. No live page reads it, and no live token changes.
+
+   How it works:
+   - The page holds one element, #lab-t, whose data-t names the candidate (a, b, c, d, d-ink, d-umber,
+     d-moss). Every rule here starts with :root:has(#lab-t...), so it applies on the lab page only and
+     works without JavaScript (the markup starts on "a").
+   - A token block sets the same names in every candidate. The palette checker reads these blocks as
+     themes (tools/palette/check.mjs, readCandidates; npm run palette:lab), so a value here is measured
+     with WCAG 2 and APCA before anyone looks at it.
+   - .lab-paper is a reading surface (candidate C turns it to paper). .lab-island is a dark plate that
+     holds an object on a light page (candidate B). The ID card is a dark physical card: on paper its
+     card takes the dark tokens, and the hint under it stays in the page's tokens. On a dark candidate both take the page tokens, so
+     they are invisible.
+   - Names a live theme would need are tokens here: --pill, --btn, --frame-bar and the others replace
+     literal colours in global.css, work.css and rail.css. The rules at the end of this file point those
+     literals at the tokens, for the lab page only.
+
+   Solved, not chosen by eye: every ink was found by searching OKLCH lightness at a fixed hue and chroma
+   until it met its floor with a small margin (body Lc 75, large 60, label 45, non-text 30; WCAG 4.5:1
+   and 3:1). Product colours keep their hue; only their lightness moves, and only where text needs it. */
+
+/* ---------- A. Graphite: one dark theme, softened (also D's first mood, and B's dark island) ---------- */
+:root:has(#lab-t[data-t="a"]),
+:root:has(#lab-t[data-t="c"]),
+:root:has(#lab-t[data-t="d"]),
+:root:has(#lab-t[data-t="b"]) .lab-island,
+:root:has(#lab-t[data-t="b"]) .lab-badge .idc-card,
+:root:has(#lab-t[data-t="c"]) .lab-paper .idc-card {
+  color-scheme: dark;
+  --ground: #121214;
+  --ground-deep: #0d0d0f;
+  --raised: #1a1a1d;
+  --raised-2: #232327;
+  --ink: #e8e3dd;
+  --read: #dedad2;
+  --ink-2: #d3cfc7;
+  --ink-3: #a19d96;
+  --ink-4: #827e78;
+  --rule: rgba(232, 227, 221, 0.1);
+  --rule-2: rgba(232, 227, 221, 0.18);
+  --wash: rgba(232, 227, 221, 0.06);
+  --focus: #f3efe7;
+  --sel: rgba(232, 227, 221, 0.9);
+  --pill: rgba(30, 30, 34, 0.7);
+  --pill-on: rgba(255, 255, 255, 0.075);
+  --pill-edge: rgba(255, 255, 255, 0.06);
+  --sheet-bar: rgba(18, 18, 20, 0.95);
+  --btn: #e8e3dd;
+  --btn-ink: #121214;
+  --btn-hover: #fff8ee;
+  --btn-ink-tint: #121214;
+  --frame: #161618;
+  --frame-bar: #1c1c1f;
+  --frame-url: rgba(255, 255, 255, 0.05);
+  --frame-view: #101012;
+  --fr-url-ink: #aaa69f;
+  --w-cap-of: #a19d96;
+  --rail-idle: #827e78;
+  --rail-panel: rgba(22, 22, 25, 0.94);
+  --rail-halo: 0 0 0 1px rgba(18, 18, 20, 0.55);
+  --pc-edge: rgba(58, 50, 42, 0.73);
+  /* product and page lights: unchanged from today */
+  --edk: #c9d4ff;
+  --recto: #bbed26;
+  --recto-glow: #a6d873;
+  --prep: #efb1cb;
+  --iris: #9a9cf0;
+  --lagoon: #6fc9cf;
+  --eat: #eb4f6b;
+  --eat-pink: #ec5794;
+  --log: #8fb8ff;
+  --about: #f3b886;
+  --accent-neutral: #ddd6cb;
+  /* inks: the same colours where they already pass; Record blue and Eat Map rose lifted for text */
+  --edk-ink: #c9d4ff;
+  --recto-ink: #bbed26;
+  --recto-glow-ink: #a6d873;
+  --prep-ink: #efb1cb;
+  --iris-ink: #a9abf3;
+  --lagoon-ink: #6fc9cf;
+  --eat-ink: #ff94a9;
+  --eat-pink-ink: #f57aa6;
+  --log-ink: #a8d3ff;
+  --about-ink: #f3b886;
+  --recto-fill: #bbed26;
+  --prep-fill: #efb1cb;
+  --eat-fill: #f2627b;
+  --recto-wm: #bbed26;
+  --prep-wm: #eee9ed;
+  --eat-wm: #eb4f6b;
+  --lab-accent: var(--edk);
+  --lab-glow: 1;
+  --lab-shadow: rgba(0, 0, 0, 0.7);
+}
+
+/* ---------- B. Paper: light throughout; objects and screens sit on dark islands ----------
+   Also C's reading surface. Warm off-white, never #fff; one warm ink at several lightnesses. Product
+   colours become inks of the same hue (lime to olive, sakura to berry, rose to a deeper rose). */
+:root:has(#lab-t[data-t="b"]),
+:root:has(#lab-t[data-t="c"]) .lab-paper {
+  color-scheme: light;
+  --ground: #f2efe8;
+  --ground-deep: #e9e5dd;
+  --raised: #f9f7f2;
+  --raised-2: #e9e5dd;
+  --ink: #1c1813;
+  --read: #332d27;
+  --ink-2: #534e48;
+  --ink-3: #6b665f;
+  --ink-4: #8c8780;
+  --rule: rgba(28, 24, 19, 0.12);
+  --rule-2: rgba(28, 24, 19, 0.2);
+  --wash: rgba(28, 24, 19, 0.05);
+  --focus: #1c1813;
+  --sel: rgba(28, 24, 19, 0.86);
+  --pill: rgba(250, 248, 243, 0.74);
+  --pill-on: rgba(28, 24, 19, 0.06);
+  --pill-edge: rgba(28, 24, 19, 0.09);
+  --sheet-bar: rgba(242, 239, 232, 0.95);
+  --btn: #1c1813;
+  --btn-ink: #f2efe8;
+  --btn-hover: #3b352e;
+  --btn-ink-tint: #f7f5f0;
+  --frame: #161618;
+  --frame-bar: #1c1c1f;
+  --frame-url: rgba(255, 255, 255, 0.05);
+  --frame-view: #101012;
+  --fr-url-ink: #aaa69f;
+  --w-cap-of: #6b665f;
+  --rail-idle: #8c8780;
+  --rail-panel: rgba(249, 247, 242, 0.94);
+  --rail-halo: 0 0 0 1px rgba(242, 239, 232, 0.6);
+  --pc-edge: rgba(58, 50, 42, 0.73);
+  --edk: #c9d4ff;
+  --recto: #bbed26;
+  --recto-glow: #a6d873;
+  --prep: #efb1cb;
+  --iris: #9a9cf0;
+  --lagoon: #6fc9cf;
+  --eat: #eb4f6b;
+  --eat-pink: #ec5794;
+  --log: #8fb8ff;
+  --about: #f3b886;
+  --accent-neutral: #6b665f;
+  --edk-ink: #5865aa;
+  --recto-ink: #557408;
+  --recto-glow-ink: #557408;
+  --prep-ink: #a54b77;
+  --iris-ink: #625fbc;
+  --lagoon-ink: #1b757a;
+  --eat-ink: #c72b4e;
+  --eat-pink-ink: #bc3471;
+  --log-ink: #27509a;
+  --about-ink: #995b1d;
+  --recto-fill: #557408;
+  --prep-fill: #a54b77;
+  --eat-fill: #c72b4e;
+  --recto-wm: #557408;
+  --prep-wm: #1c1813;
+  --eat-wm: #c72b4e;
+  --lab-accent: var(--edk-ink);
+  --lab-glow: 0;
+  --lab-shadow: rgba(60, 45, 30, 0.22);
+}
+
+/* ---------- D. Moods: a button cycles four dark rooms (Graphite is A) ----------
+   Each mood tints the ground and its inks toward one hue (one hue for every tone). Product lights stay
+   as they are: a mood never takes a product's colour, so the product still stands out in it. */
+:root:has(#lab-t[data-t="d-ink"]) {
+  color-scheme: dark;
+  --ground: #0e1220;
+  --ground-deep: #0a0d18;
+  --raised: #161b2a;
+  --raised-2: #1e2435;
+  --ink: #dfe4ed;
+  --read: #d5dbe4;
+  --ink-2: #cad0d9;
+  --ink-3: #9a9ea7;
+  --ink-4: #7b7f88;
+  --rule: rgba(223, 228, 237, 0.1);
+  --rule-2: rgba(223, 228, 237, 0.18);
+  --wash: rgba(223, 228, 237, 0.06);
+  --focus: #eef1f7;
+  --sel: rgba(223, 228, 237, 0.9);
+  --pill: rgba(26, 31, 48, 0.7);
+  --pill-on: rgba(255, 255, 255, 0.075);
+  --pill-edge: rgba(255, 255, 255, 0.06);
+  --sheet-bar: rgba(14, 18, 32, 0.95);
+  --btn: #dfe4ed;
+  --btn-ink: #0e1220;
+  --btn-hover: #f4f7fd;
+  --btn-ink-tint: #0e1220;
+  --frame: #161618;
+  --frame-bar: #1c1c1f;
+  --frame-url: rgba(255, 255, 255, 0.05);
+  --frame-view: #101012;
+  --fr-url-ink: #aaa69f;
+  --w-cap-of: #9a9ea7;
+  --rail-idle: #7b7f88;
+  --rail-panel: rgba(20, 25, 40, 0.94);
+  --rail-halo: 0 0 0 1px rgba(14, 18, 32, 0.55);
+  --pc-edge: rgba(58, 50, 42, 0.73);
+  --edk: #c9d4ff;
+  --recto: #bbed26;
+  --recto-glow: #a6d873;
+  --prep: #efb1cb;
+  --iris: #9a9cf0;
+  --lagoon: #6fc9cf;
+  --eat: #eb4f6b;
+  --eat-pink: #ec5794;
+  --log: #8fb8ff;
+  --about: #f3b886;
+  --accent-neutral: #d6d9e0;
+  --edk-ink: #c9d4ff;
+  --recto-ink: #bbed26;
+  --recto-glow-ink: #a6d873;
+  --prep-ink: #efb1cb;
+  --iris-ink: #a9abf3;
+  --lagoon-ink: #6fc9cf;
+  --eat-ink: #ff94a9;
+  --eat-pink-ink: #f57aa6;
+  --log-ink: #a8d3ff;
+  --about-ink: #f3b886;
+  --recto-fill: #bbed26;
+  --prep-fill: #efb1cb;
+  --eat-fill: #f2627b;
+  --recto-wm: #bbed26;
+  --prep-wm: #eee9ed;
+  --eat-wm: #eb4f6b;
+  --lab-accent: var(--edk);
+  --lab-glow: 1;
+  --lab-shadow: rgba(0, 0, 0, 0.7);
+}
+:root:has(#lab-t[data-t="d-umber"]) {
+  color-scheme: dark;
+  --ground: #16120e;
+  --ground-deep: #110e0b;
+  --raised: #1f1a15;
+  --raised-2: #28221c;
+  --ink: #ebe3da;
+  --read: #e2d9cf;
+  --ink-2: #d7cec4;
+  --ink-3: #a59d94;
+  --ink-4: #867e75;
+  --rule: rgba(235, 227, 218, 0.1);
+  --rule-2: rgba(235, 227, 218, 0.18);
+  --wash: rgba(235, 227, 218, 0.06);
+  --focus: #f6efe5;
+  --sel: rgba(235, 227, 218, 0.9);
+  --pill: rgba(36, 30, 24, 0.7);
+  --pill-on: rgba(255, 255, 255, 0.075);
+  --pill-edge: rgba(255, 255, 255, 0.06);
+  --sheet-bar: rgba(22, 18, 14, 0.95);
+  --btn: #ebe3da;
+  --btn-ink: #16120e;
+  --btn-hover: #fff8ee;
+  --btn-ink-tint: #16120e;
+  --frame: #161618;
+  --frame-bar: #1c1c1f;
+  --frame-url: rgba(255, 255, 255, 0.05);
+  --frame-view: #101012;
+  --fr-url-ink: #aaa69f;
+  --w-cap-of: #a59d94;
+  --rail-idle: #867e75;
+  --rail-panel: rgba(30, 25, 20, 0.94);
+  --rail-halo: 0 0 0 1px rgba(22, 18, 14, 0.55);
+  --pc-edge: rgba(58, 50, 42, 0.73);
+  --edk: #c9d4ff;
+  --recto: #bbed26;
+  --recto-glow: #a6d873;
+  --prep: #efb1cb;
+  --iris: #9a9cf0;
+  --lagoon: #6fc9cf;
+  --eat: #eb4f6b;
+  --eat-pink: #ec5794;
+  --log: #8fb8ff;
+  --about: #f3b886;
+  --accent-neutral: #e0d6c8;
+  --edk-ink: #c9d4ff;
+  --recto-ink: #bbed26;
+  --recto-glow-ink: #a6d873;
+  --prep-ink: #efb1cb;
+  --iris-ink: #a9abf3;
+  --lagoon-ink: #6fc9cf;
+  --eat-ink: #ff94a9;
+  --eat-pink-ink: #f57aa6;
+  --log-ink: #a8d3ff;
+  --about-ink: #f3b886;
+  --recto-fill: #bbed26;
+  --prep-fill: #efb1cb;
+  --eat-fill: #f2627b;
+  --recto-wm: #bbed26;
+  --prep-wm: #eee9ed;
+  --eat-wm: #eb4f6b;
+  --lab-accent: var(--edk);
+  --lab-glow: 1;
+  --lab-shadow: rgba(0, 0, 0, 0.7);
+}
+:root:has(#lab-t[data-t="d-moss"]) {
+  color-scheme: dark;
+  --ground: #101411;
+  --ground-deep: #0c0f0d;
+  --raised: #181e1a;
+  --raised-2: #202722;
+  --ink: #dfe6de;
+  --read: #d5dcd5;
+  --ink-2: #cad2ca;
+  --ink-3: #99a099;
+  --ink-4: #7a817a;
+  --rule: rgba(223, 230, 222, 0.1);
+  --rule-2: rgba(223, 230, 222, 0.18);
+  --wash: rgba(223, 230, 222, 0.06);
+  --focus: #eef3ed;
+  --sel: rgba(223, 230, 222, 0.9);
+  --pill: rgba(26, 33, 28, 0.7);
+  --pill-on: rgba(255, 255, 255, 0.075);
+  --pill-edge: rgba(255, 255, 255, 0.06);
+  --sheet-bar: rgba(16, 20, 17, 0.95);
+  --btn: #dfe6de;
+  --btn-ink: #101411;
+  --btn-hover: #f4faf3;
+  --btn-ink-tint: #101411;
+  --frame: #161618;
+  --frame-bar: #1c1c1f;
+  --frame-url: rgba(255, 255, 255, 0.05);
+  --frame-view: #101012;
+  --fr-url-ink: #aaa69f;
+  --w-cap-of: #99a099;
+  --rail-idle: #7a817a;
+  --rail-panel: rgba(22, 28, 24, 0.94);
+  --rail-halo: 0 0 0 1px rgba(16, 20, 17, 0.55);
+  --pc-edge: rgba(58, 50, 42, 0.73);
+  --edk: #c9d4ff;
+  --recto: #bbed26;
+  --recto-glow: #a6d873;
+  --prep: #efb1cb;
+  --iris: #9a9cf0;
+  --lagoon: #6fc9cf;
+  --eat: #eb4f6b;
+  --eat-pink: #ec5794;
+  --log: #8fb8ff;
+  --about: #f3b886;
+  --accent-neutral: #d6ddd5;
+  --edk-ink: #c9d4ff;
+  --recto-ink: #bbed26;
+  --recto-glow-ink: #a6d873;
+  --prep-ink: #efb1cb;
+  --iris-ink: #a9abf3;
+  --lagoon-ink: #6fc9cf;
+  --eat-ink: #ff94a9;
+  --eat-pink-ink: #f57aa6;
+  --log-ink: #a8d3ff;
+  --about-ink: #f3b886;
+  --recto-fill: #bbed26;
+  --prep-fill: #efb1cb;
+  --eat-fill: #f2627b;
+  --recto-wm: #bbed26;
+  --prep-wm: #eee9ed;
+  --eat-wm: #eb4f6b;
+  --lab-accent: var(--edk);
+  --lab-glow: 1;
+  --lab-shadow: rgba(0, 0, 0, 0.7);
+}
+
+/* ---------- the literal colours of the live stylesheets, pointed at the tokens (lab page only) ----------
+   Each rule below names a literal that a live theme would have to replace with a token first. */
+:root:has(#lab-t) ::selection { background: var(--sel); color: var(--ground); }
+:root:has(#lab-t) .bar::before { background: linear-gradient(180deg, color-mix(in srgb, var(--ground) 90%, transparent) 0%, color-mix(in srgb, var(--ground) 62%, transparent) 50%, transparent 100%); }
+:root:has(#lab-t) .bar::after { background: linear-gradient(180deg, color-mix(in srgb, var(--ground) 96%, transparent) 0%, color-mix(in srgb, var(--ground) 92%, transparent) 60%, transparent 100%); }
+:root:has(#lab-t) .tabs { background: var(--pill); box-shadow: inset 0 0 0 1px var(--pill-edge), 0 12px 40px -16px var(--lab-shadow); }
+:root:has(#lab-t) .tabs a:not([aria-current]):hover { background: var(--pill-on); }
+:root:has(#lab-t) .btn { background: var(--btn); color: var(--btn-ink); }
+:root:has(#lab-t) .btn:hover { background: var(--btn-hover); }
+:root:has(#lab-t) .btn.tint { background: var(--p-fill, var(--p)); color: var(--btn-ink-tint); }
+:root:has(#lab-t) .btn.tint:hover { background: color-mix(in srgb, var(--p-fill, var(--p)) 86%, var(--btn-hover)); }
+:root:has(#lab-t) .fr-web { background: var(--frame);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.09), 0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 40px 90px -30px var(--lab-shadow), 0 0 140px -40px color-mix(in srgb, var(--pg) calc(45% * var(--lab-glow)), transparent); }
+:root:has(#lab-t) .fr-bar { background: var(--frame-bar); }
+:root:has(#lab-t) .fr-url { background: var(--frame-url); color: var(--fr-url-ink); }
+:root:has(#lab-t) .fr-view { background: var(--frame-view); }
+:root:has(#lab-t) .w-cap-of { color: var(--w-cap-of); }
+:root:has(#lab-t) .w-light { opacity: var(--lab-glow); }
+:root:has(#lab-t) .rail-m.on { background: color-mix(in srgb, var(--ar) 48%, var(--ground)); }
+:root:has(#lab-t) .rail-sheet::before { box-shadow: inset 0 0 0 1px var(--rule), -24px 0 60px -24px var(--lab-shadow); }
+:root:has(#lab-t).rail-touch .rail.is-open .rail-sheet { background: var(--rail-panel); box-shadow: inset 0 0 0 1px var(--rule), 0 12px 40px -12px var(--lab-shadow); }
+
+/* products: the text takes the product's ink, a filled button its fill, the wordmark its colour */
+:root:has(#lab-t) :is(.lab-recto, a.pj[href$="work/recto/"], .entry[data-projects^="recto"]) { --p-ink: var(--recto-ink); --p-fill: var(--recto-fill); }
+:root:has(#lab-t) :is(.lab-prep, a.pj[href$="work/english-prep/"], .entry[data-projects^="english-prep"]) { --p-ink: var(--prep-ink); --p-fill: var(--prep-fill); }
+:root:has(#lab-t) :is(.lab-eat, a.pj[href$="work/eat-map/"], .entry[data-projects^="eat-map"]) { --p-ink: var(--eat-ink); --p-fill: var(--eat-fill); }
+:root:has(#lab-t) :is(.r-name, .post-version, .post-next b, .w-cap-n, .w-index .w-n) { color: var(--p-ink, var(--p)); }
+:root:has(#lab-t) a.pj { color: var(--p-ink, var(--p)); }
+:root:has(#lab-t) .w-facts .f-status .icon { color: var(--p-ink, var(--p)); }
+:root:has(#lab-t) .read a { color: var(--log-ink); text-decoration-color: color-mix(in srgb, var(--log-ink) 45%, transparent); }
+:root:has(#lab-t) .read ul > li::before { background: var(--p-ink, var(--log-ink)); }
+:root:has(#lab-t) .wm[data-wordmark="recto"] { --wm-c: var(--recto-wm) !important; }
+:root:has(#lab-t) .wm[data-wordmark="english-prep"] { --wm-c: var(--prep-wm) !important; --wm-dot: var(--prep-ink) !important; }
+:root:has(#lab-t) .wm[data-wordmark="eat-map"] { --wm-c: var(--eat-wm) !important; }
+
+/* ---------- surfaces ----------
+   A band paints its own ground across the window (ADR-0006 isolation rule: blended objects add onto a
+   ground the element paints itself). A paper band (C) and a dark island (B) carry their own tokens. */
+:root:has(#lab-t) .lab-band { position: relative; padding: 56px 0 72px; color: var(--ink); background: var(--ground);
+  box-shadow: 0 0 0 100vmax var(--ground); clip-path: inset(0 -100vmax); }
+:root:has(#lab-t) .lab-band + .lab-band { border-top: 1px solid var(--rule); }
+:root:has(#lab-t) .lab-island { display: block; position: relative; color: var(--ink); }
+/* B: the island is a dark plate with rounded corners; it clips its object's glow, so no light reaches the paper */
+:root:has(#lab-t[data-t="b"]) .lab-island { background: var(--ground); border-radius: 28px; overflow: hidden; isolation: isolate;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05); }
+:root:has(#lab-t[data-t="b"]) .lab-thumb, :root:has(#lab-t[data-t="b"]) .lab-tile { border-radius: 22px; }
+
+/* the grain is tuned for a dark ground: on paper its grey specks read as dirt, so it is fainter */
+:root:has(#lab-t[data-t="b"]) .grain { opacity: 0.4; }
+
+/* ---------- the lab page itself ---------- */
+.lab-themes { padding-bottom: 24px; }
+.lab-head { padding: 40px 0 48px; }
+.lab-switch { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+.lab-switch button {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--rule-2); background: transparent; color: var(--ink-2); font: 500 var(--t-ui)/1 var(--f-ui);
+  transition: background var(--d-1), color var(--d-1);
+}
+.lab-switch button b { font-weight: 600; color: var(--ink); }
+.lab-switch button:hover { background: var(--wash); color: var(--ink); }
+.lab-switch button[aria-pressed="true"] { background: var(--btn); border-color: transparent; color: var(--btn-ink); }
+.lab-switch button[aria-pressed="true"] b { color: inherit; }
+.lab-switch .lab-mood { border-style: dashed; }
+#lab-t:not([data-t^="d"]) .lab-mood { display: none; }
+.lab-note { margin-top: 12px; }
+.lab-sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 12px 20px; margin-top: 32px; }
+.lab-sw li { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.lab-sw i { flex: none; width: 30px; height: 30px; border-radius: 8px; background: var(--c); box-shadow: inset 0 0 0 1px var(--rule-2); }
+.lab-sw li > span { display: grid; gap: 1px; min-width: 0; }
+.lab-sw code { font: 400 var(--t-meta)/1.3 var(--f-ui); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.lab-label { margin-bottom: 8px; }
+
+/* Home strip */
+.lab-hero { padding-top: 8px; }
+.lab-name { font: 400 var(--t-title)/var(--lh-title) var(--f-display); letter-spacing: -0.02em; margin: 18px 0 0 -0.03em; }
+.lab-name span { display: block; }
+.lab-hero .lede { margin-top: 24px; max-width: 27em; color: var(--ink); }
+.lab-hero-obj { width: min(100%, 440px); justify-self: center; }
+.lab-hero-obj .media { width: 100% !important; margin: 0 !important; }
+.lab-now { margin-top: 48px; }
+.lab-also { display: grid; gap: 18px; margin-top: 4px; }
+.lab-also li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; align-items: center; }
+.lab-also li > span:last-child { display: grid; gap: 4px; }
+.lab-thumb { width: 96px; height: 96px; }
+.lab-thumb img { display: block; width: 96px; height: 96px; }
+.lab-also-name { font-size: 26px; line-height: 1.1; }
+.lab-also-sum { color: var(--ink-2); font-size: var(--t-ui); line-height: var(--lh-ui); }
+
+/* Work chapter: the stage without the full screen height */
+.lab-work .w-stage { min-height: 0; padding: 16px 0 8px; }
+.lab-tile { flex: none; width: clamp(112px, 10vw, 148px); aspect-ratio: 1; margin: 0 8px 0 0; }
+.lab-tile .w-emblem { width: 100%; margin: 0; }
+
+/* About opening */
+.lab-about { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 40px; align-items: start; }
+.lab-ab-title { margin: 16px 0 0 -0.04em; font: 400 var(--t-title)/var(--lh-title) var(--f-display); letter-spacing: -0.03em; }
+.lab-ab-dot { color: var(--about-ink); text-shadow: 0 0 0.32em color-mix(in srgb, var(--about) calc(55% * var(--lab-glow)), transparent); }
+.lab-about .lede { margin-top: 26px; color: var(--ink-2); max-width: 30em; }
+.lab-ab-now { display: grid; grid-template-columns: 8px minmax(0, 1fr); gap: 4px 14px; margin-top: 30px; max-width: 30em; }
+.lab-now-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--about-ink); align-self: center; box-shadow: 0 0 10px color-mix(in srgb, var(--about) calc(70% * var(--lab-glow)), transparent); }
+.lab-now-label { font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); color: var(--about-ink); letter-spacing: 0.01em; }
+.lab-now-text { grid-column: 2; font: 400 var(--t-ui)/var(--lh-ui) var(--f-ui); color: var(--ink); }
+.lab-badge { display: flex; justify-content: center; padding-top: 128px; }
+:root:has(#lab-t) .lab-badge .idc { --w: 272px; --strap: 136px; }
+
+/* Record */
+.lab-rec { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 760px; }
+.lab-post-title { margin: 14px 0 0 -0.03em; font: 400 var(--t-h2)/1.04 var(--f-display); letter-spacing: -0.02em; text-wrap: balance; }
+.lab-rec .post-dek { color: var(--ink-2); max-width: 26em; }
+.lab-read { margin-top: 36px; }
+.lab-read .post-next { font: 400 var(--t-body)/1.5 var(--f-ui); color: var(--ink-2); }
+.lab-read .post-next b { font-weight: 600; }
+.lab-release { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.lab-release .r-name { margin-top: 8px; }
+:root:has(#lab-t) .r-items li::before { background: var(--p-ink, var(--p)); }
+
+/* Chrome */
+.lab-chrome { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 56px; }
+.lab-sub { margin-bottom: 14px; }
+.lab-btns { margin-top: 0; }
+.lab-pill .tabs { display: inline-flex; }
+.lab-pill .tabs a { cursor: default; }
+.lab-clock { display: inline-flex; }
+.lab-rail-note { max-width: 28em; color: var(--ink-2); font-size: var(--t-ui); line-height: var(--lh-ui); }
+
+@media (max-width: 899.98px) {
+  :root:has(#lab-t) .lab-band { padding: 40px 0 52px; }
+  .lab-hero-obj { width: min(64vw, 260px); margin: 20px auto 0; }
+  .lab-tile { grid-column: 1; grid-row: 1 / span 2; order: -2; width: 76px; margin: 0; }
+  .lab-about { grid-template-columns: 1fr; gap: 8px; }
+  .lab-badge { order: -1; padding-top: 72px; }
+  :root:has(#lab-t) .lab-badge .idc { --w: min(62vw, 240px); --strap: 72px; }
+  .lab-chrome { grid-template-columns: 1fr; gap: 32px; }
+  .lab-also li { grid-template-columns: 76px minmax(0, 1fr); }
+  .lab-thumb, .lab-thumb img { width: 76px; height: 76px; }
+  .lab-also-name { font-size: 22px; }
+}

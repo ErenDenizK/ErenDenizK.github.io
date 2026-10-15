@@ -20,6 +20,7 @@
     "worlds": "node tests/worlds.mjs",
     "clip": "node tools/captures/clip.mjs",
     "palette": "node tools/palette/check.mjs",
+    "palette:lab": "node tools/palette/check.mjs --candidates",
     "verify": "npm run worlds && npm run check && npm run build:test && npm run budget && npm test"
   },
   "dependencies": {
