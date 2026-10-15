@@ -131,12 +131,21 @@ the journal.
 
 ## 8. Writing
 
-- Docs the owner does not need to read (ADRs, HANDOFF, PLAN, journal, agent briefs, CLAUDE.md)
-  follow Simplified Technical English (ASD-STE100) in spirit: short sentences (about 20 words or
-  fewer), one idea per sentence, active voice, one word for one meaning, no idioms. It keeps docs
-  short and unambiguous for agents, and it costs less context.
-- Site copy and Record entries keep the owner's voice; questions to the owner keep their plain
-  Turkish briefs.
+Docs the owner does not need to read (ADRs, HANDOFF, PLAN, journal, agent briefs, CLAUDE.md) use
+plain technical English after the writing rules of ASD-STE100, without its restricted dictionary.
+Evaluated 2026-10-15 at the owner's request:
+
+- **Who reads these docs:** almost only agents, at the start of every session and every brief.
+  The owner reads Turkish briefs, not these files.
+- **What helps agents:** short sentences, one idea per sentence, active voice, one term for one
+  thing, no idioms, lists and tables over long paragraphs. Fewer words means less context per
+  session and fewer misreadings between agents.
+- **What would hurt:** the restricted STE dictionary (about 900 approved words) and strict
+  compliance. Agents read natural English well; forcing the dictionary costs effort, makes
+  technical terms awkward, and tempts writers to drop the reasons. A rule without its reason is
+  how earlier rounds undid good decisions by accident (PROJECT.md).
+- **So:** the writing rules, yes; the dictionary, no; every rule keeps its reason. Site copy and
+  Record entries keep the owner's voice; questions to the owner keep their plain Turkish briefs.
 
 ## 9. Reporting to the owner
 
