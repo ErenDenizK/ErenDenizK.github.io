@@ -1,5 +1,11 @@
 # Prompt: reference research on the owner's computer
 
+Status: done 2026-10-12..14 on the owner's computer; results in
+[`docs/research/2026-10-reference-research.md`](../research/2026-10-reference-research.md) and
+[`docs/research/references/`](../research/references/README.md). Kept as written. Step 4's file name
+collides with the older `docs/research/2026-10-references.md`, so the results took the new name; the
+branch `wip/references` of step 5 never reached origin.
+
 Run this in a Claude session **on the owner's computer** (the Claude desktop app, or
 `claude remote-control` in a terminal inside a clone of this repo), because cloud sessions cannot open
 outside websites. It needs a browser the session can drive (the desktop app's built-in browser or
