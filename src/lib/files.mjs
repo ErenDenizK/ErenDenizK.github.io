@@ -1,5 +1,6 @@
 /* Files the site serves straight from the repo, without copying them into public/:
-   - media/objects/<name>/**   the pre-rendered objects (ADR-0006), written by tools/objects
+   - media/objects/<name>/**   the pre-rendered objects the pages use (ADR-0006), written by
+                                tools/objects; a folder no page names (a retired object) stays unpublished
    - content/projects/<slug>/captures/*.mp4   each product's signature clip (family-kit
                                 presentation.md §3), published as media/captures/<slug>/<file>; its
                                 screens and poster are PNG masters the build turns into AVIF and WebP
@@ -41,6 +42,18 @@ function usedCards() {
   return ids;
 }
 
+/** Objects the pages use: Home's edk, Record's recorder and each project's `object` (retired objects
+    stay in media/objects for tools/objects, unpublished). */
+function usedObjects() {
+  const names = new Set(['edk', 'recorder']);
+  if (fs.existsSync(PROJECTS_DIR)) for (const f of fs.readdirSync(PROJECTS_DIR)) {
+    if (!/\.mdx?$/.test(f)) continue;
+    const m = /^object:\s*([\w-]+)/m.exec(fs.readFileSync(path.join(PROJECTS_DIR, f), 'utf8'));
+    if (m) names.add(m[1]);
+  }
+  return names;
+}
+
 /** Every file to publish: [published path, source path]. */
 export function publishedFiles() {
   const out = [];
@@ -52,7 +65,7 @@ export function publishedFiles() {
         else if (/\.(avif|webp|png|jpg|mp4|json)$/.test(e.name)) out.push(['media/objects/' + path.relative(MEDIA_DIR, p).split(path.sep).join('/'), p]);
       }
     };
-    walk(MEDIA_DIR);
+    for (const name of usedObjects()) if (fs.existsSync(path.join(MEDIA_DIR, name))) walk(path.join(MEDIA_DIR, name));
   }
   if (fs.existsSync(PROJECTS_DIR)) for (const slug of fs.readdirSync(PROJECTS_DIR)) {
     const dir = path.join(PROJECTS_DIR, slug, 'captures');
