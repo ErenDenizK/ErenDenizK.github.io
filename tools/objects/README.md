@@ -94,12 +94,11 @@ a pivot at its bounds centre, and renders one stage per Blender process:
 | Stage | What | Defaults |
 |---|---|---|
 | `poster` | the centre pose, first paint | 1200², 128 spp |
-| `grid` | the lean grid, 17 yaw × 3 pitch: yaw ±16° in 2° steps, pitch −4°/0°/+4°; since 2026-10-11 every leaned object (edk, Recto, English Prep, Eat Map, the recorder) is 33 × 3 at 1° (`--nyaw 33`; copy the 2° frames to the even indices first, with the grid's `crop.json` given the 33 yaws, and only the odd columns render; then the `normal` stage again where the object has one) | 1040², 32 spp + OIDN |
+| `grid` | the lean grid, 17 yaw × 3 pitch: yaw ±16° in 2° steps, pitch −4°/0°/+4°; since 2026-10-11 every leaned object (edk, Recto, English Prep, Eat Map, the recorder) is 33 × 3 at 1° (`--nyaw 33`; copy the 2° frames to the even indices first, with the grid's `crop.json` given the 33 yaws, and only the odd columns render) | 1040², 32 spp + OIDN |
 | `clip` | the object's micro-interaction, rest → rest, 30 fps (`CLIPS` in `frames.py`) | 30–45 frames |
 | `droplet` | rest → the shared glass droplet, ease-in cubic, uniform in time | 24 frames |
 | `shadow` | the rest pose's floor shadow alone: the object hidden from the camera, still casting | 600², 128 spp, whole square |
 | `spin` | the phones' and touch tablets' idle loop, one turn and then rest (`SPINS` in `frames.py`): edk's letters each turn 360° about their own vertical axis in a staggered wave (2 s each, 0.3 s apart); Eat Map's pin lifts and turns 360° about its own axis over the still plate (2.2 s); English Prep's two bubbles turn 360° together on a bob and the dots bounce twice as they land (2.2 s + 0.4 s); Recto's stack turns 360° with its back pages fanning out and closing within the turn (2.4 s); the recorder turns 360° with its reels running (2.4 s, whole multiples of the hubs' teeth). Only the moving frames are rendered; `--stage all` skips it | 1040² (the recorder 640², `res` in `SPINS`), 32 spp + OIDN, 4 s loop at 30 fps (edk: 78 rendered frames, about 25 minutes) |
-| `normal` | camera-space normals for every grid pose (and the state axis's frames), inside the grid's and clip's crops; needs `grid` and `clip` first | 1040², 8 spp, emission override, no bounces: about 0.3 s (edk) to 1.3 s (Recto) a frame |
 
 Yaw turns the object about its vertical axis (positive faces right), as the page's lean did;
 pitch orbits the camera about the same centre (positive faces up), so the object stays on its
@@ -118,8 +117,7 @@ blue at rest, goes on air (six times brighter) while three soft accent rings rip
 the head, growing to 1.8 head radii so they stay inside the square. Record's drawn card lifts all
 the way out of the file (spring(110, 13), let go at 0.62 s), tips 11° toward the viewer about
 its foot on a softer spring a beat later, and drops back with a small settle into the stack: 42
-frames. Its rising frames are a state axis too, like Recto's fan, so the live engine could stop
-the lift anywhere (a note a little, an essay all the way). The recorder's record key goes down
+frames. The recorder's record key goes down
 in 0.12 s, its lamp brightens to three times its resting glow and both reels turn (the started one
 a full turn, the full one two thirds; whole multiples of the hubs' three teeth, so the last frame
 is the rest pose), then the key comes up on a stiff spring and the lamp settles: 36 frames, a time
@@ -152,27 +150,8 @@ subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact blac
   re-encoding (and checks the pixels are unchanged): Safari draws a BT.709-tagged clip brighter in
   the shadows than the sRGB stills (docs/research/2026-10-phone-motion.md §1).
 
-- for the live frame engine (ADR-0009, behind `?live`), when the `normal` stage exists, in
-  `live/`: `normals-r<row>.avif`, the half-size normal maps of one pitch row as a vertical strip
-  (column 0 at the top; R, G = camera-space normal x, y as `n * 0.5 + 0.5`, z rebuilt, B unused),
-  `normals-rest.avif` (the rest pose alone, for phones and the lite tier), `clip-half.<ext>` (the
-  clip's frames at half size as a strip) and, for a state axis, `clip-peak.<ext>` (its peak at
-  full size) and `clip-normals.avif`. `encode.py <name> --live-only` writes only these and merges
-  `normals`, `states` and `bytes.live` into the existing manifest. Coverage is not shipped: a
-  hard 0-to-1 edge rings under AVIF (up to 125 levels on the ground beside edges at q45), so the
-  page gates all light by the beauty frame, whose ground is exact 0.
-
-```sh
-<venv>/bin/python tools/objects/frames.py edk --stage normal      # about a minute (Recto ~2)
-<venv>/bin/python tools/objects/encode.py edk --live-only         # about a minute
-```
-
-The `normal` stage renders a clip's normals only for a state axis (`AXES` in `frames.py`):
-Recto's fan, whose frames 0–11 rise monotonically from rest to the furthest fan, with each
-frame's fan amount stored as `values` so the page maps a spring's value to a frame. Record's
-lift is the other state axis (its peak frame comes from its spring, so `clip_record()` adds the
-`AXES` entry itself). edk's hop
-stays a time axis (it plays forward in a second, with the light faded).
+The live frame engine's exports (the `normal` stage, `encode.py --live-only` and the `live/`
+folders) were removed on 2026-10-15. The owner rejected ADR-0009. Git history keeps them.
 
 Per-object settings that differ from the defaults are in `OBJECT` in `encode.py` (edk: full
 grid at AVIF q55 rather than 60, HEVC idle at CRF 32 rather than 30, to fit the budgets). Every
@@ -211,19 +190,9 @@ picks which videos to re-encode; the others are kept from the existing manifest.
              in:  { sources } },              // droplet → rest: the arriving object
   shadow: { blend: "multiply", pose: "rest", w: 600, h: 600, min,   // optional; covers the square
             sources: [{ src, type: "image/avif"|"image/webp", bytes }] },
-  normals: { scale: 0.5, w, h, encoding,     // optional (frames.py stage `normal`); live engine only
-             rows: [{ src, type, bytes, row, frames }],   // one strip per pitch row, column 0 on top
-             rest: { src, type, bytes },                  // the rest pose alone
-             clips: { interact: { crop, w, h, frames, src, type, bytes } } },   // state axes only
-  states: { interact: { axis: "time"|"state", fps, frames, crop,   // optional; the clip as stills
-            half: { w, h, src, type, bytes },     // its frames at half size, a strip
-            peak, values,                         // state axis: the peak frame, each frame's 0..1 amount
-            peakFull: { w, h, src, type, bytes } } },             // state axis: the peak at full size
   bytes: { shadow, poster1200, leanHalf, leanFull, clips: {av1, hevc, h264}, idle: {…},
            spin: {…}, spinSizes: { <w>: {…} },                                 // when there is a spin
-           tiers: { firstPaint, phone: {…}, phoneSpin: {…}, phoneSpinSizes: { <w>: {…} }, desktopLow, desktopFull: {…} },   // tiers include the shadow
-           live: { normalsGrid, normalsRest, clipNormals, states, restFull,
-                   tiers: { phoneLive, desktopLite, desktopFull } } }   // what each live tier fetches
+           tiers: { firstPaint, phone: {…}, phoneSpin: {…}, phoneSpinSizes: { <w>: {…} }, desktopLow, desktopFull: {…} } }   // tiers include the shadow
 }
 // sources: [{ src, type: 'video/mp4; codecs="av01.0.08M.10"', codec: "av1"|"hevc"|"h264", bytes }]
 // in that order; take the first one canPlayType() accepts.
