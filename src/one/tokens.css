@@ -1,0 +1,50 @@
+/* The token set of the two-page site (phase3 design-spec.md section 2). The draft values are copied
+   unchanged from the spec's comps/one-tokens.css. The faces are declared by the layout, not here. */
+:root {
+  color-scheme: dark;
+  /* ground: Graphite, inherited and measured (charter §4) */
+  --ground: #121214; --ground-deep: #0d0d0f; --raised: #1a1a1d; --raised-2: #232327;
+  --paper: #17171a;                       /* the person's part, after the tear */
+  --ink: #e8e3dd; --read: #dedad2; --ink-2: #d3cfc7; --ink-3: #a19d96; --ink-4: #827e78; --ink-hi: #fff8ee;
+  --fill-1: rgb(232 227 221 / .04); --fill-2: rgb(232 227 221 / .07); --fill-3: rgb(232 227 221 / .10);
+  --line-1: rgb(232 227 221 / .08); --line-2: rgb(232 227 221 / .14); --line-3: rgb(232 227 221 / .22);
+  --hush: rgb(18 18 20 / .62);
+  /* aura: three pigments per section; the field takes the section in view */
+  --a1: #6f8cff; --a2: #9a9cf0; --a3: #3a4fb8;
+  --aura-open: .32; --aura-quiet: .08;
+  /* type */
+  --f-serif: "Newsreader", "Newsreader Fallback", Georgia, serif;
+  --f-sans: "Inter", "Inter Fallback", system-ui, sans-serif;
+  --fs-cap: 12px; --fs-label: 13px;
+  --fs-small: clamp(14px, 13.63px + .095vw, 15px);
+  --fs-body: clamp(16px, 15.63px + .095vw, 17px);
+  --fs-lede: clamp(18px, 17.26px + .19vw, 20px);
+  --fs-h4: clamp(20px, 18.51px + .381vw, 24px);
+  --fs-h3: clamp(24px, 22.14px + .476vw, 29px);
+  --fs-h2: clamp(32px, 28.29px + .952vw, 42px);
+  --fs-title: clamp(44px, 33.6px + 2.667vw, 72px);
+  /* space */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
+  --s-7: 48px; --s-8: 72px; --s-9: 112px; --s-10: 168px;
+  --gut: clamp(16px, 3.05vw + 4.1px, 48px);
+  --w-text: 600px; --w-wide: 1040px; --w-stage: 1200px; --w-print: min(52vw, 720px);
+  --bar-h: 76px;
+  /* shape and depth */
+  --r-print: 3px; --r-chip: 6px; --r-screen: 10px; --r-card: 16px; --r-pill: 999px;
+  --e-card: inset 0 0 0 1px var(--line-1), inset 0 1px 0 rgb(255 255 255 / .04);
+  --e-print: 0 1px 2px rgb(0 0 0 / .5), 0 18px 40px -12px rgb(0 0 0 / .7);
+  --e-lift: 0 2px 4px rgb(0 0 0 / .5), 0 40px 90px -24px rgb(0 0 0 / .8);
+  /* motion */
+  --t-press: 120ms; --t-quick: 160ms; --t-ui: 300ms; --t-swap: 500ms; --t-reveal: 700ms;
+  --t-move: 900ms; --t-open: 900ms; --t-close: 800ms; --t-draw: 2400ms;
+  --step: 90ms;
+  --ease-ui: cubic-bezier(.4, 0, .2, 1);
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-soft: cubic-bezier(.23, 1, .32, 1);
+  --ease-path: cubic-bezier(.77, 0, .175, 1);
+  --ease-exit: cubic-bezier(.55, .055, .675, .19);
+  --ease-reel: cubic-bezier(.33, 1, .68, 1);
+  --ease-settle: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-draw: cubic-bezier(.34, .22, .47, .84);
+}
+@media (max-width: 699px) { :root { --step: 75ms; --bar-h: 64px; } }

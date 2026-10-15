@@ -1,0 +1,14 @@
+---
+/* PART B's workbench (phase3 design-spec.md 7.5): Work alone on the new tokens, between two quiet
+   stand-ins for PART A's brief and the rest. Hidden like every lab page: noindex, not linked, out of
+   the sitemap. */
+import LabShell from '../../one/work/lab/LabShell.astro';
+import Work from '../../one/Work.astro';
+import { getProjects } from '../../lib/site';
+const projects = await getProjects();
+---
+<LabShell title="Work lab">
+  <div class="lab-note"><p>Lab · Work · the brief is PART A</p></div>
+  <Work projects={projects} base="/lab/one/" />
+  <div class="lab-note lab-note-end"><p>Lab · the rest is PART A</p></div>
+</LabShell>

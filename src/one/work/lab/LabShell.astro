@@ -1,0 +1,43 @@
+---
+/* PART B's scratch document (phase3 design-spec.md 7.5): noindex, unlinked, out of the sitemap (the
+   sitemap filter in astro.config.mjs drops /lab/). It stands in for PART A's layout until that lands:
+   the faces, the tokens, a light field that answers setAura, the grain, html.js / html.still before
+   first paint, and the answers to one:layer-open / one:layer-close (inert #main). */
+import '../../tokens.css';
+import './demo.css';
+import interLatin from '../../../fonts/inter-latin.woff2?url';
+import newsLatin from '../../../fonts/newsreader-latin.woff2?url';
+import { url } from '../../../lib/site';
+interface Props { title: string }
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="en" data-base={url()}>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{title}</title>
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#121214">
+  <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href={newsLatin} as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href={url('favicon.ico')} sizes="16x16 32x32 48x48">
+  <script is:inline>
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('js');
+      if (/[?&]still\b/.test(location.search) || matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('still');
+      /* the stand-in bus (src/one/work/scripts/bus.ts falls back to these when PART A's is missing) */
+      addEventListener('one:layer-open', function () { var m = document.getElementById('main'); if (m) m.inert = true; d.classList.add('layer-open'); });
+      addEventListener('one:layer-close', function () { var m = document.getElementById('main'); if (m) m.inert = false; d.classList.remove('layer-open'); });
+    })();
+  </script>
+</head>
+<body>
+  <div class="lab-field" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="lab-grain" aria-hidden="true"></div>
+  <main id="main"><slot /></main>
+  <slot name="after" />
+</body>
+</html>
