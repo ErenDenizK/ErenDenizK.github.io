@@ -64,7 +64,7 @@ const rows = Object.entries(out).map(([n, e]) => `<section><h2>${esc(e.title)}${
 <div class="pair"><figure>${e.wide}<figcaption>${esc(e.caption)}</figcaption></figure><figure class="n">${e.narrow}</figure>${e.plate ? `<figure class="p">${e.plate}</figure>` : ''}</div></section>`).join('\n')
 fs.writeFileSync(path.join(OUT, 'sheet.html'), `<!doctype html><meta charset="utf-8"><title>Illustration kit</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..600&family=Newsreader:opsz,wght@6..72,400..500&display=swap">
-<style>:root{color-scheme:dark;--ground:#0a0a0b;--ink:#e9e5de;--ink-2:#b6b1a8;--ink-3:#8c877f;--ink-4:#5f5b55;--rule-2:rgba(233,229,222,.18);--wash:rgba(233,229,222,.06);--f-ui:Inter,system-ui,sans-serif}
+<style>:root{color-scheme:dark;--ground:#121214;--ink:#e8e3dd;--ink-2:#d3cfc7;--ink-3:#a19d96;--ink-4:#827e78;--rule-2:rgba(232,227,221,.18);--wash:rgba(232,227,221,.06);--f-ui:Inter,system-ui,sans-serif}
 body{margin:0;padding:48px;background:var(--ground);color:var(--ink);font:400 15px/1.45 var(--f-ui)}
 h1{font:400 40px/1 Newsreader,serif;margin:0 0 40px}h2{font:400 25px/1.2 Newsreader,serif;margin:0 0 20px}small{font:12px var(--f-ui);color:var(--ink-3);border:1px dashed var(--ink-4);padding:2px 6px;border-radius:4px}
 section{padding:32px 0 48px;border-top:1px solid var(--rule-2)}.pair{display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap}

@@ -25,7 +25,7 @@ const k = site.kicker;
 const sc = site.home.showcase;
 const L = lead.data;
 const la = L.accent;
-const leadVars = [`--p: ${la.color}`, `--pg: ${la.glow ?? la.color}`, la.p2 && `--p2: ${la.p2}`, la.p3 && `--p3: ${la.p3}`].filter(Boolean).join('; ');
+const leadVars = [`--p: ${la.color}`, `--pg: ${la.glow ?? la.color}`, la.p2 && `--p2: ${la.p2}`, la.p3 && `--p3: ${la.p3}`, la.ink && `--p-ink: ${la.ink}`, la.fill && `--p-fill: ${la.fill}`].filter(Boolean).join('; ');
 ---
 <Base tab="home" og="home" ogAlt={`${site.name}, with the edk glass object.`} type="profile">
   <div class="inner">

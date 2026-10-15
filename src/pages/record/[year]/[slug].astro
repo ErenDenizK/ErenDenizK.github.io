@@ -9,7 +9,7 @@ import Figure from '../../../components/Figure.astro';
 import { Picture } from 'astro:assets';
 import Foot from '../../../components/Foot.astro';
 import { render } from 'astro:content';
-import { getLog, getProjects, getSite, url, abs, entryPath, entrySlug, entryYear, entryTitle, iso, longDate, dayMonYear, categoryLabel, readingMinutes, entryProjects, projectColor, rowShape, releaseName, LOG_BLUE, type LogEntry } from '../../../lib/site';
+import { getLog, getProjects, getSite, url, abs, entryPath, entrySlug, entryYear, entryTitle, iso, longDate, dayMonYear, categoryLabel, readingMinutes, entryProjects, projectColor, inkVars, rowShape, releaseName, LOG_BLUE, type LogEntry } from '../../../lib/site';
 
 export async function getStaticPaths() {
   const all = await getLog();
@@ -41,10 +41,10 @@ const jsonld = d.kind === 'note' || d.sample ? [] : [{
       <a class="qlink post-back" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
       {toc.length > 0 && <><p class="meta">On this page</p><ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></>}
     </nav>
-    <article class:list={['post', `post-${d.kind}`, { 'post-release': release }]} data-slug={entrySlug(e)} style={`--p: ${light}`} data-rail-heads={toc.length > 0 ? '' : undefined} data-rail-accent={light} data-rail-minutes={d.kind === 'essay' ? readingMinutes(e.body) : undefined}>
+    <article class:list={['post', `post-${d.kind}`, { 'post-release': release }]} data-slug={entrySlug(e)} style={`--p: ${light}${inkVars(pj[0])}`} data-rail-heads={toc.length > 0 ? '' : undefined} data-rail-accent={light} data-rail-minutes={d.kind === 'essay' ? readingMinutes(e.body) : undefined}>
       <a class="qlink post-back post-back-sm" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
       <header class="post-head" data-rail-sec={title}>
-        <p class="meta"><time datetime={iso(d.date)}>{longDate(d.date)}</time> · {meta.join(' · ')}{pj.map((p) => <> · <a class="pj" href={url(`work/${p.id}/`)} style={`--p: ${p.data.accent.glow ?? p.data.accent.color}`}>{p.data.title}</a></>)}</p>
+        <p class="meta"><time datetime={iso(d.date)}>{longDate(d.date)}</time> · {meta.join(' · ')}{pj.map((p) => <> · <a class="pj" href={url(`work/${p.id}/`)} style={`--p: ${p.data.accent.glow ?? p.data.accent.color}${inkVars(p)}`}>{p.data.title}</a></>)}</p>
         {release && release !== title && <p class="post-version">{release}</p>}
         {d.kind === 'note' ? <h1 class="vh">{title}</h1> : <h1 class:list={['post-title', { 'is-version': release === title }]}>{title}</h1>}
         {d.dek && <p class="lede post-dek">{d.dek}</p>}

@@ -12,6 +12,9 @@
 //   npm run palette -- --theme dark          one theme
 //   npm run palette -- --md report.md        also write a Markdown report
 //   npm run palette -- --no-worlds           skip the product worlds (embassy themes)
+//   npm run palette -- --worlds-advisory     measure the worlds, but only the house theme fails the run
+//                                            (npm run verify and CI; ADR-0016: a world's colours come
+//                                            from the product's world.json, which this site does not own)
 //   npm run palette -- --candidates          only the theme lab's candidates (npm run palette:lab)
 //   npm run palette -- --all                 the live theme, the worlds and the candidates
 //
@@ -182,7 +185,7 @@ export const PAIRS = [
   { where: 'postcard: .pc-note, .pc-from (hand)', text: 'var(--hand)', on: ['var(--paper)'], px: 13, weight: 400, role: 'label', vars: { '--hand': '#23304a', '--paper': '#e9e2d4' } },
   { where: 'postcard: paper ink', text: '#3a322a', on: ['#e9e2d4'], px: 13, weight: 400, role: 'label' },
   { where: 'postcard: printed caption (0.72)', text: 'rgba(58, 50, 42, 0.72)', on: ['#e9e2d4'], px: 8, weight: 500, role: 'label' },
-  { where: 'postcard: printed edge (0.55)', text: 'var(--pc-edge, rgba(58, 50, 42, 0.55))', on: ['#e9e2d4'], px: 6.5, weight: 500, role: 'label' },
+  { where: 'postcard: printed edge, .pc-credit (0.73)', text: 'var(--pc-edge, rgba(58, 50, 42, 0.73))', on: ['#e9e2d4'], px: 6.5, weight: 500, role: 'label' },
 
   // a product's name in its own face and colour (components/Wordmark.astro). WCAG 1.4.3 exempts logotypes,
   // so the floor is the non-text one: the name must still be seen as a mark on the ground.
@@ -370,7 +373,7 @@ function readProjects() {
       const wm = src.match(/^wordmark:\s*\{([^}]*)\}/m)?.[1] ?? '';
       const field = (k, l = line) => l.match(new RegExp(`\\b${k}:\\s*"([^"]+)"`))?.[1];
       const color = field('color');
-      return { id: f.replace(/\.mdx?$/, ''), color, glow: field('glow'), wordmark: field('color', wm) ?? color };
+      return { id: f.replace(/\.mdx?$/, ''), color, glow: field('glow'), ink: field('ink'), fill: field('fill'), wordmark: field('color', wm) ?? color };
     })
     .filter((p) => p.color);
 }
@@ -422,6 +425,10 @@ function expand(pair, theme, projects, tokens) {
     return projects.map((p) => {
       const pre = PRODUCT_TOKEN[p.id];
       const vars = { ...pair.vars, '--p': p.color, '--pg': p.glow ?? p.color, '--pa': p.color, '--wm': p.wordmark === 'ink' ? 'var(--ink)' : p.wordmark };
+      /* the live site: the product's own ink and fill from its content (accent.ink, accent.fill; ADR-0016) */
+      if (p.ink) vars['--p-ink'] = p.ink;
+      if (p.fill) vars['--p-fill'] = p.fill;
+      /* a theme candidate may name its own, which wins */
       if (pre && has(`${pre}-ink`)) vars['--p-ink'] = `var(${pre}-ink)`;
       if (pre && has(`${pre}-fill`)) vars['--p-fill'] = `var(${pre}-fill)`;
       if (pre && has(`${pre}-wm`)) vars['--wm-ink'] = `var(${pre}-wm)`;
@@ -599,13 +606,20 @@ function main() {
     console.log(`\nreport: ${relative(process.cwd(), md) || md}`);
   }
 
-  const failures = results.flatMap(({ theme, rows }) => rows.filter((r) => !r.ok && r.role !== 'decor').map((r) => `${theme.name}: ${r.where}`));
+  const misses = results.flatMap(({ theme, rows }) => rows.filter((r) => !r.ok && r.role !== 'decor').map((r) => ({ theme, at: `${theme.name}: ${r.where}` })));
   const total = results.reduce((n, { rows }) => n + rows.filter((r) => r.role !== 'decor').length, 0);
+  /* --worlds-advisory: a miss inside a product's world is reported, not failed. The fix belongs to the
+     product and the Family chat (world.json), not to this site's stylesheets. */
+  const advisory = args.includes('--worlds-advisory');
+  const isWorld = (t) => t.name.startsWith('world:');
+  const failures = misses.filter((m) => !(advisory && isWorld(m.theme))).map((m) => m.at);
+  const noted = misses.filter((m) => advisory && isWorld(m.theme)).map((m) => m.at);
+  if (noted.length) console.log(`\npalette: ${noted.length} pairings miss inside a product's world (advisory, world.json):\n` + noted.map((f) => '  - ' + f).join('\n'));
   if (failures.length) {
     console.log(`\npalette: ${failures.length} of ${total} pairings fail:\n` + failures.map((f) => '  - ' + f).join('\n'));
     process.exit(1);
   }
-  console.log(`\npalette: all ${total} pairings meet their floors`);
+  console.log(noted.length ? `\npalette: the house theme meets every floor (${total - noted.length} of ${total} pairings pass)` : `\npalette: all ${total} pairings meet their floors`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) main();

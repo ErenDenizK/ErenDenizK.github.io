@@ -136,7 +136,8 @@ test.describe('desktop', () => {
     const worst = await page.evaluate(() => {
       const lin = (v: number) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
       const lum = (s: string) => { const n = (s.match(/[\d.]+/g) || []).map(Number); return 0.2126 * lin(n[0]) + 0.7152 * lin(n[1]) + 0.0722 * lin(n[2]); };
-      const cr = (s: string) => (lum(s) + 0.05) / (lum('rgb(10, 10, 11)') + 0.05);
+      const g = getComputedStyle(document.body).backgroundColor;
+      const cr = (s: string) => (lum(s) + 0.05) / (lum(g) + 0.05);
       const out: [string, number][] = [];
       const probe = document.createElement('i');
       document.body.append(probe);

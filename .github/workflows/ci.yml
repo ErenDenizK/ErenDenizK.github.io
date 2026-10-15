@@ -23,6 +23,8 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Product worlds against the family kit
         run: npm run worlds
+      - name: Colour floors of the house theme (WCAG 2 and APCA; product worlds advisory)
+        run: npm run palette:gate
       - name: Types and content schemas
         run: npm run check
       - name: Build (site and log fixtures, under the non-root base /Portfolio/ to catch base-path bugs)

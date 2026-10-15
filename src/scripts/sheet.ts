@@ -68,7 +68,7 @@ export function initSheet() {
     const h1 = c.querySelector('h1.case-title');
     if (h1) { const h2 = document.createElement('h2'); for (const a of h1.getAttributeNames()) h2.setAttribute(a, h1.getAttribute(a)!); h2.innerHTML = h1.innerHTML; h1.replaceWith(h2); }
     slot.replaceChildren(c);
-    for (const p of ['--p', '--p2', '--p3', '--pg']) { const v = c.style.getPropertyValue(p).trim(); if (v) dlg.style.setProperty(p, v); else dlg.style.removeProperty(p); }
+    for (const p of ['--p', '--p2', '--p3', '--pg', '--p-ink', '--p-fill']) { const v = c.style.getPropertyValue(p).trim(); if (v) dlg.style.setProperty(p, v); else dlg.style.removeProperty(p); }
     dlg.querySelector('#crumb-n')!.textContent = `${c.dataset.index} of ${c.dataset.total}`;
     initMedia(c);
     Media.refresh();

@@ -21,7 +21,8 @@
     "clip": "node tools/captures/clip.mjs",
     "palette": "node tools/palette/check.mjs",
     "palette:lab": "node tools/palette/check.mjs --candidates",
-    "verify": "npm run worlds && npm run check && npm run build:test && npm run budget && npm test"
+    "palette:gate": "node tools/palette/check.mjs --worlds-advisory",
+    "verify": "npm run worlds && npm run palette:gate && npm run check && npm run build:test && npm run budget && npm test"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.3",

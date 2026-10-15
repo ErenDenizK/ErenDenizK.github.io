@@ -1,5 +1,7 @@
 /* Theme candidates for the theme lab (src/pages/lab/themes.astro, Phase 1 "Foundations").
-   Only the hidden lab page imports this file. No live page reads it, and no live token changes.
+   Only the hidden lab page imports this file. No live page reads it. The owner chose A, Graphite, on
+   2026-10-15; its tokens are now the live ones in global.css (ADR-0016), and this page stays as the record
+   of the four candidates.
 
    How it works:
    - The page holds one element, #lab-t, whose data-t names the candidate (a, b, c, d, d-ink, d-umber,

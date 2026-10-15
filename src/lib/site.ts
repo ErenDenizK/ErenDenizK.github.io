@@ -151,6 +151,10 @@ export function statusLine(p: Project): string {
 
 /** The colour a project shows on black: its glow where lime would go olive, otherwise its accent. */
 export const projectColor = (p: Project) => p.data.accent.glow ?? p.data.accent.color;
+/** A project's own text and fill colours (content accent.ink, accent.fill), as inline custom properties
+    to append after its --p: text rules read var(--p-ink, ...), tinted buttons var(--p-fill, var(--p)). */
+export const inkVars = (p?: Project | null) =>
+  !p ? '' : [p.data.accent.ink && `; --p-ink: ${p.data.accent.ink}`, p.data.accent.fill && `; --p-fill: ${p.data.accent.fill}`].filter(Boolean).join('');
 /** The Record's own light, for entries about no project (readability research C2). */
 export const LOG_BLUE = 'var(--log)';
 
