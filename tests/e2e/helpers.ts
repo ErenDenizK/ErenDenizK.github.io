@@ -88,7 +88,7 @@ export async function check(page: Page, label: string, extra?: (s: State) => str
   return s;
 }
 /** Click a tab even while a navigation is in flight (the element may be replaced under us). */
-export async function tab(page: Page, t: keyof typeof TABS, opts: { tap?: boolean; noWait?: boolean } = {}) {
+export async function tab(page: Page, t: keyof typeof TABS, opts: { tap?: boolean; noWait?: boolean; until?: 'load' | 'commit' } = {}) {
   const sel = `.tabs a[data-tab="${t}"]`;
   if (opts.noWait) {
     /* a click that falls into the moment a document is swapped is lost; click again, as a person would */
@@ -99,10 +99,11 @@ export async function tab(page: Page, t: keyof typeof TABS, opts: { tap?: boolea
     }
     return;
   }
-  /* a tab change waits for the object's droplet first (ADR-0006 item 5): wait for the new page */
+  /* a tab change waits for the object's droplet first (ADR-0006 item 5): wait for the new page
+     ('commit' returns as soon as the new document is in, before its images load) */
   const target = await page.$eval(sel, (a) => (a as HTMLAnchorElement).href);
   const leaves = new URL(target).pathname !== new URL(page.url()).pathname;
-  const nav = leaves ? page.waitForURL(target, { waitUntil: 'load' }) : Promise.resolve();
+  const nav = leaves ? page.waitForURL(target, { waitUntil: opts.until ?? 'load' }) : Promise.resolve();
   if (opts.tap) await page.tap(sel); else await page.click(sel);
   await nav;
 }

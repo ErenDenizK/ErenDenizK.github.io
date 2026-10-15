@@ -288,7 +288,18 @@ for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
 
 /* While a cross-document view transition plays, its overlay takes every press and the browser reports the
    root as the target. A tab or the mark pressed as a page arrives (a slow phone stretches that window) must
-   still navigate. The transition is held for 5 s here, so the press always lands inside it. */
+   still navigate. The transition is held for 15 s here, so the press normally lands inside it.
+   On a loaded machine (a local full verify; reproduced under CPU pressure) three timings broke the old test:
+   - `pagereveal` fires at the new page's first frame, and that frame can come after `load`. So the test
+     waits for `pagereveal` itself.
+   - The press could come more than 5 s after `pagereveal` (the old hold): `load` waits for images, and each
+     command to an overloaded page can wait seconds. So the test does not wait for `load` (it presses as
+     soon as the page is revealed and the target is in it), and the hold is 15 s.
+   - A <style> added at DOMContentLoaded can come after the first frame, when the site's own short
+     animations have already ended the transition. So the hold is adopted before the page parses.
+   The browser may still skip the transition (it has a time limit for the new page), or the transition may
+   end before the press lands. Then the press proves nothing: the step is logged and run again from its
+   start page, at most 3 times. The outcome counts only for a press that landed inside a transition. */
 for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
   test.describe(label, () => {
     test.use(size);
@@ -296,21 +307,56 @@ for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
       const isPhone = label === 'phone';
       await page.addInitScript(() => {
         const w = window as any;
-        addEventListener('pagereveal', (e: any) => { w.__vt = !!e.viewTransition; e.viewTransition?.finished.finally(() => { w.__vt = false; }); });
-        document.addEventListener('DOMContentLoaded', () => {
-          const s = document.createElement('style');
-          s.textContent = '::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation-duration: 5s !important; }';
-          document.head.appendChild(s);
+        /* __vt: undefined before pagereveal, then 'playing', 'none' (no transition), 'skipped: <error>' or
+           'done'; __at() says how long after pagereveal, for the log */
+        w.__at = () => `${w.__vt} ${Math.round(performance.now() - w.__t0)} ms after pagereveal`;
+        addEventListener('pagereveal', (e: any) => {
+          const vt = e.viewTransition;
+          w.__t0 = performance.now();
+          w.__live = vt;
+          w.__vt = vt ? 'playing' : 'none';
+          vt?.ready.catch((x: any) => { w.__vt = 'skipped: ' + (x?.name ?? x); });
+          vt?.finished.finally(() => { if (w.__vt === 'playing') w.__vt = 'done at ' + Math.round(performance.now() - w.__t0) + ' ms'; });
         });
+        /* registered before the site's own capture listener, so it sees the transition the press lands in;
+           sessionStorage carries the answer across the navigation the press starts */
+        addEventListener('pointerdown', () => { try { sessionStorage.setItem('s18-press', w.__at()); } catch {} }, true);
+        /* adopted before the parser runs: a <style> added at DOMContentLoaded can come after the first frame,
+           when the site's own 160-420 ms animations have already ended the transition */
+        const hold = new CSSStyleSheet();
+        hold.replaceSync('::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation-duration: 15s !important; }');
+        document.adoptedStyleSheets = [...document.adoptedStyleSheets, hold];
       });
       await page.goto(''); await settle(page);
-      for (const [t, sel, want] of [['work', '.tabs a[data-tab="record"]', 'record'], ['about', '.mark', '']] as const) {
-        await tab(page, t, { tap: isPhone });
-        expect(await page.evaluate(() => (window as any).__vt), 'a view transition is playing').toBe(true);
-        const r = await page.evaluate((s) => { const b = document.querySelector(s)!.getBoundingClientRect(); return [b.left + b.width / 2, b.top + b.height / 2]; }, sel);
-        if (isPhone) await page.touchscreen.tap(r[0], r[1]); else await page.mouse.click(r[0], r[1]);
-        await settle(page, 600);
-        await check(page, `${sel} pressed while arriving on /${t}`, (s) => (s.path === want ? [] : ['ended on /' + s.path]));
+      for (const [from, t, sel, want] of [['', 'work', '.tabs a[data-tab="record"]', 'record'], ['record', 'about', '.mark', '']] as const) {
+        const misses: string[] = [];
+        for (let attempt = 1; ; attempt++) {
+          await tab(page, t, { tap: isPhone, until: 'commit' });
+          await page.waitForFunction((s) => (window as any).__vt !== undefined && !!document.querySelector(s), sel, { timeout: 10_000 });
+          const vt: string = await page.evaluate(() => (window as any).__at());
+          let miss = vt.startsWith('playing') ? '' : `no transition playing on arrival (${vt})`;
+          if (!miss) {
+            await page.evaluate(() => sessionStorage.removeItem('s18-press'));
+            const r = await page.evaluate((s) => { const b = document.querySelector(s)!.getBoundingClientRect(); return [b.left + b.width / 2, b.top + b.height / 2]; }, sel);
+            if (isPhone) await page.touchscreen.tap(r[0], r[1]); else await page.mouse.click(r[0], r[1]);
+            await settle(page, 600);
+            await check(page, `${sel} pressed while arriving on /${t}`, (s) => (s.path === want ? [] : ['ended on /' + s.path]));
+            const atPress = await page.evaluate(() => sessionStorage.getItem('s18-press'));
+            if (atPress?.startsWith('playing')) {
+              /* the press opened a page with its own 15 s transition; end it, or the next step's tab click
+                 waits for it (Playwright waits for the tab to be visible and stable) */
+              await page.waitForFunction(() => (window as any).__vt !== undefined, null, { timeout: 10_000 });
+              await page.evaluate(() => { try { (window as any).__live?.skipTransition(); } catch {} });
+              break;
+            }
+            miss = `the press landed after the transition (${atPress})`;
+          }
+          misses.push(`attempt ${attempt}: ${miss}`);
+          test.info().annotations.push({ type: 'S18 retry', description: `/${t}, ${misses.at(-1)}` });
+          console.log(`S18 (${label}) retry on /${t}: ${misses.at(-1)}`);
+          expect(attempt, `a press inside a transition on /${t}: ${misses.join('; ')}`).toBeLessThan(3);
+          await page.goto(from); await settle(page);
+        }
       }
     });
   });
