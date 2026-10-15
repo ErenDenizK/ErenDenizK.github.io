@@ -49,3 +49,19 @@ the photo presentation, the measured type system (to re-apply), real content. Se
   settled by measurement, and those were the rounds that went well.
 - **Fewer, better agents.** Parallel builders produced volume; one focused lead with a clear brief
   produced the work the owner kept.
+
+## Glossary
+
+Words the docs use without defining them.
+
+| Term | Meaning | Where |
+|---|---|---|
+| **Embassy** | A project view that enters the product's own world (its ground, light, colours and real screens) inside the portfolio's frame | ADR-0012 |
+| **`world.json`** | A product's world as data (`content/projects/<slug>/world.json`), following the family kit's `world.schema.json`; `npm run worlds` checks it | ADR-0012 |
+| **Droplet** | The shared glass droplet every object melts into and out of when the tab changes, so one clip per object covers every pair | ADR-0006 item 5, ADR-0007 |
+| **Lean grid** | The pre-rendered stills an object leans through as the pointer or the phone moves (33 yaw × 3 pitch at 1°) | ADR-0006 |
+| **The beads** | The one custom scrollbar on every page and in the project sheet, from the owner's sketch | ADR-0013 |
+| **Lab page** | A hidden workbench under `src/pages/lab/` (noindex, not linked, out of the sitemap); new designs go there before they replace a live page | ADR-0008; postmortem |
+| **`?live`** | A URL switch that turns on the live-frame engine (ADR-0009, proposed); off by default, its fate is with the owner | ADR-0009 |
+| **The board** | The claude.ai artifact "Portfolyo Tahtası", where the owner answers questions; it keeps every answer in its own database | `docs/HANDOFF.md` |
+| **The department** | The separate session on the owner's computer that collected and measured the reference study (2026-10-12..14); it reports, the portfolio decides | `docs/research/2026-10-reference-research.md` |
