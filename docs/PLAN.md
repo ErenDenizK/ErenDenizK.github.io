@@ -2,60 +2,69 @@
 
 The one live plan and the one list of open questions for the owner. Update a line when it moves;
 when a round closes, copy this file to `docs/history/` and start a fresh one. Closed plans:
-[`docs/history/`](history/README.md).
-
-This is a holding plan (2026-10-15). The clean-restart plan closed on 2026-10-11 with the rejected
-Home round ([`docs/history/plan-2026-10-clean-restart.md`](history/plan-2026-10-clean-restart.md),
-[`docs/research/2026-10-quality-postmortem.md`](research/2026-10-quality-postmortem.md)). The next
-plan follows the discussion of the reference study with the owner
-([`docs/research/2026-10-reference-research.md`](research/2026-10-reference-research.md)).
+[`docs/history/`](history/README.md). How work moves through the stations named below:
+[`docs/WORKFLOW.md`](WORKFLOW.md).
 
 ## Where we are (2026-10-15)
 
-- Home is back to its pre-round version (reverts `416ba12` and `9962864`); the measured type and
-  screen system (ADR-0015) went with it (revert `0f4a33a`) and waits to be re-applied once Home's
-  direction is set.
-- Kept and live: Work direction A with frames (ADR-0014), About with spread postcards (ADR-0008),
-  the Record with sample entries and the cassette recorder, the beads rail everywhere (ADR-0013),
-  pre-rendered objects at 1° (ADR-0006).
-- The reference study is done (the owner's computer, 2026-10-12..14) and archived in
-  `docs/research/references/`. Its views are opinions, not decisions, until the owner decides.
-- How work flows: references first, a design charter, still comps before code, lab pages before a
-  live page, two agents at a time (postmortem, "What changes"; `docs/WORKFLOW.md`).
+- The reference study is done and digested
+  ([`docs/research/2026-10-reference-research.md`](research/2026-10-reference-research.md)); the owner
+  answered the first round of questions on 2026-10-15 (brief log, same date).
+- Home is the pre-round version; ADR-0015 (measured type and screens) waits to be re-applied.
+- Live and kept: Work direction A with frames, About with the ID card and postcards, the Record with
+  samples and the cassette recorder, the beads rail, pre-rendered objects.
+- Repo clean-up round 1 is on `dev` (docs truth, samples out of feed and sitemap, dead weight, CI gates
+  the deploy, research archive). Round 2 in progress: retired Record objects to `media/archive/`.
 
-## Next, in order
+## Route
 
-1. Discuss the reference study with the owner, taste questions only.
-2. Write the design charter (`docs/design/charter.md`) from it.
-3. Home's direction: comps first, then a lab page, then the owner's iPhone.
-4. Re-apply ADR-0015 to the chosen Home.
-5. Photo presentation, reopened (2026-10-11, late: the postcard is not required).
+Each phase is a set of tracks; each track moves through the stations of WORKFLOW §2. At most two
+build tracks at a time.
 
-## Open questions for the owner
+| Phase | Track | Station | Next check |
+|---|---|---|---|
+| 0 Housekeeping | branches: `main` + `dev` only | waiting on the owner | the owner deletes `claude/portfolio-site-design-n38jml` on GitHub (the proxy refuses deletes here) |
+| 0 | commit authorship: owner as author, Claude as co-author | future commits done; past commits wait on Q1 | Q1 |
+| 0 | retired objects to `media/archive/` | build | merge after verify |
+| 0 | `?live` engine and ADR-0009 | waiting on Q4 | Q4 |
+| 1 Foundations | design charter (`docs/design/charter.md`): limits per width, type scale, motion language (sequenced reveals, no loaders) | research done, plan | the owner reads a one-page Turkish summary |
+| 1 | colour system: measured palette for every pairing; soft grounds; theme study (refined dark, light, hybrid, a few colour themes) shown with the real objects and renders | research | comps of themes with objects, owner gate 1 |
+| 1 | measuring tools: a palette checker (WCAG 2 and APCA) and a page probe against the charter | plan | tools run in `npm run verify` |
+| 2 Home | Home planned strip by strip, top to bottom: what each strip says, how it is shown, where it links; the object decided inside the plan | plan | an outline and copy draft from the owner's facts, then comps |
+| 2 | re-apply ADR-0015 to the chosen Home | waiting on Home | |
+| 3 About | structure: keep "How I work", rework "who I am / where I study / photos", tidier writing like Home, light and aura back on the ground | waiting on Phase 1 | comps |
+| 3 | ID card: denser surface texture on both faces; the lanyard follows the card in mouse-follow mode | plan | lab page |
+| 3 | photo prototype: postcard v2 (designed back and frame), click to enlarge, flip and swing there, at most a slight depth, a faster burn-in; replaces the `?photos` concepts | plan | lab page, owner gate 2 |
+| 4 Work | presentation pages: promise line, stepped real screens, chapters; the shared-element transition from card to project (the long version may be tried) | waiting | comps |
+| 5 Content | first real Record entries; the monthly "now" line; copy pass | waiting on the owner's notes | |
+| 6 Polish | phone and desktop pass, performance, accessibility, budgets | continuous | |
+| always | clean-up station (WORKFLOW §5) at each round's end | | journal report |
 
-- Desktop first (brief, 2026-10-09) or phone first (the 2026-10-11 rounds were tested on the phone
-  only)?
-- Home: its character, its hero object (the study in `docs/research/hero-study/` is undecided; edk
-  alone is "too simple"), the "now" line.
-- Clean-up that needs the owner: the photo concepts behind `?photos=1|2|3`; the `?live` engine and
-  ADR-0009; the sample entries on the live site; the retired objects `media/objects/log/` and
-  `record/`; the unused metro and cat photos in the public repo; a LICENSE; the merged remote branch
-  `claude/portfolio-site-design-n38jml`.
-- The research archive: whether the reports' third-party screenshots may enter the public repo.
-- Look checks: ADR-0010 (Work sections) and ADR-0012 (embassies), still proposed; ADR-0002 (content
-  first), accepted by practice.
-- Older questions: first Record entries, the first `main` release, photos on Home, Eat Map screens,
-  colours and mark (Family / Eat Map chat), the Recto logo (Penpot, Dengeli as one candidate),
-  English Prep improvements, Recto's first job, Eat Map code, the Family chat.
+## Open questions for the owner (2026-10-15 batch)
 
-The board (claude.ai artifact "Portfolyo Tahtası",
-https://claude.ai/artifact/B4cs7P7vRKPZN6p9ci8qw6) keeps every answer in its own database.
+Put to the owner as numbered questions with Turkish briefs (board artifact and chat):
+
+1. Rewrite past commits to the owner's name (dev only; `main` is untouched; hashes change; other
+   sessions must re-sync).
+2. Contribution graph: GitHub counts commits only on the default branch (`main`): make `dev` the default
+   branch, or the owner merges `dev` into `main` regularly.
+3. Remove the never-used metro photos and the second cat photo from the repo (and, with Q1, from
+   history).
+4. Retire the `?live` engine (ADR-0009 rejected).
+5. A LICENSE: code open (MIT), photos, renders and text all rights reserved.
+6. The reference reports' 64 third-party screenshots (4 MB) into the public repo, so agents can see the
+   references.
+7. Agent pace: keep two at a time, or more in research and review stations.
+8. Proposed CLAUDE.md changes (listed on the board): approve, change or drop each.
+9. Reporting: a short chat summary at each milestone plus a board for decisions; anything else?
+
+Older, still open: Recto logo (Penpot, Dengeli as one candidate); Eat Map screens, colours and mark
+(Family / Eat Map chat); English Prep improvements; the first `main` release; ADR-0010 and ADR-0012
+look checks.
 
 ## Later
 
-- First real Record entries (why this site, the two-track education, the university, the
-  projects); the sample entries go when they arrive.
 - Hand-written and school work in its own lighter format.
-- A Turkish locale; a custom domain (`edk.dev` or similar); research on hosting and
-  open-sourcing AI-built projects.
+- A Turkish locale; a custom domain (`edk.dev` or similar); research on hosting and open-sourcing
+  AI-built projects.
 - 2.5D photo, once the owner picks a photo that suits it.

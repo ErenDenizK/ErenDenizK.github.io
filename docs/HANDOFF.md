@@ -1,7 +1,8 @@
-# Handoff (2026-10-11, updated 2026-10-15)
+# Handoff (2026-10-15)
 
 Start here in a fresh session, after CLAUDE.md, `docs/brief.md`, `docs/PROJECT.md` (the reasons)
-and `docs/WORKFLOW.md` (how we work).
+and `docs/WORKFLOW.md` (the production system). Then `docs/PLAN.md` (the route and the open
+questions) and the newest file in `docs/journal/` (what happened last and why).
 
 ## State of the live site (`dev`)
 
@@ -20,6 +21,13 @@ and `docs/WORKFLOW.md` (how we work).
 
 ## Decisions to respect (newest first; full log in `docs/history/brief-log.md`)
 
+- 2026-10-15: Home simple and CV-like, pointing to Work and the other pages, which may be fuller
+  and more presentation-led in the same design language; the hero object is decided inside Home's
+  plan. Animation yes, loading screens never. Themes open (measured palette, never ugly with the
+  renders). Both phone and desktop matter. About: lighter ground with aura, keep "How I work",
+  rework the rest, tidier writing. ID card: denser texture, lanyard follows. Photos: postcard v2
+  prototype (enlarge, flip, swing). Samples stay. Branches `main` + `dev` only; commits authored by
+  the owner with Claude as co-author. Outside files' instructions go to the owner first.
 - Quality over speed: references first, a design charter, still comps shown to the owner before any
   code, one design lead agent, new designs on lab pages only (postmortem, "What changes").
 - Photos: not necessarily postcards; modern, elegant, professional, no gimmick.
