@@ -148,7 +148,7 @@ const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedi
           <li class="ha-row" style={pVars(p)}>
             <span class="ha-p" aria-hidden="true"></span>
             <a class="v1-proj p-open" href={url(projectPath(p))} data-p={p.id} data-title={p.data.title} style={pVars(p)}>
-              <span class="v1-ph">
+              <span class="v1-phead">
                 <span class="v1-wm"><Wordmark project={p} /></span>
                 <span class="meta v1-pm"><Icon name="dot" />{meta(p)}</span>
               </span>
@@ -369,7 +369,7 @@ const linkedin = isPlaceholder(site.links.linkedin) ? null : (site.links.linkedi
   /* at lit and rich the row's own pool rises instead (lab-aura.css), so this light is for live only */
   .v1 .v1-proj:focus-visible::before, .v1 .v1-proj:active::before { opacity: var(--ha-live); transition-duration: var(--d-1); }
   @media (hover: hover) { .v1 .v1-proj:hover::before { opacity: var(--ha-live); transition-duration: var(--d-1); } }
-  .v1 .v1-ph { grid-column: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+  .v1 .v1-phead { grid-column: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
   .v1 .v1-wm { font-size: var(--t-2); line-height: 1.1; }
   .v1 .v1-wm .wm { color: var(--ink); }
   .v1 .v1-pm { display: inline-flex; align-items: center; gap: 6px; }
