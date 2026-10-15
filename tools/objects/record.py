@@ -7,7 +7,7 @@ Record blue enters as light: the dividers, and a soft glow in the tray's floor.
 Parts (root "record"): tray (clear glass), glow (the light in the floor), cards (the stack),
 dividers (three blue glass year tabs), card (the drawn card with its ink).
 The interaction (frames.clip_record) lifts the drawn card all the way, tips it toward the viewer
-and lets it settle back. The tuning is record_c2.py's chosen defaults, fixed here; record_c2.py
+and lets it settle back. The tuning is concepts/record_c2.py's chosen defaults, fixed here; record_c2.py
 keeps the environment knobs for the research variants.
 Run: <venv>/bin/python tools/objects/record.py [--out DIR] [--samples N]"""
 import math

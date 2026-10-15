@@ -9,13 +9,14 @@ Parts (root "record_c2"): tray (clear glass), glow (the light in the floor), car
 dividers (three blue glass year tabs), card (the drawn card with its ink).
 The interaction lifts the drawn card a little further, tips it toward the viewer and lets it
 settle back; a note lifts it a little, an essay all the way.
-Run: <venv>/bin/python tools/objects/record_c2.py [--out DIR] [--samples N]"""
+Run: <venv>/bin/python tools/objects/concepts/record_c2.py [--out DIR] [--samples N]"""
 import math
 import os
 import random
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# common and record_kit live one folder up, in tools/objects/
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import common as C  # noqa: E402
 import record_kit as K  # noqa: E402
 

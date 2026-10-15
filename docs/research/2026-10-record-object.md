@@ -13,8 +13,9 @@ concepts for the owner to choose from. It decides nothing.
 **Method:** ten directions judged on paper, three modelled as headless-Blender scripts on the
 shared rig (`rig.json`, ADR-0006) and rendered in Cycles at 600², 64 samples with denoising
 (concept quality, not shipping quality). Three rounds of renders, each one looked at before the
-next. Scripts: `tools/objects/record_a.py`, `record_b.py`, `record_c.py`, with shared finishes in
-`record_kit.py` (brushed and spun metal, tape oxide, paper, ruled card stock).
+next. Scripts: `tools/objects/concepts/record_a.py`, `record_b.py`, `record_c.py`, with shared
+finishes in `tools/objects/record_kit.py` (brushed and spun metal, tape oxide, paper, ruled card
+stock).
 
 ![The shipped microphone beside concepts A, B and C, with close-ups and a 120 px read test](assets/2026-10-record-object.webp)
 
@@ -138,7 +139,7 @@ with fewer parts, and tries one hybrid. A is dropped.
 **Method:** as round 1 (shared rig, Cycles 600², 64 samples, denoised), but every candidate is
 judged on a board beside the four shipped posters (edk, Recto, English Prep, Eat Map, with their
 ground and shadow added back), not beside the other concepts. Scripts:
-`tools/objects/record_c2.py`, `record_b2.py` and `record_h2.py` (the hybrid, a flag on
+`tools/objects/concepts/record_c2.py`, `record_b2.py` and `record_h2.py` (the hybrid, a flag on
 `record_b2.py` so the two cannot drift). Each exposes its tuning as environment variables
 (`C2_*`, `B2_*`) so the variants below can be re-rendered; the defaults are the chosen ones.
 
