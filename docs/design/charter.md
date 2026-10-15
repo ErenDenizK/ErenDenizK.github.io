@@ -38,7 +38,9 @@ One language [L]: every page shares the tokens (sections 3-5), the type pair (Ne
 and reading, Inter interface; no third family, so labels stay Inter), the light (product colours
 as glow, section 4), the bar, clock, buttons and beads rail (liked as is, O 2026-10-15) and the
 motion grammar (section 5). A fuller page adds sections, media and motion. It never adds new
-sizes, colours or curves.
+sizes, colours or curves. Home's largest line is smaller than a Work title, but it uses the same
+face, weight and tracking, so Home reads as the quiet page of the same site. The page probe checks
+the shared frame (section 8).
 
 ## 3. Type, layout and spacing per width
 
@@ -49,7 +51,7 @@ Widths 390, 768, 1180, 1440 px. Screenshots stay at the three sizes in CLAUDE.md
 | Measure | 390 | 768 | 1180 | 1440 | Kind, source |
 |---|---|---|---|---|---|
 | Largest text, Home | 34 | 39 | 45 | 48 | [T] Home was rejected as "too big" (O 2026-10-11 late); liked sites' largest median 48 [34-64], phone 35 (M, `ref` §3.1); CV homes 16-42 (M, `ref` §3.3) |
-| Largest text, Work, project, About | 45 | 58 | 71 | 80 | [T] ADR-0015 step t-7; quiet pages cap at 36-64, giant names drew complaints (`ref` §3.2) |
+| Largest text, Work, project, About | 45 | 58 | 71 | 80 | [T] ADR-0015 step t-7, today's page-title size. The research proposes 64 (`ref` §5.3; quiet pages cap at 36-64, M, §3.2). The owner sees both in the comps. |
 | Largest text, Record | 34 | 41 | 48 | 52 | [L] ADR-0015 step t-5 (index and entry titles) |
 | Hard cap for any text | 48 | 64 | 80 | 80 | [T] nothing set as a poster (`ref` §7). A non-text mark (a wordmark image, an object) may be larger. |
 | Interface body, Inter | 16 | 16 | 17 | 17 | [L] ADR-0015; the library floor is 16 (M, `ref` §3.1) |
@@ -75,8 +77,8 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
 - **Line length** [L]: reading prose 28em, about 66-72 characters (O 2026-10-09 "about 70";
   `read` T1, M). Interface sentences at most 34em; ledes at most 30em. On phones never under 35
   characters, so no text sits beside an image below 600 px (`ref` §4.3, Saul Leiter at 12, M).
-- **Sizes at one window** [L]: at most 14 site-wide (ADR-0015 guard) and at most 6 in one
-  viewport. Reason: hierarchy reads from few steps.
+- **Distinct sizes** [L]: at most 14 across the site at one window width (ADR-0015 guard), and at
+  most 6 in one viewport. Reason: hierarchy reads from few steps.
 
 ### 3.3 Columns and spacing
 
@@ -97,12 +99,13 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
 
 ### 3.4 Density limits
 
-- Home first screen [T]: name and role in the top 130 px of content; 40-120 words; at most two
+- Home first screen [T]: name and role in the top 130 px of content (M, 8 sites, `ref` §4.1); 40-120 words; at most two
   buttons, below the line that says what the site is; the next strip shows above the fold.
   (O 2026-10-15 "not five buttons at once"; `ref` §4.1: 50-160 words, M; full-screen heroes hide
   the rest, R)
 - Home length 1.5-2.5 screens [T]: the genre runs 1.1-2.8 (M, `ref` §3.3); the owner is not sure.
-- Per viewport, every page [L]: one hero object; one moving thing; one accent colour.
+- Per viewport, every page [L]: one hero object; one ambient loop (section 5); one accent colour.
+  Entrances and state changes are not limited by this line; they settle.
 
 ## 4. Colour
 
@@ -114,27 +117,32 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
   | `--ground-deep` | #0d0d0f | object stage centre, optional | light still reads as the subject |
   | `--ground` | #121214 | every page | off pure black (R, `themes` §3-4); the safest soft black for the objects: 0.3-4.9 % of object pixels clip, against 0.4-8 % on #1a1a1a (M, objects on light §3.1) |
   | `--raised` | #1a1a1d | sheet, cards, frames | depth by a lighter plane (R, Material) |
-  | `--raised-2` | #222226 | pill, hover beds | one more step, no more |
+  | `--raised-2` | #232327 | pill, hover beds | one more step, no more |
 
-  Pure black (#000) is never a ground for text. Pure white (#fff) is never text. (O 2026-10-15;
-  `ref` §3.2: the strongest pages never do it.)
+  Pure black (#000) is never a ground for text. Pure white (#fff) is never text. (O 2026-10-12, Jakub
+  note, `ref` §7; O 2026-10-15 "need not be pure"; `ref` §3.2: the strongest pages never do it.)
 - **Ink by role** [L]. One warm ink in five tones. Starting values measured on #121214 (M, 2026-10-15,
-  WCAG 2 and APCA 0.0.98G, the formulas of the palette check):
+  WCAG 2 and APCA 0.0.98G, the formulas of the palette check). Every value also passes its floor on
+  `--raised` and `--raised-2`. They are candidate A of the theme lab (`src/styles/lab-themes.css`,
+  `wip/colour`), except `--ink-2`: the lab sets it at the body floor (#d3cfc7); this file takes the
+  secondary role below, and the lab block changes to match before gate 1.
 
   | Token | Role | Floor | Start value | Measured |
   |---|---|---|---|---|
-  | `--ink` | titles, interface | APCA Lc 75, at most about Lc 95 | #e9e5de | 14.9:1, Lc 91 |
-  | `--read` | reading prose | Lc 75 | #dcd7ce | 13.1:1, Lc 82 |
+  | `--ink` | titles, interface | APCA Lc 75, at most about Lc 90 | #e8e3dd | 14.7:1, Lc 90 |
+  | `--read` | reading prose | Lc 75 | #dedad2 | 13.4:1, Lc 84 |
   | `--ink-2` | secondary sentences, 16 px and up, at most 2 lines | Lc 60 | #c4bfb6 | 10.2:1, Lc 68 |
-  | `--ink-3` | labels, dates, captions | Lc 45 | #a29d94 | 6.9:1, Lc 49 |
-  | `--ink-4` | non-text only: rules, underlines, idle marks | Lc 30, 3:1 | #7a7670 | 4.2:1, Lc 30 |
+  | `--ink-3` | labels, dates, captions | Lc 45 | #a19d96 | 6.9:1, Lc 49 |
+  | `--ink-4` | non-text only: rules, underlines, idle marks | Lc 30, 3:1 | #827e78 | 4.6:1, Lc 33 |
 
-  Lc 90 is APCA's advisory maximum on dark (R, `themes` §3). Today ink-3 is Lc 38 and ink-4 is
-  text at 2.93:1 (M, inventory §1.4). The Lc 60 secondary role is LC (one of the palette check's
+  Lc 90 is APCA's advisory maximum on dark (R, `themes` §3). Long prose uses `--read`, not
+  `--ink`. Today ink-3 is Lc 38 and ink-4 is text at 2.93:1 (M, inventory §1.4). The Lc 60 secondary role is LC (one of the palette check's
   two options): it keeps a visible step between primary and secondary text.
 - **Contrast floors** [L]. A pair passes only when both WCAG 2 and APCA pass: body Lc 75 and 4.5:1;
   large Lc 60 and 3:1 (WCAG-large); label Lc 45 and 4.5:1; non-text Lc 30 and 3:1. Reason: WCAG 2
-  overrates contrast on dark grounds (M: ink-3 is 5.55:1 but Lc 38). Source of truth:
+  overrates contrast on dark grounds (M: ink-3 is 5.55:1 but Lc 38). The label floor is this
+  project's choice, not APCA's: APCA Bronze puts Lc 45 at headlines and Lc 30 at incidental text,
+  and its font table asks more for 13 px. Labels stay short, so they are spot-read, not read. Source of truth:
   `npm run palette` (`tools/palette/`, branch `wip/colour`), every pair in its PAIRS table.
 - **One accent at a time** [L]. The page accent leads (edk blue Home, Log blue Record, gold About);
   on Work the product in view takes over. Never two product colours lit in one viewport. (`ref` §3.2,
@@ -147,9 +155,10 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
 - **Every page has light** [L]. One glow scale of three tokens replaces the 10-15 % literals
   (inventory §2). Every house page carries at least the base pool. Reason: About is "too black,
   too empty, soulless" (O 2026-10-15).
-- **Theme direction** [T]: open. `themes` §10: A refined graphite, B dark presentation with paper
-  reading, C a button cycling dark moods, D light-led with dark object stages. The theme lab page
-  (`src/pages/lab/themes`, to build) shows them with the real objects and photos at gate 1. Fixed
+- **Theme direction** [T]: open. Four candidates, named as on the lab page: A Graphite (one soft
+  dark theme), B Paper (light, objects in dark tiles), C Hybrid (dark presentation, paper reading),
+  D Moods (a button cycling dark rooms). The lab page `/lab/themes/` (built on `wip/colour`) shows
+  them with the real objects at gate 1. The letters in `themes` §10 differ; use the names. Fixed
   for any choice [L]: objects stay on dark (section 6); a theme is a token block on
   `html[data-theme]`, set by an inline head script before first paint, with its own `color-scheme`
   and `theme-color`; the stage drops its `view-transition-name` during a theme change (`themes` §7).
@@ -160,11 +169,11 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
 |---|---|---|---|
 | Press, hover (colour, underline) | 120 ms | `--ease-out` | [L] `read` M3; UI 150-300 measured (M, `ref` §3.2) |
 | State change (tabs, toggles, panels) | 200-320 ms | `--ease-out`; springs only as below | [L] as built (`--d-2`, `--d-3`) |
-| Element entrance | 320-480 ms | `--ease-out` | [L] entrances 400-1000 measured (M) |
+| Element entrance | 320-480 ms | `--ease-out` | [L] the short end of the measured 400-1000 (M), so a sequence stays short |
 | Page change, same depth | out 160, in 320 ms | `--ease-in` out, `--ease-out` in | [L] ADR-0007 |
 | Page change, deeper / back | 420 / 240 ms | same | [L] ADR-0007 |
 | Moving across the screen (stage, accent glide) | 480-720 ms | `--ease-move` | [L] as built |
-| Work card to project (shared element) | test band 450-1400 ms; phone 300-700 ms; Back mirrors it | `--ease-move` | [T] O 2026-10-15 allows the long version; the loved model runs 1.38 s open, 1.63 s back (M, `ref` §4.2) |
+| Work card to project (shared element) | test band 450-1400 ms on phone and desktop; Back mirrors it | `--ease-move` | [T] O 2026-10-15 allows the long version; the loved model runs 1.38 s open, 1.63 s back (M, `ref` §4.2). The owner picks one value per platform on the lab page. |
 
 - **Curves** [L]: two for what the visitor sees arrive and move, `--ease-out` (0.2, 0.7, 0.1, 1)
   and `--ease-move` (0.65, 0, 0.35, 1). `--ease-in` (0.4, 0, 1, 1) is only for exits. Five literal
@@ -175,23 +184,35 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
   an extreme reaction: speed and angle are clamped (O 2026-10-10).
 - **Sequenced arrival** [T]: on arrival, the first screen's blocks enter in reading order, 70 ms
   apart, each 400 ms, rising at most 12 px from opacity 0. At most 6 steps; the rest arrive with the
-  last step. Sources: O 2026-10-15 ("elements that appear in sequence read better"); Anthony Fu, 90
+  last step. In a reading column the sequence ends at the heading; the prose is there at first
+  paint. Sources: O 2026-10-15 ("elements that appear in sequence read better"); Anthony Fu, 90
   ms apart (M, `ref` §3.2).
-- **Arrival finishes within 1000 ms** of first paint and never blocks reading [L]; no loading
-  screen, intro or counter (O 2026-10-15). The first step starts at 0 ms. Text is in the HTML,
-  readable and clickable during the stagger. An element hidden for its entrance shows by itself
+- **Arrival finishes within 1000 ms** of first paint [T]. The 1000 ms is the research's proposal,
+  not the owner's limit: calm personal sites settle in about 1 s (M, `ref` §4.1). Fixed [L]: arrival
+  never blocks reading; no loading screen, intro or counter (O 2026-10-15). The first step starts
+  at 0 ms. Text is in the HTML, readable and clickable during the stagger. An element hidden for its entrance shows by itself
   within 1000 ms if its script fails. Longer arrival effects shorten to fit: the poster fallback
   (1400-1600 ms), the glint sweep (1800 ms), the ID card twist (1300 ms) (inventory §5).
+  These three are effects the owner sees today, so the comps show them before and after.
   Exception: the Work transition band above.
 - **Reading text never moves** [L]. No per-paragraph fades and no scroll-linked effects inside a
   reading column (`read` M1). A Work or project chapter may reveal once as it scrolls in, at most
-  700 ms, on a lab page first (postmortem item 6: scroll-linked work is tried on the iPhone).
-- **Ambient loops** [L]: light only (a glow that breathes, a slow drift), a period of 5 s or more,
-  at most one per viewport, paused when hidden. Text and screens never loop. Anything else settles.
+  720 ms (the top of the moving band), on a lab page first (postmortem item 6: scroll-linked work
+  is tried on the iPhone).
+- **Ambient loops** [L]: two kinds only. A light loop (a glow that breathes, a slow drift): a period
+  of 5 s or more, at most one per viewport. Reason: a faster loop pulls the eye like a
+  notification. An object's own idle motion (pre-rendered, O 2026-10-09 "each may have its own
+  animation", O 2026-10-10 phones). Both pause when hidden. Text and screens never loop. Anything
+  else settles. Today About runs four light loops, one at 2.8 s (inventory §5); they reduce to one.
 - **Amplitude** [L]: rise 12 px (24 px deeper), scale 0.97-1.03, no rotation of type or screens.
 - **Still twins** [L]: reduced motion, no JS, no WebGL and phones each get a complete page
-  (CLAUDE.md). Under reduced motion every duration is 150 ms or less, so every duration is a token;
-  the literal 200 ms transitions move onto tokens (inventory §5.1).
+  (CLAUDE.md).
+  - Reduced motion: every duration is 150 ms or less and nothing moves; loops stop on a still frame.
+    The Work transition becomes a cross-fade. Every duration is a token, so one block can cap them
+    all; the literal 200 ms transitions move onto tokens (inventory §5.1).
+  - Objects the visitor drives (ID card, postcard): under reduced motion they jump to the end
+    state. A button gives every action (flip, open, close), so touch and keyboard lose nothing.
+  - Nothing depends on hover: on touch, a hover effect has a tap or a still state.
 
 ## 6. Objects, screens and photos
 
@@ -212,9 +233,12 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
 
 - **Screens** [L]: real screens, true aspect, untilted, in the one browser frame and the one phone
   frame (ADR-0014; ADR-0015 item 5); never past the file's pixels (15 % slack).
-- **Photos** [L]: large and still, with a one-line factual caption (place, date, what it shows).
-  No hover distortion and no reveal tricks (`ref` §4.3). Never stretched past their pixels
-  (O 2026-10-10). One cat photo, never both. On phones one photo per row, caption below.
+- **Photos** [L]: still on the page; no hover distortion (`ref` §4.3). The only reveal is the
+  postcard v2 burn-in below. Never stretched past their pixels (O 2026-10-10). One cat photo, never
+  both. On phones one photo per row.
+- **Photo caption** [T]: a one-line factual caption (place, date, what it shows) is the research's
+  finding (`ref` §4.3), not the owner's choice. The owner rejected Darkroom's click caption
+  (O 2026-10-15).
 - **Postcard v2** [L, direction approved by O 2026-10-15]: the two-sided postcard with a designed
   back and frame. A click opens a large view (at most 90 % of the viewport; LC: the page stays
   visible at the edges, so the visitor is never lost). There the card flips and swings freely,
@@ -223,7 +247,8 @@ with one switch at 900 px. Reason: crisp text and one switch, as ADR-0015 measur
 
 ## 7. Never
 
-From the owner's words (O) and the postmortem (P):
+From the owner's words (O), the postmortem (P) and the research's "not to do" list (`ref` §7,
+adopted by the lead as technique):
 
 - A loading screen, intro show, counter, gate or empty first screen; five buttons before the site
   has said what it is. (O 2026-10-15; `ref` §7)
@@ -237,7 +262,8 @@ From the owner's words (O) and the postmortem (P):
 - Tilted screens, floating phones, stretched images, faux italic, both cat photos. (`ref` §7;
   O 2026-10-10)
 - A native scrollbar anywhere; emoji as icons; symbols typed as characters. (O 2026-10-09, 10-11)
-- A literal colour, size, gap or duration beside the tokens. (O 2026-10-11 night)
+- A literal colour, size, gap or duration beside the tokens. (LC, from O 2026-10-11 night,
+  "controlled")
 - A new design on a live page before the owner approves it on a lab page. (P "What changes" 5)
 
 ## 8. How to check
@@ -252,13 +278,14 @@ in normal and in reduced motion. It fails on:
 | Check | Limit |
 |---|---|
 | Largest rendered text size | the cap for the page role and width (3.1) |
-| Distinct text sizes | 14 per window; 6 in one viewport; each one a token |
+| Distinct text sizes | 14 across all routes at one width; 6 in one viewport; each one a token |
 | Body and reading size, line height | 3.1 values |
 | Characters per line in reading prose | 60-75 from 768 up; 35 or more on phones |
 | Home first screen | words 40-120; at most two buttons; the next strip's top above the fold |
 | Horizontal overflow; touch targets | none; 44 px on touch |
 | Images and media | drawn at most 1.15x the file's pixels |
-| Arrival | every finite animation started at first paint ends by 1000 ms (Work transition: its band); infinite ones are light loops only; no element at opacity 0 after 1000 ms |
+| Arrival | every finite animation started at first paint ends by the arrival limit (section 5; Work transition: its band); infinite ones are light loops or object idle motion only; no element in the first viewport at opacity 0 after the limit |
+| One language | the bar, gutter, ground token, label style and rail are the same on every route |
 | Reduced motion | no animation longer than 150 ms; no movement |
 | Computed text colours | each text node's colour on its ground meets its role's floor |
 | Literals | no font size, colour or duration outside the tokens |
