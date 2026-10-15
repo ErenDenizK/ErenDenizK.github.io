@@ -4,6 +4,16 @@ Start here in a fresh session, after CLAUDE.md, `docs/brief.md`, `docs/PROJECT.m
 and `docs/WORKFLOW.md` (the production system). Then `docs/PLAN.md` (the route and the open
 questions) and the newest file in `docs/journal/` (what happened last and why).
 
+## New direction (2026-10-15, late night)
+
+The owner moved the site to two pages, Home and Record, with one shared token set and a redesign
+from scratch inside the same logic (brief log, the last two sections). The live four-page site below
+keeps running until the new Home replaces it; it is not the model for new work. Superseded:
+ADR-0005, 0007, 0010, 0012, 0014 and ADR-0006 item 5; ADR-0015 is re-done in the new token set
+(`docs/adr/README.md`). The old charter is archived (`docs/history/charter-2026-10-15.md`);
+`docs/design/charter.md` keeps what still holds. The `?photos` trial and the Phase 2 Home prototypes
+were removed (`docs/history/removed-2026-10-15.md`).
+
 ## State of the live site (`dev`)
 
 - **Home:** reverted to the pre-round version (edk glass beside the name, product plate, now/latest).
@@ -11,11 +21,10 @@ questions) and the newest file in `docs/journal/` (what happened last and why).
   B's *structure* (compact, focused) but not its design. B's code is in history (merge 4e35977),
   A's in 10b7826; neither is live.
 - **Reverted with Home:** the measured type and screen system (ADR-0015, merge e5611a7, reverted in
-  956cb6f; the ADR text is at 1ad060e). It was not
-  rejected; it was undone only because it was built on Home A. Re-apply it to the restored Home
-  (revert the revert of e5611a7 and resolve the Home parts) once Home's direction is set.
-- **Kept:** Work (ADR-0014, real screens in frames), About (letter with postcards; photo concepts
-  behind `?photos=1|2|3`, which the owner calls gimmicks), Record (samples, cassette recorder),
+  956cb6f; the ADR text is at 1ad060e). Do not re-apply it: since 2026-10-15 it is re-done in the new
+  token set of the two-page direction.
+- **Kept:** Work (ADR-0014, real screens in frames), About (letter with postcards; the `?photos`
+  concepts were removed on 2026-10-15), Record (samples, cassette recorder),
   the beads rail everywhere (ADR-0013), sharp objects at 1° with phone spin loops, ID card entrance,
   Istanbul clock, the phone layout sweep test.
 

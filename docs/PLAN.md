@@ -7,6 +7,13 @@ when a round closes, copy this file to `docs/history/` and start a fresh one. Cl
 
 ## Where we are (2026-10-15)
 
+- **New direction (late night):** two pages, Home and Record, one shared token set (brief log, last
+  two sections). Phases 1 (charter row), 2, 3 (About structure) and 4 below were planned for the
+  four-page site and are superseded; the lead writes the new route. Still useful from them: the ID
+  card texture and lanyard, postcard v2, the palette gate, the content phase. The archivist's
+  clean-up of 2026-10-15 removed the Home prototypes and the `?photos` trial
+  (`docs/history/removed-2026-10-15.md`) and archived the charter (`docs/history/charter-2026-10-15.md`).
+
 - The reference study is done and digested
   ([`docs/research/2026-10-reference-research.md`](research/2026-10-reference-research.md)); the owner
   answered the first round of questions on 2026-10-15 (brief log, same date).
@@ -32,14 +39,14 @@ build tracks at a time.
 | 0 | test S18 in `nav.spec.ts` | done 2026-10-15: three timing races in the test fixed; 80 of 80 under heavy load | |
 | 0 | retired objects to `media/archive/` | done 2026-10-15 | |
 | 0 | `?live` engine and ADR-0009 | done 2026-10-15: engine removed, ADR-0009 rejected | |
-| 1 Foundations | design charter (`docs/design/charter.md`) | proposed 2026-10-15, critic-checked; taste lines [T] wait on the owner | owner gate: the [T] lines |
+| 1 Foundations | design charter (`docs/design/charter.md`) | archived 2026-10-15 (two-page direction); `docs/design/charter.md` keeps what holds | the new token set |
 | 1 | colour system: Graphite chosen and live (ADR-0016); the house theme passes every floor | done 2026-10-15 | 3 product-world pairings left to the Family chat; OG cards still on #0a0a0b (re-render) |
 | 1 | measuring tools: `npm run palette:gate` in verify and CI | done 2026-10-15 | a page probe against the charter |
-| 2 Home | three prototypes on lab pages: `/lab/home-v1/` Index, `/lab/home-v2/` Strips, `/lab/home-v3/` Statement, with `?aura=` and `?col=` and object switches | lab built 2026-10-15, critic-checked | owner gate 1: pick a direction on phone and desktop |
-| 2 | re-apply ADR-0015 to the chosen Home | waiting on Home | |
+| 2 Home | three prototypes on lab pages: `/lab/home-v1/` Index, `/lab/home-v2/` Strips, `/lab/home-v3/` Statement, with `?aura=` and `?col=` and object switches | superseded 2026-10-15 by the two-page direction; lab pages removed | |
+| 2 | re-apply ADR-0015 to the chosen Home | superseded 2026-10-15: re-done in the new token set | |
 | 3 About | structure: keep "How I work", rework "who I am / where I study / photos", tidier writing like Home, light and aura back on the ground | waiting on Phase 1 | comps |
 | 3 | ID card: denser surface texture on both faces; the lanyard follows the card in mouse-follow mode | plan | lab page |
-| 3 | photo prototype: postcard v2 (designed back and frame), click to enlarge, flip and swing there, at most a slight depth, a faster burn-in; replaces the `?photos` concepts | plan | lab page, owner gate 2 |
+| 3 | photo prototype: postcard v2 (designed back and frame), click to enlarge, flip and swing there, at most a slight depth, a faster burn-in (`docs/history/code/photo-darkroom/`); the `?photos` concepts are removed | plan | lab page, owner gate 2 |
 | 4 Work | presentation pages: promise line, stepped real screens, chapters; the shared-element transition from card to project (the long version may be tried) | waiting | comps |
 | 5 Content | first real Record entries; the monthly "now" line; copy pass | waiting on the owner's notes | |
 | 6 Polish | phone and desktop pass, performance, accessibility, budgets | continuous | |
