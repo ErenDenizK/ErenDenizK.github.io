@@ -5,6 +5,7 @@ import { initOpen } from './open';
 import { initStepper } from './stepper';
 import { motion } from './bus';
 import { spin } from './loops';
+import { onFirstFrame } from './frame';
 
 export function initWork() {
   const sec = document.getElementById('work');
@@ -23,7 +24,7 @@ export function initStatic() {
     setTimeout(() => {
       v.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => { s.src = s.dataset.src!; s.removeAttribute('data-src'); });
       v.load();
-      v.addEventListener('playing', () => v.classList.add('on'), { once: true });
+      onFirstFrame(v, () => v.classList.add('on'));
       v.addEventListener('ended', () => v.classList.remove('on'), { once: true });
       v.play().catch(() => {});
       steps?.yieldTo(v);

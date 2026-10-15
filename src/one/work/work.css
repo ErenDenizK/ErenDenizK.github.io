@@ -326,7 +326,7 @@ html.vt-close::view-transition-group(*) { animation-duration: calc(var(--t-close
 html.vt-close::view-transition-old(paper) { animation: one-out calc(300ms * var(--vt-k, 1)) var(--ease-ui) calc(420ms * var(--vt-k, 1)) both; }
 html.vt-close::view-transition-new(paper) { animation: one-in calc(260ms * var(--vt-k, 1)) var(--ease-ui) calc(300ms * var(--vt-k, 1)) both; }
 html.vt-close::view-transition-group(side-1), html.vt-close::view-transition-group(side-2) { animation-delay: 0ms; animation-timing-function: var(--ease-settle); }
-html.vt-close::view-transition-old(shot) { display: block; animation: none; height: 100%; object-fit: cover; object-position: top; }
+html.vt-close::view-transition-old(shot) { display: block; animation: one-out calc(300ms * var(--vt-k, 1)) var(--ease-ui) calc(280ms * var(--vt-k, 1)) both; height: 100%; object-fit: cover; object-position: top; }
 html.vt-close::view-transition-new(shot) { animation: one-in calc(260ms * var(--vt-k, 1)) var(--ease-ui) calc(260ms * var(--vt-k, 1)) both; }
 @media (max-width: 699.98px) {
   ::view-transition-group(*) { animation-duration: calc(650ms * var(--vt-k, 1)); }

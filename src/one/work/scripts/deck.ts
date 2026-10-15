@@ -6,6 +6,7 @@
    The grid in work.css pins the stage; this file never fixes or takes the scroll. */
 import { soft, out, exit, clamp, lerp } from './ease';
 import { setAura, hold, release, motion } from './bus';
+import { onFirstFrame } from './frame';
 
 type Pose = { x: number; y: number; r: number; shade: number };
 /* rest poses in fractions of the print width (spec 3.3.1: +70 / -18 px and -84 / -6 px at 672 px) */
@@ -157,6 +158,13 @@ export function initDeck(sec: HTMLElement): Deck {
         if (write(p, 12 + j * 3, pose.shade.toFixed(3))) p.shades[j].style.opacity = pose.shade.toFixed(3);
       });
     });
+    /* the texts shown wait for the scroll to settle (clock 2), but step aside while another set passes
+       through them, so a print never runs over a title */
+    const nx = raws[shown + 1] ?? 0, own = shown > 0 ? clamp(raws[shown] * 3 - 2) : 1;
+    const dim = Math.min(1 - clamp(nx * 3), own);
+    const t = projects[shown].txt;
+    const v = dim >= 0.999 ? '' : dim.toFixed(3);
+    if (t.style.opacity !== v) t.style.opacity = v;
     /* while the stage is pinned, Work owns the light (bus.hold) */
     const nowPinned = r.top <= 1 && r.bottom >= vh - 1;
     if (nowPinned !== pinned) { pinned = nowPinned; if (pinned) { hold('work'); setAura(projects[shown].aura, { ms: 500 }); } else release('work'); }
@@ -169,6 +177,8 @@ export function initDeck(sec: HTMLElement): Deck {
     const from = shown;
     shown = to;
     const a = projects[from], b = projects[to];
+    const dimA = a.txt.style.opacity === '' ? 1 : parseFloat(a.txt.style.opacity);
+    a.txt.style.opacity = ''; b.txt.style.opacity = '';
     if (idx) {
       const t = String(to + 1).padStart(2, '0');
       if (idx.textContent !== t) {
@@ -178,8 +188,9 @@ export function initDeck(sec: HTMLElement): Deck {
       }
     }
     if (from !== to && animate) {
-      for (const el of parts(a)) el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-8px)' }], { duration: 160, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'none' });
-      setTimeout(() => { if (shown !== from) a.el.removeAttribute('data-on'); }, 150);
+      /* the old texts leave from where they are (they may have stepped aside already) */
+      a.txt.animate([{ opacity: dimA, transform: 'none' }, { opacity: 0, transform: 'translateY(-8px)' }], { duration: 160, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' })
+        .finished.then((an) => { if (shown !== from) a.el.removeAttribute('data-on'); an.cancel(); }, () => {});
       b.el.setAttribute('data-on', '');
       const step = phoneMq.matches ? 75 : 90;
       parts(b).forEach((el, i) => el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }],
@@ -203,7 +214,7 @@ export function initDeck(sec: HTMLElement): Deck {
       const vid = document.createElement('video');
       vid.muted = true; vid.loop = true; vid.playsInline = true; vid.setAttribute('aria-hidden', 'true'); vid.preload = 'auto';
       for (const s of src) { const so = document.createElement('source'); so.src = s.src; so.type = s.type; vid.append(so); }
-      vid.addEventListener('playing', () => vid.classList.add('on'), { once: true });
+      onFirstFrame(vid, () => vid.classList.add('on'));
       p.obj.append(vid);
       vid.play().catch(() => {});
     });

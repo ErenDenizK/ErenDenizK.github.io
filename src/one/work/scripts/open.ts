@@ -8,6 +8,7 @@ import type { Deck, Proj } from './deck';
 import { motion, emit, pauseField } from './bus';
 import { initStepper, type Stepper } from './stepper';
 import { spin } from './loops';
+import { onFirstFrame } from './frame';
 
 type VT = { finished: Promise<void>; updateCallbackDone: Promise<void>; skipTransition(): void };
 const root = document.documentElement;
@@ -100,7 +101,7 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
     if (!v || motion() !== 'full') return;
     v.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => { s.src = s.dataset.src!; s.removeAttribute('data-src'); });
     v.load();
-    v.addEventListener('playing', () => v.classList.add('on'), { once: true });
+    onFirstFrame(v, () => v.classList.add('on'));
     v.addEventListener('ended', () => v.classList.remove('on'), { once: true });
     v.play().catch(() => {});
     steps?.yieldTo(v);

@@ -3,6 +3,7 @@
    every 90 % of a screen, crosses the middle of the view. Elsewhere they stay a list. A clip step plays
    the signature clip while it is shown (one video at a time); the hero's clip yields to it. */
 import { motion } from './bus';
+import { onFirstFrame } from './frame';
 
 export interface Stepper { update(): void; destroy(): void; yieldTo(v: HTMLVideoElement): void }
 
@@ -22,7 +23,7 @@ export function initStepper(sec: HTMLElement | null, scroller: HTMLElement | Win
     if (!v || motion() !== 'full') return;
     other?.pause();
     if (v.querySelector('source[data-src]')) { v.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => { s.src = s.dataset.src!; s.removeAttribute('data-src'); }); v.load(); }
-    v.addEventListener('playing', () => v.classList.add('on'), { once: true });
+    onFirstFrame(v, () => v.classList.add('on'));
     v.currentTime = 0;
     v.play().catch(() => {});
   }
