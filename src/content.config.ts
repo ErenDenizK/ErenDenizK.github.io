@@ -196,8 +196,8 @@ const worlds = defineCollection({
         at: z.tuple([z.number(), z.number()]).optional(),
         size: z.tuple([z.number(), z.number()]).optional(),
         /** path: the product's own keyframes (percent, transform), an embassy extension the kit's drift allows */
-        drift: z.object({ period: z.number(), phase: z.number().optional(), path: z.array(z.tuple([z.number(), z.string().regex(/^[^;{}<>]*$/)])).optional() }).passthrough().optional(),
-        cycle: z.object({ period: z.number(), phase: z.number().optional() }).passthrough().optional(),
+        drift: z.object({ period: z.number(), phase: z.number().optional(), path: z.array(z.tuple([z.number(), z.string().regex(/^[^;{}<>]*$/)])).optional() }).loose().optional(),
+        cycle: z.object({ period: z.number(), phase: z.number().optional() }).loose().optional(),
       })),
       event: z.object({ boost: z.number().optional(), settle: z.number().optional() }).optional(),
       note: z.string().optional(),
