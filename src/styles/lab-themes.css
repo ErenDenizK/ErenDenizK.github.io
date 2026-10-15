@@ -98,7 +98,8 @@
    Also C's reading surface. Warm off-white, never #fff; one warm ink at several lightnesses. Product
    colours become inks of the same hue (lime to olive, sakura to berry, rose to a deeper rose). */
 :root:has(#lab-t[data-t="b"]),
-:root:has(#lab-t[data-t="c"]) .lab-paper {
+:root:has(#lab-t[data-t="c"]) .lab-paper,
+:root.lab-bar-paper:has(#lab-t[data-t="c"]) .bar {
   color-scheme: light;
   --ground: #f2efe8;
   --ground-deep: #e9e5dd;
@@ -385,6 +386,11 @@
 :root:has(#lab-t) .rail-m.on { background: color-mix(in srgb, var(--ar) 48%, var(--ground)); }
 :root:has(#lab-t) .rail-sheet::before { box-shadow: inset 0 0 0 1px var(--rule), -24px 0 60px -24px var(--lab-shadow); }
 :root:has(#lab-t).rail-touch .rail.is-open .rail-sheet { background: var(--rail-panel); box-shadow: inset 0 0 0 1px var(--rule), 0 12px 40px -12px var(--lab-shadow); }
+
+/* C: while a paper band is under the bar (the page script sets .lab-bar-paper), the bar takes the paper
+   tokens above and the mark's dot the paper ink of the page light. The checker skips this selector: the bar
+   on paper is the paper candidate's chrome, already measured as B. */
+:root.lab-bar-paper:has(#lab-t[data-t="c"]) .bar { --accent: var(--lab-accent); }
 
 /* products: the text takes the product's ink, a filled button its fill, the wordmark its colour */
 :root:has(#lab-t) :is(.lab-recto, a.pj[href$="work/recto/"], .entry[data-projects^="recto"]) { --p-ink: var(--recto-ink); --p-fill: var(--recto-fill); }

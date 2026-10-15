@@ -5,7 +5,9 @@
    the edk object, a Work chapter with its emblem and framed screen, the About opening with the ID card,
    a Record entry in the reading style, and the chrome (buttons, the tab pill, the clock, the rail).
    The switcher changes the candidate on this page only (#lab-t data-t; tokens in styles/lab-themes.css,
-   measured by npm run palette:lab). Live pages and live tokens are untouched.
+   measured by npm run palette:lab). Live pages and live tokens are untouched. A switch reloads the page
+   with ?t=, keeping the scroll position and the focused button: the rail resolves its bead colours once,
+   when it starts (scripts/rail.ts), so only a fresh load shows the beads a page in that theme would have.
    Objects are drawn additively over a dark ground (ADR-0006), so on a light candidate they sit on dark
    islands; they are never shown on paper as if they worked there (scratchpad report objects-light.md).
    Without JavaScript the page shows candidate A; ?t=b (or c, d, d-ink, d-umber, d-moss) picks another. */
@@ -65,7 +67,7 @@ const pinks: Record<string, string> = { recto: 'lab-recto', 'english-prep': 'lab
         {CANDIDATES.map(([id, letter, name]) => (
           <button type="button" data-set={id} aria-pressed={id === 'a' ? 'true' : 'false'}><b>{letter}</b>{name}</button>
         ))}
-        <button type="button" class="lab-mood" data-mood aria-live="polite">Mood: Graphite. Next: Ink blue</button>
+        <button type="button" class="lab-mood" data-mood>Mood: Graphite. Next: Ink blue</button>
       </div>
       <script is:inline>
         /* before first paint: the candidate named in the address (?t=), so a link shows it directly */
@@ -215,17 +217,42 @@ const pinks: Record<string, string> = { recto: 'lab-recto', 'english-prep': 'lab
         </div>
       </div>
     </section>
+    <script is:inline>
+      /* after a switch (the script below reloads with ?t=): back to the same place and the same button,
+         before the first paint, so the switch reads as a change of colour and not as a new page */
+      (function () {
+        try {
+          var s = JSON.parse(sessionStorage.getItem('lab-t-back') || 'null');
+          sessionStorage.removeItem('lab-t-back');
+          if (!s || Date.now() - s.at > 10000) return;
+          /* the band that was at the reading line goes back to the same height on screen; again once
+             fonts and pictures have settled, unless the visitor has moved the page since */
+          var place = function () {
+            var el = document.querySelectorAll('.lab-head, .lab-band')[s.i];
+            if (el) scrollTo({ top: scrollY + el.getBoundingClientRect().top - s.o, behavior: 'instant' });
+          };
+          place();
+          var moved = false;
+          ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach(function (e) { addEventListener(e, function () { moved = true; }, { once: true, passive: true }); });
+          var again = function () { if (!moved) place(); };
+          addEventListener('load', again);
+          if (document.fonts) document.fonts.ready.then(again);
+          var b = document.querySelector(s.f === 'mood' ? '#lab-t [data-mood]' : '#lab-t [data-set="' + s.f + '"]');
+          if (b) b.focus({ preventScroll: true });
+        } catch (e) {}
+      })();
+    </script>
   </div>
 </Base>
 
 <script>
   /* The switcher: one candidate at a time, on this page only. D's button cycles its four moods. The
-     address keeps the choice (?t=), so a screenshot or a link can name it. */
+     address names the choice (?t=), so a screenshot or a link can name it. A switch reloads the page (see
+     the note at the top of this file); the inline script after the last section restores the place. */
   const box = document.getElementById('lab-t') as HTMLElement;
   const MOODS = [['d', 'Graphite'], ['d-ink', 'Ink blue'], ['d-umber', 'Umber'], ['d-moss', 'Moss']];
   const meta = document.querySelector('meta[name="theme-color"]');
   function show(t: string) {
-    box.dataset.t = t;
     const fam = t.startsWith('d') ? 'd' : t;
     box.querySelectorAll<HTMLButtonElement>('[data-set]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.set === fam)));
     const i = MOODS.findIndex(([id]) => id === t);
@@ -234,16 +261,43 @@ const pinks: Record<string, string> = { recto: 'lab-recto', 'english-prep': 'lab
     const cs = getComputedStyle(document.documentElement);
     meta?.setAttribute('content', cs.getPropertyValue('--ground').trim());
     document.querySelectorAll<HTMLElement>('[data-token]').forEach((c) => { c.textContent = cs.getPropertyValue(c.dataset.token!).trim(); });
-    try { const u = new URL(location.href); u.searchParams.set('t', t); history.replaceState(history.state, '', u); } catch {}
+  }
+  function go(t: string, from: string) {
+    if (t === box.dataset.t) return;
+    /* the place, as the band at the reading line (a third down the window) and its height on screen */
+    const bands = [...document.querySelectorAll<HTMLElement>('.lab-head, .lab-band')];
+    let i = 0;
+    bands.forEach((el, n) => { if (el.getBoundingClientRect().top <= innerHeight / 3) i = n; });
+    const o = bands[i]?.getBoundingClientRect().top ?? 0;
+    try { sessionStorage.setItem('lab-t-back', JSON.stringify({ i, o, f: from, at: Date.now() })); } catch {}
+    const u = new URL(location.href);
+    u.searchParams.set('t', t);
+    location.replace(u.href);
   }
   box.addEventListener('click', (e) => {
     const b = (e.target as Element).closest<HTMLButtonElement>('button');
     if (!b) return;
-    if (b.dataset.set) show(b.dataset.set);
+    if (b.dataset.set) go(b.dataset.set, b.dataset.set);
     else if (b.hasAttribute('data-mood')) {
       const i = MOODS.findIndex(([id]) => id === box.dataset.t);
-      show(MOODS[(i + 1) % MOODS.length][0]);
+      go(MOODS[(i + 1) % MOODS.length][0], 'mood');
     }
   });
   show(box.dataset.t || 'a');
+
+  /* C: the bar takes the paper tokens while a paper band is under it. A real C page sets its theme on the
+     root, so its bar always matches it; here one page holds both, and a graphite bar over paper would be a
+     dark band the real page never shows. */
+  const papers = [...document.querySelectorAll<HTMLElement>('.lab-paper')];
+  const bar = document.getElementById('bar');
+  let raf = 0;
+  const under = () => {
+    raf = 0;
+    const r = bar?.getBoundingClientRect();
+    const y = r ? r.top + r.height / 2 : 40;
+    document.documentElement.classList.toggle('lab-bar-paper', papers.some((p) => { const q = p.getBoundingClientRect(); return q.top <= y && q.bottom > y; }));
+  };
+  addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(under); }, { passive: true });
+  addEventListener('resize', under, { passive: true });
+  under();
 </script>
