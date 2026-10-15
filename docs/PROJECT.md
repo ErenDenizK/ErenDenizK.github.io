@@ -21,7 +21,7 @@ employer: **presentation first**, then **a public record** that shows steady wor
 | Content is data (`content/`); a project or entry never needs code | The site must stay cheap to grow for four years | ADR-0002 |
 | Glass objects are **pre-rendered** (Blender Cycles), not real-time 3D | Real-time glass looked like blue plastic in a side-by-side and costs GPU and battery; pre-rendered looks like the real thing | ADR-0006; research/2026-10-realtime-3d |
 | Objects use a 1° pose grid, exact frames, whole device pixels | The "2.5D, blurry, stuttering" look came from blended 2° frames and sub-pixel scaling; measured and fixed | ADR-0006 amendments |
-| Every effect has a still twin (reduced motion, no JS, phone) | Accessibility and robustness; a page must be complete without the effect | CLAUDE.md |
+| Every effect has a still twin (reduced motion, no JS, no WebGL, phones) | Accessibility and robustness; a page must be complete without the effect | CLAUDE.md |
 | One custom scrollbar (the beads) everywhere, never the native bar | Owner's request; a consistent element of identity | ADR-0013 |
 | Real screenshots in platform frames on Work; the products keep their own wordmarks and colours | "Three objects don't show what the apps are"; each product keeps its character | ADR-0014; family kit |
 | The apps share an origin but are never flattened into one style | The owner: each keeps its differences and meets the others at a common point | docs/design/family.md |
