@@ -1,7 +1,6 @@
 ---
 title: English Prep
 order: 2
-teaserMeta: Version 0.75
 status: In development
 version: "0.75"
 role: Direction, specs, review; built with AI agents

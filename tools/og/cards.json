@@ -102,23 +102,6 @@
       }
     },
     {
-      "id": "log-starting-this-site",
-      "layout": "log",
-      "title": "Starting this site",
-      "date": "8 Oct 2026",
-      "kind": "Note",
-      "object": "media/objects/record/poster-1200.webp",
-      "blend": "plus-lighter",
-      "accent": "#8fb8ff",
-      "og": {
-        "title": "Starting this site",
-        "description": "Why a portfolio that grows for four years."
-      },
-      "sample": {
-        "postText": "New log entry."
-      }
-    },
-    {
       "id": "about",
       "layout": "about",
       "kicker": "About",

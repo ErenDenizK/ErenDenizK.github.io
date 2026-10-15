@@ -1,7 +1,6 @@
 ---
 title: Eat Map
 order: 3
-teaserMeta: iOS, private
 status: In development
 statusNote: private
 version: { placeholder: to come }
@@ -14,7 +13,6 @@ wordmark: { face: Nunito, weight: 800, tracking: -0.025 }
 object: eatmap
 og: eatmap
 summary: An iOS app, built in Xcode.
-summaryPlaceholder: description to come
 links: []
 linksNote: Code not public yet
 what:

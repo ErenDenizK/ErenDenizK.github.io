@@ -97,9 +97,9 @@ captures, copied from the product's own token files. Its `captures/` folder hold
 every world against the schema, the kit's light rules and contrast through the light; a project
 without a world keeps the house ground. Swapping a capture is a file and a line, never code.
 
-Anything the owner has not written yet is `{ placeholder: "owner to write" }` (or
-`summaryPlaceholder`): it stays in the content and is left out of the site entirely; writing the
-text is all it takes for it to appear. A test fails the build if a placeholder ever shows.
+Anything the owner has not written yet is `{ placeholder: "owner to write" }`: it stays in the
+content and is left out of the site entirely; writing the text is all it takes for it to appear. A
+test fails the build if a placeholder ever shows.
 
 ### A log entry
 

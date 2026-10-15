@@ -183,10 +183,6 @@ html:not(.js) .bar::after, html.scrolled .bar::after, html.sheet-open .bar::afte
 .vhead { padding: 40px 0 56px; }
 .vtitle { font: 400 var(--t-title)/var(--lh-title) var(--f-display); letter-spacing: -0.02em; margin: 14px 0 0 -0.03em; text-wrap: balance; }
 .vdek { margin-top: 24px; max-width: 30em; color: var(--ink-2); }
-.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--rule-2); }
-.sec-head h2 { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); letter-spacing: -0.012em; }
-.sec-head .more { font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-2); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
-.sec-head .more:hover { color: var(--ink); }
 footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 96px 0 72px; }
 
 /* ---------- buttons ---------- */
@@ -301,10 +297,6 @@ img.blend { mix-blend-mode: plus-lighter; }
 .latest span { color: var(--ink-2); display: block; margin-top: 6px; }
 .latest:hover b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; text-decoration-color: var(--ink-4); }
 
-/* ---------- side column (Log). Work's sections are styles/work.css, Home's showcase styles/showcase.css ---------- */
-.stagecol { position: relative; }
-.stagecol .sticky { position: sticky; top: calc(var(--bar-h) + 24px); background: var(--ground); }
-
 /* ---------- log: styles/log.css ---------- */
 
 /* ---------- about: src/pages/about.astro (the article and its postcards) ---------- */
@@ -346,7 +338,6 @@ dialog.focus::backdrop { background: transparent; }
   transition: background var(--d-1), color var(--d-1);
 }
 .icon-btn:hover { background: var(--wash); color: var(--ink); }
-.grabber { display: none; }
 .sheet-bar .back { display: none; }
 dialog.focus.proxy-hover { cursor: pointer; }
 .case[hidden] { display: none; }
@@ -479,7 +470,7 @@ html.vt-sheet::view-transition-old(root), html.vt-sheet::view-transition-new(roo
 @media (prefers-reduced-motion: reduce) {
   :root { --d-1: 1ms; --d-2: 120ms; --d-3: 150ms; --d-4: 150ms; --d-5: 150ms; }
   .media .m-layer { animation: none !important; }
-  .teaser::before, .tile::before, .bar { transition-duration: 1ms; }
+  .bar { transition-duration: 1ms; }
   .media.sweep .m-glint { animation: none; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
