@@ -1,0 +1,80 @@
+{
+ "slug": "saul-leiter",
+ "url": "https://www.saulleiterfoundation.org/",
+ "group": "photo",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 2.43,
+  "settleS": 1.14,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 5.2,
+  "largestPx": 28.8,
+  "largestText": "Saul Leiter Foundation",
+  "largestFont": "Nunito Sans",
+  "largestWeight": "300",
+  "largestTracking": "normal",
+  "bodyPx": 14.8,
+  "bodyFont": "Nunito Sans",
+  "lineChars": 44,
+  "measurePx": 1296,
+  "mediaPct": 0,
+  "firstScreenChars": 601,
+  "bg": "rgb(252, 252, 248)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 10,
+   "chromatic": 0,
+   "bgHex": "#fcfcf8",
+   "inkPct": 36,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 3.61,
+  "settleS": 1.05,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 11.2,
+  "largestPx": 23.1,
+  "largestText": "Saul Leiter Foundation",
+  "largestFont": "Nunito Sans",
+  "largestWeight": "300",
+  "largestTracking": "normal",
+  "bodyPx": 14.9,
+  "bodyFont": "Nunito Sans",
+  "lineChars": 12,
+  "measurePx": 343,
+  "mediaPct": 0,
+  "firstScreenChars": 559,
+  "bg": "rgb(252, 252, 248)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 7,
+   "chromatic": 0,
+   "bgHex": "#fcfcf8",
+   "inkPct": 14,
+   "chromaHex": []
+  }
+ }
+}

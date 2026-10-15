@@ -1,0 +1,1831 @@
+{
+ "slug": "playdate",
+ "url": "https://play.date/",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "10px",
+  "scrollBehavior": "auto",
+  "scrollbarWidth": "auto",
+  "smoothLib": false,
+  "maxWidths": [
+   [
+    "800px",
+    154
+   ],
+   [
+    "1100px",
+    3
+   ],
+   [
+    "1070px",
+    2
+   ],
+   [
+    "1440px",
+    1
+   ],
+   [
+    "1300px",
+    1
+   ],
+   [
+    "900px",
+    1
+   ],
+   [
+    "1000px",
+    1
+   ]
+  ],
+  "grids": [
+   [
+    "2 cols · 192.375px 288.562px",
+    10
+   ],
+   [
+    "1 cols · 600px",
+    2
+   ],
+   [
+    "3 cols · 350px 350px 350px",
+    1
+   ],
+   [
+    "2 cols · 480.938px 480.938px",
+    1
+   ],
+   [
+    "3 cols · 300px 300px 300px",
+    1
+   ],
+   [
+    "1 cols · 800px",
+    1
+   ],
+   [
+    "4 cols · 154.25px 172.562px 160.656px 312.531px",
+    1
+   ]
+  ],
+  "gaps": [
+   [
+    "2.74312px",
+    8
+   ],
+   [
+    "10.9725px",
+    1
+   ],
+   [
+    "10px",
+    1
+   ],
+   [
+    "50px",
+    1
+   ]
+  ],
+  "spacingY": [
+   [
+    "10.6875px",
+    36
+   ],
+   [
+    "28.5px",
+    34
+   ],
+   [
+    "20px",
+    27
+   ],
+   [
+    "12.9675px",
+    24
+   ],
+   [
+    "9.2625px",
+    24
+   ],
+   [
+    "2.77875px",
+    24
+   ],
+   [
+    "60px",
+    17
+   ],
+   [
+    "30px",
+    17
+   ],
+   [
+    "5.48625px",
+    12
+   ],
+   [
+    "14.25px",
+    6
+   ],
+   [
+    "50px",
+    5
+   ],
+   [
+    "40px",
+    5
+   ],
+   [
+    "10px",
+    4
+   ],
+   [
+    "8.55px",
+    4
+   ],
+   [
+    "11.97px",
+    4
+   ],
+   [
+    "7.125px",
+    4
+   ]
+  ],
+  "spacingX": [
+   [
+    "18.525px",
+    48
+   ],
+   [
+    "23.94px",
+    8
+   ],
+   [
+    "19.95px",
+    6
+   ],
+   [
+    "28.5px",
+    4
+   ],
+   [
+    "10px",
+    2
+   ],
+   [
+    "13.7156px",
+    2
+   ],
+   [
+    "25.365px",
+    2
+   ],
+   [
+    "6px",
+    2
+   ],
+   [
+    "15px",
+    2
+   ],
+   [
+    "100px",
+    2
+   ]
+  ],
+  "radii": [
+   [
+    "2.85px",
+    48
+   ],
+   [
+    "1.8525px",
+    24
+   ],
+   [
+    "50%",
+    11
+   ],
+   [
+    "21.945px",
+    7
+   ],
+   [
+    "34.2px",
+    4
+   ],
+   [
+    "28.5px",
+    3
+   ],
+   [
+    "6px",
+    2
+   ],
+   [
+    "37.3065px",
+    1
+   ],
+   [
+    "152.19px",
+    1
+   ],
+   [
+    "10px",
+    1
+   ]
+  ],
+  "shadows": [
+   [
+    "rgba(255, 255, 255, 0.6) 0px 2.5365px 2.5365px 0px inset, rgba(0, 0, 0, 0.5) 0px",
+    1
+   ]
+  ],
+  "effects": [],
+  "cursors": [
+   [
+    "zoom-in",
+    6
+   ],
+   [
+    "grab",
+    2
+   ]
+  ],
+  "fixed": 2,
+  "sticky": 0,
+  "nav": [
+   "Playdate",
+   "Shop",
+   "A Joke that's Worth 99c 2: Bounce Back",
+   "Ratcheteer",
+   "Hidey Spot",
+   "Games",
+   "Dev",
+   "Education",
+   "Help",
+   "Sign In",
+   "Preorder Season 3",
+   "Playdate®",
+   "Shop Now!!",
+   "Playdate"
+  ],
+  "viewTransitionNames": [
+   "root"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "00-frontpage.1f34fc755a03.css",
+   "url": "https://play.date/static/css/frontpage.1f34fc755a03.css",
+   "bytes": 47093
+  },
+  {
+   "file": "01-colors.45e2a71d042c.css",
+   "url": "https://play.date/static/assets/colors/colors.45e2a71d042c.css",
+   "bytes": 3959
+  },
+  {
+   "file": "02-playdate.6965b7ebe6ef.css",
+   "url": "https://play.date/static/css/playdate.6965b7ebe6ef.css",
+   "bytes": 13551
+  },
+  {
+   "file": "03-navbar.b76fabc7fa57.css",
+   "url": "https://play.date/static/assets/navbar/navbar.b76fabc7fa57.css",
+   "bytes": 32622
+  },
+  {
+   "file": "04-search.b31b56dffef0.css",
+   "url": "https://play.date/static/css/search.b31b56dffef0.css",
+   "bytes": 2773
+  },
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 15310
+  }
+ ],
+ "css": {
+  "fontFaces": [
+   {
+    "family": "Roobert",
+    "file": "Roobert-Regular.7a05714f9759.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Roobert",
+    "file": "Roobert-Light.6f5e37b19874.woff2",
+    "weight": "300"
+   },
+   {
+    "family": "Roobert",
+    "file": "Roobert-Medium.28e0d58e9b74.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "Roobert",
+    "file": "Roobert-Bold.4394eab434ae.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Roobert",
+    "file": "Roobert-SemiBold.4fbfafcf34c2.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Roobert",
+    "file": "Roobert-Heavy.f1e39e0aa199.woff2",
+    "weight": "800"
+   }
+  ],
+  "variables": {
+   "--page-bg": "inherit",
+   "--text": "inherit",
+   "--accent": "var(--purple)",
+   "--interactive": "var(--muted-purple)",
+   "--barely-subtle": "var(--psd-dark-gray)",
+   "--mildly-subtle": "var(--psd-darkest-gray)",
+   "--subtle": "var(--psd-mid-gray)",
+   "--subtler": "rgba(0,0,0,.25)",
+   "--negative": "var(--red)",
+   "--neutral": "var(--blue)",
+   "--positive": "var(--green)",
+   "--important": "var(--purple)",
+   "--subtle-negative": "var(--muted-red)",
+   "--subtle-neutral": "var(--muted-blue)",
+   "--subtle-positive": "var(--muted-green)",
+   "--subtle-important": "var(--muted-purple)",
+   "--button-bg": "var(--text)",
+   "--button-text": "var(--page-bg)",
+   "--input-bg": "var(--page-bg)",
+   "--input-text": "var(--text)",
+   "--link": "var(--brand-yellow)",
+   "--black": "color(display-p3 0 0 0)",
+   "--darkest-gray": "#1d1c18",
+   "--psd-darkest-gray": "color(display-p3 0.129 0.133 0.137)",
+   "--screen-black": "color(display-p3 0.192 0.184 0.157)",
+   "--dark-gray": "color(display-p3 0.341 0.333 0.306)",
+   "--mid-gray": "color(display-p3 0.492 0.480 0.457)",
+   "--psd-dark-gray": "color(display-p3 0.478 0.502 0.522)",
+   "--psd-mid-gray": "color(display-p3 0.392 0.404 0.424)",
+   "--screen-white": "color(display-p3 0.694 0.686 0.659)",
+   "--psd-light-gray": "color(display-p3 0.91 0.894 0.855)",
+   "--lightest-gray": "color(display-p3 0.957 0.957 0.957)",
+   "--psd-lightest-gray": "color(display-p3 0.937 0.937 0.937)",
+   "--white": "color(display-p3 1 1 1)",
+   "--brand-yellow": "color(display-p3 1 0.784 0.2)",
+   "--device-yellow": "color(display-p3 0.984 0.776 0.318)",
+   "--red": "color(display-p3 0.937 0.314 0.137)",
+   "--readable-red": "color(display-p3 1 0.423 0.259)",
+   "--muted-red": "color(display-p3 0.91 0.537 0.518)",
+   "--tomato-red": "color(display-p3 1 0 .3046)",
+   "--orange": "color(display-p3 .937 .318 .137)",
+   "--purple": "color(display-p3 0.424 0 1 / 1)",
+   "--muted-purple": "color(display-p3 0.616 0.439 0.859)",
+   "--blue": "color(display-p3 0.188 0.435 0.714)",
+   "--muted-blue": "color(display-p3 0.369 0.6 0.816)",
+   "--light-blue": "#a0d1ff",
+   "--green": "color(display-p3 0.173 0.49 0.275)",
+   "--muted-green": "color(display-p3 0.376 0.745 0.514)",
+   "--muted-light-green": "color(display-p3 0.608 0.882 0.714)",
+   "--muted-dark-green": "color(display-p3 0.274 0.604 0.396)",
+   "--light-green": "#90f8b7",
+   "--aqua": "color(display-p3 0.292 0.649 0.547)",
+   "--aqua-dark": "color(display-p3 0.216 0.463 0.403)",
+   "--aqua-light": "color(display-p3 0.37 0.765 0.667)",
+   "--dev-red": "color(display-p3 0.937 0.314 0.137)",
+   "--page-bg-inverted": "var(--white)",
+   "--card-bg": "var(--psd-darkest-gray)",
+   "--form-bg": "var(--black)",
+   "--text-inverted": "var(--black)",
+   "--disabled": "var(--psd-dark-gray)",
+   "--bright": "var(--brand-yellow)",
+   "--card-border": "var(--text)",
+   "--status-good": "var(--muted-green)",
+   "--status-alert": "var(--orange)",
+   "--status-bad": "var(--negative)",
+   "--cc-font-family": "\"Roobert\", Helvetica, sans-serif"
+  },
+  "keyframes": {
+   "blobble": " 0% { transform: scale(1,1); } 30% { transform: scale(1.05, .97); } 70% { transform: scale(.99, 1.03);} 100% { transform: scale(1.03, .99);} ",
+   "pulse": " from { opacity: 1; } to { opacity: 0.5; } ",
+   "catalogGamesBannerScroll": " 0% { transform: translateX(0rem); } 100% { transform: translateX(-100rem); } "
+  },
+  "easings": [
+   [
+    "linear",
+    31
+   ],
+   [
+    "ease-in-out",
+    9
+   ],
+   [
+    "ease-out",
+    8
+   ],
+   [
+    "ease",
+    5
+   ]
+  ],
+  "durations": [
+   [
+    ".1s",
+    32
+   ],
+   [
+    "250ms",
+    4
+   ],
+   [
+    "300ms",
+    3
+   ],
+   [
+    "150ms",
+    2
+   ],
+   [
+    "200ms",
+    2
+   ],
+   [
+    "10s",
+    2
+   ],
+   [
+    "5000ms",
+    1
+   ],
+   [
+    "3s",
+    1
+   ],
+   [
+    "3.5s",
+    1
+   ],
+   [
+    "4.5s",
+    1
+   ],
+   [
+    "5s",
+    1
+   ],
+   [
+    "1000ms",
+    1
+   ],
+   [
+    "40s",
+    1
+   ],
+   [
+    ".3s",
+    1
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "screen and (min-width: 670px)",
+    5
+   ],
+   [
+    "screen and (min-width: 240px)",
+    2
+   ],
+   [
+    "screen and (min-width: 1100px)",
+    2
+   ],
+   [
+    "(min-width: 670px)",
+    2
+   ],
+   [
+    "(min-width: 1100px)",
+    2
+   ],
+   [
+    "(prefers-reduced-motion: no-preference)",
+    1
+   ],
+   [
+    "screen and (min-width: 620px)",
+    1
+   ],
+   [
+    "(prefers-reduced-motion)",
+    1
+   ],
+   [
+    "screen and (max-width: 670px)",
+    1
+   ],
+   [
+    "(prefers-color-scheme: dark)",
+    1
+   ],
+   [
+    "screen and (prefers-reduced-motion)",
+    1
+   ],
+   [
+    "(min-width: 670px) and (max-width: 1100px)",
+    1
+   ],
+   [
+    "(min-width:1100px)",
+    1
+   ]
+  ],
+  "reducedMotion": 3,
+  "colorScheme": 1,
+  "viewTransitions": 0,
+  "scrollTimelines": 0,
+  "containerQueries": 0,
+  "clamp": []
+ },
+ "anatomy": {
+  "libs": [
+   "three"
+  ],
+  "canvases": [
+   "webgl",
+   "webgl"
+  ],
+  "videos": 2,
+  "fonts": [
+   "Roobert 400 normal",
+   "Roobert 700 normal",
+   "Roobert 800 normal"
+  ],
+  "colorVars": {
+   "--black": "#000000",
+   "--darkest-gray": "#1d1c18",
+   "--psd-darkest-gray": "#212223",
+   "--screen-black": "#312f28",
+   "--dark-gray": "#57554e",
+   "--mid-gray": "#7e7b75",
+   "--psd-dark-gray": "#7a8085",
+   "--psd-mid-gray": "#64676c",
+   "--screen-white": "#b1afa8",
+   "--psd-light-gray": "#bbb",
+   "--lightest-gray": "#f5f5f5",
+   "--psd-lightest-gray": "#efefef",
+   "--white": "#ffffff",
+   "--brand-yellow": "#ffc833",
+   "--device-yellow": "#fbc651",
+   "--red": "#ef5023",
+   "--readable-red": "#ff6c42",
+   "--muted-red": "#e88984",
+   "--tomato-red": "#ff004e",
+   "--orange": "#ef5023",
+   "--purple": "#6c00ff",
+   "--muted-purple": "#9d70db",
+   "--blue": "#306fb6",
+   "--muted-blue": "#5e99d0",
+   "--light-blue": "#a0d1ff",
+   "--green": "#2c7d46",
+   "--muted-green": "#60be83",
+   "--muted-light-green": "#9be1b6",
+   "--muted-dark-green": "#469a65",
+   "--light-green": "#90f8b7",
+   "--aqua": "#00a88a",
+   "--aqua-dark": "#127866",
+   "--aqua-light": "#21c6a9",
+   "--subtler": "rgba(0,0,0,.25)"
+  },
+  "typeScale": [
+   {
+    "px": 68.4,
+    "family": "Roobert",
+    "weight": "800",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 168,
+    "n": 14,
+    "sample": "The System."
+   },
+   {
+    "px": 57,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "1.1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 101,
+    "n": 1,
+    "sample": "It's a new, tiny handheld game system with a bun"
+   },
+   {
+    "px": 51.3,
+    "family": "Roobert",
+    "weight": "800",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 22,
+    "n": 1,
+    "sample": "Playdate for Education"
+   },
+   {
+    "px": 50.7,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 10,
+    "n": 2,
+    "sample": "Shop Now"
+   },
+   {
+    "px": 39.9,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 20,
+    "n": 1,
+    "sample": "Help / Contact / FAQ"
+   },
+   {
+    "px": 34.2,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 64,
+    "n": 4,
+    "sample": "Grab some games!"
+   },
+   {
+    "px": 34.2,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 55,
+    "n": 1,
+    "sample": "Sign up to get Playdate news. Only the important"
+   },
+   {
+    "px": 33.3,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 89,
+    "n": 1,
+    "sample": "Playdate's simplicity and scope make it perfect "
+   },
+   {
+    "px": 28.5,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 313,
+    "n": 5,
+    "sample": "Preorder Season 3"
+   },
+   {
+    "px": 28.5,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 2442,
+    "n": 35,
+    "sample": "Playdate is familiar, but unlike anything you've"
+   },
+   {
+    "px": 28.5,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 249,
+    "n": 9,
+    "sample": "very special black and white screen"
+   },
+   {
+    "px": 28.5,
+    "family": "Roobert",
+    "weight": "800",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 14,
+    "n": 2,
+    "sample": "two"
+   },
+   {
+    "px": 28.5,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 53,
+    "n": 4,
+    "sample": "No spoilers"
+   },
+   {
+    "px": 24.2,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 127,
+    "n": 1,
+    "sample": "\"If we made hardware, and built a tiny little ga"
+   },
+   {
+    "px": 24.2,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 13,
+    "n": 1,
+    "sample": "Email Address"
+   },
+   {
+    "px": 24.1,
+    "family": "Roobert",
+    "weight": "800",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 313,
+    "n": 23,
+    "sample": "Casual Birder"
+   },
+   {
+    "px": 24.1,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 12,
+    "n": 1,
+    "sample": "HYPER METEOR"
+   },
+   {
+    "px": 21.9,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "-0.164587px",
+    "transform": "none",
+    "chars": 40,
+    "n": 7,
+    "sample": "Playdate"
+   },
+   {
+    "px": 21.4,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 59,
+    "n": 10,
+    "sample": "Battery"
+   },
+   {
+    "px": 21.4,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 348,
+    "n": 24,
+    "sample": "14 days standby clock"
+   },
+   {
+    "px": 21.4,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 249,
+    "n": 20,
+    "sample": "Panic"
+   },
+   {
+    "px": 18.8,
+    "family": "Roobert",
+    "weight": "800",
+    "lineHeight": "3.75",
+    "tracking": "normal",
+    "transform": "uppercase",
+    "chars": 3,
+    "n": 1,
+    "sample": "And"
+   },
+   {
+    "px": 18.5,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 602,
+    "n": 17,
+    "sample": "Diego Garcia, Music by Maxo"
+   },
+   {
+    "px": 18.5,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 102,
+    "n": 11,
+    "sample": "uvula"
+   },
+   {
+    "px": 13.3,
+    "family": "Arial",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Play game audio"
+   }
+  ],
+  "textColors": [
+   [
+    "color(display-p3 0.192 0.184 0.157)",
+    3071
+   ],
+   [
+    "color(display-p3 1 1 1)",
+    1750
+   ],
+   [
+    "color(display-p3 0 0 0)",
+    477
+   ],
+   [
+    "color(display-p3 0.694 0.686 0.659)",
+    72
+   ],
+   [
+    "rgba(0, 0, 0, 0)",
+    69
+   ],
+   [
+    "rgb(0, 0, 0)",
+    25
+   ],
+   [
+    "rgb(255, 255, 255)",
+    16
+   ],
+   [
+    "color(display-p3 0.424 0 1)",
+    3
+   ]
+  ],
+  "bgColors": [
+   [
+    "color(display-p3 0.478 0.502 0.522)",
+    24945
+   ],
+   [
+    "color(display-p3 1 0.784 0.2)",
+    9128
+   ],
+   [
+    "color(display-p3 0.129 0.133 0.137)",
+    4248
+   ],
+   [
+    "color(display-p3 0.424 0 1)",
+    3651
+   ],
+   [
+    "color(display-p3 0.91 0.894 0.855)",
+    2592
+   ],
+   [
+    "color(display-p3 0.937 0.937 0.937)",
+    1507
+   ],
+   [
+    "rgba(0, 0, 0, 0.8)",
+    1296
+   ],
+   [
+    "color(display-p3 0.37 0.765 0.667)",
+    1269
+   ],
+   [
+    "color(display-p3 0.192 0.184 0.157)",
+    50
+   ],
+   [
+    "color(display-p3 0 0 0)",
+    24
+   ]
+  ],
+  "bodyBg": "color(display-p3 0.478 0.502 0.522)",
+  "htmlBg": "rgba(0, 0, 0, 0)",
+  "transitions": [
+   [
+    "transform | 0.15s | ease-in-out",
+    24
+   ],
+   [
+    "transform | 0.3s | ease-in-out",
+    24
+   ],
+   [
+    "background-position | 0.25s | ease-in-out",
+    24
+   ],
+   [
+    "backface-visibility | 0.15s | ease-in-out",
+    24
+   ],
+   [
+    "overflow | 0.1s | linear",
+    14
+   ],
+   [
+    "opacity | 0.1s | linear",
+    4
+   ],
+   [
+    "background-color | 0.25s | ease-in-out",
+    1
+   ],
+   [
+    "right, transform | 0.2s | ease-in-out",
+    1
+   ],
+   [
+    "width, background, border-color | 0.3s | ease",
+    1
+   ],
+   [
+    "opacity | 0.3s | ease",
+    1
+   ]
+  ],
+  "docScreens": 17.1,
+  "title": "Playdate",
+  "metaDesc": "It’s yellow. It fits in your pocket. There’s a crank. It comes with 24 free games to get you started. Say hi to Playdate from Panic."
+ },
+ "animsAtLoad": [
+  "CSSAnimation:catalogGamesBannerScroll|40000ms|delay 0|linear|Infinity",
+  "CSSAnimation:catalogGamesBannerScroll|40000ms|delay 0|linear|Infinity",
+  "CSSAnimation:blobble|3000ms|delay 220|linear|Infinity",
+  "CSSAnimation:blobble|5000ms|delay 570|linear|Infinity",
+  "CSSAnimation:blobble|3500ms|delay 0|linear|Infinity",
+  "CSSAnimation:blobble|5000ms|delay 1000|linear|Infinity",
+  "CSSAnimation:blobble|5000ms|delay 200|linear|Infinity",
+  "CSSAnimation:blobble|4500ms|delay 660|linear|Infinity",
+  "CSSAnimation:blobble|5000ms|delay 810|linear|Infinity",
+  "CSSAnimation:blobble|5000ms|delay 310|linear|Infinity",
+  "CSSAnimation:blobble|5000ms|delay 920|linear|Infinity",
+  "CSSAnimation:blobble|5000ms|delay 120|linear|Infinity",
+  "CSSAnimation:blobble|5000ms|delay 700|linear|Infinity",
+  "CSSAnimation:blobble|5000ms|delay 180|linear|Infinity"
+ ],
+ "hovers": [
+  {
+   "i": 0,
+   "tag": "A",
+   "text": "Preorder Season 3",
+   "w": 262.401123046875,
+   "h": 189.396728515625,
+   "file": "clip-hover-0.webp",
+   "maxChangePct": 5.77
+  }
+ ],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 45.34
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [],
+   "anims": 14
+  },
+  {
+   "i": 1,
+   "y": 675,
+   "file": "desktop-j01.webp",
+   "headings": [
+    "H1 0px: Playdate®"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 2,
+   "y": 1350,
+   "file": "desktop-j02.webp",
+   "headings": [
+    "H1 0px: Playdate®",
+    "H2 68px: The System.",
+    "H2 68px: The Design."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 3,
+   "y": 2025,
+   "file": "desktop-j03.webp",
+   "headings": [
+    "H2 68px: The Design."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 4,
+   "y": 2700,
+   "file": "desktop-j04.webp",
+   "headings": [
+    "H2 68px: The Crank."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 5,
+   "y": 3375,
+   "file": "desktop-j05.webp",
+   "headings": [],
+   "anims": 14
+  },
+  {
+   "i": 6,
+   "y": 4050,
+   "file": "desktop-j06.webp",
+   "headings": [
+    "H2 68px: The Season."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 7,
+   "y": 4725,
+   "file": "desktop-j07.webp",
+   "headings": [],
+   "anims": 14
+  },
+  {
+   "i": 8,
+   "y": 5400,
+   "file": "desktop-j08.webp",
+   "headings": [
+    "H2 68px: Catalog"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 9,
+   "y": 6075,
+   "file": "desktop-j09.webp",
+   "headings": [
+    "H2 68px: Catalog"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 10,
+   "y": 6750,
+   "file": "desktop-j10.webp",
+   "headings": [
+    "H2 68px: Your games?"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 11,
+   "y": 7425,
+   "file": "desktop-j11.webp",
+   "headings": [
+    "H2 68px: Big Screen Optional."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 12,
+   "y": 8100,
+   "file": "desktop-j12.webp",
+   "headings": [
+    "H2 68px: Big Screen Optional."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 13,
+   "y": 8775,
+   "file": "desktop-j13.webp",
+   "headings": [
+    "H1 51px: Playdate for Education",
+    "H3 33px: Playdate's simplicity and scope make it perfect for teaching programming and game design."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 14,
+   "y": 9450,
+   "file": "desktop-j14.webp",
+   "headings": [
+    "H2 68px: All for just $229."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 15,
+   "y": 10125,
+   "file": "desktop-j15.webp",
+   "headings": [
+    "H2 68px: AND Playdate Cover"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 16,
+   "y": 10800,
+   "file": "desktop-j16.webp",
+   "headings": [
+    "H2 68px: The Specs.",
+    "H3 21px: Battery",
+    "H3 21px: CPU",
+    "H3 21px: Storage",
+    "H3 21px: Wireless",
+    "H3 21px: Sound"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 17,
+   "y": 11475,
+   "file": "desktop-j17.webp",
+   "headings": [
+    "H3 21px: Battery",
+    "H3 21px: CPU",
+    "H3 21px: Storage",
+    "H3 21px: Size",
+    "H3 21px: Included",
+    "H3 21px: Wireless"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 18,
+   "y": 12150,
+   "file": "desktop-j18.webp",
+   "headings": [
+    "H2 68px: The Idea."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 19,
+   "y": 12825,
+   "file": "desktop-j19.webp",
+   "headings": [
+    "H2 68px: Who Made It?",
+    "H2 68px: Stay in Touch!"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 20,
+   "y": 13500,
+   "file": "desktop-j20.webp",
+   "headings": [
+    "H2 68px: Stay in Touch!",
+    "H2 68px: Need Help?"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 21,
+   "y": 14175,
+   "file": "desktop-j21.webp",
+   "headings": [],
+   "anims": 14
+  },
+  {
+   "i": 22,
+   "y": 14496,
+   "file": "desktop-j22.webp",
+   "headings": [],
+   "anims": 14
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [
+   "three"
+  ],
+  "canvases": [
+   "webgl",
+   "webgl"
+  ],
+  "videos": 2,
+  "fonts": [
+   "Roobert 400 normal",
+   "Roobert 700 normal",
+   "Roobert 800 normal"
+  ],
+  "colorVars": {
+   "--black": "#000000",
+   "--darkest-gray": "#1d1c18",
+   "--psd-darkest-gray": "#212223",
+   "--screen-black": "#312f28",
+   "--dark-gray": "#57554e",
+   "--mid-gray": "#7e7b75",
+   "--psd-dark-gray": "#7a8085",
+   "--psd-mid-gray": "#64676c",
+   "--screen-white": "#b1afa8",
+   "--psd-light-gray": "#bbb",
+   "--lightest-gray": "#f5f5f5",
+   "--psd-lightest-gray": "#efefef",
+   "--white": "#ffffff",
+   "--brand-yellow": "#ffc833",
+   "--device-yellow": "#fbc651",
+   "--red": "#ef5023",
+   "--readable-red": "#ff6c42",
+   "--muted-red": "#e88984",
+   "--tomato-red": "#ff004e",
+   "--orange": "#ef5023",
+   "--purple": "#6c00ff",
+   "--muted-purple": "#9d70db",
+   "--blue": "#306fb6",
+   "--muted-blue": "#5e99d0",
+   "--light-blue": "#a0d1ff",
+   "--green": "#2c7d46",
+   "--muted-green": "#60be83",
+   "--muted-light-green": "#9be1b6",
+   "--muted-dark-green": "#469a65",
+   "--light-green": "#90f8b7",
+   "--aqua": "#00a88a",
+   "--aqua-dark": "#127866",
+   "--aqua-light": "#21c6a9",
+   "--subtler": "rgba(0,0,0,.25)"
+  },
+  "typeScale": [
+   {
+    "px": 32.8,
+    "family": "Roobert",
+    "weight": "800",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 168,
+    "n": 14,
+    "sample": "The System."
+   },
+   {
+    "px": 27.3,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "1.1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 101,
+    "n": 1,
+    "sample": "It's a new, tiny handheld game system with a bun"
+   },
+   {
+    "px": 24.6,
+    "family": "Roobert",
+    "weight": "800",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 22,
+    "n": 1,
+    "sample": "Playdate for Education"
+   },
+   {
+    "px": 24.3,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 10,
+    "n": 2,
+    "sample": "Shop Now"
+   },
+   {
+    "px": 20.4,
+    "family": "Roobert",
+    "weight": "800",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 313,
+    "n": 23,
+    "sample": "Casual Birder"
+   },
+   {
+    "px": 20.4,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 12,
+    "n": 1,
+    "sample": "HYPER METEOR"
+   },
+   {
+    "px": 19.1,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 20,
+    "n": 1,
+    "sample": "Help / Contact / FAQ"
+   },
+   {
+    "px": 18.9,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "-0.141892px",
+    "transform": "none",
+    "chars": 40,
+    "n": 7,
+    "sample": "Playdate"
+   },
+   {
+    "px": 16.4,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 64,
+    "n": 4,
+    "sample": "Grab some games!"
+   },
+   {
+    "px": 16.4,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 55,
+    "n": 1,
+    "sample": "Sign up to get Playdate news. Only the important"
+   },
+   {
+    "px": 16,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 89,
+    "n": 1,
+    "sample": "Playdate's simplicity and scope make it perfect "
+   },
+   {
+    "px": 15.7,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 602,
+    "n": 17,
+    "sample": "Diego Garcia, Music by Maxo"
+   },
+   {
+    "px": 15.7,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 102,
+    "n": 11,
+    "sample": "uvula"
+   },
+   {
+    "px": 15.4,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 132,
+    "n": 16,
+    "sample": "Playdate"
+   },
+   {
+    "px": 13.7,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 313,
+    "n": 5,
+    "sample": "Preorder Season 3"
+   },
+   {
+    "px": 13.7,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 2442,
+    "n": 35,
+    "sample": "Playdate is familiar, but unlike anything you've"
+   },
+   {
+    "px": 13.7,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 249,
+    "n": 9,
+    "sample": "very special black and white screen"
+   },
+   {
+    "px": 13.7,
+    "family": "Roobert",
+    "weight": "800",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 14,
+    "n": 2,
+    "sample": "two"
+   },
+   {
+    "px": 13.7,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 401,
+    "n": 28,
+    "sample": "No spoilers"
+   },
+   {
+    "px": 13.7,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 59,
+    "n": 10,
+    "sample": "Battery"
+   },
+   {
+    "px": 13.3,
+    "family": "Arial",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Play game audio"
+   },
+   {
+    "px": 11.6,
+    "family": "Roobert",
+    "weight": "700",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 127,
+    "n": 1,
+    "sample": "\"If we made hardware, and built a tiny little ga"
+   },
+   {
+    "px": 11.6,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 13,
+    "n": 1,
+    "sample": "Email Address"
+   },
+   {
+    "px": 10.2,
+    "family": "Roobert",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 117,
+    "n": 4,
+    "sample": "Panic"
+   },
+   {
+    "px": 6.4,
+    "family": "Roobert",
+    "weight": "800",
+    "lineHeight": "3.75",
+    "tracking": "normal",
+    "transform": "uppercase",
+    "chars": 3,
+    "n": 1,
+    "sample": "And"
+   }
+  ],
+  "textColors": [
+   [
+    "color(display-p3 0.192 0.184 0.157)",
+    3099
+   ],
+   [
+    "color(display-p3 1 1 1)",
+    1722
+   ],
+   [
+    "color(display-p3 0 0 0)",
+    477
+   ],
+   [
+    "color(display-p3 0.694 0.686 0.659)",
+    72
+   ],
+   [
+    "rgba(0, 0, 0, 0)",
+    69
+   ],
+   [
+    "rgb(0, 0, 0)",
+    25
+   ],
+   [
+    "rgb(255, 255, 255)",
+    16
+   ],
+   [
+    "color(display-p3 0.424 0 1)",
+    3
+   ]
+  ],
+  "bgColors": [
+   [
+    "color(display-p3 0.478 0.502 0.522)",
+    4274
+   ],
+   [
+    "color(display-p3 1 0.784 0.2)",
+    2192
+   ],
+   [
+    "color(display-p3 0.91 0.894 0.855)",
+    1824
+   ],
+   [
+    "color(display-p3 0.129 0.133 0.137)",
+    642
+   ],
+   [
+    "color(display-p3 0.424 0 1)",
+    509
+   ],
+   [
+    "rgba(0, 0, 0, 0.8)",
+    329
+   ],
+   [
+    "color(display-p3 0.937 0.937 0.937)",
+    250
+   ],
+   [
+    "color(display-p3 0.37 0.765 0.667)",
+    176
+   ]
+  ],
+  "bodyBg": "color(display-p3 0.478 0.502 0.522)",
+  "htmlBg": "rgba(0, 0, 0, 0)",
+  "transitions": [
+   [
+    "transform | 0.15s | ease-in-out",
+    24
+   ],
+   [
+    "transform | 0.3s | ease-in-out",
+    24
+   ],
+   [
+    "background-position | 0.25s | ease-in-out",
+    24
+   ],
+   [
+    "backface-visibility | 0.15s | ease-in-out",
+    24
+   ],
+   [
+    "overflow | 0.1s | linear",
+    14
+   ],
+   [
+    "opacity | 0.1s | linear",
+    4
+   ],
+   [
+    "background-color | 0.25s | ease-in-out",
+    1
+   ],
+   [
+    "right, transform | 0.2s | ease-in-out",
+    1
+   ],
+   [
+    "width, background, border-color | 0.3s | ease",
+    1
+   ],
+   [
+    "opacity | 0.3s | ease",
+    1
+   ]
+  ],
+  "docScreens": 12.1,
+  "title": "Playdate",
+  "metaDesc": "It’s yellow. It fits in your pocket. There’s a crank. It comes with 24 free games to get you started. Say hi to Playdate from Panic."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [
+    "H1 0px: Playdate®",
+    "H2 33px: The System."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 1,
+   "y": 760,
+   "file": "phone-j01.webp",
+   "headings": [
+    "H2 33px: The System.",
+    "H2 33px: The Design.",
+    "H2 33px: The Crank."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 2,
+   "y": 1519,
+   "file": "phone-j02.webp",
+   "headings": [
+    "H2 33px: The Season."
+   ],
+   "anims": 14
+  },
+  {
+   "i": 3,
+   "y": 2279,
+   "file": "phone-j03.webp",
+   "headings": [],
+   "anims": 14
+  },
+  {
+   "i": 4,
+   "y": 3038,
+   "file": "phone-j04.webp",
+   "headings": [],
+   "anims": 14
+  },
+  {
+   "i": 5,
+   "y": 3798,
+   "file": "phone-j05.webp",
+   "headings": [],
+   "anims": 14
+  },
+  {
+   "i": 6,
+   "y": 4558,
+   "file": "phone-j06.webp",
+   "headings": [],
+   "anims": 14
+  },
+  {
+   "i": 7,
+   "y": 5317,
+   "file": "phone-j07.webp",
+   "headings": [
+    "H2 33px: Catalog",
+    "H2 33px: Your games?"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 8,
+   "y": 6077,
+   "file": "phone-j08.webp",
+   "headings": [
+    "H2 33px: Big Screen Optional.",
+    "H1 25px: Playdate for Education"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 9,
+   "y": 6836,
+   "file": "phone-j09.webp",
+   "headings": [
+    "H1 25px: Playdate for Education",
+    "H3 16px: Playdate's simplicity and scope make it perfect for teaching programming and game design.",
+    "H2 33px: All for just $229.",
+    "H2 33px: AND Playdate Cover"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 10,
+   "y": 7596,
+   "file": "phone-j10.webp",
+   "headings": [
+    "H2 33px: AND Playdate Cover",
+    "H2 33px: The Specs.",
+    "H3 14px: Battery",
+    "H3 14px: CPU",
+    "H3 14px: Storage",
+    "H3 14px: Size"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 11,
+   "y": 8356,
+   "file": "phone-j11.webp",
+   "headings": [
+    "H3 14px: Size",
+    "H3 14px: Included",
+    "H3 14px: Inputs",
+    "H3 14px: Cost",
+    "H2 33px: The Idea.",
+    "H2 33px: Who Made It?"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 12,
+   "y": 9115,
+   "file": "phone-j12.webp",
+   "headings": [
+    "H2 33px: Stay in Touch!",
+    "H2 33px: Need Help?"
+   ],
+   "anims": 14
+  },
+  {
+   "i": 13,
+   "y": 9410,
+   "file": "phone-j13.webp",
+   "headings": [
+    "H2 33px: Need Help?"
+   ],
+   "anims": 14
+  }
+ ]
+}

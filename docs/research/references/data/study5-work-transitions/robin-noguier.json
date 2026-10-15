@@ -1,0 +1,17 @@
+{
+ "slug": "robin-noguier",
+ "url": "https://www.robin-noguier.com/",
+ "open": {
+  "urlFrom": "https://robin-noguier.com/",
+  "urlTo": "https://robin-noguier.com/project/fun/",
+  "sameDocument": true,
+  "viewTransitions": 0,
+  "settleS": 1.38,
+  "frames": 426
+ },
+ "back": {
+  "urlTo": "https://robin-noguier.com/",
+  "sameDocument": true,
+  "settleS": 1.63
+ }
+}

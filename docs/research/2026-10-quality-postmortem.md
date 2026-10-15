@@ -2,7 +2,9 @@
 
 > **Status:** current. The lead's own analysis after the owner rejected Home A and Home B ("everything
 > too big, not professional, contrived, many bugs on the phone, ugly") and the photo concepts ("a
-> gimmick"). Home was reverted to its previous version the same day.
+> gimmick"). Home was reverted to its previous version the same day. Update 2026-10-15: "What changes"
+> item 1 is done (the owner's reference study, 2026-10-12..14, `2026-10-reference-research.md`); ADR-0015
+> was reverted with Home in `0f4a33a` (text at `16136f3`).
 
 ## What happened
 

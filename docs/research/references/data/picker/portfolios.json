@@ -1,0 +1,352 @@
+[
+ {
+  "name": "Josh W. Comeau",
+  "url": "https://www.joshwcomeau.com/",
+  "category": "portfolio",
+  "award": "Listed among the 10 best custom & creative developer blogs (DEV Community roundup); widely cited for interactive hand-built MDX posts",
+  "source": "https://dev.to/braydoncoyer/10-best-custom-and-creative-developer-blogs-in-2021-530k",
+  "why": "Whimsical, physically-animated interactive explainers with a custom widget in nearly every article, built from scratch without UI libraries.",
+  "live": true,
+  "slug": "josh-w-comeau"
+ },
+ {
+  "name": "Jhey Tompkins",
+  "url": "https://jhey.dev/",
+  "category": "portfolio",
+  "award": "Community 'pick of the year' in State of CSS 2022; regularly featured in CodePen and Codrops demo roundups",
+  "source": "https://alvaromontoro.com/10-cool-codepen-demos/2024/03/",
+  "why": "Playful, detail-obsessed CSS/JS micro-interactions from a Google DevRel engineer who pushes what CSS can do.",
+  "live": true,
+  "slug": "jhey-tompkins"
+ },
+ {
+  "name": "Maxime Heckel (blog)",
+  "url": "https://blog.maximeheckel.com/",
+  "category": "portfolio",
+  "award": "HN front page: 'Rendering the Sky, Sunsets, and Planets' 537 pts (2026), 'Crafting Painterly Shaders' 245 pts; Figma Config 2025 speaker",
+  "source": "https://news.ycombinator.com/item?id=48107997",
+  "why": "Dark, precise long-form shader/WebGL essays with embedded live playgrounds - a model of the quiet, technical design-engineer aesthetic.",
+  "live": true,
+  "slug": "maxime-heckel-blog"
+ },
+ {
+  "name": "Lynn Fisher (lynnandtonic)",
+  "url": "https://lynnandtonic.com/",
+  "category": "portfolio",
+  "award": "Famous annual from-scratch portfolio refresh (Adobe XD interview); 2025 refresh case study posted to HN (Mar 2026)",
+  "source": "https://xd.adobe.com/ideas/perspectives/interviews/lynn-fishers-annual-portfolio-redesign-skills-sharp",
+  "why": "Reinvents her portfolio every year as an experiment in surprising responsive design, starting from a blank CSS file.",
+  "live": true,
+  "slug": "lynn-fisher-lynnandtonic"
+ },
+ {
+  "name": "Robin Noguier",
+  "url": "https://www.robin-noguier.com/",
+  "category": "portfolio",
+  "award": "Awwwards Site of the Day + Honorable Mention (dev Lorenzo Cadamuro); Noguier sits on the 2026 Awwwards jury",
+  "source": "https://www.awwwards.com/lorenzocadamuro/",
+  "why": "Interactive-designer portfolio with a WebGL project carousel and cinematic transitions; a much-cited reference portfolio.",
+  "live": true,
+  "slug": "robin-noguier"
+ },
+ {
+  "name": "Cyd Stumpel",
+  "url": "https://cydstumpel.nl/",
+  "category": "portfolio",
+  "award": "Awwwards Site of the Day (Portfolio 2022, 7.36) with Developer Award; Smashing Magazine person of the week",
+  "source": "https://www.awwwards.com/sites/cyd-stumpel-portfolio-2022",
+  "why": "Creative-developer portfolio known for accessible yet expressive page transitions (swup, GSAP, Three.js).",
+  "live": true,
+  "slug": "cyd-stumpel"
+ },
+ {
+  "name": "Jesse Zhou - Jesse's Ramen",
+  "url": "https://jesse-zhou.com/",
+  "category": "portfolio",
+  "award": "Awwwards Honorable Mention (Mar 2022); featured in Codrops Collective #701; credited with landing him multiple job offers",
+  "source": "https://www.awwwards.com/sites/jesses-ramen-portfolio",
+  "why": "Baked-lighting Three.js/Blender ramen shop as a portfolio - the archetypal viral 3D personal site.",
+  "live": true,
+  "slug": "jesse-zhou-jesse-s-ramen"
+ },
+ {
+  "name": "Henry Heffernan",
+  "url": "https://henryheffernan.com/",
+  "category": "portfolio",
+  "award": "Show HN: 3D portfolio with late-90s aesthetic (2022), later widely shared as the 'computer inside a computer' portfolio (HN score modest: 29 pts)",
+  "source": "https://news.ycombinator.com/item?id=31313187",
+  "why": "A 3D desk scene that zooms into a working retro-OS monitor - the spectacular counterpoint to minimal portfolios.",
+  "live": true,
+  "slug": "henry-heffernan"
+ },
+ {
+  "name": "Aristide Benoist",
+  "url": "https://aristidebenoist.com/",
+  "category": "portfolio",
+  "award": "Awwwards Site of the Month (June 2021) for his portfolio; multiple SOTDs incl. In Cognita (Mar 2025)",
+  "source": "https://awwwards.com/aristide-benoist-portfolio-2021-wins-site-of-the-month-june-2021.html",
+  "why": "Independent WebGL developer whose portfolios are benchmarks for typography-led motion and smooth image transitions.",
+  "live": true,
+  "slug": "aristide-benoist"
+ },
+ {
+  "name": "Mathis Biabiany",
+  "url": "https://www.mathis-biabiany.fr/",
+  "category": "portfolio",
+  "award": "Awwwards Site of the Day (Jun 2018, 7.56) for his portfolio; Honorable Mention Aug 2026",
+  "source": "https://www.awwwards.com/sites/mathis-biabiany-portfolio",
+  "why": "Dark black/blue/teal real-time 3D portfolio from an ex-Resn creative technologist; strong reference for light-in-darkness WebGL.",
+  "live": true,
+  "slug": "mathis-biabiany"
+ },
+ {
+  "name": "Eduard Bodak",
+  "url": "https://www.eduardbodak.com/",
+  "category": "portfolio",
+  "award": "Awwwards profile: 4 Sites of the Day, 6 Honorable Mentions",
+  "source": "https://www.awwwards.com/eduardbodak/",
+  "why": "German designer-developer ('Crafting websites that feel good') known for clean, tactile motion and restrained layouts.",
+  "live": true,
+  "slug": "eduard-bodak"
+ },
+ {
+  "name": "Louis Paquet",
+  "url": "https://louispaquet.com/",
+  "category": "portfolio",
+  "award": "Awwwards Independent of the Year 2025; profile lists 1 SOTY, 2 SOTM, 40 SOTD",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "Montreal digital creative director (ex-Locomotive), currently the most decorated independent designer on Awwwards.",
+  "live": true,
+  "slug": "louis-paquet"
+ },
+ {
+  "name": "Bartosz Ciechanowski",
+  "url": "https://ciechanow.ski/",
+  "category": "editorial",
+  "award": "Repeated #1 on Hacker News: Mechanical Watch 4298 pts, Moon 3128, Sound 3053, Bicycle 3014, GPS 2900",
+  "source": "https://news.ycombinator.com/item?id=31261533",
+  "why": "Hand-built interactive 3D explainer essays; the gold standard of precise, engineering-grade web storytelling.",
+  "live": true,
+  "slug": "bartosz-ciechanowski"
+ },
+ {
+  "name": "Nanda Syahrasyad - Not a Number",
+  "url": "https://www.nan.fyi/",
+  "category": "editorial",
+  "award": "HN front page: 'Build your own database' 547 pts (2025); 'An interactive guide to SVG paths' 343 pts",
+  "source": "https://news.ycombinator.com/item?id=45657827",
+  "why": "Interactive programming explainers with animated diagrams, in the Ciechanowski/Comeau tradition.",
+  "live": true,
+  "slug": "nanda-syahrasyad-not-a-number"
+ },
+ {
+  "name": "Craig Mod",
+  "url": "https://craigmod.com/",
+  "category": "portfolio",
+  "award": "Many HN front pages (e.g. 'Fast Software, the Best Software' 470 pts; 'Takkyu-bin' 342 pts)",
+  "source": "https://news.ycombinator.com/item?id=38030932",
+  "why": "Writer-photographer whose site and walk essays are admired for restrained, book-like typographic and photographic presentation.",
+  "live": true,
+  "slug": "craig-mod"
+ },
+ {
+  "name": "Frank Chimero",
+  "url": "https://frankchimero.com/",
+  "category": "portfolio",
+  "award": "Redesign called 'quite wonderful' by Jeremy Keith (Adactio); featured on the Responsive Web Design podcast",
+  "source": "https://adactio.com/links/16145",
+  "why": "Designer-writer whose publicly documented redesign is a touchstone for thoughtful, typographic personal sites.",
+  "live": true,
+  "slug": "frank-chimero"
+ },
+ {
+  "name": "Jakub Krehel",
+  "url": "https://jakub.kr/",
+  "category": "portfolio",
+  "award": "Featured design-engineer interview in Lovers Magazine; known for 'Details That Make Interfaces Feel Better' and oklch.fyi",
+  "source": "https://spaces.is/loversmagazine/interviews/jakub-krehel",
+  "why": "Slovak design engineer with a minimal, precise site whose interface-detail writing is widely shared on X.",
+  "live": true,
+  "slug": "jakub-krehel"
+ },
+ {
+  "name": "Immersive Garden",
+  "url": "https://immersive-g.com/",
+  "category": "studio",
+  "award": "Awwwards Agency of the Year 2025 (also Studio of the Year 2017/2018/2020)",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "Paris studio of luxury-grade WebGL experiences with cinematic lighting and materials.",
+  "live": true,
+  "slug": "immersive-garden"
+ },
+ {
+  "name": "Malvah",
+  "url": "https://www.malvah.co/",
+  "category": "studio",
+  "award": "Awwwards Studio of the Year 2025",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "Brand-experience studio whose own site is an editorial, motion-rich showcase.",
+  "live": true,
+  "slug": "malvah"
+ },
+ {
+  "name": "abeto (Messenger)",
+  "url": "https://www.abeto.co/",
+  "category": "studio",
+  "award": "Awwwards Developer Site of the Year 2025 for 'Messenger'",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "Small studio crafting interactive 3D experiences; Messenger was the year's most technically celebrated WebGL piece.",
+  "live": true,
+  "slug": "abeto-messenger"
+ },
+ {
+  "name": "Lando Norris (by OFF+BRAND)",
+  "url": "https://landonorris.com/",
+  "category": "studio",
+  "award": "Awwwards Site of the Year 2025 and Users' Choice 2025",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "The most celebrated spectacular site of 2025 - 3D helmet, bold type and kinetic scroll; included for contrast.",
+  "live": true,
+  "slug": "lando-norris-by-off-brand"
+ },
+ {
+  "name": "Locomotive",
+  "url": "https://locomotive.ca/en",
+  "category": "studio",
+  "award": "Awwwards Agency of the Year 2024 (and 2020; self-described 7x winner); own site SOTM Jun 2019 and Mar 2023",
+  "source": "https://www.awwwards.com/locomotive/",
+  "why": "Montreal agency behind Locomotive Scroll; benchmark for smooth-scroll editorial agency sites.",
+  "live": true,
+  "slug": "locomotive"
+ },
+ {
+  "name": "Obys",
+  "url": "https://obys.agency/",
+  "category": "studio",
+  "award": "Awwwards Studio of the Year 2023; CSSDA Studio of the Year 2020/2021/2023; repeated SOTDs",
+  "source": "https://readymag.com/customers/obys",
+  "why": "Ukrainian studio known for typographic, grid-driven sites and the Design Education Series.",
+  "live": true,
+  "slug": "obys"
+ },
+ {
+  "name": "Resn",
+  "url": "https://resn.co.nz/",
+  "category": "studio",
+  "award": "Awwwards Agency of the Year 2017 and 2018",
+  "source": "https://idealog.co.nz/?p=16211",
+  "why": "New Zealand pioneer of playful, experimental interactive web campaigns.",
+  "live": true,
+  "slug": "resn"
+ },
+ {
+  "name": "Active Theory",
+  "url": "https://activetheory.net/",
+  "category": "studio",
+  "award": "CSS Design Awards Agency of the Year 2021; Webby Production Company of the Year contender 2022",
+  "source": "https://www.cssdesignawards.com/blog/2021-doty-winners/361/",
+  "why": "Creative-tech studio behind large real-time 3D/WebGL brand experiences; its own site is a WebGL showpiece.",
+  "live": true,
+  "slug": "active-theory"
+ },
+ {
+  "name": "basement.studio",
+  "url": "https://basement.studio/",
+  "category": "studio",
+  "award": "Three Awwwards SOTDs in 2024 (KidSuper, Daylight, Next.js Conf) with Developer Awards; 2025 SOTDs for own site",
+  "source": "https://basement.studio/services",
+  "why": "Studio known for Vercel/Next.js Conf work - dark, technical, developer-culture aesthetic.",
+  "live": true,
+  "slug": "basement-studio"
+ },
+ {
+  "name": "Hello Monday",
+  "url": "https://www.hellomonday.com/",
+  "category": "studio",
+  "award": "Awwwards Site of the Day (Oct 2019, 7.85) for own site; Awwwards Agency of the Year 2013",
+  "source": "https://www.awwwards.com/sites/hello-monday",
+  "why": "Danish studio (now part of DEPT) famous for warm, crafted micro-interactions.",
+  "live": true,
+  "slug": "hello-monday"
+ },
+ {
+  "name": "Collins",
+  "url": "https://www.wearecollins.com/",
+  "category": "studio",
+  "award": "8x Agency of the Year (Ad Age 2019-2026, D&AD 2021), as listed on its own site",
+  "source": "https://www.wearecollins.com/",
+  "why": "Brand-design company with a confident, type-led site; reference for elite brand-studio presentation.",
+  "live": true,
+  "slug": "collins"
+ },
+ {
+  "name": "Pentagram",
+  "url": "https://www.pentagram.com/",
+  "category": "studio",
+  "award": "World's largest independent design consultancy; own site featured in DesignRush best-designs gallery",
+  "source": "https://www.designrush.com/best-designs/websites/pentagram",
+  "why": "Restrained, image-led partner and project archive - the canonical 'let the work speak' studio site.",
+  "live": true,
+  "slug": "pentagram"
+ },
+ {
+  "name": "14islands",
+  "url": "https://www.14islands.com/",
+  "category": "studio",
+  "award": "Awwwards Agency of the Year nominee 2021",
+  "source": "https://14islands.com/blog/agency-of-the-year-nominee",
+  "why": "Stockholm studio known for refined, tasteful interactive and WebGL work.",
+  "live": true,
+  "slug": "14islands"
+ },
+ {
+  "name": "Exo Ape",
+  "url": "https://www.exoape.com/",
+  "category": "studio",
+  "award": "Awwwards: own site Site of the Month (May 2022); 16 SOTDs incl. 'Fluid Glass' (Mar 2026)",
+  "source": "https://www.awwwards.com/exo-ape/",
+  "why": "Dutch studio of polished, premium motion sites; its Fluid Glass work is directly relevant to glass-object visuals.",
+  "live": true,
+  "slug": "exo-ape"
+ },
+ {
+  "name": "The Pudding",
+  "url": "https://pudding.cool/",
+  "category": "editorial",
+  "award": "SND47 Best in Show (micro/small orgs) for story page design; SND46 World's Best Designed Digital; several 1000+ pt HN hits",
+  "source": "https://snd.org/results/",
+  "why": "Visual-essay publication that sets the bar for custom scrollytelling and data-driven storytelling.",
+  "live": true,
+  "slug": "the-pudding"
+ },
+ {
+  "name": "Reuters Graphics",
+  "url": "https://www.reuters.com/graphics/",
+  "category": "editorial",
+  "award": "Ranked 4th among top award-winning publications at SND47; past Malofiej Best of Show (digital)",
+  "source": "https://snd.org/results/",
+  "why": "Wire-service graphics desk known for clean, precise data visualisation and 3D explanatory pieces.",
+  "live": true,
+  "slug": "reuters-graphics"
+ },
+ {
+  "name": "Stephen Kent Johnson",
+  "url": "https://stephenkentjohnson.com/",
+  "category": "portfolio",
+  "award": "Featured on Siteinspire (Minimal / Photography)",
+  "source": "https://www.siteinspire.com/website/13519-stephen-kent-johnson",
+  "why": "Leading interiors/architecture photographer whose site is a minimal, image-first grid with quiet typography.",
+  "live": true,
+  "slug": "stephen-kent-johnson"
+ },
+ {
+  "name": "Satoshi Watanabe",
+  "url": "https://satoshiwatanabe.org/",
+  "category": "portfolio",
+  "award": "Featured on Siteinspire (Minimal, Photography, Grid Layout), Jul 2026",
+  "source": "https://www.siteinspire.com/website/13474-satoshi-watanabe",
+  "why": "Photography and moving-image portfolio with an austere grid layout that lets the images carry the page.",
+  "live": true,
+  "slug": "satoshi-watanabe"
+ }
+]

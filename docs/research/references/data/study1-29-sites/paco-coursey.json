@@ -1,0 +1,78 @@
+{
+ "slug": "paco-coursey",
+ "url": "https://paco.me/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp"
+  ],
+  "firstPaintS": 1.83,
+  "settleS": 0.65,
+  "continuous": false,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1.6,
+  "largestPx": 17,
+  "largestText": "Crafting interfaces",
+  "largestFont": "Newsreader",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 16,
+  "bodyFont": "Sohne",
+  "lineChars": 35,
+  "measurePx": 640,
+  "mediaPct": 0,
+  "firstScreenChars": 746,
+  "bg": "rgb(26, 26, 26)",
+  "webAnimsRunning": 7,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 1320,
+  "palette": {
+   "tones": 3,
+   "chromatic": 0,
+   "bgHex": "#1a1a1a",
+   "inkPct": 4,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp"
+  ],
+  "firstPaintS": 1.92,
+  "settleS": 1.07,
+  "continuous": false,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 1.9,
+  "largestPx": 17,
+  "largestText": "Crafting interfaces",
+  "largestFont": "Newsreader",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 16,
+  "bodyFont": "Sohne",
+  "lineChars": 29,
+  "measurePx": 342,
+  "mediaPct": 0,
+  "firstScreenChars": 433,
+  "bg": "rgb(26, 26, 26)",
+  "webAnimsRunning": 7,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 1320,
+  "palette": {
+   "tones": 4,
+   "chromatic": 0,
+   "bgHex": "#1a1a1a",
+   "inkPct": 8,
+   "chromaHex": []
+  }
+ }
+}

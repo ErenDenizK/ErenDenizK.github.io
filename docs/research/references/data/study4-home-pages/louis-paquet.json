@@ -1,0 +1,248 @@
+{
+ "slug": "louis-paquet",
+ "url": "https://louispaquet.com/",
+ "name": "Louis Paquet",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 2297,
+  "screens": 2.6,
+  "blockCount": 42,
+  "medianGap": 19,
+  "sections": [
+   {
+    "y": 27,
+    "gapBefore": null,
+    "h": 43,
+    "n": 2,
+    "chars": 50,
+    "links": 0,
+    "head": [
+     "18px Louis Paquet",
+     "18px Digital Creative Director and Designer"
+    ]
+   },
+   {
+    "y": 170,
+    "gapBefore": 100,
+    "h": 151,
+    "n": 2,
+    "chars": 312,
+    "links": 0,
+    "head": [
+     "18px About",
+     "18px I’m a Digital Creative Director and designer based in Montré"
+    ]
+   },
+   {
+    "y": 421,
+    "gapBefore": 100,
+    "h": 1177,
+    "n": 32,
+    "chars": 478,
+    "links": 30,
+    "head": [
+     "18px Latest work",
+     "18px Cossette",
+     "18px MindMarket",
+     "18px Ironside Computers"
+    ]
+   },
+   {
+    "y": 1699,
+    "gapBefore": 101,
+    "h": 471,
+    "n": 6,
+    "chars": 748,
+    "links": 3,
+    "head": [
+     "18px Courses, Masterclasses & Conferences",
+     "18px Sharing knowledge and helping others grow in the field is so",
+     "18px Using Motion Design To Animate With Purpose",
+     "18px Innovative Web Design In Figma"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 67,
+   "blocks": 19,
+   "links": 13,
+   "text": [
+    "18px Louis Paquet",
+    "18px Digital Creative Director and Designer",
+    "18px About",
+    "18px I’m a Digital Creative Director and designer based in Montréal. I craf",
+    "18px Latest work",
+    "18px* Cossette",
+    "18px* MindMarket",
+    "18px* Ironside Computers",
+    "18px* Telescope",
+    "18px* Maxima Therapy",
+    "18px* Cerebrium AI",
+    "18px* Good Is The New Cool",
+    "18px* Fondation Des Canadiens Pour L'enfance",
+    "18px* C2 Montréal",
+    "18px* Silent House Productions",
+    "18px* Mana Yerba Maté",
+    "18px Got a project in mind? Let's talk!",
+    "18px* [redacted]",
+    "18px* Prime Asia Leather"
+   ]
+  },
+  "column": {
+   "left": 498,
+   "right": 942
+  },
+  "check": {
+   "name": 27,
+   "role": 27,
+   "affiliation": 851,
+   "projects": 421,
+   "writing": null,
+   "proof": null,
+   "contact": 830,
+   "now": null
+  },
+  "bg": "rgba(0, 0, 0, 0)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 2773,
+  "screens": 3.3,
+  "blockCount": 42,
+  "medianGap": 19,
+  "sections": [
+   {
+    "y": 27,
+    "gapBefore": null,
+    "h": 83,
+    "n": 2,
+    "chars": 50,
+    "links": 0,
+    "head": [
+     "18px Louis Paquet",
+     "18px Digital Creative Director and Designer"
+    ]
+   },
+   {
+    "y": 160,
+    "gapBefore": 50,
+    "h": 22,
+    "n": 1,
+    "chars": 5,
+    "links": 0,
+    "head": [
+     "18px About"
+    ]
+   },
+   {
+    "y": 231,
+    "gapBefore": 49,
+    "h": 194,
+    "n": 1,
+    "chars": 307,
+    "links": 0,
+    "head": [
+     "18px I’m a Digital Creative Director and designer based in Montré"
+    ]
+   },
+   {
+    "y": 512,
+    "gapBefore": 87,
+    "h": 22,
+    "n": 1,
+    "chars": 11,
+    "links": 0,
+    "head": [
+     "18px Latest work"
+    ]
+   },
+   {
+    "y": 583,
+    "gapBefore": 49,
+    "h": 1181,
+    "n": 29,
+    "chars": 412,
+    "links": 29,
+    "head": [
+     "18px Cossette",
+     "18px MindMarket",
+     "18px Ironside Computers",
+     "18px Telescope"
+    ]
+   },
+   {
+    "y": 1868,
+    "gapBefore": 104,
+    "h": 43,
+    "n": 1,
+    "chars": 36,
+    "links": 0,
+    "head": [
+     "18px Courses, Masterclasses & Conferences"
+    ]
+   },
+   {
+    "y": 1961,
+    "gapBefore": 50,
+    "h": 533,
+    "n": 5,
+    "chars": 712,
+    "links": 3,
+    "head": [
+     "18px Sharing knowledge and helping others grow in the field is so",
+     "18px Using Motion Design To Animate With Purpose",
+     "18px Innovative Web Design In Figma",
+     "18px Beyond online courses, I give talks at design and tech confe"
+    ]
+   },
+   {
+    "y": 2667,
+    "gapBefore": 173,
+    "h": 43,
+    "n": 2,
+    "chars": 55,
+    "links": 1,
+    "head": [
+     "18px Got a project in mind? Let's talk!",
+     "18px [redacted]"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 43,
+   "blocks": 12,
+   "links": 7,
+   "text": [
+    "18px Louis Paquet",
+    "18px Digital Creative Director and Designer",
+    "18px About",
+    "18px I’m a Digital Creative Director and designer based in Montréal. I craf",
+    "18px Latest work",
+    "18px* Cossette",
+    "18px* MindMarket",
+    "18px* Ironside Computers",
+    "18px* Telescope",
+    "18px* Maxima Therapy",
+    "18px* Cerebrium AI",
+    "18px* Good Is The New Cool"
+   ]
+  },
+  "column": {
+   "left": 27,
+   "right": 363
+  },
+  "check": {
+   "name": 27,
+   "role": 67,
+   "affiliation": 2343,
+   "projects": 512,
+   "writing": null,
+   "proof": null,
+   "contact": 2472,
+   "now": null
+  },
+  "bg": "rgba(0, 0, 0, 0)"
+ }
+}

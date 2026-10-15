@@ -1,0 +1,202 @@
+{
+ "slug": "lee-robinson",
+ "url": "https://leerob.com/",
+ "name": "Lee Robinson",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 1220,
+  "screens": 1.4,
+  "blockCount": 44,
+  "medianGap": 15,
+  "sections": [
+   {
+    "y": 49,
+    "gapBefore": null,
+    "h": 333,
+    "n": 9,
+    "chars": 488,
+    "links": 4,
+    "head": [
+     "42px @leerob",
+     "14px Default",
+     "14px Long",
+     "14px Bio"
+    ]
+   },
+   {
+    "y": 438,
+    "gapBefore": 56,
+    "h": 198,
+    "n": 11,
+    "chars": 180,
+    "links": 10,
+    "head": [
+     "23px Notes",
+     "17px Things I believe",
+     "17px Developer products",
+     "17px Understanding AI"
+    ]
+   },
+   {
+    "y": 697,
+    "gapBefore": 61,
+    "h": 474,
+    "n": 24,
+    "chars": 632,
+    "links": 23,
+    "head": [
+     "23px Blogs",
+     "17px How we teach AI models July 2026",
+     "17px How we teach AI models",
+     "14px July 2026"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 121,
+   "blocks": 30,
+   "links": 23,
+   "text": [
+    "42px* @leerob",
+    "14px Default",
+    "14px Long",
+    "14px Bio",
+    "17px I’m an engineer and writer. I work on ML at SpaceX (formerly at Cursor",
+    "17px* Cursor",
+    "17px* Vercel",
+    "17px My life’s work is to make technology easy to understand and interestin",
+    "17px* angel invest",
+    "23px Notes",
+    "17px* Things I believe",
+    "17px* Developer products",
+    "17px* Understanding AI",
+    "17px* Documentation",
+    "17px* Developer experience",
+    "17px* Community moderation",
+    "17px* Developer marketing",
+    "17px* Personal software",
+    "17px* Developer relations",
+    "17px* Product engineers",
+    "23px Blogs",
+    "17px* How we teach AI models July 2026",
+    "17px* How we teach AI models",
+    "14px* July 2026",
+    "17px* Building low-level software with only coding agents December 2025",
+    "17px* Building low-level software with only coding agents",
+    "14px* December 2025",
+    "17px* Coding agents and complexity budgets December 2025",
+    "17px* Coding agents and complexity budgets",
+    "14px* December 2025"
+   ]
+  },
+  "column": {
+   "left": 49,
+   "right": 649
+  },
+  "check": {
+   "name": 49,
+   "role": 195,
+   "affiliation": 49,
+   "projects": 195,
+   "writing": 438,
+   "proof": null,
+   "contact": 49,
+   "now": null
+  },
+  "bg": "rgb(255, 255, 255)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 1639,
+  "screens": 1.9,
+  "blockCount": 44,
+  "medianGap": 8,
+  "sections": [
+   {
+    "y": 40,
+    "gapBefore": null,
+    "h": 425,
+    "n": 9,
+    "chars": 488,
+    "links": 4,
+    "head": [
+     "35px @leerob",
+     "14px Default",
+     "14px Long",
+     "14px Bio"
+    ]
+   },
+   {
+    "y": 521,
+    "gapBefore": 56,
+    "h": 350,
+    "n": 11,
+    "chars": 180,
+    "links": 10,
+    "head": [
+     "23px Notes",
+     "17px Things I believe",
+     "17px Understanding AI",
+     "17px Developer experience"
+    ]
+   },
+   {
+    "y": 932,
+    "gapBefore": 61,
+    "h": 687,
+    "n": 24,
+    "chars": 632,
+    "links": 23,
+    "head": [
+     "23px Blogs",
+     "17px How we teach AI models July 2026",
+     "17px How we teach AI models",
+     "13px July 2026"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 72,
+   "blocks": 19,
+   "links": 13,
+   "text": [
+    "35px* @leerob",
+    "14px Default",
+    "14px Long",
+    "14px Bio",
+    "17px I’m an engineer and writer. I work on ML at SpaceX (formerly at Cursor",
+    "17px* Cursor",
+    "17px* Vercel",
+    "17px My life’s work is to make technology easy to understand and interestin",
+    "17px* angel invest",
+    "23px Notes",
+    "17px* Things I believe",
+    "17px* Understanding AI",
+    "17px* Developer experience",
+    "17px* Developer marketing",
+    "17px* Developer relations",
+    "17px* Developer products",
+    "17px* Documentation",
+    "17px* Community moderation",
+    "17px* Personal software"
+   ]
+  },
+  "column": {
+   "left": 20,
+   "right": 370
+  },
+  "check": {
+   "name": 40,
+   "role": 170,
+   "affiliation": 40,
+   "projects": 170,
+   "writing": 521,
+   "proof": null,
+   "contact": 40,
+   "now": null
+  },
+  "bg": "rgb(255, 255, 255)"
+ }
+}

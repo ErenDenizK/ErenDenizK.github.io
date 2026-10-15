@@ -1,6 +1,6 @@
 # Site audit: erendenizk.github.io (dev @ 2ed9c0c), 2026-10-10
 
-> **Status:** current (2026-10-10): the clean-restart audit of every page; drives docs/PLAN.md tracks 1-9. Scratchpad paths cited below are scratch, not kept.
+> **Status:** current (2026-10-10): the clean-restart audit of every page; drove the clean-restart plan (`docs/history/plan-2026-10-clean-restart.md`) tracks 1-9. Scratchpad paths cited below are scratch, not kept.
 
 Method: built `dev` in a throwaway worktree, served with `tests/serve.mjs`, drove Chromium 1194
 (Playwright) at 1440×900 (fine pointer, classic scrollbars, `--hide-scrollbars` dropped),

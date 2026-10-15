@@ -16,7 +16,11 @@ the newest line wins.
 - `docs/research/`: dated research, each with a status line; it distinguishes verified facts
   from recollection. `2026-10-requirements.md` is used for its reader analysis and §18 (the AI
   tells); the owner overrode some of its requirements (see its status line).
-- `docs/history/`: closed plans and the brief log. Records, not guides.
+- `docs/history/`: closed plans, used one-off prompts and the brief log. Records, not guides.
+- `prototypes/`: the closed first directions A–F (2026-10-08/09); history, kept because ADRs,
+  research and `tools/objects` cite them. Do not edit.
+- `src/pages/lab/`: hidden workbench pages (noindex, not linked, out of the sitemap); new designs
+  go to a lab page before they replace a live page.
 - `docs/family-kit/`: the shared origin all the owner's products may adopt (light, springs, mark, charter).
   It and `docs/design/family.md` belong to the separate Family chat; this chat reads them and
   does not edit them. Who works where: `docs/family-kit/SESSIONS.md`. The site imports
@@ -30,7 +34,7 @@ the newest line wins.
   live site: run `npm run verify` before every push, and never push work in progress to `dev`.
   Agents work in their own git worktree outside the repo folder (for example under the
   session scratchpad) on a local `wip/<topic>` branch; the lead reviews and merges into `dev`.
-- Pace: start with a few agents at once and protect the weekly limit; the owner raises it.
+- Pace: two agents at a time unless the owner raises it; protect the weekly limit.
 - English for the site, docs and commits. The owner talks in Turkish, often by dictation:
   read through transcription errors and confirm names.
 - How to ask: every question to the owner comes with a short plain-language brief of the
@@ -40,12 +44,12 @@ the newest line wins.
   the session gives you. Never write an AI model name into code, comments or docs.
 - Content is data: a project or log entry never needs a code change (ADR-0002). Unwritten
   sections are hidden, never shown as placeholders.
-- Every effect has a still twin: reduced motion, no WebGL and phones get a complete page.
+- Every effect has a still twin: reduced motion, no JS, no WebGL and phones get a complete page.
 - For UI work, screenshot at 1440×900, 1180×820 (touch) and 390×844 and look before you
   report. Desktop comes first for now; phones still must not break.
 - Never write symbols (arrows, ticks, crosses) as characters: use `tools/icons`. Objects are
-  pre-rendered media (ADR-0006) until the owner decides on real-time 3D for desktop (open,
-  2026-10-10). The routing contract is ADR-0007.
+  pre-rendered media (ADR-0006); the owner kept pre-rendering on 2026-10-11 (option a). The
+  routing contract is ADR-0007.
 
 ## Log entries
 

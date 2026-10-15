@@ -1,0 +1,89 @@
+{
+ "slug": "apple-final-cut-pro",
+ "url": "https://www.apple.com/final-cut-pro/",
+ "group": "product",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-3vh.webp"
+  ],
+  "firstPaintS": 2.0,
+  "settleS": 5.9,
+  "continuous": false,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 22.7,
+  "largestPx": 80,
+  "largestText": "Reel intelligence.",
+  "largestFont": "SF Pro Display",
+  "largestWeight": "600",
+  "largestTracking": "-1.2px",
+  "bodyPx": 17,
+  "bodyFont": "SF Pro Text",
+  "lineChars": 52,
+  "measurePx": 1260,
+  "mediaPct": 0,
+  "firstScreenChars": 512,
+  "bg": "rgb(0, 0, 0)",
+  "webAnimsRunning": 7,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 6150,
+  "palette": {
+   "tones": 9,
+   "chromatic": 4,
+   "bgHex": "#000000",
+   "inkPct": 34,
+   "chromaHex": [
+    "#f00000",
+    "#ae0000",
+    "#6f474c",
+    "#442b2d"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-3vh.webp"
+  ],
+  "firstPaintS": 1.97,
+  "settleS": 4.33,
+  "continuous": false,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 19.4,
+  "largestPx": 40,
+  "largestText": "Reel intelligence.",
+  "largestFont": "SF Pro Display",
+  "largestWeight": "600",
+  "largestTracking": "normal",
+  "bodyPx": 17,
+  "bodyFont": "SF Pro Text",
+  "lineChars": 33,
+  "measurePx": 390,
+  "mediaPct": 10,
+  "firstScreenChars": 422,
+  "bg": "rgb(0, 0, 0)",
+  "webAnimsRunning": 18,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 6150,
+  "palette": {
+   "tones": 9,
+   "chromatic": 3,
+   "bgHex": "#000000",
+   "inkPct": 57,
+   "chromaHex": [
+    "#e50000",
+    "#aa0001",
+    "#844d52"
+   ]
+  }
+ }
+}

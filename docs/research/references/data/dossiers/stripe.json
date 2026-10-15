@@ -1,0 +1,2391 @@
+{
+ "slug": "stripe",
+ "url": "https://stripe.com/",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "16px",
+  "scrollBehavior": "auto",
+  "scrollbarWidth": "auto",
+  "smoothLib": false,
+  "maxWidths": [
+   [
+    "400px",
+    16
+   ],
+   [
+    "1266px",
+    15
+   ],
+   [
+    "817.778px",
+    8
+   ],
+   [
+    "100%",
+    6
+   ],
+   [
+    "343.98px",
+    5
+   ],
+   [
+    "876.096px",
+    4
+   ],
+   [
+    "856px",
+    3
+   ],
+   [
+    "504px",
+    3
+   ],
+   [
+    "608px",
+    3
+   ],
+   [
+    "752px",
+    3
+   ],
+   [
+    "1018.37px",
+    2
+   ],
+   [
+    "306px",
+    2
+   ]
+  ],
+  "grids": [
+   [
+    "12 cols · 88px 88px 88px 88px 88px 88px 88px 88px 88px 88px 88px 88px",
+    7
+   ],
+   [
+    "3 cols · 17px 19px 189px",
+    5
+   ],
+   [
+    "3 cols · 17px 16px 192px",
+    4
+   ],
+   [
+    "2 cols · 80px 80px",
+    4
+   ],
+   [
+    "1 cols · 1232px",
+    2
+   ],
+   [
+    "4 cols · 400px 400px 400px 0px",
+    2
+   ],
+   [
+    "1 cols · 608px",
+    2
+   ],
+   [
+    "3 cols · 400px 400px 400px",
+    2
+   ]
+  ],
+  "gaps": [
+   [
+    "8px",
+    46
+   ],
+   [
+    "16px",
+    19
+   ],
+   [
+    "32px",
+    16
+   ],
+   [
+    "4px",
+    14
+   ],
+   [
+    "64px",
+    14
+   ],
+   [
+    "16px normal",
+    11
+   ],
+   [
+    "4px normal",
+    8
+   ],
+   [
+    "12px",
+    7
+   ],
+   [
+    "10px",
+    6
+   ],
+   [
+    "normal 8px",
+    5
+   ],
+   [
+    "24px",
+    5
+   ],
+   [
+    "14px",
+    3
+   ]
+  ],
+  "spacingY": [
+   [
+    "6px",
+    37
+   ],
+   [
+    "11px",
+    20
+   ],
+   [
+    "15.5px",
+    18
+   ],
+   [
+    "16px",
+    15
+   ],
+   [
+    "32px",
+    15
+   ],
+   [
+    "8px",
+    14
+   ],
+   [
+    "12px",
+    13
+   ],
+   [
+    "2px",
+    13
+   ],
+   [
+    "4px",
+    13
+   ],
+   [
+    "14.5px",
+    11
+   ],
+   [
+    "96px",
+    11
+   ],
+   [
+    "10px",
+    9
+   ],
+   [
+    "40px",
+    8
+   ],
+   [
+    "64px",
+    8
+   ],
+   [
+    "16.5px",
+    7
+   ],
+   [
+    "14px",
+    7
+   ]
+  ],
+  "spacingX": [
+   [
+    "16px",
+    95
+   ],
+   [
+    "24px",
+    50
+   ],
+   [
+    "8px",
+    32
+   ],
+   [
+    "32px",
+    25
+   ],
+   [
+    "12px",
+    22
+   ],
+   [
+    "4px",
+    17
+   ],
+   [
+    "5px",
+    9
+   ],
+   [
+    "40px",
+    7
+   ],
+   [
+    "20px",
+    6
+   ],
+   [
+    "60px",
+    6
+   ]
+  ],
+  "radii": [
+   [
+    "4px",
+    56
+   ],
+   [
+    "6px",
+    36
+   ],
+   [
+    "5px",
+    6
+   ],
+   [
+    "8px",
+    4
+   ],
+   [
+    "100%",
+    3
+   ],
+   [
+    "2px",
+    3
+   ],
+   [
+    "3px",
+    2
+   ],
+   [
+    "16px",
+    1
+   ],
+   [
+    "6px 6px 0px 0px",
+    1
+   ],
+   [
+    "0px 0px 6px 6px",
+    1
+   ]
+  ],
+  "shadows": [
+   [
+    "rgba(50, 50, 93, 0.12) 0px 16px 32px 0px",
+    2
+   ],
+   [
+    "rgba(0, 0, 0, 0.1) 0px 30px 60px -50px, rgba(50, 50, 93, 0.25) 0px 30px 60px -10",
+    1
+   ],
+   [
+    "rgba(23, 23, 23, 0.08) 0px 15px 35px 0px",
+    1
+   ],
+   [
+    "rgba(23, 23, 23, 0.06) 0px 3px 6px 0px",
+    1
+   ]
+  ],
+  "effects": [
+   [
+    "filter: blur(7px)",
+    5
+   ],
+   [
+    "clip-path: inset(0px 0px 100%)",
+    5
+   ],
+   [
+    "clip-path: inset(0px 0px 0%)",
+    4
+   ],
+   [
+    "clip-path: inset(0px round 2px)",
+    4
+   ],
+   [
+    "clip-path: inset(6px 3.5503px round 6px)",
+    4
+   ],
+   [
+    "clip-path: inset(6px 3.5503px round 5px)",
+    4
+   ],
+   [
+    "filter: blur(10px)",
+    3
+   ],
+   [
+    "mix-blend-mode: multiply",
+    2
+   ],
+   [
+    "clip-path: inset(0px round 7px)",
+    2
+   ],
+   [
+    "clip-path: url(\"#:Rdbadir6l6:\")",
+    1
+   ],
+   [
+    "clip-path: url(\"#:Rttdir6l6:\")",
+    1
+   ],
+   [
+    "mix-blend-mode: hard-light",
+    1
+   ]
+  ],
+  "cursors": [
+   [
+    "grab",
+    70
+   ]
+  ],
+  "fixed": 1,
+  "sticky": 1,
+  "nav": [
+   "Stripe homepage",
+   "Pricing",
+   "Guide me",
+   "Sign in",
+   "Get recommendationsTell us about your business",
+   "See all productsExplore our full product catalog",
+   "Start now",
+   "Contact sales",
+   "Sign in\nSign in",
+   "Contact sales",
+   "Stripe for enterprises",
+   "Stripe for startups",
+   "Stripe for platforms"
+  ],
+  "viewTransitionNames": [
+   "root"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "00-e4746273d30fe790.css",
+   "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/e4746273d30fe790.css",
+   "bytes": 34132
+  },
+  {
+   "file": "01-dccb46da1bbf93b8.css",
+   "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/dccb46da1bbf93b8.css",
+   "bytes": 320738
+  },
+  {
+   "file": "02-78e4ec385d26c2f8.css",
+   "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/78e4ec385d26c2f8.css",
+   "bytes": 159105
+  },
+  {
+   "file": "03-e8a443975bb49a32.css",
+   "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/e8a443975bb49a32.css",
+   "bytes": 8898
+  },
+  {
+   "file": "04-7ab15948e3aeca38.css",
+   "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/7ab15948e3aeca38.css",
+   "bytes": 264
+  },
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 578
+  },
+  {
+   "file": "06-d829866f0dc0cad9.css",
+   "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/d829866f0dc0cad9.css",
+   "bytes": 15822
+  },
+  {
+   "file": "07-7fe9607f2fcd2964.css",
+   "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/7fe9607f2fcd2964.css",
+   "bytes": 318
+  },
+  {
+   "file": "08-5e8a245fcb880dab.css",
+   "url": "https://b.stripecdn.com/mkt-ssr-statics/assets/_next/static/css/5e8a245fcb880dab.css",
+   "bytes": 104
+  }
+ ],
+ "css": {
+  "fontFaces": [
+   {
+    "family": "sohne-var",
+    "file": "Sohne.cb178166.woff2",
+    "weight": "1 1000"
+   },
+   {
+    "family": "SourceCodePro",
+    "file": "SourceCodePro-Medium.f5ba3e6a.woff2",
+    "weight": "500"
+   }
+  ],
+  "variables": {
+   "--suite-color": "#ea2261",
+   "--stop-color": "#da56ed",
+   "--section-container-margin-inline-bleed": "calc(-1 * var(--section-container-padding-inline, var(--hds-space-layout-content",
+   "--section-row-gap-mb": "initial",
+   "--section-row-gap-tb": "initial",
+   "--section-row-gap-dt": "initial",
+   "--section-row-align-mb": "initial",
+   "--section-row-align-tb": "initial",
+   "--section-row-align-dt": "initial",
+   "--navigation-height": "76px",
+   "--navigation-border-radius": "0",
+   "--navigation-easing": "cubic-bezier(0.45,0.05,0.55,0.95)",
+   "--navigation-duration": "0s",
+   "--navigation-duration-slow": "0s",
+   "--navigation-hamburger-duration": "0.25s",
+   "--navigation-inline-start": "var(--hds-space-layout-content-margin)",
+   "--section-container-border-inline": "none",
+   "--section-container-padding-inline": "0",
+   "--section-container-pbs": "var(--hds-space-core-700)",
+   "--section-container-pbe": "0",
+   "--button-direction-if-can-scroll": "var(--can-scroll) row-reverse",
+   "--button-direction-if-cannot-scroll": "row",
+   "--last-child-visibility-if-can-scroll": "var(--can-scroll) hidden",
+   "--visibility-if-cannot-scroll": "visible",
+   "--overflow-if-can-scroll": "var(--can-scroll) hidden",
+   "--overflow-if-cannot-scroll": "scroll",
+   "--navigation-content-padding": "var(--hds-space-core-300)",
+   "--navigation-menu-transition-delay": "0.1s",
+   "--navigation-menu-footer-height": "80px",
+   "--hero-font-lang-large": "3rem",
+   "--hero-font-lang-medium": "2.75rem",
+   "--hero-font-lang-small": "2.125rem",
+   "--section-container-pbs-dt": "var(--hds-space-core-1000)",
+   "--hero-layout-min-height": "min(68svh,826px)",
+   "--lang-font-max": "var(--hero-font-lang-small)",
+   "--lang-font-min": "var(--hero-font-lang-min)",
+   "--lang-font-flex": "6lvh",
+   "--hero-logo-wall-rows-reduced-height": "2 * var(--hds-space-core-900) - var(--hds-space-core-border-sm)",
+   "--divider-color": "var(--hds-color-surface-border-quiet)",
+   "--divider-height": "120px",
+   "--section-container-pbs-tb": "var(--hds-space-core-700)",
+   "--section-container-pbe-tb": "var(--hds-space-core-300)",
+   "--section-container-pbe-dt": "var(--hds-space-core-600)",
+   "--customerLogoColor": "unset",
+   "--customerLogoBackgroundColor": "var(--hds-color-surface-bg-quiet)",
+   "--customerLogoColorAlt": "var(--customerLogoBackgroundColor)",
+   "--customerLogoColorAltShadeDarker": "color-mix(in srgb,var(--customerLogoColor) 85%,#000)",
+   "--customerLogoColorAltShadeLighter": "color-mix(in srgb,var(--customerLogoColor) 75%,#fff)",
+   "--section-container-border-block-end": "1px solid var(--hds-color-surface-border-quiet)",
+   "--bento-left-blob": "var(--hds-color-core-brand-500)",
+   "--bento-dialog-graphic-progress": "clamp(-1,var(--bento-dialog-graphic-index) - var(--carousel-scroll-progress),1)",
+   "--graphic-source-width": "0",
+   "--graphic-source-height": "0",
+   "--graphic-aspect-ratio": "1/1",
+   "--graphic-scale": "1",
+   "--graphic-max-width": "100%",
+   "--graphic-reveal-duration": "300ms",
+   "--graphic-reveal-easing": "cubic-bezier(0.25,1,0.5,1)",
+   "--horizontal-scale-left": "100%",
+   "--horizontal-transform": "0",
+   "--browser-graphic-desktop-width": "0",
+   "--browser-graphic-desktop-height": "0",
+   "--browser-graphic-mobile-width": "0",
+   "--browser-graphic-mobile-height": "0",
+   "--browser-graphic-dots-color": "color-mix(in srgb,var(--hds-color-util-neutral-200) 50%,transparent)",
+   "--phone-graphic-padding": "8px",
+   "--phone-graphic-border-radius-outer": "36px",
+   "--phone-graphic-border-radius-inner": "calc(var(--phone-graphic-border-radius-outer) - var(--phone-graphic-padding))",
+   "--phone-graphic-mobile-width": "266px",
+   "--phone-graphic-mobile-height": "543px",
+   "--phone-graphic-width": "266px",
+   "--phone-graphic-height": "543px",
+   "--bento-dialog-columns": "12",
+   "--reveal-delay": "0ms",
+   "--card-ease": "cubic-bezier(0.165,0.84,0.44,1)",
+   "--card-duration": "800ms",
+   "--card-scale": "1",
+   "--card-shift-x": "0",
+   "--card-shift-y": "0",
+   "--card-radius": "var(--hds-space-core-radius-md)",
+   "--card-radius-inner": "5px",
+   "--hover-progress": "1",
+   "--base-scroll-progress": "calc(var(--progress, 0) * 0.95)",
+   "--hover-boost": "calc(var(--hover-progress) * 0.05)",
+   "--combined-progress": "calc(var(--base-scroll-progress) + var(--hover-boost))",
+   "--scale-start": "calc(var(--bar-index) / var(--bar-total) * 0.7)",
+   "--scale-end": "calc(var(--scale-start) + 0.3)",
+   "--combined-progress-bars": "calc(var(--progress, 0) * 0.9 + var(--hover-progress) * 0.1)",
+   "--progress-in-window": "clamp(0,calc((var(--combined-progress-bars) - var(--scale-start)) / (var(--scale",
+   "--ui-x": "0px",
+   "--ui-y": "0px",
+   "--ui-scale": "1",
+   "--ui-opacity": "0",
+   "--agentic-box-shadow": "0 20.187px 40.374px -20.187px rgba(0,0,0,.1)",
+   "--translate-x": "0",
+   "--translate-y": "0",
+   "--message-bg-color": "var(--hds-color-util-white)",
+   "--stats-section-transition-duration": "1.2s",
+   "--stats-indicator-column-count": "4",
+   "--stats-indicator-gap": "var(--hds-space-layout-gap)",
+   "--stats-indicator-width": "calc((100% - (var(--stats-indicator-column-count) - 1) * var(--stats-indicator-g",
+   "--stats-indicator-offset": "calc(var(--hover-indicator-index, 0) * (var(--stats-indicator-width) + var(--sta",
+   "--stats-color": "#fcfdfe",
+   "--stats-border-color": "#8586c2",
+   "--stats-option-selected-background": "#4b45bc",
+   "--stats-option-active-background": "rgba(252,253,254,.1)",
+   "--ease": "cubic-bezier(0.25,1,0.5,1)",
+   "--time-of-day-select-icon-transition-duration": "1s",
+   "--time-of-day-select-icon-transition-timing-function": "cubic-bezier(0.65,0,0.35,1)",
+   "--columns-row-gap-mb": "var(--hds-space-core-200)",
+   "--columns-row-gap-tb": "initial",
+   "--columns-row-gap-dt": "initial",
+   "--columns-column-gap-mb": "var(--hds-space-layout-gap)",
+   "--columns-column-gap-tb": "initial",
+   "--columns-column-gap-dt": "initial",
+   "--columns-align-mb": "stretch",
+   "--columns-align-tb": "initial",
+   "--columns-align-dt": "initial",
+   "--card-mouse-x": "0",
+   "--carousel-drag-offset": "0px",
+   "--carousel-item-progress": "clamp(-1,var(--carousel-item-index,0) - var(--carousel-scroll-progress,0),1)",
+   "--carousel-gap": "var(--hds-space-core-200)",
+   "--carousel-gutter": "var(--hds-space-layout-content-margin)",
+   "--carousel-card-width": "clamp(240px,var(--case-study-carousel-card-fluid-width,30.38cqi),var(--case-stud",
+   "--case-study-carousel-hover-duration": "800ms",
+   "--card-mobile-scale-factor": "0.05",
+   "--card-mobile-gap-inset": "7px",
+   "--carousel-card-scale": "calc(1 - max(var(--carousel-item-progress, 0), -1 * var(--carousel-item-progress",
+   "--scale-shrinkage": "calc((1 - var(--carousel-card-scale)) * 50%)",
+   "--parallax-offset": "calc(-30px * var(--carousel-item-progress, 0))",
+   "--startups-carousel-icon-size": "var(--hds-space-core-500)",
+   "--statusBarHeight": "24px",
+   "--editingModeArrowWidth": "9px",
+   "--scale-amount": "0.05",
+   "--gap-inward": "7px",
+   "--gap-offset": "calc((var(--scale-shrinkage) + var(--gap-inward) / var(--carousel-card-scale)) *",
+   "--book-of-the-week-background-color": "var(--hds-color-core-neutralDark-25)",
+   "--locale-switcher-max-width": "var(--hds-space-layout-content-maxWidth)",
+   "--flag-icon-size": "21px",
+   "--hds-input-padding-block-start": "15.5px",
+   "--hds-input-padding-block-end": "16.5px",
+   "--gradient-stat-one": "linear-gradient(270deg,#ffd601 -380%,#ee30fb -60%,#635bff 110%)",
+   "--gradient-stat-two": "linear-gradient(270deg,#ffd601 -265%,#ee30fb 60%,#635bff 240%)",
+   "--pricing-callout-columns": "minmax(0,1fr)",
+   "--pricing-card-background": "var(--hds-color-surface-bg-quiet)",
+   "--pricing-card-columns": "minmax(0,1fr)",
+   "--pricing-card-left-gap": "var(--hds-space-core-200)",
+   "--pricing-card-content-gap": "var(--hds-space-core-150)",
+   "--hds-font-heading-xxs-letterSpacing": "0em",
+   "--hds-font-heading-xxs-lineHeight": "1.2"
+  },
+  "keyframes": {
+   "nav-hover-arrow-in": "0%{opacity:0;transform:translateX(-3px)}to{opacity:1;transform:translateX(0)}",
+   "nav-hover-arrow-out": "0%{opacity:1}to{opacity:0}",
+   "detect-scroll": "0%,to{--can-scroll: }",
+   "navigation-menu-delay-reset": "0%,to{--navigation-menu-transition-delay:0s}",
+   "bento-overlay-gradient-opacity-animation": "0%{opacity:0}to{opacity:1}",
+   "bento-dialog-reveal-fade-in-up": "0%{opacity:0;transform:translate3d(0,30px,0)}to{opacity:1;transform:translateZ(0)}",
+   "agentic-commerce-graphic-border-spin": "0%{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(1turn)}",
+   "book-of-the-week-fade-in": "0%{opacity:0}to{opacity:1}",
+   "opacityAnimation": "0%{background-color:rgba(229,237,245,0)}to{background-color:rgba(229,237,245,.7)}",
+   "gradient-border-input-shimmer": "0%{opacity:1;transform:var( --gradient-border-input-position,translate3d(0,0,0) ) translate(-100%,-35%)}to{opacity:1;transform:var( --gradient-border-input-position,translate3d(0,0,0) ) translate(300%,-35%)}"
+  },
+  "easings": [
+   [
+    "linear",
+    57
+   ],
+   [
+    "cubic-bezier(.25,1,.5,1)",
+    44
+   ],
+   [
+    "ease",
+    37
+   ],
+   [
+    "ease-in-out",
+    10
+   ],
+   [
+    "cubic-bezier(.4,0,.2,1)",
+    8
+   ],
+   [
+    "ease-out",
+    7
+   ],
+   [
+    "cubic-bezier(.33,1,.68,1)",
+    5
+   ],
+   [
+    "cubic-bezier(0,0,.2,1)",
+    5
+   ],
+   [
+    "cubic-bezier(.16,1,.3,1)",
+    4
+   ],
+   [
+    "cubic-bezier(.3,0,.2,1)",
+    4
+   ],
+   [
+    "cubic-bezier(.65,.05,.36,1)",
+    3
+   ],
+   [
+    "cubic-bezier(0.45,0.05,0.55,0.95)",
+    2
+   ],
+   [
+    "cubic-bezier(0.25,1,0.5,1)",
+    2
+   ],
+   [
+    "cubic-bezier(0.165,0.84,0.44,1)",
+    2
+   ]
+  ],
+  "durations": [
+   [
+    ".3s",
+    30
+   ],
+   [
+    "0s",
+    12
+   ],
+   [
+    ".15s",
+    11
+   ],
+   [
+    ".5s",
+    11
+   ],
+   [
+    ".2s",
+    8
+   ],
+   [
+    ".25s",
+    7
+   ],
+   [
+    ".4s",
+    6
+   ],
+   [
+    "1s",
+    5
+   ],
+   [
+    "0ms",
+    4
+   ],
+   [
+    ".1s",
+    3
+   ],
+   [
+    ".6s",
+    3
+   ],
+   [
+    ".8s",
+    2
+   ],
+   [
+    "2s",
+    2
+   ],
+   [
+    ".12s",
+    2
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "(min-width:640px)",
+    209
+   ],
+   [
+    "(min-width:940px)",
+    116
+   ],
+   [
+    "(prefers-reduced-motion:no-preference)",
+    62
+   ],
+   [
+    "(max-width:639px)",
+    41
+   ],
+   [
+    "(prefers-reduced-motion:reduce)",
+    17
+   ],
+   [
+    "(max-width:939px)",
+    11
+   ],
+   [
+    "(min-width:1264px)",
+    4
+   ],
+   [
+    "(min-width:640px) and (max-width:939px)",
+    4
+   ],
+   [
+    "(min-width:1300px)",
+    3
+   ],
+   [
+    "(hover:hover)",
+    3
+   ],
+   [
+    "(min-resolution:2x)",
+    3
+   ],
+   [
+    "(min-width:840px)",
+    3
+   ],
+   [
+    "(min-width:940px) and (pointer:fine) and (prefers-reduced-motion:no-preference)",
+    3
+   ],
+   [
+    "(hover:hover) and (pointer:fine)",
+    3
+   ],
+   [
+    "(max-width:639px) and (prefers-reduced-motion:no-preference)",
+    3
+   ],
+   [
+    "(min-width:600px)",
+    3
+   ],
+   [
+    "(max-width:640px)",
+    2
+   ],
+   [
+    "(min-width:940px) and (prefers-reduced-motion:no-preference)",
+    2
+   ],
+   [
+    "(min-width:480px) and (max-width:639px)",
+    2
+   ],
+   [
+    "(max-width:639.9999px)",
+    2
+   ]
+  ],
+  "reducedMotion": 91,
+  "colorScheme": 0,
+  "viewTransitions": 0,
+  "scrollTimelines": 7,
+  "containerQueries": 11,
+  "clamp": [
+   [
+    "clamp(-1,var(--bento-dialog-graphic-index)",
+    1
+   ],
+   [
+    "clamp(var(--hds-space-core-900),10lvh,var(--hds-space-core-1800))",
+    1
+   ],
+   [
+    "clamp(0,calc((var(--combined-progress-bars) - var(--scale-start))",
+    1
+   ],
+   [
+    "clamp(-1,var(--carousel-item-index,0)",
+    1
+   ],
+   [
+    "clamp(240px,var(--case-study-carousel-card-fluid-width,30.38cqi)",
+    1
+   ]
+  ]
+ },
+ "anatomy": {
+  "libs": [
+   "three",
+   "nextjs"
+  ],
+  "canvases": [
+   "webgl",
+   "webgl"
+  ],
+  "videos": 0,
+  "fonts": [
+   "sohne-var 1 1000 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 56,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.03",
+    "tracking": "-1.4px",
+    "transform": "none",
+    "chars": 31,
+    "n": 1,
+    "sample": "The backbone of global commerce"
+   },
+   {
+    "px": 48,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.15",
+    "tracking": "-0.96px",
+    "transform": "none",
+    "chars": 338,
+    "n": 6,
+    "sample": "Financial infrastructure to grow your revenue."
+   },
+   {
+    "px": 48,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.03",
+    "tracking": "-0.96px",
+    "transform": "none",
+    "chars": 57,
+    "n": 4,
+    "sample": "Building the economic infrastructure for AI"
+   },
+   {
+    "px": 48,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1",
+    "tracking": "-0.96px",
+    "transform": "none",
+    "chars": 21,
+    "n": 4,
+    "sample": "135+"
+   },
+   {
+    "px": 32,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.1",
+    "tracking": "-0.64px",
+    "transform": "none",
+    "chars": 501,
+    "n": 11,
+    "sample": "Flexible solutions for every business model."
+   },
+   {
+    "px": 26,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.12",
+    "tracking": "-0.26px",
+    "transform": "none",
+    "chars": 1773,
+    "n": 20,
+    "sample": "Accept and optimize payments globally—online and"
+   },
+   {
+    "px": 26,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.15",
+    "tracking": "-0.78px",
+    "transform": "none",
+    "chars": 22,
+    "n": 4,
+    "sample": "$5.46"
+   },
+   {
+    "px": 26,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.12",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 34,
+    "n": 1,
+    "sample": "Get Stripe product recommendations"
+   },
+   {
+    "px": 22,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.1",
+    "tracking": "-0.22px",
+    "transform": "none",
+    "chars": 1861,
+    "n": 20,
+    "sample": "Hertz unifies commerce with Stripe."
+   },
+   {
+    "px": 20,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.4",
+    "tracking": "-0.2px",
+    "transform": "none",
+    "chars": 88,
+    "n": 1,
+    "sample": "Create an account instantly, or contact us to de"
+   },
+   {
+    "px": 18,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.4",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 566,
+    "n": 7,
+    "sample": "50% of Fortune 100 companies have used Stripe to"
+   },
+   {
+    "px": 18,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.4",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 55,
+    "n": 4,
+    "sample": "Kurtis Moyer,"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 339,
+    "n": 24,
+    "sample": "Get started"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.38",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 71,
+    "n": 1,
+    "sample": "Enter your company's URL, or tell us what you se"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.4",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 2073,
+    "n": 34,
+    "sample": "currencies and payment methods supported"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.4",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 287,
+    "n": 16,
+    "sample": "160"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 397,
+    "n": 26,
+    "sample": "View services"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 95,
+    "n": 7,
+    "sample": "Products and pricing"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.25",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 1125,
+    "n": 87,
+    "sample": "Pricing"
+   },
+   {
+    "px": 14,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 100,
+    "n": 10,
+    "sample": "Products"
+   },
+   {
+    "px": 14,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 29,
+    "n": 1,
+    "sample": "Global GDP running on Stripe:"
+   },
+   {
+    "px": 14,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.43",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 8,
+    "n": 1,
+    "sample": "Pro Plan"
+   },
+   {
+    "px": 14,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.4",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 255,
+    "n": 3,
+    "sample": "Stripe Treasury includes various distinct Stripe"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 63,
+    "n": 5,
+    "sample": "Order summary"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.33",
+    "tracking": "0.036px",
+    "transform": "none",
+    "chars": 14,
+    "n": 1,
+    "sample": "Billed monthly"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.33",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 17,
+    "n": 2,
+    "sample": "Tokens"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.33",
+    "tracking": "-0.36px",
+    "transform": "none",
+    "chars": 13,
+    "n": 1,
+    "sample": "1,500,000,000"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 15,
+    "n": 1,
+    "sample": "Input strength:"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 58,
+    "n": 4,
+    "sample": "Business website"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 79,
+    "n": 4,
+    "sample": "By messaging, you understand how"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.45",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 97,
+    "n": 1,
+    "sample": "For more ideas on economic progress and technolo"
+   },
+   {
+    "px": 11,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.45",
+    "tracking": "-0.33px",
+    "transform": "none",
+    "chars": 12,
+    "n": 3,
+    "sample": "$0.01"
+   },
+   {
+    "px": 11,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.45",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 35,
+    "n": 4,
+    "sample": "per"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.5",
+    "tracking": "0.1px",
+    "transform": "none",
+    "chars": 52,
+    "n": 4,
+    "sample": "Pay Roastery"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.15",
+    "tracking": "0.1px",
+    "transform": "none",
+    "chars": 201,
+    "n": 17,
+    "sample": "Tap, insert, or swipe to pay"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.15",
+    "tracking": "0.1px",
+    "transform": "none",
+    "chars": 139,
+    "n": 23,
+    "sample": "Mocha Latte"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.15",
+    "tracking": "-0.3px",
+    "transform": "none",
+    "chars": 6,
+    "n": 2,
+    "sample": "10%"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 94,
+    "n": 4,
+    "sample": "[redacted]"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "0.8",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 81,
+    "n": 12,
+    "sample": "Card"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.2",
+    "tracking": "-0.3px",
+    "transform": "none",
+    "chars": 26,
+    "n": 4,
+    "sample": "$150.00"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(80, 97, 122)",
+    3316
+   ],
+   [
+    "rgb(100, 116, 141)",
+    2858
+   ],
+   [
+    "rgb(6, 27, 49)",
+    2787
+   ],
+   [
+    "rgb(83, 58, 253)",
+    584
+   ],
+   [
+    "rgb(131, 155, 200)",
+    481
+   ],
+   [
+    "rgb(255, 255, 255)",
+    453
+   ],
+   [
+    "rgb(163, 181, 214)",
+    309
+   ],
+   [
+    "rgb(60, 79, 105)",
+    165
+   ],
+   [
+    "rgb(125, 139, 164)",
+    135
+   ],
+   [
+    "rgb(26, 44, 68)",
+    124
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(255, 255, 255)",
+    19120
+   ],
+   [
+    "rgb(229, 237, 245)",
+    3664
+   ],
+   [
+    "rgb(13, 23, 56)",
+    3372
+   ],
+   [
+    "rgb(248, 250, 253)",
+    3254
+   ],
+   [
+    "rgba(248, 250, 253, 0.45)",
+    365
+   ],
+   [
+    "rgb(242, 247, 254)",
+    295
+   ],
+   [
+    "rgb(212, 222, 233)",
+    101
+   ]
+  ],
+  "bodyBg": "rgba(0, 0, 0, 0)",
+  "htmlBg": "rgba(0, 0, 0, 0)",
+  "transitions": [
+   [
+    "color | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    154
+   ],
+   [
+    "fill | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    125
+   ],
+   [
+    "stroke | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    59
+   ],
+   [
+    "transform | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    59
+   ],
+   [
+    "opacity | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    59
+   ],
+   [
+    "transform | 0.8s | cubic-bezier(0.165, 0.84, 0.44, 1)",
+    46
+   ],
+   [
+    "background-color, color, outline-color | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    37
+   ],
+   [
+    "opacity | 0.15s | linear",
+    36
+   ],
+   [
+    "opacity | 0.12s | ease",
+    16
+   ],
+   [
+    "transform | 0.6s | cubic-bezier(0.16, 1, 0.3, 1)",
+    12
+   ]
+  ],
+  "docScreens": 16.9,
+  "title": "Stripe | Financial Infrastructure to Grow Your Revenue",
+  "metaDesc": "Stripe is a financial services platform that helps all types of businesses accept payments, build flexible billing models, and manage money movement."
+ },
+ "animsAtLoad": [
+  "CSSAnimation:detect-scroll|NaNms|delay 0|linear|1",
+  "Animation:SPAN|325ms|delay 400|cubic-bezier(0.33, 1, 0.68, 1)|1",
+  "Animation:SPAN|325ms|delay 400|cubic-bezier(0.33, 1, 0.68, 1)|1",
+  "Animation:SPAN|325ms|delay 450|cubic-bezier(0.33, 1, 0.68, 1)|1",
+  "Animation:SPAN|325ms|delay 450|cubic-bezier(0.33, 1, 0.68, 1)|1"
+ ],
+ "hovers": [
+  {
+   "i": 0,
+   "tag": "A",
+   "text": "Get started",
+   "w": 141.421875,
+   "h": 48,
+   "file": "clip-hover-0.webp",
+   "maxChangePct": 0.3
+  },
+  {
+   "i": 1,
+   "tag": "A",
+   "text": "Sign up with Google",
+   "w": 211.96875,
+   "h": 48,
+   "file": "clip-hover-1.webp",
+   "maxChangePct": 0.25
+  },
+  {
+   "i": 2,
+   "tag": "LI",
+   "text": "",
+   "w": 172,
+   "h": 72,
+   "file": "clip-hover-2.webp",
+   "maxChangePct": 0.25
+  },
+  {
+   "i": 3,
+   "tag": "A",
+   "text": "",
+   "w": 142,
+   "h": 34,
+   "file": "clip-hover-3.webp",
+   "maxChangePct": 0.27
+  }
+ ],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 46.98
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [
+    "H1 48px: Financial infrastructure to grow your revenue. Accept payments, handle business banking,1 ",
+    "H1 48px: Financial infrastructure to grow your revenue. Accept payments, handle business banking,1 ",
+    "H2 32px: Flexible solutions for every business model."
+   ],
+   "anims": 62
+  },
+  {
+   "i": 1,
+   "y": 675,
+   "file": "desktop-j01.webp",
+   "headings": [
+    "H2 32px: Flexible solutions for every business model.",
+    "H3 26px: Accept and optimize payments globally—online and in person",
+    "H3 26px: Enable any billing model"
+   ],
+   "anims": 53
+  },
+  {
+   "i": 2,
+   "y": 1350,
+   "file": "desktop-j02.webp",
+   "headings": [
+    "H3 26px: Monetize through agentic commerce",
+    "H3 26px: Create a card issuing program",
+    "H3 26px: Access borderless money movement with stablecoins and crypto"
+   ],
+   "anims": 65
+  },
+  {
+   "i": 3,
+   "y": 2025,
+   "file": "desktop-j03.webp",
+   "headings": [
+    "H3 26px: Embed payments in your platform"
+   ],
+   "anims": 65
+  },
+  {
+   "i": 4,
+   "y": 2700,
+   "file": "desktop-j04.webp",
+   "headings": [
+    "H2 26px: Get Stripe product recommendations"
+   ],
+   "anims": 65
+  },
+  {
+   "i": 5,
+   "y": 3375,
+   "file": "desktop-j05.webp",
+   "headings": [
+    "H2 56px: The backbone of global commerce"
+   ],
+   "anims": 48
+  },
+  {
+   "i": 6,
+   "y": 4050,
+   "file": "desktop-j06.webp",
+   "headings": [
+    "H2 56px: The backbone of global commerce"
+   ],
+   "anims": 61
+  },
+  {
+   "i": 7,
+   "y": 4725,
+   "file": "desktop-j07.webp",
+   "headings": [
+    "H2 32px: Powering businesses of all sizes.",
+    "H3 26px: Transform your enterprise with agile financial infrastructure",
+    "H3 22px: Hertz unifies commerce with Stripe."
+   ],
+   "anims": 48
+  },
+  {
+   "i": 8,
+   "y": 5400,
+   "file": "desktop-j08.webp",
+   "headings": [
+    "H3 22px: Hertz unifies commerce with Stripe.",
+    "H3 22px: URBN consolidates $5 billion in online and in-store revenue onto Stripe.",
+    "H3 22px: Instacart powers online grocery delivery with Stripe.",
+    "H3 22px: Le Monde improves local and international payments with Stripe."
+   ],
+   "anims": 48
+  },
+  {
+   "i": 9,
+   "y": 6075,
+   "file": "desktop-j09.webp",
+   "headings": [
+    "H3 22px: URBN consolidates $5 billion in online and in-store revenue onto Stripe.",
+    "H3 22px: Instacart powers online grocery delivery with Stripe.",
+    "H3 22px: Le Monde improves local and international payments with Stripe.",
+    "H3 26px: Build a foundation for your startup that enables faster growth"
+   ],
+   "anims": 48
+  },
+  {
+   "i": 10,
+   "y": 6750,
+   "file": "desktop-j10.webp",
+   "headings": [
+    "H3 26px: Build a foundation for your startup that enables faster growth"
+   ],
+   "anims": 74
+  },
+  {
+   "i": 11,
+   "y": 7425,
+   "file": "desktop-j11.webp",
+   "headings": [
+    "H3 26px: Make your SaaS platform a complete financial operating system"
+   ],
+   "anims": 74
+  },
+  {
+   "i": 12,
+   "y": 8100,
+   "file": "desktop-j12.webp",
+   "headings": [],
+   "anims": 74
+  },
+  {
+   "i": 13,
+   "y": 8775,
+   "file": "desktop-j13.webp",
+   "headings": [
+    "H2 32px: Reliable, extensible infrastructure for every stack."
+   ],
+   "anims": 74
+  },
+  {
+   "i": 14,
+   "y": 9450,
+   "file": "desktop-j14.webp",
+   "headings": [
+    "H2 32px: Reliable, extensible infrastructure for every stack.",
+    "H3 26px: Connect to existing systems."
+   ],
+   "anims": 106
+  },
+  {
+   "i": 15,
+   "y": 10125,
+   "file": "desktop-j15.webp",
+   "headings": [
+    "H3 26px: Scale with confidence."
+   ],
+   "anims": 81
+  },
+  {
+   "i": 16,
+   "y": 10800,
+   "file": "desktop-j16.webp",
+   "headings": [
+    "H3 26px: Choose an integration path."
+   ],
+   "anims": 75
+  },
+  {
+   "i": 17,
+   "y": 11475,
+   "file": "desktop-j17.webp",
+   "headings": [
+    "H2 32px: What’s happening"
+   ],
+   "anims": 74
+  },
+  {
+   "i": 18,
+   "y": 12150,
+   "file": "desktop-j18.webp",
+   "headings": [
+    "H3 22px: Businesses on Stripe generated $1.9T in 2025.",
+    "H3 22px: 150K+ users have their best day ever on Stripe.",
+    "H3 22px: Tidemark’s vertical and SMB SaaS benchmark report.",
+    "H3 22px: Shopify’s Tobi Lütke sits down with John Collison.",
+    "H3 22px: New tools to process payments outside app stores.",
+    "H3 22px: Crypto.com partners with Stripe to enable better crypto payments."
+   ],
+   "anims": 74
+  },
+  {
+   "i": 19,
+   "y": 12825,
+   "file": "desktop-j19.webp",
+   "headings": [
+    "H3 32px: Book of the week"
+   ],
+   "anims": 74
+  },
+  {
+   "i": 20,
+   "y": 13500,
+   "file": "desktop-j20.webp",
+   "headings": [],
+   "anims": 48
+  },
+  {
+   "i": 21,
+   "y": 14175,
+   "file": "desktop-j21.webp",
+   "headings": [],
+   "anims": 48
+  },
+  {
+   "i": 22,
+   "y": 14341,
+   "file": "desktop-j22.webp",
+   "headings": [],
+   "anims": 48
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [
+   "three",
+   "nextjs"
+  ],
+  "canvases": [
+   "webgl",
+   "webgl"
+  ],
+  "videos": 0,
+  "fonts": [
+   "sohne-var 1 1000 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 34,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.03",
+    "tracking": "-0.34px",
+    "transform": "none",
+    "chars": 92,
+    "n": 2,
+    "sample": "Financial infrastructure to grow your revenue."
+   },
+   {
+    "px": 34,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.03",
+    "tracking": "-0.68px",
+    "transform": "none",
+    "chars": 31,
+    "n": 1,
+    "sample": "The backbone of global commerce"
+   },
+   {
+    "px": 28,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.07",
+    "tracking": "-0.28px",
+    "transform": "none",
+    "chars": 78,
+    "n": 8,
+    "sample": "Building the economic infrastructure for AI"
+   },
+   {
+    "px": 26,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.15",
+    "tracking": "-0.78px",
+    "transform": "none",
+    "chars": 22,
+    "n": 4,
+    "sample": "$5.46"
+   },
+   {
+    "px": 22,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.2",
+    "tracking": "-0.22px",
+    "transform": "none",
+    "chars": 464,
+    "n": 11,
+    "sample": "Flexible solutions for every business model."
+   },
+   {
+    "px": 20,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.2",
+    "tracking": "-0.2px",
+    "transform": "none",
+    "chars": 2588,
+    "n": 32,
+    "sample": "Accept and optimize payments globally—online and"
+   },
+   {
+    "px": 18,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.25",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 223,
+    "n": 4,
+    "sample": "Hertz unifies commerce with Stripe."
+   },
+   {
+    "px": 18,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.4",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 911,
+    "n": 5,
+    "sample": "With Stripe, we have a global technology partner"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 339,
+    "n": 24,
+    "sample": "Get started"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.4",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 2382,
+    "n": 42,
+    "sample": "currencies and payment methods supported"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.35",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 566,
+    "n": 7,
+    "sample": "50% of Fortune 100 companies have used Stripe to"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.4",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 363,
+    "n": 25,
+    "sample": "160"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 397,
+    "n": 26,
+    "sample": "View services"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.35",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 55,
+    "n": 4,
+    "sample": "Kurtis Moyer,"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 95,
+    "n": 7,
+    "sample": "Products and pricing"
+   },
+   {
+    "px": 16,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.25",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 1125,
+    "n": 87,
+    "sample": "Pricing"
+   },
+   {
+    "px": 14,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.43",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 8,
+    "n": 1,
+    "sample": "Pro Plan"
+   },
+   {
+    "px": 14,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 29,
+    "n": 2,
+    "sample": "Stripe Press"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 89,
+    "n": 5,
+    "sample": "Global GDP running on Stripe:"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.33",
+    "tracking": "0.036px",
+    "transform": "none",
+    "chars": 14,
+    "n": 1,
+    "sample": "Billed monthly"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.33",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 17,
+    "n": 2,
+    "sample": "Tokens"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.33",
+    "tracking": "-0.36px",
+    "transform": "none",
+    "chars": 13,
+    "n": 1,
+    "sample": "2,010,569,010"
+   },
+   {
+    "px": 12,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.45",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 97,
+    "n": 1,
+    "sample": "For more ideas on economic progress and technolo"
+   },
+   {
+    "px": 11,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.45",
+    "tracking": "-0.33px",
+    "transform": "none",
+    "chars": 12,
+    "n": 3,
+    "sample": "$0.01"
+   },
+   {
+    "px": 11,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.45",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 35,
+    "n": 4,
+    "sample": "per"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.5",
+    "tracking": "0.1px",
+    "transform": "none",
+    "chars": 52,
+    "n": 4,
+    "sample": "Pay Roastery"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.15",
+    "tracking": "0.1px",
+    "transform": "none",
+    "chars": 201,
+    "n": 17,
+    "sample": "Tap, insert, or swipe to pay"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.15",
+    "tracking": "0.1px",
+    "transform": "none",
+    "chars": 139,
+    "n": 23,
+    "sample": "Mocha Latte"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.15",
+    "tracking": "-0.3px",
+    "transform": "none",
+    "chars": 6,
+    "n": 2,
+    "sample": "10%"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 94,
+    "n": 4,
+    "sample": "[redacted]"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "0.8",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 81,
+    "n": 12,
+    "sample": "Card"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.2",
+    "tracking": "-0.3px",
+    "transform": "none",
+    "chars": 26,
+    "n": 4,
+    "sample": "$150.00"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.4",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 86,
+    "n": 16,
+    "sample": "Subtotal"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.4",
+    "tracking": "-0.3px",
+    "transform": "none",
+    "chars": 79,
+    "n": 12,
+    "sample": "$150.00"
+   },
+   {
+    "px": 10,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.4",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 4,
+    "n": 1,
+    "sample": "Free"
+   },
+   {
+    "px": 9,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 85,
+    "n": 4,
+    "sample": "roastery.com/checkout"
+   },
+   {
+    "px": 9,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.2",
+    "tracking": "-0.081px",
+    "transform": "none",
+    "chars": 18,
+    "n": 3,
+    "sample": "カード番号"
+   },
+   {
+    "px": 9,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.3",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 84,
+    "n": 4,
+    "sample": "Zahlen Sie jetzt oder in"
+   },
+   {
+    "px": 9,
+    "family": "sohne-var",
+    "weight": "300",
+    "lineHeight": "1.3",
+    "tracking": "-0.27px",
+    "transform": "none",
+    "chars": 12,
+    "n": 2,
+    "sample": "€50.28"
+   },
+   {
+    "px": 9,
+    "family": "sohne-var",
+    "weight": "400",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 120,
+    "n": 4,
+    "sample": "Electric Kettle with Temperature Control"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(80, 97, 122)",
+    3553
+   ],
+   [
+    "rgb(6, 27, 49)",
+    2703
+   ],
+   [
+    "rgb(100, 116, 141)",
+    2426
+   ],
+   [
+    "rgb(255, 255, 255)",
+    651
+   ],
+   [
+    "rgb(83, 58, 253)",
+    577
+   ],
+   [
+    "rgb(131, 155, 200)",
+    481
+   ],
+   [
+    "rgb(163, 181, 214)",
+    309
+   ],
+   [
+    "rgb(60, 79, 105)",
+    165
+   ],
+   [
+    "rgb(26, 44, 68)",
+    124
+   ],
+   [
+    "rgb(39, 57, 81)",
+    108
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(255, 255, 255)",
+    7098
+   ],
+   [
+    "rgb(229, 237, 245)",
+    3188
+   ],
+   [
+    "rgb(248, 250, 253)",
+    1825
+   ],
+   [
+    "rgb(13, 23, 56)",
+    1506
+   ],
+   [
+    "rgba(248, 250, 253, 0.45)",
+    176
+   ],
+   [
+    "rgb(242, 247, 254)",
+    134
+   ]
+  ],
+  "bodyBg": "rgba(0, 0, 0, 0)",
+  "htmlBg": "rgba(0, 0, 0, 0)",
+  "transitions": [
+   [
+    "color | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    154
+   ],
+   [
+    "fill | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    125
+   ],
+   [
+    "stroke | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    59
+   ],
+   [
+    "transform | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    59
+   ],
+   [
+    "opacity | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    59
+   ],
+   [
+    "background-color, color, outline-color | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+    37
+   ],
+   [
+    "opacity | 0.15s | linear",
+    36
+   ],
+   [
+    "transform | 0.8s | cubic-bezier(0.165, 0.84, 0.44, 1)",
+    22
+   ],
+   [
+    "opacity | 0.12s | ease",
+    16
+   ],
+   [
+    "transform | 0.6s | cubic-bezier(0.16, 1, 0.3, 1)",
+    12
+   ]
+  ],
+  "docScreens": 24.1,
+  "title": "Stripe | Financial Infrastructure to Grow Your Revenue",
+  "metaDesc": "Stripe is a financial services platform that helps all types of businesses accept payments, build flexible billing models, and manage money movement."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [
+    "H1 34px: Financial infrastructure to grow your revenue.",
+    "H1 34px: Financial infrastructure to grow your revenue.",
+    "H2 22px: Flexible solutions for every business model.",
+    "H3 20px: Accept and optimize payments globally—online and in person"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 1,
+   "y": 760,
+   "file": "phone-j01.webp",
+   "headings": [
+    "H3 20px: Accept and optimize payments globally—online and in person",
+    "H3 20px: Enable any billing model"
+   ],
+   "anims": 48
+  },
+  {
+   "i": 2,
+   "y": 1519,
+   "file": "phone-j02.webp",
+   "headings": [
+    "H3 20px: Monetize through agentic commerce"
+   ],
+   "anims": 71
+  },
+  {
+   "i": 3,
+   "y": 2279,
+   "file": "phone-j03.webp",
+   "headings": [
+    "H3 20px: Create a card issuing program",
+    "H3 20px: Access borderless money movement with stablecoins and crypto"
+   ],
+   "anims": 48
+  },
+  {
+   "i": 4,
+   "y": 3038,
+   "file": "phone-j04.webp",
+   "headings": [
+    "H3 20px: Embed payments in your platform"
+   ],
+   "anims": 48
+  },
+  {
+   "i": 5,
+   "y": 3798,
+   "file": "phone-j05.webp",
+   "headings": [],
+   "anims": 65
+  },
+  {
+   "i": 6,
+   "y": 4558,
+   "file": "phone-j06.webp",
+   "headings": [
+    "H2 34px: The backbone of global commerce"
+   ],
+   "anims": 65
+  },
+  {
+   "i": 7,
+   "y": 5317,
+   "file": "phone-j07.webp",
+   "headings": [
+    "H2 22px: Powering businesses of all sizes.",
+    "H3 20px: Transform your enterprise with agile financial infrastructure",
+    "H3 18px: Hertz unifies commerce with Stripe."
+   ],
+   "anims": 65
+  },
+  {
+   "i": 8,
+   "y": 6077,
+   "file": "phone-j08.webp",
+   "headings": [
+    "H3 18px: Hertz unifies commerce with Stripe.",
+    "H3 18px: URBN consolidates $5 billion in online and in-store revenue onto Stripe."
+   ],
+   "anims": 65
+  },
+  {
+   "i": 9,
+   "y": 6836,
+   "file": "phone-j09.webp",
+   "headings": [
+    "H3 18px: Hertz unifies commerce with Stripe.",
+    "H3 18px: URBN consolidates $5 billion in online and in-store revenue onto Stripe.",
+    "H3 18px: Instacart powers online grocery delivery with Stripe.",
+    "H3 18px: Le Monde improves local and international payments with Stripe."
+   ],
+   "anims": 48
+  },
+  {
+   "i": 10,
+   "y": 7596,
+   "file": "phone-j10.webp",
+   "headings": [],
+   "anims": 61
+  },
+  {
+   "i": 11,
+   "y": 8356,
+   "file": "phone-j11.webp",
+   "headings": [
+    "H3 20px: Build a foundation for your startup that enables faster growth"
+   ],
+   "anims": 82
+  },
+  {
+   "i": 12,
+   "y": 9115,
+   "file": "phone-j12.webp",
+   "headings": [
+    "H3 20px: Make your SaaS platform a complete financial operating system"
+   ],
+   "anims": 92
+  },
+  {
+   "i": 13,
+   "y": 9875,
+   "file": "phone-j13.webp",
+   "headings": [],
+   "anims": 85
+  }
+ ]
+}

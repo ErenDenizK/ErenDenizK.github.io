@@ -1,0 +1,72 @@
+# Plan: the clean restart (2026-10-10)
+
+Status: closed 2026-10-11 by the rejected Home round (see
+[`docs/research/2026-10-quality-postmortem.md`](../research/2026-10-quality-postmortem.md)). Kept as
+written. The open questions on the mini CV and the Record object were settled on 2026-10-10
+(evening); the 2026-10-11 board rounds answered tracks 3, 7, 8, 9 and 15 and real-time 3D (brief
+log, 2026-10-11). The live plan is
+[`docs/PLAN.md`](../PLAN.md).
+
+The one live plan, written from the owner's 2026-10-10 direction (the clean restart, brief
+"Current intent"). It replaces `ROADMAP.md` and the round plans, which are in `docs/history/`.
+Update a track's status when it moves; when a round closes, copy this file to `docs/history/`
+and start a fresh one.
+
+## Where we are (2026-10-10)
+
+v0 is live from `dev`: Home, Work with embassies, About with the ID card, the Record (sample
+entries only), pre-rendered objects, the contents-ladder rail on pages with sections, CI and
+`npm run verify`. The owner liked none of the recent Home/About designs and asked for a clean
+start: a fresh situation analysis, corrected docs, an evaluation board and regular reports.
+Every track below is reviewed for its purpose, its reason and a designer's discipline.
+
+## Tracks
+
+| # | Track | What the owner asked (brief, 2026-10-10) | Status |
+|---|---|---|---|
+| 1 | Home as brand and vision | keep the simple layout; present a product, an identity, a brand, the vision; flashier, not busier | open |
+| 2 | About as an about-me article | the ID card on top, then chapters in the owner's voice and postcard photos (2026-10-10 evening) | built 2026-10-10 (ADR-0008 amendment), copy in review |
+| 3 | One scrollbar everywhere | one custom scrollbar on every page and in the project sheet; no native bar left (ADR-0011 revision first) | built 2026-10-10 (ADR-0013), in review |
+| 4 | Istanbul + clock | bring the detail back (`content/site.json` already has `about.kicker` "About · Istanbul") | built 2026-10-10 ("Istanbul HH:MM" in the bar, desktop; ADR-0013 item 9), in review |
+| 5 | ID card calmer | keep it playable; damp extreme input so it no longer goes wild | built 2026-10-10 (ADR-0008 amendment); owner's look check |
+| 6 | edk object bug | find and fix where it glitches and looks unclean | built 2026-10-10 (ADR-0006 amendment); owner's look check |
+| 7 | Object stutter and real-time 3D | measure the pre-rendered stutter vs a real-time desktop tier; report the performance difference to the owner, who decides (ADR-0006 under review) | study done; option (a) built 2026-10-10 (float, sharp lean, no self-turn); 1° grid and real time wait for the owner |
+| 8 | Record object redesign | a tape / voice recorder, different from the earlier ones | built 2026-10-10: the pocket cassette recorder (`media/objects/recorder/`), in review |
+| 9 | Photo placement | high-resolution derivatives only; one cat photo, never both; About first, Home possible | About postcards built 2026-10-10; metro censor concepts with the owner |
+| 10 | Screenshots and logos | app captures and app logos (or 3D logos) beside the objects, once the apps are presentable in their own chats | open: waits on the app chats |
+| 11 | Copy and slogans | improve wording | open: last |
+| 12 | Phone pass | after desktop settles; phones must not break meanwhile | open: after desktop |
+| 13 | Sample Record entries | note, entry, release, essay for testing, tagged `sample`, `SAMPLES=0` drops them | done 2026-10-10 |
+| 15 | Work as the flagship page | real screens in platform frames, wordmarks, facts; objects as emblems (ADR-0014) | built 2026-10-10, direction in review |
+| 16 | Object sharpness | blur and the "2.5D" look measured and fixed; edk at 1° (ADR-0006 amendment) | built 2026-10-10; other objects' 1° grids wait on the owner's look |
+| 14 | Docs clean-up | brief consolidated, plans archived, ADR statuses corrected | done 2026-10-10 |
+
+## How work flows
+
+- Start with a few agents at a time. Build agents work in their own worktree on a local
+  `wip/<topic>` branch; the lead reviews screenshots, runs `npm run verify`, merges into `dev`
+  and pushes (which deploys).
+- Evaluation board: each track is judged against the owner's words above, with screenshots at
+  the three CLAUDE.md sizes, before it is shown to the owner.
+- Regular reports to the owner: short, plain, in Turkish, ending with what could not be
+  verified (real Safari, real iPhone, GPU timings).
+- Taste goes to the owner as short option lists; technique is decided and recorded in ADRs.
+
+## Open questions for the owner
+
+- "Mini CV": a CV-style About only, or also a downloadable document?
+- Real-time 3D on desktop: decided after the track 7 report.
+- Record object: H2 again or a tape/cassette player (shown as options).
+- Look checks on ADR-0010 (Work sections) and ADR-0012 (embassies), still proposed.
+- ADR-0002 (content first) and ADR-0009 (`?live`): accept, or leave parked behind track 7.
+- Eat Map's real colour values and mark from Xcode (Family/Eat Map chat).
+- Recto logo: references and sketches (Penpot, Dengeli as one candidate).
+
+## Later
+
+- First real Record entries (why this site, the two-track education, the university, the
+  projects); the sample entries go when they arrive.
+- Hand-written and school work in its own lighter format.
+- A Turkish locale; a custom domain (`edk.dev` or similar); research on hosting and
+  open-sourcing AI-built projects.
+- 2.5D photo, once the owner picks a photo that suits it.

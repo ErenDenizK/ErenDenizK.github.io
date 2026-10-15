@@ -1,0 +1,628 @@
+{
+ "slug": "jhey-tompkins",
+ "url": "https://jhey.dev/",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "16px",
+  "scrollBehavior": "auto",
+  "scrollbarWidth": "thin",
+  "smoothLib": false,
+  "maxWidths": [
+   [
+    "1392px",
+    1
+   ]
+  ],
+  "grids": [
+   [
+    "1 cols · 20px",
+    5
+   ],
+   [
+    "1 cols · 40px",
+    1
+   ]
+  ],
+  "gaps": [
+   [
+    "8px",
+    5
+   ]
+  ],
+  "spacingY": [
+   [
+    "4px",
+    10
+   ],
+   [
+    "16px",
+    5
+   ],
+   [
+    "8px",
+    3
+   ],
+   [
+    "80px",
+    2
+   ],
+   [
+    "24px",
+    2
+   ]
+  ],
+  "spacingX": [
+   [
+    "8px",
+    2
+   ]
+  ],
+  "radii": [
+   [
+    "6px",
+    1
+   ]
+  ],
+  "shadows": [],
+  "effects": [
+   [
+    "filter: grayscale(1)",
+    5
+   ],
+   [
+    "filter: blur(0px)",
+    1
+   ]
+  ],
+  "cursors": [],
+  "fixed": 1,
+  "sticky": 0,
+  "nav": [
+   "jhey.dev"
+  ],
+  "viewTransitionNames": [
+   "root"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "00-index.BXGkBX-5.css",
+   "url": "https://www.jhey.dev/_astro/index.BXGkBX-5.css",
+   "bytes": 33760
+  },
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 7957
+  }
+ ],
+ "css": {
+  "fontFaces": [
+   {
+    "family": "DM Serif Text-06c75f9b58f80d38",
+    "file": "aaaed8c49a9adc4f.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "DM Serif Text-06c75f9b58f80d38",
+    "file": "166a772b1a474934.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Doto-bb558af012af430a",
+    "file": "008d67fd73a4c01b.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Doto-bb558af012af430a fallback: Arial",
+    "file": "",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "4ef51e824ae0457a.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11 fallback: Arial",
+    "file": "",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "506e3ac255d1705a.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "DM Serif Text-06c75f9b58f80d38",
+    "file": "27d11f540a05086b.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "67b75d7bc446d8f1.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "DM Serif Text-06c75f9b58f80d38 fallback: Arial",
+    "file": "",
+    "weight": "400"
+   },
+   {
+    "family": "Doto-bb558af012af430a",
+    "file": "f1ca978fcc99595e.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "3318e8bb83008fbd.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "c0cfa0649def90cf.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "bbfe07316449c17c.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "7d8a942e49c358b9.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "DM Serif Text-06c75f9b58f80d38",
+    "file": "3223277add763a3c.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "1a1fc2eef5b77571.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "743ba8c5de9b8da2.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "863c6d4ebf55aa09.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "b77ed88846045e35.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "807789ff2fc8560e.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "233f952ab2955996.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter-280267e3536fdc11",
+    "file": "ab406b10c6d4c446.woff2",
+    "weight": "400"
+   }
+  ],
+  "variables": {
+   "--font-sans": "Inter-280267e3536fdc11,\"Inter-280267e3536fdc11 fallback: Arial\",sans-serif",
+   "--font-serif": "\"DM Serif Text-06c75f9b58f80d38\",\"DM Serif Text-06c75f9b58f80d38 fallback: Arial",
+   "--font-mono": "Doto-bb558af012af430a,\"Doto-bb558af012af430a fallback: Arial\",sans-serif",
+   "--color-red-400": "oklch(70.4% .191 22.216)",
+   "--color-red-500": "oklch(63.7% .237 25.331)",
+   "--color-gray-300": "oklch(87.2% .01 258.338)",
+   "--color-gray-800": "oklch(27.8% .033 256.848)",
+   "--color-neutral-300": "oklch(87% 0 0)",
+   "--color-neutral-700": "oklch(37.1% 0 0)",
+   "--color-black": "#000",
+   "--color-white": "#fff",
+   "--spacing": ".25rem",
+   "--container-md": "28rem",
+   "--text-xs": ".75rem",
+   "--text-xs--line-height": "calc(1/.75)",
+   "--text-sm": ".875rem",
+   "--text-sm--line-height": "calc(1.25/.875)",
+   "--text-base": "1rem",
+   "--text-base--line-height": "1.5",
+   "--text-lg": "1.125rem",
+   "--text-lg--line-height": "calc(1.75/1.125)",
+   "--text-xl": "1.25rem",
+   "--text-xl--line-height": "calc(1.75/1.25)",
+   "--text-4xl": "2.25rem",
+   "--text-4xl--line-height": "calc(2.5/2.25)",
+   "--font-weight-medium": "500",
+   "--font-weight-semibold": "600",
+   "--font-weight-bold": "700",
+   "--font-weight-black": "900",
+   "--leading-relaxed": "1.625",
+   "--radius-md": ".375rem",
+   "--radius-lg": ".5rem",
+   "--ease-in": "cubic-bezier(.4,0,1,1)",
+   "--ease-out": "cubic-bezier(0,0,.2,1)",
+   "--ease-in-out": "cubic-bezier(.4,0,.2,1)",
+   "--animate-spin": "spin 1s linear infinite",
+   "--default-transition-duration": ".15s",
+   "--default-transition-timing-function": "cubic-bezier(.4,0,.2,1)",
+   "--default-font-family": "var(--font-sans)",
+   "--default-mono-font-family": "var(--font-mono)",
+   "--color-bg": "light-dark(#fff,#000)",
+   "--header-height": "80px",
+   "--tree-row-h": "1.75rem",
+   "--spacing-content": "600px",
+   "--content": "56ch",
+   "--spacing-max-content": "calc(100vw - (2*var(--spacing-gutter)))",
+   "--spacing-gutter": "1.5rem",
+   "--font-size-min": "14",
+   "--font-size-max": "20",
+   "--font-ratio-min": "1.2",
+   "--font-ratio-max": "1.33",
+   "--font-width-min": "375",
+   "--font-width-max": "1500",
+   "--fluid-min": "calc(var(--font-size-min)*pow(var(--font-ratio-min),var(--font-level,0)))",
+   "--fluid-max": "calc(var(--font-size-max)*pow(var(--font-ratio-max),var(--font-level,0)))",
+   "--fluid-preferred": "calc((var(--fluid-max) - var(--fluid-min))/(var(--font-width-max) - var(--font-w",
+   "--fluid-type": "clamp((var(--fluid-min)/16)*1rem,((var(--fluid-min)/16)*1rem) - (((var(--fluid-p",
+   "--size": "40px",
+   "--line": "light-dark(color-mix(in hsl,canvasText,#0000 90%),color-mix(in hsl,canvasText,#0",
+   "--duration": ".6",
+   "--delay": ".2",
+   "--base-delay": ".75",
+   "--end": "1.025"
+  },
+  "keyframes": {
+   "marquee": "to{translate:-50%}",
+   "reveal": "0%{filter:blur(var(--blur-from,4px));scale:var(--scale-from,1);opacity:var(--opacity-from,0);translate:var(--translate-from-x,0)var(--translate-from-y,0)}to{filter:blur(var(--blur-to,0px));scale:var(--scale-to,1);opacity:var(--opacity-to,1);translate:var(--tra",
+   "fill": "to{fill:currentColor}",
+   "draw": "to{stroke-dashoffset:0}",
+   "blink": "0%,46%,48%,50%,to{transform:scaleY(1)}47%,49%{transform:scaleY(.1)}",
+   "spin": "to{transform:rotate(360deg)}",
+   "astroFadeInOut": "0%{opacity:1}to{opacity:0}",
+   "astroFadeIn": "0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}",
+   "astroFadeOut": "0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}",
+   "astroSlideFromRight": "0%{transform:translate(100%)}",
+   "astroSlideFromLeft": "0%{transform:translate(-100%)}",
+   "astroSlideToRight": "to{transform:translate(100%)}",
+   "astroSlideToLeft": "to{transform:translate(-100%)}"
+  },
+  "easings": [
+   [
+    "ease",
+    8
+   ],
+   [
+    "ease-in",
+    7
+   ],
+   [
+    "linear",
+    6
+   ],
+   [
+    "ease-out",
+    5
+   ],
+   [
+    "ease-in-out",
+    4
+   ],
+   [
+    "cubic-bezier(.4,0,.2,1)",
+    2
+   ],
+   [
+    "cubic-bezier(.4,0,1,1)",
+    1
+   ],
+   [
+    "cubic-bezier(0,0,.2,1)",
+    1
+   ]
+  ],
+  "durations": [
+   [
+    "1s",
+    3
+   ],
+   [
+    ".2s",
+    2
+   ],
+   [
+    ".15s",
+    1
+   ],
+   [
+    ".35s",
+    1
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "(prefers-reduced-motion:no-preference)",
+    3
+   ],
+   [
+    "(min-width:968px)",
+    2
+   ],
+   [
+    "(min-width:40rem)",
+    2
+   ],
+   [
+    "(min-width:48rem)",
+    2
+   ],
+   [
+    "(min-width:80rem)",
+    2
+   ],
+   [
+    "(min-width:96rem)",
+    2
+   ],
+   [
+    "(hover:hover)",
+    1
+   ],
+   [
+    "(prefers-color-scheme:dark)",
+    1
+   ],
+   [
+    "(prefers-reduced-motion)",
+    1
+   ]
+  ],
+  "reducedMotion": 4,
+  "colorScheme": 1,
+  "viewTransitions": 3,
+  "scrollTimelines": 0,
+  "containerQueries": 1,
+  "clamp": [
+   [
+    "clamp((var(--fluid-min)/16)*1rem,((var(--fluid-min)/16)*1rem)",
+    1
+   ]
+  ]
+ },
+ "anatomy": {
+  "libs": [],
+  "canvases": [],
+  "videos": 0,
+  "fonts": [
+   "Inter-280267e3536fdc11 400 italic",
+   "Inter-280267e3536fdc11 400 normal",
+   "Inter-280267e3536fdc11 fallback: Arial 400 normal",
+   "DM Serif Text-06c75f9b58f80d38 400 normal",
+   "Doto-bb558af012af430a 400 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 58.1,
+    "family": "DM Serif Text-06c75f9b58f80d38",
+    "weight": "600",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 23,
+    "n": 1,
+    "sample": "Making your ideas click"
+   },
+   {
+    "px": 16,
+    "family": "Inter-280267e3536fdc11",
+    "weight": "300",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 540,
+    "n": 18,
+    "sample": "A design engineer crafting"
+   },
+   {
+    "px": 14,
+    "family": "Doto-bb558af012af430a",
+    "weight": "600",
+    "lineHeight": "1.43",
+    "tracking": "normal",
+    "transform": "uppercase",
+    "chars": 178,
+    "n": 7,
+    "sample": "Jhey Tompkins — Brand Design Studio @ Shopify"
+   }
+  ],
+  "textColors": [
+   [
+    "color(srgb 0.4 0.4 0.4)",
+    529
+   ],
+   [
+    "oklch(0.704 0.191 22.216)",
+    212
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(255, 255, 255)",
+    1296
+   ]
+  ],
+  "bodyBg": "rgb(255, 255, 255)",
+  "htmlBg": "rgba(0, 0, 0, 0)",
+  "transitions": [],
+  "docScreens": 1,
+  "title": "Jhey Tompkins",
+  "metaDesc": "Making your ideas click. Jhey Tompkins is the one who crafts. Design Engineer, Craftsman, Speaker, Educator."
+ },
+ "animsAtLoad": [
+  "CSSAnimation:reveal|350ms|delay 500|linear|1",
+  "CSSAnimation:draw|832ms|delay 750|linear|1",
+  "CSSAnimation:draw|32ms|delay 1582|linear|1",
+  "CSSAnimation:draw|36ms|delay 1614|linear|1",
+  "CSSAnimation:draw|18ms|delay 1649|linear|1",
+  "CSSAnimation:fill|500ms|delay 1723|linear|1",
+  "CSSAnimation:blink|6000ms|delay 1723|linear|Infinity",
+  "CSSAnimation:draw|16ms|delay 1667|linear|1",
+  "CSSAnimation:fill|500ms|delay 1723|linear|1",
+  "CSSAnimation:blink|6000ms|delay 1723|linear|Infinity",
+  "CSSAnimation:draw|40ms|delay 1683|linear|1",
+  "CSSAnimation:fill|500ms|delay 1723|linear|1",
+  "CSSAnimation:marquee|8000ms|delay 0|linear|Infinity"
+ ],
+ "hovers": [
+  {
+   "i": 0,
+   "tag": "A",
+   "text": "UI demos",
+   "w": 71.890625,
+   "h": 20,
+   "file": "clip-hover-0.webp",
+   "maxChangePct": 0.16
+  },
+  {
+   "i": 1,
+   "tag": "A",
+   "text": "know me for",
+   "w": 94.046875,
+   "h": 20,
+   "file": "clip-hover-1.webp",
+   "maxChangePct": 0.2
+  },
+  {
+   "i": 2,
+   "tag": "A",
+   "text": "“Wait, how did you do that?”",
+   "w": 213.796875,
+   "h": 20,
+   "file": "clip-hover-2.webp",
+   "maxChangePct": 0.45
+  },
+  {
+   "i": 3,
+   "tag": "A",
+   "text": "Developer Relations at Google",
+   "w": 227.90625,
+   "h": 20,
+   "file": "clip-hover-3.webp",
+   "maxChangePct": 0.66
+  }
+ ],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 0.02
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [
+    "H1 14px: JHEY TOMPKINS — BRAND DESIGN STUDIO @ SHOPIFY"
+   ],
+   "anims": 13
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [],
+  "canvases": [],
+  "videos": 0,
+  "fonts": [
+   "Inter-280267e3536fdc11 400 italic",
+   "Inter-280267e3536fdc11 400 normal",
+   "Inter-280267e3536fdc11 fallback: Arial 400 normal",
+   "DM Serif Text-06c75f9b58f80d38 400 normal",
+   "Doto-bb558af012af430a 400 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 40.2,
+    "family": "DM Serif Text-06c75f9b58f80d38",
+    "weight": "600",
+    "lineHeight": "1",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 23,
+    "n": 1,
+    "sample": "Making your ideas click"
+   },
+   {
+    "px": 16,
+    "family": "Inter-280267e3536fdc11",
+    "weight": "300",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 540,
+    "n": 18,
+    "sample": "A design engineer crafting"
+   },
+   {
+    "px": 14,
+    "family": "Doto-bb558af012af430a",
+    "weight": "600",
+    "lineHeight": "1.43",
+    "tracking": "normal",
+    "transform": "uppercase",
+    "chars": 178,
+    "n": 7,
+    "sample": "Jhey Tompkins — Brand Design Studio @ Shopify"
+   }
+  ],
+  "textColors": [
+   [
+    "color(srgb 0.4 0.4 0.4)",
+    529
+   ],
+   [
+    "oklch(0.704 0.191 22.216)",
+    212
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(255, 255, 255)",
+    405
+   ]
+  ],
+  "bodyBg": "rgb(255, 255, 255)",
+  "htmlBg": "rgba(0, 0, 0, 0)",
+  "transitions": [],
+  "docScreens": 1.2,
+  "title": "Jhey Tompkins",
+  "metaDesc": "Making your ideas click. Jhey Tompkins is the one who crafts. Design Engineer, Craftsman, Speaker, Educator."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [
+    "H1 14px: JHEY TOMPKINS — BRAND DESIGN STUDIO @ SHOPIFY"
+   ],
+   "anims": 13
+  },
+  {
+   "i": 1,
+   "y": 195,
+   "file": "phone-j01.webp",
+   "headings": [
+    "H1 14px: JHEY TOMPKINS — BRAND DESIGN STUDIO @ SHOPIFY"
+   ],
+   "anims": 13
+  }
+ ]
+}

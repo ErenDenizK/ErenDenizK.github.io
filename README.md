@@ -32,21 +32,29 @@ Pages and runs the navigation suite, the log templates, axe, and the screenshot 
 content/               everything a visitor reads: data, not code (ADR-0002)
   site.json            name, links, the lines on Home, Work, Record and About
   projects/<slug>.md   one file per project
-  log/<year>/<slug>.md one file per entry of the record, served under /record/ (none published yet)
+  log/<year>/<slug>.md one file per entry of the record, served under /record/ (only design samples
+                       so far, `sample: true`)
   photos/              the owner's originals
-media/objects/<name>/  pre-rendered objects and their manifest.json (tools/objects, ADR-0006)
+media/objects/<name>/  pre-rendered objects and their manifest.json (tools/objects, ADR-0006); folder
+                       names drop the hyphen of the project slug (`englishprep` for `english-prep`,
+                       `eatmap` for `eat-map`): a project names its folder in `object`
 src/
   content.config.ts    the schemas: a bad field fails the build
   pages/               routes: /, /work/, /work/<slug>/, /record/, /record/<year>/<slug>/, /about/, 404, feed;
                        lab/ holds hidden component workbenches (noindex, not in the sitemap)
   components/          Media (the object stage), ProjectCase, LogRow, Figure, Icon, IdCard, Postcard, ...
-  scripts/             media.ts (stage), sheet.ts (project sheet), log.ts, card3d.ts (cards), site.ts,
-                       rail.ts (scroll rail), embassy.ts, accent.ts, env.ts, live/ (the ?live engine)
+  scripts/             media.ts (stage), lean.ts (where an object looks), sheet.ts (project sheet),
+                       log.ts, card3d.ts (cards), postcard.ts (About's postcards), reel.ts (Work's
+                       capture reels), clock.ts (Istanbul time in the bar), site.ts, rail.ts (scroll
+                       rail), embassy.ts, accent.ts, env.ts, live/ (the ?live engine), photos/ (the
+                       trial ?photos presentations)
   styles/              global.css (tokens and layout), log.css, transitions.css, rail.css, showcase.css,
                        work.css, embassy.css, wordmarks.css
-  fonts/               subset Newsreader and Inter (tools/fonts/subset.py)
+  fonts/               subset Newsreader and Inter, and the wordmark faces Funnel Display and Nunito
+                       (tools/fonts/subset.py)
   assets/photos/       graded photos (tools/photos/grade.mjs) and About's postcards (tools/photos/postcards.mjs)
-tools/                 generators: icons, link-preview cards and favicons, objects, illustrations, fonts
+tools/                 generators: icons, link-preview cards and favicons, objects, illustrations, fonts,
+                       photos (grading and postcards), captures (product screens and clips)
 tests/                 Playwright suites, the Pages-like server, the size budget, log fixtures
 ```
 
@@ -65,6 +73,7 @@ Copy `content/projects/recto.md` to `content/projects/<slug>.md`; the file name 
 | `featured` | `true` puts the project at the head of Home's showcase (the first marked one, by `order`); without one, the project with the latest record entry leads, then the first by `order` |
 | `group` | `directed` (built by directing agents, the default) or `by-hand` |
 | `status` | `Live`, `Public beta`, `In development`, `Paused` or `Archived` |
+| `statusNote` | optional: a short note after the status on Home, Work and the project view |
 | `version`, `started` (`YYYY-MM`), `role`, `runsOn`, `stack` | the facts row |
 | `accent` | `{ color, glow?, p2?, p3? }`: the project's light |
 | `wordmark` | optional `{ face, weight, tracking?, case?, text?, color?, dot?, image? }`: the name in the product's own face (`src/lib/wordmarks.ts` lists the faces and weights; `docs/research/2026-10-wordmarks.md`) |
@@ -72,6 +81,7 @@ Copy `content/projects/recto.md` to `content/projects/<slug>.md`; the file name 
 | `og` | link-preview card in `tools/og/out/<og>.jpg` (defaults to the home card) |
 | `summary` | the one line on Home and Work (and Work's line-up) (the pitch when it leads Home's showcase; `what.text` and `what.numbers` follow it there) |
 | `links` | `[{ label, href, kind: live \| code \| other }]` |
+| `linksNote` | optional: a line beside the links, for a project with no public link yet |
 | `captures` | `[{ id, at?, caption? }]`: real screens from the product's `world.json`, in order; the first opens the embassy, the rest stand with How unless `at` names a section |
 | `clip` | `{ id, phone? }`: the product's signature clip from `world.json` (and a phone cut of the same gesture) |
 | `reel` | optional, up to four `[{ id, phone?, caption? }]`: the screens Work shows in the project's chapter (ADR-0014), a wide screen or the signature clip in a browser frame, with an optional phone screen beside it; left out, the first three wide `captures`; with no captures at all, the object is the picture |
@@ -107,12 +117,15 @@ the owner said. The slug never changes once published.
 - Photos: put the original in `content/photos/`, add it to `tools/photos/grade.mjs`, run
   `npm run photos`.
 - About's chapters and postcards: `about.chapters` in `content/site.json` (`{ id, title, text: [...],
-  list?: products | links, photos?: [{ photo, alt, note, place, date? }] }`); `photo` is the file stem in
-  `content/photos/`. One photo stands in the chapter's margin, two or three form a row. Run
+  list?: products | links, facts?, tracks?, quote?, timeline?, photos?: [{ photo, alt, note, place,
+  date? }] }`; each optional part is described in `src/content.config.ts`); `photo` is the file stem in
+  `content/photos/`. One or two postcards per chapter, standing beside it in the margin. Run
   `npm run photos`: `tools/photos/postcards.mjs` resizes the originals to the widths shown (never up).
 - Icons: `tools/icons` (inlined at build by `src/components/Icon.astro`).
 - Link previews and favicons: `tools/og` writes `tools/og/out/`; the build publishes the cards under
-  content-hashed names and packs `favicon.ico`. The favicon choice is `ICONS` in `src/lib/files.mjs`.
+  content-hashed names and packs `favicon.ico`. A new project needs its own entry in
+  `tools/og/cards.json` and a card rebuild (`cd tools/og && node build.mjs`); so does a change to a
+  project's status or summary line, which the card repeats. The favicon choice is `ICONS` in `src/lib/files.mjs`.
 
 ## Releases
 

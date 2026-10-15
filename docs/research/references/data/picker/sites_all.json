@@ -1,0 +1,1018 @@
+[
+ {
+  "slug": "scout-motors",
+  "name": "Scout Motors",
+  "url": "https://www.scoutmotors.com/",
+  "cat": "product",
+  "award": "Awwwards Yılın E-ticaret Sitesi 2025",
+  "why": "Sinematik ürün anlatımı ve cilalı yapılandırıcısıyla arazi tipi elektrikli araç rezervasyon sitesi."
+ },
+ {
+  "slug": "shopify-editions-the-renaissance-edition",
+  "name": "Shopify Editions, Renaissance",
+  "url": "https://www.shopify.com/editions/winter2026",
+  "cat": "product",
+  "award": "Webby 2026 En İyi Ana Sayfa; Awwwards Ayın Sitesi",
+  "why": "Shopify'ın ürün güncellemeleri, dev ölçekte Rönesans tarzı bir galeri olarak sunuluyor."
+ },
+ {
+  "slug": "anime-js",
+  "name": "Anime.js",
+  "url": "https://animejs.com/",
+  "cat": "product",
+  "award": "Awwwards Ayın Sitesi",
+  "why": "Animasyon kütüphanesini kesin, oyunbaz, kodla sürülen hareketle gösteren geliştirici aracı sayfası."
+ },
+ {
+  "slug": "exat-typeface-hot-type",
+  "name": "Exat (Hot Type)",
+  "url": "https://exat.hottype.co/",
+  "cat": "product",
+  "award": "CSSDA Yılın Sitesi 2025 ilk 10; En İyi Arayüz",
+  "why": "Sıkı ızgara tipografisi ve canlı yazı deneme alanıyla bir yazı karakteri sitesi."
+ },
+ {
+  "slug": "bezier-type-foundry",
+  "name": "Bézier",
+  "url": "https://www.bezier.com/en",
+  "cat": "product",
+  "award": "Webby 2025 En İyi Görsel Tasarım (İşlev)",
+  "why": "Gezinirken yazı denemeyi içine alan sade, fütüristik bir yazı karakteri mağazası."
+ },
+ {
+  "slug": "cowboy",
+  "name": "Cowboy",
+  "url": "https://cowboy.com/",
+  "cat": "product",
+  "award": "Webby 2024 En İyi Görsel Tasarım (İşlev)",
+  "why": "Net ürün fotoğrafları, temiz e-ticaret ve kendinden emin tipografiyle elektrikli bisiklet markası."
+ },
+ {
+  "slug": "ayocin-atmos-lamp",
+  "name": "AYOCIN Atmos",
+  "url": "https://ayocin.com/",
+  "cat": "product",
+  "award": "CSSDA Yılın Sitesi 2024 En İyi Kullanıcı Deneyimi",
+  "why": "Obys yapımı; kaydırdıkça sakince açılan premium bir lamba ürün sayfası."
+ },
+ {
+  "slug": "oryzo-ai",
+  "name": "Oryzo AI",
+  "url": "https://oryzo.ai/",
+  "cat": "product",
+  "award": "Awwwards Ayın Sitesi",
+  "why": "Mantar bardak altlığı için 'yapay zekâ ürünü' parodisi; premium ürün sayfalarının kusursuz taklidi."
+ },
+ {
+  "slug": "pangram-pangram-foundry",
+  "name": "Pangram Pangram",
+  "url": "https://pangrampangram.com/",
+  "cat": "product",
+  "award": "Awwwards Yılın Sitesi listesinde",
+  "why": "İri tipografik örnekler ve editoryal hissiyatlı gezinmeyle ünlü yazı karakteri mağazası."
+ },
+ {
+  "slug": "dia-the-browser-company",
+  "name": "Dia (The Browser Company)",
+  "url": "https://www.diabrowser.com/",
+  "cat": "product",
+  "award": "Lapa Ninja'da öne çıkarıldı, 2025",
+  "why": "Yumuşak renk geçişleri ve ölçülü tipografiyle sakin, editoryal bir yapay zekâ tarayıcısı sayfası."
+ },
+ {
+  "slug": "arc",
+  "name": "Arc",
+  "url": "https://arc.net/",
+  "cat": "product",
+  "award": "Awwwards Mansiyon; Lapa Ninja",
+  "why": "Bağımsız yazılım lansmanlarının tonunu belirleyen oyunbaz, renkli tarayıcı sitesi."
+ },
+ {
+  "slug": "stripe",
+  "name": "Stripe",
+  "url": "https://stripe.com/",
+  "cat": "product",
+  "award": "Awwwards adayı; Lapa Ninja",
+  "why": "Fintech ana sayfalarının ölçütü: hareketli renk geçişi, yoğun ama zarif ürün anlatımı."
+ },
+ {
+  "slug": "framer",
+  "name": "Framer",
+  "url": "https://www.framer.com/",
+  "cat": "product",
+  "award": "Lapa Ninja'da öne çıkarıldı",
+  "why": "Kendi ürünüyle yapılmış kaydırma animasyonlarını gösteren koyu, hareketli tasarım aracı sitesi."
+ },
+ {
+  "slug": "superhuman",
+  "name": "Superhuman",
+  "url": "https://superhuman.com/",
+  "cat": "product",
+  "award": "SaaS Landing Page'de öne çıkarıldı",
+  "why": "Net koyu arayüz görüntüleri ve hız vurgulu metinlerle premium, sinematik e-posta uygulaması sitesi."
+ },
+ {
+  "slug": "notion-calendar",
+  "name": "Notion Calendar",
+  "url": "https://www.notion.com/product/calendar",
+  "cat": "product",
+  "award": "Ünlü Cron sitesinin devamı",
+  "why": "Kesin arayüz görüntüleriyle sade bir takvim ürün sayfası."
+ },
+ {
+  "slug": "rabbit-r1",
+  "name": "rabbit r1",
+  "url": "https://www.rabbit.tech/rabbit-r1",
+  "cat": "product",
+  "award": "Awwwards Mansiyon; Hacker News ön sayfası",
+  "why": "Teenage Engineering tasarımı yapay zekâ cihazı; iri turuncu, lansman sunumu gibi bir sayfa."
+ },
+ {
+  "slug": "daylight-computer",
+  "name": "Daylight Computer",
+  "url": "https://daylightcomputer.com/",
+  "cat": "product",
+  "award": "Awwwards Günün Sitesi; Hacker News'te bir numara (2.230 puan)",
+  "why": "Sıcak, güneşli, film fotoğrafı estetiği; HN ve X'te viral olan e-kâğıt tablet."
+ },
+ {
+  "slug": "playdate-panic",
+  "name": "Playdate (Panic)",
+  "url": "https://play.date/",
+  "cat": "product",
+  "award": "Hacker News ön sayfası (1.370 puan)",
+  "why": "Sarı el konsolu için kola odaklı, çizimli ve sevimli bir ürün sitesi."
+ },
+ {
+  "slug": "analogue-3d",
+  "name": "Analogue 3D",
+  "url": "https://www.analogue.co/3d",
+  "cat": "product",
+  "award": "Awwwards Günün Sitesi",
+  "why": "Müze kalitesinde ürün fotoğraflarıyla galeri gibi sunulan premium oyun konsolu."
+ },
+ {
+  "slug": "rivian-r2",
+  "name": "Rivian R2",
+  "url": "https://rivian.com/r2",
+  "cat": "product",
+  "award": "Awwwards adayı",
+  "why": "Tam ekran videolar ve yapılandırıcı akışıyla macera temalı elektrikli araç lansmanı."
+ },
+ {
+  "slug": "mymind",
+  "name": "mymind",
+  "url": "https://mymind.com/",
+  "cat": "product",
+  "award": "Lapa Ninja'da öne çıkarıldı",
+  "why": "Serif tipografiyle şiirsel, manifesto gibi bir kişisel arşiv uygulaması sayfası."
+ },
+ {
+  "slug": "rive",
+  "name": "Rive",
+  "url": "https://rive.app/",
+  "cat": "product",
+  "award": "Lapa Ninja; Hacker News 432 puan",
+  "why": "Sayfanın içinde canlı çalışan etkileşimli animasyonlarla animasyon aracı sitesi."
+ },
+ {
+  "slug": "spline",
+  "name": "Spline",
+  "url": "https://spline.design/",
+  "cat": "product",
+  "award": "Lapa Ninja; SaaS Landing Page",
+  "why": "Sayfaya gömülü gerçek zamanlı etkileşimli 3B sahnelerle 3B tasarım aracı."
+ },
+ {
+  "slug": "mercury",
+  "name": "Mercury",
+  "url": "https://mercury.com/",
+  "cat": "product",
+  "award": "Lapa Ninja; Awwwards adayı",
+  "why": "Atmosferik manzara görselleri ve sakin, rafine arayüz sunumuyla bankacılık sitesi."
+ },
+ {
+  "slug": "ramp",
+  "name": "Ramp",
+  "url": "https://ramp.com/",
+  "cat": "product",
+  "award": "SaaS Landing Page'de öne çıkarıldı",
+  "why": "Sarı vurgulu, enerjik kurumsal kart sitesi; net arayüz animasyonları."
+ },
+ {
+  "slug": "claude-anthropic",
+  "name": "Claude (Anthropic)",
+  "url": "https://claude.com/product/overview",
+  "cat": "product",
+  "award": "SaaS Landing Page'de öne çıkarıldı",
+  "why": "Neon yapay zekâ klişelerinin tersine sıcak, kâğıt tonlu, serif ve elle çizim."
+ },
+ {
+  "slug": "granola",
+  "name": "Granola",
+  "url": "https://www.granola.ai/",
+  "cat": "product",
+  "award": "Lapa Ninja; ekibin arayüz yazısı HN'de 460 puan",
+  "why": "Defter kâğıdı estetiğinde not uygulaması; ekip arayüz zanaatine takıntılı."
+ },
+ {
+  "slug": "cursor",
+  "name": "Cursor",
+  "url": "https://cursor.com/",
+  "cat": "product",
+  "award": "SaaS Landing Page; Cursor 1.0 HN'de 613 puan",
+  "why": "Editör demolarıyla, temiz tek renkli düzende yapay zekâ kod editörü sayfası."
+ },
+ {
+  "slug": "warp",
+  "name": "Warp",
+  "url": "https://www.warp.dev/",
+  "cat": "product",
+  "award": "Lapa Ninja; Show HN 946 puan",
+  "why": "Cilalı koyu arayüz ve parlayan renk vurgularıyla modern terminal sitesi."
+ },
+ {
+  "slug": "resend",
+  "name": "Resend",
+  "url": "https://resend.com/",
+  "cat": "product",
+  "award": "SaaS Landing Page; Launch HN 432 puan",
+  "why": "Koyu, cam gibi 3B açılışı çok kopyalanan geliştirici e-posta servisi sitesi."
+ },
+ {
+  "slug": "halide",
+  "name": "Halide",
+  "url": "https://www.halide.cam/",
+  "cat": "product",
+  "award": "Lapa Ninja'da öne çıkarıldı",
+  "why": "Fotoğraf makinesi donanımından ilham alan dokunsal bir iPhone kamera uygulaması sitesi."
+ },
+ {
+  "slug": "flighty",
+  "name": "Flighty",
+  "url": "https://flighty.com/",
+  "cat": "product",
+  "award": "Apple Design Award 2023 (Etkileşim)",
+  "why": "Havalimanı tabelalarından ilham alan uçuş takip uygulaması; site de arayüzü gibi bilgi dolu ve güzel."
+ },
+ {
+  "slug": "crouton",
+  "name": "Crouton",
+  "url": "https://crouton.app/",
+  "cat": "product",
+  "award": "Apple Design Award 2024 (Etkileşim)",
+  "why": "Mutfakta kullanıma hazır arayüzüne uygun, temiz ve samimi bir tarif uygulaması sitesi."
+ },
+ {
+  "slug": "procreate-dreams",
+  "name": "Procreate Dreams",
+  "url": "https://procreate.com/dreams",
+  "cat": "product",
+  "award": "Apple Design Award 2024 (Yenilik)",
+  "why": "Procreate'in iPad animasyon uygulaması için zengin, hareketli lansman sayfası."
+ },
+ {
+  "slug": "rooms",
+  "name": "Rooms",
+  "url": "https://rooms.xyz/",
+  "cat": "product",
+  "award": "Apple Design Award 2024 (Görsellik)",
+  "why": "Oyuncak gibi izometrik 3B odalar; voksel tarzı oyunbaz bir site."
+ },
+ {
+  "slug": "gentler-streak",
+  "name": "Gentler Streak",
+  "url": "https://gentlerstories.com/gentlerstreak",
+  "cat": "product",
+  "award": "Apple Design Award 2024 (Sosyal Etki)",
+  "why": "Performans yerine iyi oluşu öne çıkaran yumuşak, çizimli fitness uygulaması sitesi."
+ },
+ {
+  "slug": "copilot-money",
+  "name": "Copilot Money",
+  "url": "https://www.copilot.money/",
+  "cat": "product",
+  "award": "Apple Design Award 2024 finalisti",
+  "why": "Yerel iOS ve Mac zanaatini satan cilalı, renkli kişisel finans uygulaması sitesi."
+ },
+ {
+  "slug": "capwords",
+  "name": "CapWords",
+  "url": "https://capwords.app/",
+  "cat": "product",
+  "award": "Apple Design Award 2025 (Keyif)",
+  "why": "Çıkartma tarzı, kesilmiş nesne estetiğiyle dil öğrenme uygulaması."
+ },
+ {
+  "slug": "feather-draw-in-3d",
+  "name": "Feather",
+  "url": "https://www.feather.art/",
+  "cat": "product",
+  "award": "Apple Design Award 2025 (Görsellik)",
+  "why": "Havadar, çizgiyle çizilmiş 3B işleri sergileyen iPad 3B eskiz uygulaması."
+ },
+ {
+  "slug": "mela",
+  "name": "Mela",
+  "url": "https://mela.recipes/",
+  "cat": "product",
+  "award": "Apple Design Award 2025 finalisti",
+  "why": "Sade, Apple benzeri bir ürün sayfasıyla yerel tarif yöneticisi."
+ },
+ {
+  "slug": "lumy",
+  "name": "Lumy",
+  "url": "https://lumy.app/",
+  "cat": "product",
+  "award": "Apple Design Award 2025 finalisti",
+  "why": "Özenle seçilmiş renk paletiyle güneş ve ay takip uygulaması."
+ },
+ {
+  "slug": "ia-writer",
+  "name": "iA Writer",
+  "url": "https://ia.net/writer",
+  "cat": "product",
+  "award": "Apple Design Award 2025 finalisti",
+  "why": "Tipografi öncülüğünde yazı uygulaması; site metin merkezli sade tasarımın dersi gibi."
+ },
+ {
+  "slug": "structured",
+  "name": "Structured",
+  "url": "https://structured.app/",
+  "cat": "product",
+  "award": "Apple Design Award 2026 finalisti",
+  "why": "Renkli zaman çizelgesi günlük planlayıcı; parlak, samimi bir ürün sitesi."
+ },
+ {
+  "slug": "not-boring-camera",
+  "name": "(Not Boring) Camera",
+  "url": "https://notbor.ing/product/camera",
+  "cat": "product",
+  "award": "Apple Design Award 2026 finalisti (Görsellik)",
+  "why": "Dokunsal, gerçek nesne gibi bir kamera uygulaması; iri 3B arayüz görselleriyle sunuluyor."
+ },
+ {
+  "slug": "moonlitt",
+  "name": "Moonlitt",
+  "url": "https://www.flippinghues.com/moonlitt",
+  "cat": "product",
+  "award": "Apple Design Award 2026 (Etkileşim)",
+  "why": "Rüya gibi gece göğü görselleriyle ay evresi takip uygulaması."
+ },
+ {
+  "slug": "tide-guide",
+  "name": "Tide Guide",
+  "url": "https://tideguide.com/",
+  "cat": "product",
+  "award": "Apple Design Award 2026 (Görsellik)",
+  "why": "Zarif grafikler ve okyanus tonlarıyla gelgit ve deniz havası uygulaması."
+ },
+ {
+  "slug": "apple-macbook-pro",
+  "name": "Apple MacBook Pro",
+  "url": "https://www.apple.com/macbook-pro/",
+  "cat": "product",
+  "award": "Apple ürün sayfası",
+  "why": "Siyahın içinden ışıkla beliren gümüş kenar; küçük, kenarda duran başlık."
+ },
+ {
+  "slug": "apple-final-cut-pro",
+  "name": "Apple Final Cut Pro",
+  "url": "https://www.apple.com/final-cut-pro/",
+  "cat": "product",
+  "award": "Apple yazılım sayfası",
+  "why": "Gerçek uygulama ekranı Mac, iPad ve ekranda tek bir kompozisyon olarak."
+ },
+ {
+  "slug": "linear",
+  "name": "Linear",
+  "url": "https://linear.app/",
+  "cat": "product",
+  "award": "Yazılım dünyasında en çok örnek alınan ürün sitesi",
+  "why": "Bulanıktan netleşen başlık ve hemen altında koyu, gerçek boyutta uygulama ekranı."
+ },
+ {
+  "slug": "vercel",
+  "name": "Vercel",
+  "url": "https://vercel.com/",
+  "cat": "product",
+  "award": "Geliştirici ürünlerinde tasarım ölçütü",
+  "why": "Arkasından gelen ışıkla siyahın içinden beliren siyah üçgen."
+ },
+ {
+  "slug": "raycast",
+  "name": "Raycast",
+  "url": "https://www.raycast.com/",
+  "cat": "product",
+  "award": "Sitesi ve uygulamasıyla tasarım ödüllü",
+  "why": "Başlığın arkasında açan kırmızı, cam gibi bir şekil; ürün ekranı gerçek macOS çerçevesinde."
+ },
+ {
+  "slug": "things",
+  "name": "Things 3",
+  "url": "https://culturedcode.com/things/",
+  "cat": "product",
+  "award": "Apple Design Award sahibi uygulama",
+  "why": "Ortada uygulama ikonu ve adı; aşağıda hafif perspektifte gerçek ekranlar."
+ },
+ {
+  "slug": "teenage-engineering",
+  "name": "Teenage Engineering OP-1",
+  "url": "https://teenage.engineering/products/op-1",
+  "cat": "product",
+  "award": "Tasarım dünyasının sevdiği donanım markası",
+  "why": "Düz zeminde cihazın fotoğrafı; kaydırdıkça tuşlara kadar yaklaşan görüntü."
+ },
+ {
+  "slug": "family",
+  "name": "Family",
+  "url": "https://family.co/",
+  "cat": "product",
+  "award": "Etkileşim tasarımıyla çok konuşulan cüzdan uygulaması",
+  "why": "Beyaz sayfa, kayarak gelen başlık, etrafında beliren renkli karakterler."
+ },
+ {
+  "slug": "messenger",
+  "name": "Messenger (abeto)",
+  "url": "https://messenger.abeto.co/",
+  "cat": "brand",
+  "award": "Awwwards Yılın Geliştirici Sitesi 2025",
+  "why": "Küçük bir gezegende geçen, elle çizilmiş havada 3B WebGL deneyimi."
+ },
+ {
+  "slug": "dropbox-brand",
+  "name": "Dropbox Brand",
+  "url": "https://brand.dropbox.com/",
+  "cat": "brand",
+  "award": "CSSDA Yılın Sitesi 2025; Awwwards Ayın Sitesi",
+  "why": "Etkileşimli, güzel ritimli marka kılavuzu; tasarım sistemi anlatımının ölçütü."
+ },
+ {
+  "slug": "charles-leclerc",
+  "name": "Charles Leclerc",
+  "url": "https://charlesleclerc.com/en/",
+  "cat": "brand",
+  "award": "CSSDA Yılın Sitesi 2025 ilk 10",
+  "why": "Zarif editoryal düzen ve rafine hareketle F1 pilotunun resmi sitesi."
+ },
+ {
+  "slug": "the-symphony-of-vines",
+  "name": "The Symphony of Vines",
+  "url": "https://symphonyofvines.unseen.co/",
+  "cat": "brand",
+  "award": "CSSDA Yılın Sitesi 2025 ikincisi",
+  "why": "Resim gibi WebGL bölümleri ve sesle anlatılan bir bağ ve toprak hikâyesi."
+ },
+ {
+  "slug": "mana-yerba-mate",
+  "name": "Mana Yerba Mate",
+  "url": "https://en.manayerbamate.com/",
+  "cat": "brand",
+  "award": "Awwwards Yılın Sitesi listesinde",
+  "why": "Dokunsal 3B kutu görselleri ve neşeli, renkli sanat yönetimiyle içecek markası."
+ },
+ {
+  "slug": "montfort-group",
+  "name": "Montfort",
+  "url": "https://mont-fort.com/",
+  "cat": "brand",
+  "award": "Awwwards Ayın Sitesi",
+  "why": "Sakin, sinematik görseller ve kesin tipografik ölçüyle kurumsal bir grup sitesi."
+ },
+ {
+  "slug": "don-t-board-me",
+  "name": "Don't Board Me",
+  "url": "https://dontboardme.com/",
+  "cat": "brand",
+  "award": "Awwwards Yılın Sitesi listesinde",
+  "why": "Oyunbaz 3B karakterler ve keyifli mikro etkileşimlerle köpek bakımevi sitesi."
+ },
+ {
+  "slug": "polestar",
+  "name": "Polestar",
+  "url": "https://www.polestar.com/us/",
+  "cat": "brand",
+  "award": "Lapa Ninja'da öne çıkarıldı",
+  "why": "İskandinav sadeliği: bol beyaz alan, kesin tipografi, sinematik araç görselleri."
+ },
+ {
+  "slug": "lando-norris-by-off-brand",
+  "name": "Lando Norris",
+  "url": "https://landonorris.com/",
+  "cat": "brand",
+  "award": "Awwwards Yılın Sitesi 2025 ve Kullanıcıların Seçimi",
+  "why": "3B kask, iri tipografi ve hareketli kaydırma: 2025'in en çok konuşulan gösterişli sitesi."
+ },
+ {
+  "slug": "igloo-inc",
+  "name": "Igloo Inc.",
+  "url": "https://www.igloo.inc/",
+  "cat": "brand",
+  "award": "Awwwards Yılın Sitesi 2024",
+  "why": "Noktalar ve çizgiler buzdan bir iglo oluşturuyor; içten aydınlanan, neredeyse tek renkli bir sahne."
+ },
+ {
+  "slug": "antoine-wodniack",
+  "name": "Antoine Wodniack",
+  "url": "https://wodniack.dev/",
+  "cat": "portfolio",
+  "award": "Webby 2025 En İyi Ana Sayfa; CSSDA 2024 En İyi Portfolyo",
+  "why": "Çarpıcı tipografik WebGL ve net, yüksek kontrastlı düzenle yaratıcı geliştirici portfolyosu."
+ },
+ {
+  "slug": "merouane-bali",
+  "name": "Merouane Bali",
+  "url": "https://merodev.net/",
+  "cat": "portfolio",
+  "award": "CSSDA Yılın Sitesi 2025 ilk 10; En İyi Yenilik",
+  "why": "Tek bir sade girişle açılan, sürükleyici WebGL dünyası olarak kurulmuş portfolyo."
+ },
+ {
+  "slug": "chung-yun-yoo-chungi-folio",
+  "name": "Chungi Yoo",
+  "url": "https://www.chungiyoo.com/",
+  "cat": "portfolio",
+  "award": "Awwwards Yılın Sitesi listesinde",
+  "why": "El yapımı çizimler ve yaratıcı gezinmeyle illüstratör portfolyosu."
+ },
+ {
+  "slug": "josh-w-comeau",
+  "name": "Josh W. Comeau",
+  "url": "https://www.joshwcomeau.com/",
+  "cat": "portfolio",
+  "award": "En iyi geliştirici bloglarından biri olarak sık anılır",
+  "why": "Her yazısında elle yapılmış, fiziğe dayalı animasyonlu etkileşimli açıklamalar."
+ },
+ {
+  "slug": "jhey-tompkins",
+  "name": "Jhey Tompkins",
+  "url": "https://jhey.dev/",
+  "cat": "portfolio",
+  "award": "State of CSS 2022 topluluk seçimi; Google'da geliştirici",
+  "why": "CSS ile yapılmış oyunbaz, ayrıntıya takıntılı mikro etkileşimler."
+ },
+ {
+  "slug": "maxime-heckel-blog",
+  "name": "Maxime Heckel",
+  "url": "https://blog.maximeheckel.com/",
+  "cat": "portfolio",
+  "award": "Shader yazıları Hacker News ön sayfasında; Figma Config 2025 konuşmacısı",
+  "why": "Koyu, kesin, uzun teknik yazılar; içine gömülü canlı WebGL denemeleri."
+ },
+ {
+  "slug": "lynn-fisher-lynnandtonic",
+  "name": "Lynn Fisher",
+  "url": "https://lynnandtonic.com/",
+  "cat": "portfolio",
+  "award": "Her yıl sıfırdan yenilenen ünlü portfolyo",
+  "why": "Portfolyosunu her yıl şaşırtıcı bir duyarlı tasarım deneyi olarak baştan yapıyor."
+ },
+ {
+  "slug": "robin-noguier",
+  "name": "Robin Noguier",
+  "url": "https://www.robin-noguier.com/",
+  "cat": "portfolio",
+  "award": "Awwwards Günün Sitesi; 2026 Awwwards jüri üyesi",
+  "why": "WebGL proje karuseli ve sinematik geçişlerle çok örnek gösterilen bir portfolyo."
+ },
+ {
+  "slug": "cyd-stumpel",
+  "name": "Cyd Stumpel",
+  "url": "https://cydstumpel.nl/",
+  "cat": "portfolio",
+  "award": "Awwwards Günün Sitesi ve Geliştirici Ödülü",
+  "why": "Erişilebilir ama etkileyici sayfa geçişleriyle bilinen yaratıcı geliştirici portfolyosu."
+ },
+ {
+  "slug": "jesse-zhou-jesse-s-ramen",
+  "name": "Jesse Zhou",
+  "url": "https://jesse-zhou.com/",
+  "cat": "portfolio",
+  "award": "Awwwards Mansiyon; sahibine birçok iş teklifi getirdi",
+  "why": "Portfolyo olarak tasarlanmış, Blender ışıklı 3B bir ramen dükkânı."
+ },
+ {
+  "slug": "henry-heffernan",
+  "name": "Henry Heffernan",
+  "url": "https://henryheffernan.com/",
+  "cat": "portfolio",
+  "award": "'Bilgisayarın içinde bilgisayar' portfolyosu olarak çok paylaşıldı",
+  "why": "Masa sahnesinden çalışan eski bir işletim sistemine yakınlaşan 3B portfolyo."
+ },
+ {
+  "slug": "aristide-benoist",
+  "name": "Aristide Benoist",
+  "url": "https://aristidebenoist.com/",
+  "cat": "portfolio",
+  "award": "Awwwards Ayın Sitesi; birçok Günün Sitesi",
+  "why": "Tipografi öncülüğünde hareket ve yumuşak görsel geçişlerde ölçüt sayılan WebGL portfolyosu."
+ },
+ {
+  "slug": "mathis-biabiany",
+  "name": "Mathis Biabiany",
+  "url": "https://www.mathis-biabiany.fr/",
+  "cat": "portfolio",
+  "award": "Awwwards Günün Sitesi; Ağustos 2026 Mansiyon",
+  "why": "Siyah, mavi ve camgöbeği; karanlıkta ışıkla çalışan gerçek zamanlı 3B portfolyo."
+ },
+ {
+  "slug": "eduard-bodak",
+  "name": "Eduard Bodak",
+  "url": "https://www.eduardbodak.com/",
+  "cat": "portfolio",
+  "award": "Awwwards'ta 4 Günün Sitesi, 6 Mansiyon (müşteri işleri)",
+  "why": "Ölçülü düzenler ve dokunsal, temiz hareketlerle bilinen tasarımcı-geliştirici."
+ },
+ {
+  "slug": "louis-paquet",
+  "name": "Louis Paquet",
+  "url": "https://louispaquet.com/",
+  "cat": "portfolio",
+  "award": "Awwwards Yılın Bağımsızı 2025",
+  "why": "Awwwards'ın şu an en çok ödül almış bağımsız tasarımcısının sitesi."
+ },
+ {
+  "slug": "craig-mod",
+  "name": "Craig Mod",
+  "url": "https://craigmod.com/",
+  "cat": "portfolio",
+  "award": "Yazıları birçok kez Hacker News ön sayfasında",
+  "why": "Kitap gibi sakin tipografi ve fotoğraf sunumuyla sevilen yazar-fotoğrafçı sitesi."
+ },
+ {
+  "slug": "frank-chimero",
+  "name": "Frank Chimero",
+  "url": "https://frankchimero.com/",
+  "cat": "portfolio",
+  "award": "Yeniden tasarımı tasarım çevrelerinde örnek gösterildi",
+  "why": "Düşünülmüş, tipografi öncülüğünde kişisel sitenin mihenk taşı."
+ },
+ {
+  "slug": "jakub-krehel",
+  "name": "Jakub Krehel",
+  "url": "https://jakub.kr/",
+  "cat": "portfolio",
+  "award": "Arayüz ayrıntıları üzerine yazıları X'te çok paylaşılır",
+  "why": "Sade, kesin bir tasarım mühendisi sitesi."
+ },
+ {
+  "slug": "rauno-freiberg",
+  "name": "Rauno Freiberg",
+  "url": "https://rauno.me/",
+  "cat": "portfolio",
+  "award": "Tasarımcılar arasında çok paylaşılan kişisel site",
+  "why": "Tek cümlelik biyografi, arkasında büyüyen sarı bir daire, yanda dev harf kartları."
+ },
+ {
+  "slug": "paco-coursey",
+  "name": "Paco Coursey",
+  "url": "https://paco.me/",
+  "cat": "portfolio",
+  "award": "Linear'da tasarım mühendisi; sitesi sadeliğiyle örnek gösterilir",
+  "why": "Koyu zemin üstünde yalnızca metin; bir saniyeden kısa süren yumuşak bir açılış."
+ },
+ {
+  "slug": "emil-kowalski",
+  "name": "Emil Kowalski",
+  "url": "https://emilkowal.ski/",
+  "cat": "portfolio",
+  "award": "Sonner ve Vaul'un yaratıcısı; tasarım mühendisliği dünyasında tanınır",
+  "why": "Beyaz sayfada tek sütun 16 px metin; hiç animasyon yok."
+ },
+ {
+  "slug": "brian-lovin",
+  "name": "Brian Lovin",
+  "url": "https://brianlovin.com/",
+  "cat": "portfolio",
+  "award": "Notion tasarımcısı; sitesi sık referans verilir",
+  "why": "Simsiyah zeminde avatar, bir cümle ve yazı ile proje listeleri."
+ },
+ {
+  "slug": "guillermo-rauch",
+  "name": "Guillermo Rauch",
+  "url": "https://rauchg.com/",
+  "cat": "portfolio",
+  "award": "Vercel'in kurucusu",
+  "why": "Yıllara göre dizilmiş yazı listesi; sağda okunma sayıları, başka hiçbir şey yok."
+ },
+ {
+  "slug": "anthony-fu",
+  "name": "Anthony Fu",
+  "url": "https://antfu.me/",
+  "cat": "portfolio",
+  "award": "Vue ve Vite ekibinden; açık kaynakta çok tanınır",
+  "why": "Koyu zeminde satır satır beliren metin, kenarlarda kendini çizen soluk çizgiler."
+ },
+ {
+  "slug": "lee-robinson",
+  "name": "Lee Robinson",
+  "url": "https://leerob.com/",
+  "cat": "portfolio",
+  "award": "Yazıları ve sitesiyle geliştiriciler arasında çok bilinir",
+  "why": "Sıcak siyah zeminde serif metin ve sağda tek bir renkli illüstrasyon."
+ },
+ {
+  "slug": "dennis-snellenberg",
+  "name": "Dennis Snellenberg",
+  "url": "https://dennissnellenberg.com/",
+  "cat": "portfolio",
+  "award": "Awwwards ödüllü portfolyo",
+  "why": "Birçok dilde 'Merhaba' ile açılış, büyük portre, altta kayan dev isim."
+ },
+ {
+  "slug": "gianluca-gradogna",
+  "name": "Gianluca Gradogna",
+  "url": "https://gianlucagradogna.com/",
+  "cat": "portfolio",
+  "award": "Awwwards portfolyo ödülü",
+  "why": "0'dan 100'e sayaç, sonra koyu fotoğrafların üstünde tek beyaz kart."
+ },
+ {
+  "slug": "matthieu-givelet",
+  "name": "Matthieu Givelet",
+  "url": "https://matthieugivelet.com/",
+  "cat": "portfolio",
+  "award": "Awwwards portfolyo ödülü",
+  "why": "İsmin ortasına yerleştirilmiş küçük bir görsel; ince çizgiler, köşeli parantezli etiketler."
+ },
+ {
+  "slug": "olha-lazarieva",
+  "name": "Olha Lazarieva",
+  "url": "https://www.olhalazarieva.com/",
+  "cat": "portfolio",
+  "award": "Awwwards portfolyo ödülü",
+  "why": "Uzun yükleme, ardından beyaz sayfada dönen üç boyutlu yazı halkası."
+ },
+ {
+  "slug": "bruno-simon",
+  "name": "Bruno Simon",
+  "url": "https://bruno-simon.com/",
+  "cat": "portfolio",
+  "award": "Awwwards Yılın Sitesi",
+  "why": "Parlayan bir halka içinde kendini kuran küçük oyuncak dünya; arabayla gezilen portfolyo."
+ },
+ {
+  "slug": "burocratik-we-are-buro",
+  "name": "Bürocratik",
+  "url": "https://www.burocratik.com/",
+  "cat": "studio",
+  "award": "CSSDA Yılın Sitesi 2025 ilk 10; En İyi Ajans",
+  "why": "Esprili, yoğun editoryal düzen ve titiz tipografik ayrıntıyla Portekiz stüdyosu."
+ },
+ {
+  "slug": "buttermax",
+  "name": "Buttermax",
+  "url": "https://buttermax.net/",
+  "cat": "studio",
+  "award": "CSSDA Yılın Sitesi 2024",
+  "why": "İşlerini son derece sade, yumuşak WebGL ile sunan tasarım stüdyosu."
+ },
+ {
+  "slug": "phantom",
+  "name": "Phantom",
+  "url": "https://www.phantom.land/",
+  "cat": "studio",
+  "award": "Webby 2026 En İyi Ana Sayfa adayı; Awwwards Günün Sitesi",
+  "why": "Koyu, sinematik, içerik dolu bir ana sayfayla teknoloji odaklı yaratıcı ajans."
+ },
+ {
+  "slug": "immersive-garden",
+  "name": "Immersive Garden",
+  "url": "https://immersive-g.com/",
+  "cat": "studio",
+  "award": "Awwwards Yılın Ajansı 2025",
+  "why": "Sinematik ışık ve malzemeyle lüks düzeyde WebGL deneyimleri yapan Paris stüdyosu."
+ },
+ {
+  "slug": "malvah",
+  "name": "Malvah",
+  "url": "https://www.malvah.co/",
+  "cat": "studio",
+  "award": "Awwwards Yılın Stüdyosu 2025",
+  "why": "Editoryal düzenli, hareketli bir marka deneyimi stüdyosu sitesi."
+ },
+ {
+  "slug": "abeto-messenger",
+  "name": "abeto (Messenger)",
+  "url": "https://www.abeto.co/",
+  "cat": "studio",
+  "award": "Awwwards Yılın Geliştirici Sitesi 2025",
+  "why": "Küçük bir gezegende geçen etkileşimli 3B deneyim; yılın teknik olarak en çok övülen işi."
+ },
+ {
+  "slug": "obys",
+  "name": "Obys",
+  "url": "https://obys.agency/",
+  "cat": "studio",
+  "award": "Awwwards Yılın Stüdyosu 2023; CSSDA Yılın Stüdyosu",
+  "why": "Tipografik, ızgaraya dayalı sitelerle bilinen stüdyo."
+ },
+ {
+  "slug": "resn",
+  "name": "Resn",
+  "url": "https://resn.co.nz/",
+  "cat": "studio",
+  "award": "Awwwards Yılın Ajansı 2017 ve 2018",
+  "why": "Oyunbaz, deneysel etkileşimli web işlerinin öncüsü."
+ },
+ {
+  "slug": "active-theory",
+  "name": "Active Theory",
+  "url": "https://activetheory.net/",
+  "cat": "studio",
+  "award": "CSS Design Awards Yılın Ajansı 2021",
+  "why": "Büyük ölçekli gerçek zamanlı 3B marka deneyimleri; kendi sitesi bir WebGL vitrini."
+ },
+ {
+  "slug": "basement-studio",
+  "name": "basement.studio",
+  "url": "https://basement.studio/",
+  "cat": "studio",
+  "award": "Awwwards Günün Sitesi (kendi sitesi ve Vercel işleri)",
+  "why": "Koyu, teknik, geliştirici kültürüne yakın estetik; Next.js Conf işleri."
+ },
+ {
+  "slug": "hello-monday",
+  "name": "Hello Monday",
+  "url": "https://www.hellomonday.com/",
+  "cat": "studio",
+  "award": "Awwwards Günün Sitesi; Yılın Ajansı 2013",
+  "why": "Sıcak, özenli mikro etkileşimleriyle ünlü Danimarka stüdyosu."
+ },
+ {
+  "slug": "collins",
+  "name": "Collins",
+  "url": "https://www.wearecollins.com/",
+  "cat": "studio",
+  "award": "Sekiz kez Yılın Ajansı (kendi sitesine göre)",
+  "why": "Tipografi öncülüğünde, kendinden emin bir marka stüdyosu sitesi."
+ },
+ {
+  "slug": "pentagram",
+  "name": "Pentagram",
+  "url": "https://www.pentagram.com/",
+  "cat": "studio",
+  "award": "Dünyanın en büyük bağımsız tasarım ofisi",
+  "why": "Görsel öncülüğünde, ölçülü proje arşivi: 'iş kendini anlatsın' sitesinin örneği."
+ },
+ {
+  "slug": "14islands",
+  "name": "14islands",
+  "url": "https://www.14islands.com/",
+  "cat": "studio",
+  "award": "Awwwards Yılın Ajansı adayı",
+  "why": "Rafine, zevkli etkileşimli ve WebGL işleriyle bilinen Stockholm stüdyosu."
+ },
+ {
+  "slug": "exo-ape",
+  "name": "Exo Ape",
+  "url": "https://www.exoape.com/",
+  "cat": "studio",
+  "award": "Awwwards Ayın Sitesi; 'Fluid Glass' işi Mart 2026 Günün Sitesi",
+  "why": "Cilalı, premium hareketli siteler; cam nesne görselleri bizim için doğrudan ilgili."
+ },
+ {
+  "slug": "lusion",
+  "name": "Lusion",
+  "url": "https://lusion.co/",
+  "cat": "studio",
+  "award": "Awwwards Yılın Sitesi (stüdyo)",
+  "why": "Sayaçlı yükleme, sonra çerçeveli bir kartın içinde mavi-beyaz 3B nesne yığını."
+ },
+ {
+  "slug": "persepolis-reimagined-getty",
+  "name": "Persepolis Reimagined (Getty)",
+  "url": "https://persepolis.getty.edu/",
+  "cat": "editorial",
+  "award": "Awwwards Yılın Sitesi listesinde",
+  "why": "Antik Persepolis'in 3B, ses ve anlatıyla yeniden kurulduğu müze hikâyesi."
+ },
+ {
+  "slug": "tracing-art-getty",
+  "name": "Tracing Art (Getty)",
+  "url": "https://www.getty.edu/tracingart/",
+  "cat": "editorial",
+  "award": "Awwwards Ayın Sitesi",
+  "why": "Müze ölçülülüğünde, veri dolu kaydırmalı anlatım."
+ },
+ {
+  "slug": "siena-film-foundation",
+  "name": "Siena Film Foundation",
+  "url": "https://siena.film/",
+  "cat": "editorial",
+  "award": "Awwwards Ayın Sitesi; Webby 2026 En İyi Ana Sayfa adayı",
+  "why": "Sürükleyerek gezilen bir belgesel arşiviyle film vakfı sitesi."
+ },
+ {
+  "slug": "the-monolith-project",
+  "name": "The Monolith Project",
+  "url": "https://themonolithproject.net/",
+  "cat": "editorial",
+  "award": "CSSDA Yılın Sitesi 2025 ilk 10",
+  "why": "Müzikli, yavaş ve atmosferik deneysel bir WebGL yolculuğu."
+ },
+ {
+  "slug": "fondation-cartier",
+  "name": "Fondation Cartier",
+  "url": "https://www.fondationcartier.com/en",
+  "cat": "editorial",
+  "award": "Webby 2026 En İyi Görsel Tasarım (İşlev) adayı",
+  "why": "Rafine galeri tipografisi ve sakin, düzenli yerleşimle çağdaş sanat vakfı sitesi (AREA 17)."
+ },
+ {
+  "slug": "bartosz-ciechanowski",
+  "name": "Bartosz Ciechanowski",
+  "url": "https://ciechanow.ski/",
+  "cat": "editorial",
+  "award": "Yazıları defalarca Hacker News'te bir numara (3.000+ puan)",
+  "why": "Mekanik saat, GPS, bisiklet: elle yapılmış etkileşimli 3B açıklamalar; mühendislik hassasiyetinde anlatım."
+ },
+ {
+  "slug": "nanda-syahrasyad-not-a-number",
+  "name": "Nanda Syahrasyad (nan.fyi)",
+  "url": "https://www.nan.fyi/",
+  "cat": "editorial",
+  "award": "Hacker News ön sayfası (547 ve 343 puan)",
+  "why": "Animasyonlu diyagramlarla etkileşimli programlama anlatımları."
+ },
+ {
+  "slug": "the-pudding",
+  "name": "The Pudding",
+  "url": "https://pudding.cool/",
+  "cat": "editorial",
+  "award": "SND47 Best in Show; SND46 Dünyanın En İyi Dijital Tasarımı",
+  "why": "Özel kaydırmalı anlatımlarla görsel deneme yayıncılığının ölçütü."
+ },
+ {
+  "slug": "stephen-kent-johnson",
+  "name": "Stephen Kent Johnson",
+  "url": "https://stephenkentjohnson.com/",
+  "cat": "editorial",
+  "award": "Siteinspire'da öne çıkarıldı (Minimal, Fotoğraf)",
+  "why": "İç mekân ve mimari fotoğrafçısı; sessiz tipografili, görsel öncülüğünde ızgara."
+ },
+ {
+  "slug": "satoshi-watanabe",
+  "name": "Satoshi Watanabe",
+  "url": "https://satoshiwatanabe.org/",
+  "cat": "editorial",
+  "award": "Siteinspire'da öne çıkarıldı, Temmuz 2026",
+  "why": "Sade bir ızgarada fotoğraf ve hareketli görüntü; sayfayı görseller taşıyor."
+ },
+ {
+  "slug": "gianluca-gradogna-lens",
+  "name": "Gradogna, Through this lens",
+  "url": "https://gianlucagradogna.com/through-this-lens",
+  "cat": "editorial",
+  "award": "Awwwards ödüllü portfolyonun fotoğraf bölümü",
+  "why": "Bölümlere ayrılmış fotoğraf denemesi: her bölümde yer adı, koordinat ve tek büyük fotoğraf."
+ },
+ {
+  "slug": "alec-soth",
+  "name": "Alec Soth",
+  "url": "https://alecsoth.com/",
+  "cat": "editorial",
+  "award": "Magnum fotoğrafçısı",
+  "why": "Turuncu bir bantta birinci ağızdan kısa bir cümle, sonra sergi fotoğrafları."
+ },
+ {
+  "slug": "rinko-kawauchi",
+  "name": "Rinko Kawauchi",
+  "url": "http://rinkokawauchi.com/en/",
+  "cat": "editorial",
+  "award": "Dünyaca tanınan Japon fotoğrafçı",
+  "why": "Ekranın üçte ikisini kaplayan tek fotoğraf, küçük serif menü, yavaş geçişler."
+ },
+ {
+  "slug": "atlantic-in-focus",
+  "name": "The Atlantic, Photography",
+  "url": "https://www.theatlantic.com/photo/",
+  "cat": "editorial",
+  "award": "Köklü dergi; fotoğraf hikâyeleri",
+  "why": "Her hikâyede önce büyük fotoğraf, sonra serif başlık ve tarih (yalnızca telefon görüntüsü var)."
+ },
+ {
+  "slug": "cereal",
+  "name": "Cereal",
+  "url": "https://readcereal.com/",
+  "cat": "editorial",
+  "award": "Sadeliğiyle bilinen seyahat ve tasarım dergisi",
+  "why": "Krem zeminde numaralı, eşit boyutlu küçük fotoğraflardan bir dizin."
+ },
+ {
+  "slug": "vivian-maier",
+  "name": "Vivian Maier",
+  "url": "https://www.vivianmaier.com/",
+  "cat": "editorial",
+  "award": "Fotoğrafçının resmi arşivi",
+  "why": "Kenardan kenara siyah-beyaz fotoğraf ızgarası; telefonda her satırda bir fotoğraf."
+ },
+ {
+  "slug": "saul-leiter",
+  "name": "Saul Leiter Foundation",
+  "url": "https://www.saulleiterfoundation.org/",
+  "cat": "editorial",
+  "award": "Fotoğrafçının vakfı",
+  "why": "Solda fotoğraf, sağda kısa metin; geniş boşluklar, bir saniyelik açılış."
+ }
+]

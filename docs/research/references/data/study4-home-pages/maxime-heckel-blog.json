@@ -1,0 +1,160 @@
+{
+ "slug": "maxime-heckel-blog",
+ "url": "https://blog.maximeheckel.com/",
+ "name": "Maxime Heckel",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 5717,
+  "screens": 6.4,
+  "blockCount": 191,
+  "medianGap": 22,
+  "sections": [
+   {
+    "y": 35,
+    "gapBefore": null,
+    "h": 17,
+    "n": 4,
+    "chars": 19,
+    "links": 0,
+    "head": [
+     "14px Index",
+     "14px Articles",
+     "14px Cmd",
+     "14px Ask"
+    ]
+   },
+   {
+    "y": 600,
+    "gapBefore": 548,
+    "h": 224,
+    "n": 6,
+    "chars": 613,
+    "links": 0,
+    "head": [
+     "24px Experiments and essays on the modern web.",
+     "16px Each piece I write aims to dive deep into the topics I’m pas",
+     "16px Hi I’m Maxime, and this is my blog. In here, you’ll find all",
+     "16px Maxime"
+    ]
+   },
+   {
+    "y": 888,
+    "gapBefore": 64,
+    "h": 4326,
+    "n": 181,
+    "chars": 7679,
+    "links": 163,
+    "head": [
+     "16px 2026 Shading Motion Shading Motion Aug 18 AUG 18 On Renderin",
+     "14px 2026",
+     "16px Shading Motion Shading Motion Aug 18 AUG 18",
+     "14px Shading Motion"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 95,
+   "blocks": 12,
+   "links": 0,
+   "text": [
+    "14px Index",
+    "14px Articles",
+    "14px Cmd",
+    "14px Ask",
+    "24px Experiments and essays on the modern web.",
+    "16px Each piece I write aims to dive deep into the topics I’m passionate ab",
+    "16px Hi I’m Maxime, and this is my blog. In here, you’ll find all the artic",
+    "16px Maxime",
+    "16px interactive playgrounds, visualization, and detailed walkthroughs",
+    "16px web development, shaders, real-time 3D on the web",
+    "16px 2026 Shading Motion Shading Motion Aug 18 AUG 18 On Rendering the Sky,",
+    "14px 2026"
+   ]
+  },
+  "column": {
+   "left": 389,
+   "right": 1052
+  },
+  "check": {
+   "name": 682,
+   "role": 1429,
+   "affiliation": 1372,
+   "projects": 3087,
+   "writing": 35,
+   "proof": null,
+   "contact": 2761,
+   "now": null
+  },
+  "bg": "oklch(0.1468 0.01 262.04)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 7004,
+  "screens": 8.3,
+  "blockCount": 186,
+  "medianGap": 46,
+  "sections": [
+   {
+    "y": 35,
+    "gapBefore": null,
+    "h": 17,
+    "n": 4,
+    "chars": 19,
+    "links": 0,
+    "head": [
+     "14px Index",
+     "14px Articles",
+     "14px Cmd",
+     "14px Ask"
+    ]
+   },
+   {
+    "y": 591,
+    "gapBefore": 539,
+    "h": 5926,
+    "n": 182,
+    "chars": 8502,
+    "links": 158,
+    "head": [
+     "24px Experiments and essays on the modern web.",
+     "16px Hi I’m Maxime, and this is my blog. In here, you’ll find all",
+     "16px Maxime",
+     "16px web development, shaders, real-time 3D on the web"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 67,
+   "blocks": 9,
+   "links": 0,
+   "text": [
+    "14px Index",
+    "14px Articles",
+    "14px Cmd",
+    "14px Ask",
+    "24px Experiments and essays on the modern web.",
+    "16px Hi I’m Maxime, and this is my blog. In here, you’ll find all the artic",
+    "16px Maxime",
+    "16px web development, shaders, real-time 3D on the web",
+    "16px Each piece I write aims to dive deep into the topics I’m passionate ab"
+   ]
+  },
+  "column": {
+   "left": 8,
+   "right": 382
+  },
+  "check": {
+   "name": 672,
+   "role": 1654,
+   "affiliation": 1596,
+   "projects": 3752,
+   "writing": 35,
+   "proof": null,
+   "contact": 3353,
+   "now": null
+  },
+  "bg": "oklch(0.1468 0.01 262.04)"
+ }
+}

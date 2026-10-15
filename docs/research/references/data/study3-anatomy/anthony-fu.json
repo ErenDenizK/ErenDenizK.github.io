@@ -1,0 +1,455 @@
+{
+ "slug": "anthony-fu",
+ "url": "https://antfu.me/",
+ "desktop": {
+  "anatomy": {
+   "libs": [],
+   "canvases": [
+    "other"
+   ],
+   "videos": 0,
+   "fonts": [
+    "DM Mono 400 normal",
+    "Inter 400 normal",
+    "Roboto Condensed 400 normal"
+   ],
+   "colorVars": {
+    "--color-note": "#0969da",
+    "--color-tip": "#1a7f37",
+    "--color-warning": "#9a6700",
+    "--color-severe": "#bc4c00",
+    "--color-caution": "#d1242f",
+    "--color-important": "#8250df",
+    "--twoslash-border-color": "#8888",
+    "--twoslash-highlighted-border": "#c37d0d50",
+    "--twoslash-highlighted-bg": "#c37d0d20",
+    "--twoslash-popup-bg": "#fafafa",
+    "--twoslash-popup-shadow": "#00000014 0px 1px 4px",
+    "--twoslash-docs-color": "#888",
+    "--twoslash-unmatched-color": "#888",
+    "--twoslash-cursor-color": "#8888",
+    "--twoslash-error-color": "#d45656",
+    "--twoslash-error-bg": "#d4565620",
+    "--twoslash-warn-color": "#c37d0d",
+    "--twoslash-warn-bg": "#c37d0d20",
+    "--twoslash-tag-color": "#3772cf",
+    "--twoslash-tag-bg": "#3772cf20",
+    "--twoslash-tag-annotate-color": "#1ba673",
+    "--twoslash-tag-annotate-bg": "#1ba67320",
+    "--c-bg": "#050505",
+    "--c-scrollbar": "#111",
+    "--c-scrollbar-hover": "#222",
+    "--fg-light": "#888",
+    "--fg": "#bbb",
+    "--fg-deep": "#ddd",
+    "--fg-deeper": "#fff"
+   },
+   "typeScale": [
+    {
+     "px": 36,
+     "family": "Inter",
+     "weight": "800",
+     "lineHeight": "1.11",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 10,
+     "n": 1,
+     "sample": "Anthony Fu"
+    },
+    {
+     "px": 16.8,
+     "family": "ui-serif",
+     "weight": "400",
+     "lineHeight": "1.75",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 15,
+     "n": 1,
+     "sample": "No Coding Today"
+    },
+    {
+     "px": 16,
+     "family": "Inter",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 46,
+     "n": 5,
+     "sample": "Blog"
+    },
+    {
+     "px": 16,
+     "family": "Inter",
+     "weight": "400",
+     "lineHeight": "1.75",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 970,
+     "n": 34,
+     "sample": "Hey! I’m Anthony Fu, a fanatical open sourceror "
+    },
+    {
+     "px": 16,
+     "family": "Roboto Condensed",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 92,
+     "n": 14,
+     "sample": "Vercel"
+    },
+    {
+     "px": 16,
+     "family": "DM Mono",
+     "weight": "400",
+     "lineHeight": "1.75",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 10,
+     "n": 2,
+     "sample": "hi"
+    },
+    {
+     "px": 14,
+     "family": "Inter",
+     "weight": "400",
+     "lineHeight": "1.43",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 59,
+     "n": 3,
+     "sample": "How does this work?"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(187, 187, 187)",
+     843
+    ],
+    [
+     "rgb(255, 255, 255)",
+     227
+    ],
+    [
+     "rgb(136, 136, 136)",
+     92
+    ],
+    [
+     "rgb(229, 231, 235)",
+     25
+    ],
+    [
+     "rgb(221, 221, 221)",
+     15
+    ]
+   ],
+   "bgColors": [],
+   "bodyBg": "rgba(0, 0, 0, 0)",
+   "htmlBg": "rgb(5, 5, 5)",
+   "transitions": [
+    [
+     "border | 0.3s | ease-in-out",
+     34
+    ],
+    [
+     "opacity | 0.2s | ease",
+     11
+    ],
+    [
+     "all | 0.2s | cubic-bezier(0, 0, 0.2, 1)",
+     3
+    ],
+    [
+     "color, background-color, border-color | 0.3s | cubic-bezier(0.4, 0, 0.2, 1)",
+     1
+    ]
+   ],
+   "docScreens": 1.4,
+   "title": "Anthony Fu",
+   "metaDesc": "Anthony Fu's Portfolio"
+  },
+  "animsAtLoad": [
+   "CSSAnimation:grow-69a3f4dd|10000ms|delay 0|linear|Infinity",
+   "CSSAnimation:slide-enter|1000ms|delay 90|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 180|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 270|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 360|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 450|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 540|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 630|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 720|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 810|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 900|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 990|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1080|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1170|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1260|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1200|linear|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "desktop-j00.webp",
+    "headings": [
+     "H1 36px: Anthony Fu"
+    ],
+    "anims": 16
+   },
+   {
+    "i": 1,
+    "y": 330,
+    "file": "desktop-j01.webp",
+    "headings": [],
+    "anims": 16
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:grow-69a3f4dd|10000ms|delay 0|linear|Infinity",
+   "CSSAnimation:slide-enter|1000ms|delay 90|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 180|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 270|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 360|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 450|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 540|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 630|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 720|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 810|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 900|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 990|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1080|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1170|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1260|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1200|linear|1"
+  ]
+ },
+ "phone": {
+  "anatomy": {
+   "libs": [],
+   "canvases": [
+    "other"
+   ],
+   "videos": 0,
+   "fonts": [
+    "DM Mono 400 normal",
+    "Inter 400 normal",
+    "Roboto Condensed 400 normal"
+   ],
+   "colorVars": {
+    "--color-note": "#0969da",
+    "--color-tip": "#1a7f37",
+    "--color-warning": "#9a6700",
+    "--color-severe": "#bc4c00",
+    "--color-caution": "#d1242f",
+    "--color-important": "#8250df",
+    "--twoslash-border-color": "#8888",
+    "--twoslash-highlighted-border": "#c37d0d50",
+    "--twoslash-highlighted-bg": "#c37d0d20",
+    "--twoslash-popup-bg": "#fafafa",
+    "--twoslash-popup-shadow": "#00000014 0px 1px 4px",
+    "--twoslash-docs-color": "#888",
+    "--twoslash-unmatched-color": "#888",
+    "--twoslash-cursor-color": "#8888",
+    "--twoslash-error-color": "#d45656",
+    "--twoslash-error-bg": "#d4565620",
+    "--twoslash-warn-color": "#c37d0d",
+    "--twoslash-warn-bg": "#c37d0d20",
+    "--twoslash-tag-color": "#3772cf",
+    "--twoslash-tag-bg": "#3772cf20",
+    "--twoslash-tag-annotate-color": "#1ba673",
+    "--twoslash-tag-annotate-bg": "#1ba67320",
+    "--c-bg": "#050505",
+    "--c-scrollbar": "#111",
+    "--c-scrollbar-hover": "#222",
+    "--fg-light": "#888",
+    "--fg": "#bbb",
+    "--fg-deep": "#ddd",
+    "--fg-deeper": "#fff"
+   },
+   "typeScale": [
+    {
+     "px": 36,
+     "family": "Inter",
+     "weight": "800",
+     "lineHeight": "1.11",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 10,
+     "n": 1,
+     "sample": "Anthony Fu"
+    },
+    {
+     "px": 16.8,
+     "family": "ui-serif",
+     "weight": "400",
+     "lineHeight": "1.75",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 15,
+     "n": 1,
+     "sample": "No Coding Today"
+    },
+    {
+     "px": 16,
+     "family": "Inter",
+     "weight": "400",
+     "lineHeight": "1.75",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 970,
+     "n": 34,
+     "sample": "Hey! I’m Anthony Fu, a fanatical open sourceror "
+    },
+    {
+     "px": 16,
+     "family": "Roboto Condensed",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 92,
+     "n": 14,
+     "sample": "Vercel"
+    },
+    {
+     "px": 16,
+     "family": "DM Mono",
+     "weight": "400",
+     "lineHeight": "1.75",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 10,
+     "n": 2,
+     "sample": "hi"
+    },
+    {
+     "px": 16,
+     "family": "Inter",
+     "weight": "400",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 21,
+     "n": 1,
+     "sample": "Sponsor the Ecosystem"
+    },
+    {
+     "px": 14,
+     "family": "Inter",
+     "weight": "400",
+     "lineHeight": "1.43",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 59,
+     "n": 3,
+     "sample": "How does this work?"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(187, 187, 187)",
+     843
+    ],
+    [
+     "rgb(255, 255, 255)",
+     227
+    ],
+    [
+     "rgb(136, 136, 136)",
+     92
+    ],
+    [
+     "rgb(221, 221, 221)",
+     15
+    ]
+   ],
+   "bgColors": [],
+   "bodyBg": "rgba(0, 0, 0, 0)",
+   "htmlBg": "rgb(5, 5, 5)",
+   "transitions": [
+    [
+     "border | 0.3s | ease-in-out",
+     34
+    ],
+    [
+     "opacity | 0.2s | ease",
+     11
+    ],
+    [
+     "all | 0.2s | cubic-bezier(0, 0, 0.2, 1)",
+     3
+    ],
+    [
+     "color, background-color, border-color | 0.3s | cubic-bezier(0.4, 0, 0.2, 1)",
+     1
+    ]
+   ],
+   "docScreens": 2,
+   "title": "Anthony Fu",
+   "metaDesc": "Anthony Fu's Portfolio"
+  },
+  "animsAtLoad": [
+   "CSSAnimation:grow-69a3f4dd|10000ms|delay 0|linear|Infinity",
+   "CSSAnimation:slide-enter|1000ms|delay 90|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 180|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 270|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 360|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 450|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 540|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 630|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 720|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 810|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 900|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 990|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1080|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1170|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1260|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1200|linear|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "phone-j00.webp",
+    "headings": [
+     "H1 36px: Anthony Fu"
+    ],
+    "anims": 16
+   },
+   {
+    "i": 1,
+    "y": 760,
+    "file": "phone-j01.webp",
+    "headings": [],
+    "anims": 16
+   },
+   {
+    "i": 2,
+    "y": 834,
+    "file": "phone-j02.webp",
+    "headings": [],
+    "anims": 16
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:grow-69a3f4dd|10000ms|delay 0|linear|Infinity",
+   "CSSAnimation:slide-enter|1000ms|delay 90|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 180|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 270|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 360|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 450|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 540|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 630|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 720|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 810|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 900|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 990|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1080|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1170|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1260|linear|1",
+   "CSSAnimation:slide-enter|1000ms|delay 1200|linear|1"
+  ]
+ }
+}

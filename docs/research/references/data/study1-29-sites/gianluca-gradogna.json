@@ -1,0 +1,80 @@
+{
+ "slug": "gianluca-gradogna",
+ "url": "https://gianlucagradogna.com/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp"
+  ],
+  "firstPaintS": 1.67,
+  "settleS": 5.88,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1,
+  "largestPx": 48,
+  "largestText": "Through",
+  "largestFont": "LZ",
+  "largestWeight": "500",
+  "largestTracking": "-1.43991px",
+  "bodyPx": 24,
+  "bodyFont": "LZ",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 25,
+  "firstScreenChars": 338,
+  "bg": "rgba(0, 0, 0, 0)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 6,
+   "chromatic": 1,
+   "bgHex": "#ffffff",
+   "inkPct": 86,
+   "chromaHex": [
+    "#324346"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.57,
+  "settleS": 6.14,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 13,
+  "largestPx": 29.3,
+  "largestText": "Crafting Narrative",
+  "largestFont": "Neue-Montreal",
+  "largestWeight": "400",
+  "largestTracking": "-1.17px",
+  "bodyPx": 21.9,
+  "bodyFont": "LZ",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 43,
+  "firstScreenChars": 207,
+  "bg": "rgba(0, 0, 0, 0)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 6,
+   "chromatic": 0,
+   "bgHex": "#ffffff",
+   "inkPct": 69,
+   "chromaHex": []
+  }
+ }
+}

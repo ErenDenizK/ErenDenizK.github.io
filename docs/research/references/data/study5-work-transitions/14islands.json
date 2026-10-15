@@ -1,0 +1,23 @@
+{
+ "slug": "14islands",
+ "url": "https://www.14islands.com/",
+ "found": {
+  "href": "https://www.14islands.com/work/cartier365",
+  "top": 2224.453125,
+  "w": 660.84375,
+  "h": 500.234375
+ },
+ "open": {
+  "urlFrom": "https://www.14islands.com/",
+  "urlTo": "https://www.14islands.com/work/cartier365",
+  "sameDocument": true,
+  "viewTransitions": 0,
+  "settleS": 2.87,
+  "frames": 401
+ },
+ "back": {
+  "urlTo": "https://www.14islands.com/",
+  "sameDocument": true,
+  "settleS": 4.49
+ }
+}

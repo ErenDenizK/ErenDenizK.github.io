@@ -10,7 +10,7 @@ owner's request (brief §7, "phone check": "bring the ladder to phones too") · 
 **Note 2026-10-10:** the owner wants one consistent custom scrollbar on every page, including the
 project sheet; some pages still show the native bar (brief, "Look, motion and objects"). That
 contradicts this ADR's no-rail cases (pages without sections, short pages, the sheet, year pages).
-A revision follows (`docs/PLAN.md` track 3); until it lands, this ADR describes what is built.
+A revision follows (`docs/history/plan-2026-10-clean-restart.md` track 3); until it lands, this ADR describes what is built.
 
 **Amendment 2026-10-10 (later):** revised by [ADR-0013](0013-one-rail-everywhere.md): the rail is on every
 page and in the project sheet (the ladder where there are sections, a plain track and thumb elsewhere),

@@ -1,0 +1,80 @@
+{
+ "slug": "teenage-engineering",
+ "url": "https://teenage.engineering/products/op-1",
+ "group": "product",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 3.02,
+  "settleS": 0.42,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 22.5,
+  "largestPx": 52.9,
+  "largestText": "the beauty of evolution.",
+  "largestFont": "te-40",
+  "largestWeight": "300",
+  "largestTracking": "normal",
+  "bodyPx": 19.1,
+  "bodyFont": "te-20",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 13,
+  "firstScreenChars": 367,
+  "bg": "rgb(240, 240, 239)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 9,
+   "chromatic": 0,
+   "bgHex": "#d0d1d2",
+   "inkPct": 27,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 2.13,
+  "settleS": 0.48,
+  "continuous": false,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 11.1,
+  "largestPx": 28.7,
+  "largestText": "OP\u20131 \ue001",
+  "largestFont": "te-40",
+  "largestWeight": "300",
+  "largestTracking": "normal",
+  "bodyPx": 7.2,
+  "bodyFont": "te-20",
+  "lineChars": 47,
+  "measurePx": 354,
+  "mediaPct": 0,
+  "firstScreenChars": 78,
+  "bg": "rgb(240, 240, 239)",
+  "webAnimsRunning": 1,
+  "webAnimsInfinite": 1,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 8,
+   "chromatic": 0,
+   "bgHex": "#d0d1d2",
+   "inkPct": 48,
+   "chromaHex": []
+  }
+ }
+}

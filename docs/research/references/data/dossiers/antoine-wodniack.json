@@ -1,0 +1,1179 @@
+{
+ "slug": "antoine-wodniack",
+ "url": "https://wodniack.dev/",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "16px",
+  "scrollBehavior": "auto",
+  "scrollbarWidth": "none",
+  "smoothLib": true,
+  "maxWidths": [],
+  "grids": [
+   [
+    "4 cols · 157px 157px 157px 157px",
+    1
+   ]
+  ],
+  "gaps": [],
+  "spacingY": [
+   [
+    "8px",
+    102
+   ],
+   [
+    "12px",
+    24
+   ],
+   [
+    "24px",
+    8
+   ],
+   [
+    "32px",
+    8
+   ],
+   [
+    "9px",
+    7
+   ],
+   [
+    "1px",
+    4
+   ],
+   [
+    "240px",
+    2
+   ],
+   [
+    "2px",
+    2
+   ],
+   [
+    "72px",
+    2
+   ],
+   [
+    "186.75px",
+    2
+   ],
+   [
+    "16.875px",
+    1
+   ],
+   [
+    "-28.125px",
+    1
+   ],
+   [
+    "360px",
+    1
+   ],
+   [
+    "720px",
+    1
+   ],
+   [
+    "660px",
+    1
+   ]
+  ],
+  "spacingX": [
+   [
+    "8px",
+    136
+   ],
+   [
+    "12px",
+    24
+   ],
+   [
+    "16px",
+    8
+   ],
+   [
+    "11.2px",
+    8
+   ],
+   [
+    "24px",
+    6
+   ],
+   [
+    "48px",
+    6
+   ],
+   [
+    "20px",
+    4
+   ],
+   [
+    "6px",
+    2
+   ],
+   [
+    "72px",
+    2
+   ]
+  ],
+  "radii": [
+   [
+    "15984px",
+    1
+   ]
+  ],
+  "shadows": [],
+  "effects": [
+   [
+    "clip-path: inset(0px 1.08px)",
+    17
+   ],
+   [
+    "clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0p",
+    11
+   ],
+   [
+    "clip-path: inset(-1px)",
+    11
+   ],
+   [
+    "clip-path: inset(0px -16px)",
+    2
+   ],
+   [
+    "filter: blur(7px)",
+    2
+   ],
+   [
+    "clip-path: path(\"M 19.3184 6.01751 L 10.4517 0.1059",
+    1
+   ],
+   [
+    "clip-path: path(\"M 1.13025 14.9839 H 3.93671 V 4.6 ",
+    1
+   ],
+   [
+    "clip-path: path(\"M 10.0996 20 C 8.71628 20 7.41628 ",
+    1
+   ],
+   [
+    "clip-path: inset(0px 16px)",
+    1
+   ],
+   [
+    "clip-path: path(evenodd, \"M -1 0 L 1410 0 L 1410 90",
+    1
+   ],
+   [
+    "clip-path: inset(-900px 0px -660px)",
+    1
+   ],
+   [
+    "mix-blend-mode: darken",
+    1
+   ]
+  ],
+  "cursors": [
+   [
+    "grab",
+    1
+   ]
+  ],
+  "fixed": 3,
+  "sticky": 1,
+  "nav": [
+   "Antoine Wodniack",
+   "ABOUT",
+   "WORK",
+   "CONTACT",
+   "Follow me on CodePen",
+   "Follow me on LinkedIn",
+   "Hire me"
+  ],
+  "viewTransitionNames": [
+   "root"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "00-index.MJ9FiCyD.css",
+   "url": "https://wodniack.dev/_astro/index.MJ9FiCyD.css",
+   "bytes": 72702
+  },
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 578
+  }
+ ],
+ "css": {
+  "fontFaces": [
+   {
+    "family": "Fraktion Mono",
+    "file": "PPFraktionMono-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Fraktion Mono",
+    "file": "PPFraktionMono-Bold.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Editorial New",
+    "file": "PPEditorialNew-Ultralight.woff2",
+    "weight": "200"
+   },
+   {
+    "family": "Editorial New",
+    "file": "PPEditorialNew-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Bigger Display",
+    "file": "Bigger-Display.woff2",
+    "weight": "700"
+   }
+  ],
+  "variables": {
+   "--bg-p": "0%",
+   "--border-width": "1rem",
+   "--x": "50vw",
+   "--y": "50vh",
+   "--width": "1rem",
+   "--height": "100lvh",
+   "--shadow": "var(--color-shadow)",
+   "--progress": ".5",
+   "--state": "0",
+   "--head": "calc((var(--progress) - .5) * -2)",
+   "--ahead": "calc(var(--head) * var(--head))",
+   "--padding": "30rem",
+   "--smiley-size": "5.625rem",
+   "--s": "0",
+   "--z": "-1000vw",
+   "--rx": "0",
+   "--ry": "0",
+   "--rz": "0",
+   "--depth": "1rem",
+   "--strip-width": "1px",
+   "--strip-gap": "25px",
+   "--amplitude": "75%",
+   "--offset": "0s",
+   "--size": "64rem",
+   "--move-delay": "calc(var(--delay) + var(--offset))",
+   "--color-primary": "#fff2ed",
+   "--color-secondary": "#160000",
+   "--color-shadow": "#4d4040",
+   "--font-family-fraktion": "\"Fraktion Mono\", monospace",
+   "--font-family-editorial": "\"Editorial New\", serif",
+   "--font-family-bigger": "\"Bigger Display\", sans-serif",
+   "--font-size-base": "16px",
+   "--font-weight-base": "400",
+   "--font-height-base": "1.48",
+   "--font-family-base": "var(--font-family-editorial)"
+  },
+  "keyframes": {
+   "site-head-caret": "0%,to{opacity:1}50%{opacity:0}",
+   "blink-in": "0%,30%,60%{opacity:0}15%,45%,75%,to{opacity:1}",
+   "s-hero-move-to-left": "0%{transform:translateZ(0)}to{transform:translate3d(100%,0,0)}",
+   "s-hero-move-to-right": "0%{transform:translateZ(0)}to{transform:translate3d(-100%,0,0)}",
+   "s-hero-move-to-top": "0%{transform:translateZ(0)}to{transform:translate3d(0,-100%,0)}",
+   "s-hero-move-to-bottom": "0%{transform:translateZ(0)}to{transform:translate3d(0,100%,0)}",
+   "rotate": "0%{transform:rotate(0)}to{transform:rotate(360deg)}",
+   "vanish": "0%{-webkit-mask-position:left 0;mask-position:left 0}to{-webkit-mask-position:right 0;mask-position:right 0}",
+   "s-cta-char-up-down": "0%{transform:translateZ(0);animation-timing-function:cubic-bezier(.215,.61,.355,1)}25%{transform:translate3d(0,-52%,0);animation-timing-function:cubic-bezier(.645,.045,.355,1)}75%{transform:translate3d(0,52%,0);animation-timing-function:cubic-bezier(.55,.055,.",
+   "s-cta-char-toggle": "0%{opacity:1}50%{opacity:1}50.01%{opacity:0}to{opacity:0}",
+   "s-cta-star-float": "0%{transform:translateZ(0)}50%{transform:translate3d(0,-15%,0) scale(.5)}to{transform:translateZ(0)}"
+  },
+  "easings": [
+   [
+    "linear",
+    14
+   ],
+   [
+    "cubic-bezier(.86,0,.07,1)",
+    9
+   ],
+   [
+    "cubic-bezier(1,0,0,1)",
+    7
+   ],
+   [
+    "cubic-bezier(.23,1,.32,1)",
+    7
+   ],
+   [
+    "cubic-bezier(.55,.055,.675,.19)",
+    6
+   ],
+   [
+    "cubic-bezier(.215,.61,.355,1)",
+    5
+   ],
+   [
+    "cubic-bezier(.19,1,.22,1)",
+    2
+   ],
+   [
+    "steps(29,end)",
+    1
+   ],
+   [
+    "cubic-bezier(.755,.05,.855,.06)",
+    1
+   ],
+   [
+    "cubic-bezier(.645,.045,.355,1)",
+    1
+   ],
+   [
+    "cubic-bezier(.455,.03,.515,.955)",
+    1
+   ]
+  ],
+  "durations": [
+   [
+    "1s",
+    7
+   ],
+   [
+    ".6s",
+    6
+   ],
+   [
+    ".3s",
+    4
+   ],
+   [
+    ".8s",
+    4
+   ],
+   [
+    "2s",
+    3
+   ],
+   [
+    ".1s",
+    2
+   ],
+   [
+    "10s",
+    2
+   ],
+   [
+    "1.8s",
+    2
+   ],
+   [
+    ".5s",
+    1
+   ],
+   [
+    ".2s",
+    1
+   ],
+   [
+    ".4s",
+    1
+   ],
+   [
+    ".75s",
+    1
+   ],
+   [
+    "1.2s",
+    1
+   ],
+   [
+    "0s",
+    1
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "only screen and (max-width: 767px) and (orientation: landscape),only screen and (max-width: 576px)",
+    44
+   ],
+   [
+    "only screen and (max-width: 767px)",
+    24
+   ],
+   [
+    "only screen and (max-width: 987px)",
+    18
+   ],
+   [
+    "only screen and (max-width: 1080px)",
+    9
+   ],
+   [
+    "only screen and (max-width: 1280px)",
+    4
+   ],
+   [
+    "only screen and (max-width:400px)",
+    2
+   ],
+   [
+    "only screen and (max-width: 1680px)",
+    2
+   ],
+   [
+    "only screen and (max-width: 1530px)",
+    2
+   ],
+   [
+    "only screen and (max-width:360px)",
+    1
+   ]
+  ],
+  "reducedMotion": 0,
+  "colorScheme": 0,
+  "viewTransitions": 0,
+  "scrollTimelines": 0,
+  "containerQueries": 0,
+  "clamp": []
+ },
+ "anatomy": {
+  "libs": [
+   "lenis"
+  ],
+  "canvases": [
+   "other",
+   "other"
+  ],
+  "videos": 34,
+  "fonts": [
+   "Bigger Display 700 normal",
+   "Editorial New 400 normal",
+   "Editorial New 200 normal",
+   "Fraktion Mono 400 normal",
+   "Fraktion Mono 700 normal"
+  ],
+  "colorVars": {
+   "--color-primary": "#f40c3f",
+   "--color-secondary": "#160000",
+   "--color-shadow": "#540000",
+   "--color-white": "#fff0eb"
+  },
+  "typeScale": [
+   {
+    "px": 138,
+    "family": "Bigger Display",
+    "weight": "700",
+    "lineHeight": "0.82",
+    "tracking": "-0.4px",
+    "transform": "uppercase",
+    "chars": 8,
+    "n": 1,
+    "sample": "awwwards"
+   },
+   {
+    "px": 105,
+    "family": "Bigger Display",
+    "weight": "700",
+    "lineHeight": "0.82",
+    "tracking": "-0.4px",
+    "transform": "uppercase",
+    "chars": 8,
+    "n": 2,
+    "sample": "fwa"
+   },
+   {
+    "px": 36,
+    "family": "Editorial New",
+    "weight": "200",
+    "lineHeight": "1.13",
+    "tracking": "-0.4px",
+    "transform": "none",
+    "chars": 231,
+    "n": 10,
+    "sample": "2025 Webby Awards Winner"
+   },
+   {
+    "px": 32,
+    "family": "Editorial New",
+    "weight": "200",
+    "lineHeight": "1.5",
+    "tracking": "-0.4px",
+    "transform": "none",
+    "chars": 430,
+    "n": 6,
+    "sample": "I collaborate with agencies and designers to cra"
+   },
+   {
+    "px": 20,
+    "family": "Editorial New",
+    "weight": "200",
+    "lineHeight": "2.4",
+    "tracking": "-0.4px",
+    "transform": "none",
+    "chars": 58,
+    "n": 2,
+    "sample": "Coding globally from France."
+   },
+   {
+    "px": 20,
+    "family": "Editorial New",
+    "weight": "400",
+    "lineHeight": "2.4",
+    "tracking": "-0.4px",
+    "transform": "none",
+    "chars": 7,
+    "n": 1,
+    "sample": "Hire me"
+   },
+   {
+    "px": 20,
+    "family": "Editorial New",
+    "weight": "200",
+    "lineHeight": "1.3",
+    "tracking": "-0.4px",
+    "transform": "none",
+    "chars": 64,
+    "n": 6,
+    "sample": "(SOTD x 16)"
+   },
+   {
+    "px": 14,
+    "family": "Fraktion Mono",
+    "weight": "400",
+    "lineHeight": "1",
+    "tracking": "0.7px",
+    "transform": "uppercase",
+    "chars": 16,
+    "n": 3,
+    "sample": "About"
+   },
+   {
+    "px": 12,
+    "family": "Fraktion Mono",
+    "weight": "700",
+    "lineHeight": "2",
+    "tracking": "1.2px",
+    "transform": "uppercase",
+    "chars": 11,
+    "n": 2,
+    "sample": "About"
+   },
+   {
+    "px": 11,
+    "family": "Fraktion Mono",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "1.65px",
+    "transform": "uppercase",
+    "chars": 864,
+    "n": 68,
+    "sample": "Generous Branding"
+   },
+   {
+    "px": 8,
+    "family": "Fraktion Mono",
+    "weight": "400",
+    "lineHeight": "1.4",
+    "tracking": "-0.4px",
+    "transform": "uppercase",
+    "chars": 58,
+    "n": 1,
+    "sample": "stay calm Halfway done… maybe Simulating progres"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(22, 0, 0)",
+    880
+   ],
+   [
+    "rgb(244, 12, 63)",
+    875
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(244, 12, 63)",
+    86208
+   ],
+   [
+    "rgb(22, 0, 0)",
+    3098
+   ]
+  ],
+  "bodyBg": "rgb(244, 12, 63)",
+  "htmlBg": "rgb(22, 0, 0)",
+  "transitions": [
+   [
+    "translate, scale | 1s | cubic-bezier(0.23, 1, 0.32, 1)",
+    10
+   ],
+   [
+    "clip-path | 0.8s | cubic-bezier(0.86, 0, 0.07, 1)",
+    10
+   ],
+   [
+    "scale | 0.6s | cubic-bezier(0.55, 0.055, 0.675, 0.19)",
+    2
+   ],
+   [
+    "scale | 0.8s | cubic-bezier(0.55, 0.055, 0.675, 0.19)",
+    2
+   ],
+   [
+    "scale | 1s | cubic-bezier(0.23, 1, 0.32, 1)",
+    1
+   ],
+   [
+    "scale | 1.2s | cubic-bezier(0.23, 1, 0.32, 1)",
+    1
+   ],
+   [
+    "clip-path | 0.6s | cubic-bezier(0.86, 0, 0.07, 1)",
+    1
+   ],
+   [
+    "scale | 0.5s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+    1
+   ],
+   [
+    "scale, opacity | 0.2s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+    1
+   ]
+  ],
+  "docScreens": 24.4,
+  "title": "AW - Creative Developer Freelance - France",
+  "metaDesc": "Creative Developer with 15+ years and 140+ projects, specializing in animation-driven, high-impact websites. Partnering with designers to craft memorable UX."
+ },
+ "animsAtLoad": [
+  "CSSAnimation:s-hero-move-to-right|1000ms|delay 0|linear|1",
+  "CSSAnimation:rotate|10000ms|delay 0|linear|Infinity"
+ ],
+ "hovers": [
+  {
+   "i": 0,
+   "tag": "A",
+   "text": "Antoine Wodniack",
+   "w": 48,
+   "h": 19,
+   "file": "clip-hover-0.webp",
+   "maxChangePct": 0.76
+  },
+  {
+   "i": 1,
+   "tag": "LI",
+   "text": "Follow me on LinkedIn",
+   "w": 48,
+   "h": 48,
+   "file": "clip-hover-1.webp",
+   "maxChangePct": 4.19
+  },
+  {
+   "i": 2,
+   "tag": "A",
+   "text": "Hire me",
+   "w": 62.953125,
+   "h": 48,
+   "file": "clip-hover-2.webp",
+   "maxChangePct": 4.99
+  }
+ ],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 31.41
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [
+    "H1 216px: C R E A T I V E D E V E L O P E R"
+   ],
+   "anims": 3
+  },
+  {
+   "i": 1,
+   "y": 676,
+   "file": "desktop-j01.webp",
+   "headings": [
+    "H1 216px: C R E A T I V E D E V E L O P E R",
+    "H2 12px: ABOUT"
+   ],
+   "anims": 3
+  },
+  {
+   "i": 2,
+   "y": 1352,
+   "file": "desktop-j02.webp",
+   "headings": [
+    "H2 12px: AWARDS"
+   ],
+   "anims": 1
+  },
+  {
+   "i": 3,
+   "y": 2028,
+   "file": "desktop-j03.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 4,
+   "y": 2704,
+   "file": "desktop-j04.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 5,
+   "y": 3380,
+   "file": "desktop-j05.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 6,
+   "y": 4056,
+   "file": "desktop-j06.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 7,
+   "y": 4732,
+   "file": "desktop-j07.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 8,
+   "y": 5408,
+   "file": "desktop-j08.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 9,
+   "y": 6084,
+   "file": "desktop-j09.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 10,
+   "y": 6760,
+   "file": "desktop-j10.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 11,
+   "y": 7436,
+   "file": "desktop-j11.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 12,
+   "y": 8112,
+   "file": "desktop-j12.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 13,
+   "y": 8788,
+   "file": "desktop-j13.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 14,
+   "y": 9464,
+   "file": "desktop-j14.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 15,
+   "y": 10140,
+   "file": "desktop-j15.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 16,
+   "y": 10816,
+   "file": "desktop-j16.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 17,
+   "y": 11492,
+   "file": "desktop-j17.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 18,
+   "y": 12168,
+   "file": "desktop-j18.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 19,
+   "y": 12844,
+   "file": "desktop-j19.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 20,
+   "y": 13520,
+   "file": "desktop-j20.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 21,
+   "y": 14196,
+   "file": "desktop-j21.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 22,
+   "y": 14872,
+   "file": "desktop-j22.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 23,
+   "y": 15548,
+   "file": "desktop-j23.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 24,
+   "y": 16224,
+   "file": "desktop-j24.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 25,
+   "y": 16900,
+   "file": "desktop-j25.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 26,
+   "y": 17576,
+   "file": "desktop-j26.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 27,
+   "y": 18252,
+   "file": "desktop-j27.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 28,
+   "y": 18928,
+   "file": "desktop-j28.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 29,
+   "y": 19604,
+   "file": "desktop-j29.webp",
+   "headings": [],
+   "anims": 61
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [
+   "lenis"
+  ],
+  "canvases": [
+   "other",
+   "other"
+  ],
+  "videos": 34,
+  "fonts": [
+   "Bigger Display 700 normal",
+   "Editorial New 400 normal",
+   "Editorial New 200 normal",
+   "Fraktion Mono 400 normal",
+   "Fraktion Mono 700 normal"
+  ],
+  "colorVars": {
+   "--color-primary": "#f40c3f",
+   "--color-secondary": "#160000",
+   "--color-shadow": "#540000",
+   "--color-white": "#fff0eb"
+  },
+  "typeScale": [
+   {
+    "px": 64,
+    "family": "Bigger Display",
+    "weight": "700",
+    "lineHeight": "0.82",
+    "tracking": "-0.4px",
+    "transform": "uppercase",
+    "chars": 8,
+    "n": 2,
+    "sample": "fwa"
+   },
+   {
+    "px": 56,
+    "family": "Bigger Display",
+    "weight": "700",
+    "lineHeight": "0.82",
+    "tracking": "-0.4px",
+    "transform": "uppercase",
+    "chars": 8,
+    "n": 1,
+    "sample": "awwwards"
+   },
+   {
+    "px": 24,
+    "family": "Editorial New",
+    "weight": "200",
+    "lineHeight": "1.5",
+    "tracking": "-0.4px",
+    "transform": "none",
+    "chars": 430,
+    "n": 6,
+    "sample": "I collaborate with agencies and designers to cra"
+   },
+   {
+    "px": 20,
+    "family": "Editorial New",
+    "weight": "400",
+    "lineHeight": "2.4",
+    "tracking": "-0.4px",
+    "transform": "none",
+    "chars": 7,
+    "n": 1,
+    "sample": "Hire me"
+   },
+   {
+    "px": 18.4,
+    "family": "Editorial New",
+    "weight": "200",
+    "lineHeight": "1.13",
+    "tracking": "-0.4px",
+    "transform": "none",
+    "chars": 231,
+    "n": 10,
+    "sample": "2025 Webby Awards Winner"
+   },
+   {
+    "px": 17.6,
+    "family": "Editorial New",
+    "weight": "200",
+    "lineHeight": "1.3",
+    "tracking": "-0.4px",
+    "transform": "none",
+    "chars": 64,
+    "n": 6,
+    "sample": "(SOTD x 16)"
+   },
+   {
+    "px": 12,
+    "family": "Fraktion Mono",
+    "weight": "700",
+    "lineHeight": "2",
+    "tracking": "1.2px",
+    "transform": "uppercase",
+    "chars": 11,
+    "n": 2,
+    "sample": "About"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(22, 0, 0)",
+    748
+   ],
+   [
+    "rgb(244, 12, 63)",
+    11
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(244, 12, 63)",
+    20627
+   ],
+   [
+    "rgb(22, 0, 0)",
+    664
+   ]
+  ],
+  "bodyBg": "rgb(244, 12, 63)",
+  "htmlBg": "rgb(22, 0, 0)",
+  "transitions": [
+   [
+    "translate, scale | 1s | cubic-bezier(0.23, 1, 0.32, 1)",
+    10
+   ],
+   [
+    "clip-path | 0.8s | cubic-bezier(0.86, 0, 0.07, 1)",
+    10
+   ],
+   [
+    "scale | 0.6s | cubic-bezier(0.55, 0.055, 0.675, 0.19)",
+    2
+   ],
+   [
+    "scale | 0.8s | cubic-bezier(0.55, 0.055, 0.675, 0.19)",
+    2
+   ],
+   [
+    "scale | 1s | cubic-bezier(0.23, 1, 0.32, 1)",
+    1
+   ],
+   [
+    "scale | 1.2s | cubic-bezier(0.23, 1, 0.32, 1)",
+    1
+   ],
+   [
+    "clip-path | 0.6s | cubic-bezier(0.86, 0, 0.07, 1)",
+    1
+   ],
+   [
+    "scale | 0.5s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+    1
+   ],
+   [
+    "scale, opacity | 0.2s | cubic-bezier(0.215, 0.61, 0.355, 1)",
+    1
+   ]
+  ],
+  "docScreens": 22.8,
+  "title": "AW - Creative Developer Freelance - France",
+  "metaDesc": "Creative Developer with 15+ years and 140+ projects, specializing in animation-driven, high-impact websites. Partnering with designers to craft memorable UX."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [
+    "H1 109px: C R E A T I V E D E V E L O P E R",
+    "H2 12px: ABOUT"
+   ],
+   "anims": 3
+  },
+  {
+   "i": 1,
+   "y": 379,
+   "file": "phone-j01.webp",
+   "headings": [
+    "H1 109px: C R E A T I V E D E V E L O P E R",
+    "H2 12px: ABOUT"
+   ],
+   "anims": 2
+  },
+  {
+   "i": 2,
+   "y": 759,
+   "file": "phone-j02.webp",
+   "headings": [
+    "H1 109px: C R E A T I V E D E V E L O P E R",
+    "H2 12px: ABOUT"
+   ],
+   "anims": 2
+  },
+  {
+   "i": 3,
+   "y": 1139,
+   "file": "phone-j03.webp",
+   "headings": [
+    "H2 12px: AWARDS"
+   ],
+   "anims": 5
+  },
+  {
+   "i": 4,
+   "y": 1519,
+   "file": "phone-j04.webp",
+   "headings": [
+    "H2 12px: AWARDS"
+   ],
+   "anims": 3
+  },
+  {
+   "i": 5,
+   "y": 1899,
+   "file": "phone-j05.webp",
+   "headings": [],
+   "anims": 4
+  },
+  {
+   "i": 6,
+   "y": 2279,
+   "file": "phone-j06.webp",
+   "headings": [],
+   "anims": 2
+  },
+  {
+   "i": 7,
+   "y": 2659,
+   "file": "phone-j07.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 8,
+   "y": 3039,
+   "file": "phone-j08.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 9,
+   "y": 3419,
+   "file": "phone-j09.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 10,
+   "y": 3799,
+   "file": "phone-j10.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 11,
+   "y": 4179,
+   "file": "phone-j11.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 12,
+   "y": 4559,
+   "file": "phone-j12.webp",
+   "headings": [],
+   "anims": 1
+  },
+  {
+   "i": 13,
+   "y": 4939,
+   "file": "phone-j13.webp",
+   "headings": [],
+   "anims": 1
+  }
+ ]
+}

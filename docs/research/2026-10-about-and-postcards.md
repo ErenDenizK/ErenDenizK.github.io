@@ -3,7 +3,9 @@
 **Status:** current, except the pile (§3), which the owner replaced on 2026-10-11 (afternoon) with postcards spread through the page; see ADR-0008, amendment "postcards through the page". Rests on the owner's words of 2026-10-11 (brief log): About is "soulless: plain
 text and three photos"; postcards should be "more interactive"; "research what makes a photo frame
 richer and more fun, and how photos are presented digitally". The direction at the end is what
-`src/pages/about.astro` and `src/components/PostcardPile.astro` build.
+`src/pages/about.astro` built; `PostcardPile.astro` is gone with the pile, and the postcards are
+`src/components/Postcard.astro`. On 2026-10-11 (late) the owner said the postcard is not required:
+photo presentation is reopened.
 
 **How sure:** **V** = seen in a search result this session (link given). **R** = recollection of a
 site the lead knows; direct fetches of personal sites were refused by this container's network

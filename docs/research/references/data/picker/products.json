@@ -1,0 +1,401 @@
+[
+ {
+  "name": "Dia (The Browser Company)",
+  "url": "https://www.diabrowser.com/",
+  "category": "product",
+  "award": "Lapa Ninja feature, 2025",
+  "source": "https://www.lapa.ninja/post/dia-browser/",
+  "why": "Calm, editorial AI-browser launch page with soft gradients and restrained typography.",
+  "live": true,
+  "slug": "dia-the-browser-company"
+ },
+ {
+  "name": "Arc",
+  "url": "https://arc.net/",
+  "category": "product",
+  "award": "Awwwards Honorable Mention; Lapa Ninja feature",
+  "source": "https://www.lapa.ninja/post/arc/",
+  "why": "Playful, colourful browser site that set the tone for indie-feeling software launches.",
+  "live": true,
+  "slug": "arc"
+ },
+ {
+  "name": "Stripe",
+  "url": "https://stripe.com/",
+  "category": "product",
+  "award": "Awwwards Nominee; Lapa Ninja feature",
+  "source": "https://www.awwwards.com/sites/stripe",
+  "why": "The reference fintech homepage: animated mesh-gradient hero, dense yet elegant product storytelling.",
+  "live": true,
+  "slug": "stripe"
+ },
+ {
+  "name": "Framer",
+  "url": "https://www.framer.com/",
+  "category": "product",
+  "award": "Lapa Ninja feature",
+  "source": "https://www.lapa.ninja/post/framer/",
+  "why": "Dark, motion-heavy design-tool site showcasing scroll animations built in its own product.",
+  "live": true,
+  "slug": "framer"
+ },
+ {
+  "name": "Superhuman",
+  "url": "https://superhuman.com/",
+  "category": "product",
+  "award": "SaaS Landing Page feature",
+  "source": "https://saaslandingpage.com/superhuman/",
+  "why": "Premium, cinematic email-client marketing with crisp dark UI shots and speed-focused copy.",
+  "live": true,
+  "slug": "superhuman"
+ },
+ {
+  "name": "Notion Calendar",
+  "url": "https://www.notion.com/product/calendar",
+  "category": "product",
+  "award": "SaaS Landing Page feature",
+  "source": "https://saaslandingpage.com/notion-calendar/",
+  "why": "Successor of the celebrated Cron site: minimal calendar product page with precise UI renders.",
+  "live": true,
+  "slug": "notion-calendar"
+ },
+ {
+  "name": "Nothing",
+  "url": "https://nothing.tech/",
+  "category": "brand",
+  "award": "Awwwards Honorable Mention",
+  "source": "https://www.awwwards.com/sites/nothing",
+  "why": "Dot-matrix typography and monochrome hardware photography define a distinctive consumer-tech brand.",
+  "live": true,
+  "slug": "nothing"
+ },
+ {
+  "name": "rabbit r1",
+  "url": "https://www.rabbit.tech/rabbit-r1",
+  "category": "product",
+  "award": "Awwwards Honorable Mention; HN front page (352 pts, 2024)",
+  "source": "https://www.awwwards.com/sites/rabbit-r1",
+  "why": "Teenage Engineering-designed AI gadget launched with a bold orange, keynote-style product page.",
+  "live": true,
+  "slug": "rabbit-r1"
+ },
+ {
+  "name": "Daylight Computer",
+  "url": "https://daylightcomputer.com/",
+  "category": "product",
+  "award": "Awwwards Site of the Day; HN #1 (2230 pts, 2024)",
+  "source": "https://www.awwwards.com/sites/daylight",
+  "why": "Warm, sunlit, film-photography aesthetic for a 60fps e-paper tablet; went viral on HN and X.",
+  "live": true,
+  "slug": "daylight-computer"
+ },
+ {
+  "name": "Playdate (Panic)",
+  "url": "https://play.date/",
+  "category": "product",
+  "award": "HN front page (1370 pts)",
+  "source": "https://news.ycombinator.com/item?id=19986106",
+  "why": "Yellow handheld with a charming, illustrated, crank-centric product site by Panic.",
+  "live": true,
+  "slug": "playdate-panic"
+ },
+ {
+  "name": "Analogue 3D",
+  "url": "https://www.analogue.co/3d",
+  "category": "product",
+  "award": "Awwwards Site of the Day",
+  "source": "https://www.awwwards.com/sites/analogue",
+  "why": "Gallery-like hardware presentation of a premium FPGA N64 console with museum-grade product shots.",
+  "live": true,
+  "slug": "analogue-3d"
+ },
+ {
+  "name": "Rivian R2",
+  "url": "https://rivian.com/r2",
+  "category": "product",
+  "award": "Awwwards Nominee",
+  "source": "https://www.awwwards.com/sites/rivian",
+  "why": "Adventure-lifestyle EV launch page with immersive full-bleed video and configurator flow.",
+  "live": true,
+  "slug": "rivian-r2"
+ },
+ {
+  "name": "Polestar",
+  "url": "https://www.polestar.com/",
+  "category": "brand",
+  "award": "Lapa Ninja feature",
+  "source": "https://www.lapa.ninja/post/polestar/",
+  "why": "Scandinavian minimalist car brand site: stark white space, precise type, cinematic car imagery.",
+  "live": true,
+  "slug": "polestar"
+ },
+ {
+  "name": "mymind",
+  "url": "https://mymind.com/",
+  "category": "product",
+  "award": "Lapa Ninja feature",
+  "source": "https://www.lapa.ninja/post/mymind/",
+  "why": "Poetic, manifesto-like landing page for a private visual bookmarking app with serif typography.",
+  "live": true,
+  "slug": "mymind"
+ },
+ {
+  "name": "Rive",
+  "url": "https://rive.app/",
+  "category": "product",
+  "award": "Lapa Ninja feature; HN 432 pts (renderer open-sourced, 2024)",
+  "source": "https://www.lapa.ninja/post/rive/",
+  "why": "Interactive-animation tool whose site demos live state-machine graphics running in the page.",
+  "live": true,
+  "slug": "rive"
+ },
+ {
+  "name": "Spline",
+  "url": "https://spline.design/",
+  "category": "product",
+  "award": "Lapa Ninja feature; SaaS Landing Page feature",
+  "source": "https://www.lapa.ninja/post/spline/",
+  "why": "3D design tool site with real-time interactive 3D scenes embedded throughout.",
+  "live": true,
+  "slug": "spline"
+ },
+ {
+  "name": "Mercury",
+  "url": "https://mercury.com/",
+  "category": "product",
+  "award": "Lapa Ninja feature; Awwwards Nominee",
+  "source": "https://www.lapa.ninja/post/mercury/",
+  "why": "Fintech banking site praised for atmospheric landscape imagery and refined, calm UI presentation.",
+  "live": true,
+  "slug": "mercury"
+ },
+ {
+  "name": "Ramp",
+  "url": "https://ramp.com/",
+  "category": "product",
+  "award": "SaaS Landing Page feature",
+  "source": "https://saaslandingpage.com/ramp/",
+  "why": "High-energy yellow-accented corporate-card site with crisp product UI animations.",
+  "live": true,
+  "slug": "ramp"
+ },
+ {
+  "name": "Claude (Anthropic)",
+  "url": "https://claude.com/product/overview",
+  "category": "product",
+  "award": "SaaS Landing Page feature",
+  "source": "https://saaslandingpage.com/claude/",
+  "why": "Warm, paper-toned AI lab branding with serif type and hand-drawn illustration, unlike typical AI neon.",
+  "live": true,
+  "slug": "claude-anthropic"
+ },
+ {
+  "name": "Granola",
+  "url": "https://www.granola.ai/",
+  "category": "product",
+  "award": "Lapa Ninja feature; HN 460 pts (craft post 'Don't animate height')",
+  "source": "https://www.lapa.ninja/post/granola/",
+  "why": "Notebook-paper aesthetic AI notepad site; the team is known for obsessive interface craft.",
+  "live": true,
+  "slug": "granola"
+ },
+ {
+  "name": "Cursor",
+  "url": "https://cursor.com/",
+  "category": "product",
+  "award": "SaaS Landing Page feature; HN 613 pts (Cursor 1.0)",
+  "source": "https://saaslandingpage.com/cursor/",
+  "why": "Defining AI-code-editor landing page with editor demos and clean monochrome layout.",
+  "live": true,
+  "slug": "cursor"
+ },
+ {
+  "name": "Warp",
+  "url": "https://www.warp.dev/",
+  "category": "product",
+  "award": "Lapa Ninja feature; Show HN 946 pts",
+  "source": "https://www.lapa.ninja/post/warp/",
+  "why": "Modern terminal product site with polished dark UI and glowing gradient accents.",
+  "live": true,
+  "slug": "warp"
+ },
+ {
+  "name": "Resend",
+  "url": "https://resend.com/",
+  "category": "product",
+  "award": "SaaS Landing Page feature; Launch HN 432 pts",
+  "source": "https://saaslandingpage.com/resend/",
+  "why": "Developer-email API site widely copied for its dark, glassy 3D hero and code-forward design.",
+  "live": true,
+  "slug": "resend"
+ },
+ {
+  "name": "Halide",
+  "url": "https://www.halide.cam/",
+  "category": "product",
+  "award": "Lapa Ninja feature",
+  "source": "https://www.lapa.ninja/post/halide/",
+  "why": "Pro iPhone camera app with a tactile, camera-hardware-inspired marketing site by Lux.",
+  "live": true,
+  "slug": "halide"
+ },
+ {
+  "name": "Flighty",
+  "url": "https://flighty.com/",
+  "category": "product",
+  "award": "Apple Design Award 2023 winner (Interaction)",
+  "source": "https://developer.apple.com/design/awards/2023/",
+  "why": "Airport-signage-inspired flight tracker whose site mirrors its information-dense, beautiful UI.",
+  "live": true,
+  "slug": "flighty"
+ },
+ {
+  "name": "Crouton",
+  "url": "https://crouton.app/",
+  "category": "product",
+  "award": "Apple Design Award 2024 winner (Interaction)",
+  "source": "https://developer.apple.com/design/awards/2024/",
+  "why": "Indie recipe app with a clean, friendly site matching its kitchen-ready interface.",
+  "live": true,
+  "slug": "crouton"
+ },
+ {
+  "name": "Procreate Dreams",
+  "url": "https://procreate.com/dreams",
+  "category": "product",
+  "award": "Apple Design Award 2024 winner (Innovation); HN 449 pts",
+  "source": "https://developer.apple.com/design/awards/2024/",
+  "why": "Rich, animated launch page for Procreate's iPad animation app.",
+  "live": true,
+  "slug": "procreate-dreams"
+ },
+ {
+  "name": "Rooms",
+  "url": "https://rooms.xyz/",
+  "category": "product",
+  "award": "Apple Design Award 2024 winner (Visuals and Graphics); HN 480 pts",
+  "source": "https://developer.apple.com/design/awards/2024/",
+  "why": "Toy-like isometric 3D rooms from Things, Inc. with a playful, voxel-styled site.",
+  "live": true,
+  "slug": "rooms"
+ },
+ {
+  "name": "Gentler Streak",
+  "url": "https://gentlerstories.com/gentlerstreak",
+  "category": "product",
+  "award": "Apple Design Award 2024 winner (Social Impact)",
+  "source": "https://developer.apple.com/design/awards/2024/",
+  "why": "Soft, illustrated fitness app site emphasising wellbeing over performance.",
+  "live": true,
+  "slug": "gentler-streak"
+ },
+ {
+  "name": "Copilot Money",
+  "url": "https://www.copilot.money/",
+  "category": "product",
+  "award": "Apple Design Award 2024 finalist (Innovation)",
+  "source": "https://developer.apple.com/design/awards/2024/",
+  "why": "Personal finance app with a polished, colourful site that sells its native iOS/Mac craft.",
+  "live": true,
+  "slug": "copilot-money"
+ },
+ {
+  "name": "CapWords",
+  "url": "https://capwords.app/",
+  "category": "product",
+  "award": "Apple Design Award 2025 winner (Delight and Fun)",
+  "source": "https://developer.apple.com/design/awards/2025/",
+  "why": "Sticker-style language-learning app with a playful, cut-out object aesthetic.",
+  "live": true,
+  "slug": "capwords"
+ },
+ {
+  "name": "Feather: Draw in 3D",
+  "url": "https://www.feather.art/",
+  "category": "product",
+  "award": "Apple Design Award 2025 winner (Visuals and Graphics)",
+  "source": "https://developer.apple.com/design/awards/2025/",
+  "why": "iPad 3D sketching app whose site showcases airy, line-drawn 3D artwork.",
+  "live": true,
+  "slug": "feather-draw-in-3d"
+ },
+ {
+  "name": "Mela",
+  "url": "https://mela.recipes/",
+  "category": "product",
+  "award": "Apple Design Award 2025 finalist (Interaction)",
+  "source": "https://developer.apple.com/design/awards/2025/",
+  "why": "Native recipe manager with a minimal, Apple-like product page.",
+  "live": true,
+  "slug": "mela"
+ },
+ {
+  "name": "Lumy",
+  "url": "https://lumy.app/",
+  "category": "product",
+  "award": "Apple Design Award 2025 finalist (Delight and Fun)",
+  "source": "https://developer.apple.com/design/awards/2025/",
+  "why": "Sun-and-moon tracker with a carefully curated colour palette and elegant widgets.",
+  "live": true,
+  "slug": "lumy"
+ },
+ {
+  "name": "iA Writer",
+  "url": "https://ia.net/writer",
+  "category": "product",
+  "award": "Apple Design Award 2025 finalist (Interaction)",
+  "source": "https://developer.apple.com/design/awards/2025/",
+  "why": "Typography-first writing app from iA; the site is a lesson in reductive, text-centred design.",
+  "live": true,
+  "slug": "ia-writer"
+ },
+ {
+  "name": "Structured",
+  "url": "https://structured.app/",
+  "category": "product",
+  "award": "Apple Design Award 2026 finalist (Inclusivity); Lapa Ninja feature",
+  "source": "https://developer.apple.com/design/awards/",
+  "why": "Colourful timeline day-planner with a bright, friendly product site.",
+  "live": true,
+  "slug": "structured"
+ },
+ {
+  "name": "(Not Boring) Camera",
+  "url": "https://notbor.ing/product/camera",
+  "category": "product",
+  "award": "Apple Design Award 2026 finalist (Visuals and Graphics)",
+  "source": "https://developer.apple.com/design/awards/",
+  "why": "Andy Works' skeuomorphic, tactile camera app presented with bold 3D-rendered UI.",
+  "live": true,
+  "slug": "not-boring-camera"
+ },
+ {
+  "name": "Moonlitt",
+  "url": "https://www.flippinghues.com/moonlitt",
+  "category": "product",
+  "award": "Apple Design Award 2026 winner (Interaction)",
+  "source": "https://developer.apple.com/design/awards/",
+  "why": "Moon-phase tracker with dreamy night-sky visuals by Flipping Hues.",
+  "live": true,
+  "slug": "moonlitt"
+ },
+ {
+  "name": "Tide Guide",
+  "url": "https://tideguide.com/",
+  "category": "product",
+  "award": "Apple Design Award 2026 winner (Visuals and Graphics)",
+  "source": "https://developer.apple.com/design/awards/",
+  "why": "Tide and marine-weather app with elegant charts and ocean-toned visuals.",
+  "live": true,
+  "slug": "tide-guide"
+ },
+ {
+  "name": "Igloo Inc.",
+  "url": "https://www.igloo.inc/",
+  "category": "brand",
+  "award": "Awwwards Site of the Day (and 2024 Site of the Year)",
+  "source": "https://www.awwwards.com/sites/igloo-inc",
+  "why": "Immersive WebGL ice-crystal brand experience, one of the most-shared 3D sites of 2024.",
+  "live": true
+ }
+]

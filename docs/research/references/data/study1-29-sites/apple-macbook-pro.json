@@ -1,0 +1,80 @@
+{
+ "slug": "apple-macbook-pro",
+ "url": "https://www.apple.com/macbook-pro/",
+ "group": "product",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-3.5vh.webp"
+  ],
+  "firstPaintS": 2.01,
+  "settleS": 9.95,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 46.9,
+  "largestPx": 80,
+  "largestText": "M5. M5 Pro. M5 Max.",
+  "largestFont": "SF Pro Display",
+  "largestWeight": "600",
+  "largestTracking": "-1.2px",
+  "bodyPx": 12,
+  "bodyFont": "SF Pro Text",
+  "lineChars": 136,
+  "measurePx": 980,
+  "mediaPct": 0,
+  "firstScreenChars": 571,
+  "bg": "rgb(0, 0, 0)",
+  "webAnimsRunning": 14,
+  "webAnimsInfinite": 2,
+  "webAnimMaxEndMs": 6150,
+  "palette": {
+   "tones": 7,
+   "chromatic": 0,
+   "bgHex": "#000000",
+   "inkPct": 28,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-3.5vh.webp"
+  ],
+  "firstPaintS": 2.2,
+  "settleS": 9.08,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 54,
+  "largestPx": 48,
+  "largestText": "M5. M5 Pro. M5 Max.",
+  "largestFont": "SF Pro Display",
+  "largestWeight": "600",
+  "largestTracking": "-0.144px",
+  "bodyPx": 12,
+  "bodyFont": "SF Pro Text",
+  "lineChars": 53,
+  "measurePx": 358,
+  "mediaPct": 43,
+  "firstScreenChars": 407,
+  "bg": "rgb(0, 0, 0)",
+  "webAnimsRunning": 25,
+  "webAnimsInfinite": 2,
+  "webAnimMaxEndMs": 6150,
+  "palette": {
+   "tones": 7,
+   "chromatic": 0,
+   "bgHex": "#000000",
+   "inkPct": 42,
+   "chromaHex": []
+  }
+ }
+}

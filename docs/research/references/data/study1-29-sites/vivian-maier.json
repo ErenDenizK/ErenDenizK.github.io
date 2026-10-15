@@ -1,0 +1,83 @@
+{
+ "slug": "vivian-maier",
+ "url": "https://www.vivianmaier.com/",
+ "group": "photo",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp"
+  ],
+  "firstPaintS": 13.81,
+  "settleS": 0.24,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1.4,
+  "largestPx": 12,
+  "largestText": "Portfolios",
+  "largestFont": "dinregular",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 10,
+  "bodyFont": "dinregular",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 1,
+  "firstScreenChars": 128,
+  "bg": "rgb(245, 245, 245)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 10,
+   "chromatic": 1,
+   "bgHex": "#876c4e",
+   "inkPct": 85,
+   "chromaHex": [
+    "#876c4e"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 25.93,
+  "settleS": 0.28,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 4,
+  "largestPx": 15,
+  "largestText": "Street 1",
+  "largestFont": "din_mediumregular",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 0,
+  "bodyFont": "",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 62,
+  "firstScreenChars": 25,
+  "bg": "rgb(245, 245, 245)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 11,
+   "chromatic": 1,
+   "bgHex": "#f5f5f5",
+   "inkPct": 67,
+   "chromaHex": [
+    "#876c4e"
+   ]
+  }
+ }
+}

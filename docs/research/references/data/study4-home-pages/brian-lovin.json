@@ -1,0 +1,165 @@
+{
+ "slug": "brian-lovin",
+ "url": "https://brianlovin.com/",
+ "name": "Brian Lovin",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 1572,
+  "screens": 1.7,
+  "blockCount": 46,
+  "medianGap": 6,
+  "sections": [
+   {
+    "y": 292,
+    "gapBefore": null,
+    "h": 112,
+    "n": 2,
+    "chars": 99,
+    "links": 0,
+    "head": [
+     "24px Brian Lovin",
+     "24px I'm a software designer living in San Francisco, currently m"
+    ]
+   },
+   {
+    "y": 583,
+    "gapBefore": 179,
+    "h": 229,
+    "n": 6,
+    "chars": 163,
+    "links": 6,
+    "head": [
+     "16px Writing",
+     "20px Grok Bot first impressions",
+     "20px How I’m feeling about AI in August 2026",
+     "20px Give your agent a laboratory, pt. II"
+    ]
+   },
+   {
+    "y": 876,
+    "gapBefore": 64,
+    "h": 568,
+    "n": 38,
+    "chars": 826,
+    "links": 37,
+    "head": [
+     "16px Projects",
+     "20px HN",
+     "20px A minimal hacker news reader",
+     "20px App Dissection Breaking down well-designed apps"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 48,
+   "blocks": 9,
+   "links": 6,
+   "text": [
+    "24px Brian Lovin",
+    "24px I'm a software designer living in San Francisco, currently making AI p",
+    "16px* Writing",
+    "20px* Grok Bot first impressions",
+    "20px* How I’m feeling about AI in August 2026",
+    "20px* Give your agent a laboratory, pt. II",
+    "20px* Why I’m excited about Notion Workers",
+    "20px* Use the ✦ Hyper key",
+    "16px Projects"
+   ]
+  },
+  "column": {
+   "left": 400,
+   "right": 1040
+  },
+  "check": {
+   "name": 292,
+   "role": 340,
+   "affiliation": 340,
+   "projects": 742,
+   "writing": 583,
+   "proof": null,
+   "contact": 1374,
+   "now": 340
+  },
+  "bg": "rgba(0, 0, 0, 0)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 2222,
+  "screens": 2.6,
+  "blockCount": 46,
+  "medianGap": 16,
+  "sections": [
+   {
+    "y": 228,
+    "gapBefore": null,
+    "h": 144,
+    "n": 2,
+    "chars": 99,
+    "links": 0,
+    "head": [
+     "24px Brian Lovin",
+     "24px I'm a software designer living in San Francisco, currently m"
+    ]
+   },
+   {
+    "y": 551,
+    "gapBefore": 179,
+    "h": 333,
+    "n": 6,
+    "chars": 163,
+    "links": 6,
+    "head": [
+     "16px Writing",
+     "20px Grok Bot first impressions",
+     "20px How I’m feeling about AI in August 2026",
+     "20px Give your agent a laboratory, pt. II"
+    ]
+   },
+   {
+    "y": 948,
+    "gapBefore": 64,
+    "h": 1210,
+    "n": 38,
+    "chars": 826,
+    "links": 37,
+    "head": [
+     "16px Projects",
+     "20px HN",
+     "20px A minimal hacker news reader",
+     "20px App Dissection Breaking down well-designed apps"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 42,
+   "blocks": 7,
+   "links": 5,
+   "text": [
+    "24px Brian Lovin",
+    "24px I'm a software designer living in San Francisco, currently making AI p",
+    "16px* Writing",
+    "20px* Grok Bot first impressions",
+    "20px* How I’m feeling about AI in August 2026",
+    "20px* Give your agent a laboratory, pt. II",
+    "20px* Why I’m excited about Notion Workers"
+   ]
+  },
+  "column": {
+   "left": 16,
+   "right": 374
+  },
+  "check": {
+   "name": 228,
+   "role": 276,
+   "affiliation": 276,
+   "projects": 772,
+   "writing": 551,
+   "proof": null,
+   "contact": 2014,
+   "now": 276
+  },
+  "bg": "rgba(0, 0, 0, 0)"
+ }
+}

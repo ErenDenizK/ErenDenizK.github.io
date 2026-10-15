@@ -24,6 +24,8 @@ imageAlt: What the image shows   # required with image
 caption: One sentence on what to see in it.   # optional
 next: Annotations are next. # optional: the owner's own next step, the page's closing line
 help: edit                  # edit | more (the agent did more than edit; add helpNote)
+helpNote: What the agent added.   # with help: more; one line on what went beyond editing
+draft: false                # true keeps it out of the build (it still shows in npm run dev)
 ---
 Body in Markdown. In an .mdx essay a figure is <Figure name="entry-flow" />. A release keeps its
 shipped items as the body's first list; the record shows the first three.

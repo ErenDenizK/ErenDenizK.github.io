@@ -1,0 +1,250 @@
+{
+ "slug": "eduard-bodak",
+ "url": "https://www.eduardbodak.com/",
+ "name": "Eduard Bodak",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 4842,
+  "screens": 5.4,
+  "blockCount": 118,
+  "medianGap": 81,
+  "sections": [
+   {
+    "y": 16,
+    "gapBefore": null,
+    "h": 180,
+    "n": 27,
+    "chars": 333,
+    "links": 16,
+    "head": [
+     "90px Crafting Websites that Feel Good Crafting Websites that Feel",
+     "90px Crafting",
+     "90px Websites",
+     "14px Service Service Service"
+    ]
+   },
+   {
+    "y": 472,
+    "gapBefore": 276,
+    "h": 798,
+    "n": 15,
+    "chars": 342,
+    "links": 0,
+    "head": [
+     "14px Eduard Bodak · Designer & Developer Eduard Bodak · Designer ",
+     "14px Eduard",
+     "14px Bodak",
+     "14px Designer"
+    ]
+   },
+   {
+    "y": 1765,
+    "gapBefore": 495,
+    "h": 1030,
+    "n": 13,
+    "chars": 401,
+    "links": 0,
+    "head": [
+     "52px strategy, design,",
+     "52px Every project includes strategy, design, development and mot",
+     "52px development",
+     "52px motion"
+    ]
+   },
+   {
+    "y": 3039,
+    "gapBefore": 244,
+    "h": 33,
+    "n": 1,
+    "chars": 68,
+    "links": 0,
+    "head": [
+     "11px When everything looks the same, details make the difference."
+    ]
+   },
+   {
+    "y": 3301,
+    "gapBefore": 229,
+    "h": 603,
+    "n": 13,
+    "chars": 129,
+    "links": 0,
+    "head": [
+     "20px Next Chapter",
+     "14px Next",
+     "14px Chapter",
+     "160px Explore"
+    ]
+   },
+   {
+    "y": 4249,
+    "gapBefore": 345,
+    "h": 208,
+    "n": 36,
+    "chars": 456,
+    "links": 24,
+    "head": [
+     "14px No media found",
+     "20px Sitemap",
+     "20px Channels",
+     "14px No media found"
+    ]
+   },
+   {
+    "y": 4800,
+    "gapBefore": 343,
+    "h": 31,
+    "n": 13,
+    "chars": 159,
+    "links": 8,
+    "head": [
+     "14px Imprint Imprint Imprint",
+     "14px Imprint",
+     "14px Privacy Privacy Privacy",
+     "14px Privacy"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 105,
+   "blocks": 37,
+   "links": 16,
+   "text": [
+    "90px Crafting Websites that Feel Good Crafting Websites that Feel Good",
+    "90px Crafting",
+    "90px Websites",
+    "14px* Service Service Service",
+    "14px* Service Service",
+    "14px* Service",
+    "14px* Work Work Work",
+    "14px* Work",
+    "14px Connect Connect Connect",
+    "14px Connect",
+    "14px* EN EN EN",
+    "14px* EN EN",
+    "14px* EN",
+    "14px* DE DE DE",
+    "14px* DE",
+    "14px* Service",
+    "14px Eduard Bodak · Designer & Developer Eduard Bodak · Designer & Develope",
+    "14px* EN",
+    "14px* Work Work",
+    "14px* Work",
+    "14px Connect Connect",
+    "14px Connect",
+    "14px* DE DE",
+    "14px* DE",
+    "90px that",
+    "90px Feel",
+    "90px Good",
+    "14px Eduard Bodak · Designer & Developer Eduard Bodak · Designer & Develope",
+    "14px Eduard",
+    "14px Bodak",
+    "14px Designer",
+    "14px Developer",
+    "52px Filmbot Filmbot",
+    "16px No media found",
+    "52px Titangate Equity Titangate Equity",
+    "24px For brands that believe every detail matters. For brands that believe ",
+    "14px Remote Worldwide Remote Worldwide"
+   ]
+  },
+  "column": {
+   "left": 24,
+   "right": 1406
+  },
+  "check": {
+   "name": 23,
+   "role": 23,
+   "affiliation": null,
+   "projects": 20,
+   "writing": null,
+   "proof": null,
+   "contact": 4350,
+   "now": null
+  },
+  "bg": "rgba(0, 0, 0, 0)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 4539,
+  "screens": 5.4,
+  "blockCount": 115,
+  "medianGap": 114,
+  "sections": [
+   {
+    "y": 24,
+    "gapBefore": null,
+    "h": 4452,
+    "n": 115,
+    "chars": 1706,
+    "links": 40,
+    "head": [
+     "14px Service Service Service",
+     "14px Service Service",
+     "14px Service",
+     "14px Work Work Work"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 73,
+   "blocks": 35,
+   "links": 16,
+   "text": [
+    "14px* Service Service Service",
+    "14px* Service Service",
+    "14px* Service",
+    "14px* Work Work Work",
+    "14px* Work",
+    "14px Connect Connect Connect",
+    "14px Connect",
+    "14px* EN EN EN",
+    "14px* EN EN",
+    "14px* EN",
+    "14px* DE DE DE",
+    "14px* DE",
+    "14px* Service",
+    "14px* EN",
+    "14px* Work Work",
+    "14px* Work",
+    "14px Connect Connect",
+    "14px Connect",
+    "14px* DE DE",
+    "14px* DE",
+    "56px Crafting Websites that Feel Good Crafting Websites that Feel Good",
+    "56px Crafting",
+    "56px Websites",
+    "56px that",
+    "56px Feel",
+    "56px Good",
+    "14px Eduard Bodak · Designer & Developer Eduard Bodak · Designer & Develope",
+    "14px Eduard",
+    "14px Bodak",
+    "14px Designer",
+    "14px Developer",
+    "13px No media found",
+    "20px Filmbot Filmbot",
+    "20px Filmbot",
+    "20px View"
+   ]
+  },
+  "column": {
+   "left": -63,
+   "right": 470
+  },
+  "check": {
+   "name": 511,
+   "role": 511,
+   "affiliation": null,
+   "projects": 24,
+   "writing": null,
+   "proof": null,
+   "contact": 4271,
+   "now": null
+  },
+  "bg": "rgba(0, 0, 0, 0)"
+ }
+}

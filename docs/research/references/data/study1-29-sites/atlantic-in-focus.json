@@ -1,0 +1,79 @@
+{
+ "slug": "atlantic-in-focus",
+ "url": "https://www.theatlantic.com/photo/",
+ "group": "photo",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp"
+  ],
+  "firstPaintS": 1.55,
+  "settleS": 0.11,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1,
+  "largestPx": 48,
+  "largestText": "Your access has been blocked.",
+  "largestFont": "AGaramondPro",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 22,
+  "bodyFont": "AGaramondPro",
+  "lineChars": 56,
+  "measurePx": 560,
+  "mediaPct": 35,
+  "firstScreenChars": 410,
+  "bg": "rgb(255, 255, 255)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 5,
+   "chromatic": 0,
+   "bgHex": "#ffffff",
+   "inkPct": 10,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.85,
+  "settleS": 5.28,
+  "continuous": true,
+  "vw": 970,
+  "vh": 2100,
+  "docHeightScreens": 3.5,
+  "largestPx": 44,
+  "largestText": "Photography",
+  "largestFont": "Atlantic Serif",
+  "largestWeight": "400",
+  "largestTracking": "2px",
+  "bodyPx": 18,
+  "bodyFont": "AGaramondPro",
+  "lineChars": 42,
+  "measurePx": 358,
+  "mediaPct": 12,
+  "firstScreenChars": 543,
+  "bg": "rgba(0, 0, 0, 0)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 7,
+   "chromatic": 1,
+   "bgHex": "#ffffff",
+   "inkPct": 26,
+   "chromaHex": [
+    "#463f31"
+   ]
+  }
+ }
+}

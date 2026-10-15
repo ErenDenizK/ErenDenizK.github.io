@@ -1,0 +1,82 @@
+{
+ "slug": "rauno-freiberg",
+ "url": "https://rauno.me/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 2.75,
+  "settleS": 1.6,
+  "continuous": false,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 6.8,
+  "largestPx": 720,
+  "largestText": "DD",
+  "largestFont": "X",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 14,
+  "bodyFont": "X",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 0,
+  "firstScreenChars": 106,
+  "bg": "rgb(237, 237, 237)",
+  "webAnimsRunning": 7,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 1150,
+  "palette": {
+   "tones": 5,
+   "chromatic": 1,
+   "bgHex": "#ededed",
+   "inkPct": 57,
+   "chromaHex": [
+    "#ffff02"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp"
+  ],
+  "firstPaintS": 2.0,
+  "settleS": 1.95,
+  "continuous": false,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 1,
+  "largestPx": 720,
+  "largestText": "DD",
+  "largestFont": "X",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 14,
+  "bodyFont": "X",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 0,
+  "firstScreenChars": 106,
+  "bg": "rgb(237, 237, 237)",
+  "webAnimsRunning": 7,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 1150,
+  "palette": {
+   "tones": 3,
+   "chromatic": 1,
+   "bgHex": "#ededed",
+   "inkPct": 23,
+   "chromaHex": [
+    "#ffff02"
+   ]
+  }
+ }
+}

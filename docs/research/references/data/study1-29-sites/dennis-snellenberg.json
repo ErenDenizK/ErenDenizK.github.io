@@ -1,0 +1,83 @@
+{
+ "slug": "dennis-snellenberg",
+ "url": "https://dennissnellenberg.com/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp"
+  ],
+  "firstPaintS": 3.24,
+  "settleS": 7.12,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1,
+  "largestPx": 216,
+  "largestText": "Dennis Snellenberg",
+  "largestFont": "Dennis Sans",
+  "largestWeight": "450",
+  "largestTracking": "normal",
+  "bodyPx": 17.3,
+  "bodyFont": "Dennis Sans",
+  "lineChars": 26,
+  "measurePx": 1440,
+  "mediaPct": 0,
+  "firstScreenChars": 131,
+  "bg": "rgb(28, 29, 32)",
+  "webAnimsRunning": 5,
+  "webAnimsInfinite": 5,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 8,
+   "chromatic": 1,
+   "bgHex": "#999d9e",
+   "inkPct": 31,
+   "chromaHex": [
+    "#b18475"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 2.84,
+  "settleS": 7.68,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 4.4,
+  "largestPx": 144,
+  "largestText": "\u2014",
+  "largestFont": "Dennis Sans",
+  "largestWeight": "450",
+  "largestTracking": "normal",
+  "bodyPx": 16,
+  "bodyFont": "Dennis Sans",
+  "lineChars": 20,
+  "measurePx": 390,
+  "mediaPct": 0,
+  "firstScreenChars": 77,
+  "bg": "rgb(28, 29, 32)",
+  "webAnimsRunning": 5,
+  "webAnimsInfinite": 5,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 8,
+   "chromatic": 2,
+   "bgHex": "#999d9e",
+   "inkPct": 64,
+   "chromaHex": [
+    "#b89182",
+    "#9b6f61"
+   ]
+  }
+ }
+}

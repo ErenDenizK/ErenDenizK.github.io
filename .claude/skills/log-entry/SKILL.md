@@ -62,7 +62,8 @@ updates, corrections, figures, what never appears) before the first entry of a s
     the index at 1440 × 900 and 390 × 844, run `npm run verify`, commit on `dev` with a
     Conventional Commit (`docs(log): add "<title>"` style, lower-case subject, ≤100 chars, the
     session's trailers), push (a push to `dev` deploys), then tell the owner the URL once it
-    is live.
+    is live. The lead publishes: an agent working in its own `wip/` worktree (CLAUDE.md) hands
+    the approved draft to the lead instead of committing to `dev` itself.
 
 ## Voice
 

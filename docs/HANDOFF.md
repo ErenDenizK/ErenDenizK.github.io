@@ -1,4 +1,4 @@
-# Handoff (2026-10-11)
+# Handoff (2026-10-11, updated 2026-10-15)
 
 Start here in a fresh session, after CLAUDE.md, `docs/brief.md`, `docs/PROJECT.md` (the reasons)
 and `docs/WORKFLOW.md` (how we work).
@@ -9,7 +9,8 @@ and `docs/WORKFLOW.md` (how we work).
   Home A and Home B were rejected (`docs/research/2026-10-quality-postmortem.md`). The owner liked
   B's *structure* (compact, focused) but not its design. B's code is in history (merge 7d33e48),
   A's in b107e51; neither is live.
-- **Reverted with Home:** the measured type and screen system (ADR-0015, merge 6d26667). It was not
+- **Reverted with Home:** the measured type and screen system (ADR-0015, merge 6d26667, reverted in
+  0f4a33a; the ADR text is at 16136f3). It was not
   rejected; it was undone only because it was built on Home A. Re-apply it to the restored Home
   (revert the revert of 6d26667 and resolve the Home parts) once Home's direction is set.
 - **Kept:** Work (ADR-0014, real screens in frames), About (letter with postcards; photo concepts
@@ -29,12 +30,14 @@ and `docs/WORKFLOW.md` (how we work).
 
 ## Open with the owner
 
-- Network access for agents to study real sites, or 5–10 liked and 3 disliked reference pages.
-- Hero object: the study is in the lead's scratchpad (cat, triplet block, dot); undecided.
+The one list of open questions is in [`docs/PLAN.md`](PLAN.md). In short:
+
+- References: done. The owner ran the reference study on their own computer (2026-10-12..14); the
+  entry point is [`docs/research/2026-10-reference-research.md`](research/2026-10-reference-research.md),
+  the archive [`docs/research/references/`](research/references/README.md).
+- Hero object: the study is in `docs/research/hero-study/` (cat, triplet block, dot); undecided.
 - The board (claude.ai artifact "Portfolyo Tahtası", https://claude.ai/artifact/B4cs7P7vRKPZN6p9ci8qw6)
   keeps every answer in its own database; nothing there is lost when a session ends.
-- Nine older questions (first record entries, first `main` release, photos on Home, Eat Map screens,
-  Recto logo, English Prep improvements, Recto's first job, Eat Map code, the Family chat).
 
 ## Not in the repo (lost when the cloud session ends)
 
@@ -50,5 +53,6 @@ object, `tools/objects/README.md`). The hero study's notes, script and contact s
 > Turkish, briefly, where the portfolio stands and what you propose next, with your questions. Do not
 > build anything until I answer.
 
-Reference research that needs real websites: `docs/prompts/reference-research.md`, to run on the
-owner's computer.
+The reference research ran on the owner's computer from the prompt now kept at
+`docs/history/prompt-2026-10-reference-research.md`; its results are in
+`docs/research/2026-10-reference-research.md`.

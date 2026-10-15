@@ -1,0 +1,86 @@
+{
+ "slug": "lusion",
+ "url": "https://lusion.co/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp"
+  ],
+  "firstPaintS": 1.78,
+  "settleS": 7.97,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1,
+  "largestPx": 36,
+  "largestText": "We",
+  "largestFont": "Aeonik",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 13,
+  "bodyFont": "Aeonik",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 0,
+  "firstScreenChars": 112,
+  "bg": "rgb(255, 255, 255)",
+  "webAnimsRunning": 6,
+  "webAnimsInfinite": 6,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 12,
+   "chromatic": 5,
+   "bgHex": "#f0f1fa",
+   "inkPct": 67,
+   "chromaHex": [
+    "#071ec6",
+    "#020870",
+    "#010ea1",
+    "#2a3484",
+    "#1b1e3d"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp"
+  ],
+  "firstPaintS": 1.73,
+  "settleS": 8.02,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 1,
+  "largestPx": 23.4,
+  "largestText": "We",
+  "largestFont": "Aeonik",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 9.8,
+  "bodyFont": "Aeonik",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 0,
+  "firstScreenChars": 93,
+  "bg": "rgb(255, 255, 255)",
+  "webAnimsRunning": 6,
+  "webAnimsInfinite": 6,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 8,
+   "chromatic": 3,
+   "bgHex": "#f0f1fa",
+   "inkPct": 76,
+   "chromaHex": [
+    "#01097f",
+    "#020346",
+    "#1e286a"
+   ]
+  }
+ }
+}

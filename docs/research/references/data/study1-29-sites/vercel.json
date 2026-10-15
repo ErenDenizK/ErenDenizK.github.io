@@ -1,0 +1,80 @@
+{
+ "slug": "vercel",
+ "url": "https://vercel.com/",
+ "group": "product",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.75,
+  "settleS": 0.85,
+  "continuous": false,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 5.9,
+  "largestPx": 64,
+  "largestText": "Agentic Infrastructure",
+  "largestFont": "GeistSans",
+  "largestWeight": "400",
+  "largestTracking": "-3.84px",
+  "bodyPx": 14,
+  "bodyFont": "GeistSans",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 0,
+  "firstScreenChars": 199,
+  "bg": "rgb(0, 0, 0)",
+  "webAnimsRunning": 1,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 200,
+  "palette": {
+   "tones": 6,
+   "chromatic": 0,
+   "bgHex": "#000000",
+   "inkPct": 13,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.71,
+  "settleS": 8.02,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 5.9,
+  "largestPx": 48,
+  "largestText": "Agentic Infrastructure",
+  "largestFont": "GeistSans",
+  "largestWeight": "400",
+  "largestTracking": "-2.88px",
+  "bodyPx": 14,
+  "bodyFont": "GeistSans",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 0,
+  "firstScreenChars": 168,
+  "bg": "rgb(0, 0, 0)",
+  "webAnimsRunning": 3,
+  "webAnimsInfinite": 2,
+  "webAnimMaxEndMs": 200,
+  "palette": {
+   "tones": 7,
+   "chromatic": 0,
+   "bgHex": "#000000",
+   "inkPct": 20,
+   "chromaHex": []
+  }
+ }
+}

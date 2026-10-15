@@ -1,0 +1,400 @@
+{
+ "slug": "dia-the-browser-company",
+ "url": "https://www.diabrowser.com/",
+ "name": "Dia",
+ "desktop": {
+  "vw": 1440,
+  "vh": 900,
+  "docH": 6674,
+  "screens": 7.4,
+  "blockCount": 62,
+  "medianGap": 28,
+  "sections": [
+   {
+    "y": 44,
+    "gapBefore": null,
+    "h": 115,
+    "n": 4,
+    "chars": 60,
+    "links": 3,
+    "head": [
+     "16px What's New",
+     "16px Apps",
+     "16px Security",
+     "39px More than a browser. A better workday."
+    ]
+   },
+   {
+    "y": 790,
+    "gapBefore": 631,
+    "h": 89,
+    "n": 2,
+    "chars": 52,
+    "links": 0,
+    "head": [
+     "20px Download Dia for free",
+     "14px Available for macOS and Windows"
+    ]
+   },
+   {
+    "y": 980,
+    "gapBefore": 101,
+    "h": 552,
+    "n": 12,
+    "chars": 912,
+    "links": 0,
+    "head": [
+     "48px Dia reads between the tabs",
+     "10px 01 Start your day two steps ahead Before the day kicks in, D",
+     "11px 01",
+     "24px Start your day two steps ahead"
+    ]
+   },
+   {
+    "y": 3053,
+    "gapBefore": 1521,
+    "h": 112,
+    "n": 1,
+    "chars": 31,
+    "links": 0,
+    "head": [
+     "48px Built for how you actually work"
+    ]
+   },
+   {
+    "y": 3326,
+    "gapBefore": 161,
+    "h": 120,
+    "n": 2,
+    "chars": 309,
+    "links": 0,
+    "head": [
+     "20px Create clean lines between work, freelance, and personal lif",
+     "20px Dia pulls together the places where work is actually happeni"
+    ]
+   },
+   {
+    "y": 3977,
+    "gapBefore": 531,
+    "h": 120,
+    "n": 2,
+    "chars": 334,
+    "links": 0,
+    "head": [
+     "20px Every call starts with the right meeting page, agenda, notes",
+     "20px See a meeting on one side and a doc on the other without jug"
+    ]
+   },
+   {
+    "y": 4628,
+    "gapBefore": 531,
+    "h": 120,
+    "n": 2,
+    "chars": 289,
+    "links": 0,
+    "head": [
+     "20px Ask Dia for a deck and your scattered context becomes real s",
+     "20px Keep your workspace tidy by grouping related tabs with appro"
+    ]
+   },
+   {
+    "y": 5320,
+    "gapBefore": 572,
+    "h": 460,
+    "n": 12,
+    "chars": 454,
+    "links": 1,
+    "head": [
+     "48px Privacy first",
+     "16px Block trackers On",
+     "16px Personalize new chats Off",
+     "16px Memory On"
+    ]
+   },
+   {
+    "y": 6000,
+    "gapBefore": 220,
+    "h": 56,
+    "n": 1,
+    "chars": 23,
+    "links": 0,
+    "head": [
+     "48px Ready for a better day?"
+    ]
+   },
+   {
+    "y": 6408,
+    "gapBefore": 352,
+    "h": 246,
+    "n": 24,
+    "chars": 276,
+    "links": 17,
+    "head": [
+     "13px PRODUCT",
+     "13px RESOURCES",
+     "13px COMPANY",
+     "13px CONNECT"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 20,
+   "blocks": 6,
+   "links": 3,
+   "text": [
+    "16px* What's New",
+    "16px* Apps",
+    "16px* Security",
+    "39px More than a browser. A better workday.",
+    "20px Download Dia for free",
+    "14px Available for macOS and Windows"
+   ]
+  },
+  "column": {
+   "left": 30,
+   "right": 1279
+  },
+  "check": {
+   "name": 790,
+   "role": null,
+   "affiliation": null,
+   "projects": 116,
+   "writing": 3977,
+   "proof": null,
+   "contact": 6460,
+   "now": null
+  },
+  "bg": "rgb(251, 250, 246)"
+ },
+ "phone": {
+  "vw": 390,
+  "vh": 844,
+  "docH": 7368,
+  "screens": 8.7,
+  "blockCount": 61,
+  "medianGap": 24,
+  "sections": [
+   {
+    "y": -138,
+    "gapBefore": null,
+    "h": 304,
+    "n": 5,
+    "chars": 78,
+    "links": 3,
+    "head": [
+     "48px What's New",
+     "48px Apps",
+     "48px Security",
+     "16px Send download link"
+    ]
+   },
+   {
+    "y": 718,
+    "gapBefore": 552,
+    "h": 78,
+    "n": 2,
+    "chars": 49,
+    "links": 0,
+    "head": [
+     "18px Send download link",
+     "12px Available for macOS and Windows"
+    ]
+   },
+   {
+    "y": 904,
+    "gapBefore": 108,
+    "h": 76,
+    "n": 1,
+    "chars": 26,
+    "links": 0,
+    "head": [
+     "32px Dia reads between the tabs"
+    ]
+   },
+   {
+    "y": 1314,
+    "gapBefore": 334,
+    "h": 134,
+    "n": 3,
+    "chars": 167,
+    "links": 0,
+    "head": [
+     "12px 01",
+     "24px Start your day two steps ahead",
+     "16px Before the day kicks in, Dia's Morning Brief lays it all out"
+    ]
+   },
+   {
+    "y": 1802,
+    "gapBefore": 354,
+    "h": 158,
+    "n": 3,
+    "chars": 206,
+    "links": 0,
+    "head": [
+     "12px 02",
+     "24px Synthesis you'll actually use",
+     "16px Instead of bouncing between tools, just ask Dia. It gathers "
+    ]
+   },
+   {
+    "y": 2314,
+    "gapBefore": 354,
+    "h": 164,
+    "n": 3,
+    "chars": 171,
+    "links": 0,
+    "head": [
+     "12px 03",
+     "24px Find the answer without hunting it down",
+     "16px Ask once. Dia digs into your full context, across GSuite, Te"
+    ]
+   },
+   {
+    "y": 2558,
+    "gapBefore": 80,
+    "h": 76,
+    "n": 1,
+    "chars": 31,
+    "links": 0,
+    "head": [
+     "32px Built for how you actually work"
+    ]
+   },
+   {
+    "y": 2775,
+    "gapBefore": 141,
+    "h": 96,
+    "n": 1,
+    "chars": 143,
+    "links": 0,
+    "head": [
+     "16px Create clean lines between work, freelance, and personal lif"
+    ]
+   },
+   {
+    "y": 3193,
+    "gapBefore": 322,
+    "h": 96,
+    "n": 1,
+    "chars": 166,
+    "links": 0,
+    "head": [
+     "16px Dia pulls together the places where work is actually happeni"
+    ]
+   },
+   {
+    "y": 3797,
+    "gapBefore": 508,
+    "h": 96,
+    "n": 1,
+    "chars": 158,
+    "links": 0,
+    "head": [
+     "16px Every call starts with the right meeting page, agenda, notes"
+    ]
+   },
+   {
+    "y": 4402,
+    "gapBefore": 509,
+    "h": 120,
+    "n": 1,
+    "chars": 176,
+    "links": 0,
+    "head": [
+     "16px See a meeting on one side and a doc on the other without jug"
+    ]
+   },
+   {
+    "y": 4837,
+    "gapBefore": 315,
+    "h": 96,
+    "n": 1,
+    "chars": 129,
+    "links": 0,
+    "head": [
+     "16px Ask Dia for a deck and your scattered context becomes real s"
+    ]
+   },
+   {
+    "y": 5266,
+    "gapBefore": 333,
+    "h": 96,
+    "n": 1,
+    "chars": 160,
+    "links": 0,
+    "head": [
+     "16px Keep your workspace tidy by grouping related tabs with appro"
+    ]
+   },
+   {
+    "y": 5931,
+    "gapBefore": 569,
+    "h": 466,
+    "n": 12,
+    "chars": 454,
+    "links": 1,
+    "head": [
+     "32px Privacy first",
+     "16px Block trackers On",
+     "16px Personalize new chats Off",
+     "16px Memory On"
+    ]
+   },
+   {
+    "y": 6567,
+    "gapBefore": 170,
+    "h": 38,
+    "n": 1,
+    "chars": 23,
+    "links": 0,
+    "head": [
+     "32px Ready for a better day?"
+    ]
+   },
+   {
+    "y": 6758,
+    "gapBefore": 153,
+    "h": 550,
+    "n": 24,
+    "chars": 310,
+    "links": 17,
+    "head": [
+     "18px Send download link",
+     "12px Available for macOS and Windows",
+     "13px PRODUCT",
+     "13px RESOURCES"
+    ]
+   }
+  ],
+  "firstScreen": {
+   "words": 22,
+   "blocks": 7,
+   "links": 3,
+   "text": [
+    "48px* What's New",
+    "48px* Apps",
+    "48px* Security",
+    "16px Send download link",
+    "28px More than a browser. A better workday.",
+    "18px Send download link",
+    "12px Available for macOS and Windows"
+   ]
+  },
+  "column": {
+   "left": 14,
+   "right": 376
+  },
+  "check": {
+   "name": 904,
+   "role": null,
+   "affiliation": null,
+   "projects": 104,
+   "writing": 3797,
+   "proof": null,
+   "contact": 7150,
+   "now": null
+  },
+  "bg": "rgb(251, 250, 246)"
+ }
+}

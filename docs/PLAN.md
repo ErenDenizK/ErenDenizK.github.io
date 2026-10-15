@@ -1,59 +1,55 @@
 # Plan
 
-The one live plan, written from the owner's 2026-10-10 direction (the clean restart, brief
-"Current intent"). It replaces `ROADMAP.md` and the round plans, which are in `docs/history/`.
-Update a track's status when it moves; when a round closes, copy this file to `docs/history/`
-and start a fresh one.
+The one live plan and the one list of open questions for the owner. Update a line when it moves;
+when a round closes, copy this file to `docs/history/` and start a fresh one. Closed plans:
+[`docs/history/`](history/README.md).
 
-## Where we are (2026-10-10)
+This is a holding plan (2026-10-15). The clean-restart plan closed on 2026-10-11 with the rejected
+Home round ([`docs/history/plan-2026-10-clean-restart.md`](history/plan-2026-10-clean-restart.md),
+[`docs/research/2026-10-quality-postmortem.md`](research/2026-10-quality-postmortem.md)). The next
+plan follows the discussion of the reference study with the owner
+([`docs/research/2026-10-reference-research.md`](research/2026-10-reference-research.md)).
 
-v0 is live from `dev`: Home, Work with embassies, About with the ID card, the Record (sample
-entries only), pre-rendered objects, the contents-ladder rail on pages with sections, CI and
-`npm run verify`. The owner liked none of the recent Home/About designs and asked for a clean
-start: a fresh situation analysis, corrected docs, an evaluation board and regular reports.
-Every track below is reviewed for its purpose, its reason and a designer's discipline.
+## Where we are (2026-10-15)
 
-## Tracks
+- Home is back to its pre-round version (reverts `416ba12` and `9962864`); the measured type and
+  screen system (ADR-0015) went with it (revert `0f4a33a`) and waits to be re-applied once Home's
+  direction is set.
+- Kept and live: Work direction A with frames (ADR-0014), About with spread postcards (ADR-0008),
+  the Record with sample entries and the cassette recorder, the beads rail everywhere (ADR-0013),
+  pre-rendered objects at 1° (ADR-0006).
+- The reference study is done (the owner's computer, 2026-10-12..14) and archived in
+  `docs/research/references/`. Its views are opinions, not decisions, until the owner decides.
+- How work flows: references first, a design charter, still comps before code, lab pages before a
+  live page, two agents at a time (postmortem, "What changes"; `docs/WORKFLOW.md`).
 
-| # | Track | What the owner asked (brief, 2026-10-10) | Status |
-|---|---|---|---|
-| 1 | Home as brand and vision | keep the simple layout; present a product, an identity, a brand, the vision; flashier, not busier | open |
-| 2 | About as an about-me article | the ID card on top, then chapters in the owner's voice and postcard photos (2026-10-10 evening) | built 2026-10-10 (ADR-0008 amendment), copy in review |
-| 3 | One scrollbar everywhere | one custom scrollbar on every page and in the project sheet; no native bar left (ADR-0011 revision first) | built 2026-10-10 (ADR-0013), in review |
-| 4 | Istanbul + clock | bring the detail back (`content/site.json` already has `about.kicker` "About · Istanbul") | built 2026-10-10 ("Istanbul HH:MM" in the bar, desktop; ADR-0013 item 9), in review |
-| 5 | ID card calmer | keep it playable; damp extreme input so it no longer goes wild | built 2026-10-10 (ADR-0008 amendment); owner's look check |
-| 6 | edk object bug | find and fix where it glitches and looks unclean | built 2026-10-10 (ADR-0006 amendment); owner's look check |
-| 7 | Object stutter and real-time 3D | measure the pre-rendered stutter vs a real-time desktop tier; report the performance difference to the owner, who decides (ADR-0006 under review) | study done; option (a) built 2026-10-10 (float, sharp lean, no self-turn); 1° grid and real time wait for the owner |
-| 8 | Record object redesign | a tape / voice recorder, different from the earlier ones | built 2026-10-10: the pocket cassette recorder (`media/objects/recorder/`), in review |
-| 9 | Photo placement | high-resolution derivatives only; one cat photo, never both; About first, Home possible | About postcards built 2026-10-10; metro censor concepts with the owner |
-| 10 | Screenshots and logos | app captures and app logos (or 3D logos) beside the objects, once the apps are presentable in their own chats | open: waits on the app chats |
-| 11 | Copy and slogans | improve wording | open: last |
-| 12 | Phone pass | after desktop settles; phones must not break meanwhile | open: after desktop |
-| 13 | Sample Record entries | note, entry, release, essay for testing, tagged `sample`, `SAMPLES=0` drops them | done 2026-10-10 |
-| 15 | Work as the flagship page | real screens in platform frames, wordmarks, facts; objects as emblems (ADR-0014) | built 2026-10-10, direction in review |
-| 16 | Object sharpness | blur and the "2.5D" look measured and fixed; edk at 1° (ADR-0006 amendment) | built 2026-10-10; other objects' 1° grids wait on the owner's look |
-| 14 | Docs clean-up | brief consolidated, plans archived, ADR statuses corrected | done 2026-10-10 |
+## Next, in order
 
-## How work flows
-
-- Start with a few agents at a time. Build agents work in their own worktree on a local
-  `wip/<topic>` branch; the lead reviews screenshots, runs `npm run verify`, merges into `dev`
-  and pushes (which deploys).
-- Evaluation board: each track is judged against the owner's words above, with screenshots at
-  the three CLAUDE.md sizes, before it is shown to the owner.
-- Regular reports to the owner: short, plain, in Turkish, ending with what could not be
-  verified (real Safari, real iPhone, GPU timings).
-- Taste goes to the owner as short option lists; technique is decided and recorded in ADRs.
+1. Discuss the reference study with the owner, taste questions only.
+2. Write the design charter (`docs/design/charter.md`) from it.
+3. Home's direction: comps first, then a lab page, then the owner's iPhone.
+4. Re-apply ADR-0015 to the chosen Home.
+5. Photo presentation, reopened (2026-10-11, late: the postcard is not required).
 
 ## Open questions for the owner
 
-- "Mini CV": a CV-style About only, or also a downloadable document?
-- Real-time 3D on desktop: decided after the track 7 report.
-- Record object: H2 again or a tape/cassette player (shown as options).
-- Look checks on ADR-0010 (Work sections) and ADR-0012 (embassies), still proposed.
-- ADR-0002 (content first) and ADR-0009 (`?live`): accept, or leave parked behind track 7.
-- Eat Map's real colour values and mark from Xcode (Family/Eat Map chat).
-- Recto logo: references and sketches (Penpot, Dengeli as one candidate).
+- Desktop first (brief, 2026-10-09) or phone first (the 2026-10-11 rounds were tested on the phone
+  only)?
+- Home: its character, its hero object (the study in `docs/research/hero-study/` is undecided; edk
+  alone is "too simple"), the "now" line.
+- Clean-up that needs the owner: the photo concepts behind `?photos=1|2|3`; the `?live` engine and
+  ADR-0009; the sample entries on the live site; the retired objects `media/objects/log/` and
+  `record/`; the unused metro and cat photos in the public repo; a LICENSE; the merged remote branch
+  `claude/portfolio-site-design-n38jml`.
+- The research archive: whether the reports' third-party screenshots may enter the public repo.
+- Look checks: ADR-0010 (Work sections) and ADR-0012 (embassies), still proposed; ADR-0002 (content
+  first), accepted by practice.
+- Older questions: first Record entries, the first `main` release, photos on Home, Eat Map screens,
+  colours and mark (Family / Eat Map chat), the Recto logo (Penpot, Dengeli as one candidate),
+  English Prep improvements, Recto's first job, Eat Map code, the Family chat.
+
+The board (claude.ai artifact "Portfolyo Tahtası",
+https://claude.ai/artifact/B4cs7P7vRKPZN6p9ci8qw6) keeps every answer in its own database.
 
 ## Later
 

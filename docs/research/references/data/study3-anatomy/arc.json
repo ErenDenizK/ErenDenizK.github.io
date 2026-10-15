@@ -1,0 +1,714 @@
+{
+ "slug": "arc",
+ "url": "https://arc.net/",
+ "desktop": {
+  "anatomy": {
+   "libs": [
+    "nextjs"
+   ],
+   "canvases": [],
+   "videos": 1,
+   "fonts": [
+    "Marlin 800 normal",
+    "Inter 500 normal",
+    "Inter 600 normal",
+    "Inter 700 normal",
+    "InterVariable 100 900 normal",
+    "ABC Favorit Mono 700 normal",
+    "ABC Favorit Mono 400 normal",
+    "Marlin Soft SQ 500 normal",
+    "Marlin Soft SQ 700 normal",
+    "Marlin Soft SQ 700 italic",
+    "ABC Oracle 400 normal",
+    "Exposure VAR 700 normal"
+   ],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 45.5,
+     "family": "Marlin Soft SQ",
+     "weight": "700",
+     "lineHeight": "0.93",
+     "tracking": "-1.8204px",
+     "transform": "none",
+     "chars": 51,
+     "n": 2,
+     "sample": "Arc is the Chrome replacement"
+    },
+    {
+     "px": 40,
+     "family": "Marlin Soft SQ",
+     "weight": "700",
+     "lineHeight": "0.98",
+     "tracking": "-1.6px",
+     "transform": "none",
+     "chars": 144,
+     "n": 5,
+     "sample": "A browser that doesn’t just meet your"
+    },
+    {
+     "px": 36,
+     "family": "Exposure VAR",
+     "weight": "700",
+     "lineHeight": "1",
+     "tracking": "-0.72px",
+     "transform": "none",
+     "chars": 35,
+     "n": 1,
+     "sample": "Meet Dia, the next evolution of Arc"
+    },
+    {
+     "px": 28,
+     "family": "Marlin Soft SQ",
+     "weight": "700",
+     "lineHeight": "1.07",
+     "tracking": "-1.4px",
+     "transform": "none",
+     "chars": 269,
+     "n": 4,
+     "sample": "Way more powerful than Chrome. Arc looks like th"
+    },
+    {
+     "px": 28,
+     "family": "Marlin Soft SQ",
+     "weight": "700",
+     "lineHeight": "1.1",
+     "tracking": "-1.4px",
+     "transform": "none",
+     "chars": 33,
+     "n": 3,
+     "sample": "Enter"
+    },
+    {
+     "px": 24,
+     "family": "ABC Oracle",
+     "weight": "400",
+     "lineHeight": "1.2",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 7,
+     "n": 1,
+     "sample": "Try Dia"
+    },
+    {
+     "px": 20,
+     "family": "ABC Oracle",
+     "weight": "400",
+     "lineHeight": "1.2",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 82,
+     "n": 1,
+     "sample": "Weekly security updates, SOC 2 certification, an"
+    },
+    {
+     "px": 17,
+     "family": "InterVariable",
+     "weight": "500",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 313,
+     "n": 7,
+     "sample": "Clean and calm, Arc shapes itself to how you use"
+    },
+    {
+     "px": 17,
+     "family": "InterVariable",
+     "weight": "700",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 63,
+     "n": 5,
+     "sample": "Spaces"
+    },
+    {
+     "px": 16,
+     "family": "Marlin Soft SQ",
+     "weight": "700",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 720,
+     "n": 16,
+     "sample": "“Rethinking the fundamentals of how we use the w"
+    },
+    {
+     "px": 14,
+     "family": "Marlin Soft SQ",
+     "weight": "500",
+     "lineHeight": "normal",
+     "tracking": "-0.28px",
+     "transform": "none",
+     "chars": 31,
+     "n": 5,
+     "sample": "Max"
+    },
+    {
+     "px": 14,
+     "family": "-apple-system",
+     "weight": "600",
+     "lineHeight": "2.07",
+     "tracking": "-0.14px",
+     "transform": "none",
+     "chars": 68,
+     "n": 3,
+     "sample": "Download Arc for Windows"
+    },
+    {
+     "px": 13,
+     "family": "Marlin",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 123,
+     "n": 1,
+     "sample": "FYI: Arc receives Chromium updates only. For act"
+    },
+    {
+     "px": 12,
+     "family": "ABC Favorit Mono",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "1.8px",
+     "transform": "uppercase",
+     "chars": 11,
+     "n": 2,
+     "sample": "More"
+    },
+    {
+     "px": 12,
+     "family": "ABC Favorit Mono",
+     "weight": "700",
+     "lineHeight": "normal",
+     "tracking": "0.6px",
+     "transform": "uppercase",
+     "chars": 49,
+     "n": 4,
+     "sample": "@beebomco"
+    },
+    {
+     "px": 12,
+     "family": "ABC Favorit Mono",
+     "weight": "700",
+     "lineHeight": "normal",
+     "tracking": "0.4px",
+     "transform": "uppercase",
+     "chars": 16,
+     "n": 2,
+     "sample": "Product"
+    },
+    {
+     "px": 12,
+     "family": "InterVariable",
+     "weight": "600",
+     "lineHeight": "normal",
+     "tracking": "0.4px",
+     "transform": "none",
+     "chars": 135,
+     "n": 13,
+     "sample": "Download"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(49, 57, 251)",
+     1215
+    ],
+    [
+     "rgb(105, 105, 105)",
+     343
+    ],
+    [
+     "rgb(255, 252, 236)",
+     246
+    ],
+    [
+     "rgb(255, 250, 221)",
+     123
+    ],
+    [
+     "rgba(0, 0, 0, 0.65)",
+     82
+    ],
+    [
+     "rgb(255, 255, 255)",
+     58
+    ],
+    [
+     "rgb(39, 2, 194)",
+     48
+    ],
+    [
+     "rgb(0, 0, 0)",
+     35
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(255, 252, 236)",
+     10220
+    ],
+    [
+     "rgb(255, 255, 255)",
+     7430
+    ],
+    [
+     "rgb(49, 57, 251)",
+     2522
+    ]
+   ],
+   "bodyBg": "rgb(255, 252, 236)",
+   "htmlBg": "rgba(0, 0, 0, 0)",
+   "transitions": [
+    [
+     "transform, box-shadow | 0.15s | ease",
+     6
+    ],
+    [
+     "transform, background | 0.15s | ease",
+     5
+    ],
+    [
+     "background | 0.2s | ease-in-out",
+     1
+    ],
+    [
+     "transform | 0.2s | ease-in-out",
+     1
+    ],
+    [
+     "opacity | 0.1s | ease-out",
+     1
+    ]
+   ],
+   "docScreens": 6.8,
+   "title": "Arc from The Browser Company",
+   "metaDesc": "Experience a calmer, more personal internet in this browser designed for you. Let go of the clicks, the clutter, the distractions with the Arc browser."
+  },
+  "animsAtLoad": [
+   "CSSAnimation:scroll|78523ms|delay 0|linear|Infinity",
+   "CSSAnimation:scroll|78523ms|delay 0|linear|Infinity",
+   "Animation:A|300ms|delay 0|linear|1",
+   "Animation:DIV|300ms|delay 0|linear|1",
+   "Animation:DIV|300ms|delay 0|ease-in-out|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "desktop-j00.webp",
+    "headings": [
+     "H1 46px: Arc is the Chrome replacement I've been waiting for."
+    ],
+    "anims": 5
+   },
+   {
+    "i": 1,
+    "y": 675,
+    "file": "desktop-j01.webp",
+    "headings": [
+     "H1 46px: Arc is the Chrome replacement I've been waiting for."
+    ],
+    "anims": 6
+   },
+   {
+    "i": 2,
+    "y": 1350,
+    "file": "desktop-j02.webp",
+    "headings": [],
+    "anims": 6
+   },
+   {
+    "i": 3,
+    "y": 2025,
+    "file": "desktop-j03.webp",
+    "headings": [],
+    "anims": 6
+   },
+   {
+    "i": 4,
+    "y": 2700,
+    "file": "desktop-j04.webp",
+    "headings": [],
+    "anims": 6
+   },
+   {
+    "i": 5,
+    "y": 3375,
+    "file": "desktop-j05.webp",
+    "headings": [],
+    "anims": 6
+   },
+   {
+    "i": 6,
+    "y": 4050,
+    "file": "desktop-j06.webp",
+    "headings": [],
+    "anims": 6
+   },
+   {
+    "i": 7,
+    "y": 4725,
+    "file": "desktop-j07.webp",
+    "headings": [],
+    "anims": 6
+   },
+   {
+    "i": 8,
+    "y": 5231,
+    "file": "desktop-j08.webp",
+    "headings": [],
+    "anims": 6
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:scroll|78523ms|delay 0|linear|Infinity",
+   "CSSAnimation:scroll|78523ms|delay 0|linear|Infinity",
+   "Animation:A|300ms|delay 0|linear|1",
+   "Animation:DIV|300ms|delay 0|linear|1",
+   "Animation:DIV|200ms|delay 0|linear|1",
+   "Animation:DIV|300ms|delay 0|ease-in-out|1"
+  ]
+ },
+ "phone": {
+  "anatomy": {
+   "libs": [
+    "nextjs"
+   ],
+   "canvases": [],
+   "videos": 4,
+   "fonts": [
+    "Marlin 800 normal",
+    "Inter 400 normal",
+    "Inter 500 normal",
+    "Inter 600 normal",
+    "Inter 700 normal",
+    "InterVariable 100 900 normal",
+    "ABC Favorit Mono 700 normal",
+    "Marlin Soft SQ 700 normal",
+    "Marlin Soft SQ 700 italic",
+    "ABC Oracle 400 normal",
+    "Exposure VAR 700 normal"
+   ],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 32,
+     "family": "Marlin Soft SQ",
+     "weight": "700",
+     "lineHeight": "0.98",
+     "tracking": "-1.6px",
+     "transform": "none",
+     "chars": 50,
+     "n": 3,
+     "sample": "Arc is the Chrome"
+    },
+    {
+     "px": 30,
+     "family": "Exposure VAR",
+     "weight": "700",
+     "lineHeight": "1",
+     "tracking": "-0.72px",
+     "transform": "none",
+     "chars": 35,
+     "n": 1,
+     "sample": "Meet Dia, the next evolution of Arc"
+    },
+    {
+     "px": 28,
+     "family": "Marlin Soft SQ",
+     "weight": "700",
+     "lineHeight": "0.95",
+     "tracking": "-1.4px",
+     "transform": "none",
+     "chars": 32,
+     "n": 4,
+     "sample": "Enter"
+    },
+    {
+     "px": 27.2,
+     "family": "Marlin Soft SQ",
+     "weight": "700",
+     "lineHeight": "0.98",
+     "tracking": "-1.6px",
+     "transform": "none",
+     "chars": 144,
+     "n": 5,
+     "sample": "A browser that doesn’t just meet your"
+    },
+    {
+     "px": 20,
+     "family": "ABC Oracle",
+     "weight": "400",
+     "lineHeight": "1.2",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 7,
+     "n": 1,
+     "sample": "Try Dia"
+    },
+    {
+     "px": 17,
+     "family": "InterVariable",
+     "weight": "500",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 313,
+     "n": 7,
+     "sample": "Clean and calm, Arc shapes itself to how you use"
+    },
+    {
+     "px": 17,
+     "family": "InterVariable",
+     "weight": "700",
+     "lineHeight": "1.5",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 63,
+     "n": 5,
+     "sample": "Spaces"
+    },
+    {
+     "px": 17,
+     "family": "-apple-system",
+     "weight": "600",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 17,
+     "n": 1,
+     "sample": "Get Download Link"
+    },
+    {
+     "px": 16,
+     "family": "ABC Oracle",
+     "weight": "400",
+     "lineHeight": "1.2",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 82,
+     "n": 1,
+     "sample": "Weekly security updates, SOC 2 certification, an"
+    },
+    {
+     "px": 14,
+     "family": "-apple-system",
+     "weight": "600",
+     "lineHeight": "2.07",
+     "tracking": "-0.14px",
+     "transform": "none",
+     "chars": 25,
+     "n": 1,
+     "sample": "Download on the App Store"
+    },
+    {
+     "px": 14,
+     "family": "InterVariable",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 69,
+     "n": 1,
+     "sample": "We can email you a quick download link to get yo"
+    },
+    {
+     "px": 13,
+     "family": "Marlin",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 123,
+     "n": 1,
+     "sample": "FYI: Arc receives Chromium updates only. For act"
+    },
+    {
+     "px": 13,
+     "family": "-apple-system",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 41,
+     "n": 1,
+     "sample": "or get a download link for Arc on Desktop"
+    },
+    {
+     "px": 13,
+     "family": "Marlin Soft SQ",
+     "weight": "700",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 720,
+     "n": 16,
+     "sample": "“Rethinking the fundamentals of how we use the w"
+    },
+    {
+     "px": 12,
+     "family": "ABC Favorit Mono",
+     "weight": "700",
+     "lineHeight": "normal",
+     "tracking": "0.4px",
+     "transform": "uppercase",
+     "chars": 16,
+     "n": 2,
+     "sample": "Product"
+    },
+    {
+     "px": 12,
+     "family": "InterVariable",
+     "weight": "600",
+     "lineHeight": "normal",
+     "tracking": "0.4px",
+     "transform": "none",
+     "chars": 135,
+     "n": 13,
+     "sample": "Download"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(49, 57, 251)",
+     897
+    ],
+    [
+     "rgb(105, 105, 105)",
+     343
+    ],
+    [
+     "rgb(255, 252, 236)",
+     302
+    ],
+    [
+     "rgb(255, 250, 221)",
+     164
+    ],
+    [
+     "rgba(0, 0, 0, 0.65)",
+     82
+    ],
+    [
+     "rgb(0, 0, 0)",
+     35
+    ],
+    [
+     "rgb(39, 2, 194)",
+     25
+    ],
+    [
+     "rgb(255, 255, 255)",
+     24
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(255, 252, 236)",
+     1605
+    ],
+    [
+     "rgb(255, 255, 255)",
+     991
+    ],
+    [
+     "rgb(49, 57, 251)",
+     853
+    ],
+    [
+     "rgb(255, 51, 51)",
+     22
+    ]
+   ],
+   "bodyBg": "rgb(255, 252, 236)",
+   "htmlBg": "rgba(0, 0, 0, 0)",
+   "transitions": [
+    [
+     "transform, background | 0.15s | ease",
+     5
+    ],
+    [
+     "background | 0.2s | ease-in-out",
+     1
+    ],
+    [
+     "transform | 0.2s | ease-in-out",
+     1
+    ],
+    [
+     "transform, box-shadow | 0.15s | ease",
+     1
+    ],
+    [
+     "opacity | 0.1s | ease-out",
+     1
+    ],
+    [
+     "transform | 0.15s | ease",
+     1
+    ]
+   ],
+   "docScreens": 4.4,
+   "title": "Arc from The Browser Company",
+   "metaDesc": "Experience a calmer, more personal internet in this browser designed for you. Let go of the clicks, the clutter, the distractions with the Arc browser."
+  },
+  "animsAtLoad": [
+   "CSSAnimation:scroll|67745ms|delay 0|linear|Infinity",
+   "CSSAnimation:scroll|67745ms|delay 0|linear|Infinity",
+   "Animation:A|300ms|delay 0|linear|1",
+   "Animation:DIV|300ms|delay 0|linear|1",
+   "Animation:DIV|300ms|delay 0|ease-in-out|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "phone-j00.webp",
+    "headings": [
+     "H1 32px: Arc is the Chrome replacement I've been waiting for."
+    ],
+    "anims": 5
+   },
+   {
+    "i": 1,
+    "y": 760,
+    "file": "phone-j01.webp",
+    "headings": [],
+    "anims": 6
+   },
+   {
+    "i": 2,
+    "y": 1519,
+    "file": "phone-j02.webp",
+    "headings": [],
+    "anims": 6
+   },
+   {
+    "i": 3,
+    "y": 2279,
+    "file": "phone-j03.webp",
+    "headings": [],
+    "anims": 6
+   },
+   {
+    "i": 4,
+    "y": 2890,
+    "file": "phone-j04.webp",
+    "headings": [],
+    "anims": 6
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:scroll|67745ms|delay 0|linear|Infinity",
+   "CSSAnimation:scroll|67745ms|delay 0|linear|Infinity",
+   "Animation:A|300ms|delay 0|linear|1",
+   "Animation:DIV|300ms|delay 0|linear|1",
+   "Animation:DIV|200ms|delay 0|linear|1",
+   "Animation:DIV|300ms|delay 0|ease-in-out|1"
+  ]
+ }
+}

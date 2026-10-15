@@ -1,0 +1,80 @@
+{
+ "slug": "emil-kowalski",
+ "url": "https://emilkowal.ski/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.7,
+  "settleS": 0.0,
+  "continuous": false,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 2.8,
+  "largestPx": 16,
+  "largestText": "Emil Kowalski",
+  "largestFont": "Sans",
+  "largestWeight": "500",
+  "largestTracking": "normal",
+  "bodyPx": 16,
+  "bodyFont": "Sans",
+  "lineChars": 29,
+  "measurePx": 644,
+  "mediaPct": 0,
+  "firstScreenChars": 409,
+  "bg": "rgb(253, 253, 252)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 1,
+   "chromatic": 0,
+   "bgHex": "#fdfdfc",
+   "inkPct": 2,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.81,
+  "settleS": 0.0,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 2.7,
+  "largestPx": 16,
+  "largestText": "Emil Kowalski",
+  "largestFont": "Sans",
+  "largestWeight": "500",
+  "largestTracking": "normal",
+  "bodyPx": 16,
+  "bodyFont": "Sans",
+  "lineChars": 24,
+  "measurePx": 342,
+  "mediaPct": 0,
+  "firstScreenChars": 380,
+  "bg": "rgb(253, 253, 252)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 4,
+   "chromatic": 0,
+   "bgHex": "#fdfdfc",
+   "inkPct": 8,
+   "chromaHex": []
+  }
+ }
+}

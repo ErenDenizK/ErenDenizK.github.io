@@ -1,0 +1,84 @@
+{
+ "slug": "lee-robinson",
+ "url": "https://leerob.com/",
+ "group": "personal",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp"
+  ],
+  "firstPaintS": 2.06,
+  "settleS": 0.02,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 1.4,
+  "largestPx": 46.6,
+  "largestText": "@",
+  "largestFont": "Iowan Old Style Local",
+  "largestWeight": "600",
+  "largestTracking": "-0.848px",
+  "bodyPx": 17,
+  "bodyFont": "Iowan Old Style Local",
+  "lineChars": 56,
+  "measurePx": 600,
+  "mediaPct": 25,
+  "firstScreenChars": 793,
+  "bg": "rgb(27, 26, 25)",
+  "webAnimsRunning": 107,
+  "webAnimsInfinite": 107,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 11,
+   "chromatic": 7,
+   "bgHex": "#1b1a19",
+   "inkPct": 35,
+   "chromaHex": [
+    "#7fb8d9",
+    "#aaa44c",
+    "#9bcae0",
+    "#d4b85f",
+    "#558763"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp"
+  ],
+  "firstPaintS": 1.58,
+  "settleS": 0.02,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 1.9,
+  "largestPx": 38.7,
+  "largestText": "@",
+  "largestFont": "Iowan Old Style Local",
+  "largestWeight": "600",
+  "largestTracking": "-0.704px",
+  "bodyPx": 17,
+  "bodyFont": "Iowan Old Style Local",
+  "lineChars": 37,
+  "measurePx": 350,
+  "mediaPct": 0,
+  "firstScreenChars": 623,
+  "bg": "rgb(27, 26, 25)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 5,
+   "chromatic": 0,
+   "bgHex": "#1b1a19",
+   "inkPct": 13,
+   "chromaHex": []
+  }
+ }
+}

@@ -1,0 +1,80 @@
+{
+ "slug": "linear",
+ "url": "https://linear.app/",
+ "group": "product",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 2.47,
+  "settleS": 8.13,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 11.1,
+  "largestPx": 64,
+  "largestText": "The product development",
+  "largestFont": "Inter Variable",
+  "largestWeight": "510",
+  "largestTracking": "-1.408px",
+  "bodyPx": 15,
+  "bodyFont": "Inter Variable",
+  "lineChars": null,
+  "measurePx": null,
+  "mediaPct": 0,
+  "firstScreenChars": 915,
+  "bg": "rgb(8, 9, 10)",
+  "webAnimsRunning": 82,
+  "webAnimsInfinite": 82,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 5,
+   "chromatic": 0,
+   "bgHex": "#08090a",
+   "inkPct": 18,
+   "chromaHex": []
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.63,
+  "settleS": 2.25,
+  "continuous": false,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 7,
+  "largestPx": 38,
+  "largestText": "The product",
+  "largestFont": "Inter Variable",
+  "largestWeight": "510",
+  "largestTracking": "-0.836px",
+  "bodyPx": 15,
+  "bodyFont": "Inter Variable",
+  "lineChars": 50,
+  "measurePx": 342,
+  "mediaPct": 0,
+  "firstScreenChars": 887,
+  "bg": "rgb(8, 9, 10)",
+  "webAnimsRunning": 78,
+  "webAnimsInfinite": 78,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 5,
+   "chromatic": 0,
+   "bgHex": "#08090a",
+   "inkPct": 17,
+   "chromaHex": []
+  }
+ }
+}

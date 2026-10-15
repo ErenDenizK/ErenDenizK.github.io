@@ -1,0 +1,87 @@
+{
+ "slug": "things",
+ "url": "https://culturedcode.com/things/",
+ "group": "product",
+ "desktop": {
+  "kind": "desktop",
+  "files": [
+   "desktop-arrival-3s.webp",
+   "desktop-1-first.webp",
+   "desktop-scroll-interaction.webp",
+   "desktop-2-scroll-1vh.webp",
+   "desktop-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.66,
+  "settleS": 1.02,
+  "continuous": true,
+  "vw": 1440,
+  "vh": 900,
+  "docHeightScreens": 9,
+  "largestPx": 24,
+  "largestText": "Things",
+  "largestFont": "ui-sans-serif",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 18,
+  "bodyFont": "ui-sans-serif",
+  "lineChars": 35,
+  "measurePx": 1015,
+  "mediaPct": 22,
+  "firstScreenChars": 192,
+  "bg": "rgb(242, 245, 247)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 3,
+   "chromatic": 2,
+   "bgHex": "#f2f5f7",
+   "inkPct": 4,
+   "chromaHex": [
+    "#7995c1",
+    "#2c5189"
+   ]
+  }
+ },
+ "phone": {
+  "kind": "phone",
+  "files": [
+   "phone-arrival-3s.webp",
+   "phone-1-first.webp",
+   "phone-2-scroll-1vh.webp",
+   "phone-3-scroll-2.6vh.webp"
+  ],
+  "firstPaintS": 1.74,
+  "settleS": 0.83,
+  "continuous": true,
+  "vw": 390,
+  "vh": 844,
+  "docHeightScreens": 13.4,
+  "largestPx": 20.3,
+  "largestText": "Things",
+  "largestFont": "ui-sans-serif",
+  "largestWeight": "400",
+  "largestTracking": "normal",
+  "bodyPx": 18,
+  "bodyFont": "ui-sans-serif",
+  "lineChars": 19,
+  "measurePx": 390,
+  "mediaPct": 38,
+  "firstScreenChars": 192,
+  "bg": "rgb(242, 245, 247)",
+  "webAnimsRunning": 0,
+  "webAnimsInfinite": 0,
+  "webAnimMaxEndMs": 0,
+  "palette": {
+   "tones": 6,
+   "chromatic": 3,
+   "bgHex": "#f2f5f7",
+   "inkPct": 14,
+   "chromaHex": [
+    "#1e3b68",
+    "#6e98d6",
+    "#5072a8"
+   ]
+  }
+ }
+}

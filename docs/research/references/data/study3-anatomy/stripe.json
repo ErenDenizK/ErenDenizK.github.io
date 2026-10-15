@@ -1,0 +1,1631 @@
+{
+ "slug": "stripe",
+ "url": "https://stripe.com/",
+ "desktop": {
+  "anatomy": {
+   "libs": [
+    "three",
+    "nextjs"
+   ],
+   "canvases": [
+    "webgl",
+    "webgl"
+   ],
+   "videos": 0,
+   "fonts": [
+    "sohne-var 1 1000 normal"
+   ],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 56,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.03",
+     "tracking": "-1.4px",
+     "transform": "none",
+     "chars": 31,
+     "n": 1,
+     "sample": "The backbone of global commerce"
+    },
+    {
+     "px": 48,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.15",
+     "tracking": "-0.96px",
+     "transform": "none",
+     "chars": 338,
+     "n": 6,
+     "sample": "Financial infrastructure to grow your revenue."
+    },
+    {
+     "px": 48,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.03",
+     "tracking": "-0.96px",
+     "transform": "none",
+     "chars": 57,
+     "n": 4,
+     "sample": "Building the economic infrastructure for AI"
+    },
+    {
+     "px": 48,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1",
+     "tracking": "-0.96px",
+     "transform": "none",
+     "chars": 21,
+     "n": 4,
+     "sample": "135+"
+    },
+    {
+     "px": 32,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.1",
+     "tracking": "-0.64px",
+     "transform": "none",
+     "chars": 501,
+     "n": 11,
+     "sample": "Flexible solutions for every business model."
+    },
+    {
+     "px": 26,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.12",
+     "tracking": "-0.26px",
+     "transform": "none",
+     "chars": 1773,
+     "n": 20,
+     "sample": "Accept and optimize payments globally—online and"
+    },
+    {
+     "px": 26,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.15",
+     "tracking": "-0.78px",
+     "transform": "none",
+     "chars": 22,
+     "n": 4,
+     "sample": "$5.46"
+    },
+    {
+     "px": 22,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.1",
+     "tracking": "-0.22px",
+     "transform": "none",
+     "chars": 1861,
+     "n": 20,
+     "sample": "Hertz unifies commerce with Stripe."
+    },
+    {
+     "px": 20,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.4",
+     "tracking": "-0.2px",
+     "transform": "none",
+     "chars": 88,
+     "n": 1,
+     "sample": "Create an account instantly, or contact us to de"
+    },
+    {
+     "px": 18,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 566,
+     "n": 7,
+     "sample": "50% of Fortune 100 companies have used Stripe to"
+    },
+    {
+     "px": 18,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 55,
+     "n": 4,
+     "sample": "Kurtis Moyer,"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 339,
+     "n": 24,
+     "sample": "Get started"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 2073,
+     "n": 34,
+     "sample": "currencies and payment methods supported"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 287,
+     "n": 16,
+     "sample": "160"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 397,
+     "n": 26,
+     "sample": "View services"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.2",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 95,
+     "n": 7,
+     "sample": "Products and pricing"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.25",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 1125,
+     "n": 87,
+     "sample": "Pricing"
+    },
+    {
+     "px": 14,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 92,
+     "n": 9,
+     "sample": "Products"
+    },
+    {
+     "px": 14,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 29,
+     "n": 1,
+     "sample": "Global GDP running on Stripe:"
+    },
+    {
+     "px": 14,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.43",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 8,
+     "n": 1,
+     "sample": "Pro Plan"
+    },
+    {
+     "px": 14,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 255,
+     "n": 3,
+     "sample": "Stripe Treasury includes various distinct Stripe"
+    },
+    {
+     "px": 12,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 60,
+     "n": 4,
+     "sample": "Order summary"
+    },
+    {
+     "px": 12,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.33",
+     "tracking": "0.036px",
+     "transform": "none",
+     "chars": 14,
+     "n": 1,
+     "sample": "Billed monthly"
+    },
+    {
+     "px": 12,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.33",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 17,
+     "n": 2,
+     "sample": "Tokens"
+    },
+    {
+     "px": 12,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.33",
+     "tracking": "-0.36px",
+     "transform": "none",
+     "chars": 13,
+     "n": 1,
+     "sample": "1,500,000,000"
+    },
+    {
+     "px": 12,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.45",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 97,
+     "n": 1,
+     "sample": "For more ideas on economic progress and technolo"
+    },
+    {
+     "px": 11,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.45",
+     "tracking": "-0.33px",
+     "transform": "none",
+     "chars": 12,
+     "n": 3,
+     "sample": "$0.01"
+    },
+    {
+     "px": 11,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.45",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 35,
+     "n": 4,
+     "sample": "per"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.5",
+     "tracking": "0.1px",
+     "transform": "none",
+     "chars": 52,
+     "n": 4,
+     "sample": "Pay Roastery"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.15",
+     "tracking": "0.1px",
+     "transform": "none",
+     "chars": 201,
+     "n": 17,
+     "sample": "Tap, insert, or swipe to pay"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.15",
+     "tracking": "0.1px",
+     "transform": "none",
+     "chars": 139,
+     "n": 23,
+     "sample": "Mocha Latte"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.15",
+     "tracking": "-0.3px",
+     "transform": "none",
+     "chars": 6,
+     "n": 2,
+     "sample": "10%"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.2",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 94,
+     "n": 4,
+     "sample": "[redacted]"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "0.8",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 81,
+     "n": 12,
+     "sample": "Card"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.2",
+     "tracking": "-0.3px",
+     "transform": "none",
+     "chars": 26,
+     "n": 4,
+     "sample": "$150.00"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 86,
+     "n": 16,
+     "sample": "Subtotal"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.4",
+     "tracking": "-0.3px",
+     "transform": "none",
+     "chars": 79,
+     "n": 12,
+     "sample": "$150.00"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 4,
+     "n": 1,
+     "sample": "Free"
+    },
+    {
+     "px": 9,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.2",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 85,
+     "n": 4,
+     "sample": "roastery.com/checkout"
+    },
+    {
+     "px": 9,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.2",
+     "tracking": "-0.081px",
+     "transform": "none",
+     "chars": 18,
+     "n": 3,
+     "sample": "カード番号"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(80, 97, 122)",
+     3245
+    ],
+    [
+     "rgb(6, 27, 49)",
+     2745
+    ],
+    [
+     "rgb(100, 116, 141)",
+     2718
+    ],
+    [
+     "rgb(83, 58, 253)",
+     584
+    ],
+    [
+     "rgb(131, 155, 200)",
+     481
+    ],
+    [
+     "rgb(255, 255, 255)",
+     453
+    ],
+    [
+     "rgb(163, 181, 214)",
+     309
+    ],
+    [
+     "rgb(60, 79, 105)",
+     165
+    ],
+    [
+     "rgb(125, 139, 164)",
+     135
+    ],
+    [
+     "rgb(26, 44, 68)",
+     124
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(255, 255, 255)",
+     18291
+    ],
+    [
+     "rgb(229, 237, 245)",
+     3664
+    ],
+    [
+     "rgb(13, 23, 56)",
+     3372
+    ],
+    [
+     "rgb(248, 250, 253)",
+     3254
+    ],
+    [
+     "rgba(248, 250, 253, 0.45)",
+     365
+    ],
+    [
+     "rgb(242, 247, 254)",
+     295
+    ]
+   ],
+   "bodyBg": "rgba(0, 0, 0, 0)",
+   "htmlBg": "rgba(0, 0, 0, 0)",
+   "transitions": [
+    [
+     "color | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     153
+    ],
+    [
+     "fill | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     125
+    ],
+    [
+     "stroke | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     59
+    ],
+    [
+     "transform | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     59
+    ],
+    [
+     "opacity | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     59
+    ],
+    [
+     "transform | 0.8s | cubic-bezier(0.165, 0.84, 0.44, 1)",
+     46
+    ],
+    [
+     "background-color, color, outline-color | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     37
+    ],
+    [
+     "opacity | 0.15s | linear",
+     36
+    ],
+    [
+     "opacity | 0.12s | ease",
+     16
+    ],
+    [
+     "transform | 0.6s | cubic-bezier(0.16, 1, 0.3, 1)",
+     12
+    ]
+   ],
+   "docScreens": 16.4,
+   "title": "Stripe | Financial Infrastructure to Grow Your Revenue",
+   "metaDesc": "Stripe is a financial services platform that helps all types of businesses accept payments, build flexible billing models, and manage money movement."
+  },
+  "animsAtLoad": [
+   "CSSAnimation:detect-scroll|NaNms|delay 0|linear|1",
+   "Animation:SPAN|325ms|delay 450|cubic-bezier(0.33, 1, 0.68, 1)|1",
+   "Animation:SPAN|325ms|delay 450|cubic-bezier(0.33, 1, 0.68, 1)|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "desktop-j00.webp",
+    "headings": [
+     "H1 48px: Financial infrastructure to grow your revenue. Accept payments, handle business banking,1 ",
+     "H1 48px: Financial infrastructure to grow your revenue. Accept payments, handle business banking,1 ",
+     "H2 32px: Flexible solutions for every business model."
+    ],
+    "anims": 1
+   },
+   {
+    "i": 1,
+    "y": 675,
+    "file": "desktop-j01.webp",
+    "headings": [
+     "H2 32px: Flexible solutions for every business model.",
+     "H3 26px: Accept and optimize payments globally—online and in person",
+     "H3 26px: Enable any billing model"
+    ],
+    "anims": 48
+   },
+   {
+    "i": 2,
+    "y": 1350,
+    "file": "desktop-j02.webp",
+    "headings": [
+     "H3 26px: Monetize through agentic commerce",
+     "H3 26px: Create a card issuing program",
+     "H3 26px: Access borderless money movement with stablecoins and crypto"
+    ],
+    "anims": 71
+   },
+   {
+    "i": 3,
+    "y": 2025,
+    "file": "desktop-j03.webp",
+    "headings": [
+     "H3 26px: Embed payments in your platform"
+    ],
+    "anims": 65
+   },
+   {
+    "i": 4,
+    "y": 2700,
+    "file": "desktop-j04.webp",
+    "headings": [
+     "H2 56px: The backbone of global commerce"
+    ],
+    "anims": 65
+   },
+   {
+    "i": 5,
+    "y": 3375,
+    "file": "desktop-j05.webp",
+    "headings": [
+     "H2 56px: The backbone of global commerce"
+    ],
+    "anims": 65
+   },
+   {
+    "i": 6,
+    "y": 4050,
+    "file": "desktop-j06.webp",
+    "headings": [
+     "H2 32px: Powering businesses of all sizes.",
+     "H3 26px: Transform your enterprise with agile financial infrastructure"
+    ],
+    "anims": 48
+   },
+   {
+    "i": 7,
+    "y": 4725,
+    "file": "desktop-j07.webp",
+    "headings": [
+     "H3 26px: Transform your enterprise with agile financial infrastructure",
+     "H3 22px: Hertz unifies commerce with Stripe."
+    ],
+    "anims": 61
+   },
+   {
+    "i": 8,
+    "y": 5400,
+    "file": "desktop-j08.webp",
+    "headings": [
+     "H3 22px: URBN consolidates $5 billion in online and in-store revenue onto Stripe.",
+     "H3 22px: Instacart powers online grocery delivery with Stripe.",
+     "H3 22px: Le Monde improves local and international payments with Stripe."
+    ],
+    "anims": 48
+   },
+   {
+    "i": 9,
+    "y": 6075,
+    "file": "desktop-j09.webp",
+    "headings": [
+     "H3 26px: Build a foundation for your startup that enables faster growth"
+    ],
+    "anims": 84
+   },
+   {
+    "i": 10,
+    "y": 6750,
+    "file": "desktop-j10.webp",
+    "headings": [
+     "H3 26px: Make your SaaS platform a complete financial operating system"
+    ],
+    "anims": 77
+   },
+   {
+    "i": 11,
+    "y": 7425,
+    "file": "desktop-j11.webp",
+    "headings": [
+     "H3 26px: Make your SaaS platform a complete financial operating system"
+    ],
+    "anims": 91
+   },
+   {
+    "i": 12,
+    "y": 8100,
+    "file": "desktop-j12.webp",
+    "headings": [],
+    "anims": 91
+   },
+   {
+    "i": 13,
+    "y": 8775,
+    "file": "desktop-j13.webp",
+    "headings": [
+     "H2 32px: Reliable, extensible infrastructure for every stack.",
+     "H3 26px: Connect to existing systems."
+    ],
+    "anims": 91
+   },
+   {
+    "i": 14,
+    "y": 9450,
+    "file": "desktop-j14.webp",
+    "headings": [
+     "H3 26px: Connect to existing systems.",
+     "H3 26px: Scale with confidence."
+    ],
+    "anims": 107
+   },
+   {
+    "i": 15,
+    "y": 10125,
+    "file": "desktop-j15.webp",
+    "headings": [
+     "H3 26px: Scale with confidence.",
+     "H3 26px: Choose an integration path."
+    ],
+    "anims": 89
+   },
+   {
+    "i": 16,
+    "y": 10800,
+    "file": "desktop-j16.webp",
+    "headings": [
+     "H3 26px: Choose an integration path.",
+     "H2 32px: What’s happening"
+    ],
+    "anims": 84
+   },
+   {
+    "i": 17,
+    "y": 11475,
+    "file": "desktop-j17.webp",
+    "headings": [
+     "H2 32px: What’s happening",
+     "H3 22px: Businesses on Stripe generated $1.9T in 2025.",
+     "H3 22px: 150K+ users have their best day ever on Stripe.",
+     "H3 22px: Tidemark’s vertical and SMB SaaS benchmark report.",
+     "H3 22px: Shopify’s Tobi Lütke sits down with John Collison.",
+     "H3 22px: New tools to process payments outside app stores."
+    ],
+    "anims": 77
+   },
+   {
+    "i": 18,
+    "y": 12150,
+    "file": "desktop-j18.webp",
+    "headings": [
+     "H3 22px: Businesses on Stripe generated $1.9T in 2025.",
+     "H3 22px: 150K+ users have their best day ever on Stripe.",
+     "H3 22px: Tidemark’s vertical and SMB SaaS benchmark report.",
+     "H3 22px: Shopify’s Tobi Lütke sits down with John Collison.",
+     "H3 22px: New tools to process payments outside app stores.",
+     "H3 22px: Crypto.com partners with Stripe to enable better crypto payments."
+    ],
+    "anims": 77
+   },
+   {
+    "i": 19,
+    "y": 12825,
+    "file": "desktop-j19.webp",
+    "headings": [],
+    "anims": 65
+   },
+   {
+    "i": 20,
+    "y": 13500,
+    "file": "desktop-j20.webp",
+    "headings": [],
+    "anims": 65
+   },
+   {
+    "i": 21,
+    "y": 13922,
+    "file": "desktop-j21.webp",
+    "headings": [],
+    "anims": 65
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:detect-scroll|NaNms|delay 0|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:svg|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:svg|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:svg|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1"
+  ]
+ },
+ "phone": {
+  "anatomy": {
+   "libs": [
+    "three",
+    "nextjs"
+   ],
+   "canvases": [
+    "webgl",
+    "webgl"
+   ],
+   "videos": 0,
+   "fonts": [
+    "sohne-var 1 1000 normal"
+   ],
+   "colorVars": {},
+   "typeScale": [
+    {
+     "px": 34,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.03",
+     "tracking": "-0.34px",
+     "transform": "none",
+     "chars": 92,
+     "n": 2,
+     "sample": "Financial infrastructure to grow your revenue."
+    },
+    {
+     "px": 34,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.03",
+     "tracking": "-0.68px",
+     "transform": "none",
+     "chars": 31,
+     "n": 1,
+     "sample": "The backbone of global commerce"
+    },
+    {
+     "px": 28,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.07",
+     "tracking": "-0.28px",
+     "transform": "none",
+     "chars": 78,
+     "n": 8,
+     "sample": "Building the economic infrastructure for AI"
+    },
+    {
+     "px": 26,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.15",
+     "tracking": "-0.78px",
+     "transform": "none",
+     "chars": 22,
+     "n": 4,
+     "sample": "$5.46"
+    },
+    {
+     "px": 22,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.2",
+     "tracking": "-0.22px",
+     "transform": "none",
+     "chars": 464,
+     "n": 11,
+     "sample": "Flexible solutions for every business model."
+    },
+    {
+     "px": 20,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.2",
+     "tracking": "-0.2px",
+     "transform": "none",
+     "chars": 2588,
+     "n": 32,
+     "sample": "Accept and optimize payments globally—online and"
+    },
+    {
+     "px": 18,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.25",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 223,
+     "n": 4,
+     "sample": "Hertz unifies commerce with Stripe."
+    },
+    {
+     "px": 18,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 911,
+     "n": 5,
+     "sample": "With Stripe, we have a global technology partner"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 339,
+     "n": 24,
+     "sample": "Get started"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 2382,
+     "n": 42,
+     "sample": "currencies and payment methods supported"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.35",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 566,
+     "n": 7,
+     "sample": "50% of Fortune 100 companies have used Stripe to"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 363,
+     "n": 25,
+     "sample": "160"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 397,
+     "n": 26,
+     "sample": "View services"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.35",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 55,
+     "n": 4,
+     "sample": "Kurtis Moyer,"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.2",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 95,
+     "n": 7,
+     "sample": "Products and pricing"
+    },
+    {
+     "px": 16,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.25",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 1125,
+     "n": 87,
+     "sample": "Pricing"
+    },
+    {
+     "px": 14,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.43",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 8,
+     "n": 1,
+     "sample": "Pro Plan"
+    },
+    {
+     "px": 14,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 37,
+     "n": 3,
+     "sample": "Stripe Press"
+    },
+    {
+     "px": 14,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.3",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 45,
+     "n": 1,
+     "sample": "Get industry insights and updates from Stripe"
+    },
+    {
+     "px": 12,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "normal",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 89,
+     "n": 5,
+     "sample": "Global GDP running on Stripe:"
+    },
+    {
+     "px": 12,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.33",
+     "tracking": "0.036px",
+     "transform": "none",
+     "chars": 14,
+     "n": 1,
+     "sample": "Billed monthly"
+    },
+    {
+     "px": 12,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.33",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 17,
+     "n": 2,
+     "sample": "Tokens"
+    },
+    {
+     "px": 12,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.33",
+     "tracking": "-0.36px",
+     "transform": "none",
+     "chars": 13,
+     "n": 1,
+     "sample": "2,010,569,010"
+    },
+    {
+     "px": 12,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.45",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 284,
+     "n": 5,
+     "sample": "For more ideas on economic progress and technolo"
+    },
+    {
+     "px": 11,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.45",
+     "tracking": "-0.33px",
+     "transform": "none",
+     "chars": 12,
+     "n": 3,
+     "sample": "$0.01"
+    },
+    {
+     "px": 11,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.45",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 35,
+     "n": 4,
+     "sample": "per"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.5",
+     "tracking": "0.1px",
+     "transform": "none",
+     "chars": 52,
+     "n": 4,
+     "sample": "Pay Roastery"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.15",
+     "tracking": "0.1px",
+     "transform": "none",
+     "chars": 201,
+     "n": 17,
+     "sample": "Tap, insert, or swipe to pay"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.15",
+     "tracking": "0.1px",
+     "transform": "none",
+     "chars": 139,
+     "n": 23,
+     "sample": "Mocha Latte"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.15",
+     "tracking": "-0.3px",
+     "transform": "none",
+     "chars": 6,
+     "n": 2,
+     "sample": "10%"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.2",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 94,
+     "n": 4,
+     "sample": "[redacted]"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "0.8",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 81,
+     "n": 12,
+     "sample": "Card"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.2",
+     "tracking": "-0.3px",
+     "transform": "none",
+     "chars": 26,
+     "n": 4,
+     "sample": "$150.00"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 86,
+     "n": 16,
+     "sample": "Subtotal"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.4",
+     "tracking": "-0.3px",
+     "transform": "none",
+     "chars": 79,
+     "n": 12,
+     "sample": "$150.00"
+    },
+    {
+     "px": 10,
+     "family": "sohne-var",
+     "weight": "400",
+     "lineHeight": "1.4",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 4,
+     "n": 1,
+     "sample": "Free"
+    },
+    {
+     "px": 9,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.2",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 85,
+     "n": 4,
+     "sample": "roastery.com/checkout"
+    },
+    {
+     "px": 9,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.2",
+     "tracking": "-0.081px",
+     "transform": "none",
+     "chars": 18,
+     "n": 3,
+     "sample": "カード番号"
+    },
+    {
+     "px": 9,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.3",
+     "tracking": "normal",
+     "transform": "none",
+     "chars": 84,
+     "n": 4,
+     "sample": "Zahlen Sie jetzt oder in"
+    },
+    {
+     "px": 9,
+     "family": "sohne-var",
+     "weight": "300",
+     "lineHeight": "1.3",
+     "tracking": "-0.27px",
+     "transform": "none",
+     "chars": 12,
+     "n": 2,
+     "sample": "€50.28"
+    }
+   ],
+   "textColors": [
+    [
+     "rgb(80, 97, 122)",
+     3553
+    ],
+    [
+     "rgb(6, 27, 49)",
+     2748
+    ],
+    [
+     "rgb(100, 116, 141)",
+     2613
+    ],
+    [
+     "rgb(255, 255, 255)",
+     659
+    ],
+    [
+     "rgb(83, 58, 253)",
+     577
+    ],
+    [
+     "rgb(131, 155, 200)",
+     481
+    ],
+    [
+     "rgb(163, 181, 214)",
+     309
+    ],
+    [
+     "rgb(60, 79, 105)",
+     165
+    ],
+    [
+     "rgb(26, 44, 68)",
+     124
+    ],
+    [
+     "rgb(39, 57, 81)",
+     108
+    ]
+   ],
+   "bgColors": [
+    [
+     "rgb(255, 255, 255)",
+     7098
+    ],
+    [
+     "rgb(229, 237, 245)",
+     3188
+    ],
+    [
+     "rgb(248, 250, 253)",
+     1934
+    ],
+    [
+     "rgb(13, 23, 56)",
+     1506
+    ],
+    [
+     "rgba(248, 250, 253, 0.45)",
+     176
+    ],
+    [
+     "rgb(242, 247, 254)",
+     134
+    ]
+   ],
+   "bodyBg": "rgba(0, 0, 0, 0)",
+   "htmlBg": "rgba(0, 0, 0, 0)",
+   "transitions": [
+    [
+     "color | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     155
+    ],
+    [
+     "fill | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     125
+    ],
+    [
+     "stroke | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     61
+    ],
+    [
+     "transform | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     61
+    ],
+    [
+     "opacity | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     61
+    ],
+    [
+     "background-color, color, outline-color | 0.3s | cubic-bezier(0.25, 1, 0.5, 1)",
+     39
+    ],
+    [
+     "opacity | 0.15s | linear",
+     36
+    ],
+    [
+     "transform | 0.8s | cubic-bezier(0.165, 0.84, 0.44, 1)",
+     22
+    ],
+    [
+     "opacity | 0.12s | ease",
+     16
+    ],
+    [
+     "transform | 0.6s | cubic-bezier(0.16, 1, 0.3, 1)",
+     12
+    ]
+   ],
+   "docScreens": 24.5,
+   "title": "Stripe | Financial Infrastructure to Grow Your Revenue",
+   "metaDesc": "Stripe is a financial services platform that helps all types of businesses accept payments, build flexible billing models, and manage money movement."
+  },
+  "animsAtLoad": [
+   "CSSAnimation:detect-scroll|NaNms|delay 0|linear|1",
+   "Animation:rect|0ms|delay 0|linear|1"
+  ],
+  "stops": [
+   {
+    "i": 0,
+    "y": 0,
+    "file": "phone-j00.webp",
+    "headings": [
+     "H1 34px: Financial infrastructure to grow your revenue.",
+     "H1 34px: Financial infrastructure to grow your revenue.",
+     "H2 22px: Flexible solutions for every business model.",
+     "H3 20px: Accept and optimize payments globally—online and in person"
+    ],
+    "anims": 2
+   },
+   {
+    "i": 1,
+    "y": 760,
+    "file": "phone-j01.webp",
+    "headings": [
+     "H3 20px: Accept and optimize payments globally—online and in person",
+     "H3 20px: Enable any billing model"
+    ],
+    "anims": 49
+   },
+   {
+    "i": 2,
+    "y": 1519,
+    "file": "phone-j02.webp",
+    "headings": [
+     "H3 20px: Monetize through agentic commerce"
+    ],
+    "anims": 72
+   },
+   {
+    "i": 3,
+    "y": 2279,
+    "file": "phone-j03.webp",
+    "headings": [
+     "H3 20px: Create a card issuing program",
+     "H3 20px: Access borderless money movement with stablecoins and crypto"
+    ],
+    "anims": 49
+   },
+   {
+    "i": 4,
+    "y": 3038,
+    "file": "phone-j04.webp",
+    "headings": [
+     "H3 20px: Embed payments in your platform"
+    ],
+    "anims": 49
+   },
+   {
+    "i": 5,
+    "y": 3798,
+    "file": "phone-j05.webp",
+    "headings": [],
+    "anims": 66
+   },
+   {
+    "i": 6,
+    "y": 4558,
+    "file": "phone-j06.webp",
+    "headings": [
+     "H2 34px: The backbone of global commerce"
+    ],
+    "anims": 66
+   },
+   {
+    "i": 7,
+    "y": 5317,
+    "file": "phone-j07.webp",
+    "headings": [
+     "H2 22px: Powering businesses of all sizes.",
+     "H3 20px: Transform your enterprise with agile financial infrastructure",
+     "H3 18px: Hertz unifies commerce with Stripe."
+    ],
+    "anims": 66
+   },
+   {
+    "i": 8,
+    "y": 6077,
+    "file": "phone-j08.webp",
+    "headings": [
+     "H3 18px: Hertz unifies commerce with Stripe.",
+     "H3 18px: URBN consolidates $5 billion in online and in-store revenue onto Stripe."
+    ],
+    "anims": 66
+   },
+   {
+    "i": 9,
+    "y": 6836,
+    "file": "phone-j09.webp",
+    "headings": [
+     "H3 18px: Hertz unifies commerce with Stripe.",
+     "H3 18px: URBN consolidates $5 billion in online and in-store revenue onto Stripe.",
+     "H3 18px: Instacart powers online grocery delivery with Stripe.",
+     "H3 18px: Le Monde improves local and international payments with Stripe."
+    ],
+    "anims": 49
+   },
+   {
+    "i": 10,
+    "y": 7596,
+    "file": "phone-j10.webp",
+    "headings": [],
+    "anims": 62
+   },
+   {
+    "i": 11,
+    "y": 8356,
+    "file": "phone-j11.webp",
+    "headings": [
+     "H3 20px: Build a foundation for your startup that enables faster growth"
+    ],
+    "anims": 83
+   },
+   {
+    "i": 12,
+    "y": 9115,
+    "file": "phone-j12.webp",
+    "headings": [
+     "H3 20px: Make your SaaS platform a complete financial operating system"
+    ],
+    "anims": 93
+   },
+   {
+    "i": 13,
+    "y": 9875,
+    "file": "phone-j13.webp",
+    "headings": [],
+    "anims": 86
+   },
+   {
+    "i": 14,
+    "y": 10634,
+    "file": "phone-j14.webp",
+    "headings": [],
+    "anims": 86
+   },
+   {
+    "i": 15,
+    "y": 11394,
+    "file": "phone-j15.webp",
+    "headings": [
+     "H2 22px: Reliable, extensible infrastructure for every stack.",
+     "H3 20px: Connect to existing systems."
+    ],
+    "anims": 100
+   },
+   {
+    "i": 16,
+    "y": 12154,
+    "file": "phone-j16.webp",
+    "headings": [
+     "H3 20px: Connect to existing systems.",
+     "H3 20px: Scale with confidence."
+    ],
+    "anims": 132
+   },
+   {
+    "i": 17,
+    "y": 12913,
+    "file": "phone-j17.webp",
+    "headings": [
+     "H3 20px: Scale with confidence.",
+     "H3 20px: Choose an integration path."
+    ],
+    "anims": 103
+   }
+  ],
+  "animsLate": [
+   "CSSAnimation:detect-scroll|NaNms|delay 0|linear|1",
+   "Animation:rect|0ms|delay 0|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:svg|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:svg|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:svg|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1",
+   "Animation:DIV|1420ms|delay 4000|linear|1"
+  ]
+ }
+}

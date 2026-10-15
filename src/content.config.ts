@@ -6,7 +6,8 @@ import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { WORDMARK_FACES, WORDMARK_FACE_NAMES } from './lib/wordmarks';
 
-/** Text the owner has not written yet: rendered as a dashed "placeholder" tag, never as a claim. */
+/** Text the owner has not written yet: kept in the content and left out of the site entirely, never shown
+    as a claim or a visible placeholder (tests/e2e/placeholders.spec.ts). */
 const placeholder = z.object({ placeholder: z.string() });
 const textOrPlaceholder = z.union([z.string(), placeholder]);
 

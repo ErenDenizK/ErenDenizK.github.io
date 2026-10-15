@@ -1,0 +1,337 @@
+[
+ {
+  "name": "Scout Motors",
+  "url": "https://www.scoutmotors.com/",
+  "category": "product",
+  "award": "Awwwards E-commerce of the Year 2025",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "Rugged-EV reservation site with cinematic product storytelling and a polished configurator flow.",
+  "live": true,
+  "slug": "scout-motors"
+ },
+ {
+  "name": "Shopify Editions - The Renaissance Edition (Winter '26)",
+  "url": "https://www.shopify.com/editions/winter2026",
+  "category": "product",
+  "award": "Webby 2026 Best Home Page winner; Awwwards SOTM",
+  "source": "https://winners.webbyawards.com/winners/websites-and-mobile-sites/features-design/best-home-page",
+  "why": "Shopify's product-release showcase reimagined as a Renaissance-styled gallery with exceptional art direction at massive scale.",
+  "live": true,
+  "slug": "shopify-editions-the-renaissance-edition"
+ },
+ {
+  "name": "Anime.js",
+  "url": "https://animejs.com/",
+  "category": "product",
+  "award": "Awwwards Site of the Month",
+  "source": "https://www.awwwards.com/websites/sites_of_the_month/",
+  "why": "Developer-tool homepage that demonstrates the animation engine through precise, playful, code-driven motion.",
+  "live": true,
+  "slug": "anime-js"
+ },
+ {
+  "name": "Exat Typeface (Hot Type)",
+  "url": "https://exat.hottype.co/",
+  "category": "product",
+  "award": "CSSDA WOTY 2025 top 10 + Best UI",
+  "source": "https://www.cssdesignawards.com/blog/2025-website-of-the-year-winners/430/",
+  "why": "Typeface microsite with rigorous grid typography, live type tester and design-space exploration.",
+  "live": true,
+  "slug": "exat-typeface-hot-type"
+ },
+ {
+  "name": "Bezier type foundry",
+  "url": "https://www.bezier.com/en",
+  "category": "product",
+  "award": "Webby 2025 Best Visual Design - Function winner",
+  "source": "https://winners.webbyawards.com/winners/websites-and-mobile-sites/features-design/best-visual-design-function",
+  "why": "Minimal, futuristic font foundry e-shop with interactive type testing baked into browsing (Build in Amsterdam).",
+  "live": true,
+  "slug": "bezier-type-foundry"
+ },
+ {
+  "name": "FOLLOW.ART",
+  "url": "https://follow.art/",
+  "category": "product",
+  "award": "Webby 2026 Best Visual Design - Function winner",
+  "source": "https://winners.webbyawards.com/winners/websites-and-mobile-sites/features-design/best-visual-design-function",
+  "why": "Product site for artists' one-card creative practice, gallery-like layout with restrained motion.",
+  "live": true,
+  "slug": "follow-art"
+ },
+ {
+  "name": "Cowboy",
+  "url": "https://cowboy.com/",
+  "category": "product",
+  "award": "Webby 2024 Best Visual Design - Function winner",
+  "source": "https://winners.webbyawards.com/winners/websites-and-mobile-sites/features-design/best-visual-design-function",
+  "why": "Connected e-bike brand known for crisp product photography, clean e-commerce and confident typography.",
+  "live": true,
+  "slug": "cowboy"
+ },
+ {
+  "name": "AYOCIN ATMOS Lamp",
+  "url": "https://ayocin.com/",
+  "category": "product",
+  "award": "CSSDA WOTY 2024 Best UX",
+  "source": "https://www.cssdesignawards.com/blog/2024-website-of-the-year-winners/414/",
+  "why": "Wellness lamp product site by Obys with calm scroll-driven product reveals and premium hardware presentation.",
+  "live": true,
+  "slug": "ayocin-atmos-lamp"
+ },
+ {
+  "name": "Oryzo AI",
+  "url": "https://oryzo.ai/",
+  "category": "product",
+  "award": "Awwwards Site of the Month",
+  "source": "https://www.awwwards.com/websites/sites_of_the_month/",
+  "why": "Tongue-in-cheek 'AI product' launch page for a cork coaster, a pitch-perfect parody of premium product pages.",
+  "live": true,
+  "slug": "oryzo-ai"
+ },
+ {
+  "name": "Pangram Pangram Foundry",
+  "url": "https://pangrampangram.com/",
+  "category": "product",
+  "award": "Awwwards Site of the Year honoree",
+  "source": "https://www.awwwards.com/websites/sites_of_the_year/",
+  "why": "Type foundry storefront famous for bold typographic specimens and smooth, editorial-feeling browsing.",
+  "live": true,
+  "slug": "pangram-pangram-foundry"
+ },
+ {
+  "name": "Lando Norris",
+  "url": "https://landonorris.com/",
+  "category": "brand",
+  "award": "Awwwards Site of the Year 2025 (+ Users' Choice)",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "F1 driver site by OFF+BRAND with high-energy WebGL helmet visuals, neon-lime palette and fluid transitions.",
+  "live": true
+ },
+ {
+  "name": "Messenger",
+  "url": "https://messenger.abeto.co/",
+  "category": "brand",
+  "award": "Awwwards Developer Site of the Year 2025",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "abeto's tiny-planet WebGL experience, celebrated for technical craft and charming hand-drawn 3D style.",
+  "live": true,
+  "slug": "messenger"
+ },
+ {
+  "name": "Dropbox Brand",
+  "url": "https://brand.dropbox.com/",
+  "category": "brand",
+  "award": "CSSDA Website of the Year 2025; Awwwards SOTM; Webby 2025 nominee",
+  "source": "https://www.cssdesignawards.com/blog/2025-website-of-the-year-winners/430/",
+  "why": "Brand-guidelines site by Daybreak Studio, a benchmark for interactive, beautifully paced design-system storytelling.",
+  "live": true,
+  "slug": "dropbox-brand"
+ },
+ {
+  "name": "Charles Leclerc",
+  "url": "https://charlesleclerc.com/en/",
+  "category": "brand",
+  "award": "CSSDA WOTY 2025 top 10",
+  "source": "https://www.cssdesignawards.com/blog/2025-website-of-the-year-winners/430/",
+  "why": "Official F1 driver site by Apart Collective with elegant editorial layout and refined motion.",
+  "live": true,
+  "slug": "charles-leclerc"
+ },
+ {
+  "name": "The Symphony of Vines",
+  "url": "https://symphonyofvines.unseen.co/",
+  "category": "brand",
+  "award": "CSSDA WOTY 2025 runner-up",
+  "source": "https://www.cssdesignawards.com/blog/2025-website-of-the-year-winners/430/",
+  "why": "Unseen Studio's immersive wine-terroir story told through painterly WebGL chapters and sound.",
+  "live": true,
+  "slug": "the-symphony-of-vines"
+ },
+ {
+  "name": "Cartier Watches & Wonders 2024",
+  "url": "https://www.cartier.com/en-fr/watchesandwonders",
+  "category": "brand",
+  "award": "CSSDA WOTY 2024 Best UI",
+  "source": "https://www.cssdesignawards.com/blog/2024-website-of-the-year-winners/414/",
+  "why": "Luxury watch-novelty presentation by Immersive Garden with jewel-like 3D renders and restrained luxury UI.",
+  "live": true,
+  "slug": "cartier-watches-wonders-2024"
+ },
+ {
+  "name": "Mana Yerba Mate",
+  "url": "https://en.manayerbamate.com/",
+  "category": "brand",
+  "award": "Awwwards Site of the Year honoree",
+  "source": "https://www.awwwards.com/websites/sites_of_the_year/",
+  "why": "Beverage brand e-commerce with tactile 3D can rendering and joyful, colourful art direction.",
+  "live": true,
+  "slug": "mana-yerba-mate"
+ },
+ {
+  "name": "Montfort Group",
+  "url": "https://mont-fort.com/",
+  "category": "brand",
+  "award": "Awwwards Site of the Month",
+  "source": "https://www.awwwards.com/websites/sites_of_the_month/",
+  "why": "Corporate commodities group site elevated by calm, cinematic imagery and precise typographic restraint.",
+  "live": true,
+  "slug": "montfort-group"
+ },
+ {
+  "name": "Don't Board Me",
+  "url": "https://dontboardme.com/",
+  "category": "brand",
+  "award": "Awwwards Site of the Year honoree",
+  "source": "https://www.awwwards.com/websites/sites_of_the_year/",
+  "why": "Dog daycare site by The First The Last, beloved for playful 3D characters and delightful micro-interactions.",
+  "live": true,
+  "slug": "don-t-board-me"
+ },
+ {
+  "name": "Antoine Wodniack",
+  "url": "https://wodniack.dev/",
+  "category": "portfolio",
+  "award": "Webby 2025 Best Home Page winner; CSSDA 2024 Best Portfolio",
+  "source": "https://winners.webbyawards.com/winners/websites-and-mobile-sites/features-design/best-home-page",
+  "why": "Creative-developer portfolio with striking typographic WebGL and a crisp, high-contrast layout.",
+  "live": true,
+  "slug": "antoine-wodniack"
+ },
+ {
+  "name": "Louis Paquet",
+  "url": "https://louispaquet.com/",
+  "category": "portfolio",
+  "award": "Awwwards Independent of the Year 2025",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "Montreal creative director's portfolio, minimal and precise, showcasing a run of award-winning client work.",
+  "live": true
+ },
+ {
+  "name": "Merouane Bali",
+  "url": "https://merodev.net/",
+  "category": "portfolio",
+  "award": "CSSDA WOTY 2025 top 10 + Best Innovation",
+  "source": "https://www.cssdesignawards.com/blog/2025-website-of-the-year-winners/430/",
+  "why": "Creative-developer portfolio built as an immersive WebGL world entered from a single minimal prompt.",
+  "live": true,
+  "slug": "merouane-bali"
+ },
+ {
+  "name": "Chung-Yun Yoo (Chungi Folio)",
+  "url": "https://www.chungiyoo.com/",
+  "category": "portfolio",
+  "award": "Awwwards Site of the Year honoree",
+  "source": "https://www.awwwards.com/websites/sites_of_the_year/",
+  "why": "Illustrator/art-director playground portfolio with charming hand-made illustration and inventive navigation.",
+  "live": true,
+  "slug": "chung-yun-yoo-chungi-folio"
+ },
+ {
+  "name": "Immersive Garden",
+  "url": "https://immersive-g.com/",
+  "category": "studio",
+  "award": "Awwwards Agency of the Year 2025; Awwwards SOTM",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "Paris studio behind Cartier/Louis Vuitton work; cinematic full-bleed WebGL with luxury restraint.",
+  "live": true
+ },
+ {
+  "name": "Malvah Studio",
+  "url": "https://www.malvah.co/",
+  "category": "studio",
+  "award": "Awwwards Studio of the Year 2025",
+  "source": "https://www.awwwards.com/annual-awards/winners",
+  "why": "Cape Town branding studio with bold editorial typography and immersive, distinctive transitions.",
+  "live": true
+ },
+ {
+  "name": "Burocratik (We are Buro)",
+  "url": "https://www.burocratik.com/",
+  "category": "studio",
+  "award": "CSSDA WOTY 2025 top 10 + Best Agency; Awwwards SOTM",
+  "source": "https://www.cssdesignawards.com/blog/2025-website-of-the-year-winners/430/",
+  "why": "Portuguese studio site with witty, dense editorial layout and meticulous typographic detail.",
+  "live": true,
+  "slug": "burocratik-we-are-buro"
+ },
+ {
+  "name": "Buttermax",
+  "url": "https://buttermax.net/",
+  "category": "studio",
+  "award": "CSSDA Website of the Year 2024",
+  "source": "https://www.cssdesignawards.com/blog/2024-website-of-the-year-winners/414/",
+  "why": "Design studio site with ultra-minimal, smooth WebGL presentation of its work.",
+  "live": true,
+  "slug": "buttermax"
+ },
+ {
+  "name": "Active Theory",
+  "url": "https://activetheory.net/",
+  "category": "studio",
+  "award": "CSSDA WOTY 2024 Best Innovation; Awwwards SOTY honoree (v4)",
+  "source": "https://www.cssdesignawards.com/blog/2024-website-of-the-year-winners/414/",
+  "why": "Legendary WebGL studio whose site is itself a real-time 3D experience.",
+  "live": true
+ },
+ {
+  "name": "Phantom",
+  "url": "https://www.phantom.land/",
+  "category": "studio",
+  "award": "Webby 2026 Best Home Page nominee; Awwwards SOTD",
+  "source": "https://winners.webbyawards.com/winners/websites-and-mobile-sites/features-design/best-home-page",
+  "why": "London/Auckland technology creative agency with a dark, cinematic and content-rich home page.",
+  "live": true,
+  "slug": "phantom"
+ },
+ {
+  "name": "Persepolis Reimagined (Getty)",
+  "url": "https://persepolis.getty.edu/",
+  "category": "editorial",
+  "award": "Awwwards Site of the Year honoree",
+  "source": "https://www.awwwards.com/websites/sites_of_the_year/",
+  "why": "Getty's immersive reconstruction of ancient Persepolis: museum storytelling with 3D, audio and narrative.",
+  "live": true,
+  "slug": "persepolis-reimagined-getty"
+ },
+ {
+  "name": "Tracing Art (Getty)",
+  "url": "https://www.getty.edu/tracingart/",
+  "category": "editorial",
+  "award": "Awwwards Site of the Month",
+  "source": "https://www.awwwards.com/websites/sites_of_the_month/",
+  "why": "Getty Provenance Index story site: data-rich scrollytelling with elegant museum-grade restraint.",
+  "live": true,
+  "slug": "tracing-art-getty"
+ },
+ {
+  "name": "Siena Film Foundation",
+  "url": "https://siena.film/",
+  "category": "editorial",
+  "award": "Awwwards SOTM; Webby 2026 Best Home Page nominee",
+  "source": "https://winners.webbyawards.com/winners/websites-and-mobile-sites/features-design/best-home-page",
+  "why": "Documentary film foundation site with an immersive drag-to-explore film archive.",
+  "live": true,
+  "slug": "siena-film-foundation"
+ },
+ {
+  "name": "The Monolith Project",
+  "url": "https://themonolithproject.net/",
+  "category": "editorial",
+  "award": "CSSDA WOTY 2025 top 10",
+  "source": "https://www.cssdesignawards.com/blog/2025-website-of-the-year-winners/430/",
+  "why": "Experimental audiovisual WebGL piece: a slow, atmospheric monolith journey with soundtrack.",
+  "live": true,
+  "slug": "the-monolith-project"
+ },
+ {
+  "name": "Fondation Cartier",
+  "url": "https://www.fondationcartier.com/en",
+  "category": "editorial",
+  "award": "Webby 2026 Best Visual Design - Function nominee",
+  "source": "https://winners.webbyawards.com/winners/websites-and-mobile-sites/features-design/best-visual-design-function",
+  "why": "Contemporary art foundation site by AREA 17 with refined gallery typography and calm, structured layout.",
+  "live": true,
+  "slug": "fondation-cartier"
+ }
+]

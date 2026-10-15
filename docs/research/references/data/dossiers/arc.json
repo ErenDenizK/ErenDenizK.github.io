@@ -1,0 +1,1415 @@
+{
+ "slug": "arc",
+ "url": "https://arc.net/",
+ "date": "2026-10-14",
+ "arrival": "clip-arrival.webp",
+ "layout": {
+  "rootFontSize": "16px",
+  "scrollBehavior": "auto",
+  "scrollbarWidth": "auto",
+  "smoothLib": false,
+  "maxWidths": [
+   [
+    "900px",
+    4
+   ],
+   [
+    "340px",
+    4
+   ],
+   [
+    "250px",
+    4
+   ],
+   [
+    "1440px",
+    3
+   ],
+   [
+    "1344px",
+    2
+   ],
+   [
+    "1400px",
+    2
+   ],
+   [
+    "1200px",
+    1
+   ],
+   [
+    "700px",
+    1
+   ],
+   [
+    "440px",
+    1
+   ]
+  ],
+  "grids": [],
+  "gaps": [
+   [
+    "12px",
+    19
+   ],
+   [
+    "16px",
+    8
+   ],
+   [
+    "8px",
+    8
+   ],
+   [
+    "6px",
+    5
+   ],
+   [
+    "24px",
+    5
+   ],
+   [
+    "10px",
+    3
+   ],
+   [
+    "32px",
+    2
+   ],
+   [
+    "43.2px",
+    1
+   ]
+  ],
+  "spacingY": [
+   [
+    "24px",
+    32
+   ],
+   [
+    "8px",
+    20
+   ],
+   [
+    "4px",
+    8
+   ],
+   [
+    "3px",
+    5
+   ],
+   [
+    "32px",
+    5
+   ],
+   [
+    "-86.3906px",
+    3
+   ],
+   [
+    "128px",
+    2
+   ],
+   [
+    "16px",
+    2
+   ],
+   [
+    "48px",
+    2
+   ],
+   [
+    "90px",
+    1
+   ],
+   [
+    "72px",
+    1
+   ],
+   [
+    "20px",
+    1
+   ],
+   [
+    "37px",
+    1
+   ],
+   [
+    "2px",
+    1
+   ],
+   [
+    "25px",
+    1
+   ],
+   [
+    "150px",
+    1
+   ]
+  ],
+  "spacingX": [
+   [
+    "24px",
+    40
+   ],
+   [
+    "32px",
+    14
+   ],
+   [
+    "10px",
+    10
+   ],
+   [
+    "16px",
+    10
+   ],
+   [
+    "20px",
+    4
+   ],
+   [
+    "48px",
+    2
+   ],
+   [
+    "8px",
+    1
+   ],
+   [
+    "22px",
+    1
+   ]
+  ],
+  "radii": [
+   [
+    "8px",
+    9
+   ],
+   [
+    "10px",
+    3
+   ],
+   [
+    "22px",
+    1
+   ],
+   [
+    "4px",
+    1
+   ]
+  ],
+  "shadows": [
+   [
+    "rgba(0, 0, 0, 0.1) 0px 5px 5px 0px",
+    3
+   ],
+   [
+    "rgba(0, 0, 0, 0.25) 0px 2px 8px 0px",
+    1
+   ]
+  ],
+  "effects": [
+   [
+    "clip-path: url(\"#inverse\")",
+    4
+   ],
+   [
+    "clip-path: url(\"#mkbhd\")",
+    4
+   ],
+   [
+    "mix-blend-mode: overlay",
+    2
+   ],
+   [
+    "filter: url(\"#a\")",
+    1
+   ],
+   [
+    "filter: url(\"#b\")",
+    1
+   ],
+   [
+    "filter: url(\"#c\")",
+    1
+   ],
+   [
+    "clip-path: url(\"#clip0_935_1420\")",
+    1
+   ],
+   [
+    "backdrop-filter: blur(3.04833px)",
+    1
+   ]
+  ],
+  "cursors": [],
+  "fixed": 2,
+  "sticky": 0,
+  "nav": [
+   "Max",
+   "Mobile",
+   "Developers",
+   "Students",
+   "Blog"
+  ],
+  "viewTransitionNames": [
+   "root"
+  ]
+ },
+ "cssFiles": [
+  {
+   "file": "00-df28c1bc1b1a6c7d.css",
+   "url": "https://arc.net/_next/static/css/df28c1bc1b1a6c7d.css",
+   "bytes": 6309
+  },
+  {
+   "file": "inline.css",
+   "url": "(inline <style>)",
+   "bytes": 259188
+  }
+ ],
+ "css": {
+  "fontFaces": [
+   {
+    "family": "ABC Favorit Mono",
+    "file": "ABCFavoritMono-Bold.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "ABC Favorit Mono",
+    "file": "ABCFavoritMono-Medium.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "Marlin Soft SQ",
+    "file": "MarlinSoftSQ-BoldItalic.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Marlin Soft Basic",
+    "file": "MarlinSoftBasic-RegularItalic.otf",
+    "weight": "400"
+   },
+   {
+    "family": "ABC Oracle",
+    "file": "ABCOracle-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Exposure VAR",
+    "file": "205TF-Exposure-[-30].woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Marlin Soft Basic",
+    "file": "MarlinSoftBasic-Regular.otf",
+    "weight": "400"
+   },
+   {
+    "family": "ABC Favorit Mono",
+    "file": "ABCFavoritMono-RegularItalic.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Exposure VAR",
+    "file": "205TF-Exposure-[-40].woff2",
+    "weight": "750"
+   },
+   {
+    "family": "ABC Favorit Mono",
+    "file": "ABCFavoritMono-MediumItalic.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "Sohne Breit Extrafett",
+    "file": "SohneBreit-Extrafett.woff2",
+    "weight": "900"
+   },
+   {
+    "family": "ABC Favorit Mono",
+    "file": "ABCFavoritMono-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "ABC Oracle",
+    "file": "ABCOracle-Book.woff2",
+    "weight": "350"
+   },
+   {
+    "family": "ABC Favorit Mono",
+    "file": "ABCFavoritMono-BoldItalic.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Sohne Breit",
+    "file": "SohneBreit-Buch.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Marlin Soft SQ",
+    "file": "MarlinSoftSQ-Medium.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "Sohne Breit",
+    "file": "SohneBreit-Dreiviertelfett.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Marlin Soft SQ",
+    "file": "MarlinSoftSQ-ExtraBoldItalic.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Space Mono",
+    "file": "i7dPIFZifjKcF5UAWdDRYE98RXi4EwSsbg.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter",
+    "file": "inter-var-latin.woff2",
+    "weight": "600"
+   },
+   {
+    "family": "Marlin Soft SQ",
+    "file": "MarlinSoftSQ-Bold.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Marlin Soft SQ",
+    "file": "MarlinSoftSQ-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Marlin Soft SQ",
+    "file": "MarlinSoftSQ-ExtraBold.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Marlin Soft SQ",
+    "file": "MarlinSoftSQ-RegularItalic.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Space Mono",
+    "file": "i7dPIFZifjKcF5UAWdDRYE58RXi4EwSsbg.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Exposure VAR",
+    "file": "205TF-Exposure-[-20].woff2",
+    "weight": "650"
+   },
+   {
+    "family": "InterVariable",
+    "file": "inter-var-latin.woff2",
+    "weight": "100 900"
+   },
+   {
+    "family": "Space Mono",
+    "file": "i7dPIFZifjKcF5UAWdDRYEF8RXi4EwQ.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter",
+    "file": "inter-var-latin.woff2",
+    "weight": "500"
+   },
+   {
+    "family": "Space Mono",
+    "file": "SpaceMono-Bold.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Space Mono",
+    "file": "SpaceMono-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Marlin Soft SQ",
+    "file": "MarlinSoftSQ-ExtraBlackItalic.woff2",
+    "weight": "900"
+   },
+   {
+    "family": "Space Mono",
+    "file": "i7dPIFZifjKcF5UAWdDRUEU.woff",
+    "weight": "400"
+   },
+   {
+    "family": "Inter",
+    "file": "inter-var-latin.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Marlin",
+    "file": "marlin.woff2",
+    "weight": "800"
+   },
+   {
+    "family": "EB Garamond",
+    "file": "EBGaramond-Regular.woff2",
+    "weight": "400"
+   },
+   {
+    "family": "Inter",
+    "file": "inter-var-latin.woff2",
+    "weight": "700"
+   },
+   {
+    "family": "Marlin Soft SQ",
+    "file": "MarlinSoftSQ-ExtraBlack.woff2",
+    "weight": "900"
+   }
+  ],
+  "variables": {
+   "--colors-primary1": "rgb(255, 234, 231)",
+   "--colors-primary2": "rgb(255, 201, 195)",
+   "--colors-primary3": "rgb(252, 163, 159)",
+   "--colors-primary4": "rgb(252, 130, 121)",
+   "--colors-primary5": "rgb(253, 105, 88)",
+   "--colors-primary6": "rgb(250, 69, 49)",
+   "--colors-primary7": "rgb(207, 56, 40)",
+   "--colors-primary8": "rgb(162, 43, 31)",
+   "--colors-primary9": "rgb(116, 30, 21)",
+   "--colors-primary10": "rgb(71, 17, 12)",
+   "--colors-primary11": "rgb(26, 4, 2)",
+   "--colors-primary12": "rgb(9, 2, 1)",
+   "--colors-secondary1": "rgb(0, 234, 231)",
+   "--colors-secondary2": "rgb(0, 201, 195)",
+   "--colors-secondary3": "rgb(0, 163, 159)",
+   "--colors-secondary4": "rgb(0, 130, 121)",
+   "--colors-secondary5": "rgb(0, 105, 88)",
+   "--colors-secondary6": "rgb(0, 69, 49)",
+   "--colors-secondary7": "rgb(0, 56, 40)",
+   "--colors-secondary8": "rgb(0, 43, 31)",
+   "--colors-secondary9": "rgb(0, 30, 21)",
+   "--colors-secondary10": "rgb(0, 17, 12)",
+   "--colors-secondary11": "rgb(0, 4, 2)",
+   "--colors-secondary12": "rgb(0, 2, 1)",
+   "--colors-students-arc_blue": "rgb(12, 80, 255)",
+   "--colors-students-arc_blue_pale": "rgb(69, 138, 255)",
+   "--colors-students-deep_blue": "rgb(36, 4, 170)",
+   "--colors-students-arc_pinkish": "rgb(242, 94, 107)",
+   "--colors-students-off_white": "rgb(245, 244, 226)",
+   "--colors-students-dark_grey": "rgb(60, 59, 58)",
+   "--colors-students-light_grey": "rgb(225, 224, 206)",
+   "--colors-students-light_grey-hover": "rgb(215, 214, 196)",
+   "--colors-students-text_light": "rgb(151, 146, 143)",
+   "--colors-students-text_dark": "rgb(118, 110, 106)",
+   "--colors-students-dark_blue": "rgb(39, 2, 194)",
+   "--colors-students-light_blue": "rgb(205, 204, 223)",
+   "--colors-students-light_green": "rgb(211, 224, 129)",
+   "--colors-students-salmon": "rgb(242, 194, 172)",
+   "--colors-lowContrast": "#FFF",
+   "--colors-highContrast": "#000",
+   "--colors-brandDarkBlue": "#000354",
+   "--colors-brandDeepBlue": "#2404AA",
+   "--colors-brandBlue": "#3139FB",
+   "--colors-brandRed": "#FB3A4D",
+   "--colors-brandOffwhite": "#FFFCEC",
+   "--colors-focusOutline": "#96C4FF",
+   "--space-4": "4px",
+   "--space-8": "8px",
+   "--space-12": "12px",
+   "--space-16": "16px",
+   "--space-24": "24px",
+   "--space-32": "32px",
+   "--space-40": "40px",
+   "--space-48": "48px",
+   "--space-56": "56px",
+   "--space-64": "64px",
+   "--space-72": "72px",
+   "--sizes-4": "4px",
+   "--sizes-8": "8px",
+   "--sizes-12": "12px",
+   "--sizes-16": "16px",
+   "--sizes-24": "24px",
+   "--sizes-32": "32px",
+   "--sizes-40": "40px",
+   "--sizes-48": "48px",
+   "--sizes-56": "56px",
+   "--sizes-64": "64px",
+   "--sizes-72": "72px",
+   "--fontSizes-10": "10px",
+   "--fontSizes-12": "12px",
+   "--fontSizes-14": "14px",
+   "--fontSizes-16": "16px",
+   "--fontSizes-20": "20px",
+   "--fontSizes-24": "24px",
+   "--fontSizes-32": "32px",
+   "--fontSizes-36": "36px",
+   "--fontSizes-40": "40px",
+   "--fontSizes-48": "48px",
+   "--fonts-boostSans": "-apple-system, BlinkMacSystemFont, sans-serif",
+   "--fonts-boostsSoft": "Marlin Soft Basic, -apple-system, BlinkMacSystemFont, sans-serif",
+   "--fonts-referralSans": "-apple-system, BlinkMacSystemFont, sans-serif",
+   "--fonts-referralCode": "\"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubu",
+   "--fonts-sans": "Marlin, -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubun",
+   "--fonts-cta": "\"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen\", \"Ubu",
+   "--fonts-body": "\"InterVariable\", \"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto",
+   "--fonts-mono": "ABC Favorit Mono, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mo",
+   "--fonts-softSans": "Marlin Soft SQ, -apple-system, BlinkMacSystemFont, \"Segoe UI\", \"Roboto\", \"Oxygen",
+   "--fonts-oracle": "\"ABC Oracle\", \"Helvetica\", sans-serif",
+   "--fonts-exposure": "\"Exposure VAR\", \"Helvetica\", sans-serif",
+   "--fontWeights-400": "400",
+   "--fontWeights-500": "500",
+   "--fontWeights-600": "600",
+   "--fontWeights-700": "700",
+   "--fontWeights-800": "800",
+   "--lineHeights-12": "12px",
+   "--lineHeights-16": "16px",
+   "--lineHeights-20": "20px",
+   "--lineHeights-24": "24px",
+   "--lineHeights-32": "32px",
+   "--lineHeights-40": "40px",
+   "--lineHeights-48": "48px",
+   "--lineHeights-56": "56px",
+   "--radii-2": "2px",
+   "--radii-4": "4px",
+   "--radii-8": "8px",
+   "--radii-12": "12px",
+   "--radii-16": "16px",
+   "--radii-32": "32px",
+   "--radii-round": "9999px",
+   "--shadows-small": "0 5px 10px rgba(0, 0, 0, 0.12)",
+   "--shadows-medium": "0 8px 30px rgba(0, 0, 0, 0.12)",
+   "--color-indigo-fg": "#0047FF",
+   "--color-indigo-bg": "#F0F1FF",
+   "--color-red-bg": "#FEF1ED",
+   "--color-red-fg": "#E5484D",
+   "--color-yellow-fg": "#FFB223",
+   "--color-yellow-bg": "#FEF4D5",
+   "--color-gray1": "#6F6F6F",
+   "--color-gray2": "#171717",
+   "--padding": "32px",
+   "--max-width": "1280px",
+   "--page-padding-left": "max(env(safe-area-inset-left), var(--padding))",
+   "--page-padding-right": "max(env(safe-area-inset-right), var(--padding))",
+   "--navbar-height": "64px",
+   "--mobile-cta-height": "56px",
+   "--announcement-banner-height": "0px",
+   "--announcement-banner-height-desktop": "0px"
+  },
+  "keyframes": {
+   "k-lFWJD": "0%{transform:translateX(-1px)}100%{transform:translateX(-42px)}",
+   "scroll": " 0% { transform: translateX(0%); } 100% { transform: translateX(-100%); } "
+  },
+  "easings": [
+   [
+    "linear",
+    8
+   ],
+   [
+    "ease-out",
+    6
+   ],
+   [
+    "ease",
+    4
+   ],
+   [
+    "ease-in-out",
+    4
+   ]
+  ],
+  "durations": [
+   [
+    "0.2s",
+    6
+   ],
+   [
+    "150ms",
+    2
+   ],
+   [
+    "0.1s",
+    2
+   ],
+   [
+    "0.15s",
+    1
+   ],
+   [
+    ".1s",
+    1
+   ]
+  ],
+  "mediaQueries": [
+   [
+    "(min-width: 800px)",
+    13
+   ],
+   [
+    "screen and (min-width: 30em)",
+    12
+   ],
+   [
+    "(max-width: 600px)",
+    12
+   ],
+   [
+    "screen and (min-width: 650px)",
+    8
+   ],
+   [
+    "screen and (min-width: 800px)",
+    7
+   ],
+   [
+    "screen and (min-width: 1000px)",
+    6
+   ],
+   [
+    "(min-width: 580px)",
+    4
+   ],
+   [
+    "screen and (min-width: 60em)",
+    4
+   ],
+   [
+    "(min-width: 600px)",
+    3
+   ],
+   [
+    "screen and (min-height: 1360px)",
+    2
+   ],
+   [
+    "screen and (max-width: 30em)",
+    2
+   ],
+   [
+    "(max-width: 800px)",
+    1
+   ],
+   [
+    "only screen and (max-width: 750px)",
+    1
+   ],
+   [
+    "(max-height: 780px)",
+    1
+   ],
+   [
+    "screen and (min-height: 1100px) and (max-height: 1359px)",
+    1
+   ],
+   [
+    "screen and (min-width: 1100px) and (min-height: 700px)",
+    1
+   ],
+   [
+    "screen and (max-width: 1075px)",
+    1
+   ],
+   [
+    "screen and (min-width: 1075px)",
+    1
+   ],
+   [
+    "screen and (min-width: 50rem)",
+    1
+   ],
+   [
+    "(min-width: 50em)",
+    1
+   ]
+  ],
+  "reducedMotion": 0,
+  "colorScheme": 0,
+  "viewTransitions": 0,
+  "scrollTimelines": 0,
+  "containerQueries": 0,
+  "clamp": []
+ },
+ "anatomy": {
+  "libs": [
+   "nextjs"
+  ],
+  "canvases": [],
+  "videos": 1,
+  "fonts": [
+   "Marlin 800 normal",
+   "Inter 500 normal",
+   "Inter 600 normal",
+   "Inter 700 normal",
+   "InterVariable 100 900 normal",
+   "ABC Favorit Mono 700 normal",
+   "ABC Favorit Mono 400 normal",
+   "Marlin Soft SQ 500 normal",
+   "Marlin Soft SQ 700 normal",
+   "Marlin Soft SQ 700 italic",
+   "ABC Oracle 400 normal",
+   "Exposure VAR 700 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 45.5,
+    "family": "Marlin Soft SQ",
+    "weight": "700",
+    "lineHeight": "0.93",
+    "tracking": "-1.8204px",
+    "transform": "none",
+    "chars": 51,
+    "n": 2,
+    "sample": "Arc is the Chrome replacement"
+   },
+   {
+    "px": 40,
+    "family": "Marlin Soft SQ",
+    "weight": "700",
+    "lineHeight": "0.98",
+    "tracking": "-1.6px",
+    "transform": "none",
+    "chars": 144,
+    "n": 5,
+    "sample": "A browser that doesn’t just meet your"
+   },
+   {
+    "px": 36,
+    "family": "Exposure VAR",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "-0.72px",
+    "transform": "none",
+    "chars": 35,
+    "n": 1,
+    "sample": "Meet Dia, the next evolution of Arc"
+   },
+   {
+    "px": 28,
+    "family": "Marlin Soft SQ",
+    "weight": "700",
+    "lineHeight": "1.07",
+    "tracking": "-1.4px",
+    "transform": "none",
+    "chars": 269,
+    "n": 4,
+    "sample": "Way more powerful than Chrome. Arc looks like th"
+   },
+   {
+    "px": 28,
+    "family": "Marlin Soft SQ",
+    "weight": "700",
+    "lineHeight": "1.1",
+    "tracking": "-1.4px",
+    "transform": "none",
+    "chars": 33,
+    "n": 3,
+    "sample": "Enter"
+   },
+   {
+    "px": 24,
+    "family": "ABC Oracle",
+    "weight": "400",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 7,
+    "n": 1,
+    "sample": "Try Dia"
+   },
+   {
+    "px": 20,
+    "family": "ABC Oracle",
+    "weight": "400",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 82,
+    "n": 1,
+    "sample": "Weekly security updates, SOC 2 certification, an"
+   },
+   {
+    "px": 17,
+    "family": "InterVariable",
+    "weight": "500",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 313,
+    "n": 7,
+    "sample": "Clean and calm, Arc shapes itself to how you use"
+   },
+   {
+    "px": 17,
+    "family": "InterVariable",
+    "weight": "700",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 63,
+    "n": 5,
+    "sample": "Spaces"
+   },
+   {
+    "px": 16,
+    "family": "Marlin Soft SQ",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 720,
+    "n": 16,
+    "sample": "“Rethinking the fundamentals of how we use the w"
+   },
+   {
+    "px": 14,
+    "family": "Marlin Soft SQ",
+    "weight": "500",
+    "lineHeight": "normal",
+    "tracking": "-0.28px",
+    "transform": "none",
+    "chars": 31,
+    "n": 5,
+    "sample": "Max"
+   },
+   {
+    "px": 14,
+    "family": "-apple-system",
+    "weight": "600",
+    "lineHeight": "2.07",
+    "tracking": "-0.14px",
+    "transform": "none",
+    "chars": 68,
+    "n": 3,
+    "sample": "Download Arc for Windows"
+   },
+   {
+    "px": 13,
+    "family": "Marlin",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 123,
+    "n": 1,
+    "sample": "FYI: Arc receives Chromium updates only. For act"
+   },
+   {
+    "px": 12,
+    "family": "ABC Favorit Mono",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "1.8px",
+    "transform": "uppercase",
+    "chars": 11,
+    "n": 2,
+    "sample": "More"
+   },
+   {
+    "px": 12,
+    "family": "ABC Favorit Mono",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "0.6px",
+    "transform": "uppercase",
+    "chars": 49,
+    "n": 4,
+    "sample": "@beebomco"
+   },
+   {
+    "px": 12,
+    "family": "ABC Favorit Mono",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "0.4px",
+    "transform": "uppercase",
+    "chars": 16,
+    "n": 2,
+    "sample": "Product"
+   },
+   {
+    "px": 12,
+    "family": "InterVariable",
+    "weight": "600",
+    "lineHeight": "normal",
+    "tracking": "0.4px",
+    "transform": "none",
+    "chars": 135,
+    "n": 13,
+    "sample": "Download"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(49, 57, 251)",
+    1215
+   ],
+   [
+    "rgb(105, 105, 105)",
+    343
+   ],
+   [
+    "rgb(255, 252, 236)",
+    246
+   ],
+   [
+    "rgb(255, 250, 221)",
+    123
+   ],
+   [
+    "rgba(0, 0, 0, 0.65)",
+    82
+   ],
+   [
+    "rgb(255, 255, 255)",
+    58
+   ],
+   [
+    "rgb(39, 2, 194)",
+    48
+   ],
+   [
+    "rgb(0, 0, 0)",
+    35
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(255, 252, 236)",
+    10208
+   ],
+   [
+    "rgb(255, 255, 255)",
+    7430
+   ],
+   [
+    "rgb(49, 57, 251)",
+    2511
+   ]
+  ],
+  "bodyBg": "rgb(255, 252, 236)",
+  "htmlBg": "rgba(0, 0, 0, 0)",
+  "transitions": [
+   [
+    "transform, box-shadow | 0.15s | ease",
+    6
+   ],
+   [
+    "transform, background | 0.15s | ease",
+    5
+   ],
+   [
+    "background | 0.2s | ease-in-out",
+    1
+   ],
+   [
+    "transform | 0.2s | ease-in-out",
+    1
+   ],
+   [
+    "opacity | 0.1s | ease-out",
+    1
+   ]
+  ],
+  "docScreens": 6.8,
+  "title": "Arc from The Browser Company",
+  "metaDesc": "Experience a calmer, more personal internet in this browser designed for you. Let go of the clicks, the clutter, the distractions with the Arc browser."
+ },
+ "animsAtLoad": [
+  "CSSAnimation:scroll|78523ms|delay 0|linear|Infinity",
+  "CSSAnimation:scroll|78523ms|delay 0|linear|Infinity",
+  "Animation:A|300ms|delay 0|linear|1",
+  "Animation:DIV|300ms|delay 0|linear|1",
+  "Animation:DIV|300ms|delay 0|ease-in-out|1"
+ ],
+ "hovers": [],
+ "scrollClip": {
+  "file": "clip-scroll.webp",
+  "maxChangePct": 49.28
+ },
+ "stopsDesktop": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "desktop-j00.webp",
+   "headings": [
+    "H1 46px: Arc is the Chrome replacement I've been waiting for."
+   ],
+   "anims": 5
+  },
+  {
+   "i": 1,
+   "y": 675,
+   "file": "desktop-j01.webp",
+   "headings": [
+    "H1 46px: Arc is the Chrome replacement I've been waiting for."
+   ],
+   "anims": 6
+  },
+  {
+   "i": 2,
+   "y": 1350,
+   "file": "desktop-j02.webp",
+   "headings": [],
+   "anims": 6
+  },
+  {
+   "i": 3,
+   "y": 2025,
+   "file": "desktop-j03.webp",
+   "headings": [],
+   "anims": 6
+  },
+  {
+   "i": 4,
+   "y": 2700,
+   "file": "desktop-j04.webp",
+   "headings": [],
+   "anims": 6
+  },
+  {
+   "i": 5,
+   "y": 3375,
+   "file": "desktop-j05.webp",
+   "headings": [],
+   "anims": 6
+  },
+  {
+   "i": 6,
+   "y": 4050,
+   "file": "desktop-j06.webp",
+   "headings": [],
+   "anims": 6
+  },
+  {
+   "i": 7,
+   "y": 4725,
+   "file": "desktop-j07.webp",
+   "headings": [],
+   "anims": 6
+  },
+  {
+   "i": 8,
+   "y": 5223,
+   "file": "desktop-j08.webp",
+   "headings": [],
+   "anims": 6
+  }
+ ],
+ "anatomyPhone": {
+  "libs": [
+   "nextjs"
+  ],
+  "canvases": [],
+  "videos": 4,
+  "fonts": [
+   "Marlin 800 normal",
+   "Inter 400 normal",
+   "Inter 500 normal",
+   "Inter 600 normal",
+   "Inter 700 normal",
+   "InterVariable 100 900 normal",
+   "ABC Favorit Mono 700 normal",
+   "Marlin Soft SQ 700 normal",
+   "Marlin Soft SQ 700 italic",
+   "ABC Oracle 400 normal",
+   "Exposure VAR 700 normal"
+  ],
+  "colorVars": {},
+  "typeScale": [
+   {
+    "px": 32,
+    "family": "Marlin Soft SQ",
+    "weight": "700",
+    "lineHeight": "0.98",
+    "tracking": "-1.6px",
+    "transform": "none",
+    "chars": 50,
+    "n": 3,
+    "sample": "Arc is the Chrome"
+   },
+   {
+    "px": 30,
+    "family": "Exposure VAR",
+    "weight": "700",
+    "lineHeight": "1",
+    "tracking": "-0.72px",
+    "transform": "none",
+    "chars": 35,
+    "n": 1,
+    "sample": "Meet Dia, the next evolution of Arc"
+   },
+   {
+    "px": 28,
+    "family": "Marlin Soft SQ",
+    "weight": "700",
+    "lineHeight": "0.95",
+    "tracking": "-1.4px",
+    "transform": "none",
+    "chars": 32,
+    "n": 4,
+    "sample": "Enter"
+   },
+   {
+    "px": 27.2,
+    "family": "Marlin Soft SQ",
+    "weight": "700",
+    "lineHeight": "0.98",
+    "tracking": "-1.6px",
+    "transform": "none",
+    "chars": 144,
+    "n": 5,
+    "sample": "A browser that doesn’t just meet your"
+   },
+   {
+    "px": 20,
+    "family": "ABC Oracle",
+    "weight": "400",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 7,
+    "n": 1,
+    "sample": "Try Dia"
+   },
+   {
+    "px": 17,
+    "family": "InterVariable",
+    "weight": "500",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 313,
+    "n": 7,
+    "sample": "Clean and calm, Arc shapes itself to how you use"
+   },
+   {
+    "px": 17,
+    "family": "InterVariable",
+    "weight": "700",
+    "lineHeight": "1.5",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 63,
+    "n": 5,
+    "sample": "Spaces"
+   },
+   {
+    "px": 17,
+    "family": "-apple-system",
+    "weight": "600",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 17,
+    "n": 1,
+    "sample": "Get Download Link"
+   },
+   {
+    "px": 16,
+    "family": "ABC Oracle",
+    "weight": "400",
+    "lineHeight": "1.2",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 82,
+    "n": 1,
+    "sample": "Weekly security updates, SOC 2 certification, an"
+   },
+   {
+    "px": 14,
+    "family": "-apple-system",
+    "weight": "600",
+    "lineHeight": "2.07",
+    "tracking": "-0.14px",
+    "transform": "none",
+    "chars": 25,
+    "n": 1,
+    "sample": "Download on the App Store"
+   },
+   {
+    "px": 14,
+    "family": "InterVariable",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 69,
+    "n": 1,
+    "sample": "We can email you a quick download link to get yo"
+   },
+   {
+    "px": 13,
+    "family": "Marlin",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 123,
+    "n": 1,
+    "sample": "FYI: Arc receives Chromium updates only. For act"
+   },
+   {
+    "px": 13,
+    "family": "-apple-system",
+    "weight": "400",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 41,
+    "n": 1,
+    "sample": "or get a download link for Arc on Desktop"
+   },
+   {
+    "px": 13,
+    "family": "Marlin Soft SQ",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "normal",
+    "transform": "none",
+    "chars": 720,
+    "n": 16,
+    "sample": "“Rethinking the fundamentals of how we use the w"
+   },
+   {
+    "px": 12,
+    "family": "ABC Favorit Mono",
+    "weight": "700",
+    "lineHeight": "normal",
+    "tracking": "0.4px",
+    "transform": "uppercase",
+    "chars": 16,
+    "n": 2,
+    "sample": "Product"
+   },
+   {
+    "px": 12,
+    "family": "InterVariable",
+    "weight": "600",
+    "lineHeight": "normal",
+    "tracking": "0.4px",
+    "transform": "none",
+    "chars": 135,
+    "n": 13,
+    "sample": "Download"
+   }
+  ],
+  "textColors": [
+   [
+    "rgb(49, 57, 251)",
+    897
+   ],
+   [
+    "rgb(105, 105, 105)",
+    343
+   ],
+   [
+    "rgb(255, 252, 236)",
+    302
+   ],
+   [
+    "rgb(255, 250, 221)",
+    164
+   ],
+   [
+    "rgba(0, 0, 0, 0.65)",
+    82
+   ],
+   [
+    "rgb(0, 0, 0)",
+    35
+   ],
+   [
+    "rgb(39, 2, 194)",
+    25
+   ],
+   [
+    "rgb(255, 255, 255)",
+    24
+   ]
+  ],
+  "bgColors": [
+   [
+    "rgb(255, 252, 236)",
+    1600
+   ],
+   [
+    "rgb(255, 255, 255)",
+    991
+   ],
+   [
+    "rgb(49, 57, 251)",
+    848
+   ],
+   [
+    "rgb(255, 51, 51)",
+    22
+   ]
+  ],
+  "bodyBg": "rgb(255, 252, 236)",
+  "htmlBg": "rgba(0, 0, 0, 0)",
+  "transitions": [
+   [
+    "transform, background | 0.15s | ease",
+    5
+   ],
+   [
+    "background | 0.2s | ease-in-out",
+    1
+   ],
+   [
+    "transform | 0.2s | ease-in-out",
+    1
+   ],
+   [
+    "transform, box-shadow | 0.15s | ease",
+    1
+   ],
+   [
+    "opacity | 0.1s | ease-out",
+    1
+   ],
+   [
+    "transform | 0.15s | ease",
+    1
+   ]
+  ],
+  "docScreens": 4.4,
+  "title": "Arc from The Browser Company",
+  "metaDesc": "Experience a calmer, more personal internet in this browser designed for you. Let go of the clicks, the clutter, the distractions with the Arc browser."
+ },
+ "stopsPhone": [
+  {
+   "i": 0,
+   "y": 0,
+   "file": "phone-j00.webp",
+   "headings": [
+    "H1 32px: Arc is the Chrome replacement I've been waiting for."
+   ],
+   "anims": 5
+  },
+  {
+   "i": 1,
+   "y": 760,
+   "file": "phone-j01.webp",
+   "headings": [],
+   "anims": 6
+  },
+  {
+   "i": 2,
+   "y": 1519,
+   "file": "phone-j02.webp",
+   "headings": [],
+   "anims": 6
+  },
+  {
+   "i": 3,
+   "y": 2279,
+   "file": "phone-j03.webp",
+   "headings": [],
+   "anims": 6
+  },
+  {
+   "i": 4,
+   "y": 2877,
+   "file": "phone-j04.webp",
+   "headings": [],
+   "anims": 6
+  }
+ ]
+}
