@@ -9,7 +9,7 @@ import { readManifest } from '../lib/files.mjs';
 const site = await getSite();
 const obj = poster('edk');
 const m = readManifest('edk');
-const idle = m?.idle?.sources?.map((s: { src: string; type: string }) => ({ src: `${obj.manifest?.replace(/manifest\.json$/, '')}${s.src}`, type: s.type })) ?? [];
+const idle: { src: string; type: string }[] = m?.idle?.sources?.map((s: { src: string; type: string }) => ({ src: `${obj.manifest?.replace(/manifest\.json$/, '')}${s.src}`, type: s.type })) ?? [];
 const made = site.about.colophon.find(([k]) => k === 'The site');
 ---
 <footer class="foot" id="end">

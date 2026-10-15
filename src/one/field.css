@@ -52,11 +52,12 @@ html.motion .field .pools { animation: bloom 1200ms var(--ease-out) both; }
 /* ---------- the still twins (spec §4.11): no fixed field; each section carries its own pools, so the
    colour follows the content with no animation. Without JavaScript the same. ---------- */
 html.still .field .pools, html:not(.js) .field .pools { display: none; }
+/* each pool is an ellipse of a set size that ends inside its section's box, so no pool shows an edge */
 html.still [data-aura], html:not(.js) [data-aura] {
   background-image:
-    radial-gradient(60% 46% at 50% 0%, color-mix(in srgb, var(--s1, var(--brief-1)) 22%, transparent), transparent),
-    radial-gradient(40% 40% at 92% 30%, color-mix(in srgb, var(--s2, var(--brief-2)) 16%, transparent), transparent),
-    radial-gradient(44% 40% at 6% 70%, color-mix(in srgb, var(--s3, var(--brief-3)) 20%, transparent), transparent);
+    radial-gradient(ellipse 46% 38% at 50% 40%, color-mix(in srgb, var(--s1, var(--brief-1)) 20%, transparent), transparent),
+    radial-gradient(ellipse 26% 30% at 80% 52%, color-mix(in srgb, var(--s2, var(--brief-2)) 14%, transparent), transparent),
+    radial-gradient(ellipse 28% 30% at 18% 64%, color-mix(in srgb, var(--s3, var(--brief-3)) 18%, transparent), transparent);
   background-repeat: no-repeat;
 }
 @media (forced-colors: active) { .field .pools { display: none; } }

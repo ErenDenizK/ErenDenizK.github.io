@@ -72,6 +72,8 @@ const tabs = [['home', 'Home', home], ['record', 'Record', url('record/')]] as c
 
   .clock { justify-self: end; font: 500 13px / 1 var(--f-sans); letter-spacing: 0.01em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
   .clock time { color: var(--ink-2); }
+  /* without JavaScript there is no time to show, so the place alone would read as a stray word */
+  :global(html:not(.js)) .clock { visibility: hidden; }
 
   @media (max-width: 699.98px) {
     .tabs a { padding: 0 16px; }
