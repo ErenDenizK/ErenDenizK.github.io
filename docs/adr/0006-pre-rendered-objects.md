@@ -1,7 +1,9 @@
 # ADR-0006: Objects are pre-rendered Cycles frames; real time is only glue
 
 **Status:** accepted 2026-10-09 (owner: "fake it with very high-resolution photos and video; a
-still first, the moving version behind it"); **under review 2026-10-10:** the owner finds the
+still first, the moving version behind it"); **real-time 3D on desktop declined 2026-10-11:** the
+owner chose to stay pre-rendered and fix it (option a; brief log, 2026-10-11). Before that, **under
+review 2026-10-10:** the owner finds the
 objects stutter in tiny movements and may bring real-time 3D back on desktop once the performance
 difference is reported (brief, "Look, motion and objects"; `docs/PLAN.md` track 7); the stutter
 causes inside this pipeline were fixed on 2026-10-10 (amendment below), and the softness and "2.5D" look
