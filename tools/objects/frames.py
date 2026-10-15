@@ -44,6 +44,8 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# log (the microphone) and record (the card file) are retired; encode.py writes their media to
+# media/archive/objects/ (media/archive/README.md)
 OBJECTS = ("edk", "recto", "englishprep", "eatmap", "log", "record", "recorder")
 STAGES = ("poster", "grid", "clip", "droplet", "shadow", "normal", "spin")
 # The live engine plays a clip either as a time axis (forward from rest, back to rest) or, where

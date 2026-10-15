@@ -11,9 +11,7 @@ const fallbacks = import.meta.glob<string>('../assets/objects/*-poster.webp', { 
     softer green: lime goes olive on black at low alpha (craft audit §5.3). */
 export const LIGHTS: Record<string, string> = {
   edk: '#c9d4ff', recto: '#a6d873', englishprep: '#efb1cb', eatmap: '#eb4f6b', recorder: '#8fb8ff',
-  record: '#8fb8ff',   // the card file (C2), kept in media/objects/record/ but no longer used
-  log: '#8fb8ff',   // the microphone, kept in media/objects/log/ but no longer used (tools/objects/README.md)
-};
+};  // retired objects (the microphone, the card file) are in media/archive/objects/, never published
 
 export type Poster = {
   name: string;

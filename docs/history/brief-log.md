@@ -452,6 +452,8 @@ The owner's words, translated from Turkish.
 - **Now:** a monthly "now" line is fine: the owner tells the lead, the lead updates it. The long story
   stays on About; About needs work in every respect.
 - **Samples** stay until the owner says they are old.
+- **Retired objects** (the old Record objects): never deleted outright; archive them, because they
+  carry value: why they were liked or not.
 - **Photo concepts** (tested 2026-10-15): the postcard (two-sided, flippable) is still the right
   concept; what failed is the graphic design of the back and perhaps the frame, which felt simple and
   cheap. New idea: click a photo, it grows to a large view (as in Proof), and there it can be flipped

@@ -14,7 +14,8 @@ when a round closes, copy this file to `docs/history/` and start a fresh one. Cl
 - Live and kept: Work direction A with frames, About with the ID card and postcards, the Record with
   samples and the cassette recorder, the beads rail, pre-rendered objects.
 - Repo clean-up round 1 is on `dev` (docs truth, samples out of feed and sitemap, dead weight, CI gates
-  the deploy, research archive). Round 2 in progress: retired Record objects to `media/archive/`.
+  the deploy, research archive). Round 2: the retired Record objects (microphone, card file) moved
+  to `media/archive/` with a README of why, 2026-10-15.
 
 ## Route
 
@@ -25,7 +26,7 @@ build tracks at a time.
 |---|---|---|---|
 | 0 Housekeeping | branches: `main` + `dev` only | waiting on the owner | the owner deletes `claude/portfolio-site-design-n38jml` on GitHub (the proxy refuses deletes here) |
 | 0 | commit authorship: owner as author, Claude as co-author | future commits done; past commits wait on Q1 | Q1 |
-| 0 | retired objects to `media/archive/` | build | merge after verify |
+| 0 | retired objects to `media/archive/` | done 2026-10-15 | |
 | 0 | `?live` engine and ADR-0009 | waiting on Q4 | Q4 |
 | 1 Foundations | design charter (`docs/design/charter.md`): limits per width, type scale, motion language (sequenced reveals, no loaders) | research done, plan | the owner reads a one-page Turkish summary |
 | 1 | colour system: measured palette for every pairing; soft grounds; theme study (refined dark, light, hybrid, a few colour themes) shown with the real objects and renders | research | comps of themes with objects, owner gate 1 |
