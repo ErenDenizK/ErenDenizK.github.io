@@ -33,7 +33,10 @@ img, video, picture { display: block; max-width: 100%; }
 .lab-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; background: var(--ground);
   --fa1: var(--a1); --fa2: var(--a2); --fa3: var(--a3); transition: --fa1 var(--lab-ms, 500ms) var(--ease-ui), --fa2 var(--lab-ms, 500ms) var(--ease-ui), --fa3 var(--lab-ms, 500ms) var(--ease-ui); }
 .lab-field i { position: absolute; width: 512px; height: 512px; left: 50%; top: 50%; margin: -256px 0 0 -256px; border-radius: 50%;
-  mix-blend-mode: plus-lighter; will-change: transform; }
+  will-change: transform; }
+/* normal blending, not plus-lighter: on the near-black ground they look the same, and the stand-in
+   should not cost frames that PART A's field budgets for itself (measured: plus-lighter here doubled
+   the rAF interval under a 4x CPU throttle in headless Chromium) */
 .lab-field i:nth-child(1) { background: radial-gradient(closest-side, color-mix(in srgb, var(--fa1) 30%, transparent), transparent); transform: translate(0, -28vh) scale(2.9, 1.9); }
 .lab-field i:nth-child(2) { background: radial-gradient(closest-side, color-mix(in srgb, var(--fa3) 32%, transparent), transparent); transform: translate(-36vw, 12vh) scale(1.8, 1.6); }
 .lab-field i:nth-child(3) { background: radial-gradient(closest-side, color-mix(in srgb, var(--fa2) 22%, transparent), transparent); transform: translate(30vw, -6vh) scale(1.8, 1.6); }

@@ -33,6 +33,8 @@
   font: 500 11px/1.2 var(--f-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
 .pr-cap span:first-child { overflow: hidden; text-overflow: ellipsis; }
 .pr-shade { position: absolute; inset: 0; z-index: 2; border-radius: inherit; background: var(--ground); opacity: var(--shade, 0); pointer-events: none; }
+/* the deck writes the shade every frame of a shuffle: its own layer, so the print under it never repaints */
+html.js:not(.still) .work .pr-shade { will-change: opacity; }
 /* a project without screens: its object on its own paper, lit by its light */
 .pr-obj { background: radial-gradient(62% 72% at 50% 58%, color-mix(in srgb, var(--a1) 30%, transparent), transparent 72%),
   radial-gradient(90% 60% at 50% 100%, color-mix(in srgb, var(--a3) 60%, transparent), transparent 80%), var(--paper); }

@@ -57,7 +57,7 @@ export function initDeck(sec: HTMLElement): Deck {
   const phoneMq = matchMedia('(max-width: 699.98px)');
   const fine = matchMedia('(hover: hover) and (pointer: fine)');
 
-  let vh = innerHeight, pw = 672, top = 134, slotTop: number[] = [], running = false, raf = 0, paused = false;
+  let vh = innerHeight, pw = 672, top = 134, secTop = 0, secH = 0, slotTop: number[] = [], running = false, raf = 0, paused = false, lastS = NaN;
   let cur = 0, shown = 0, settleT = 0, pinned = false;
   const deck: Deck = {
     projects, live: false,
@@ -69,9 +69,9 @@ export function initDeck(sec: HTMLElement): Deck {
       if (!p) return;
       const y = sec.getBoundingClientRect().top + scrollY + (slotTop[p.k] ?? 0);
       scrollTo({ top: y, behavior: 'instant' as ScrollBehavior });
-      frame(); swap(cur, false);
+      lastS = NaN; frame(); swap(cur, false);
     },
-    pause(on) { paused = on; if (!on) kick(); },
+    pause(on) { paused = on; if (!on) { lastS = NaN; kick(); } },
   };
   if (!deckOn()) { projects.forEach((p) => p.el.toggleAttribute('data-on', true)); return deck; }
   deck.live = true;
@@ -81,6 +81,8 @@ export function initDeck(sec: HTMLElement): Deck {
     pw = projects[0].box.offsetWidth || 672;
     top = projects[0].box.offsetTop;
     slotTop = projects.map((p) => p.slot.offsetTop);
+    const r = sec.getBoundingClientRect();
+    secTop = r.top + scrollY; secH = r.height; lastS = NaN;
   }
 
   /* ---- clock 1: geometry ---- */
@@ -94,8 +96,11 @@ export function initDeck(sec: HTMLElement): Deck {
   function frame() {
     raf = 0;
     if (paused) return;
-    const r = sec.getBoundingClientRect();
-    const s = -r.top;
+    /* no layout read per frame: the section's place comes from measure() (resize, ResizeObserver) */
+    const s = scrollY - secTop;
+    if (s === lastS) return;
+    lastS = s;
+    const r = { top: -s, bottom: secH - s };
     const phone = phoneMq.matches;
     const P = phone ? PHONE : DESK, O = phone ? OUT_PHONE : OUT_DESK;
     const raws = projects.map((p) => arrival(p, s));
@@ -206,13 +211,14 @@ export function initDeck(sec: HTMLElement): Deck {
 
   function settle() {
     clearTimeout(settleT);
-    settleT = window.setTimeout(() => { frame(); if (cur !== shown) swap(cur); }, 200);
+    settleT = window.setTimeout(() => { lastS = NaN; frame(); if (cur !== shown) swap(cur); }, 200);
   }
   const onScroll = () => { kick(); settle(); };
   addEventListener('scroll', onScroll, { passive: true });
-  if ('onscrollend' in window) addEventListener('scrollend', () => { clearTimeout(settleT); settleT = window.setTimeout(() => { frame(); if (cur !== shown) swap(cur); }, 120); });
+  if ('onscrollend' in window) addEventListener('scrollend', () => { clearTimeout(settleT); settleT = window.setTimeout(() => { lastS = NaN; frame(); if (cur !== shown) swap(cur); }, 120); });
   addEventListener('resize', () => { measure(); for (const p of projects) p.cache = []; kick(); }, { passive: true });
-  new ResizeObserver(() => { measure(); kick(); }).observe(sec);
+  const ro = new ResizeObserver(() => { measure(); kick(); });
+  ro.observe(sec); ro.observe(document.body);
   new IntersectionObserver(([e]) => { running = e.isIntersecting; if (running) kick(); else if (pinned) { pinned = false; release('work'); } }, { rootMargin: '50% 0px' }).observe(sec);
 
   /* focus on a project's button brings its slot into place (spec 4.5, "Focus and keys") */
