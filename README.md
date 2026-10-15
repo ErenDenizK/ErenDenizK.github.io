@@ -24,7 +24,9 @@ The browser tests need Playwright's Chromium (`npx playwright install chromium`,
 `PLAYWRIGHT_BROWSERS_PATH`). `npm run build:test` builds the site under the non-root base `/Portfolio/`
 on purpose, to catch base-path bugs (the live site is at `/`), and a second copy with fixture log entries; `npm test` serves both like
 Pages and runs the navigation suite, the log templates, axe, and the screenshot matrix (written to
-`tests/shots/`). `npm run budget` checks first paint (at most 200 KB per page).
+`tests/shots/`). `npm run budget` checks first paint (at most 200 KB per page). The photo tools
+(`tools/photos`) use `sharp`, which is not a direct dependency: it arrives with Astro (an optional
+dependency of `astro`), so `npm ci` installs it.
 
 ## Where things are
 

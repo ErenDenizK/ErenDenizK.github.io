@@ -20,7 +20,8 @@ const repo = path.resolve(here, '../..');
 const out = path.join(here, 'out');
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
 const fontsDir = path.resolve(arg('--fonts', here));
-const require = createRequire(path.join(process.env.PLAYWRIGHT_PATH || '/opt/node-tools/node_modules', '/'));
+// Playwright: the repo's own node_modules (it comes with @playwright/test), or PLAYWRIGHT_PATH.
+const require = createRequire(process.env.PLAYWRIGHT_PATH ? path.join(process.env.PLAYWRIGHT_PATH, '/') : import.meta.url);
 const { chromium } = require('playwright');
 
 const data = JSON.parse(fs.readFileSync(path.join(here, 'cards.json'), 'utf8'));
