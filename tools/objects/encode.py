@@ -2,6 +2,7 @@
 (ADR-0006 §2-3; media research §8 and its recipe).
 
   python3 tools/objects/encode.py edk [--masters DIR] [--out media/objects]
+  (a retired object, log or record, defaults to --out media/archive/objects)
 
 Needs numpy, Pillow with WebP and AVIF (the Blender venv has both) and an ffmpeg with
 libsvtav1, libx265 and libx264 (Ubuntu's ffmpeg 6.1 has all three).
@@ -53,7 +54,10 @@ G = G8 / 255
 ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
 ap.add_argument("obj")
 ap.add_argument("--masters", default=os.environ.get("OBJECT_MASTERS", "/tmp/object-masters"))
-ap.add_argument("--out", default=os.path.join(REPO, "media", "objects"))
+# Retired objects (the microphone and the card file, media/archive/README.md) encode into the
+# archive, never back into media/objects/, which is what the site reads.
+RETIRED = ("log", "record")
+ap.add_argument("--out", help="default media/objects, or media/archive/objects for a retired object")
 ap.add_argument("--still", choices=("auto", "webp", "avif"), default="auto")
 ap.add_argument("--webp-q", type=int)
 ap.add_argument("--avif-q", type=int, help="full grid tier (default 60)")
@@ -87,6 +91,8 @@ for k, v in {**DEFAULTS, **OBJECT.get(A.obj, {})}.items():
     if k not in ("idle_crf", "spin_crf") and getattr(A, k) is None:
         setattr(A, k, v)
 
+if A.out is None:
+    A.out = os.path.join(REPO, "media", "archive", "objects") if A.obj in RETIRED else os.path.join(REPO, "media", "objects")
 M = os.path.join(A.masters, A.obj)
 OUT = os.path.join(A.out, A.obj)
 WORK = os.path.join(M, "sub")

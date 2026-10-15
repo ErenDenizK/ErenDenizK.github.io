@@ -1,6 +1,7 @@
 /* Files the site serves straight from the repo, without copying them into public/:
    - media/objects/<name>/**   the pre-rendered objects the pages use (ADR-0006), written by
-                                tools/objects; a folder no page names (a retired object) stays unpublished
+                                tools/objects; only folders a page names are published (retired
+                                objects live in media/archive/objects/, which nothing here reads)
    - content/projects/<slug>/captures/*.mp4   each product's signature clip (family-kit
                                 presentation.md §3), published as media/captures/<slug>/<file>; its
                                 screens and poster are PNG masters the build turns into AVIF and WebP
@@ -43,7 +44,7 @@ function usedCards() {
 }
 
 /** Objects the pages use: Home's edk, Record's recorder and each project's `object` (retired objects
-    stay in media/objects for tools/objects, unpublished). */
+    are kept in media/archive/objects/, outside MEDIA_DIR, so they are never published). */
 function usedObjects() {
   const names = new Set(['edk', 'recorder']);
   if (fs.existsSync(PROJECTS_DIR)) for (const f of fs.readdirSync(PROJECTS_DIR)) {
