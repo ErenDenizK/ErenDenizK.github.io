@@ -2,7 +2,7 @@
 /* Home prototype V3 "Statement" (Phase 2 Home plan, section 3 V3; learns from Dia): a hidden workbench,
    noindex, not linked from anywhere and out of the sitemap (astro.config.mjs filters /lab/). The live
    Home (src/pages/index.astro) is not changed.
-   Strips: 1 intro (the name, one statement in --h3-home, the role line, the live lede; the object beside
+   Strips: 1 intro (the name, the role line, one statement in --h3-home, the live lede; the object beside
    it from 900 px, outside the 680 px text column, and under the text on phones), 3 Work (three rows with
    a real still screen; Eat Map has no screens, so its object sits in a dark tile of the same box),
    4 Now, 5 Record (the newest three entries; hidden when there are none), 6 About and links, 7 the foot.
@@ -92,6 +92,8 @@ const OPTIONS: [string, string, [string, string][]][] = [
     <div class="h3-intro">
       <div class="h3-text">
         <h1 class="h3-name" id="h-home" data-s="0">{site.name}</h1>
+        {/* the role sits right under the name, so name and role are in the top 130 px of content (charter §3.4) */}
+        <p class="h3-role" data-s="0">{k.study} · <span class="lg">{k.school}</span><abbr class="sm" title={k.school}>{k.schoolShort}</abbr> · {k.year}</p>
         {STATEMENTS.map(([id, text, draft]) => (
           <>
             {draft && <Fragment set:html={`<!-- DRAFT: statement ${id.toUpperCase()} (Home plan V3) -->`} />}
@@ -99,7 +101,6 @@ const OPTIONS: [string, string, [string, string][]][] = [
           </>
         ))}
         <div class="h3-who" data-s="2">
-          <p class="h3-role">{k.study} · <span class="lg">{k.school}</span><abbr class="sm" title={k.school}>{k.schoolShort}</abbr> · {k.year}</p>
           <p class="h3-lede"><span class="h3-lede-1">{lede1} </span>{lede2}</p>
         </div>
       </div>
@@ -258,8 +259,8 @@ const OPTIONS: [string, string, [string, string][]][] = [
   html[data-h3-st="b"] .h3-st[data-st="b"], html[data-h3-st="c"] .h3-st[data-st="c"] { display: block; }
   html[data-h3-st="b"] .h3-lede-1, html[data-h3-st="c"] .h3-lede-1 { display: none; }
   .h3-who { margin-top: 24px; }
-  .h3-role { font: 500 var(--t-meta)/var(--lh-meta) var(--f-ui); letter-spacing: 0.005em; color: var(--ink-3); }
-  .h3-lede { margin-top: 12px; max-width: 30em; color: var(--ink-2); text-wrap: pretty; }
+  .h3-role { margin-top: 6px; font: 500 var(--t-meta)/var(--lh-meta) var(--f-ui); letter-spacing: 0.005em; color: var(--ink-3); }
+  .h3-lede { margin-top: 0; max-width: 30em; color: var(--ink-2); text-wrap: pretty; }
   .h3-obj { justify-self: center; width: var(--h3-obj); }
   .h3-o { display: none; }
   html:not([data-h3-obj]) .h3-o-mark, html[data-h3-obj="mark"] .h3-o-mark { display: block; }
