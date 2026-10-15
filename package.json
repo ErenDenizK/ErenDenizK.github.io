@@ -19,7 +19,7 @@
     "photos": "node tools/photos/grade.mjs && node tools/photos/postcards.mjs",
     "worlds": "node tests/worlds.mjs",
     "clip": "node tools/captures/clip.mjs",
-    "verify": "npm run worlds && npm run check && npm run build:test && npm run budget -- dist && npm test"
+    "verify": "npm run worlds && npm run check && npm run build:test && npm run budget && npm test"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.3",
