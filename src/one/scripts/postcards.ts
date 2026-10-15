@@ -38,6 +38,7 @@ export function initPostcards() {
       const c = pc.querySelector('.pc-cap');
       cap.replaceChildren(...(c ? [...c.childNodes].map((n) => n.cloneNode(true)) : []));
       cap.hidden = !(document.documentElement.dataset.cap === 'large' && c);
+      cap.style.visibility = '';
       if (!dlg.open) dlg.showModal();
       open = pc;
       const big = stage.querySelector<HTMLElement>('[data-big-card]')!;
@@ -91,6 +92,8 @@ export function initPostcards() {
       card.setAttribute('aria-pressed', String(turned));
       front.setAttribute('aria-hidden', String(turned));
       back.setAttribute('aria-hidden', String(!turned));
+      /* the back carries the note itself: the caption under the card steps aside, so it is never read twice */
+      cap.style.visibility = turned ? 'hidden' : '';
     };
     const draw = () => card.style.setProperty('--pc-sw', `${sw.toFixed(2)}deg`);
     const springBack = () => {
