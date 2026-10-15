@@ -33,9 +33,9 @@ build tracks at a time.
 | 0 | retired objects to `media/archive/` | done 2026-10-15 | |
 | 0 | `?live` engine and ADR-0009 | done 2026-10-15: engine removed, ADR-0009 rejected | |
 | 1 Foundations | design charter (`docs/design/charter.md`) | proposed 2026-10-15, critic-checked; taste lines [T] wait on the owner | owner gate: the [T] lines |
-| 1 | colour system and theme candidates A Graphite, B Paper, C Hybrid, D Moods at `/lab/themes/` (all 395 pairings pass) | lab built 2026-10-15 | owner gate 1: pick a candidate on phone and desktop; then align `--ink-2` (charter #c4bfb6 vs lab #d3cfc7) |
-| 1 | measuring tools: `npm run palette` (live: 26 of 104 pairings fail APCA, 3 fail WCAG) and `npm run palette:lab` | checker done 2026-10-15 | into `verify` once the chosen theme is live; a page probe after the charter |
-| 2 Home | Home planned strip by strip, top to bottom: what each strip says, how it is shown, where it links; the object decided inside the plan | plan | an outline and copy draft from the owner's facts, then comps |
+| 1 | colour system: Graphite chosen and live (ADR-0016); the house theme passes every floor | done 2026-10-15 | 3 product-world pairings left to the Family chat; OG cards still on #0a0a0b (re-render) |
+| 1 | measuring tools: `npm run palette:gate` in verify and CI | done 2026-10-15 | a page probe against the charter |
+| 2 Home | three prototypes on lab pages: `/lab/home-v1/` Index, `/lab/home-v2/` Strips, `/lab/home-v3/` Statement, with `?aura=` and `?col=` and object switches | lab built 2026-10-15, critic-checked | owner gate 1: pick a direction on phone and desktop |
 | 2 | re-apply ADR-0015 to the chosen Home | waiting on Home | |
 | 3 About | structure: keep "How I work", rework "who I am / where I study / photos", tidier writing like Home, light and aura back on the ground | waiting on Phase 1 | comps |
 | 3 | ID card: denser surface texture on both faces; the lanyard follows the card in mouse-follow mode | plan | lab page |
