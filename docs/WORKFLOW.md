@@ -50,9 +50,9 @@ the whole line.
 
 - **One queue.** `docs/PLAN.md` is the only list of work and the only list of open questions. If it is
   not in PLAN, nobody is working on it.
-- **Work-in-progress limit.** At most two build tracks at once; research and review agents may run
-  beside them. Agents run two at a time unless the owner raises the limit (CLAUDE.md), so the weekly
-  usage limit lasts.
+- **Work-in-progress limit.** At most two build tracks at once. Research and review run up to four
+  agents at a time, builders two (CLAUDE.md). This is a default: the lead runs more when the gain is
+  clear and fewer when the weekly usage limit is tight; the owner may lift it.
 - **Pull, not push.** A station starts only when the station before it finished its check. Builders
   never start from words alone; they start from a picked comp.
 - **Stop the line.** A failing verify, a broken phone layout, or a critic's refutation stops the track
@@ -129,7 +129,16 @@ the journal.
   says plainly who did what: the owner directs, Claude writes.
 - `npm run verify` before every push to `dev`; a push to `dev` deploys only after CI passes.
 
-## 8. Reporting to the owner
+## 8. Writing
+
+- Docs the owner does not need to read (ADRs, HANDOFF, PLAN, journal, agent briefs, CLAUDE.md)
+  follow Simplified Technical English (ASD-STE100) in spirit: short sentences (about 20 words or
+  fewer), one idea per sentence, active voice, one word for one meaning, no idioms. It keeps docs
+  short and unambiguous for agents, and it costs less context.
+- Site copy and Record entries keep the owner's voice; questions to the owner keep their plain
+  Turkish briefs.
+
+## 9. Reporting to the owner
 
 - In Turkish, short, plain: what changed, what to look at on the phone and on the computer, what
   could not be verified (real Safari, real GPU), the batch of questions.

@@ -137,3 +137,8 @@ Work happens on `dev`; CI (`.github/workflows/ci.yml`) runs every gate on each p
 `dev` deploy the live site during the build-up (`.github/workflows/deploy.yml`, ADR-0004
 amendment), once CI has passed on them (ADR-0004 note 2026-10-15), so run `npm run verify` first;
 only the owner touches `main`.
+
+## License
+
+Code: MIT (`LICENSE`). Photographs, renders and written content: all rights reserved
+(`LICENSE-CONTENT.md`). Fonts keep their own licenses.

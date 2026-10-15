@@ -485,3 +485,23 @@ The owner's words, translated from Turkish.
   keep docs and CLAUDE.md reviewed regularly; consult the owner before adding a rule to CLAUDE.md.
   Turn the owner's dictation into clean bullet points and improve on it. Present the important
   questions with explanations so the owner can answer well.
+
+### 2026-10-15, evening (answers on the decision board)
+
+1. Rewrite the past commits to the owner's name now (A).
+2. The owner makes `dev` the default branch on GitHub, so the commits count on the profile (A).
+3. The metro photos and the second cat photo stay in the repo: they can be used when needed,
+   especially the metro ones; more photos will be uploaded over time.
+4. Retire the `?live` engine; ADR-0009 is rejected (A).
+5. License: code under MIT; photos, renders and text all rights reserved (A).
+6. The research reports' screenshots go into the repo so agents can see the references (A).
+7. Agents: start with up to four in research and review and two for builders. Not a hard rule:
+   the owner watches the usage limit and may lift the limits; the lead runs more when the gain is
+   clear. Control and optimisation stay with the lead.
+8. CLAUDE.md rules 1–7 approved. Rule 8 (dictation turned into a list and shown first) changed:
+   the owner asked whether reading a message twice causes context rot; re-evaluate it; the owner
+   only wanted the emphasis and a check.
+9. Reports as proposed (a short chat summary per milestone, a board for decisions, a lab link to
+   try). Use the documentation standard written for aircraft manuals (Simplified Technical
+   English) in places the owner does not need to read; questions to the owner keep their plain
+   explanations.

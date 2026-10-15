@@ -61,13 +61,18 @@ location "(Istanbul)" in the hiring section and the "free study room" headline e
 Privacy: the capture tools blurred emails, phone numbers and contact lines before capturing and
 scrubbed them from the JSON; a regex sweep of these files before committing found none.
 
+## Images
+
+`img/` holds the 64 report figures (4.1 MB), added on 2026-10-15 with the owner's agreement so
+agents can see the references. They are third-party screenshots, kept for research and commentary
+only (`LICENSE-CONTENT.md`). The links in `report.md` and `rapor.html` resolve to them.
+
 ## What is not here
 
-- **Images.** `img/` (64 report figures) and `img-dossiers/` (dossier clips and frames) are
-  third-party screenshots and wait on the owner's agreement, so the reports' image links do not
-  resolve in the repo. Read them in the published artifacts: the report
-  https://claude.ai/artifact/5vVohMohG5zLmSrh456jjB and the dossiers
-  https://claude.ai/artifact/V1SZ4t9nfRH7TuxVw3tdva.
+- **Dossier images.** `img-dossiers/` (dossier clips and frames, 11 MB) stays in the owner's archive.
+  The dossier reports' image links therefore do not resolve here. Read them in the published
+  dossiers: https://claude.ai/artifact/V1SZ4t9nfRH7TuxVw3tdva. The report is also published:
+  https://claude.ai/artifact/5vVohMohG5zLmSrh456jjB.
 - **Raw captures** of all 127 sites (`library/captures/`), the intermediate reports and every scroll
   frame (`reviews/`; their JSON matches `data/`), and the sites' stylesheets (`data/dossiers/css/`,
   third-party code). They stay in the owner's archive, off the repo.

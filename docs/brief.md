@@ -45,6 +45,9 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   treat it as `dev` only, no other remote branches. (2026-10-15)
 - Every commit, past and future, carries the owner's name, openly co-authored with Claude: the
   owner directs the agents and the work and wants that activity visible on GitHub. (2026-10-15)
+- `dev` becomes the default branch on GitHub (the owner sets it) so the commits count on the
+  profile; past commits are rewritten to the owner's name. Code is MIT; photos, renders and text
+  are all rights reserved. (2026-10-15, evening)
 
 ### Home
 
@@ -154,7 +157,8 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   stretch a low-resolution derivative across a large area. More will come. Of the two cat photos
   use one, never both. Photos may sit in different spots (a photo card, the ID card, ...); About
   fits best, Home is possible. (2026-10-10)
-- Metro photos: never used. (2026-10-11)
+- Metro photos: never used. (2026-10-11) They stay in the repo and can be used when needed,
+  especially the metro ones; more photos will come. (2026-10-15, evening)
 - The postcard concept is not required. Wanted: a modern, innovative, elegant, professional way
   to present the photos, beautiful in every respect; not a simple gimmick. (2026-10-11, late)
 - After testing the concepts: the two-sided, flippable postcard stays the concept; its back and
