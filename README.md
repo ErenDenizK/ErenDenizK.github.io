@@ -50,8 +50,8 @@ src/
   scripts/             media.ts (stage), lean.ts (where an object looks), sheet.ts (project sheet),
                        log.ts, card3d.ts (cards), postcard.ts (About's postcards), reel.ts (Work's
                        capture reels), clock.ts (Istanbul time in the bar), site.ts, rail.ts (scroll
-                       rail), embassy.ts, accent.ts, env.ts, live/ (the ?live engine), photos/ (the
-                       trial ?photos presentations)
+                       rail), embassy.ts, accent.ts, env.ts, photos/ (the trial ?photos
+                       presentations)
   styles/              global.css (tokens and layout), log.css, transitions.css, rail.css, showcase.css,
                        work.css, embassy.css, wordmarks.css
   fonts/               subset Newsreader and Inter, and the wordmark faces Funnel Display and Nunito

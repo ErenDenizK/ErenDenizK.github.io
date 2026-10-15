@@ -166,7 +166,8 @@ repo, nothing per visit. The worker is a separate chunk loaded with the first le
 a real GPU-composited Chrome and real laptop panels; all numbers are headless Chromium. Work's slots
 are 640 CSS px at 1440 wide, so at DPR 2 the poster (1200) is enlarged 1.07x and the lean frames
 (1040-scale renders) up to 1.23x: closing that needs larger renders or a smaller slot, the owner's call.
-The live engine behind `?live` (ADR-0009) still blends four frames and keeps its own roll.
+The live engine behind `?live` (ADR-0009) still blends four frames and keeps its own roll. *Note
+2026-10-15: ADR-0009 was rejected and the engine removed.*
 
 ## Note 2026-10-10 (evening): the Record's object is the pocket cassette recorder
 

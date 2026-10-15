@@ -27,7 +27,7 @@ build tracks at a time.
 | 0 Housekeeping | branches: `main` + `dev` only | waiting on the owner | the owner deletes `claude/portfolio-site-design-n38jml` on GitHub (the proxy refuses deletes here) |
 | 0 | commit authorship: owner as author, Claude as co-author | future commits done; past commits wait on Q1 | Q1 |
 | 0 | retired objects to `media/archive/` | done 2026-10-15 | |
-| 0 | `?live` engine and ADR-0009 | waiting on Q4 | Q4 |
+| 0 | `?live` engine and ADR-0009 | done 2026-10-15: engine removed, ADR-0009 rejected | |
 | 1 Foundations | design charter (`docs/design/charter.md`): limits per width, type scale, motion language (sequenced reveals, no loaders) | research done, plan | the owner reads a one-page Turkish summary |
 | 1 | colour system: measured palette for every pairing; soft grounds; theme study (refined dark, light, hybrid, a few colour themes) shown with the real objects and renders | research | comps of themes with objects, owner gate 1 |
 | 1 | measuring tools: a palette checker (WCAG 2 and APCA) and a page probe against the charter | plan | tools run in `npm run verify` |
@@ -51,7 +51,7 @@ Put to the owner as numbered questions with Turkish briefs (board artifact and c
    branch, or the owner merges `dev` into `main` regularly.
 3. Remove the never-used metro photos and the second cat photo from the repo (and, with Q1, from
    history).
-4. Retire the `?live` engine (ADR-0009 rejected).
+4. Retire the `?live` engine (ADR-0009 rejected). Answered 2026-10-15: yes; done.
 5. A LICENSE: code open (MIT), photos, renders and text all rights reserved.
 6. The reference reports' 64 third-party screenshots (4 MB) into the public repo, so agents can see the
    references.

@@ -1,8 +1,8 @@
 # ADR-0009: Live frames: one frame engine and one light, behind a flag
 
-**Status:** proposed (the owner A/Bs it on the live site behind `?live`, one page load at a time since
-2026-10-11; nothing changes without the flag); no verdict recorded, parked until the real-time 3D decision (2026-10-10, `docs/history/plan-2026-10-clean-restart.md`
-track 7) · **Amends:** ADR-0006 items 4 (interaction) and 6 (tiers); keeps items 1–3, 5 and 7 ·
+**Status:** rejected 2026-10-15 by the owner (pre-rendered kept, option a); code removed. It never
+took effect, so ADR-0006 stands as written. Before that it was proposed and parked behind `?live`
+(2026-10-10 to 2026-10-15) · **Would have amended:** ADR-0006 items 4 (interaction) and 6 (tiers) ·
 **Rests on:** brief §7 (2026-10-09 after v0: the owner misses prototype E's live, interactive
 animation on desktop; "if we render well, phones can get animation too");
 `research/2026-10-liveliness.md` (§2 diagnosis, §5 design, §6 proofs, §7 tiers)
@@ -134,3 +134,20 @@ and a project page; a phone with `?live` or `?live=1` loads no engine) and `test
   frame times, heat and battery must be measured on their desktop and iPhone before this leaves the flag.
 - Per-part axes (edk's letters hopping independently, the Eat Map pin under gravity) and video as
   texture transport are not built yet (research §8 items 3–4).
+
+## Rejection 2026-10-15
+
+The owner answered "Retire the `?live` engine?" with "A: yes, delete it, and mark ADR-0009
+rejected". Pre-rendered objects stay, as chosen on 2026-10-11 (option a).
+
+Removed from `dev`:
+
+- `src/scripts/live/` (engine, flag, tier, gl, spring) and its hooks in `media.ts` and `global.css`;
+- `tests/e2e/live.spec.ts` and the stored-flag check in `tests/e2e/reading.spec.ts`;
+- the `live/` folders of edk, Recto and the recorder, and the manifest keys `normals`, `states` and
+  `bytes.live`;
+- the `normal` stage in `tools/objects/frames.py` and the live export in `tools/objects/encode.py`.
+
+Visitors without `?live` see the same site. A stored `edk-live` key is no longer cleared; nothing reads
+it. The archived record object keeps its `live/` folder (`media/archive/`). The last `dev` commit with
+the engine is `1d23f55`; git history keeps the code.
