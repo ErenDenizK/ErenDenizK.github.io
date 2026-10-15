@@ -16,6 +16,7 @@ import interLatin from '../fonts/inter-latin.woff2?url';
 import newsLatin from '../fonts/newsreader-latin.woff2?url';
 import newsTr from '../fonts/newsreader-tr.woff2?url';
 import { getSite, url, abs } from '../lib/site';
+import { GROUND } from '../lib/theme';
 import { ogPath } from '../lib/files.mjs';
 
 interface Props {
@@ -64,7 +65,7 @@ const graph = [
   <meta name="description" content={description}>
   <link rel="canonical" href={canonical}>
   {noindex && <meta name="robots" content="noindex">}
-  <meta name="theme-color" content="#0a0a0b">
+  <meta name="theme-color" content={GROUND}>
   <meta name="color-scheme" content="dark">
   <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin>
   <link rel="preload" href={newsLatin} as="font" type="font/woff2" crossorigin>

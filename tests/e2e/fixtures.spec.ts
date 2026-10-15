@@ -96,7 +96,8 @@ test.describe('record with entries', () => {
     await page.goto('record/2026/fixture-essay/');
     await expect(page.locator('.post-toc ol a')).toHaveCount(2);
     await expect(page.locator('figure.fig#fig-entry-flow svg')).toHaveCount(2);
-    await expect(page.locator('.post-body a[href="https://example.com/"]')).toHaveCSS('color', 'rgb(143, 184, 255)');
+    /* a link in the Record takes the Record blue's ink, lifted for text (--log-ink, ADR-0016) */
+    await expect(page.locator('.post-body a[href="https://example.com/"]')).toHaveCSS('color', 'rgb(168, 211, 255)');
     expect(await page.locator('script[type="application/ld+json"]').textContent()).toContain('BlogPosting');
 
     await page.goto('record/2026/');

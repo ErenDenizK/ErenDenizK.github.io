@@ -62,7 +62,7 @@
 .w-head { display: flex; align-items: flex-end; gap: 4px; }
 .w-emblem { width: clamp(112px, 10vw, 148px); margin: -20px 0 -16px -18px; flex: none; }
 .w-index { display: flex; align-items: baseline; gap: 2px; padding-bottom: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-.w-index .w-n { color: var(--p); }
+.w-index .w-n { color: var(--p-ink, var(--p)); }
 /* the wordmark as large as its column allows: a long name (english prep.) steps down, a short one caps */
 .w-title { --t: clamp(48px, 5vw, 76px); font-size: min(var(--t), calc((100cqi - var(--beside, 0px)) / (var(--chars, 8) * 0.58))); line-height: 1.04; font-weight: 400; margin: 6px 0 0 -0.02em; }
 .w-title .wm { line-height: 1.04; padding-bottom: 0.06em; }
@@ -96,16 +96,16 @@
 
 /* the browser frame: the product's real address in a quiet bar, its own corner, a hairline and its light */
 .fr-web {
-  position: relative; border-radius: 12px; overflow: hidden; background: #0e0e10;
+  position: relative; border-radius: 12px; overflow: hidden; background: var(--frame);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.09), 0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
     0 40px 90px -30px rgba(0, 0, 0, 0.9), 0 0 140px -40px color-mix(in srgb, var(--pg) 45%, transparent);
 }
-.fr-bar { position: relative; height: 32px; display: flex; align-items: center; padding: 0 13px; background: #151517; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.fr-bar { position: relative; height: 32px; display: flex; align-items: center; padding: 0 13px; background: var(--frame-bar); border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
 .fr-dots { display: flex; gap: 7px; }
 .fr-dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.13); }
 .fr-url { position: absolute; left: 50%; translate: -50% 0; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  padding: 3px 14px; border-radius: 6px; background: rgba(255, 255, 255, 0.05); font: 400 12px/1.4 var(--f-ui); color: var(--ink-3); letter-spacing: 0.01em; }
-.fr-view { position: relative; background: #0b0b0d; }
+  padding: 3px 14px; border-radius: 6px; background: var(--frame-url); font: 400 12px/1.4 var(--f-ui); color: var(--fr-url-ink); letter-spacing: 0.01em; }
+.fr-view { position: relative; background: var(--frame-view); }
 .fr-view picture { display: contents; }
 .fr-view img, .fr-view video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .w-clip { position: absolute; inset: 0; opacity: 0; transition: opacity 200ms linear; }
@@ -113,7 +113,7 @@
 
 /* the phone frame: a slim dark rim around the screen, no drawn hardware */
 .fr-phone {
-  border-radius: 30px; padding: 5px; background: #08080a;
+  border-radius: 30px; padding: 5px; background: var(--frame-rim);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.6) inset, 0 30px 70px -16px rgba(0, 0, 0, 0.92), 0 0 90px -30px color-mix(in srgb, var(--pg) 40%, transparent);
 }
 .fr-phone .fr-view { border-radius: 25px; overflow: hidden; }
@@ -123,9 +123,9 @@
 /* the number beside the caption while the caption has room for a line of words (12em), above it in a
    narrow phone frame: never a sentence squeezed one word per line beside its number (audit 2026-10-11) */
 .w-cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; margin-top: 20px; min-height: 22px; color: var(--ink-2); font-size: var(--t-ui); line-height: 1.45; text-wrap: pretty; }
-.w-cap-n { flex: none; color: var(--p); font-variant-numeric: tabular-nums; }
+.w-cap-n { flex: none; color: var(--p-ink, var(--p)); font-variant-numeric: tabular-nums; }
 .w-cap-t { flex: 1 1 12em; min-width: 0; }
-.w-cap-of { color: var(--ink-4); }
+.w-cap-of { color: var(--w-cap-of); }
 
 /* the ticks go to a step (buttons; shown by the script when the reel steps) */
 .w-ticks { display: flex; justify-content: flex-end; margin-top: -33px; position: relative; }

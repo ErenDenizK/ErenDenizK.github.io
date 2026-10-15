@@ -15,13 +15,13 @@
 .sc-head .more:hover { color: var(--ink); }
 .sc-plate {
   position: relative; overflow: hidden; margin-top: 28px; padding: 44px 56px; border-radius: 28px;
-  background: color-mix(in srgb, #050506, var(--pg) 2.5%);
+  background: color-mix(in srgb, var(--ground-deep), var(--pg) 2.5%);
   border: 1px solid color-mix(in srgb, var(--pg) 16%, transparent);
 }
 .sc-light {
   position: absolute; left: -10%; top: -30%; width: 70%; aspect-ratio: 1; pointer-events: none;
   background:
-    radial-gradient(closest-side, color-mix(in srgb, var(--pg) 11%, transparent), color-mix(in srgb, var(--pg) 4%, transparent) 58%, transparent),
+    radial-gradient(closest-side, color-mix(in srgb, var(--pg) var(--glow-base), transparent), color-mix(in srgb, var(--pg) 4%, transparent) 58%, transparent),
     radial-gradient(26% 26% at 70% 70%, color-mix(in srgb, var(--p3, var(--pg)) 5%, transparent), transparent);
 }
 .sc-lead { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 48px; align-items: center; }
@@ -37,7 +37,7 @@
 .sc-numbers div { display: flex; flex-direction: column-reverse; gap: 2px; }
 .sc-numbers dd { margin: 0; font: 400 var(--t-h2)/1 var(--f-display); letter-spacing: -0.02em; font-variant-numeric: tabular-nums lining-nums; }
 .sc-text .links { margin-top: 28px; }
-.sc-text .btn.tint { background: var(--p); }
+.sc-text .btn.tint { background: var(--p-fill, var(--p)); }
 
 /* the others: one quiet strip, never the cards Work uses */
 .sc-also { position: relative; margin-top: 44px; }

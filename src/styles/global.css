@@ -14,16 +14,47 @@
 
 :root {
   color-scheme: dark;
-  --ground: #0a0a0b;
-  --ink: #e9e5de;
-  --ink-2: #b6b1a8;
-  --ink-3: #8c877f;
-  --ink-4: #5f5b55;
-  --read: #dcd7ce;
-  --rule: rgba(233, 229, 222, 0.1);
-  --rule-2: rgba(233, 229, 222, 0.18);
-  --wash: rgba(233, 229, 222, 0.06);
+  /* Graphite (ADR-0016): one dark theme, off pure black. Every value meets its floor in npm run palette
+     (tools/palette/check.mjs): text needs both WCAG 2 and APCA (docs/design/charter.md §4). */
+  /* grounds: the page, one step down (object plates), two steps up (frames, glass) */
+  --ground: #121214;
+  --ground-deep: #0d0d0f;
+  --raised: #1a1a1d;
+  --raised-2: #232327;
+  /* ink by role, solved on --ground: ink Lc 90, read 84, ink-2 77 (body floor 75), ink-3 49 (labels,
+     45), ink-4 33 (non-text only: rules, underlines, idle marks; 30 and 3:1) */
+  --ink: #e8e3dd;
+  --ink-2: #d3cfc7;
+  --ink-3: #a19d96;
+  --ink-4: #827e78;
+  --read: #dedad2;
+  --ink-hi: #fff8ee;              /* hover: a step brighter than the ink, never #fff */
+  --rule: rgba(232, 227, 221, 0.1);
+  --rule-2: rgba(232, 227, 221, 0.18);
+  --wash: rgba(232, 227, 221, 0.06);
   --focus: #f3efe7;
+  --sel: rgba(232, 227, 221, 0.9);
+  /* surfaces drawn over the ground */
+  --pill: rgba(30, 30, 34, 0.7);          /* the tab pill's glass */
+  --pill-on: rgba(255, 255, 255, 0.075);  /* the active tab's bed */
+  --pill-edge: rgba(255, 255, 255, 0.06);
+  --sheet-bar: color-mix(in srgb, var(--ground) 95%, transparent);
+  --btn: var(--ink);
+  --btn-ink: var(--ground);
+  --btn-hover: var(--ink-hi);
+  --btn-ink-tint: var(--ground);
+  --frame: #161618;                        /* the browser frame around a real screen */
+  --frame-bar: #1c1c1f;
+  --frame-url: rgba(255, 255, 255, 0.05);
+  --frame-view: #101012;
+  --frame-rim: #08080a;                    /* the phone frame's rim */
+  --fr-url-ink: #aaa69f;
+  --w-cap-of: var(--ink-3);
+  --dim: rgba(4, 4, 5, 0.74);              /* the ground under an open sheet */
+  --dim-phone: rgba(4, 4, 5, 0.6);
+  /* light pools (charter §4, "every page has light"): the share of the page light in a pool's centre.
+     Every house page carries at least --glow-base. */
+  --glow-base: 11%;
 
   /* accents (brief §7, accepted 2026-10-09) */
   --recto: #bbed26;
@@ -37,6 +68,8 @@
   --edk: #c9d4ff;
   --log: #8fb8ff;
   --about: #f3b886;
+  /* where a light is text, its own measured ink (charter §4): Record links */
+  --log-ink: #a8d3ff;
 
   /* type: three roles, nine sizes (audit §3.2, §3.4) */
   --f-display: "Newsreader", "Newsreader Fallback", Georgia, serif;
@@ -77,7 +110,7 @@ body {
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
 }
-::selection { background: rgba(233, 229, 222, 0.85); color: var(--ground); }
+::selection { background: var(--sel); color: var(--ground); }
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.22em; text-decoration-color: var(--ink-4); transition: text-decoration-color var(--d-1), color var(--d-1); }
 a:hover { text-decoration-color: currentColor; }
 p, h1, h2, h3, figure, dl, dd, ol, ul, blockquote { margin: 0; }
@@ -105,7 +138,7 @@ abbr { text-decoration: none; }
 .sample {
   display: inline-flex; align-items: center;
   font: 400 12px/1 var(--f-ui); letter-spacing: 0.01em; color: var(--ink-3); white-space: nowrap;
-  padding: 4px 7px; border: 1px dashed rgba(233, 229, 222, 0.3); border-radius: 4px;
+  padding: 4px 7px; border: 1px dashed color-mix(in srgb, var(--ink) 30%, transparent); border-radius: 4px;
   vertical-align: 0.18em;
 }
 
@@ -126,13 +159,13 @@ abbr { text-decoration: none; }
 }
 .bar > * { pointer-events: auto; }
 .bar::before { content: ""; position: absolute; z-index: -1; left: 0; right: 0; top: -16px; height: 96px; pointer-events: none;
-  background: linear-gradient(180deg, rgba(10, 10, 11, 0.9) 0%, rgba(10, 10, 11, 0.62) 50%, rgba(10, 10, 11, 0) 100%); }
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ground) 90%, transparent) 0%, color-mix(in srgb, var(--ground) 62%, transparent) 50%, transparent 100%); }
 /* The quiet band under the bar (site audit B7): once the page has moved, or while the sheet is open over
    it, text passing under the mark, the tabs and GitHub sinks into the ground instead of colliding with them.
    Nearly opaque down to the pill's lower edge, then a short fade; at the top of a page it is not drawn, so
    About's photograph keeps its light. Without JavaScript it is always there. */
 .bar::after { content: ""; position: absolute; z-index: -1; left: 0; right: 0; top: -16px; height: calc(var(--bar-h) + 32px); pointer-events: none;
-  background: linear-gradient(180deg, rgba(10, 10, 11, 0.96) 0%, rgba(10, 10, 11, 0.92) 60%, rgba(10, 10, 11, 0) 100%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ground) 96%, transparent) 0%, color-mix(in srgb, var(--ground) 92%, transparent) 60%, transparent 100%);
   opacity: 0; transition: opacity var(--d-3) var(--ease-out); }
 html:not(.js) .bar::after, html.scrolled .bar::after, html.sheet-open .bar::after { opacity: 1; }
 .mark {
@@ -143,9 +176,9 @@ html:not(.js) .bar::after, html.scrolled .bar::after, html.sheet-open .bar::afte
 .tabs {
   position: relative; display: flex; gap: 2px; padding: 4px;
   border-radius: 999px;
-  background: rgba(22, 22, 25, 0.66);
+  background: var(--pill);
   -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 12px 40px -16px rgba(0, 0, 0, 0.7);
+  box-shadow: inset 0 0 0 1px var(--pill-edge), 0 12px 40px -16px rgba(0, 0, 0, 0.7);
 }
 .tabs a {
   position: relative; z-index: 1;
@@ -157,7 +190,7 @@ html:not(.js) .bar::after, html.scrolled .bar::after, html.sheet-open .bar::afte
 .tabs a:hover, .tabs a.hover-proxy, .tabs a[aria-current="page"] { color: var(--ink); }
 .tabs a:focus-visible { outline-offset: -2px; border-radius: 999px; }
 .tabs a .ind {
-  position: absolute; z-index: -1; inset: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.075);
+  position: absolute; z-index: -1; inset: 0; border-radius: 999px; background: var(--pill-on);
   view-transition-name: tab-ind;
 }
 .tabs a[aria-current="page"] { isolation: isolate; }
@@ -190,13 +223,14 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
 .btn {
   display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 20px;
   border-radius: 999px; text-decoration: none; font: 500 var(--t-ui)/1 var(--f-ui);
-  background: var(--ink); color: #0b0b0c;
+  background: var(--btn); color: var(--btn-ink);
   transition: background var(--d-1), transform var(--d-1);
 }
-.btn:hover { background: #fff8ee; }
+.btn:hover { background: var(--btn-hover); }
 .btn:active { transform: scale(0.98); }
-.btn.tint { background: var(--p); }
-.btn.tint:hover { background: color-mix(in srgb, var(--p) 88%, #fff); }
+/* a product's fill: its light, or its own fill where the light is too dark for the label (content accent.fill) */
+.btn.tint { background: var(--p-fill, var(--p)); color: var(--btn-ink-tint); }
+.btn.tint:hover { background: color-mix(in srgb, var(--p-fill, var(--p)) 88%, var(--ink-hi)); }
 .qlink { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font: 400 var(--t-ui)/1 var(--f-ui); color: var(--ink-2); text-decoration: none; }
 .qlink:hover { color: var(--ink); }
 .qlink .icon { color: var(--ink-3); transition: color var(--d-1), transform 200ms var(--ease-out); }
@@ -220,7 +254,7 @@ footer.foot { display: flex; flex-wrap: wrap; justify-content: space-between; ga
 /* the shadow belongs to the object at rest: it leaves with the melt and returns with the object */
 .media:has(.m-layer.dropping) .m-shadow, .media:has(.m-layer.arriving) .m-shadow, html[data-arrive] .media.stage .m-shadow { opacity: 0; }
 .media .m-glow { position: absolute; inset: -34%; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--light, var(--edk)) 11%, transparent), color-mix(in srgb, var(--light, var(--edk)) 4%, transparent) 55%, transparent 100%);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--light, var(--edk)) var(--glow-base), transparent), color-mix(in srgb, var(--light, var(--edk)) 4%, transparent) 55%, transparent 100%);
   transition: background var(--d-4) var(--ease-move); }
 .media .m-layer { position: absolute; inset: 0; }
 .media .m-layer picture { display: contents; }
@@ -303,7 +337,7 @@ dialog.focus::backdrop { background: transparent; }
     radial-gradient(52% 46% at 50% 0%, color-mix(in srgb, var(--pg, var(--p)) 15%, transparent), transparent 72%),
     radial-gradient(30% 40% at 6% 62%, color-mix(in srgb, var(--p2, var(--pg, var(--p))) 9%, transparent), transparent 70%),
     radial-gradient(30% 40% at 94% 72%, color-mix(in srgb, var(--p3, var(--pg, var(--p))) 9%, transparent), transparent 70%),
-    linear-gradient(180deg, transparent 0, transparent 60px, rgba(4, 4, 5, 0.74) 96px);
+    linear-gradient(180deg, transparent 0, transparent 60px, var(--dim) 96px);
 }
 .sheet {
   position: absolute; left: 0; right: 0; top: calc(var(--bar-h) + 2px); margin: 0 auto;
@@ -311,12 +345,12 @@ dialog.focus::backdrop { background: transparent; }
   background: var(--ground); border-radius: 22px; overflow: hidden;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), 0 50px 120px -30px rgba(0, 0, 0, 0.9);
 }
-.sheet-scroll { height: 100%; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(233, 229, 222, 0.2) transparent; }
+.sheet-scroll { height: 100%; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--ink) 20%, transparent) transparent; }
 .sheet-bar {
   position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 12px;
   padding: 12px 14px 12px 32px; min-height: 64px;
   /* nearly opaque: the text scrolling under the sheet's bar must not show through (site audit B11) */
-  background: rgba(10, 10, 11, 0.95); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  background: var(--sheet-bar); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   box-shadow: 0 1px 0 var(--rule);
 }
 .sheet-bar .crumb { margin-right: auto; }
@@ -366,7 +400,7 @@ dialog.focus.proxy-hover { cursor: pointer; }
 .case-next a:last-child { text-align: right; justify-items: end; }
 .case-next .meta { display: inline-flex; align-items: center; gap: 6px; }
 .case-next b { font: 400 var(--t-h3)/var(--lh-h3) var(--f-display); font-weight: 400; transition: color var(--d-1); }
-.case-next a:hover b { color: var(--p); }
+.case-next a:hover b { color: var(--p-ink, var(--p)); }
 html.sheet-open { overflow: hidden; }
 
 /* The project page without the sheet controller (no JS, a direct visit, phones): the same sheet,
@@ -432,7 +466,7 @@ html.vt-sheet::view-transition-old(root), html.vt-sheet::view-transition-new(roo
   .sheet-bar .crumb-w { display: none; }
 
   /* phones: the project is a page of its own, not a drawer (owner, 2026-10-09) */
-  .backlight { background: rgba(4, 4, 5, 0.6); }
+  .backlight { background: var(--dim-phone); }
   .sheet { inset: 0; top: 0; width: auto; height: auto; border-radius: 0; box-shadow: none; }
   .sheet-bar { padding: 8px 8px 8px 4px; min-height: 56px; gap: 4px; }
   .sheet-bar .back { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 0 12px 0 8px; border: 0; background: transparent; color: var(--ink); font: 500 var(--t-ui)/1 var(--f-ui); cursor: pointer; border-radius: 999px; }
@@ -471,7 +505,7 @@ html.vt-sheet::view-transition-old(root), html.vt-sheet::view-transition-new(roo
    that uses it glides to a new value (gradients included) instead of jumping. Across pages, the new page
    starts from the old page's accent (--accent-from, set before first paint) and the dot and the tab light
    are their own view-transition groups (transitions.css), so the colour never flashes. */
-@property --accent { syntax: "<color>"; inherits: true; initial-value: #c9d4ff; }
+@property --accent { syntax: "<color>"; inherits: true; initial-value: #c9d4ff; }  /* = --edk (a registered initial value cannot be a var()) */
 :root {
   --accent-neutral: #ddd6cb;        /* Work before a project is chosen: the warm off-white of the ink, a little cooler */
   --accent-glide: var(--d-5) var(--ease-move);
@@ -510,7 +544,7 @@ html.vt-sheet::view-transition-old(root), html.vt-sheet::view-transition-new(roo
 /* the active tab glides its --accent and the light inside it inherits the gliding value (a child that
    transitioned too would chase its parent's moving value and lag behind) */
 .tabs a[aria-current="page"] { color: color-mix(in oklab, var(--accent) 18%, var(--ink)); transition: color var(--d-2), --accent var(--accent-glide); }
-.tabs a:not([aria-current]):hover { background: rgba(255, 255, 255, 0.035); }
+.tabs a:not([aria-current]):hover { background: color-mix(in srgb, var(--pill-on) 47%, transparent); }
 
 /* arriving from another page: the colour starts where the last page left it, and the lens lights up as
    the pill settles */

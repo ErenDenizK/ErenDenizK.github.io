@@ -39,8 +39,14 @@ test('the theme lab is hidden, starts on A, and its switcher changes the candida
   expect(sitemap).not.toContain('/lab/');
 });
 
-test('a live page never carries the lab candidates', async ({ page }) => {
+/* The live theme is Graphite (ADR-0016): the ground is #121214 in the stylesheet, and the theme-color meta
+   and the web manifest (src/lib/theme.ts, which cannot read the stylesheet) say the same. */
+test('a live page never carries the lab candidates, and its ground is Graphite everywhere', async ({ page, request }) => {
   await page.goto('?still');
   expect(await page.locator('#lab-t').count()).toBe(0);
-  expect(await ground(page)).toBe('rgb(10, 10, 11)');
+  expect(await ground(page)).toBe('rgb(18, 18, 20)');
+  expect(await page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor)).toBe('rgb(18, 18, 20)');
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#121214');
+  const manifest = await (await request.get('manifest.webmanifest')).json();
+  expect([manifest.theme_color, manifest.background_color]).toEqual(['#121214', '#121214']);
 });

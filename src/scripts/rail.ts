@@ -23,7 +23,6 @@ const ROW = 28;            // one title per 28 px row at least; each row is a li
 const TMARK = 8;           // touch: the least room one mark needs on the column
 const DRAG = 4;            // pointer travel before a press on a title becomes a drag
 const SCREENS = [2, 6];    // a page without sections gets one bead per screen, between these
-const GROUND: RGB = [10, 10, 11];
 const PAST = 4.5;          // contrast the lit marks behind you keep against the ground (≥ 3:1, 1.4.11)
 type RGB = [number, number, number];
 type Mode = 'rungs' | 'plain' | 'none';
@@ -474,10 +473,14 @@ function fromLab([L, A, B]: RGB): RGB {
   const rgb = [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s, -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s];
   return rgb.map((v) => Math.min(255, Math.max(0, gam(v)))) as RGB;
 }
+/** the page ground (--ground, global.css), read once from the stylesheet so a theme change needs no edit here */
+let ground: RGB | null = null;
+const GROUND = (): RGB => (ground ??= resolve('var(--ground)', document.body));
 function rest(c: RGB): RGB {
-  if (contrast(c, GROUND) <= PAST) return c;
+  const GR = GROUND();
+  if (contrast(c, GR) <= PAST) return c;
   const [L, A, B] = toLab(c);
   let lo = 0, hi = L;
-  for (let k = 0; k < 20; k++) { const m = (lo + hi) / 2; if (contrast(fromLab([m, A, B]), GROUND) >= PAST) hi = m; else lo = m; }
+  for (let k = 0; k < 20; k++) { const m = (lo + hi) / 2; if (contrast(fromLab([m, A, B]), GR) >= PAST) hi = m; else lo = m; }
   return fromLab([hi, A, B]);
 }

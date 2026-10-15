@@ -5,13 +5,13 @@
 /** Colours: the site tokens (prototype F, :root). In the page every value is read through a
  * CSS variable with this as its fallback, so a drawing follows the page if the tokens move. */
 export const INK = {
-  ground: ['--ground', '#0a0a0b'],
-  ink: ['--ink', '#e9e5de'],
-  ink2: ['--ink-2', '#b6b1a8'],
-  ink3: ['--ink-3', '#8c877f'],
-  ink4: ['--ink-4', '#5f5b55'],
-  rule: ['--rule-2', 'rgba(233, 229, 222, 0.18)'],
-  wash: ['--wash', 'rgba(233, 229, 222, 0.06)'],
+  ground: ['--ground', '#121214'],
+  ink: ['--ink', '#e8e3dd'],
+  ink2: ['--ink-2', '#d3cfc7'],
+  ink3: ['--ink-3', '#a19d96'],
+  ink4: ['--ink-4', '#827e78'],
+  rule: ['--rule-2', 'rgba(232, 227, 221, 0.18)'],
+  wash: ['--wash', 'rgba(232, 227, 221, 0.06)'],
 }
 
 /** One accent per drawing: the project the entry belongs to, or the Log's blue. Lime is drawn
@@ -87,5 +87,5 @@ export const snap = (v) => Math.round(v / UNIT) * UNIT
 /** Half-pixel offset so a 1px or 1.5px horizontal or vertical line lands crisply at 2x. */
 export const crisp = (v) => Math.round(v * 2) / 2
 
-/** CSS value with fallback: var(--ink-3, #8c877f). */
+/** CSS value with fallback: var(--ink-3, #a19d96). */
 export const css = (pair) => `var(${pair[0]}, ${pair[1]})`
