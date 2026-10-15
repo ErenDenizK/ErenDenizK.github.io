@@ -1,0 +1,42 @@
+/* The shell's one entry (design spec §7.3): the field, the scroll reveal, the scroll driver, the rail,
+   the clock, the person's part, and PART A's answers to PART B's layer events (§7.5). */
+import { initField } from './field';
+import { initArrive } from './arrive';
+import { initScrub } from './scrub';
+import { pauseField } from './bus';
+import { initRail } from '../../scripts/rail';
+import { initClock } from '../../scripts/clock';
+
+const root = document.documentElement;
+
+initField();
+initScrub();
+initArrive();
+initRail();
+initClock();
+
+/* the quiet band under the bar, once the page has moved */
+const moved = () => root.classList.toggle('moved', scrollY > 8);
+addEventListener('scroll', moved, { passive: true });
+moved();
+
+/* PART B opens a project as a layer over Home: the field pauses, Home goes inert, the page rail hides */
+const main = document.getElementById('main');
+document.addEventListener('one:layer-open', () => {
+  pauseField(true);
+  main?.setAttribute('inert', '');
+  root.classList.add('layer-open');
+});
+document.addEventListener('one:layer-close', () => {
+  pauseField(false);
+  main?.removeAttribute('inert');
+  root.classList.remove('layer-open');
+});
+
+/* the person's part loads its interactive pieces when it comes near */
+const rest = document.querySelector('[data-part="rest"]');
+if (rest) {
+  const go = () => import('./rest').then((m) => m.initRest());
+  const io = new IntersectionObserver((e) => { if (e.some((x) => x.isIntersecting)) { io.disconnect(); go(); } }, { rootMargin: '150% 0px' });
+  io.observe(rest);
+}

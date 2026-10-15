@@ -1,0 +1,125 @@
+/* The two-page site's base (design spec §2, §4.2, §4.11): faces, reset, type roles, chips, buttons, the
+   hush behind text, the grain, the scroll reveal and the still twins. Tokens: src/one/tokens.css.
+   html.js is set before first paint; html.motion when motion is welcome (no reduced motion, no ?still),
+   html.still otherwise. Without JavaScript neither class is set and nothing waits for a script. */
+
+/* ---------- faces: the house subsets (tools/fonts/subset.py), the same files as the live site ---------- */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("../fonts/inter-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+2010-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032, U+2039-203A, U+20AC, U+2122; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("../fonts/inter-tr.woff2") format("woff2"); unicode-range: U+011E-011F, U+0130, U+015E-015F; }
+@font-face { font-family: "Newsreader"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("../fonts/newsreader-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+2010-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032, U+2039-203A, U+20AC, U+2122; }
+@font-face { font-family: "Newsreader"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("../fonts/newsreader-tr.woff2") format("woff2"); unicode-range: U+011E-011F, U+0130, U+015E-015F; }
+/* the real italic: loaded on first use, never preloaded (spec §2.1) */
+@font-face { font-family: "Newsreader"; font-style: italic; font-weight: 400 500; font-display: swap; src: url("../fonts/newsreader-italic-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+2010-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032, U+2039-203A, U+20AC, U+2122; }
+@font-face { font-family: "Newsreader"; font-style: italic; font-weight: 400 500; font-display: swap; src: url("../fonts/newsreader-italic-tr.woff2") format("woff2"); unicode-range: U+011E-011F, U+0130, U+015E-015F; }
+@font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Liberation Sans"), local("Helvetica"); size-adjust: 105%; ascent-override: 92%; descent-override: 23%; line-gap-override: 0%; }
+@font-face { font-family: "Newsreader Fallback"; src: local("Times New Roman"), local("Liberation Serif"), local("Times"); size-adjust: 100.5%; ascent-override: 73%; descent-override: 26.4%; line-gap-override: 0%; }
+
+/* the tab change between Home and the Record is a cross-document view transition (spec §3.1) */
+@view-transition { navigation: auto; }
+
+/* ---------- reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--ground); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0; min-height: 100vh; background: var(--ground); color: var(--ink);
+  font: 400 var(--fs-body) / 1.65 var(--f-sans);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip; font-synthesis: none;
+}
+h1, h2, h3, h4, p, ul, ol, li, figure, blockquote, dl, dd { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+a { color: inherit; text-decoration: none; }
+img, svg, video, picture { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+::selection { background: rgb(232 227 221 / 0.85); color: var(--ground); }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { position: fixed; z-index: 100; left: 16px; top: 12px; padding: 10px 16px; border-radius: var(--r-pill); background: var(--ink); color: var(--ground); font: 500 15px/1 var(--f-sans); translate: 0 -200%; }
+.skip:focus { translate: 0 0; }
+
+/* ---------- type roles ---------- */
+.label { font: 500 var(--fs-label) / 1.2 var(--f-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.cap { font: 500 var(--fs-cap) / 1.2 var(--f-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.small { font: 400 var(--fs-small) / 1.5 var(--f-sans); }
+.lede { font: 400 var(--fs-lede) / 1.55 var(--f-sans); letter-spacing: -0.005em; color: var(--ink-2); text-wrap: pretty; }
+.h4 { font: 500 var(--fs-h4) / 1.3 var(--f-sans); letter-spacing: -0.01em; text-wrap: balance; }
+.h3 { font: 400 var(--fs-h3) / 1.25 var(--f-serif); letter-spacing: -0.012em; text-wrap: balance; }
+.h2 { font: 500 var(--fs-h2) / 1.1 var(--f-serif); letter-spacing: -0.02em; text-wrap: balance; }
+.it { font-style: italic; }
+p { text-wrap: pretty; }
+
+/* a link inside running text: colour and underline in 150 ms (spec §4.9) */
+.tl { text-decoration: underline; text-decoration-color: var(--ink-4); text-underline-offset: 0.22em; text-decoration-thickness: 1px;
+  transition: color 150ms var(--ease-ui), text-decoration-color 150ms var(--ease-ui); }
+.tl:hover { text-decoration-color: currentColor; color: var(--ink); }
+
+/* ---------- chips and buttons ---------- */
+.chip {
+  display: inline-flex; align-items: center; gap: var(--s-2); min-height: 32px; padding: 0 var(--s-3);
+  border-radius: var(--r-chip); background: var(--fill-1); box-shadow: inset 0 0 0 1px var(--line-1);
+  font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink);
+  transition: background-color 150ms var(--ease-ui), box-shadow 150ms var(--ease-ui), scale var(--t-press) var(--ease-ui);
+}
+.chip:hover { background: var(--fill-2); box-shadow: inset 0 0 0 1px var(--line-2); }
+.chip:active { scale: 0.98; }
+.chip .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--c); box-shadow: 0 0 8px var(--c); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-5);
+  border-radius: var(--r-pill); font: 500 15px / 1 var(--f-sans);
+  background: var(--fill-2); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-2);
+  transition: background-color 150ms var(--ease-ui), box-shadow 150ms var(--ease-ui), scale var(--t-press) var(--ease-ui);
+}
+.btn:hover { background: var(--fill-3); box-shadow: inset 0 0 0 1px var(--line-3); }
+.btn:active { scale: 0.98; }
+.btn .icon { flex: none; }
+@media (pointer: coarse) { .chip { min-height: 44px; } }
+
+/* ---------- the hush: a quiet zone of ground behind a text block over a strong pool (spec §2.6) ---------- */
+.hushed { position: relative; isolation: isolate; }
+.hushed::before {
+  content: ""; position: absolute; inset: -80px -140px; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, var(--hush-c, var(--hush)), transparent);
+}
+@media (max-width: 699.98px) { .hushed::before { inset: -56px -40px; } }
+
+/* ---------- the grain: one static 128 px tile over the field and the plates, under the content ---------- */
+.grain {
+  position: fixed; inset: 0; z-index: var(--z-grain); pointer-events: none;
+  background: url("../assets/photos/grain.png") repeat; background-size: 128px;
+}
+@supports (height: 100lvh) { .grain { min-height: 100lvh; } }
+/* main clips sideways itself: a clip on body is handed to the viewport, and a phone still widens its
+   layout viewport for what overflows (a hush wider than the column) */
+main { position: relative; z-index: var(--z-content); overflow-x: clip; }
+
+/* ---------- the rail (ADR-0013, src/styles/rail.css, unchanged in look): its house names, pointed at
+   this token set so the beads keep their timing and colour ---------- */
+.rail, .rail-plain {
+  --d-1: 120ms; --d-2: 200ms; --d-3: 320ms; --d-4: 480ms;
+  --spring-ui: var(--kl-settle-ease, var(--ease-out));
+  --f-ui: var(--f-sans); --rule: var(--line-1);
+  z-index: var(--z-rail);
+}
+
+/* ---------- arrive one by one (spec §4.2): scripts/arrive.ts marks what starts below the fold ---------- */
+html.motion [data-arrive].pre { opacity: 0; translate: 0 var(--rise); }
+html.motion [data-arrive="img"].pre { translate: 0 var(--rise-img); scale: 0.97; filter: blur(2px); }
+html.motion [data-arrive].in {
+  opacity: 1; translate: 0 0; scale: 1; filter: none;
+  transition: opacity var(--t-reveal) var(--ease-out), translate var(--t-reveal) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * var(--step));
+}
+html.motion [data-arrive="img"].in {
+  transition: opacity var(--t-move) var(--ease-soft), translate var(--t-move) var(--ease-soft), scale var(--t-move) var(--ease-soft), filter var(--t-move) var(--ease-soft);
+  transition-delay: calc(var(--i, 0) * var(--step));
+}
+@media (max-width: 699.98px) {
+  html.motion [data-arrive].in { transition-duration: 560ms; }
+}
+
+/* ---------- the plates layer: drawings that scroll with the page (spec §4.3, L1 and L2) ---------- */
+.plates { position: absolute; z-index: var(--z-plate); left: 0; right: 0; top: 0; height: 2400px; overflow: clip; pointer-events: none; }
+html.layer-open #rail, html.layer-open .rail-plain { display: none !important; }

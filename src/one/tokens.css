@@ -1,0 +1,124 @@
+/* The token set of the two-page site (design spec §2; lab page /lab/one/). It inherits nothing from
+   src/styles/global.css except the Graphite grounds and the measured inks (charter §4). Every text and
+   ground pairing here is measured by `npm run palette` (tools/palette/check.mjs, scope "one"). Each value
+   keeps its reason in the spec; the comments below give only the short form. */
+
+/* The aura pigments are typed colours, so the field cross-fades between sections (spec §2.6). */
+@property --a1 { syntax: "<color>"; inherits: true; initial-value: #6f8cff; }
+@property --a2 { syntax: "<color>"; inherits: true; initial-value: #9a9cf0; }
+@property --a3 { syntax: "<color>"; inherits: true; initial-value: #3a4fb8; }
+/* the next section's light, bleeding in at the lower edge (spec §3.2: "the aura shows what comes next") */
+@property --n1 { syntax: "<color>"; inherits: true; initial-value: #a6d873; }
+
+:root {
+  color-scheme: dark;
+
+  /* grounds: Graphite, inherited and measured */
+  --ground: #121214;
+  --ground-deep: #0d0d0f;
+  --raised: #1a1a1d;
+  --raised-2: #232327;
+  --paper: #17171a;            /* the person's part, after the tear */
+  --paper-2: #1d1d21;          /* one step above the paper: cards on it */
+
+  /* inks: Dia's dark ladder 100 / 80 / 60 / 40 as solid measured colours */
+  --ink: #e8e3dd;              /* titles, UI */
+  --read: #dedad2;             /* Record prose */
+  --ink-2: #d3cfc7;            /* body, lede */
+  --ink-3: #a19d96;            /* labels, inactive steps */
+  --ink-4: #827e78;            /* non-text only */
+  --ink-hi: #fff8ee;           /* a pressed light button, never text on the ground */
+
+  /* fills and lines, on ink */
+  --fill-1: rgb(232 227 221 / 0.04);
+  --fill-2: rgb(232 227 221 / 0.07);
+  --fill-3: rgb(232 227 221 / 0.10);
+  --line-1: rgb(232 227 221 / 0.08);
+  --line-2: rgb(232 227 221 / 0.14);
+  --line-3: rgb(232 227 221 / 0.22);
+  --hush: rgb(18 18 20 / 0.62);
+  --hush-paper: rgb(23 23 26 / 0.62);
+  --focus: #f3efe7;
+
+  /* aura sets: three pigments each (spec §2.5). The project sets come from world.json (src/one/aura.mjs). */
+  --brief-1: #6f8cff; --brief-2: #9a9cf0; --brief-3: #3a4fb8;
+  --person-1: #f3b886; --person-2: #e8955a; --person-3: #8a4a2e;
+  --record-1: #8fb8ff; --record-2: #6f8cff; --record-3: #6fc9cf;
+  --aura-open: 0.32;           /* pool centre where no text sits */
+  --aura-quiet: 0.08;          /* the most light any text block may stand on */
+  --signal: #ff6b6b;
+
+  /* type: faces */
+  --f-serif: "Newsreader", "Newsreader Fallback", Georgia, serif;
+  --f-sans: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* type: scale, 1.2 per step above body; fluid from 390 to 1440 px (spec §2.2) */
+  --fs-cap: 12px;
+  --fs-label: 13px;
+  --fs-small: clamp(14px, 13.63px + 0.095vw, 15px);
+  --fs-body: clamp(16px, 15.63px + 0.095vw, 17px);
+  --fs-lede: clamp(18px, 17.26px + 0.19vw, 20px);
+  --fs-h4: clamp(20px, 18.51px + 0.381vw, 24px);
+  --fs-h3: clamp(24px, 22.14px + 0.476vw, 29px);
+  --fs-h2: clamp(32px, 28.29px + 0.952vw, 42px);
+  --fs-title: clamp(44px, 33.6px + 2.667vw, 72px);
+
+  /* space: 4 to 32 in steps of 4 and 8, then x1.5 */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
+  --s-7: 48px; --s-8: 72px; --s-9: 112px; --s-10: 168px;
+  --strip-gap: var(--s-9);     /* between strips */
+  --part-gap: var(--s-10);     /* between the three parts: brief, Work, the rest */
+  --gut: clamp(16px, 3.05vw + 4.1px, 48px);
+
+  /* columns, all centred on the page axis */
+  --w-text: 600px;
+  --w-wide: 1040px;
+  --w-stage: 1200px;
+  --w-print: min(52vw, 720px);
+  --bar-h: 76px;
+
+  /* shape and depth: on dark, a lighter plane plus a hairline plus a shadow */
+  --r-print: 3px; --r-chip: 6px; --r-screen: 10px; --r-card: 16px; --r-pill: 999px;
+  --e-card: inset 0 0 0 1px var(--line-1), inset 0 1px 0 rgb(255 255 255 / 0.04);
+  --e-print: 0 1px 2px rgb(0 0 0 / 0.5), 0 18px 40px -12px rgb(0 0 0 / 0.7);
+  --e-lift: 0 2px 4px rgb(0 0 0 / 0.5), 0 40px 90px -24px rgb(0 0 0 / 0.8);
+
+  /* z-index map, shared by PART A and PART B */
+  --z-field: 0; --z-plate: 1; --z-grain: 5; --z-content: 10; --z-layer: 50;
+  --z-bar: 60; --z-rail: 61; --z-capsule: 62; --z-big: 70;
+
+  /* motion: durations */
+  --t-press: 120ms;
+  --t-quick: 160ms;
+  --t-ui: 300ms;
+  --t-swap: 500ms;
+  --t-reveal: 700ms;
+  --t-move: 900ms;
+  --t-open: 900ms;
+  --t-close: 800ms;
+  --t-draw: 2400ms;
+  --step: 90ms;
+  --rise: 12px;
+  --rise-img: 24px;
+
+  /* motion: curves */
+  --ease-ui: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-path: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-exit: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-settle: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-draw: cubic-bezier(0.34, 0.22, 0.47, 0.84);
+}
+
+/* phone: smaller steps, a lower bar, shorter stagger and rises (spec §2.3, §4.1, §4.2) */
+@media (max-width: 699.98px) {
+  :root {
+    --bar-h: 64px;
+    --step: 75ms;
+    --rise: 8px;
+    --rise-img: 16px;
+    --strip-gap: var(--s-8);
+    --part-gap: var(--s-9);
+  }
+}

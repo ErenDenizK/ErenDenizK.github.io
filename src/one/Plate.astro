@@ -1,0 +1,96 @@
+---
+/* The brief's plate (design spec §1.2, §3.2): the line twin of the Bostancı platform at dusk, traced
+   from the owner's photograph (tools/illustrations/line-twin/), with construction lines drawn over it
+   and the red signal light on the page axis. It is L1 of the layers: it scrolls more slowly than the
+   text for the first screen (spec §4.3). The twin loads after first paint (it is a mask image, which
+   the browser fetches when it paints the plate, never before the text) and reveals outward from the
+   signal on arrival. Geometry: the 1440 px twin has the signal 287 px below its top, the 900 px one
+   179 px; the signal sits at y 560 (desktop) and y 600 (phone), see plates.json. */
+import twin1440 from '../assets/plates/bostanci-1440.webp?url';
+import twin900 from '../assets/plates/bostanci-900.webp?url';
+---
+<div class="plate" data-scrub="0 100" style={`--twin-l: url("${twin1440}"); --twin-s: url("${twin900}")`}>
+  <div class="twin"></div>
+  <svg class="construct wide" viewBox="0 0 1440 1240" fill="none" stroke="currentColor" stroke-width="1" focusable="false">
+    <circle class="dr" cx="720" cy="560" r="430" pathLength="1" transform="rotate(-90 720 560)" />
+    <circle class="dot" cx="720" cy="560" r="266" stroke-dasharray="2 6" />
+    <path class="dr" d="M0 560H1440" pathLength="1" />
+    <path class="dot" d="M720 96V1240" stroke-dasharray="1 7" />
+    <path class="dr" d="M720 560 90 1240M720 560 1350 1240" pathLength="1" />
+    <path class="dot" d="M290 96 720 560 1150 96" stroke-dasharray="2 8" />
+    <path class="dr" d="M470 176V166H970V176" pathLength="1" />
+    <path class="dr tick" d="M706 560h-16M734 560h16" pathLength="1" />
+  </svg>
+  <svg class="construct narrow" viewBox="0 0 780 1100" fill="none" stroke="currentColor" stroke-width="1" focusable="false">
+    <circle class="dr" cx="390" cy="600" r="300" pathLength="1" transform="rotate(-90 390 600)" />
+    <circle class="dot" cx="390" cy="600" r="186" stroke-dasharray="2 6" />
+    <path class="dr" d="M0 600H780" pathLength="1" />
+    <path class="dot" d="M390 80V1100" stroke-dasharray="1 7" />
+    <path class="dr" d="M390 600 40 1100M390 600 740 1100" pathLength="1" />
+  </svg>
+  <i class="sig"></i>
+</div>
+
+<style>
+  @property --rv { syntax: "<percentage>"; inherits: false; initial-value: 150%; }
+  .plate { position: absolute; left: 0; right: 0; top: 0; height: 2200px; color: var(--ink); }
+  .twin {
+    position: absolute; left: 50%; top: 273px; width: 1440px; height: 1649px; margin-left: -720px;
+    background: var(--ink); opacity: 0.2;
+    /* three masks: the drawing, a band that begins under the rows and ends under Work, and the reveal
+       that opens outward from the signal (radius --rv) */
+    -webkit-mask: var(--twin-l) 0 0 / 100% 100% no-repeat,
+      linear-gradient(180deg, transparent 0, transparent 150px, #000 330px, #000 900px, transparent 1300px),
+      radial-gradient(circle at 50% 287px, #000 calc(var(--rv) - 18%), transparent var(--rv));
+    -webkit-mask-composite: source-in, source-in;
+    mask: var(--twin-l) 0 0 / 100% 100% no-repeat,
+      linear-gradient(180deg, transparent 0, transparent 150px, #000 330px, #000 900px, transparent 1300px),
+      radial-gradient(circle at 50% 287px, #000 calc(var(--rv) - 18%), transparent var(--rv));
+    mask-composite: intersect;
+  }
+  .construct { position: absolute; left: 50%; top: 0; opacity: 0.1; overflow: visible; }
+  .construct.wide { width: 1440px; height: 1240px; margin-left: -720px; }
+  .construct.narrow { display: none; width: 780px; height: 1100px; margin-left: -390px; }
+  .sig {
+    position: absolute; left: 50%; top: 560px; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%;
+    background: var(--signal); box-shadow: 0 0 14px 4px rgb(255 90 90 / 0.5); opacity: 0.8;
+  }
+
+  @media (max-width: 699.98px) {
+    .twin {
+      top: 421px; width: 900px; height: 1031px; margin-left: -450px;
+      -webkit-mask: var(--twin-s) 0 0 / 100% 100% no-repeat,
+        linear-gradient(180deg, transparent 0, transparent 90px, #000 220px, #000 560px, transparent 860px),
+        radial-gradient(circle at 50% 179px, #000 calc(var(--rv) - 18%), transparent var(--rv));
+      -webkit-mask-composite: source-in, source-in;
+      mask: var(--twin-s) 0 0 / 100% 100% no-repeat,
+        linear-gradient(180deg, transparent 0, transparent 90px, #000 220px, #000 560px, transparent 860px),
+        radial-gradient(circle at 50% 179px, #000 calc(var(--rv) - 18%), transparent var(--rv));
+      mask-composite: intersect;
+    }
+    .construct.wide { display: none; }
+    .construct.narrow { display: block; }
+    .sig { top: 600px; }
+  }
+
+  /* ---------- arrival (spec §4.1): the lines draw, the twin opens from the signal, the signal comes last ---------- */
+  :global(html.motion) .dr { stroke-dasharray: 1; animation: draw var(--t-draw) var(--ease-draw) both; }
+  :global(html.motion) .dot { animation: fade 1600ms var(--ease-ui) 600ms both; }
+  :global(html.motion) .tick { animation-delay: 1400ms; animation-duration: 800ms; }
+  :global(html.motion) .twin { animation: reveal var(--t-draw) var(--ease-draw) 300ms both; }
+  :global(html.motion) .sig { animation: fade 300ms var(--ease-ui) 2400ms both; }
+  @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes fade { from { opacity: 0; } }
+  @keyframes reveal { from { --rv: 0%; } to { --rv: 150%; } }
+
+  /* L1: half speed for the first screen, then with the page (spec §4.3). Scroll-driven where the browser
+     has scroll timelines; scripts/scrub.ts drives the same keyframes elsewhere (one style write a frame). */
+  @supports (animation-timeline: scroll()) {
+    :global(html.motion) .plate { animation: plate-drift linear both; animation-timeline: scroll(root); animation-range: 0 100vh; }
+  }
+  @supports not (animation-timeline: scroll()) {
+    :global(html.motion) .plate { animation: plate-drift 1s linear both paused; animation-delay: calc(var(--p, 0) * -1s); }
+  }
+  @keyframes plate-drift { to { translate: 0 50vh; } }
+  @media (max-width: 699.98px) { @keyframes plate-drift { to { translate: 0 30vh; } } }
+</style>

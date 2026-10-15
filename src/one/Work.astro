@@ -1,0 +1,18 @@
+---
+/* Placeholder for PART B's Work (design spec §3.3, §7.5): it renders the slot's interface and the project
+   titles only, so PART A's rail and field can be built against it. PART B replaces this file. */
+import type { Project } from '../lib/site';
+import { getWorld } from '../lib/world';
+import { projectSet, auraAttr } from './aura.mjs';
+
+interface Props { projects: Project[]; base: string }
+const { projects } = Astro.props;
+const items = await Promise.all(projects.map(async (p) => ({ p, set: projectSet(p.data.accent, await getWorld(p.id)) })));
+---
+<section id="work" data-part="work">
+  {items.map(({ p, set }) => (
+    <div id={p.id} data-rail-sec={p.data.title} data-rail-accent={set[0]} data-aura={auraAttr(set)}>
+      <h2>{p.data.title}</h2>
+    </div>
+  ))}
+</section>

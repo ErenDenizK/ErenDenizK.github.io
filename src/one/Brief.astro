@@ -1,0 +1,75 @@
+---
+/* The brief (design spec §3.2): the name, the lede and three rows, centred on the page axis, standing
+   on the Bostancı plate (Plate.astro). The intro is the one place allowed to summarise (spec §3.5): the
+   rows name the school, the products and the Record, and link to their one place below.
+   Studying: the school and the year (the lede already gives the subject). Building: one chip per
+   project, in its colour, linking to it in Work. Writing: the Record and the date of its newest entry,
+   hidden while the Record is empty. */
+import { getSite, getProjects, getLog, projectColor, dayMon, iso, url } from '../lib/site';
+import { SETS, auraAttr, auraVars } from './aura.mjs';
+
+const site = await getSite();
+const projects = await getProjects();
+const log = await getLog();
+const newest = log[0];
+const k = site.kicker;
+const year = k.year.charAt(0).toLowerCase() + k.year.slice(1);
+---
+<section id="brief" class="brief" data-rail-sec={site.firstName} data-rail-accent={SETS.brief[0]} data-aura={auraAttr(SETS.brief)} style={auraVars(SETS.brief)}>
+  <div class="brief-in hushed">
+    <h1 class="h2 name">{site.name}</h1>
+    <p class="lede" data-in style="--d: 180ms">{site.lede}</p>
+    <dl class="rows">
+      <div class="row" data-in style="--d: 270ms">
+        <dt class="label">Studying</dt>
+        <dd class="v"><span class="wide">{k.school}</span><span class="short">{k.schoolShort}</span>, {year}</dd>
+      </div>
+      <div class="row" data-in style="--d: 360ms">
+        <dt class="label">Building</dt>
+        <dd>
+          <ul class="chips">
+            {projects.map((p) => (
+              <li><a class="chip" href={`#${p.id}`} style={`--c: ${projectColor(p)}`}><i class="dot" aria-hidden="true"></i>{p.data.title}</a></li>
+            ))}
+          </ul>
+        </dd>
+      </div>
+      {newest && (
+        <div class="row" data-in style="--d: 450ms">
+          <dt class="label">Writing</dt>
+          <dd class="v"><a class="tl" href={url('record/')}>{site.log.title}</a> <span class="when">· last entry <time datetime={iso(newest.data.date)}>{dayMon(newest.data.date)}</time></span></dd>
+        </div>
+      )}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .brief { position: relative; padding: 196px var(--gut) 0; min-height: 690px; text-align: center; }
+  .brief-in { width: min(var(--w-text), 100%); margin: 0 auto; }
+  .name { font-size: var(--fs-h2); }
+  .lede { margin: var(--s-5) auto 0; max-width: 34em; }
+  .rows { margin-top: var(--s-7); display: grid; gap: var(--s-4); justify-items: center; }
+  .row { display: flex; align-items: center; justify-content: center; gap: var(--s-4); flex-wrap: wrap; }
+  .v { font: 400 var(--fs-body) / 1.4 var(--f-sans); color: var(--ink); }
+  .when { color: var(--ink-3); }
+  .short { display: none; }
+  .chips { display: flex; gap: var(--s-2); flex-wrap: wrap; justify-content: center; }
+
+  @media (max-width: 699.98px) {
+    .brief { padding-top: 112px; min-height: 700px; }
+    .lede { margin-top: var(--s-4); }
+    .rows { margin-top: var(--s-6); }
+    .row { flex-direction: column; gap: var(--s-2); }
+    .wide { display: none; }
+    .short { display: inline; }
+  }
+
+  /* arrival (spec §4.1): the name is there from first paint; the lede and the rows rise 10 px in turn */
+  :global(html.motion) [data-in] { animation: brief-in var(--t-reveal) var(--ease-out) var(--d) both; }
+  @keyframes brief-in { from { opacity: 0; translate: 0 10px; } }
+  @media (max-width: 699.98px) {
+    :global(html.motion) [data-in] { animation-name: brief-in-s; }
+    @keyframes brief-in-s { from { opacity: 0; translate: 0 8px; } }
+  }
+</style>

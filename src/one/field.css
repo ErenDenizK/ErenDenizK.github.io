@@ -1,0 +1,62 @@
+/* The field (design spec §2.6, §4.4, §4.10): one fixed layer under the content. Three pools of the
+   current aura set plus one of the next section's light at the lower edge, each an elliptical radial
+   gradient in a 512 px box scaled up by transform (never a 90 vmax layer: about 62 MB of layer memory
+   on a phone, tech §4.2), added to the ground with plus-lighter. The pigments are typed colours on the
+   root (tokens.css), so a section change cross-fades them; scripts/field.ts picks the set. The one
+   ambient loop is the drift: transform only, periods 23, 31 and 37 s, paused when the tab is hidden,
+   when a layer is open, and in the still twins. */
+:root {
+  transition: --a1 var(--aura-t, 1100ms) var(--ease-ui), --a2 var(--aura-t, 1100ms) var(--ease-ui),
+    --a3 var(--aura-t, 1100ms) var(--ease-ui), --n1 var(--aura-t, 1100ms) var(--ease-ui);
+}
+.field {
+  position: fixed; inset: 0; z-index: var(--z-field); pointer-events: none;
+  overflow: hidden; contain: strict; isolation: isolate; background: var(--ground);
+}
+@supports (height: 100lvh) { .field { min-height: 100lvh; } }
+/* a pool: placed at its centre; the drift moves this box, the scale lives on the child */
+.pool { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; }
+.pool i {
+  position: absolute; left: -256px; top: -256px; width: 512px; height: 512px; border-radius: 50%;
+  mix-blend-mode: plus-lighter;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--c) calc(var(--o) * 100%), transparent) 0%,
+    color-mix(in srgb, var(--c) calc(var(--o) * 55%), transparent) 38%, transparent 100%);
+  transform: scale(var(--sx), var(--sy));
+}
+.pool.p1 { --c: var(--a1); --o: 0.30; --x: 50%; --y: -6%; --sx: 3.1; --sy: 2.1; }
+.pool.p2 { --c: var(--a2); --o: 0.24; --x: 86%; --y: 8%; --sx: 1.9; --sy: 1.8; }
+.pool.p3 { --c: var(--a3); --o: 0.32; --x: 6%; --y: 62%; --sx: 2.2; --sy: 1.7; }
+.pool.p4 { --c: var(--n1); --o: var(--n-o, 0.18); --x: 50%; --y: 112%; --sx: 2.4; --sy: 1.3; transition: --n-o 900ms var(--ease-ui); }
+@media (max-width: 699.98px) {
+  .pool.p1 { --x: 50%; --y: -4%; --sx: 1.6; --sy: 1.5; }
+  .pool.p2 { --x: 104%; --y: 24%; --sx: 1.1; --sy: 1.2; }
+  .pool.p3 { --x: -6%; --y: 70%; --sx: 1.2; --sy: 1.2; }
+  .pool.p4 { --x: 50%; --y: 108%; --sx: 1.5; --sy: 0.9; }
+}
+
+/* the drift: within ±6 vmax, scale 0.9 to 1.1, independent phases (the one loop that never settles) */
+html.motion .pool { animation: var(--drift) var(--period) ease-in-out var(--phase) infinite alternate; }
+.pool.p1 { --drift: drift-a; --period: 23s; --phase: -4s; }
+.pool.p2 { --drift: drift-b; --period: 31s; --phase: -17s; }
+.pool.p3 { --drift: drift-c; --period: 37s; --phase: -9s; }
+.pool.p4 { --drift: drift-b; --period: 29s; --phase: -21s; }
+@keyframes drift-a { from { transform: translate(-4vmax, 0) scale(0.94); } to { transform: translate(5vmax, 3vmax) scale(1.08); } }
+@keyframes drift-b { from { transform: translate(3vmax, -2vmax) scale(1.06); } to { transform: translate(-6vmax, 4vmax) scale(0.92); } }
+@keyframes drift-c { from { transform: translate(0, 4vmax) scale(0.9); } to { transform: translate(6vmax, -3vmax) scale(1.1); } }
+html.field-paused .pool { animation-play-state: paused; }
+
+/* arrival: the aura blooms to rest from the ground (spec §4.1, 0 to 1200 ms) */
+html.motion .field .pools { animation: bloom 1200ms var(--ease-out) both; }
+@keyframes bloom { from { opacity: 0; } }
+
+/* ---------- the still twins (spec §4.11): no fixed field; each section carries its own pools, so the
+   colour follows the content with no animation. Without JavaScript the same. ---------- */
+html.still .field .pools, html:not(.js) .field .pools { display: none; }
+html.still [data-aura], html:not(.js) [data-aura] {
+  background-image:
+    radial-gradient(60% 46% at 50% 0%, color-mix(in srgb, var(--s1, var(--brief-1)) 22%, transparent), transparent),
+    radial-gradient(40% 40% at 92% 30%, color-mix(in srgb, var(--s2, var(--brief-2)) 16%, transparent), transparent),
+    radial-gradient(44% 40% at 6% 70%, color-mix(in srgb, var(--s3, var(--brief-3)) 20%, transparent), transparent);
+  background-repeat: no-repeat;
+}
+@media (forced-colors: active) { .field .pools { display: none; } }
