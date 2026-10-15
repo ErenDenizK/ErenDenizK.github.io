@@ -16,3 +16,14 @@ The owner chose to publish from `dev` during the build-up, so pushes to `dev` de
 Agents still never push to or merge into `main`. Because every push to `dev` is now live, a
 push must pass the local gates (`npm run verify`) first, and work in progress stays on topic
 branches or in scratch until it does.
+
+## Note 2026-10-15: dev deploys only after CI passes
+
+Technique only; the branch policy above does not change. Until now `deploy.yml` ran on every push
+to `dev` beside CI and did not wait for it, so a red push still went live. Now CI calls the deploy
+workflow as its last job (`needs: check`, pushes to `dev` only), so a push to `dev` reaches the site
+only when every gate in CI passed on that commit. One workflow is used rather than `workflow_run`,
+which only fires from the workflow file on the default branch. A push to `main` (the owner's merge)
+and a manual run still deploy directly. `npm run verify` before every push stays the rule: CI is
+the backstop, not the first check. A newer push to `dev` cancels the older CI run, its deploy
+included, and deploys in its place.

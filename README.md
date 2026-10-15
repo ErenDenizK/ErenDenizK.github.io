@@ -118,4 +118,5 @@ the owner said. The slug never changes once published.
 
 Work happens on `dev`; CI (`.github/workflows/ci.yml`) runs every gate on each push. Pushes to
 `dev` deploy the live site during the build-up (`.github/workflows/deploy.yml`, ADR-0004
-amendment), so run `npm run verify` first; only the owner touches `main`.
+amendment), once CI has passed on them (ADR-0004 note 2026-10-15), so run `npm run verify` first;
+only the owner touches `main`.

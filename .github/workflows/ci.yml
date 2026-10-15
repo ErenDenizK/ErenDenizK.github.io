@@ -1,4 +1,5 @@
-# Quality gates on every push to dev and every pull request (ADR-0001 item 6, ADR-0004).
+# Quality gates on every push to dev and every pull request (ADR-0001 item 6, ADR-0004); a green
+# push to dev then deploys through deploy.yml.
 name: ci
 on:
   push:
@@ -39,3 +40,12 @@ jobs:
             tests/shots/
             test-results/
           retention-days: 14
+  # A push to dev is a deploy (ADR-0004 amendment); it goes out only when check passed.
+  deploy:
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/deploy.yml
