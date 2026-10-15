@@ -51,7 +51,7 @@
 
   /* type: faces */
   --f-serif: "Newsreader", "Newsreader Fallback", Georgia, serif;
-  --f-sans: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-sans: "Inter", "Inter Fallback", system-ui, sans-serif;
 
   /* type: scale, 1.2 per step above body; fluid from 390 to 1440 px (spec §2.2) */
   --fs-cap: 12px;
@@ -113,6 +113,7 @@
   --ease-exit: cubic-bezier(0.55, 0.055, 0.675, 0.19);
   --ease-settle: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-draw: cubic-bezier(0.34, 0.22, 0.47, 0.84);
+  --ease-reel: cubic-bezier(0.33, 1, 0.68, 1);   /* the deck reel in Work (draft) */
 }
 
 /* phone: smaller steps, a lower bar, shorter stagger and rises (spec §2.3, §4.1, §4.2) */

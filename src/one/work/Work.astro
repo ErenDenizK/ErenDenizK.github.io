@@ -1,0 +1,75 @@
+---
+/* Work (PART B of phase3 design-spec.md; sections 3.3, 4.5, 4.8 and 7.5). One section, one element per
+   project with the attributes PART A's rail and field read (id, data-rail-sec, data-rail-accent,
+   data-aura), and one presentation per project in a <template> that scripts/open.ts turns into the
+   layer. The markup is the still twin: without JavaScript, under reduced motion or with ?still it is a
+   vertical list (each project's prints side by side, then its text) and every "Take a look" is a real
+   link to the project's static page. With JavaScript and motion, work.css turns the same nodes into the
+   deck: one pinned stage, each project a slot of scroll ((1 + 0.35 x (prints - 1)) screens). */
+import './work.css';
+import Print from './Print.astro';
+import Obj from './Obj.astro';
+import Presentation from './Presentation.astro';
+import { models } from './data';
+import { getSite, type Project } from '../../lib/site';
+interface Props { projects: Project[]; base?: string }
+const { projects, base = '/lab/one/' } = Astro.props;
+const site = await getSite();
+const list = await models(projects, base);
+const two = (k: number) => String(k).padStart(2, '0');
+const slotLen = (n: number) => 1 + 0.35 * (Math.max(n, 1) - 1);
+const rows = [...list.map((m) => `calc(${slotLen(m.prints.length).toFixed(2)} * var(--sv))`), 'var(--sv)'].join(' ');
+const propSizes = (w: number) => `(max-width: 699.98px) ${Math.round(330 * w)}px, ${Math.round(700 * w)}px`;
+const PRINT = '(max-width: 699.98px) calc((100vw - 88px) * 1.6), min(52vw, 720px)';
+---
+<section id="work" class="work" data-part="work" aria-labelledby="work-h" style={`--rows: ${rows}`} data-count={list.length}>
+  <div class="w-chrome">
+    <h2 id="work-h" class="w-idx label">{site.home.showcase.title}<span class="w-count" aria-hidden="true"> <b data-idx>01</b> / {two(list.length)}</span></h2>
+  </div>
+  {list.map((m, k) => (
+    <div class="proj" data-slug={m.slug} data-k={k} data-n={Math.max(m.prints.length, 1)}
+      style={`--a1: ${m.aura[0]}; --a2: ${m.aura[1]}; --a3: ${m.aura[2]}; --paper: ${m.paper}; --row: ${k + 1}`}>
+      <div class="slot" id={m.slug} data-rail-sec={m.title} data-rail-accent={m.aura[0]} data-aura={m.aura.join(' ')}></div>
+      <div class="set">
+        <div class="set-box">
+          <a class="set-link" href={m.href} tabindex="-1" aria-hidden="true" data-open={m.slug}>
+            {m.prints.length
+              ? m.prints.map((s, i) => <Print m={m} s={s} i={i} n={m.prints.length} sizes={PRINT} />)
+              : <Print m={m} i={0} n={1} sizes={PRINT} />}
+          </a>
+          {m.prints.length > 0 && <Obj o={m.obj} sizes="(max-width: 699.98px) 200px, 400px" cls="set-obj" />}
+          {m.props.map((p) => (
+            <picture class:list={['prop', { 'prop-phone': p.phone }]} aria-hidden="true"
+              style={`--x: ${p.at[0]}; --y: ${p.at[1]}; --w: ${p.at[2]}; --turn: ${p.turn}deg; --ar: ${p.w} / ${p.h}; --radf: ${(p.radius / p.w).toFixed(4)}`}>
+              <source type="image/avif" srcset={p.pic.avif} sizes={propSizes(p.at[2])} />
+              <source type="image/webp" srcset={p.pic.webp} sizes={propSizes(p.at[2])} />
+              <img src={p.pic.src} alt="" width={p.w} height={p.h} loading="lazy" decoding="async" />
+            </picture>
+          ))}
+        </div>
+      </div>
+      <div class="txt">
+        <div class="txt-in">
+          <div class="hush" aria-hidden="true"></div>
+          <p class="w-meta label" data-part="meta">{m.meta}</p>
+          <h3 class="w-title" data-part="title"><span class:list={['wm', m.wmClass]} style={m.wordmark} lang="en">{m.title}</span></h3>
+          <p class="w-promise" data-part="promise">{m.summary}</p>
+          <p class="w-acts" data-part="acts"><a class="btn" href={m.href} data-open={m.slug}>{site.work.cta}</a></p>
+        </div>
+      </div>
+    </div>
+  ))}
+  <svg class="w-defs" width="0" height="0" aria-hidden="true" focusable="false" style="position: absolute">
+    <filter id="w-light" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  1.25 1.25 1.25 0 0" /></filter>
+  </svg>
+  {list.map((m) => (
+    <template id={`pres-${m.slug}`} data-pres-tpl={m.slug}>
+      <Presentation m={m} next={list.find((x) => x.slug === m.next?.slug)} mode="layer" />
+    </template>
+  ))}
+</section>
+
+<script>
+  import { initWork } from './scripts/work';
+  initWork();
+</script>

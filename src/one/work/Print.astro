@@ -1,0 +1,26 @@
+---
+/* A print (phase3 design-spec.md 3.3.1): a real screen on a mount of the project's own dark paper,
+   12 px on three sides and 34 px at the bottom (8 / 26 on phones), with its own grain and a caption
+   on the mount. A project without screens gets one print of its glass object on that paper.
+   Three nested boxes: .pr takes the deck's pose (scripts/deck.ts), .pr-in the hover lift, .pr-mount
+   is the paper (the view transition name "paper" on open). */
+import Shot from './Shot.astro';
+import Obj from './Obj.astro';
+import type { Model, Screen } from './data';
+interface Props { m: Model; s?: Screen; i: number; n: number; sizes: string; eager?: boolean; cls?: string }
+const { m, s, i, n, sizes, eager = false, cls = '' } = Astro.props;
+const left = s ? (s.title ? `${m.title} · ${s.title}` : m.title) : `${m.title} · ${m.kind}`;
+---
+<figure class:list={['pr', cls]} data-i={i} data-pos={i}>
+  <div class="pr-in">
+    <div class="pr-mount">
+      <div class:list={['pr-screen', { 'pr-obj': !s }]}>
+        {s
+          ? <Shot s={s} sizes={sizes} phoneSizes="calc(100vw - 88px)" eager={eager} cls="pr-img" />
+          : <Obj o={m.obj} sizes="(max-width: 699.98px) 70vw, 420px" cls="pr-object" />}
+      </div>
+      <figcaption class="pr-cap cap"><span>{left}</span>{n > 1 && <span>{i + 1} / {n}</span>}</figcaption>
+      <div class="pr-shade" aria-hidden="true"></div>
+    </div>
+  </div>
+</figure>

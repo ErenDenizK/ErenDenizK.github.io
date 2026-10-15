@@ -1,0 +1,25 @@
+---
+/* The static twin of each open presentation (phase3 design-spec.md 3.3.4, "URLs"): a direct visit or a
+   reload of /lab/one/work/<slug>/ gets the complete presentation without JavaScript, with Close as a
+   link to /lab/one/#<slug>. Hidden like every lab page (noindex, out of the sitemap). Later the same
+   page moves to /work/<slug>/. */
+import LabShell from '../../../../one/work/lab/LabShell.astro';
+import Presentation from '../../../../one/work/Presentation.astro';
+import '../../../../one/work/work.css';
+import { models } from '../../../../one/work/data';
+import { getProjects } from '../../../../lib/site';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  const list = await models(projects, '/lab/one/');
+  return list.map((m) => ({ params: { slug: m.slug }, props: { m, next: list.find((x) => x.slug === m.next?.slug) } }));
+}
+const { m, next } = Astro.props;
+---
+<LabShell title={`${m.title} · Work lab`}>
+  <Presentation m={m} next={next} mode="page" />
+</LabShell>
+<script>
+  import { initStatic } from '../../../../one/work/scripts/work';
+  initStatic();
+</script>

@@ -1,0 +1,47 @@
+/* PART B's scratch shell (phase3 design-spec.md 7.5, "until then B uses its own scratch lab page"): the
+   faces, a reset, a stand-in light field and the grain. PART A's layout (src/layouts/One.astro, base.css,
+   field.css) replaces all of this; nothing in src/one/work/ depends on it. */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("../../../fonts/inter-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+2010-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032, U+2039-203A, U+20AC, U+2122; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("../../../fonts/inter-tr.woff2") format("woff2"); unicode-range: U+011E-011F, U+0130, U+015E-015F; }
+@font-face { font-family: "Newsreader"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("../../../fonts/newsreader-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+2010-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032, U+2039-203A, U+20AC, U+2122; }
+@font-face { font-family: "Newsreader"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("../../../fonts/newsreader-tr.woff2") format("woff2"); unicode-range: U+011E-011F, U+0130, U+015E-015F; }
+@font-face { font-family: "Newsreader"; font-style: italic; font-weight: 400 500; font-display: swap; src: url("../../../fonts/newsreader-italic-latin.woff2") format("woff2");
+  unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+2010-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032, U+2039-203A, U+20AC, U+2122; }
+@font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Liberation Sans"), local("Helvetica"); size-adjust: 105%; ascent-override: 92%; descent-override: 23%; line-gap-override: 0%; }
+@font-face { font-family: "Newsreader Fallback"; src: local("Times New Roman"), local("Liberation Serif"), local("Times"); size-adjust: 100.5%; ascent-override: 73%; descent-override: 26.4%; line-gap-override: 0%; }
+
+@property --fa1 { syntax: "<color>"; inherits: true; initial-value: #6f8cff; }
+@property --fa2 { syntax: "<color>"; inherits: true; initial-value: #9a9cf0; }
+@property --fa3 { syntax: "<color>"; inherits: true; initial-value: #3a4fb8; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--ground); scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+html.layer-open { overflow: hidden; }
+body { margin: 0; background: var(--ground); color: var(--ink); font: 400 var(--fs-body)/1.65 var(--f-sans);
+  -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+#main { position: relative; z-index: 10; overflow-x: clip; }
+p, h1, h2, h3, ul, ol, dl, dd, figure, blockquote { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+a { color: inherit; text-decoration: none; }
+img, video, picture { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* the stand-in field: three pools in the current light, behind everything */
+.lab-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; background: var(--ground);
+  --fa1: var(--a1); --fa2: var(--a2); --fa3: var(--a3); transition: --fa1 var(--aura-t, 500ms) var(--ease-ui), --fa2 var(--aura-t, 500ms) var(--ease-ui), --fa3 var(--aura-t, 500ms) var(--ease-ui); }
+.lab-field i { position: absolute; width: 512px; height: 512px; left: 50%; top: 50%; margin: -256px 0 0 -256px; border-radius: 50%;
+  will-change: transform; }
+/* normal blending, not plus-lighter: on the near-black ground they look the same, and the stand-in
+   should not cost frames that PART A's field budgets for itself (measured: plus-lighter here doubled
+   the rAF interval under a 4x CPU throttle in headless Chromium) */
+.lab-field i:nth-child(1) { background: radial-gradient(closest-side, color-mix(in srgb, var(--fa1) 30%, transparent), transparent); transform: translate(0, -28vh) scale(2.9, 1.9); }
+.lab-field i:nth-child(2) { background: radial-gradient(closest-side, color-mix(in srgb, var(--fa3) 32%, transparent), transparent); transform: translate(-36vw, 12vh) scale(1.8, 1.6); }
+.lab-field i:nth-child(3) { background: radial-gradient(closest-side, color-mix(in srgb, var(--fa2) 22%, transparent), transparent); transform: translate(30vw, -6vh) scale(1.8, 1.6); }
+.lab-grain { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: url("../../../assets/photos/grain.png") repeat; background-size: 128px; }
+
+.lab-note { position: relative; min-height: 70svh; display: grid; place-content: center; text-align: center; gap: var(--s-3); padding: var(--s-9) var(--gut); }
+.lab-note p { font: 500 var(--fs-label)/1.2 var(--f-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+.lab-note-end { min-height: 120svh; background: var(--paper); }
