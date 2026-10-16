@@ -8,7 +8,9 @@ import { initScene } from './scene';
 import { initLines } from './lines';
 import { pauseField, motion } from './bus';
 import { initRail } from '../../scripts/rail';
+import { bloom } from './bloom';
 import { initClock } from '../../scripts/clock';
+import { initGlass } from './glass';
 
 const root = document.documentElement;
 
@@ -19,13 +21,14 @@ initScrub();
 initScene();
 initLines();
 initArrive();
-/* the rail's sheet (spec v3 §7): rows grouped by the page's three parts */
+/* the rail's hold-to-scrub and bloom (review row V6, scripts/bloom.ts); the names keep the page's three parts.
+   The person's part has no heading on the page and its first section is already "Eren", so it has no label;
+   it stays a group of its own because Work stands between it and the brief. */
 initRail({
-  sheet: {
-    group: (el) => el.closest('#record') ? 'The record' : el.closest('#work') ? 'Work' : el.closest('[data-part="rest"]') ? 'Eren' : undefined,
-  },
+  ext: bloom((el) => el.closest('#record') ? 'The record' : el.closest('#work') ? 'Work' : undefined),
 });
 initClock();
+initGlass();
 
 /* the quiet band under the bar, once the page has moved */
 const moved = () => root.classList.toggle('moved', scrollY > 8);

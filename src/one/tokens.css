@@ -56,6 +56,13 @@
   /* type: faces */
   --f-serif: "Newsreader", "Newsreader Fallback", Georgia, serif;
   --f-sans: "Inter", "Inter Fallback", system-ui, sans-serif;
+  /* the name and the bar mark (charter §3, "The name"; type study V8): Newsreader at its display optical
+     size (opsz 72) and weight 380, a static instance of the letters (tools/fonts/name.py). At opsz 32-42
+     and weight 500 the same family drew its subhead design (low contrast, blunt serifs, loose fit) and
+     read as a news headline; light on the dark ground also looks heavier than its weight. */
+  --f-name: "Newsreader Name", "Newsreader", "Newsreader Fallback", Georgia, serif;
+  --name-wght: 380;
+  --mark-wght: 380;
 
   /* type: scale, 1.2 per step above body; fluid from 390 to 1440 px (spec §2.2) */
   --fs-cap: 12px;
@@ -67,6 +74,14 @@
   --fs-h3: clamp(24px, 22.14px + 0.476vw, 29px);
   --fs-h2: clamp(32px, 28.29px + 0.952vw, 42px);
   --fs-title: clamp(44px, 33.6px + 2.667vw, 72px);
+  /* the name: at the owner's provisional cap for Home, 48 px desktop and 34 px phone (one-spec §2.2, E4),
+     2.4x the lede on desktop (it was 2.1x). Phones set it in two lines (content nameLines). Tracking
+     tightens with the size: -0.025 em, -0.02 em on phones. ?namesize=60 shows the study's 60 / 42 px. */
+  --fs-name-base: clamp(34px, 28.8px + 1.333vw, 48px);
+  --name-scale: 1;
+  --fs-name: calc(var(--fs-name-base) * var(--name-scale));
+  --name-track: -0.025em;
+  --name-lh: 1.04;
 
   /* space: 4 to 32 in steps of 4 and 8, then x1.5 */
   --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px;
@@ -99,13 +114,20 @@
   --e-print: 0 1px 2px rgb(0 0 0 / 0.5), 0 18px 40px -12px rgb(0 0 0 / 0.7);
   --e-lift: 0 2px 4px rgb(0 0 0 / 0.5), 0 40px 90px -24px rgb(0 0 0 / 0.8);
 
-  /* glass: the tab bar's recipe, shared by the tabs, the layer's capsules, the photo view's capsules, the
-     close cursor and the rail's sheet (spec v3 §5.1). The blur is raised to 22 px and saturated so text
-     behind it breaks up instead of reading through. */
-  --glass-bg: rgb(30 30 34 / 0.62);
-  --glass-blur: blur(22px) saturate(1.5);
-  --glass-edge: inset 0 0 0 1px rgb(255 255 255 / 0.07), inset 0 1px 0 rgb(255 255 255 / 0.05);
-  --glass-shadow: 0 12px 40px -16px rgb(0 0 0 / 0.7);
+  /* glass: one family for the tab pill, the layer's capsules, the photo view's capsules, the close
+     cursors and the rail's sheet (spec v3 §5.1; glass study V7, version A). The body is the capsules'
+     minimal dark one; the backdrop is halved in brightness before the tint, so dark content barely
+     changes and a white page behind lands near 85/255, where --ink measures 5.7:1 and --ink-2 4.7:1
+     (Chromium; the old body gave 3.9 and 3.2). The aura-coloured parts (rim foot, inner glow, caustic,
+     beds) read --a1 where the object is, so they are written on the objects in glass.css, not here.
+     ?glass=now restores the round-3 recipe (glass.css). */
+  --glass-bg: rgb(22 22 26 / 0.56);
+  --glass-blur: blur(24px) saturate(1.8) brightness(0.5);
+  --glass-edge: inset 0 8px 10px -9px rgb(255 255 255 / 0.07), 0 0 0 0.5px rgb(0 0 0 / 0.38);
+  --glass-shadow: 0 1px 2px rgb(0 0 0 / 0.22), 0 12px 32px -14px rgb(0 0 0 / 0.66);
+  /* over a white page --ink-3 cannot reach 3:1 on any glass light enough to read as glass (2.8:1), so
+     an inactive label on glass is --ink-2; the bed and --ink mark the current item */
+  --glass-label-off: var(--ink-2);
   --glass-pad: 4px;
   --glass-item: 40px;          /* 44 px under a coarse pointer (below) */
   --glass-gap: 12px;           /* between two capsules */
@@ -156,5 +178,21 @@
     --part-gap: var(--s-9);
     --chapter-gap: var(--s-9);
     --in-chapter: var(--s-7);
+    --name-track: -0.02em;
   }
+}
+
+/* ---------- the name's lab switches (round 4, V8; set before first paint in layouts/One.astro) ----------
+   ?name=nr (default) | current | playfair | fraunces, ?namesize=48 (default) | 60. A face that is not
+   chosen is never downloaded: its @font-face (base.css) is used only under its switch. */
+html[data-namesize="60"] { --fs-name-base: clamp(42px, 35.31px + 1.714vw, 60px); --name-track: -0.028em; }
+@media (max-width: 699.98px) { html[data-namesize="60"] { --name-track: -0.022em; } }
+/* Playfair 2.0 at opsz 60, weight 380: high contrast, wide and calm; set 3 % smaller for its width */
+html[data-name="playfair"] { --f-name: "Playfair Name", "Newsreader", "Newsreader Fallback", Georgia, serif; --name-scale: 0.967; --name-track: -0.02em; }
+/* Fraunces at opsz 72, weight 320, SOFT 40, WONK 0: soft wedges, the warmest; never above opsz 72 on dark */
+html[data-name="fraunces"] { --f-name: "Fraunces Name", "Newsreader", "Newsreader Fallback", Georgia, serif; --name-wght: 320; --mark-wght: 320; }
+/* round 3 as built: Newsreader 500 at the .h2 token, optical size auto, one line on phones too */
+html[data-name="current"] {
+  --f-name: var(--f-serif); --name-wght: 500; --mark-wght: 500;
+  --fs-name: var(--fs-h2); --name-track: -0.02em; --name-lh: 1.1;
 }

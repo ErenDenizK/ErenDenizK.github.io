@@ -4,7 +4,7 @@
    list whose links open complete pages; the flight is a pure function of the scroll position (no pin
    but the last block's hold, the same picture on the way back); the open works from a frame in mid
    flight and keeps one history step and the focus (on the close, spec v3 §4.2); the opened project has its
-   rail, its scrubbed steps, two glass capsules whose close folds, and the cutaway; Home's rail opens a sheet. */
+   rail, its scrubbed steps, two glass capsules whose close folds, and the cutaway. Home's rail: lab-one-rail.spec.ts. */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone, PROJECTS } from './helpers';
 import { BASE } from '../../playwright.config';
@@ -199,7 +199,7 @@ test('on Home every project link stays under the site base once', async ({ page 
   for (const slug of PROJECTS) await expect(page.locator(`#${slug} .btn`)).toHaveAttribute('href', `${BASE}lab/one/work/${slug}/`);
 });
 
-test.describe('round 3: capsules, cutaway, rail sheet (desktop)', () => {
+test.describe('round 3: capsules and cutaway (desktop)', () => {
   test.use(desktop);
   const at = (page: Page, slug: string) => page.evaluate((s) => scrollTo({ top: document.getElementById(s)!.getBoundingClientRect().top + scrollY, behavior: 'instant' }), slug);
 
@@ -250,33 +250,6 @@ test.describe('round 3: capsules, cutaway, rail sheet (desktop)', () => {
     expect(low).toBeLessThan(0.2);
     expect(await hp()).toBeGreaterThan(0.8);
     await page.keyboard.press('Escape');
-  });
-
-  test('a click on the rail opens the sheet with each title level with its bead; Escape closes only the sheet', async ({ page }) => {
-    await page.goto('lab/one/');
-    await at(page, 'english-prep'); await page.waitForTimeout(600);
-    const y0 = await page.evaluate(() => scrollY);
-    const hit = (await page.locator('#rail .rail-track-hit').boundingBox())!;
-    await page.mouse.click(hit.x + 30, hit.y + hit.height / 2);
-    await expect(page.locator('#rail')).toHaveClass(/is-sheet/);
-    await expect(page.locator('.rail-glass')).toHaveClass(/on/);
-    expect(Math.abs(await page.evaluate(() => scrollY) - y0)).toBeLessThan(2);
-    await page.waitForTimeout(900);
-    const off = await page.evaluate(() => {
-      const m = [...document.querySelectorAll('#rail .rail-m')].map((e) => { const r = e.getBoundingClientRect(); return r.top + r.height / 2; });
-      const t = [...document.querySelectorAll('#rail .rail-i')].map((e) => { const r = e.getBoundingClientRect(); return r.top + r.height / 2; });
-      return Math.max(...m.map((y, i) => Math.abs(y - t[i])));
-    });
-    expect(off).toBeLessThan(1.5);
-    expect(await page.locator('#rail li.rail-g').evaluateAll((l) => l.map((e) => (e as HTMLElement).dataset.g))).toEqual(expect.arrayContaining(['Work', 'Eren', 'The record']));
-    await page.keyboard.press('Escape');
-    await expect(page.locator('#rail')).not.toHaveClass(/is-sheet/);
-    /* a row goes to its section and closes the sheet */
-    await page.mouse.click(hit.x + 30, hit.y + hit.height / 2);
-    await expect(page.locator('#rail')).toHaveClass(/is-sheet/);
-    await page.locator('#rail .rail-i', { hasText: 'Photos' }).click();
-    await expect(page.locator('#rail')).not.toHaveClass(/is-sheet/);
-    await expect.poll(() => page.evaluate(() => document.getElementById('photos')!.getBoundingClientRect().top)).toBeLessThan(400);
   });
 });
 
