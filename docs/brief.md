@@ -10,6 +10,28 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 
 ## Current intent
 
+### Two pages (2026-10-15, late night; this section wins over every older line below)
+
+- The site becomes two pages, **Home** and **Record** (a blog), on one shared token set. All content
+  stays; only the page system changes. A tab switches between the two pages. The scroll rail, the
+  ID card and the photos (as cards) carry over, reimplemented where needed. (2026-10-15)
+- **Home**, one vertical page, everything centred: a short brief like Anthony Fu (the one place
+  that may summarise everything); then Work, each project as a photo frame or a set of frames that,
+  on click, grows into the project inside the same page (no new tab, no window that opens and
+  closes), with the other images and texts arriving with it, as in Robin Noguier and Antoine
+  Wodniack; project presentations follow Dia and Notion Calendar; then the rest (the person, How I
+  work, photos, now, links, the newest Record entries). (2026-10-15)
+- No information repeats; every fact lives in its one place. (2026-10-15)
+- Full fluid motion, alive and professional; slow scene animations and content arriving one by one
+  while scrolling; Shopify Editions is the model for elegance, background liveliness and motion. A
+  modern, generous aura; own drawings and 2.5D layered backgrounds over the simplicity. (2026-10-15)
+- Desktop and phone may be different designs. (2026-10-15)
+- Do not ask the owner about every small decision; show working results sooner; ask only where the
+  owner's decisions leave a gap. (2026-10-15)
+- The briefs in the research archive's HTML files are accepted as brief. (2026-10-15)
+- The new Home is built on `/lab/one/`; it replaces the live pages after the owner approves it.
+  (2026-10-16)
+
 ### Who
 
 - Eren Deniz Kuyucaklıoğlu, in full; the mark is "edk", no logo. (2026-10-09)
@@ -51,6 +73,9 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 
 ### Home
 
+> Superseded where it conflicts with "Two pages" above (2026-10-15).
+
+
 - Home is a better introduction: it presents a product, an identity, a brand, and conveys the
   vision. Its layout is good because it is as simple as possible, just not flashy enough.
   (2026-10-10) Home feels very empty: it must be a stunning opening page, the most important one.
@@ -80,6 +105,9 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 
 ### About
 
+> Superseded where it conflicts with "Two pages" above (2026-10-15).
+
+
 - About is an "about me" article, not a CV: who I am, where I study, how I work, what I do at
   school, my software side; more photos; the ID card keeps the current photo.
   (2026-10-10, evening) How the photos are shown is open again (see Photos). (2026-10-11, late)
@@ -105,6 +133,9 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   (2026-10-15)
 
 ### Projects and Work
+
+> Superseded where it conflicts with "Two pages" above (2026-10-15).
+
 
 - Work feels empty: three objects do not show what each app is. A comprehensive study to make
   it the site's strongest page. (2026-10-10, evening) Direction A, the stage, is chosen; frames

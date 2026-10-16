@@ -1,23 +1,29 @@
 # Working on the portfolio
 
 Eren Deniz Kuyucaklıoğlu's (they/them) personal site at `erendenizk.github.io`: presentation
-first, a public record of continuous work, grown level by level over four years. Read "Current
-intent" in `docs/brief.md` before any work; it is the owner's intent, every line is dated, and
-the newest line wins.
+first, a public record of continuous work, grown level by level over four years. Since
+2026-10-15 it is moving to two pages, Home and Record, with one shared token set; the live
+four-page site runs until the new Home replaces it and is not the model for new work. Read
+"Current intent" in `docs/brief.md` before any work; it is the owner's intent, every line is
+dated, and the newest line wins.
 
 ## Where things are
 
 - `docs/brief.md`: what the owner wants (its dated log: `docs/history/brief-log.md`).
+  `docs/design/charter.md`: the design rules that hold for the two-page site; the new token
+  set's numbers are written there before they are used.
   `docs/PROJECT.md`: why the main decisions were made. `docs/WORKFLOW.md`: how we work.
   `docs/HANDOFF.md`: the current state and the next steps.
   `docs/PLAN.md`: the one live plan and the owner's open questions.
   `docs/journal/`: one short file per working day, the bridge between sessions.
 - `docs/adr/`: decisions; `docs/adr/README.md` has true statuses. Proposed ones are not
-  binding until the owner accepts.
+  binding until the owner accepts; superseded ones describe the live site only.
 - `docs/research/`: dated research, each with a status line; it distinguishes verified facts
   from recollection. `2026-10-requirements.md` is used for its reader analysis and §18 (the AI
   tells); the owner overrode some of its requirements (see its status line).
-- `docs/history/`: closed plans, used one-off prompts and the brief log. Records, not guides.
+- `docs/history/`: closed plans, used one-off prompts, the brief log, the archived charter of
+  the four-page site and the record of removed code (`removed-2026-10-15.md`). Records, not
+  guides.
 - `prototypes/`: the closed first directions A–F (2026-10-08/09); history, kept because ADRs,
   research and `tools/objects` cite them. Do not edit.
 - `src/pages/lab/`: hidden workbench pages (noindex, not linked, out of the sitemap); new designs
@@ -60,10 +66,12 @@ the newest line wins.
   sections are hidden, never shown as placeholders.
 - Every effect has a still twin: reduced motion, no JS, no WebGL and phones get a complete page.
 - For UI work, screenshot at 1440×900, 1180×820 (touch) and 390×844 and look before you
-  report. Phone and desktop matter equally: design and check every change on both.
+  report. Phone and desktop matter equally: design and check every change on both. They may be
+  different designs (owner, 2026-10-15); never force one scheme onto both.
 - Never write symbols (arrows, ticks, crosses) as characters: use `tools/icons`. Objects are
-  pre-rendered media (ADR-0006); the owner kept pre-rendering on 2026-10-11 (option a). The
-  routing contract is ADR-0007.
+  pre-rendered media (ADR-0006); the owner kept pre-rendering on 2026-10-11 (option a). ADR-0007
+  (four tabs, the project sheet) is superseded by the two-page direction; the new routing ADR
+  replaces it.
 
 ## Log entries
 
