@@ -46,10 +46,13 @@ function tick(t: number) {
   if (paused) { if (moving) raf = requestAnimationFrame(tick); else last = 0; return; }
   const y = scrollY;
   if (lastY < 0) lastY = y;
-  const raw = ((y - lastY) / dt) * 1000;
+  /* a jump (a key, an anchor, the rail: over 40 % of a view in one frame) is not a speed; the raw value
+     is clamped, and a still page lets the velocity fall faster (60 ms) than a moving one follows it */
+  const dy = y - lastY;
+  const raw = Math.abs(dy) > frame.vh * 0.4 ? 0 : Math.max(-4000, Math.min(4000, (dy / dt) * 1000));
   lastY = y;
-  v += (raw - v) * (1 - Math.exp(-dt / 90));
-  if (Math.abs(v) < 2 && raw === 0) v = 0;
+  v += (raw - v) * (1 - Math.exp(-dt / (raw === 0 ? 60 : 90)));
+  if (Math.abs(v) < 4 && raw === 0) v = 0;
   frame.y = y; frame.v = v; frame.dt = dt; frame.t = t;
   more = false;
   for (const s of subs) if (s(frame)) more = true;
