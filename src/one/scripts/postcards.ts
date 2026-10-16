@@ -46,6 +46,25 @@ const rememberFold = () => { try { sessionStorage.setItem(FOLD_KEY, '1'); } catc
 const step = (s: Sp, [k, c]: [number, number], h: number) => { s.v += (-k * (s.x - s.to) - c * s.v) * h; s.x += s.v * h; };
 const still = (s: Sp, e: number) => Math.abs(s.x - s.to) < e && Math.abs(s.v) < e * 4;
 
+/* the backs' drawings (Postcards.astro: data-plate holds the file's URL): fetched once on the first pick
+   up or open, then set into each clone of the large card before its back can be seen */
+const plates = new Map<string, Promise<string>>();
+const plate = (url: string) => {
+  let p = plates.get(url);
+  if (!p) {
+    p = fetch(url).then((r) => (r.ok ? r.text() : ''))
+      .then((t) => t.replace(/<title>[^<]*<\/title>|<desc>[^<]*<\/desc>/g, '').replace('<svg ', '<svg aria-hidden="true" focusable="false" '))
+      .catch(() => '');
+    plates.set(url, p);
+  }
+  return p;
+};
+const platesOf = (root: ParentNode) => [...root.querySelectorAll<HTMLElement>('[data-plate]')];
+const warm = (tpl: HTMLTemplateElement) => platesOf(tpl.content).forEach((el) => plate(el.dataset.plate!));
+const fill = (root: ParentNode) => platesOf(root).forEach((el) => {
+  plate(el.dataset.plate!).then((t) => { if (t && !el.firstChild) el.innerHTML = t; });
+});
+
 type VT = { finished: Promise<void>; skipTransition(): void };
 /* html.pc-vt holds every group of the morph to the card's own 640 ms (the page's groups default to the
    900 ms open tempo, which kept the card unresponsive for over a second, row G4) */
@@ -150,7 +169,7 @@ export function initPostcards() {
     kick();
   };
   cards.forEach((c, i) => {
-    c.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') pick(i); });
+    c.addEventListener('pointerenter', (e) => { warm(c.querySelector('template[data-big]')!); if (e.pointerType === 'mouse') pick(i); });
     c.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && up === i) drop(i); });
   });
 
@@ -174,6 +193,7 @@ export function initPostcards() {
     const i = cards.indexOf(pc);
     if (up === i) drop(i);
     const tpl = pc.querySelector<HTMLTemplateElement>('template[data-big]')!;
+    warm(tpl);
     pc.classList.add('is-hero');
     queued = false;
     opening = true;
@@ -187,6 +207,7 @@ export function initPostcards() {
       stage.replaceChildren(tpl.content.cloneNode(true));
       if (!dlg.open) dlg.showModal();
       open = pc;
+      fill(stage);
       const big = stage.querySelector<HTMLElement>('[data-big-card]')!;
       big.classList.add('is-hero');
       initCards(stage);

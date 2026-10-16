@@ -39,7 +39,9 @@ const photos = site.about.chapters.find((c) => c.id === 'photos');
 const lede = photos?.text[0]?.split(/(?<=\.)\s/)[0] ?? '';
 const files = import.meta.glob<string>('../../assets/photos/pc-*.{avif,webp}', { eager: true, query: '?url', import: 'default' });
 /* the backs' drawings, inlined so the back can draw them on and colour them with its own ink */
-const drawings = import.meta.glob<string>('./art/pc-*.svg', { eager: true, query: '?raw', import: 'default' });
+/* the drawings are fetched when the large view first opens (postcards.ts), not inlined: inline, the three
+   came to about 15 KB of the page's first-paint budget for a face that is seen only after a turn */
+const drawings = import.meta.glob<string>('./art/pc-*.svg', { eager: true, query: '?url', import: 'default' });
 const file = (stem: string, w: number | 'full', ext: 'avif' | 'webp') => {
   const f = files[`../../assets/photos/pc-${stem}-${w}.${ext}`];
   if (!f) throw new Error(`missing pc-${stem}-${w}.${ext}: run npm run photos`);
@@ -79,7 +81,7 @@ const cards = list.map((p, i) => {
     bratio: 1 / ((0.936 * m.height) / m.width + 0.132),
     bigAvif: big('avif'), bigWebp: big('webp'), idx: `${pad(i + 1)} / ${pad(n)}`,
     palette: mm.palette.map((q) => ({ ...q, light: lum(q.hex) > 0.45 })), rules, ring, micro: `${site.mark} · ${t.credit} · ${p.place}`.toUpperCase(),
-    deep: mm.deep, crop: mm.crop, svg: svg?.replace(/<title>[^<]*<\/title><desc>[^<]*<\/desc>/, '').replace('<svg ', '<svg aria-hidden="true" focusable="false" '), no: pad(i + 1), of: pad(n),
+    deep: mm.deep, crop: mm.crop, svg, no: pad(i + 1), of: pad(n),
     name: `${t.of} ${p.place}`,
   };
 });
@@ -126,7 +128,7 @@ const cards = list.map((p, i) => {
                   <button class="idc-turn" type="button" data-turn aria-label={t.back}></button>
                   <span class="bk-paper" aria-hidden="true"></span>
                   <p class="bk-head" aria-hidden="true"><span class="mk">{site.mark}</span><span class="no">{t.credit} <b>{c.no}</b> / {c.of}</span></p>
-                  {c.svg && <div class="bk-plate" aria-hidden="true" set:html={c.svg} />}
+                  {c.svg && <div class="bk-plate" aria-hidden="true" data-plate={c.svg} />}
                   <span class="bk-stamp" aria-hidden="true"><i></i></span>
                   <svg class="bk-ring" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
                     <defs><path id={`pc-ring-${c.i}`} d="M60 60m-43 0a43 43 0 1 1 86 0a43 43 0 1 1-86 0" /></defs>
