@@ -392,6 +392,10 @@ html.vt-close::view-transition-group(*) { animation-duration: calc(var(--t-close
 /* texts keep their own size while their box travels: no stretched letters, only a cross-fade */
 ::view-transition-old(meta), ::view-transition-new(meta), ::view-transition-old(title), ::view-transition-new(title),
 ::view-transition-old(promise), ::view-transition-new(promise) { block-size: 100%; object-fit: none; object-position: 50% 50%; }
+/* the texts hand over, they never cross-fade: two lines of different length at half opacity read as a
+   double image (critic, 2026-10-16). The old text leaves in the first third, the new one comes after. */
+::view-transition-old(meta), ::view-transition-old(title), ::view-transition-old(promise) { animation: one-out calc(220ms * var(--vt-k, 1)) var(--ease-ui) both; }
+::view-transition-new(meta), ::view-transition-new(title), ::view-transition-new(promise) { animation: one-in calc(300ms * var(--vt-k, 1)) var(--ease-out) calc(260ms * var(--vt-k, 1)) both; }
 ::view-transition-old(shot) { display: none; }
 ::view-transition-new(shot) { height: 100%; object-fit: cover; object-position: top; animation: none; }
 ::view-transition-old(paper), ::view-transition-new(paper) { width: 100%; height: 100%; }

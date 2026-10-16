@@ -76,6 +76,8 @@ p { text-wrap: pretty; }
 }
 .btn:hover { background: var(--fill-3); box-shadow: inset 0 0 0 1px var(--line-3); }
 .btn:active { scale: 0.98; }
+/* the press is the feedback on touch; the browser's blue tap flash over a light pill read as a glitch */
+.btn, .chip { -webkit-tap-highlight-color: transparent; }
 .btn .icon { flex: none; }
 @media (pointer: coarse) { .chip { min-height: 44px; } }
 
