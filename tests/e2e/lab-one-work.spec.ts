@@ -6,6 +6,7 @@
    flight and keeps one history step and the focus; the opened project has its rail and scrubbed steps. */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone, PROJECTS } from './helpers';
+import { BASE } from '../../playwright.config';
 
 const LAB = 'lab/one-work/';
 const page_ = (slug: string) => `lab/one/work/${slug}/`;
@@ -186,4 +187,9 @@ test.describe('the flight (desktop)', () => {
     await page.keyboard.press('Escape');
     await expect(page.locator('.layer')).toHaveCount(0);
   });
+});
+
+test('on Home every project link stays under the site base once', async ({ page }) => {
+  await page.goto('lab/one/?still');
+  for (const slug of PROJECTS) await expect(page.locator(`#${slug} .btn`)).toHaveAttribute('href', `${BASE}lab/one/work/${slug}/`);
 });

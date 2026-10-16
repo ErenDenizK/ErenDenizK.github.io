@@ -124,6 +124,9 @@ function objVideos(name: string, key: 'idle' | 'spin' | 'spin-640'): Video {
 
 /** Projects, sorted by order, into Work's model. `base` is Home's path under the site base. */
 export async function models(projects: Project[], base: string): Promise<Model[]> {
+  /* a caller may pass Home's full URL (url('lab/one/')): the site base is taken off, so it is never doubled */
+  const site = url();
+  if (site !== '/' && base.startsWith(site)) base = '/' + base.slice(site.length);
   const home = url(base);
   const list: Model[] = [];
   for (const p of projects) {
