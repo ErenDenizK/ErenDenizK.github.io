@@ -42,6 +42,29 @@ intake -> plan -> research -> comps -> [owner gate 1] -> lab build -> review -> 
 | **Record** | what changed | an ADR for each technique decision; HANDOFF and PLAN updated; the session journal written |
 | **Clean** | the round's leftovers | section 5 run; lab pages, concepts and stale docs archived or removed with the owner's clearance |
 
+### 2.1 The two-page line (2026-10-16)
+
+The owner asked for speed on 2026-10-15: show working results sooner, and ask only where the owner's
+decisions leave a gap. For the two-page redesign, owner gate 1 (comps) is therefore folded into the
+lab build: the design lead's still comps go to the builders, not to the owner, and the owner sees the
+lab page. Taste points that stay open become lab switches (`?name=value`) on the page, not questions.
+
+```
+study (3 in parallel) -> design lead -> build (2 in parallel) -> integrate + critic -> lead review -> [owner: lab link] -> ship
+```
+
+| Station | Agents | Output |
+|---|---|---|
+| Study | reference reader; motion analyst (the clips, frame by frame); archivist | `docs/research/2026-10-reference-notes.md`, `docs/research/2026-10-motion-frames.md`, the clean-up commits |
+| Design | one design lead | `docs/design/one-spec.md`: concept, token set, layouts for desktop and phone, motion, the "every fact in one place" table, the build split, the limits a critic tests; still comps |
+| Build | builder A (shell) and builder B (Work), each in its own worktree, joined through one component interface | `wip/one` and `wip/one-work` |
+| Review | integrator and critic in one | the merge, defects fixed, `npm run verify`, the critique and 8 screenshots |
+| Lead review | the lead | looks at every screenshot at the three sizes, fixes what the critic left, merges into `dev` |
+
+The prompt of every station quotes the owner's direction and the limits (cause 1 of the 2026-10-11
+postmortem: prompts that asked for excess). The workflow script is kept with the session; its prompts
+are the template for the next round.
+
 Scaling: a typo or a one-line fix goes intake, ship, record. A change in one place with no taste in it
 skips both owner gates. A new page, a redesign, an object or anything visible to the owner's eye takes
 the whole line.
@@ -54,7 +77,8 @@ the whole line.
   agents at a time, builders two (CLAUDE.md). This is a default: the lead runs more when the gain is
   clear and fewer when the weekly usage limit is tight; the owner may lift it.
 - **Pull, not push.** A station starts only when the station before it finished its check. Builders
-  never start from words alone; they start from a picked comp.
+  never start from words alone; they start from a picked comp or, on the two-page line, from the
+  design lead's spec and comps (§2.1).
 - **Stop the line.** A failing verify, a broken phone layout, or a critic's refutation stops the track
   until fixed. Green tests are necessary, not sufficient.
 - **Batch the owner's time.** Questions go out in one batch per milestone, each with a short Turkish

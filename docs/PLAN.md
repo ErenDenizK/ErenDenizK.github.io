@@ -5,7 +5,11 @@ when a round closes, copy this file to `docs/history/` and start a fresh one. Cl
 [`docs/history/`](history/README.md). How work moves through the stations named below:
 [`docs/WORKFLOW.md`](WORKFLOW.md).
 
-## Where we are (2026-10-15)
+## Where we are (2026-10-16)
+
+- **The new Home is on `/lab/one/`** (2026-10-16): built by the two-page line; the live site is
+  unchanged until the owner approves it.
+
 
 - **New direction (late night):** two pages, Home and Record, one shared token set (brief log, last
   two sections). Phases 1 (charter row), 2, 3 (About structure) and 4 below were planned for the
@@ -31,6 +35,11 @@ build tracks at a time.
 
 | Phase | Track | Station | Next check |
 |---|---|---|---|
+| **A Two pages** | the new Home on `/lab/one/` (brief on the Bostancı plate, Work as a deck of prints that opens in place into Dia/Notion-style presentations, the person, photos as postcards, now, Record strip, contact); spec `docs/design/one-spec.md` | built 2026-10-16 (two-page line, WORKFLOW §2.1); verify green | owner tries `/lab/one/` on the iPhone and desktop; switches `?open=900\|1400`, `?cap=line\|large`, `?still` |
+| A | performance on real hardware | open: headless frame times are 2–4× heavier than the live pages (software GPU here) | the owner's iPhone; then trim layers if it stutters |
+| A | P2 motion: tear in motion, index flight, pointer parallax, scroll-linked colour, `?work=drift` | plan | after the owner's first look |
+| A | Record page in the new tokens; the tab between the two pages | plan | after Home is approved |
+| A | ship: the new Home replaces `/`; `/work/`, `/about/` and project URLs redirect into Home; a new routing ADR replaces ADR-0007; tests rewritten | plan | owner approval |
 | 0 Housekeeping | branches: `main` + `dev` only | waiting on the owner | the owner deletes `claude/portfolio-site-design-n38jml` on GitHub (the proxy refuses deletes here) |
 | 0 | commit authorship: owner as author, Claude as signed committer | done 2026-10-15: past commits rewritten (trees and dates kept), cited hashes remapped | the owner sets `dev` as the default branch on GitHub |
 | 0 | licenses: MIT for code, content all rights reserved | done 2026-10-15 | |

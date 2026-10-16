@@ -1,4 +1,4 @@
-# Handoff (2026-10-15)
+# Handoff (2026-10-16)
 
 Start here in a fresh session, after CLAUDE.md, `docs/brief.md`, `docs/PROJECT.md` (the reasons)
 and `docs/WORKFLOW.md` (the production system). Then `docs/PLAN.md` (the route and the open
@@ -13,6 +13,22 @@ ADR-0005, 0007, 0010, 0012, 0014 and ADR-0006 item 5; ADR-0015 is re-done in the
 (`docs/adr/README.md`). The old charter is archived (`docs/history/charter-2026-10-15.md`);
 `docs/design/charter.md` keeps what still holds. The `?photos` trial and the Phase 2 Home prototypes
 were removed (`docs/history/removed-2026-10-15.md`).
+
+## The new Home (2026-10-16)
+
+- Built on `/lab/one/` (layout `src/layouts/One.astro` if present, components `src/one/`, Work in
+  `src/one/work/`, tokens `src/one/tokens.css`; no inheritance from `src/styles/global.css`). Spec:
+  `docs/design/one-spec.md`. Evidence: `docs/research/2026-10-reference-notes.md`,
+  `docs/research/2026-10-motion-frames.md` (clips in `docs/research/references/clips/`),
+  `docs/research/2026-10-two-page-tech.md`.
+- Stack: native CSS scroll-driven animations with a small script fallback, same-document View
+  Transitions for the project open, a real URL per project (`/lab/one/work/<slug>/`, static without
+  JS). No GSAP, Lenis, Motion or WebGL on the site.
+- The brief stands on the owner's Bostancı photograph, graded dark (`tools/illustrations/plate-photo.py`);
+  the traced line twin was dropped as too noisy.
+- Known weak points: frame times in headless Chromium are 2–4× the live pages (needs the iPhone);
+  the lab HTML is 40.9 KB gzip (three presentations embedded); P2 motion not built; the person's part
+  has little drawing yet.
 
 ## State of the live site (`dev`)
 
