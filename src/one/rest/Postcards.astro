@@ -309,7 +309,9 @@ const cards = list.map((p, i) => {
     background: var(--glass-bg, rgb(30 30 34 / 0.62)); -webkit-backdrop-filter: var(--glass-blur, blur(22px) saturate(1.5)); backdrop-filter: var(--glass-blur, blur(22px) saturate(1.5));
     box-shadow: var(--glass-edge, inset 0 0 0 1px rgb(255 255 255 / 0.07)), var(--glass-shadow, 0 12px 40px -16px rgb(0 0 0 / 0.7));
     opacity: 0; scale: 0.6; transition: opacity var(--t-quick) var(--ease-ui), scale var(--t-ui) var(--ease-out); }
-  .pv-cursor b { position: absolute; top: calc(100% + 8px); left: 50%; translate: -50% 0; font: 500 var(--fs-cap) / 1 var(--f-sans); color: var(--ink-2); white-space: nowrap; }
+  .pv-cursor b { position: absolute; top: calc(100% + 6px); left: 50%; translate: -50% 0; padding: 4px 8px; border-radius: 999px;
+    font: 500 var(--fs-cap) / 1 var(--f-sans); color: var(--ink); white-space: nowrap;
+    background: var(--glass-bg, rgb(28 28 32 / .72)); -webkit-backdrop-filter: var(--glass-blur, blur(22px)); backdrop-filter: var(--glass-blur, blur(22px)); box-shadow: var(--glass-edge, none); }
   .pc-big.cur-x .pv-cursor { opacity: 1; scale: 1; }
   .pc-big.cur-x, .pc-big.cur-x .big-stage { cursor: none; }
   :global(html.still) .pv-cursor { scale: 1; transition: opacity var(--t-quick) linear; }

@@ -433,7 +433,10 @@ html.motion .layer .cap-a { transition-delay: 60ms; }
   display: grid; place-items: center; pointer-events: none; color: var(--ink);
   background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-edge), var(--glass-shadow);
   opacity: 0; scale: .6; transition: opacity var(--t-quick) var(--ease-ui), scale var(--t-ui) var(--ease-out); }
-.cursor-x b { position: absolute; top: calc(100% + 8px); left: 50%; translate: -50% 0; font: 500 var(--fs-cap)/1 var(--f-sans); color: var(--ink-2); white-space: nowrap; }
+/* the label sits on its own glass: over a light side print the bare caption could not be read (round 3 critique) */
+.cursor-x b { position: absolute; top: calc(100% + 6px); left: 50%; translate: -50% 0; padding: 4px 8px; border-radius: 999px;
+  font: 500 var(--fs-cap)/1 var(--f-sans); color: var(--ink); white-space: nowrap;
+  background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-edge); }
 .layer.cur-x .cursor-x { opacity: 1; scale: 1; }
 .layer.cur-x, .layer.cur-x * { cursor: none; }
 html.still .cursor-x { transition: opacity var(--t-quick) linear; scale: 1; }

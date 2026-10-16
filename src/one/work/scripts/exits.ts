@@ -42,7 +42,9 @@ export function initExits(l: HTMLElement, back: () => void): Exits {
     const head = l.querySelector<HTMLElement>('.pt');
     const empty = (e: PointerEvent) => {
       const t = e.target as Element;
-      if (!head || t.closest('a, button, .pt-stage, .side, .pt-head > :not(.hush), .facts > *, .caps, .rail, .rail-plain')) return false;
+      /* the side prints count as empty space: they are still pictures beside the hero, and at 1440 they fill
+         most of the margin, which left the close cursor almost no room (round 3 critique) */
+      if (!head || t.closest('a, button, .hero, .pt-obj, .pt-head > :not(.hush), .facts > *, .caps, .rail, .rail-plain')) return false;
       const r = head.getBoundingClientRect();
       if (e.clientY < r.top || e.clientY > r.bottom) return false;
       /* never over the text column, where the pointer reads */
