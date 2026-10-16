@@ -16,6 +16,15 @@ and the Record strip at 390 x 844, DPR 3) set T1, T2, T3, T6, T8, T9, T10, T11, 
 T23 to built. Headless Chromium only: the glass blur, the pull gestures and the recorder on a real
 iPhone are not checked. The verdicts and the weak points are in the round-three critique.
 
+Round 4 (2026-10-16, night): the same rule. The integrator merged the rail, glass and type, and person
+lanes and took frame sequences at 1440 x 900 and 390 x 844 (DPR 3, touch): a steady scroll of the whole page,
+the rail's hold-scrub and its bloom opening and closing in each variant, each glass version over dark and
+light content, the name in each face, the ID card and the postcards. The frames set V2, V5, V6, V7, V8, V10
+and T27 to built; T9 is superseded by V6; T22 and T25 are closed by V1 and V3; T24 waits (V2). V7 and V8 are
+built with a default chosen from the studies; the owner picks the final version on the lab page
+(`?glass=a|b|c|now`, `?name=nr|current|playfair|fraunces`, `?bloom=drop|palm|fan`). Headless Chromium only.
+The verdicts are in the round-four critique.
+
 ## Overall
 
 | Id | The owner said | What it means for the work | Status |
@@ -120,7 +129,7 @@ Kept as said; the lead's classification in the last column (task, note, or decid
 | T6 | The Record's 3D object has a small mobile render problem. | Reproduce and fix the recorder object on phones. | task | built |
 | T7 | The edk at the very bottom stays for now, but it is cut off from the rest of the page. A better thing may be designed much later, only when the owner asks. | No work now; recorded as a known weak point. | note | open |
 | T8 | With the 3D objects gone from most of the page, the owner is unsure. Two remain: edk (not well received) and the recorder (loved, but alone). Think, research and evaluate: new 3D objects from scratch? Where? In the background? The owner loves the recorder object and does not want it gone; fit it better into the whole page. | A study of the 3D objects' role on the new page, with options and a recommendation; the recorder stays. | task | built |
-| T9 | The panel that opens when the rail is clicked is good and makes jumping easy, but it should match the rail's lively look: maybe it grows from the side instead of a small window, blurs the background slightly, a bit more Apple design. | Redesign the rail's jump panel: grows from the rail's edge, light backdrop blur. | task | built |
+| T9 | The panel that opens when the rail is clicked is good and makes jumping easy, but it should match the rail's lively look: maybe it grows from the side instead of a small window, blurs the background slightly, a bit more Apple design. | Redesign the rail's jump panel: grows from the rail's edge, light backdrop blur. | task | superseded by V6 (the owner rejected the panel) |
 | T10 | The lanyard does not move when the card moves by itself: on the small hover response and the phone's first swing. It must react to those too, not only to pulling. | The lanyard follows every card motion (hover sway, idle, entrance). | task | built |
 | T11 | In the opened project, the "How it's made" part's object is a bad object; design something much better. | Replace that object with a designed piece. | task | built |
 | T12 | The rest of the opened project is good. | Keep it. | decided | closed |
@@ -141,12 +150,12 @@ items noted but dropped, and open rows that no build lane owned. New rows:
 
 | Id | Source | What it means for the work | Kind | Status |
 |---|---|---|---|---|
-| T22 | message 1 ("HyperFrames or an alternative") | Decide with the owner whether composed motion-graphic loops (HyperFrames renders here) are made for the project presentations and the hero, or why not. | owner question | open |
+| T22 | message 1 ("HyperFrames or an alternative") | Decide with the owner whether composed motion-graphic loops (HyperFrames renders here) are made for the project presentations and the hero, or why not. | owner question | closed (V1: after Home and Record) |
 | T23 | message 2 (no repetition) | A lab-one test that finds no repeated sentence of 5+ words outside the brief; re-run after the postcard and Record strip changes. | task | built |
-| T24 | message 3 (all achievements, real work) | A short list for the owner of the real-work routes beyond the PR flow (READMEs worth starring, Discussions answers), with who does each. | task | open |
-| T25 | message 3 (PRs in the other projects too) | Pass the PR rule to the English Prep chat through the owner; H3 here is done (CLAUDE.md rule). | task | open |
-| T26 | messages 1 and 3 (motion everywhere, no empty wait; G6) | List every interactive element that gives no motion response and assign it to a lane. | task | open |
-| T27 | message 3 (C2, card texture) | A denser texture on both faces of the ported ID card. | task | open |
+| T24 | message 3 (all achievements, real work) | A short list for the owner of the real-work routes beyond the PR flow (READMEs worth starring, Discussions answers), with who does each. | task | open (deferred by V2) |
+| T25 | message 3 (PRs in the other projects too) | Pass the PR rule to the English Prep chat through the owner; H3 here is done (CLAUDE.md rule). | task | closed (V3: English Prep archived) |
+| T26 | messages 1 and 3 (motion everywhere, no empty wait; G6) | List every interactive element that gives no motion response and assign it to a lane. | task | open (person area built in round 4; Work, the project layer and the bar not yet listed) |
+| T27 | message 3 (C2, card texture) | A denser texture on both faces of the ported ID card. | task | built |
 
 Rows G2, G3, G6, G7, G8, M1, M2 and E1 stay open and must be owned by a lane in every round until
 closed. C3 is answered by T1; H3 is done (the rule is in CLAUDE.md since PR #1).
@@ -156,12 +165,12 @@ closed. C3 is answered by T1; H3 is done (the rule is in CLAUDE.md since PR #1).
 | Id | The owner said | What it means for the work | Kind | Status |
 |---|---|---|---|---|
 | V1 | HyperFrames: wait; certainly used later, maybe one round per app once everything is done. In-page animation goes well. | T22 deferred to after Home and Record are done. | decided | closed |
-| V2 | Other achievements: no rush. The current ones have not appeared yet; unclear why. | Check why Pull Shark / YOLO did not show (likely the default branch is still `main`); report. | task | open |
+| V2 | Other achievements: no rush. The current ones have not appeared yet; unclear why. | Check why Pull Shark / YOLO did not show (likely the default branch is still `main`); report. | task | built (a report of the likely reasons and the owner's checks) |
 | V3 | English Prep is archived; no change there for now. | T25 closed. | decided | closed |
 | V4 | The tape-as-spine Record idea may not be bad; the owner tests in the morning. The project-objects idea was not clear. | Explain the objects options simply with pictures in the next report. | note | open |
-| V5 | The postcard-back drawings look good; the text at the bottom spreads a bit; maybe a phone problem; measure on the phone too. | Fix the postcard back's lower text block on phones; every measurement at 390 as well as 1440. | task | open |
-| V6 | The rail's opened panel looks very ugly in the shot. The plain rail at the right is good. The rail needs two more parts: press-and-hold to drag (scrub), and a menu on click that is a showcase. Never a separate drawer or window. A click should feel like touching something alive that grows or reveals from that point: a water drop pressed spreads lower and wider; a closed palm whose fingers open. The background blur is gradual and natural from the side, not inside a window, to bring the text and the pressed rail forward; above all on phones. Fonts, taps and motion must be expert, professional and artistic, not a technical feature: every light, colour and motion detail matters; a masterpiece; creative, meticulous, measured. | Redesign the rail interaction: hold-to-scrub; a click that blooms from the rail point (no panel box); edge-graded backdrop blur; typographic and motion craft; iterate several versions and judge them frame by frame. | task | open |
-| V7 | The new glass looks good. Should the bottom capsules and the top Home/Record tab be the same glass? Different? Real refraction, or would it hurt performance; GPU on capable devices? The top one's light changes with the aura and feels more like glass; the bottom ones are nicely minimal. Let each take the best of the other; test several versions to find the right one. | A glass study: one family for the tab and the capsules; aura-tinted light, minimal body; optional refraction on capable GPUs with a fallback; versions as lab switches with measured cost. | task | open |
-| V8 | The owner's father found the name's typeface at the top cheap. The owner thinks it is elegant and personal rather than product-like. Review all references, portfolios and research again; evaluate candidate typefaces yourself, why and why not; follow the research and the lead's view. | A typeface study for the name (and display role): candidates against the references; a recommendation; candidates as a lab switch; the owner decides. | task | open |
-| V9 | Keep working through the night: open work first, then small improvements (no big changes), then iterate the rail. | Continue the open rows; rail iterations. | task | open |
-| V10 | Check again that nothing that turned into a note in earlier messages was left undone; gather everything. | A second coverage pass over all owner messages. | task | open |
+| V5 | The postcard-back drawings look good; the text at the bottom spreads a bit; maybe a phone problem; measure on the phone too. | Fix the postcard back's lower text block on phones; every measurement at 390 as well as 1440. | task | built |
+| V6 | The rail's opened panel looks very ugly in the shot. The plain rail at the right is good. The rail needs two more parts: press-and-hold to drag (scrub), and a menu on click that is a showcase. Never a separate drawer or window. A click should feel like touching something alive that grows or reveals from that point: a water drop pressed spreads lower and wider; a closed palm whose fingers open. The background blur is gradual and natural from the side, not inside a window, to bring the text and the pressed rail forward; above all on phones. Fonts, taps and motion must be expert, professional and artistic, not a technical feature: every light, colour and motion detail matters; a masterpiece; creative, meticulous, measured. | Redesign the rail interaction: hold-to-scrub; a click that blooms from the rail point (no panel box); edge-graded backdrop blur; typographic and motion craft; iterate several versions and judge them frame by frame. | task | built (default drop; the owner judges the variants) |
+| V7 | The new glass looks good. Should the bottom capsules and the top Home/Record tab be the same glass? Different? Real refraction, or would it hurt performance; GPU on capable devices? The top one's light changes with the aura and feels more like glass; the bottom ones are nicely minimal. Let each take the best of the other; test several versions to find the right one. | A glass study: one family for the tab and the capsules; aura-tinted light, minimal body; optional refraction on capable GPUs with a fallback; versions as lab switches with measured cost. | task | built (default A; the owner picks a version) |
+| V8 | The owner's father found the name's typeface at the top cheap. The owner thinks it is elegant and personal rather than product-like. Review all references, portfolios and research again; evaluate candidate typefaces yourself, why and why not; follow the research and the lead's view. | A typeface study for the name (and display role): candidates against the references; a recommendation; candidates as a lab switch; the owner decides. | task | built (default Newsreader display at 48/34 px; the owner decides) |
+| V9 | Keep working through the night: open work first, then small improvements (no big changes), then iterate the rail. | Continue the open rows; rail iterations. | task | in work |
+| V10 | Check again that nothing that turned into a note in earlier messages was left undone; gather everything. | A second coverage pass over all owner messages. | task | built (coverage pass two) |

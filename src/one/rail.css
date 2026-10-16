@@ -15,7 +15,9 @@ html.rail-bloom .rail.rail .rail-btn {
   /* a vertical swipe on the rail still scrolls the page; a held finger takes it (bloom.ts) */
   touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
 }
-html.rail-bloom .rail .rail-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+/* the column's ring is half a capsule docked to the screen's edge, with the beads inside it (round-four frames:
+   the 12 px corners read as a window frame round the rail; a full capsule inside the column left the beads out) */
+html.rail-bloom .rail .rail-btn:focus-visible { outline: 1.5px solid var(--focus); outline-offset: -2px; border-radius: 22px 0 0 22px; }
 /* while the names are out or the thumb is held, they are the focus indication: a ring round the column
    would draw the box the bloom exists to avoid */
 html.rail-bloom .rail:is(.is-bloom, .is-scrub) .rail-btn:focus-visible { outline: none; }
@@ -65,7 +67,7 @@ html.rail-bloom .rail.rail .rail-i.on .rail-t { color: var(--a); text-shadow: 0 
 html.rail-bloom .rail.rail .rail-i:is(:hover, :focus-visible) .rail-t { color: var(--ink); translate: -3px 0; }
 html.rail-bloom .rail.rail .rail-i.on:is(:hover, :focus-visible) .rail-t { color: var(--a); }
 html.rail-bloom .rail.rail .rail-i:active .rail-t { scale: 0.98; }
-html.rail-bloom .rail.rail .rail-i:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+html.rail-bloom .rail.rail .rail-i:focus-visible { outline: 1.5px solid var(--focus); outline-offset: 0; border-radius: 999px; }
 /* each name's own bead, in the rail's three shapes: ahead a dash, behind a dot in its light, current a line */
 .bl-dot { flex: none; position: relative; width: 12px; height: 24px; }
 .bl-dot::before {

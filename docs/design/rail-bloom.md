@@ -27,7 +27,9 @@ site's rail does not change. Tests: `tests/e2e/lab-one-rail.spec.ts`.
    sizes), on the beads' own spring. The current bead becomes a dot, so the thumb is the only line.
 3. A thumb (5 x 26 px, the section's light, a two-step glow) stays exactly under the pointer.
 4. The page follows the thumb on a first-order ease with a 70 ms time constant (no ease under reduced
-   motion).
+   motion). The first move of a scrub (the page going to the held bead) starts at 260 ms and relaxes to
+   70 ms in about 300 ms, so taking the page reads as a glide, not a cut (integrator, round 4: at 70 ms a
+   hold on a far bead crossed 2800 px in two frames).
 5. Mapping: bead j's centre is section j's start; between two beads the page moves linearly; half a slot
    below the last bead reaches the end. Each bead is a soft detent: the mapping is flattened with
    `d - (0.7 / 2π) sin(2π d)`, which is continuous and monotonic and leaves 30 % speed at a bead. It
@@ -95,7 +97,7 @@ Frame sheets every 50 ms (timeline slowed through the DevTools protocol) at 1440
 |---|---|---|
 | `drop` (default) | each name leaves the press point (all the way from the rail, 70 % of the press height), from 0.5 scale and 10 px blur, on the glide spring (760 ms), its delay growing with its distance from the pressed row (40 + 30 d^0.85 ms); its colour brightens from `--ink-4`. A pool of the section's light spreads from the point, lower and wider (scale 2.6 x 4.4, 900 ms). | Reads as one gesture from one point; the light carries the "drop". No name overlaps another once visible. Chosen. |
 | `palm` | every name starts folded onto the pressed one and swings open around the arc's centre on the pop spring (820 ms, 9.6 % overshoot), outer names last. | The most alive, but for about 150 ms the folded names are drawn over each other; legible only at full speed. |
-| `fan` | each name unfolds from the press point outward like a paper fold (rotateX 84 deg to 0, settle spring, 48 ms apart). | Cleanest frames, but it reads as a list appearing, not as something growing from the point. |
+| `fan` | each name unfolds from the press point outward like a paper fold (rotateX 84 deg to 0, settle spring, 48 ms apart). | It reads as a list appearing, not as something growing from the point. The integrator's frames (round 4) also show neighbouring names drawn over each other for about 100 ms on the phone, while they unfold. |
 
 Switch with `?bloom=drop|palm|fan`.
 
@@ -112,6 +114,8 @@ Switch with `?bloom=drop|palm|fan`.
   The names stay the rail's own links in its `nav`; closed, they are hidden and out of the tab order.
 - Enter or Space opens with focus on the current name; Up, Down, Home and End move; Escape closes and
   returns focus to the column; Tab out of the names closes them.
+- Focus rings are 1.5 px in `--focus`: on a name a capsule round the row; on the column half a capsule
+  docked to the screen's edge with the beads inside it (round 4: the 12 px corners read as a window frame).
 - Reduced motion or `?still`: the names and the veil appear at once and still; the scrub follows the
   pointer without the ease; no swell, no roll.
 - Without JavaScript or in forced colours there is no rail; the platform's scrollbar stays (ADR-0013).

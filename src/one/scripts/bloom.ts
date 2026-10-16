@@ -32,6 +32,7 @@ const HOLD = { mouse: 240, touch: 320 };   // a press held this long, without mo
 const SLOP = { mouse: 4, touch: 10 };      // travel before a press stops being a tap
 const DETENT = 0.7;          // 0: linear mapping; 1: flat at each bead. 0.7 leaves 30 % speed at a bead
 const FOLLOW = 70;           // ms: the page's time constant behind the scrub thumb
+const ENTRY = 260;           // ms: the same at the start of a scrub, relaxing to FOLLOW in about 300 ms
 const SLOT = [26, 36];       // the scrub column's pitch per section: least, most
 /** the bloom's geometry, fine pointer and touch */
 const G = {
@@ -118,6 +119,9 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
     type Press = { id: number; type: 'mouse' | 'touch'; x0: number; y0: number; s0: number; t: number; scrub: boolean };
     let press: Press | null = null;
     let target = 0, raf = 0, last = 0, shown = -1, slot = 32, top0 = 0, thumbY = 0;
+    /* the follow's time constant: a scrub's first move (the page going to the held bead) starts at ENTRY and
+       relaxes to FOLLOW, so taking the page reads as a glide, not a cut (round-four frames) */
+    let tau = FOLLOW;
 
     /** pointer y to page y: bead j's centre is section j's start; between beads the page moves linearly,
         slowed near each bead by a sine detent (continuous and monotonic: never a snap) */
@@ -145,7 +149,8 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       const dt = last ? Math.min(64, t - last) : 16;
       last = t;
       const y = api.y();
-      const k = still() ? 1 : 1 - Math.exp(-dt / FOLLOW);
+      const k = still() ? 1 : 1 - Math.exp(-dt / tau);
+      tau = Math.max(FOLLOW, tau - dt * 0.6);
       const next = Math.abs(target - y) < 0.5 ? target : y + (target - y) * k;
       api.setY(next, 'instant');
       if (Math.abs(target - next) >= 0.5) raf = requestAnimationFrame(follow); else last = 0;
@@ -202,6 +207,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       getSelection()?.removeAllRanges();
       vibrate(8);
       shown = -1;
+      tau = ENTRY;
       moveThumb(press.y0);
     };
     const endScrub = (restore: boolean) => {
