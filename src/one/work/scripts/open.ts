@@ -81,6 +81,8 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
       c.querySelectorAll('img').forEach((im) => (im.loading = 'eager'));
       slot.replaceChildren(c);
     });
+    /* the hero must be decoded before the new state is shown: a lazy image would only start loading then */
+    l.querySelectorAll<HTMLImageElement>('.hero img').forEach((im) => (im.loading = 'eager'));
     return l;
   }
 
@@ -129,6 +131,7 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     pauseTicker(true);
     deck.pause(true);
     layer = build(p);
+    const l0 = layer;
     root.style.setProperty('--vt-k', String(vtk()));
     if (!canVT()) {
       show(p);
@@ -136,9 +139,17 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
       settled(layer);
       return;
     }
-    /* the press before the open (spec 4.8: the front print lifts, 120 ms) */
+    /* the press before the open (spec 4.8: the front print lifts, 120 ms). The snapshot of the page waits
+       for it, so the click answers at once even where taking the snapshot is slow (review G6: never an
+       empty wait); the transition then starts from the lifted print. */
     const front = deck.order(p)[0];
-    front?.querySelector<HTMLElement>('.pr-in')?.animate([{ transform: 'none' }, { transform: 'scale(1.02)' }], { duration: 120, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' });
+    const press = front?.querySelector<HTMLElement>('.pr-in')?.animate([{ transform: 'none' }, { transform: 'scale(1.02)' }], { duration: 120, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' });
+    await press?.finished.catch(() => {});
+    if (layer !== l0) return;
+    /* Back or Escape during the press: the open is called off and the page runs on */
+    if ((history.state as { p?: string } | null)?.p !== slug) {
+      press?.cancel(); layer = null; deck.pause(false); pauseTicker(false); return;
+    }
     deckNames(p, true);
     const l = layer;
     root.classList.add('vt-open');
@@ -176,7 +187,18 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
       } else { drop(); done(); }
       return;
     }
+    /* a clip that shows fades back to the capture first (250 ms), so the shared screen closes onto the
+       same capture that Home shows and nothing cuts */
+    const clip = l.querySelector<HTMLVideoElement>('.hero-video.on');
     l.querySelectorAll('video').forEach((v) => v.pause());
+    if (clip) {
+      clip.style.transition = 'opacity 250ms ease-out'; clip.classList.remove('on');
+      setTimeout(() => { if (layer === l) closeVT(p, l, done); }, 250);
+      return;
+    }
+    closeVT(p, l, done);
+  }
+  function closeVT(p: Proj, l: HTMLElement, done: () => void) {
     layerNames(l, true);
     root.classList.add('vt-close');
     vt = start(() => {
