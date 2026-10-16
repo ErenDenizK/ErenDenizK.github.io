@@ -160,11 +160,12 @@ export function initPostcards() {
   const closeBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-close]');
   const turnBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-turn]');
   const cursor = dlg.querySelector<HTMLElement>('[data-pv-cursor]');
-  let open: HTMLElement | null = null, busy: VT | null = null, pushed = false, queued = false, foldT = 0;
+  let open: HTMLElement | null = null, busy: VT | null = null, pushed = false, queued = false, foldT = 0, opening = false;
   const fold = () => caps?.classList.add('folded');
   /* the face toward the viewer turns the card (its button is the live one; the other face is inert) */
   const turnCard = () => stage.querySelector<HTMLButtonElement>('[data-face]:not([inert]) [data-turn]')?.click();
   const settle = () => {
+    opening = false;
     dlg.classList.add('settled');
     if (queued) { queued = false; turnCard(); }
   };
@@ -175,6 +176,7 @@ export function initPostcards() {
     const tpl = pc.querySelector<HTMLTemplateElement>('template[data-big]')!;
     pc.classList.add('is-hero');
     queued = false;
+    opening = true;
     dlg.classList.remove('settled', 'cur-x');
     caps?.classList.toggle('folded', wasFolded());
     clearTimeout(foldT);
@@ -227,17 +229,19 @@ export function initPostcards() {
     if (busy) busy.finished.finally(done); else done();
     if (pushed && !fromHistory) { pushed = false; history.back(); } else pushed = false;
   };
-  for (const pc of cards) pc.querySelector('.pc-open')?.addEventListener('click', () => show(pc));
+  /* a second press on the table card while it is already growing is the queued turn, not a new open */
+  for (const pc of cards) pc.querySelector('.pc-open')?.addEventListener('click', () => { if (opening || open) { queued = true; return; } show(pc); });
   dlg.addEventListener('cancel', (e) => { e.preventDefault(); hide(); });
   closeBtn?.addEventListener('click', () => hide());
   turnBtn?.addEventListener('click', () => { if (busy) queued = true; else turnCard(); });
+  const onCaps = (t: EventTarget | null) => !!(t as Element | null)?.closest?.('[data-pv-caps]');
   const onCard = (t: EventTarget | null) => !!(t as Element | null)?.closest?.('[data-big-card], [data-pv-caps]');
   dlg.addEventListener('click', (e) => { if (!onCard(e.target)) hide(); });
-  /* G4: while the card grows, the transition's snapshot covers the page and takes the press; keep it */
+  /* G4: while the card grows, the transition's snapshot covers the page and takes the press; keep it.
+     Before the snapshot is taken the press reaches the old page instead (the click handler above). */
   document.addEventListener('pointerdown', (e) => {
-    if (!busy || !open || e.button !== 0) return;
-    const r = stage.getBoundingClientRect();
-    if (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) queued = true;
+    if (!opening || !busy || e.button !== 0 || onCaps(e.target)) return;
+    queued = true;
   }, true);
   addEventListener('popstate', () => { if (open) hide(true); });
 
@@ -261,7 +265,6 @@ export function initPostcards() {
     dlg.style.setProperty('--pull', k.toFixed(1));
     caps?.classList.toggle('armed', px >= PULL);
   };
-  const onCaps = (t: EventTarget | null) => !!(t as Element | null)?.closest?.('[data-pv-caps]');
   dlg.addEventListener('touchstart', (e) => {
     if (e.touches.length !== 1 || !open || motion() === 'reduced' || onCaps(e.target)) { dir = 2; return; }
     y0 = e.touches[0].clientY; x0 = e.touches[0].clientX; dir = 0;
