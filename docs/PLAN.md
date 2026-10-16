@@ -7,6 +7,10 @@ when a round closes, copy this file to `docs/history/` and start a fresh one. Cl
 
 ## Where we are (2026-10-16)
 
+- **The owner reviewed `/lab/one/`** (2026-10-16): every point is a row in
+  [`docs/feedback/2026-10-16-lab-one-review.md`](feedback/2026-10-16-lab-one-review.md); round 2 works
+  through it. Work now lands on `dev` through pull requests (CLAUDE.md).
+
 - **The new Home is on `/lab/one/`** (2026-10-16): built by the two-page line; the live site is
   unchanged until the owner approves it.
 
