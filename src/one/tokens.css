@@ -39,6 +39,7 @@
   --line-3: rgb(232 227 221 / 0.22);
   --hush: rgb(18 18 20 / 0.62);
   --hush-paper: rgb(23 23 26 / 0.62);
+  --paper-veil: rgb(18 18 20 / 0.06);   /* over white captures in an opened project (spec v3, O3) */
   --focus: #f3efe7;
 
   /* aura sets: three pigments each (spec §2.5). The project sets come from world.json (src/one/aura.mjs). */

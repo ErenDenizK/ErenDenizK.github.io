@@ -289,13 +289,17 @@
 .steps.pinned .st-txt .st-ln > * { will-change: transform; }
 .steps.pinned .st:not(:first-child) .st-txt .st-ln > * { opacity: 0; }
 .steps.pinned .st-shot, .steps.pinned .st-txt { pointer-events: auto; }
-/* phones and narrow windows with motion: each screen rises by its own view timeline (CSS only) */
+/* phones and narrow windows with motion: each screen rises by its own view timeline (CSS only). Each
+   timeline sits in its own, stronger rule: in one rule the CSS minifier folds it into the animation
+   shorthand, which browsers reject (scene.css has the same note; round 2 lost these three that way). */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    html.js:not(.still) .steps:not(.pinned) .st-shot { animation: st-rise linear both, st-leave linear both; animation-timeline: view(), view();
-      animation-range: entry 0% cover 35%, exit 20% exit 100%; }
-    html.js:not(.still) .pres .pt .hero { animation: hero-push linear both; animation-timeline: scroll(nearest); animation-range: 0 40vh; }
-    html.js:not(.still) .pres .facts { animation: st-rise linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+    html.js:not(.still) .steps:not(.pinned) .st-shot { animation: st-rise linear both, st-leave linear both; }
+    html.js:not(.still) .pres .pt .hero { animation: hero-push linear both; }
+    html.js:not(.still) .pres .facts { animation: st-rise linear both; }
+    html.js:not(.still) body .steps:not(.pinned) .st-shot { animation-timeline: view(), view(); animation-range: entry 0% cover 35%, exit 20% exit 100%; }
+    html.js:not(.still) body .pres .pt .hero { animation-timeline: scroll(nearest); animation-range: 0 40vh; }
+    html.js:not(.still) body .pres .facts { animation-timeline: view(); animation-range: entry 0% cover 30%; }
   }
 }
 @keyframes st-rise { from { transform: translateY(28px) scale(.97); opacity: .6; } }
@@ -319,12 +323,56 @@ html.layer-open .layer .rail-plain.in-layer { display: block !important; view-tr
 .p-quote p::after { content: "\201D"; }
 .p-how { max-width: calc(var(--w-wide) + 2 * var(--gut)); margin: var(--s-9) auto 0; padding: 0 var(--gut); text-align: center; }
 .p-how h2 { margin-bottom: var(--s-5); font-weight: 500; }
-.how-card { position: relative; text-align: left; padding: var(--s-6) var(--s-6) 0; border-radius: var(--r-card); background: var(--raised); box-shadow: var(--e-card); margin-bottom: 96px; }
+.how-card { position: relative; text-align: left; padding: var(--s-6) var(--s-6) var(--s-2); border-radius: var(--r-card); background: var(--raised); box-shadow: var(--e-card); }
 .how-list { columns: 2; column-gap: var(--s-7); }
 .how-list li { break-inside: avoid; padding: 0 0 var(--s-4); font: 400 var(--fs-body)/1.55 var(--f-sans); color: var(--ink); text-wrap: pretty; }
-.how-crop { display: block; width: min(560px, 76%); aspect-ratio: 16 / 6; margin: var(--s-5) auto -96px; overflow: hidden; border-radius: var(--r-screen) var(--r-screen) 0 0;
-  box-shadow: var(--e-lift), 0 0 0 1px rgb(255 255 255 / .07); rotate: -1.2deg; }
-.how-crop img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+/* the cutaway (HowMade.astro, spec v3 §6): slabs drawn on, then apart, then their labels; every value is a
+   function of --hp, the section's view progress (1 when nothing drives it: the still twin) */
+@property --hp { syntax: "<number>"; inherits: true; initial-value: 1; }
+.how-cut { padding: var(--s-7) var(--s-6) var(--s-6); }
+.cut { position: relative; color: color-mix(in srgb, var(--a1) 72%, var(--ink));
+  --s: clamp(0, (var(--hp) - .36) / .4, 1); --lb: clamp(0, (var(--hp) - .7) / .24, 1); }
+.cut-art { display: block; width: 360px; height: auto; margin: 0 auto; overflow: visible; }
+.cut-art path { vector-effect: non-scaling-stroke; }
+.cut-art .d { stroke-dasharray: 2 5; }
+.cut-art .h { opacity: .4; }
+.pl { --d: clamp(0, (var(--hp) - var(--k) * .06) / .24, 1); transform: translateY(calc(var(--mid) + var(--o) * (10px + var(--s) * 66px))); }
+.pl :is(.pl-face, .pl-slab, .pl-h) { stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--d)); }
+.pl-face { opacity: .8; }
+.pl-slab { opacity: .55; fill: color-mix(in srgb, var(--raised) 78%, #000); fill-opacity: var(--d); }
+.pl-fill { stroke: none; fill: var(--raised); fill-opacity: var(--d); }
+.pl-in { opacity: calc(var(--d) * .5); }
+.pl-n { font: 500 10px/1 var(--f-sans); letter-spacing: .12em; fill: currentColor; stroke: none; opacity: calc(var(--s) * .75); }
+.cut-con { opacity: calc(var(--s) * .7);
+  transform: translateY(calc(var(--mid) - (var(--n) - 1) / 2 * (10px + var(--s) * 66px))) scaleY(calc((10 + var(--s) * 66) / 76)); }
+.cut-list, .cut-items { list-style: none; margin: 0; padding: 0; }
+.cut-name { display: block; color: var(--ink-3); }
+.cut-n { margin-right: 10px; color: color-mix(in srgb, var(--a1) 72%, var(--ink)); font-variant-numeric: tabular-nums; }
+.cut-items li { margin-top: var(--s-2); font: 400 var(--fs-small)/1.5 var(--f-sans); color: var(--ink-2); text-wrap: pretty; }
+.cut-rest { margin-top: var(--s-6); }
+@media (min-width: 900px) {
+  /* the labels stand level with their slab's outer corner, a 44 px leader between */
+  .cut { min-height: calc(var(--h) + 48px); }
+  .cut-list { position: absolute; inset: 0; pointer-events: none; }
+  .cut-i { position: absolute; top: calc(var(--y) - 8px); width: calc(50% - 224px); pointer-events: auto;
+    opacity: var(--lb); translate: calc((1 - var(--lb)) * 16px * var(--dir)) 0; }
+  .cut-l { right: calc(50% + 224px); text-align: right; --dir: 1; }
+  .cut-r { left: calc(50% + 224px); --dir: -1; }
+  .cut-i::before { content: ""; position: absolute; top: 8px; width: 44px; height: 1px; background: currentColor; opacity: .45; scale: var(--lb) 1; }
+  .cut-l::before { left: calc(100% + 6px); transform-origin: 0 50%; }
+  .cut-r::before { right: calc(100% + 6px); transform-origin: 100% 50%; }
+}
+@media (max-width: 899.98px) {
+  .cut-art { width: min(300px, 100%); }
+  .cut-list { display: grid; gap: var(--s-5); margin-top: var(--s-6); }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.js:not(.still) .cut { animation: how-p linear both; }
+    html.js:not(.still) body .cut { animation-timeline: view(); animation-range: entry 5% cover 55%; }
+  }
+}
+@keyframes how-p { from { --hp: 0; } to { --hp: 1; } }
 .p-next { display: block; position: relative; margin: var(--s-9) auto 0; padding-top: var(--s-6); text-align: center; height: min(420px, 52svh); overflow: hidden; }
 .p-next-label { display: block; }
 .p-next-title { display: block; margin-top: var(--s-2); font-size: var(--fs-h2); }
@@ -333,16 +381,73 @@ html.layer-open .layer .rail-plain.in-layer { display: block !important; view-tr
 .p-next:hover .p-next-print { translate: 0 -8px; }
 .p-next .pr { --shade: .3; }
 
-.capsule { position: fixed; z-index: 62; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); translate: -50% 0; display: flex; gap: 4px; padding: 4px;
-  border-radius: var(--r-pill); background: rgb(28 30 34 / .72); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .08), 0 16px 40px -12px rgb(0 0 0 / .8); }
-.capsule :is(a, .cap-note) { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; border-radius: var(--r-pill);
-  font: 500 var(--fs-small)/1 var(--f-sans); color: var(--ink); white-space: nowrap; transition: background-color var(--t-quick) var(--ease-ui); }
-.capsule a:hover { background: var(--fill-2); }
-.capsule .cap-x { width: 44px; padding: 0; justify-content: center; background: var(--fill-2); }
-.capsule .cap-go { background: var(--fill); color: var(--fill-ink); }
-.capsule .cap-go:hover { background: color-mix(in srgb, var(--fill) 88%, #fff); }
-.capsule .cap-note { color: var(--ink-3); padding: 0 18px 0 12px; }
+/* ---------- the bottom bar (spec v3 §4, §5): two glass capsules on the tab bar's tokens ----------
+   The close alone, then the actions, 12 px apart, one item height, one baseline. Desktop: a centred pair;
+   phone: the close at the left gutter, the actions at the right one. In the layer they rise in after the
+   paper lands (.settled, scripts/open.ts); the static page shows them at once. */
+.caps { position: fixed; z-index: 62; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); translate: -50% 0;
+  display: flex; align-items: center; gap: var(--glass-gap); }
+.glass { display: flex; align-items: center; gap: 2px; padding: var(--glass-pad); border-radius: var(--r-pill);
+  background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-edge), var(--glass-shadow); }
+.glass :is(a, .cap-note) { min-height: var(--glass-item); display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; border-radius: var(--r-pill);
+  font: 500 var(--fs-small)/1 var(--f-sans); color: var(--ink); white-space: nowrap; -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
+.glass a:hover { background: var(--fill-2); }
+.glass a:active { scale: .96; }
+.glass a:focus-visible { outline-offset: -2px; border-radius: var(--r-pill); }
+.cap-a .cap-go { background: var(--fill); color: var(--fill-ink); }
+.cap-a .cap-go:hover { background: color-mix(in srgb, var(--fill) 88%, #fff); }
+.cap-a .cap-note { color: var(--ink-3); }
+/* the close: a cross in a round slot, then "Close" and the esc key cap, which fold away (width from the
+   left edge, 300 ms; the words fade in the first 120 ms) */
+.glass .cap-x { padding: 0; gap: 0; }
+.cap-xi { position: relative; flex: none; display: grid; place-items: center; width: var(--glass-item); height: var(--glass-item); }
+.cap-xi .icon { grid-area: 1 / 1; }
+.cap-more { display: grid; grid-template-columns: 1fr; transition: grid-template-columns 300ms var(--ease-out); }
+.cap-more-in { display: flex; align-items: center; gap: 10px; min-width: 0; overflow: hidden; white-space: nowrap;
+  transition: opacity 120ms var(--ease-ui); }
+/* the trailing space is a margin inside the clipped box, so a folded close is exactly its round slot */
+.cap-more-in > :last-child { margin-right: 14px; }
+html:not(.fine) .cap-lb { margin-right: 16px; }
+.cap-lb { color: var(--ink-2); }
+.cap-kbd { font: 500 11px/1 var(--f-sans); letter-spacing: .04em; color: var(--ink-3); padding: 4px 6px; border-radius: 5px;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .12); }
+html:not(.fine) .cap-kbd { display: none; }
+.caps.folded .cap-more { grid-template-columns: 0fr; }
+.caps.folded .cap-more-in { opacity: 0; }
+/* the pull ring: drawn around the cross as a finger pulls the layer toward its close point */
+.cap-ring { position: absolute; inset: 0; width: 100%; height: 100%; rotate: -90deg; pointer-events: none; overflow: visible; }
+.cap-ring circle { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: var(--pull, 0) 100; opacity: calc(var(--pull, 0) * .05); }
+.caps.armed .cap-ring circle { stroke: var(--wm-c, var(--ink)); }
+/* arrival in the layer: rise 16 px and fade in, the close first, the actions 60 ms later; leaving, the body
+   group of the close transition fades them with the page */
+html.motion .layer .glass { transition: opacity var(--t-sheet) var(--ease-out), translate var(--t-sheet) var(--ease-out); }
+html.motion .layer .cap-a { transition-delay: 60ms; }
+.layer:not(.settled) .glass { opacity: 0; translate: 0 16px; }
+/* a narrow phone has no room for the words beside the actions: the close starts folded */
+@media (max-width: 379.98px) { .caps .cap-more { grid-template-columns: 0fr; } .caps .cap-more-in { opacity: 0; } }
+/* the close cursor (fine pointers, exits.ts): over the empty space beside the hero the pointer becomes a
+   small glass disc with the cross, and a click there closes */
+.cursor-x { position: fixed; z-index: 64; left: 0; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%;
+  display: grid; place-items: center; pointer-events: none; color: var(--ink);
+  background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-edge), var(--glass-shadow);
+  opacity: 0; scale: .6; transition: opacity var(--t-quick) var(--ease-ui), scale var(--t-ui) var(--ease-out); }
+.cursor-x b { position: absolute; top: calc(100% + 8px); left: 50%; translate: -50% 0; font: 500 var(--fs-cap)/1 var(--f-sans); color: var(--ink-2); white-space: nowrap; }
+.layer.cur-x .cursor-x { opacity: 1; scale: 1; }
+.layer.cur-x, .layer.cur-x * { cursor: none; }
+html.still .cursor-x { transition: opacity var(--t-quick) linear; scale: 1; }
+/* touch: the layer's own pull replaces the platform's bounce at its top and end (exits.ts) */
+@media (pointer: coarse) { .layer { overscroll-behavior-y: none; } }
+/* white document pages sit on the Graphite page without being its brightest thing: a 6 % ink veil and an
+   inner keyline over every screen in the layer; the captures themselves are not regraded (spec v3 §1.2, O3) */
+.pres :is(.hero:not(.hero-obj), .st-shot)::after { content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; pointer-events: none;
+  background: var(--paper-veil); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .06); }
+/* the bottom quiet band, the mirror of the bar's: the layer's text fades before it reaches the glass */
+.pres::after { content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 120px; z-index: 61; pointer-events: none;
+  background: linear-gradient(to top, var(--paper) 0%, color-mix(in srgb, var(--paper) 86%, transparent) 46%, transparent);
+  transition: opacity var(--t-ui) var(--ease-ui); }
+.layer:not(.settled) .pres::after { opacity: 0; }
 
 @media (max-width: 699.98px) {
   .pres { --hero-w: calc(100vw - 32px); }
@@ -363,12 +468,12 @@ html.layer-open .layer .rail-plain.in-layer { display: block !important; view-tr
   .p-outcome { margin: var(--s-8) auto var(--s-7); }
   .p-nums { gap: var(--s-6); margin-top: var(--s-8); }
   .p-quote, .p-how { margin-top: var(--s-8); }
-  .how-card { padding: var(--s-5) var(--s-5) 0; margin-bottom: 72px; }
+  .how-card { padding: var(--s-5) var(--s-5) var(--s-1); }
+  .how-cut { padding: var(--s-6) var(--s-5); }
   .how-list { columns: 1; }
-  .how-crop { width: 88%; margin-bottom: -72px; }
   .p-next { margin-top: var(--s-8); height: min(360px, 46svh); }
-  .capsule { bottom: calc(16px + env(safe-area-inset-bottom)); }
-  .capsule :is(a, .cap-note) { padding: 0 16px; }
+  .caps { left: 16px; right: 16px; translate: none; justify-content: space-between; bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .cap-a :is(a, .cap-note) { padding: 0 16px; }
 }
 
 /* ---------- open and close (spec 4.8): same-document view transitions ----------

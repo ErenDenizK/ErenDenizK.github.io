@@ -14,6 +14,7 @@ import { motion, emit, pauseField } from './bus';
 import { initStepper, type Stepper } from './stepper';
 import { spin } from './loops';
 import { onFirstFrame } from './frame';
+import { initExits, wasFolded, rememberFold, type Exits } from './exits';
 
 type VT = { finished: Promise<void>; updateCallbackDone: Promise<void>; skipTransition(): void };
 const root = document.documentElement;
@@ -28,7 +29,7 @@ const decode = (img: HTMLImageElement | null, ms = 350) => !img ? Promise.resolv
 
 export function initOpen(sec: HTMLElement, deck: Flight) {
   let layer: HTMLElement | null = null, open: Proj | null = null, vt: VT | null = null, steps: Stepper | null = null, clipT = 0;
-  let rail: Rail | null = null, smoother: { destroy(): void } | null = null;
+  let rail: Rail | null = null, smoother: { destroy(): void } | null = null, exits: Exits | null = null;
   const tpl = (slug: string) => sec.querySelector<HTMLTemplateElement>(`template[data-pres-tpl="${slug}"]`);
 
   /* the block's side of the shared names: the hero frame, its side frames, the texts */
@@ -83,6 +84,8 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     });
     /* the hero must be decoded before the new state is shown: a lazy image would only start loading then */
     l.querySelectorAll<HTMLImageElement>('.hero img').forEach((im) => (im.loading = 'eager'));
+    /* the close was folded once this session: later opens start with the cross alone (exits.ts) */
+    if (wasFolded()) l.querySelector('[data-caps]')?.classList.add('folded');
     return l;
   }
 
@@ -98,7 +101,11 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
   /* the layer once it stands: its steps scrubbed by its own scroll, its rail, its smoothing (spec v2 §3.4) */
   function settled(l: HTMLElement) {
     clear(l);
-    l.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true });
+    /* the capsules rise in once the paper has landed; focus goes to the close, so a keyboard or screen
+       reader user meets the way out first (spec v3 §4.2) */
+    l.classList.add('settled');
+    (l.querySelector<HTMLElement>('.cap-x') ?? l.querySelector<HTMLElement>('h1'))?.focus({ preventScroll: true });
+    exits = initExits(l, back);
     steps = initStepper(l.querySelector('[data-steps]'), l);
     smoother = createSmoother(l);
     const pres = l.querySelector<HTMLElement>('.pres')!;
@@ -143,11 +150,17 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
        for it, so the click answers at once even where taking the snapshot is slow (review G6: never an
        empty wait); the transition then starts from the lifted print. */
     const front = deck.order(p)[0];
-    const press = front?.querySelector<HTMLElement>('.pr-in')?.animate([{ transform: 'none' }, { transform: 'scale(1.02)' }], { duration: 120, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' });
+    /* the paper is picked up: it lifts 6 px and its shadow grows, so the snapshot's wait reads as the
+       lift (spec v3 §1.2, W3 / O1) */
+    const pin = front?.querySelector<HTMLElement>('.pr-in');
+    const lift = { duration: 120, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' as const };
+    const press = pin?.animate([{ transform: 'none' }, { transform: 'translateY(-6px) scale(1.02)' }], lift);
+    pin?.querySelector<HTMLElement>('.pr-mount')?.animate([{ boxShadow: getComputedStyle(pin.querySelector('.pr-mount')!).boxShadow }, { boxShadow: '0 2px 4px rgb(0 0 0 / .5), 0 40px 90px -24px rgb(0 0 0 / .8), inset 0 0 0 1px rgb(255 255 255 / .05)' }], lift);
     await press?.finished.catch(() => {});
     if (layer !== l0) return;
     /* Back or Escape during the press: the open is called off and the page runs on */
     if ((history.state as { p?: string } | null)?.p !== slug) {
+      pin?.querySelectorAll('*').forEach((e) => e.getAnimations().forEach((a) => a.cancel()));
       press?.cancel(); layer = null; deck.pause(false); pauseTicker(false); return;
     }
     deckNames(p, true);
@@ -155,7 +168,7 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     root.classList.add('vt-open');
     vt = start(async () => {
       deckNames(p, false);
-      front?.querySelector<HTMLElement>('.pr-in')?.getAnimations().forEach((a) => a.cancel());
+      pin?.getAnimations({ subtree: true }).forEach((a) => a.cancel());
       layerNames(l, true);
       show(p);
       await decode(l.querySelector<HTMLImageElement>('.hero img'));
@@ -166,6 +179,7 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
   /* close: the reverse, onto the print that is in front of the deck now */
   function drop() {
     clearTimeout(clipT);
+    exits?.destroy(); exits = null;
     steps?.destroy(); steps = null;
     rail?.destroy(); rail = null;
     smoother?.destroy(); smoother = null;
@@ -178,6 +192,7 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
   function closeProject(o: { ua?: boolean } = {}) {
     if (!layer || !open) return;
     if (vt) vt.skipTransition();
+    rememberFold();
     const p = open, l = layer;
     const done = () => p.btn.focus({ preventScroll: true });
     if (!canVT() || o.ua) {
@@ -224,7 +239,7 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     name(peek?.querySelector('.pr-screen'), 'shot');
     vt = start(async () => {
       clear(old);
-      clearTimeout(clipT); steps?.destroy(); steps = null;
+      clearTimeout(clipT); steps?.destroy(); steps = null; exits?.destroy(); exits = null;
       rail?.destroy(); rail = null; smoother?.destroy(); smoother = null;
       old.remove();
       from.el.classList.remove('opened');
