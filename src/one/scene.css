@@ -1,0 +1,37 @@
+/* Scroll scenes (spec v2 §7, motion contract rules 3, 5, 6 and 9). A scene is an element with
+   [data-scene]. It carries one number, --p, its cover progress: 0 when its top meets the bottom of the
+   view, 1 when its bottom leaves the top of the view. Every scroll-linked value inside a scene is a pure
+   function of --p written in calc(), so it plays backwards on the way up and it never waits on a timer.
+   Where the browser has view timelines, a view() timeline animates --p; elsewhere scripts/scene.ts
+   writes the same number once a frame while the page moves. The initial value is 1 and every function
+   below falls back to its rest value outside html.motion, so the still twins (reduced motion, ?still,
+   no JavaScript) show every scene complete and still. */
+@property --p { syntax: "<number>"; inherits: true; initial-value: 1; }
+@keyframes scene-p { from { --p: 0; } to { --p: 1; } }
+@supports (animation-timeline: view()) {
+  html.motion [data-scene] { animation: scene-p linear both; }
+  /* the timeline sits in its own, stronger rule: in one rule the CSS minifier folds it into the
+     animation shorthand, which browsers reject (Plate.astro has the same note) */
+  html.motion body [data-scene] { animation-timeline: view(); animation-range: cover 0% cover 100%; }
+}
+
+/* ---------- lines in masks (rule 9): scripts/lines.ts splits [data-lines] into measured lines ----------
+   Each line is a mask (.ln) holding one span (.ln-i). The span rises from 110 % with a 4 deg skew to
+   rest, as a function of --p: the group's window starts at --a and lasts --w; each line starts 6 % of
+   the window later than the one above it. The mask pads 0.06 em above and 0.26 em below, so no
+   descender is cut at rest (spec v2 §2.1). */
+.ln { display: block; overflow: clip; padding: 0.06em 0 0.26em; margin: -0.06em 0 -0.26em; }
+.ln-i { display: block; transform-origin: 0 100%; }
+html.motion [data-lines] .ln-i {
+  --t: clamp(0, (var(--p) - var(--a, 0.08) - var(--i, 0) * var(--w, 0.22) * 0.06) / var(--w, 0.22), 1);
+  --in: calc(1 - (1 - var(--t)) * (1 - var(--t)) * (1 - var(--t)));
+  transform: translateY(calc((1 - var(--in)) * 110%)) skewY(calc((1 - var(--in)) * 4deg));
+}
+
+/* ---------- a block that rises as one (body text, never per word): opacity 0.4 to 1 and 16 px ---------- */
+html.motion [data-rise] {
+  --t: clamp(0, (var(--p) - var(--a, 0.1)) / var(--w, 0.25), 1);
+  --in: calc(1 - (1 - var(--t)) * (1 - var(--t)));
+  opacity: calc(0.4 + 0.6 * var(--in));
+  transform: translateY(calc((1 - var(--in)) * 16px));
+}

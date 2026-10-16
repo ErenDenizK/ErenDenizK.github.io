@@ -3,6 +3,8 @@
 import { initField } from './field';
 import { initArrive } from './arrive';
 import { initScrub } from './scrub';
+import { initScene } from './scene';
+import { initLines } from './lines';
 import { pauseField, motion } from './bus';
 import { initRail } from '../../scripts/rail';
 import { initClock } from '../../scripts/clock';
@@ -11,6 +13,8 @@ const root = document.documentElement;
 
 initField();
 initScrub();
+initScene();
+initLines();
 initArrive();
 initRail();
 initClock();
