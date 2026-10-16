@@ -287,6 +287,12 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
   .idc-link + .idc-link { margin-left: 0; }
   .idc-link:hover { color: var(--ink); }
   .idc-link .icon { color: var(--ink-3); }
+  /* row T26: a hovered link answers with motion too, the way the Record strip's "whole record" does: its
+     arrow (every one points up and out) steps 1.5 px along its own direction */
+  .idc-link .icon, .idc-links .icon:last-child { transition: color var(--t-press), translate 200ms var(--ease-out); }
+  .idc-link:hover .icon { color: var(--ink-2); translate: 1.5px -1.5px; }
+  .idc-links a:hover .icon:last-child { color: var(--ink-2); translate: 1.5px -1.5px; }
+  :global(html.still) .idc-link:hover .icon, :global(html.still) .idc-links a:hover .icon:last-child { translate: none; }
   /* the security foil: a small hologram whose rings catch the light as the card turns */
   .idc-seal {
     margin-left: auto; width: 8.4cqi; height: 8.4cqi; border-radius: 50%; pointer-events: none;
