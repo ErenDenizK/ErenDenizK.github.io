@@ -68,8 +68,8 @@ const edges = [edge(390, 11), edge(820, 23), edge(1440, 7)];
           ))}
           <a class="fl-hero" href={m.href} tabindex="-1" aria-hidden="true" data-open={m.slug}>
             {short
-              ? <Print m={m} i={0} n={1} sizes={HERO} num={`${two(k + 1)} / ${two(list.length)}`} />
-              : <Print m={m} s={m.prints[0]} i={0} n={m.prints.length} sizes={HERO} twin num={`${two(k + 1)} / ${two(list.length)}`} />}
+              ? <Print m={m} i={0} n={1} sizes={HERO} eager num={`${two(k + 1)} / ${two(list.length)}`} />
+              : <Print m={m} s={m.prints[0]} i={0} n={m.prints.length} sizes={HERO} eager twin num={`${two(k + 1)} / ${two(list.length)}`} />}
           </a>
           <div class="txt">
             <div class="txt-in">

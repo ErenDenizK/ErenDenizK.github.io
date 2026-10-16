@@ -20,7 +20,7 @@ const left = s ? (s.title ? `${m.title} · ${s.title}` : m.title) : `${m.title} 
       <div class:list={['pr-screen', { 'pr-obj': !s }]}>
         {s
           ? <Shot s={s} sizes={sizes} phoneSizes="calc(100vw - 88px)" eager={eager} cls="pr-img" />
-          : <Obj o={m.obj} sizes="(max-width: 699.98px) 70vw, 420px" cls="pr-object" />}
+          : <Obj o={m.obj} sizes="(max-width: 699.98px) 70vw, 420px" cls="pr-object" eager={eager} />}
         {s && twin && <div class="pr-twin" aria-hidden="true"><Shot s={s} sizes={sizes} phoneSizes="calc(100vw - 88px)" eager={eager} cls="pr-img" alt="" /></div>}
       </div>
       <figcaption class="pr-cap cap"><span>{left}</span>{num ? <span>{num}</span> : n > 1 && <span>{i + 1} / {n}</span>}</figcaption>

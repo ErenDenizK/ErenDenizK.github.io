@@ -3,8 +3,8 @@
    every object on the site. scripts/deck.ts adds the idle loop later, on the project in front only;
    the presentation adds the spin loop where it has one. Decorative: aria-hidden. */
 import type { Obj } from './data';
-interface Props { o: Obj; sizes: string; cls?: string; loop?: 'idle' | 'spin' }
-const { o, sizes, cls = '', loop = 'idle' } = Astro.props;
+interface Props { o: Obj; sizes: string; cls?: string; loop?: 'idle' | 'spin'; eager?: boolean }
+const { o, sizes, cls = '', loop = 'idle', eager = false } = Astro.props;
 const p = o.poster;
 const videos = loop === 'spin' ? { wide: o.spin, phone: o.spinPhone } : { wide: o.idle, phone: o.idle };
 ---
@@ -12,6 +12,6 @@ const videos = loop === 'spin' ? { wide: o.spin, phone: o.spinPhone } : { wide: 
   data-videos={JSON.stringify(videos)} style={`--light: ${p.light}`}>
   <picture>
     {p.sources.map((s) => <source type={s.type} srcset={s.srcset} sizes={sizes} />)}
-    <img class="obj-img" src={p.src} alt="" width={p.w} height={p.h} loading="lazy" decoding="async" />
+    <img class="obj-img" src={p.src} alt="" width={p.w} height={p.h} loading={eager ? undefined : 'lazy'} decoding="async" />
   </picture>
 </div>
