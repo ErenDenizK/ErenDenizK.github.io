@@ -36,7 +36,13 @@ site's rail does not change. Tests: `tests/e2e/lab-one-rail.spec.ts`.
    above it in 10.5 px capitals, letter-spacing 0.16em. On touch the name sits 52 px above the finger,
    because the finger covers what is below its tip. Each change rolls the name 9 px in the direction of
    travel (220 ms), swells the passed bead (280 ms) and, where the platform allows it, vibrates for 5 ms.
-7. Release leaves the page where it is. Escape puts it back where the press started.
+7. The veil is lighter than the bloom's: only the two narrow blur layers (on touch 62 % and 44 % of the
+   width) at 80 % and the shade at 55 %, because the reader watches the page arrive. The name has a close
+   halo of ground under its light. On touch it keeps 12 px clear of the 44 px column, and no focus ring is
+   drawn round the column while the thumb or the names are out (the ring read as a box).
+8. The part's name is shown only where it adds something: "Work" over a project, "The record" over Now.
+   The person's part has no heading on the page and would repeat "Eren", so it has none.
+9. Release leaves the page where it is. Escape puts it back where the press started.
 
 A resting mouse over the column shows only the bead's name, 13 px Inter, with a halo of ground.
 

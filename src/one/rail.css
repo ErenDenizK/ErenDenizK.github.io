@@ -16,6 +16,9 @@ html.rail-bloom .rail.rail .rail-btn {
   touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
 }
 html.rail-bloom .rail .rail-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+/* while the names are out or the thumb is held, they are the focus indication: a ring round the column
+   would draw the box the bloom exists to avoid */
+html.rail-bloom .rail:is(.is-bloom, .is-scrub) .rail-btn:focus-visible { outline: none; }
 /* the beads under a resting mouse lengthen, as on the live rail */
 html.rail-bloom .rail:has(.rail-btn:hover) .rail-m:not(.on, .done) { width: 10px; background: var(--ink-3); }
 /* focus on the button never spreads the beads (the live rail spreads them for its hover titles) */
@@ -92,7 +95,10 @@ html.rail-bloom .rail.rail .rail-i:focus-visible { outline: 2px solid var(--focu
 .bl-veil.on, .bl-veil.scrub { visibility: visible; transition: visibility 0s; }
 .bl-veil.on { pointer-events: auto; }
 .bl-veil.on > i, .bl-veil.on::after { opacity: 1; transition-duration: 460ms; }
-.bl-veil.scrub > i, .bl-veil.scrub::after { opacity: 0.8; transition-duration: 260ms; }
+/* a scrub moves the page under the thumb, and the reader watches where it goes: only the two narrow layers
+   and a lighter shade, so the name beside the thumb reads and the page beyond it stays sharp */
+.bl-veil.scrub > i:nth-child(n + 3) { opacity: 0.8; transition-duration: 260ms; }
+.bl-veil.scrub::after { opacity: 0.55; transition-duration: 260ms; }
 .bl-veil > i { position: absolute; top: 0; bottom: 0; right: 0; }
 /* each layer is only as wide as its mask reaches, so the blurs cost 2.5 views of area, not 4 */
 .bl-veil > i:nth-child(1) { width: var(--bw); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
@@ -114,6 +120,8 @@ html.rail-touch .bl-veil { --bw: 100vw; }
 html.rail-touch .bl-veil > i:nth-child(2) { width: 100%; }
 html.rail-touch .bl-veil > i:nth-child(3) { width: 86%; }
 html.rail-touch .bl-veil > i:nth-child(4) { width: 64%; }
+html.rail-touch .bl-veil.scrub > i:nth-child(3) { width: 62%; }
+html.rail-touch .bl-veil.scrub > i:nth-child(4) { width: 44%; }
 html.rail-touch .bl-veil::after {
   background: linear-gradient(to left, rgb(13 13 15 / 0.84), rgb(13 13 15 / 0.74) 40%, rgb(13 13 15 / 0.5) 72%, rgb(13 13 15 / 0.26));
 }
@@ -149,7 +157,9 @@ html.rail-touch .bl-veil::after {
 .bl-tag-g:empty { display: none; }
 .bl-tag-n {
   font: 400 30px / 1 var(--f-serif); letter-spacing: -0.012em; color: var(--ink);
-  text-shadow: 0 0 26px color-mix(in srgb, var(--a) 40%, transparent);
+  /* a close halo of ground first, so the name reads over a bright object the lighter scrub shade leaves
+     sharp, then the section's light */
+  text-shadow: 0 0 3px rgb(13 13 15 / 0.7), 0 0 14px rgb(13 13 15 / 0.55), 0 0 26px color-mix(in srgb, var(--a) 40%, transparent);
 }
 /* a resting mouse: only the name, small, with a halo of ground so it reads over anything */
 .bl-tag.quiet .bl-tag-g { display: none; }

@@ -153,7 +153,10 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
     const showTag = (i: number, y: number, quiet: boolean) => {
       const a = axis();
       const lift = touch() && !quiet ? 52 : 0;   // above the finger, which covers the rail below its tip
-      tag.style.setProperty('--x', (innerWidth - a.x + g().inset + (quiet ? 0 : 8)) + 'px');
+      /* on touch the column is a 44 px button: the name keeps 12 px clear of its left edge, so the finger's
+         target and the name never share pixels */
+      const right = touch() ? innerWidth - btn.getBoundingClientRect().left + 12 : innerWidth - a.x + g().inset + (quiet ? 0 : 8);
+      tag.style.setProperty('--x', right + 'px');
       tag.style.setProperty('--y', (y - lift) + 'px');
       tag.style.setProperty('--a', secs[i].a);
       tag.classList.toggle('quiet', quiet);
@@ -161,7 +164,9 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       if (i === shown) return;
       const dir = shown < 0 ? 0 : i > shown ? 1 : -1;
       shown = i;
-      tagG.textContent = groups[i] && groups[i] !== secs[i].label ? groups[i]! : '';
+      /* the part's name, unless it only repeats the section's ("The record" over "Record") */
+      const gl = groups[i];
+      tagG.textContent = gl && !gl.toLowerCase().includes(secs[i].label.toLowerCase()) ? gl : '';
       tagN.textContent = secs[i].label;
       if (!still() && dir) tagN.animate([{ opacity: 0.2, translate: `0 ${dir * 9}px`, filter: 'blur(2px)' }, { opacity: 1, translate: '0 0', filter: 'blur(0)' }],
         { duration: 220, easing: 'cubic-bezier(.22, 1, .36, 1)' });

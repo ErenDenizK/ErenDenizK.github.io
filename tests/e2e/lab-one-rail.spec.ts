@@ -186,6 +186,10 @@ test.describe('phone', () => {
     /* the name sits above the finger, not under it */
     const tag = (await page.locator('.bl-tag-n').boundingBox())!;
     expect(tag.y + tag.height).toBeLessThan(y);
+    /* and clear of the 44 px column, so the finger's target and the name never share pixels */
+    expect(tag.x + tag.width).toBeLessThanOrEqual(b.x - 8);
+    /* the person's part has no label that would repeat "Eren" */
+    await expect(page.locator('.bl-tag-g')).not.toHaveText('Eren');
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await expect(page.locator('#rail')).not.toHaveClass(/is-scrub/);
     await expect(page.locator('#rail .rail-btn')).toHaveAttribute('aria-expanded', 'false');
