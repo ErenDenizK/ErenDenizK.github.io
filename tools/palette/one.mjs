@@ -66,18 +66,25 @@ export function onePairs() {
     { where: 'one paper: body (ink-2)', text: 'var(--ink-2)', on: PAPER, px: 16, weight: 400, role: 'body' },
     { where: 'one paper: ink', text: 'var(--ink)', on: PAPER, px: 16, weight: 400, role: 'body' },
     { where: 'one paper: .label (ink-3)', text: 'var(--ink-3)', on: PAPER, px: 13, weight: 500, role: 'label' },
-    { where: 'one paper: lane on fill-1', text: 'var(--ink-2)', on: [...PAPER, 'var(--fill-1)'], px: 16, weight: 400, role: 'body' },
-    { where: 'one paper: lane label on fill-1', text: 'var(--ink-3)', on: [...PAPER, 'var(--fill-1)'], px: 13, weight: 500, role: 'label' },
-    { where: 'one paper: now stop (gold)', text: 'var(--person-1)', on: PAPER, px: 13, weight: 500, role: 'label' },
-    { where: 'one paper: lane title (gold mix)', text: 'color-mix(in srgb, var(--person-1) 70%, var(--ink))', on: [...PAPER, 'var(--fill-1)'], px: 20, weight: 500, role: 'large' },
-    { where: 'one paper: "Both matter." (gold mix)', text: 'color-mix(in srgb, var(--person-1) 55%, var(--ink))', on: PAPER, px: 20, weight: 500, role: 'large' },
-    // the ID card (its face, darkest stop of the stock)
-    { where: 'one id card: issued, label (ink-3)', text: 'var(--ink-3)', on: ['#100f0d'], px: 11.7, weight: 500, role: 'label' },
-    { where: 'one id card: role (ink-2)', text: 'var(--ink-2)', on: ['#100f0d'], px: 12.6, weight: 400, role: 'label' },
-    // the postcard's back in the large view
-    { where: 'one postcard: note and address (hand)', text: '#23304a', on: ['#e6ddcc'], px: 17, weight: 400, role: 'body' },
-    { where: 'one postcard: printed head (0.78)', text: 'rgb(58 50 42 / 0.78)', on: ['#e6ddcc'], px: 11, weight: 500, role: 'label' },
-    { where: 'one postcard: credit (0.73)', text: 'rgb(58 50 42 / 0.73)', on: ['#e6ddcc'], px: 8, weight: 500, role: 'label' },
+    // How I work and Path (spec v2 §3.5.3, §3.5.4): no boxes, lanes on the paper
+    { where: 'one paper: agents lane label (gold mix, serif 24)', text: 'color-mix(in srgb, var(--gold-ink) 75%, var(--ink))', on: PAPER, px: 24, weight: 400, role: 'large' },
+    { where: 'one paper: "gives" line (serif italic 16)', text: 'var(--ink)', on: PAPER, px: 16, weight: 400, role: 'body' },
+    { where: 'one paper: now stop (gold)', text: 'var(--gold-ink)', on: PAPER, px: 13, weight: 400, role: 'label' },
+    // the Record strip on the paper (spec v2 §3.7)
+    { where: 'one paper: record note (read, serif 19)', text: 'var(--read)', on: PAPER, px: 19, weight: 430, role: 'body' },
+    { where: 'one paper: record dates, meta (ink-3)', text: 'var(--ink-3)', on: PAPER, px: 13, weight: 400, role: 'label' },
+    { where: 'one paper: now month (record blue)', text: 'var(--record-1)', on: PAPER, px: 13, weight: 400, role: 'label' },
+    { where: 'one paper: record months (12 px, ink-3)', text: 'var(--ink-3)', on: PAPER, px: 12, weight: 400, role: 'label' },
+    // the ID card (its face, darkest stop of the stock), at the 12 px floor (spec v2 §2.1)
+    { where: 'one id card: issued, label (ink-3)', text: 'var(--ink-3)', on: ['#100f0d'], px: 12, weight: 400, role: 'label' },
+    { where: 'one id card: role (ink-2)', text: 'var(--ink-2)', on: ['#100f0d'], px: 12, weight: 400, role: 'label' },
+    // the postcard (spec v2 §3.6): the front's edge line on the mount (the photo's own light at 38 %, its
+    // lightest measured mount), and the dark back
+    { where: 'one postcard: place on the mount (serif italic 16)', text: 'var(--ink)', on: ['#4a4530'], px: 16, weight: 400, role: 'body' },
+    { where: 'one postcard: index on the mount (12 px)', text: 'var(--ink-2)', on: ['#4a4530'], px: 12, weight: 500, role: 'label' },
+    { where: 'one postcard back: note (serif italic 17)', text: 'var(--ink)', on: ['#1c1a17'], px: 17, weight: 400, role: 'body' },
+    { where: 'one postcard back: signature (gold)', text: 'var(--gold-ink)', on: ['#1c1a17'], px: 15, weight: 400, role: 'label' },
+    { where: 'one postcard back: labels, hex (12 px, ink-3)', text: 'var(--ink-3)', on: ['#1c1a17'], px: 12, weight: 500, role: 'label' },
     // non-text
     { where: 'one: signal light', text: 'var(--signal)', on: [G], role: 'nontext' },
     { where: 'one: focus ring', text: 'var(--focus)', on: [G], role: 'nontext' },

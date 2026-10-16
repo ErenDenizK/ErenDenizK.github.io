@@ -96,6 +96,16 @@ the right rule.
   photos stay in the repo and may be used when needed (O 2026-10-15, evening; this replaces "never
   used" of 2026-10-11).
 
+- **Numbers of the person's part** (spec v2 §2.2, §2.5, §2.6; lab page only until the owner accepts):
+  `--chapter-gap` 168 px desktop and 112 px phone between the person's chapters, `--in-chapter` 72 px
+  and 48 px inside one. The Record's grid keeps its numbers under new names: `--rec-gutter` 64,
+  `--rec-spine` 36 (22 on phones), `--rec-col` 680, `--rec-thumb` 244, `--rec-w` 1060 px. The ID card
+  and the postcards are one family: `--gold-ink` rgb(243 184 134), `--foil` (the live card's conic
+  gradient #f3b886, #f6dcc4, #c9d4ff, #efb1cb), the guilloché at 0.07 behind the card and 0.11 on a
+  card face. Line-art textures stand at 0.06 to 0.08 behind text-free areas. Reason: the review asked
+  for chapters instead of equal strips (G5), the Record's own language on Home (R1), and denser texture
+  (C2, E1).
+
 ## 7. Never
 
 - A loading screen; a name set as a poster; everything too big. (O 2026-10-11, 2026-10-15)

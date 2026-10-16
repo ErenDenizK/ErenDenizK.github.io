@@ -48,6 +48,9 @@
   --aura-open: 0.32;           /* pool centre where no text sits */
   --aura-quiet: 0.08;          /* the most light any text block may stand on */
   --signal: #ff6b6b;
+  /* the card and the postcards are one family: one gold ink, one foil, one guilloché (spec v2 §2.6) */
+  --gold-ink: rgb(243 184 134);
+  --foil: conic-gradient(from var(--fa, 150deg), #f3b886, #f6dcc4, #c9d4ff, #efb1cb, #f3b886);
 
   /* type: faces */
   --f-serif: "Newsreader", "Newsreader Fallback", Georgia, serif;
@@ -69,6 +72,10 @@
   --s-7: 48px; --s-8: 72px; --s-9: 112px; --s-10: 168px;
   --strip-gap: var(--s-9);     /* between strips */
   --part-gap: var(--s-10);     /* between the three parts: brief, Work, the rest */
+  --chapter-gap: var(--s-10);  /* between the person's chapters (spec v2 §2.2) */
+  --in-chapter: var(--s-8);    /* between blocks of one chapter */
+  /* the Record's grid, named for the new set (spec v2 §2.5; record-language §2.3) */
+  --rec-gutter: 64px; --rec-spine: 36px; --rec-col: 680px; --rec-thumb: 244px; --rec-w: 1060px;
   --gut: clamp(16px, 3.05vw + 4.1px, 48px);
 
   /* columns, all centred on the page axis */
@@ -125,5 +132,7 @@
     --rise-img: 16px;
     --strip-gap: var(--s-8);
     --part-gap: var(--s-9);
+    --chapter-gap: var(--s-9);
+    --in-chapter: var(--s-7);
   }
 }

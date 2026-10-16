@@ -1,10 +1,15 @@
-/* Open and close (phase3 design-spec.md 3.3.4 "URLs", 4.8): the print's paper grows into the page.
-   A same-document view transition with shared names: the front print's mount becomes the layer's ground
-   ("paper"), its screen the hero ("shot", never hidden), the deck's meta, title and promise the head, the
-   other prints the flanking ones ("side-1", "side-2") and the glass object stays the object ("obj").
+/* Open and close (phase3 design-spec.md 3.3.4 "URLs", 4.8; kept in spec v2 §3.3.5, the owner likes it:
+   W3, O1): the print's paper grows into the page. A same-document view transition with shared names:
+   the hero frame's mount becomes the layer's ground ("paper"), its screen the hero ("shot", never
+   hidden), the block's meta, title and promise the head, its side frames the flanking ones ("side-1",
+   "side-2"). At most eight named groups (rule 17): no object group. The open starts from the hero's
+   transform at the click, so a frame clicked mid-flight grows from where it is; the page's clock and
+   the field pause before the transition starts.
    Every project has a real URL: open pushes it, Close, Escape and Back all take the one history step
    back. Without view transitions (or with reduced motion) the layer changes at once, with a 150 ms fade. */
-import type { Deck, Proj } from './deck';
+import type { Flight, Proj } from './flight';
+import { pauseTicker, createSmoother } from '../../scripts/ticker';
+import { createRail, type Rail } from '../../../scripts/rail';
 import { motion, emit, pauseField } from './bus';
 import { initStepper, type Stepper } from './stepper';
 import { spin } from './loops';
@@ -21,28 +26,27 @@ function name(el: Element | null | undefined, n: string) { if (el) (el as HTMLEl
 function clear(scope: ParentNode | null | undefined) { scope?.querySelectorAll<HTMLElement>('[style*="view-transition-name"]').forEach((e) => (e.style.viewTransitionName = '')); }
 const decode = (img: HTMLImageElement | null, ms = 350) => !img ? Promise.resolve() : Promise.race([img.decode().catch(() => {}), new Promise((r) => setTimeout(r, ms))]);
 
-export function initOpen(sec: HTMLElement, deck: Deck) {
+export function initOpen(sec: HTMLElement, deck: Flight) {
   let layer: HTMLElement | null = null, open: Proj | null = null, vt: VT | null = null, steps: Stepper | null = null, clipT = 0;
+  let rail: Rail | null = null, smoother: { destroy(): void } | null = null;
   const tpl = (slug: string) => sec.querySelector<HTMLTemplateElement>(`template[data-pres-tpl="${slug}"]`);
 
-  /* the deck's side of the shared names: the print in front, the others, the texts, the object */
+  /* the block's side of the shared names: the hero frame, its side frames, the texts */
   function deckNames(p: Proj, on: boolean) {
     const [front, ...rest] = deck.order(p);
     const set = (el: Element | null | undefined, n: string) => name(el, on ? n : '');
     set(front?.querySelector('.pr-mount'), 'paper');
     set(front?.querySelector('.pr-screen'), 'shot');
-    if (!p.prints.length) set(p.box.querySelector('.pr-screen'), 'shot');
     set(p.txt.querySelector('[data-part="meta"]'), 'meta');
     set(p.txt.querySelector('[data-part="title"]'), 'title');
     set(p.txt.querySelector('[data-part="promise"]'), 'promise');
-    if (!phone()) { rest.forEach((el, i) => set(el, `side-${i + 1}`)); set(p.obj, 'obj'); }
-    p.props.forEach((el, i) => set(el, `prop-${i + 1}`));
+    if (!phone()) rest.forEach((el, i) => set(el, `side-${i + 1}`));
   }
   function layerNames(l: HTMLElement, on: boolean) {
     const set = (sel: string, n: string) => name(l.querySelector(sel), on ? n : '');
     set('[data-vt="paper"]', 'paper'); set('[data-vt="shot"]', 'shot'); set('[data-vt="body"]', 'body');
     set('[data-vt="meta"]', 'meta'); set('[data-vt="title"]', 'title'); set('[data-vt="promise"]', 'promise');
-    if (!phone()) { set('[data-vt="side-1"]', 'side-1'); set('[data-vt="side-2"]', 'side-2'); set('.pt-obj', 'obj'); }
+    if (!phone()) { set('[data-vt="side-1"]', 'side-1'); set('[data-vt="side-2"]', 'side-2'); }
   }
 
   /* the layer from the project's template; the hero and the flanking prints show exactly the deck's
@@ -77,6 +81,8 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
       c.querySelectorAll('img').forEach((im) => (im.loading = 'eager'));
       slot.replaceChildren(c);
     });
+    /* the hero must be decoded before the new state is shown: a lazy image would only start loading then */
+    l.querySelectorAll<HTMLImageElement>('.hero img').forEach((im) => (im.loading = 'eager'));
     return l;
   }
 
@@ -87,12 +93,20 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
     emit('one:layer-open', p.slug);
     pauseField(true);
     deck.pause(true);
+    pauseTicker(true);
   }
+  /* the layer once it stands: its steps scrubbed by its own scroll, its rail, its smoothing (spec v2 §3.4) */
   function settled(l: HTMLElement) {
     clear(l);
     l.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true });
     steps = initStepper(l.querySelector('[data-steps]'), l);
-    l.addEventListener('scroll', () => steps?.update(), { passive: true });
+    smoother = createSmoother(l);
+    const pres = l.querySelector<HTMLElement>('.pres')!;
+    rail = createRail({
+      scroller: l, host: l, sections: [...pres.querySelectorAll<HTMLElement>('[data-rail-sec]')], content: pres,
+      flat: l, id: 'layer-rail', extraClass: 'in-layer',
+      offset: () => (parseFloat(getComputedStyle(root).getPropertyValue('--bar-h')) || 76) + 16,
+    });
     clipT = window.setTimeout(() => playHero(l), 300);
   }
   function playHero(l: HTMLElement) {
@@ -113,7 +127,11 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
     if (vt) { vt.skipTransition(); return; }
     if (layer) { if (open?.slug === slug) return; drop(); }
     if (how === 'click') history.pushState({ p: slug }, '', p.btn.href);
+    /* the clock stops first: the hero keeps the transform it has now, and the transition starts from it */
+    pauseTicker(true);
+    deck.pause(true);
     layer = build(p);
+    const l0 = layer;
     root.style.setProperty('--vt-k', String(vtk()));
     if (!canVT()) {
       show(p);
@@ -121,9 +139,17 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
       settled(layer);
       return;
     }
-    /* the press before the open (spec 4.8: the front print lifts, 120 ms) */
+    /* the press before the open (spec 4.8: the front print lifts, 120 ms). The snapshot of the page waits
+       for it, so the click answers at once even where taking the snapshot is slow (review G6: never an
+       empty wait); the transition then starts from the lifted print. */
     const front = deck.order(p)[0];
-    front?.querySelector<HTMLElement>('.pr-in')?.animate([{ transform: 'none' }, { transform: 'scale(1.02)' }], { duration: 120, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' });
+    const press = front?.querySelector<HTMLElement>('.pr-in')?.animate([{ transform: 'none' }, { transform: 'scale(1.02)' }], { duration: 120, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' });
+    await press?.finished.catch(() => {});
+    if (layer !== l0) return;
+    /* Back or Escape during the press: the open is called off and the page runs on */
+    if ((history.state as { p?: string } | null)?.p !== slug) {
+      press?.cancel(); layer = null; deck.pause(false); pauseTicker(false); return;
+    }
     deckNames(p, true);
     const l = layer;
     root.classList.add('vt-open');
@@ -141,10 +167,13 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
   function drop() {
     clearTimeout(clipT);
     steps?.destroy(); steps = null;
+    rail?.destroy(); rail = null;
+    smoother?.destroy(); smoother = null;
     layer?.remove(); layer = null;
     if (open) { open.el.classList.remove('opened'); emit('one:layer-close', open.slug); }
     pauseField(false);
     deck.pause(false);
+    pauseTicker(false);
   }
   function closeProject(o: { ua?: boolean } = {}) {
     if (!layer || !open) return;
@@ -158,7 +187,18 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
       } else { drop(); done(); }
       return;
     }
+    /* a clip that shows fades back to the capture first (250 ms), so the shared screen closes onto the
+       same capture that Home shows and nothing cuts */
+    const clip = l.querySelector<HTMLVideoElement>('.hero-video.on');
     l.querySelectorAll('video').forEach((v) => v.pause());
+    if (clip) {
+      clip.style.transition = 'opacity 250ms ease-out'; clip.classList.remove('on');
+      setTimeout(() => { if (layer === l) closeVT(p, l, done); }, 250);
+      return;
+    }
+    closeVT(p, l, done);
+  }
+  function closeVT(p: Proj, l: HTMLElement, done: () => void) {
     layerNames(l, true);
     root.classList.add('vt-close');
     vt = start(() => {
@@ -177,7 +217,7 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
     history.replaceState({ p: slug }, '', p.btn.href);
     const nl = build(p);
     const peek = old.querySelector('.p-next-print');
-    if (!canVT()) { drop(); deck.jump(slug); layer = nl; show(p); deck.pause(true); settled(nl); return; }
+    if (!canVT()) { drop(); deck.jump(slug); layer = nl; show(p); settled(nl); return; }
     name(old.querySelector('[data-vt="paper"]'), 'paper-old');
     name(old.querySelector('[data-vt="body"]'), 'body');
     name(peek?.querySelector('.pr-mount'), 'paper');
@@ -185,9 +225,10 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
     vt = start(async () => {
       clear(old);
       clearTimeout(clipT); steps?.destroy(); steps = null;
+      rail?.destroy(); rail = null; smoother?.destroy(); smoother = null;
       old.remove();
       from.el.classList.remove('opened');
-      deck.pause(false); deck.jump(slug); deck.pause(true);
+      deck.jump(slug);
       layer = nl; open = p; p.el.classList.add('opened');
       name(nl.querySelector('[data-vt="paper"]'), 'paper');
       name(nl.querySelector('[data-vt="shot"]'), 'shot');

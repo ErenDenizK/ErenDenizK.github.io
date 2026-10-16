@@ -3,8 +3,8 @@
    capture replaces the wide one when the reel names one; otherwise the wide screen is cropped to its
    focal point by the frame around it (object-position from --fx / --fy). Lazy unless `eager`. */
 import type { Screen } from './data';
-interface Props { s: Screen; sizes: string; phoneSizes: string; eager?: boolean; cls?: string }
-const { s, sizes, phoneSizes, eager = false, cls = 'shot-img' } = Astro.props;
+interface Props { s: Screen; sizes: string; phoneSizes: string; eager?: boolean; cls?: string; alt?: string }
+const { s, sizes, phoneSizes, eager = false, cls = 'shot-img', alt } = Astro.props;
 const PHONE = '(max-width: 699.98px)';
 const style = `--fx: ${s.focus[0] * 100}%; --fy: ${s.focus[1] * 100}%; --pfx: ${s.phoneFocus[0] * 100}%; --pfy: ${s.phoneFocus[1] * 100}%`;
 ---
@@ -13,6 +13,6 @@ const style = `--fx: ${s.focus[0] * 100}%; --fy: ${s.focus[1] * 100}%; --pfx: ${
   {s.phone && <source media={PHONE} type="image/webp" srcset={s.phone.webp} sizes={phoneSizes} />}
   <source type="image/avif" srcset={s.wide.avif} sizes={sizes} />
   <source type="image/webp" srcset={s.wide.webp} sizes={sizes} />
-  <img class={cls} src={s.wide.src} alt={s.alt} width={s.wide.w} height={s.wide.h} style={style}
+  <img class={cls} src={s.wide.src} alt={alt ?? s.alt} width={s.wide.w} height={s.wide.h} style={style}
     loading={eager ? undefined : 'lazy'} decoding="async" data-phone-frame={s.phone ? '' : undefined} />
 </picture>

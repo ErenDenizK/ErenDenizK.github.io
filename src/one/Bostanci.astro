@@ -1,0 +1,89 @@
+---
+/* The Bostancı frame (spec v2 §3.2; review row P1): the owner's photograph shown whole, vertical and
+   large, in its own frame between the brief and Work, or not at all. Desktop: 3:4, 772 px tall, centred,
+   inside the brief's construction drawing (a dashed circle, a solid circle, the dotted page axis, the
+   horizon through the photograph's horizon line, crop marks at two corners); the caption at the left,
+   bottom-aligned with the photograph. Phone: the photograph at full width, the caption under it. Its
+   top edge peeks at the bottom of the first screen.
+   Scroll (a pure function of the frame's --sp, scene.css; reversible): the photograph pushes in (scale
+   0.92 to 1 at the middle of its pass, 1.03 as it leaves; 0.95 to 1 on phones), it develops from a dark
+   grey print to its colour (an opacity cross-fade, no animated filter), the drawing draws round it,
+   and the caption's lines rise in masks. Still twins: the photograph whole and in colour.
+   The note and the place come from the photos chapter of content/site.json (the caption is the one
+   place of this note; the postcards no longer carry Bostancı). Files: npm run photos (pc-*). */
+import { getSite } from '../lib/site';
+import manifest from '../assets/photos/postcards.json';
+import './scene.css';
+
+const site = await getSite();
+const pic = site.about.chapters.find((c) => c.id === 'photos')?.photos?.find((p) => p.photo === 'bostanci-rain-dusk');
+const m = (manifest as Record<string, { width: number; height: number; widths: number[]; full: number }>)['bostanci-rain-dusk'];
+const files = import.meta.glob<string>('../assets/photos/pc-bostanci-rain-dusk-*.{avif,webp}', { eager: true, query: '?url', import: 'default' });
+const f = (w: number | 'full', ext: string) => files[`../assets/photos/pc-bostanci-rain-dusk-${w}.${ext}`];
+const set = (ext: string) => [...m.widths.map((w) => `${f(w, ext)} ${w}w`), ...(m.full ? [`${f('full', ext)} ${m.full}w`] : [])].join(', ');
+const sizes = '(min-width: 700px) 579px, calc(100vw - 32px)';
+---
+{pic && m && (
+  <section class="bost" id="bostanci" data-scene aria-label={pic.note ?? pic.place}>
+    <svg class="draw" viewBox="0 0 1440 1240" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false">
+      <circle class="d c1" cx="720" cy="620" r="520" stroke-dasharray="2 7" pathLength="1000" />
+      <circle class="d c2" cx="720" cy="620" r="322" pathLength="1" transform="rotate(-90 720 620)" />
+      <path class="d ax" d="M720 0V1240" stroke-dasharray="1 7" />
+      <path class="d hz" d="M0 731H1440" pathLength="1" />
+      <path class="d cm" d="M412 222h-16m16 0v-16M1028 1018h16m-16 0v16" />
+    </svg>
+    <figure class="frame">
+      <div class="photo">
+        <picture>
+          <source type="image/avif" srcset={set('avif')} sizes={sizes} />
+          <img src={f(760, 'webp')} srcset={set('webp')} sizes={sizes} alt={pic.alt} width={m.width} height={m.height} loading="lazy" decoding="async" />
+        </picture>
+        <span class="dev grey" aria-hidden="true"></span><span class="dev dim" aria-hidden="true"></span>
+      </div>
+      <figcaption class="bcap">
+        {pic.note && <p class="note" data-lines style="--a: 0.3; --w: 0.12">{pic.note}</p>}
+        <p class="place" data-rise style="--a: 0.36; --w: 0.1">{pic.place}</p>
+      </figcaption>
+    </figure>
+  </section>
+)}
+
+<style>
+  .bost { position: relative; margin-top: 44px; padding: 0 var(--gut) 0; color: var(--ink); }
+  .draw { position: absolute; left: 50%; top: 50%; width: 1440px; height: 1240px; margin: -620px 0 0 -720px; max-width: none; opacity: 0.1; pointer-events: none; overflow: visible; }
+  .draw path, .draw circle { vector-effect: non-scaling-stroke; }
+  .frame { position: relative; width: 579px; margin: 0 auto; }
+  .photo { position: relative; height: 772px; border-radius: 3px; overflow: hidden; isolation: isolate;
+    box-shadow: var(--e-lift), 0 0 160px -20px rgb(80 120 255 / 0.35); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .photo::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08); pointer-events: none; }
+  /* the dark print it develops from: grey (a saturation blend inside the photo's own group) and dim */
+  .dev { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+  .dev.grey { background: #6d6d6d; mix-blend-mode: saturation; }
+  .dev.dim { background: rgb(14 16 28 / 0.5); }
+  .bcap { position: absolute; right: calc(100% + 48px); bottom: 0; width: 300px; text-align: right; }
+  .note { font: italic 400 var(--fs-h3) / 1.25 var(--f-serif); letter-spacing: -0.01em; color: var(--ink); text-wrap: balance; }
+  .place { margin-top: var(--s-3); font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); }
+
+  /* scroll: push-in, development, the drawing round it */
+  :global(html.motion) .photo {
+    --a: clamp(0, var(--sp) / 0.5, 1); --b: clamp(0, (var(--sp) - 0.5) / 0.5, 1);
+    transform: scale(calc(0.92 + 0.08 * var(--a) + 0.03 * var(--b)));
+  }
+  :global(html.motion) .dev { opacity: calc(1 - clamp(0, (var(--sp) - 0.12) / 0.3, 1)); }
+  :global(html.motion) .dev.grey { opacity: calc(0.55 - 0.55 * clamp(0, (var(--sp) - 0.12) / 0.3, 1)); }
+  :global(html.motion) .draw { transform: scale(calc(0.94 + 0.08 * var(--sp))); }
+  :global(html.motion) .c2, :global(html.motion) .hz { stroke-dasharray: 1; stroke-dashoffset: calc(1 - clamp(0, (var(--sp) - 0.08) / 0.35, 1)); }
+  :global(html.motion) .c1, :global(html.motion) .ax, :global(html.motion) .cm { opacity: clamp(0, (var(--sp) - 0.15) / 0.25, 1); }
+
+  @media (max-width: 1099.98px) {
+    .bcap { position: static; width: auto; margin-top: var(--s-5); text-align: left; }
+  }
+  @media (max-width: 699.98px) {
+    .bost { margin-top: var(--s-6); }
+    .draw { display: none; }
+    .frame { width: 100%; }
+    .photo { height: auto; aspect-ratio: 3 / 4; }
+    :global(html.motion) .photo { transform: scale(calc(0.95 + 0.05 * var(--a))); }
+  }
+</style>

@@ -11,10 +11,28 @@ import { WORDMARK_FACES } from '../../lib/wordmarks';
 import { url, ym, isPlaceholder, type Project } from '../../lib/site';
 import stageData from './stage.json';
 
-type StageEntry = { focus?: Record<string, [number, number]>; props?: { capture: string; crop: number[]; radius?: number; at: [number, number, number]; turn?: number; phone?: boolean }[] };
+type StageEntry = { hero?: string; focus?: Record<string, [number, number]>; props?: { capture: string; crop: number[]; radius?: number; at: [number, number, number]; turn?: number; phone?: boolean }[] };
 const STAGE = stageData as unknown as Record<string, StageEntry>;
 
 const propFiles = import.meta.glob<{ default: ImageMetadata }>('./props/*.png', { eager: true });
+/* The line art behind each project (spec v2 §5.1; owner, 2026-10-16, row W4): art/<slug>.svg, optional.
+   One file per project with three layer groups (#back, #mid, #front); the page loads it one screen
+   ahead (scripts/art.ts) and uses the file itself as a CSS mask for the still twin. */
+const artUrls = import.meta.glob<string>('./art/*.svg', { eager: true, query: '?url', import: 'default' });
+const artRaw = import.meta.glob<string>('./art/*.svg', { eager: true, query: '?raw', import: 'default' });
+
+/** The places of a drawing: the flat ground rings of its #front group, in viewBox units, the lowest
+    first (the route lights them in that order as the torn paper rises: spec v2 §3.3.4). */
+function stopsOf(svg: string): [number, number][] {
+  const i = svg.indexOf('<g id="front"');
+  if (i < 0) return [];
+  const out: [number, number][] = [];
+  for (const m of svg.slice(i).matchAll(/M(-?[\d.]+) (-?[\d.]+)a([\d.]+) ([\d.]+) 0 1 0/g)) {
+    const [x, y, rx, ry] = [m[1], m[2], m[3], m[4]].map(Number);
+    if (rx > 2.5 * ry && ry < 10 && !out.some(([a, b]) => Math.abs(a - x - rx) < 30 && Math.abs(b - y) < 30)) out.push([+(x + rx).toFixed(1), y]);
+  }
+  return out.sort((a, b) => b[1] - a[1]);
+}
 
 /** One image in AVIF and WebP at the given widths (never wider than the master). */
 export type Pic = { avif: string; webp: string; src: string; w: number; h: number };
@@ -62,6 +80,10 @@ export type Model = {
   /** the signature clip the hero plays once the open has settled (a phone cut under 700 px) */
   heroClip?: { wide: Video; phone?: Video };
   props: Prop[];
+  /** the line art behind the project, and its places (none without a file) */
+  art?: { url: string; stops: [number, number][] };
+  /** two or three words from the stack line, floated in Work's margins (spec v2 §3.3.1, parity SH14) */
+  tags: string[];
   /** the label of a print without screens (the first part of the stack line) */
   kind: string;
   href: string;
@@ -102,6 +124,9 @@ function objVideos(name: string, key: 'idle' | 'spin' | 'spin-640'): Video {
 
 /** Projects, sorted by order, into Work's model. `base` is Home's path under the site base. */
 export async function models(projects: Project[], base: string): Promise<Model[]> {
+  /* a caller may pass Home's full URL (url('lab/one/')): the site base is taken off, so it is never doubled */
+  const site = url();
+  if (site !== '/' && base.startsWith(site)) base = '/' + base.slice(site.length);
   const home = url(base);
   const list: Model[] = [];
   for (const p of projects) {
@@ -134,6 +159,10 @@ export async function models(projects: Project[], base: string): Promise<Model[]
     /* the prints: the reel's still screens, in its order, then the project's other wide captures, up to three */
     const ids: { id: string; phone?: string }[] = reel.filter((r) => isWide(r.id)).map((r) => ({ id: r.id, phone: r.phone }));
     for (const c of d.captures) if (ids.length < 3 && isWide(c.id) && !ids.some((x) => x.id === c.id)) ids.push({ id: c.id });
+    /* the hero frame (spec v2 §3.3.1): stage.json may name the capture that leads (a dark screen on the
+       Graphite page rather than a white document); the others follow in reel order */
+    const lead = ids.findIndex((x) => x.id === st.hero);
+    if (lead > 0) ids.unshift(...ids.splice(lead, 1));
     const prints = w ? await Promise.all(ids.slice(0, 3).map((x) => screen(x.id, x.phone))) : [];
     /* the steps: the reel as written (a clip step plays the signature clip) */
     const steps = w ? await Promise.all(reel.map((r) => prints.find((x) => x.id === r.id) ?? screen(r.id, r.phone))) : [];
@@ -185,6 +214,8 @@ export async function models(projects: Project[], base: string): Promise<Model[]
       obj: { name: d.object, poster: poster(d.object), idle: objVideos(d.object, 'idle'), spin: objVideos(d.object, 'spin'), spinPhone: objVideos(d.object, 'spin-640') },
       heroClip,
       props,
+      art: artUrls[`./art/${p.id}.svg`] ? { url: artUrls[`./art/${p.id}.svg`], stops: stopsOf(artRaw[`./art/${p.id}.svg`]) } : undefined,
+      tags: (d.stack ?? '').split(/\s*·\s*/).filter(Boolean).slice(0, 3),
       kind: (d.stack ?? d.runsOn).split(/\s*[·,]\s*/)[0],
       href: url(`${base.replace(/^\/|\/$/g, '')}/work/${p.id}/`),
       home,
