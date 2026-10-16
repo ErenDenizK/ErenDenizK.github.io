@@ -14,10 +14,14 @@
   background: radial-gradient(closest-side, var(--hush), rgb(18 18 20 / 0)); }
 :is(.work, .pres) .wm { line-height: 1; }
 .work .btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: var(--r-pill);
-  font: 500 var(--fs-small)/1 var(--f-sans); background: var(--ink); color: var(--ground);
-  transition: background-color var(--t-quick) var(--ease-ui), transform var(--t-press) var(--ease-ui); }
-.work .btn:hover { background: var(--ink-hi); }
-.work .btn:active { transform: scale(.97); }
+  font: 500 var(--fs-small)/1 var(--f-sans); background: var(--ink); color: var(--ground); -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--t-quick) var(--ease-ui), translate var(--t-ui) var(--ease-out), box-shadow var(--t-ui) var(--ease-out), scale var(--t-press) var(--ease-ui); }
+/* every control answers with motion (review G6, T26): the button rises 2 px into a soft lit shadow under a
+   fine pointer and gives under a press (spec v3 §9.6: 120 ms, 0.98) */
+@media (hover: hover) and (pointer: fine) {
+  .work .btn:hover { background: var(--ink-hi); translate: 0 -2px; box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--a1, var(--ink)) 70%, transparent); }
+}
+.work .btn:active { scale: .98; translate: 0 0; box-shadow: none; }
 
 /* ---------- a print ---------- */
 .pr { position: relative; }
@@ -382,8 +386,16 @@ html.layer-open .layer .rail-plain.in-layer { display: block !important; view-tr
 .p-next-label { display: block; }
 .p-next-title { display: block; margin-top: var(--s-2); font-size: var(--fs-h2); }
 .p-next-title .wm { color: var(--wm-c, var(--ink)); }
-.p-next-print { display: block; width: min(560px, 78vw); margin: var(--s-6) auto 0; rotate: 2.5deg; transition: translate 300ms var(--ease-out); }
-.p-next:hover .p-next-print { translate: 0 -8px; }
+.p-next-print { display: block; width: min(560px, 78vw); margin: var(--s-6) auto 0; rotate: 2.5deg;
+  transition: translate 300ms var(--ease-out), scale var(--t-press) var(--ease-ui); }
+.p-next-title { transition: translate 300ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .p-next:hover .p-next-print { translate: 0 -8px; }
+  .p-next:hover .p-next-title { translate: 0 -2px; }
+}
+/* a press (touch has no hover): the print gives, so the tap is felt before the next project opens */
+.p-next { -webkit-tap-highlight-color: transparent; }
+.p-next:active .p-next-print { scale: .985; }
 .p-next .pr { --shade: .3; }
 
 /* ---------- the bottom bar (spec v3 §4, §5): two glass capsules on the tab bar's tokens ----------
@@ -443,6 +455,8 @@ html.motion .layer .cap-a { transition-delay: 60ms; }
   font: 500 var(--fs-cap)/1 var(--f-sans); color: var(--ink); white-space: nowrap;
   background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-edge); }
 .layer.cur-x .cursor-x { opacity: 1; scale: 1; }
+/* a press on the empty space: the disc gives before the close begins */
+.layer.cur-x:active .cursor-x { scale: .9; transition-duration: var(--t-press); }
 .layer.cur-x, .layer.cur-x * { cursor: none; }
 html.still .cursor-x { transition: opacity var(--t-quick) linear; scale: 1; }
 /* touch: the layer's own pull replaces the platform's bounce at its top and end (exits.ts) */
