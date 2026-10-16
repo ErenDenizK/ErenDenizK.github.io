@@ -66,7 +66,7 @@ const cards = list.map((p, i) => {
   if (p.date) rules.push(['Date', p.date]);
   const ringUnit = `${p.place.toUpperCase()} · `;
   const ring = ringUnit.repeat(Math.max(1, Math.ceil(34 / ringUnit.length)));
-  const waves = mm.rows.map((r, k) => wave(r, 150, 38 + k * 7, 9));
+  const waves = mm.rows.map((r, k) => wave(r, 300, 76 + k * 14, 18));
   return {
     ...p, i, land, w: m.width, h: m.height, rest: REST[i % REST.length], tone: m.tone,
     avif: set('avif'), webp: set('webp'), src: file(p.photo, m.widths[0], 'webp'), small: file(p.photo, m.widths[0], 'webp'),
@@ -121,12 +121,12 @@ const cards = list.map((p, i) => {
                   <svg class="bk-guil" viewBox="-110 -110 220 220" aria-hidden="true" focusable="false"><path d={guil} /></svg>
                   <p class="bk-head" aria-hidden="true"><span class="mk">{site.mark}</span><span class="lb">{t.credit} · {c.idx}</span></p>
                   <span class="bk-stamp" aria-hidden="true"><span></span></span>
-                  <svg class="bk-post" viewBox="0 0 250 100" aria-hidden="true" focusable="false">
-                    <defs><path id={`pc-ring-${c.i}`} d="M200 50 m-36 0 a36 36 0 1 1 72 0 a36 36 0 1 1 -72 0" /></defs>
-                    {c.waves.map((d) => <path class="wv" d={d} transform="translate(8 -26)" />)}
-                    <circle cx="200" cy="50" r="44" /><circle cx="200" cy="50" r="27" />
-                    <text class="rg"><textPath href={`#pc-ring-${c.i}`}>{c.ring}</textPath></text>
-                    <text class="mk" x="200" y="56" text-anchor="middle">{site.mark}</text>
+                  <svg class="bk-post" viewBox="0 0 500 200" aria-hidden="true" focusable="false">
+                    <defs><path id={`pc-ring-${c.i}`} d="M400 100 m-72 0 a72 72 0 1 1 144 0 a72 72 0 1 1 -144 0" /></defs>
+                    {c.waves.map((d) => <path class="wv" d={d} transform="translate(16 -52)" />)}
+                    <circle cx="400" cy="100" r="88" /><circle cx="400" cy="100" r="54" />
+                    <text class="rg"><textPath href={`#pc-ring-${c.i}`} textLength="448" lengthAdjust="spacing">{c.ring}</textPath></text>
+                    <text class="mk" x="400" y="112" text-anchor="middle">{site.mark}</text>
                   </svg>
                   {c.note && (
                     <div class="bk-msg">
@@ -292,13 +292,14 @@ const cards = list.map((p, i) => {
     mask: radial-gradient(circle at 4.5px 4.5px, transparent 2.6px, #000 3px) -4.5px -4.5px / 9px 9px, linear-gradient(#000 0 0) 50% 50% / calc(100% - 9px) calc(100% - 9px) no-repeat;
     filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.4)); }
   .pc-big .bk-stamp span { position: absolute; inset: 9%; background: var(--img) 50% 50% / cover; }
-  /* the postmark: rings with the place, the mark in the middle, the cancellation running left */
+  /* the postmark: rings with the place, the mark in the middle, the cancellation running left. Its user
+     units are twice the drawn size, so no text in it is ever below a browser's minimum font size */
   .pc-big .bk-post { position: absolute; right: 22%; top: 26%; width: 64%; overflow: visible; fill: none; stroke: color-mix(in srgb, var(--gold-ink) 75%, transparent); stroke-width: 1; }
   .pc-big .bk-post circle, .pc-big .bk-post .wv { vector-effect: non-scaling-stroke; }
   .pc-big .bk-post .wv { stroke: color-mix(in srgb, var(--gold-ink) 60%, transparent); }
-  .pc-big .bk-post text { fill: color-mix(in srgb, var(--gold-ink) 85%, transparent); stroke: none; }
-  .pc-big .bk-post .rg { font: 500 6.6px / 1 var(--f-sans); letter-spacing: 1.6px; }
-  .pc-big .bk-post .mk { font: 400 15px / 1 var(--f-serif); }
+  .pc-big .bk-post text { fill: color-mix(in srgb, var(--gold-ink) 85%, transparent); stroke: none; text-rendering: geometricPrecision; }
+  .pc-big .bk-post .rg { font: 500 13.2px / 1 var(--f-sans); letter-spacing: 3.2px; }
+  .pc-big .bk-post .mk { font: 400 30px / 1 var(--f-serif); }
   .pc-big .bk-msg { position: absolute; left: 7%; width: 57%; top: 45%; }
   .pc-big .bk-note { font: italic 400 max(17px, calc(5.4 * var(--u))) / 1.22 var(--f-serif); color: var(--ink); text-wrap: pretty; }
   .pc-big .bk-sig { margin-top: 0.8em; font: italic 400 max(15px, calc(3.6 * var(--u))) / 1 var(--f-serif); color: var(--gold-ink); }
