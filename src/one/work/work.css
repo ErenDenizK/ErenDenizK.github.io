@@ -158,6 +158,13 @@
   html.js:not(.still) .work .w-tear { display: block; position: relative; z-index: 0; height: calc(.6 * var(--sv));
     margin: calc(-.5 * var(--sv)) 0 calc(-.1 * var(--sv)); pointer-events: none; }
   html.js:not(.still) #work ~ .rest > .tear { display: none; }
+  /* the person's part rides right behind the moving edge: no stretch of blank paper between the tear and
+     How I work (review W7, G3). The part is pulled up by the hold, less a short margin under the edge. */
+  html.js:not(.still) #work ~ .rest { margin-top: calc(-.5 * var(--sv) + var(--s-8)); }
+  /* the part starts on the opaque paper of the edge and lets the aura back in over 40 % of a view, so no
+     seam shows where the two papers meet */
+  html.js:not(.still) #work ~ .rest > .sheet { padding-top: var(--s-6);
+    background: linear-gradient(var(--paper) var(--s-6), rgb(23 23 26 / 0) calc(.4 * var(--sv))), var(--sheet); }
   .w-edge { display: none; position: absolute; left: 0; top: -46px; width: 100%; height: 48px; overflow: visible; }
   .w-edge-fill { fill: var(--paper); }
   .w-edge-fibre { fill: none; stroke: var(--line-2); stroke-width: 1; vector-effect: non-scaling-stroke; }
@@ -179,6 +186,7 @@
     html.js:not(.still) .work .txt { top: calc(var(--htop) + var(--hh) + 18px); }
     html.js:not(.still) .work .w-promise { max-width: 22em; }
     html.js:not(.still) .work .w-tear { margin-top: calc(-.4 * var(--sv)); height: calc(.5 * var(--sv)); margin-bottom: calc(-.1 * var(--sv)); }
+    html.js:not(.still) #work ~ .rest { margin-top: calc(-.4 * var(--sv) + var(--s-7)); }
   }
 }
 
