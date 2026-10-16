@@ -80,8 +80,8 @@ const cards = list.map((p, i) => {
 {cards.length > 0 && (
   <section class="photos" id="photos" data-rail-sec="Photos" data-scene style={`--grain: url("${grain}")`}>
     <img class="city" src={city} alt="" width="1600" height="600" loading="lazy" decoding="async" />
-    <h2 class="ph-t h2" data-lines style="--a: 0.06; --w: 0.12">{photos?.title ?? 'Photos'}</h2>
-    {lede && <p class="ph-lede" data-rise style="--a: 0.09; --w: 0.12">{lede}</p>}
+    <h2 class="photos-t h2" data-lines style="--a: 0.06; --w: 0.12">{photos?.title ?? 'Photos'}</h2>
+    {lede && <p class="photos-lede" data-rise style="--a: 0.09; --w: 0.12">{lede}</p>}
     <ul class="table" data-pc-table>
       {cards.map((c) => (
         <li class:list={['pc', c.land ? 'land' : 'port']} data-postcard={c.i} style={`--rest: ${c.rest}deg; --ratio: ${c.w} / ${c.h}; --img: url("${c.small}"); --tone: ${c.tone}`}>
@@ -149,7 +149,7 @@ const cards = list.map((p, i) => {
         </li>
       ))}
     </ul>
-    <p class="ph-hint"><span class="h-fine">{(t.table ?? t.hint).fine}</span><span class="h-touch">{(t.table ?? t.hint).touch}</span></p>
+    <p class="photos-hint"><span class="h-fine">{(t.table ?? t.hint).fine}</span><span class="h-touch">{(t.table ?? t.hint).touch}</span></p>
     <dialog class="pc-big" data-pc-dialog aria-label={t.head}>
       <div class="big-stage" data-big-stage></div>
       <p class="big-hint"><span class="h-fine">{t.hint.fine}</span><span class="h-touch">{t.hint.touch}</span></p>
@@ -163,7 +163,7 @@ const cards = list.map((p, i) => {
   .city { position: absolute; left: 50%; bottom: -150px; width: 1600px; max-width: none; height: auto; margin-left: -800px; opacity: 0.08; pointer-events: none;
     -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
   :global(html.motion) .city { transform: translateY(calc((var(--sp) - 0.5) * 16vh)); }
-  .ph-lede { margin: var(--s-4) auto 0; max-width: 30em; font: 400 var(--fs-body) / 1.6 var(--f-sans); color: var(--ink-2); }
+  .photos-lede { margin: var(--s-4) auto 0; max-width: 30em; font: 400 var(--fs-body) / 1.6 var(--f-sans); color: var(--ink-2); }
 
   /* ---------- the table: three cards on parallel planes (rotateZ only), stacked by z-index ---------- */
   .table { position: relative; margin: var(--s-8) auto 0; display: flex; justify-content: center; align-items: center; perspective: 1400px; }
@@ -208,10 +208,10 @@ const cards = list.map((p, i) => {
   .pc-cap { display: none; margin-top: var(--s-3); color: var(--ink-3); font: 400 var(--fs-small) / 1.5 var(--f-sans); }
   .pc-cap .note { display: block; color: var(--ink-2); font-style: italic; }
   :global(html:not(.js)) .pc-cap { display: block; }
-  .ph-hint, .big-hint { margin-top: var(--s-7); font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); }
-  .ph-hint span, .big-hint span { display: none; }
-  :global(html.fine) :is(.ph-hint, .big-hint) .h-fine, :global(html:not(.fine)) :is(.ph-hint, .big-hint) .h-touch { display: inline; }
-  :global(html:not(.js)) .ph-hint { display: none; }
+  .photos-hint, .big-hint { margin-top: var(--s-7); font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); }
+  .photos-hint span, .big-hint span { display: none; }
+  :global(html.fine) :is(.photos-hint, .big-hint) .h-fine, :global(html:not(.fine)) :is(.photos-hint, .big-hint) .h-touch { display: inline; }
+  :global(html:not(.js)) .photos-hint { display: none; }
   /* scroll: the cards come up onto the table, the middle one first (a pure function of --sp) */
   :global(html.motion) .pc { --k: clamp(0, (var(--sp) - 0.1 - var(--o, 0) * 0.025) / 0.14, 1); }
   :global(html.motion) .pc:nth-child(1) { --o: 1; } :global(html.motion) .pc:nth-child(3) { --o: 2; }
@@ -219,7 +219,7 @@ const cards = list.map((p, i) => {
 
   /* ---------- phone: a loose pile of two small cards and the landscape card under them ---------- */
   @media (max-width: 699.98px) {
-    .ph-t, .ph-lede { text-align: left; margin-left: 0; }
+    .photos-t, .photos-lede { text-align: left; margin-left: 0; }
     .city { width: 1100px; margin-left: -550px; bottom: -110px; }
     .table { display: block; height: 590px; margin-top: var(--s-6); }
     .pc { position: absolute; width: calc(50% - 2px); max-width: 196px; }
@@ -230,7 +230,7 @@ const cards = list.map((p, i) => {
     .pc-mount { padding: 8px 8px 30px; }
     .pc-edge { left: 10px; right: 10px; bottom: 9px; }
     .pc-edge i { font-size: var(--fs-small); }
-    .ph-hint { margin-top: var(--s-5); }
+    .photos-hint { margin-top: var(--s-5); }
   }
 
   /* ---------- the large view ---------- */
