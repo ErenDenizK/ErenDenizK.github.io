@@ -2,11 +2,15 @@
 // 1. The ID card's livelier photo (review row C2): the same square crop of the gate selfie as
 //    grade.mjs, regraded warmer and brighter (exposure +6 %, saturation +16 %, contrast +7 %,
 //    warmth +6 % against the live card's grade), written as gate-card-live-<w>.{avif,webp}.
-// 2. Measurements of each postcard photograph, for the postcard's back (row P4): the five colours the
-//    photograph is made of (k-means in RGB on a 64 px copy, sorted by share), and five luminance rows
-//    (48 samples each, at 30 to 70 % of the height, normalised to 0..1) that the postmark's
-//    cancellation lines are traced from. Written to src/assets/photos/postcards-meta.json.
-// Nothing is invented: every value is measured from the owner's file. Run: node tools/photos/live.mjs
+// 2. Measurements of each postcard photograph, for the postcard's back (row P4; spec v3 §2.1): the five
+//    colours the photograph is made of (k-means in RGB on a 64 px copy, sorted by share) and the darkest
+//    of them (`deep`, the back's ground). Two entries are the back's design data, not measurements: the
+//    drawing of the photograph (`drawing`, the stem of src/one/rest/art/pc-<stem>.svg, present only when
+//    that file exists) and the stamp's crop point (`crop`, CROPS below). The round-two luminance rows for
+//    the postmark's cancellation lines are gone with the lines. Written to
+//    src/assets/photos/postcards-meta.json.
+// Nothing is invented: every colour is measured from the owner's file. Run: node tools/photos/live.mjs
+// (`--meta` writes the measurements only and leaves the card's photo files alone).
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -17,7 +21,7 @@ const sharp = require('sharp');
 const SRC = path.join(ROOT, 'content/photos');
 const OUT = path.join(ROOT, 'src/assets/photos');
 
-{
+if (!process.argv.includes('--meta')) {
   // the live card's grade was brightness 0.95, saturation 0.9; this one is 6 % brighter, 16 % more
   // saturated, 7 % more contrast about mid grey, and 6 % warmer (red up, blue down by half each)
   const base = sharp(path.join(SRC, 'eren-ytu-gate.jpg')).extract({ left: 680, top: 290, width: 1150, height: 1150 })
@@ -56,6 +60,11 @@ function kmeans(px, k = 5, iters = 24) {
   return cs.map((c, j) => ({ hex: hex(c), share: +share[j].toFixed(3) })).sort((a, b) => b.share - a.share);
 }
 
+/* the stamp's crop point per photograph: the part of it the stamp shows (spec v3 §2.1) */
+const CROPS = { 'park-through-lens': '60% 46%', 'metro-platform': '76% 52%', 'cat-sunset-silhouette': '36% 72%' };
+const ART = path.join(ROOT, 'src/one/rest/art');
+const lumOf = (h) => [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16)).reduce((n, v, i) => n + v * [0.2126, 0.7152, 0.0722][i], 0);
+
 const meta = {};
 for (const stem of stems.sort()) {
   const file = path.join(SRC, `${stem}.jpg`);
@@ -63,14 +72,8 @@ for (const stem of stems.sort()) {
   const px = [];
   for (let i = 0; i < data.length; i += 3) px.push([data[i], data[i + 1], data[i + 2]]);
   const palette = kmeans(px);
-  const g = await sharp(file).rotate().resize(48, 48, { fit: 'fill' }).greyscale().raw().toBuffer();
-  const rows = [0.3, 0.4, 0.5, 0.6, 0.7].map((f) => {
-    const y = Math.round(f * 47);
-    const row = Array.from({ length: 48 }, (_, x) => g[y * 48 + x]);
-    const lo = Math.min(...row), hi = Math.max(...row);
-    return row.map((v) => +((v - lo) / (hi - lo || 1)).toFixed(3));
-  });
-  meta[stem] = { palette, rows };
+  const deep = palette.reduce((a, b) => (lumOf(b.hex) < lumOf(a.hex) ? b : a)).hex;
+  meta[stem] = { palette, deep, crop: CROPS[stem] ?? '50% 50%', ...(fs.existsSync(path.join(ART, `pc-${stem}.svg`)) ? { drawing: stem } : {}) };
   console.log(stem.padEnd(24), palette.map((p) => p.hex).join(' '));
 }
 fs.writeFileSync(path.join(OUT, 'postcards-meta.json'), JSON.stringify(meta) + '\n');

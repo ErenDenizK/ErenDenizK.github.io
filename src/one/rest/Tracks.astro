@@ -70,10 +70,11 @@ const lanes = tr?.lanes.map((l, j) => ({ ...l, j, a: 0.12 + j * 0.03 })) ?? [];
   :global(html.motion) .rain { transform: translateY(calc((var(--sp) - 0.5) * 30vh)); }
   .how-in { position: relative; width: min(760px, 100%); margin: 0 auto; }
   .how-t { text-align: center; }
-  .how-lede { margin: var(--s-4) auto 0; max-width: 30em; text-align: center; font: 400 var(--fs-body) / 1.6 var(--f-sans); color: var(--ink-2); }
+  /* the chapter's inner rhythm (spec v3 §9.2): 24 under the title, then 48 between lede, figure and quote */
+  .how-lede { margin: var(--s-5) auto 0; max-width: 30em; text-align: center; font: 400 var(--fs-body) / var(--lh-lede) var(--f-sans); color: var(--ink-2); }
 
   /* ---------- the figure (about.astro .tracks, at today's sizes) ---------- */
-  .tracks { --tg: 64px; --lc: var(--ink-2); position: relative; margin: var(--s-8) 0 0; }
+  .tracks { --tg: 64px; --lc: var(--ink-2); position: relative; margin: var(--s-7) 0 0; }
   .tr-lanes { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--tg); }
   .tr-lane { --lc: var(--ink-2); position: relative; padding: 2px 0 26px 28px; }
   .tr-lane--1 { --lc: var(--gold-ink); }
@@ -85,7 +86,8 @@ const lanes = tr?.lanes.map((l, j) => ({ ...l, j, a: 0.12 + j * 0.03 })) ?? [];
   :global(html.motion) .tr-lane::before { --k: clamp(0, (var(--sp) - var(--a)) / 0.2, 1); transform: scaleY(var(--k)); }
   .tr-label { font: 400 var(--fs-h3) / 1.15 var(--f-serif); letter-spacing: -0.01em; color: var(--ink); }
   .tr-lane--1 .tr-label { color: color-mix(in srgb, var(--gold-ink) 75%, var(--ink)); }
-  .tr-items { margin-top: 14px; display: grid; gap: 9px; font: 400 var(--fs-body) / 1.45 var(--f-sans); color: var(--ink-2); }
+  /* lists at 17 px in one family: the serif of Path's rows (spec v3 §9.1) */
+  .tr-items { margin-top: 14px; display: grid; gap: 8px; font: 400 var(--fs-body) / var(--lh-list) var(--f-serif); color: var(--ink-2); }
   .tr-items li { position: relative; }
   .tr-items li::before { content: ""; position: absolute; left: -26.5px; top: 0.62em; width: 4px; height: 4px; border-radius: 50%; background: color-mix(in srgb, var(--lc) 70%, transparent); }
   .tr-gives { margin-top: 18px; display: grid; gap: 4px; }
@@ -145,7 +147,7 @@ const lanes = tr?.lanes.map((l, j) => ({ ...l, j, a: 0.12 + j * 0.03 })) ?? [];
   @keyframes node { 0%, 84% { opacity: 0; transform: scale(0.6); } 89% { opacity: 1; transform: scale(1.5); } 100% { opacity: 0; transform: scale(1.9); } }
 
   /* ---------- the quote ---------- */
-  .quote { position: relative; margin: var(--s-8) 0 0; padding-left: 28px; max-width: 680px; }
+  .quote { position: relative; margin: var(--s-7) 0 0; padding-left: 28px; max-width: 680px; }
   .quote::before { content: ""; position: absolute; left: 0; top: 0.3em; bottom: 0.3em; width: 2px; border-radius: 1px; background: linear-gradient(var(--gold-ink), transparent); }
   .quote p { font: italic 400 var(--fs-h3) / 1.24 var(--f-serif); letter-spacing: -0.012em; color: var(--ink); text-wrap: balance; }
 

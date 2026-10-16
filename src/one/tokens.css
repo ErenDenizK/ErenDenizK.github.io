@@ -75,6 +75,9 @@
   --part-gap: var(--s-10);     /* between the three parts: brief, Work, the rest */
   --chapter-gap: var(--s-10);  /* between the person's chapters (spec v2 §2.2) */
   --in-chapter: var(--s-8);    /* between blocks of one chapter */
+  /* body line heights, two values (spec v3 §9.1): lists and rows, ledes */
+  --lh-list: 1.5;
+  --lh-lede: 1.6;
   /* the Record's grid, named for the new set (spec v2 §2.5; record-language §2.3) */
   --rec-gutter: 64px; --rec-spine: 36px; --rec-col: 680px; --rec-thumb: 244px; --rec-w: 1060px;
   --gut: clamp(16px, 3.05vw + 4.1px, 48px);

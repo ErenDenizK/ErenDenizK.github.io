@@ -1,12 +1,19 @@
 ---
-/* The rest of Home: the person's part (spec v2 §4), four chapters with chapter gaps instead of seven
-   equal strips: I How I work and Path, II Photos, III Now and the Record, IV the card and the footer.
+/* The rest of Home: the person's part (spec v2 §4; spec v3 T1), three chapters with chapter gaps
+   instead of seven equal strips: I How I work, the card and Path, II Photos, III Now and the Record,
+   then the footer.
    The ground changes once, at the tear, from the night ground to the paper (a 2.2 % lift of ink over
    the ground, so the aura and the grain still show through it). The torn edge is drawn at build time
    from a fixed seed, one edge per width class (a 1440 px edge squeezed into 390 px read as a saw blade,
-   spec v2 §3.3.4). Lab switch ?card=lanes moves chapter IV between How I work and Path (spec v2 §3.5.2);
-   the default hangs it at the end. */
-import CardEnd from './CardEnd.astro';
+   spec v2 §3.3.4).
+   The card (spec v3 T1; review rows C3 and T1): the ID card hangs in chapter I, between How I work and
+   Path, as the one place of GitHub and LinkedIn (its front carries both links). It is rendered there at
+   build time, so nothing moves after the first paint. Its lanyard runs up out of the view into the band
+   under How I work's quote: that band is the strap's drop, and the card's slot below it holds only the
+   card, its hint and a small swing allowance. Behind the card a large guilloché rosette turns 20 deg over
+   the card's scroll (a pure function of its --sp, scene.css). The card's room to swing is the whole width
+   of the chapter ([data-card-area], read by card3d.ts). */
+import IdCard from './IdCard.astro';
 import Tracks from './Tracks.astro';
 import Path from './Path.astro';
 import Postcards from './Postcards.astro';
@@ -14,6 +21,9 @@ import RecordStrip from './RecordStrip.astro';
 import Foot from '../Foot.astro';
 import '../scene.css';
 import { SETS, auraAttr, auraVars } from '../aura.mjs';
+import { url } from '../../lib/site';
+
+const rose = url('lab/one/guil/rose.svg');
 
 /* the torn edge: points every `step` px, `depth` px deep, with an occasional deeper bite */
 function tear(width: number, step: [number, number], depth: [number, number], s: number) {
@@ -37,23 +47,17 @@ const edges = [tear(1440, [6, 22], [14, 16], 7), tear(390, [5, 12], [16, 10], 13
   <div class="sheet">
     <div class="chapter ch-1">
       <Tracks />
-      <div class="lanes-slot" data-card-slot></div>
+      <section class="card-ch" id="card" data-rail-sec="Card" data-scene>
+        <img class="rose" src={rose} alt="" width="1120" height="1120" loading="lazy" decoding="async" />
+        <div class="card-area" data-card-area><IdCard /></div>
+      </section>
       <Path />
     </div>
     <div class="chapter ch-2"><Postcards /></div>
     <div class="chapter ch-3"><RecordStrip /></div>
-    <div class="chapter ch-4" data-card-home><CardEnd /></div>
     <Foot />
   </div>
 </section>
-<script is:inline>
-  /* ?card=lanes (spec v2 §3.5.2): before any script reads it, hang the card between How I work and Path */
-  (function () {
-    if (document.documentElement.dataset.card !== 'lanes') return;
-    var c = document.getElementById('card'), s = document.querySelector('[data-card-slot]');
-    if (c && s) s.appendChild(c);
-  })();
-</script>
 
 <style>
   .rest { --sheet: var(--paper-lift); position: relative; margin-top: var(--part-gap); }
@@ -64,14 +68,25 @@ const edges = [tear(1440, [6, 22], [14, 16], 7), tear(390, [5, 12], [16, 10], 13
   .sheet { background: var(--sheet); margin-top: -1px; padding-top: var(--s-9); }
   /* chapters: a chapter gap between them, the in-chapter rhythm inside (spec v2 §2.2) */
   .chapter + .chapter { margin-top: var(--chapter-gap); }
-  .ch-1 > :global(.path) { margin-top: var(--chapter-gap); }
-  .lanes-slot:empty { display: none; }
-  .lanes-slot { margin-top: var(--chapter-gap); }
-  .ch-4:not(:has(#card)) { display: none; }
+  .ch-1 > :global(.path) { margin-top: var(--in-chapter); }
+  /* the card: its strap's drop above it (padding), then a slot of the card, its hint and a swing allowance */
+  .card-ch { --strap: 236px; position: relative; margin-top: var(--s-7); padding-top: var(--strap); display: grid; justify-items: center; }
+  .rose {
+    position: absolute; left: 50%; top: calc(var(--strap) + 280px); width: 1120px; height: 1120px; max-width: none; margin: -560px 0 0 -560px;
+    opacity: 0.07; pointer-events: none;
+    -webkit-mask: radial-gradient(closest-side, #000 60%, transparent); mask: radial-gradient(closest-side, #000 60%, transparent);
+  }
+  :global(html.motion) .rose { transform: rotate(calc((var(--sp) - 0.5) * 20deg)); }
+  .card-area { position: relative; width: 100%; min-height: 560px; display: flex; justify-content: center; align-items: flex-start; }
+  .card-area > :global(.idc) { --w: 300px; --strap: 236px; }
   .sheet :global(.hushed) { --hush-c: var(--hush-paper); }
   @media (max-width: 699.98px) {
     .tear.wide { display: none; }
     .tear.narrow { display: block; }
     .sheet { padding-top: var(--s-8); }
+    .card-ch { --strap: 200px; margin-top: var(--s-6); }
+    .rose { width: 760px; height: 760px; margin: -380px 0 0 -380px; top: calc(var(--strap) + 250px); }
+    .card-area { min-height: 520px; }
+    .card-area > :global(.idc) { --w: 280px; --strap: 200px; }
   }
 </style>
