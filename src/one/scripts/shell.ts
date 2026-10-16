@@ -9,6 +9,7 @@ import { initLines } from './lines';
 import { pauseField, motion } from './bus';
 import { initRail } from '../../scripts/rail';
 import { initClock } from '../../scripts/clock';
+import { initGlass } from './glass';
 
 const root = document.documentElement;
 
@@ -26,6 +27,7 @@ initRail({
   },
 });
 initClock();
+initGlass();
 
 /* the quiet band under the bar, once the page has moved */
 const moved = () => root.classList.toggle('moved', scrollY > 8);

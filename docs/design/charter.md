@@ -31,6 +31,15 @@ the right rule.
   28em (about 70 characters). Reading text never moves: no fades per paragraph and no scroll-linked
   effects inside a reading column (`readability` M1). These rules apply to Record entries. The Home
   presentation may set its own sizes in the new token set.
+- **The name** (type study V8, 2026-10-16; lab page until the owner chooses): Newsreader at its display
+  optical size (opsz 72), weight 380, a static instance of the letters a name uses
+  (`tools/fonts/name.py`, 8 KB, preloaded); 48 px desktop and 34 px phone, the owner's provisional Home
+  cap (E4); tracking -0.025 em, -0.02 em on phones; line height 1.04; one line on desktop, the two
+  content `nameLines` on phones; its own token `--fs-name`, not `.h2`. The bar mark "edk" uses the same
+  instance. Reason (M): at opsz 32-42 and weight 500 the same family drew its subhead design and read as
+  a news headline, light on the dark ground looks heavier than its weight, and the name was only 2.1x the
+  lede (now 2.4x). Lab switches: `?name=current|playfair|fraunces` (Playfair 2.0 opsz 60 / 380;
+  Fraunces opsz 72 / 320, SOFT 40, WONK 0) and `?namesize=60` (the study's 60 / 42 px, above the cap).
 - **Smallest readable text: 13 px** for 400-weight text on the Graphite ground (M: APCA has no row for
   400 weight below 13 px). 11-12 px only for labels inside a figure.
 - **Touch targets: 44 px** on touch screens.
@@ -66,6 +75,15 @@ the right rule.
 - Open for the new token set: how many product lights may show in one viewport, and how large a
   saturated field may be. The archived charter limited both; the owner's Shopify Editions reference
   and "a generous aura" may change that.
+
+- **Glass** (glass study V7, 2026-10-16): one family for the tab pill, the capsules and the close
+  cursors (`src/one/glass.css`, tokens in `src/one/tokens.css`). Body rgb(22 22 26 / 0.56); backdrop
+  blur 24 px, saturate 1.8, brightness 0.5; a 1 px rim, white 17 % at the top and `--a1` 42 % at the foot;
+  an `--a1` 34 % caustic inside the lower edge and a 15 % glow in the body; a 0.5 px dark hairline outside.
+  An inactive label on glass is `--ink-2`. Reason (M, Chromium): over a white page the old glass gave
+  `--ink` 3.9:1 and `--ink-3` 1.9:1; this one gives 5.7:1 and `--ink-2` 4.7:1, at the same frame cost.
+  To re-measure in Safari on a phone. Lab switches: `?glass=b` (SVG rim refraction, Chromium only),
+  `?glass=c` (WebGL rim light on capable GPUs), `?glass=now` (the round-3 recipe).
 
 ## 5. Motion
 

@@ -41,7 +41,7 @@ const tabs = [['home', 'Home', home], ['record', 'Record', url('record/')]] as c
 
   .mark {
     justify-self: start; display: inline-flex; align-items: baseline; gap: 3px; min-height: 44px; align-items: center;
-    font: 500 24px / 1 var(--f-serif); letter-spacing: -0.01em; color: var(--ink);
+    font: var(--mark-wght) 24px / 1 var(--f-name); letter-spacing: -0.01em; color: var(--ink);
     transition: opacity var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui);
   }
   /* every press is felt (spec v3 §9.6): the mark dims on hover and gives under the finger */
@@ -55,26 +55,23 @@ const tabs = [['home', 'Home', home], ['record', 'Record', url('record/')]] as c
 
   .tabs {
     display: flex; gap: 2px; padding: var(--glass-pad); border-radius: var(--r-pill);
-    background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+    background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
     box-shadow: var(--glass-edge), var(--glass-shadow);
   }
-  /* the glass tokens (tokens.css) are shared with the opened project's capsules: one height, one label size */
+  /* the glass family (glass.css, tokens.css) is shared with the opened project's capsules: one height, one label size */
   .tabs a {
     position: relative; isolation: isolate; min-height: var(--glass-item); padding: 0 20px; display: inline-flex; align-items: center;
-    border-radius: var(--r-pill); font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink-3);
+    border-radius: var(--r-pill); font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--glass-label-off);
     transition: color var(--t-quick) var(--ease-ui), background-color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui);
   }
   .tabs a:hover { color: var(--ink); }
   .tabs a:active { scale: 0.98; }
   .tabs a:focus-visible { outline-offset: -2px; border-radius: var(--r-pill); }
   .tabs a[aria-current="page"] { color: var(--ink); }
-  /* the active bed: 8 % light with the current aura glowing up from under it */
+  /* the active bed: faint light with the current aura glowing up from under it (glass.css) */
   .tabs .ind {
     position: absolute; z-index: -1; inset: 0; border-radius: inherit; overflow: hidden;
-    background:
-      radial-gradient(60% 120% at 50% 140%, color-mix(in oklab, var(--a1) 34%, transparent), transparent 72%),
-      rgb(255 255 255 / 0.08);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+    background: var(--glass-bed); box-shadow: var(--glass-bed-edge);
     view-transition-name: tab-ind;
   }
 

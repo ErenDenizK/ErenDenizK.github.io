@@ -329,3 +329,61 @@ test('touch: the strap is a rope too (driven by the card, never by a hand), and 
   await expect(dlg).not.toHaveAttribute('open', '');
   await ctx.close();
 });
+
+/* Round 4, rows V7 and V8: the name in its display instance (48 px desktop, two lines of 34 px on a phone,
+   the bar mark in the same face) and the glass family, with today's settings behind lab switches. */
+test.describe('the name and the glass (round 4)', () => {
+  const nameOf = (page: Page) => page.locator('#brief .name').evaluate((h) => {
+    const cs = getComputedStyle(h), r = document.createRange(); r.selectNodeContents(h);
+    const tops = new Set([...r.getClientRects()].filter((x) => x.width > 0 && x.height < 80).map((x) => Math.round(x.top / 4)));
+    return { face: cs.fontFamily, weight: cs.fontWeight, size: Math.round(parseFloat(cs.fontSize)), lines: tops.size,
+      mark: getComputedStyle(document.querySelector('.mark')!).fontFamily };
+  });
+
+  test('desktop: the display instance at 48 px on one line, the mark in the same face; ?name and ?namesize switch it', async ({ page }) => {
+    await page.setViewportSize(desktop.viewport);
+    await page.goto(PAGE);
+    await page.evaluate(() => document.fonts.ready);
+    const n = await nameOf(page);
+    expect(n.face).toMatch(/^"Newsreader Name"/);
+    expect(n.mark).toMatch(/^"Newsreader Name"/);
+    expect(n.weight).toBe('380');
+    expect(Math.round(n.size)).toBe(48);
+    expect(await page.evaluate(() => document.fonts.check('380 48px "Newsreader Name"', 'Kuyucaklıoğlu'))).toBe(true);
+    await page.goto(PAGE + '?name=current');
+    expect(await nameOf(page)).toMatchObject({ weight: '500', size: 42 });
+    await page.goto(PAGE + '?name=fraunces');
+    expect((await nameOf(page)).face).toMatch(/^"Fraunces Name"/);
+    await page.goto(PAGE + '?namesize=60');
+    expect(Math.round((await nameOf(page)).size)).toBe(60);
+  });
+
+  test('phone: the name in two lines of 34 px', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...phone });
+    const page = await ctx.newPage();
+    await page.goto(PAGE);
+    await page.evaluate(() => document.fonts.ready);
+    const n = await nameOf(page);
+    expect(Math.round(n.size)).toBe(34);
+    expect(n.lines).toBe(2);
+    await ctx.close();
+  });
+
+  test('the glass family: aura rim and readable inactive label by default; ?glass=now restores round 3', async ({ page }) => {
+    await page.setViewportSize(desktop.viewport);
+    await page.goto(PAGE);
+    const look = () => page.evaluate(() => {
+      const t = document.querySelector('.tabs')!, off = document.querySelector('.tabs a:not([aria-current])')!;
+      return { rim: getComputedStyle(t, '::before').display, blur: getComputedStyle(t).backdropFilter, off: getComputedStyle(off).color };
+    });
+    const a = await look();
+    expect(a.rim).toBe('block');
+    expect(a.blur).toContain('brightness(0.5)');
+    expect(a.off).toBe('rgb(211, 207, 199)'); /* --ink-2 */
+    await page.goto(PAGE + '?glass=now');
+    const now = await look();
+    expect(now.rim).toBe('none');
+    expect(now.blur).toBe('blur(22px) saturate(1.5)');
+    expect(now.off).toBe('rgb(161, 157, 150)'); /* --ink-3 */
+  });
+});
