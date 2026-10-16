@@ -67,7 +67,10 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     if (hero && pic && !hero.classList.contains('hero-obj')) {
       const mine = hero.querySelector('picture');
       const copy = pic.cloneNode(true) as HTMLElement;
-      copy.querySelectorAll('source').forEach((s) => s.setAttribute('sizes', s.getAttribute('media') ? 'calc(100vw - 32px)' : '(max-width: 699.98px) calc(100vw - 32px), 800px'));
+      /* the copy keeps the deck's sizes until the layer stands, so it picks the very file the deck shows
+         (already decoded); a larger file for the layer's size is chosen after the open (settled), and the
+         browser keeps the shown picture until it arrives (review V17: a grey hero during the open) */
+      copy.querySelectorAll('source').forEach((s) => (s.dataset.sizes = s.getAttribute('media') ? 'calc(100vw - 32px)' : '(max-width: 699.98px) calc(100vw - 32px), 800px'));
       const img = copy.querySelector('img')!;
       img.className = 'hero-img';
       img.loading = 'eager';
@@ -80,14 +83,31 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
       const c = src.cloneNode(true) as HTMLElement;
       c.removeAttribute('style'); c.dataset.pos = String(i + 1);
       c.querySelectorAll<HTMLElement>('[style]').forEach((e) => { if (e.classList.contains('pr-shade')) e.removeAttribute('style'); });
-      c.querySelectorAll('img').forEach((im) => (im.loading = 'eager'));
+      /* phones hide the flanking prints in the layer: their pictures are not fetched during the open */
+      if (!phone()) c.querySelectorAll('img').forEach((im) => (im.loading = 'eager'));
       slot.replaceChildren(c);
     });
     /* the hero must be decoded before the new state is shown: a lazy image would only start loading then */
     l.querySelectorAll<HTMLImageElement>('.hero img').forEach((im) => (im.loading = 'eager'));
+    return l;
+  }
+
+  /* warm (review V17): the pointer's intent (hover on a fine pointer, a press, keyboard focus) builds the
+     layer ahead of the click, so its images are already fetched and decoding when the paper starts to
+     grow. One warm layer at a time. */
+  let warm: { slug: string; l: HTMLElement } | null = null;
+  function take(p: Proj): HTMLElement {
+    const w = warm; warm = null;
+    const l = w && w.slug === p.slug ? w.l : build(p);
     /* the close was folded once this session: later opens start with the cross alone (exits.ts) */
     if (wasFolded()) l.querySelector('[data-caps]')?.classList.add('folded');
     return l;
+  }
+  function warmUp(slug: string) {
+    if (layer || vt || warm?.slug === slug) return;
+    const p = deck.find(slug);
+    if (!p || !tpl(slug)) return;
+    warm = { slug, l: build(p) };
   }
 
   function show(p: Proj) {
@@ -102,6 +122,7 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
   /* the layer once it stands: its steps scrubbed by its own scroll, its rail, its smoothing (spec v2 §3.4) */
   function settled(l: HTMLElement) {
     clear(l);
+    l.querySelectorAll<HTMLSourceElement>('.hero source[data-sizes]').forEach((s) => { s.sizes = s.dataset.sizes!; s.removeAttribute('data-sizes'); });
     /* the capsules rise in once the paper has landed; focus goes to the close, so a keyboard or screen
        reader user meets the way out first (spec v3 §4.2) */
     l.classList.add('settled');
@@ -138,10 +159,9 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     /* the clock stops first: the hero keeps the transform it has now, and the transition starts from it */
     pauseTicker(true);
     deck.pause(true);
-    layer = build(p);
-    const l0 = layer;
     root.style.setProperty('--vt-k', String(vtk()));
     if (!canVT()) {
+      layer = take(p);
       show(p);
       if (motion() === 'full') layer.classList.add('fade');
       settled(layer);
@@ -149,16 +169,26 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     }
     /* the press before the open (spec 4.8: the front print lifts, 120 ms). The snapshot of the page waits
        for it, so the click answers at once even where taking the snapshot is slow (review G6: never an
-       empty wait); the transition then starts from the lifted print. */
+       empty wait); the transition then starts from the lifted print. The press starts before any other
+       work of the click (review V17): the layer is built while the paper lifts, unless the pointer's
+       intent built it already (warm). */
     const front = deck.order(p)[0];
-    /* the paper is picked up: it lifts 6 px and its shadow grows, so the snapshot's wait reads as the
-       lift (spec v3 §1.2, W3 / O1) */
+    /* the paper is picked up: it lifts 10 px and its shadow grows, so the snapshot's wait reads as the
+       lift (spec v3 §1.2, W3 / O1). The shadow's first keyframe is implicit (the current shadow), so no
+       style is read on the click. */
     const pin = front?.querySelector<HTMLElement>('.pr-in');
     const lift = { duration: 120, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards' as const };
-    const press = pin?.animate([{ transform: 'none' }, { transform: 'translateY(-6px) scale(1.02)' }], lift);
-    pin?.querySelector<HTMLElement>('.pr-mount')?.animate([{ boxShadow: getComputedStyle(pin.querySelector('.pr-mount')!).boxShadow }, { boxShadow: '0 2px 4px rgb(0 0 0 / .5), 0 40px 90px -24px rgb(0 0 0 / .8), inset 0 0 0 1px rgb(255 255 255 / .05)' }], lift);
-    await press?.finished.catch(() => {});
+    /* from where the paper is now (the hover lift on a fine pointer, rest on touch): no first-frame drop.
+       The lift reaches past the hover's (-4 px, 1.02), so the click reads on a print already lifted. */
+    const press = pin?.animate([{ transform: 'translateY(-10px) scale(1.035)' }], lift);
+    pin?.querySelector<HTMLElement>('.pr-mount')?.animate([{ boxShadow: '0 2px 4px rgb(0 0 0 / .5), 0 40px 90px -24px rgb(0 0 0 / .8), inset 0 0 0 1px rgb(255 255 255 / .05)' }], lift);
+    const l0 = (layer = document.createElement('div'));
+    await new Promise((r) => requestAnimationFrame(() => setTimeout(r)));
     if (layer !== l0) return;
+    layer = take(p);
+    const lb = layer;
+    await press?.finished.catch(() => {});
+    if (layer !== lb) return;
     /* Back or Escape during the press: the open is called off and the page runs on */
     if ((history.state as { p?: string } | null)?.p !== slug) {
       pin?.querySelectorAll('*').forEach((e) => e.getAnimations().forEach((a) => a.cancel()));
@@ -231,13 +261,14 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     if (!p || !layer || !open || vt) return;
     const old = layer, from = open;
     history.replaceState({ p: slug }, '', p.btn.href);
-    const nl = build(p);
+    const nl = take(p);
     const peek = old.querySelector('.p-next-print');
     if (!canVT()) { drop(); deck.jump(slug); layer = nl; show(p); settled(nl); return; }
     name(old.querySelector('[data-vt="paper"]'), 'paper-old');
     name(old.querySelector('[data-vt="body"]'), 'body');
     name(peek?.querySelector('.pr-mount'), 'paper');
     name(peek?.querySelector('.pr-screen'), 'shot');
+    root.classList.add('vt-open');
     vt = start(async () => {
       clear(old);
       clearTimeout(clipT); steps?.destroy(); steps = null; exits?.destroy(); exits = null;
@@ -252,10 +283,17 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
       document.body.append(nl);
       await decode(nl.querySelector<HTMLImageElement>('.hero img'));
     });
-    vt.finished.finally(() => { vt = null; if (layer === nl) settled(nl); });
+    vt.finished.finally(() => { vt = null; root.classList.remove('vt-open'); if (layer === nl) settled(nl); });
   }
 
   /* ---- input ---- */
+  const intent = (e: Event) => {
+    const a = (e.target as Element).closest<HTMLAnchorElement>('a[data-open]');
+    if (a && sec.contains(a)) warmUp(a.dataset.open!);
+  };
+  sec.addEventListener('pointerover', intent, { passive: true });
+  sec.addEventListener('pointerdown', intent, { passive: true });
+  sec.addEventListener('focusin', intent);
   sec.addEventListener('click', (e) => {
     const a = (e.target as Element).closest<HTMLAnchorElement>('a[data-open]');
     if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;

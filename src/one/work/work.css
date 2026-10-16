@@ -487,6 +487,12 @@ html.still .cursor-x { transition: opacity var(--t-quick) linear; scale: 1; }
 ::view-transition-group(*) { animation-duration: calc(var(--t-open) * var(--vt-k, 1)); animation-timing-function: var(--ease-path); }
 html.vt-close::view-transition-group(*) { animation-duration: calc(var(--t-close) * var(--vt-k, 1)); }
 ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+/* the page itself is not captured for the open, the close or the next project (review V17: the 1.6 to 2 s
+   wait). Its new picture covered the old one at once (no animation above), so the old capture was never
+   seen, and on a long page with glass and the field it was the largest part of the wait before the paper
+   moved. Unnamed, the page stays live under the shared elements, in its new state, exactly as the new
+   capture showed it. Measured at 1440 headless: the old capture fell from about 450 to about 230 ms. */
+html:is(.vt-open, .vt-close) { view-transition-name: none; }
 ::view-transition-group(paper-old) { z-index: 1; }
 ::view-transition-group(paper) { z-index: 2; }
 ::view-transition-group(obj) { z-index: 3; mix-blend-mode: plus-lighter; }
