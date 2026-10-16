@@ -3,7 +3,8 @@
    horizontal overflow at the four widths; the still twin (no JavaScript, reduced motion) is a complete
    list whose links open complete pages; the flight is a pure function of the scroll position (no pin
    but the last block's hold, the same picture on the way back); the open works from a frame in mid
-   flight and keeps one history step and the focus; the opened project has its rail and scrubbed steps. */
+   flight and keeps one history step and the focus (on the close, spec v3 §4.2); the opened project has its
+   rail, its scrubbed steps, two glass capsules whose close folds, and the cutaway; Home's rail opens a sheet. */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone, PROJECTS } from './helpers';
 import { BASE } from '../../playwright.config';
@@ -32,7 +33,7 @@ for (const [label, size] of [['1440', desktop], ['1180', tablet], ['390', phone]
         await page.waitForTimeout(500);
         if (await overflow(page) > 0) fails.push(`flight at ${slug}`);
         await page.locator(`.proj[data-k="${k}"] .btn`).click();
-        await expect(page.locator('.layer h1')).toBeFocused();
+        await expect(page.locator('.layer .cap-x')).toBeFocused();
         const lo = await page.evaluate(() => { const l = document.querySelector('.layer')!; return l.scrollWidth - l.clientWidth; });
         if (lo > 0 || await overflow(page) > 0) fails.push(`layer ${slug}`);
         await page.keyboard.press('Escape');
@@ -88,7 +89,7 @@ test.describe('reduced motion', () => {
     expect(await page.locator('.proj#recto .fl-hero').evaluate((e) => getComputedStyle(e).transform)).toBe('none');
     await page.locator('.proj[data-slug="english-prep"] .btn').click();
     await expect(page).toHaveURL(/\/lab\/one\/work\/english-prep\/$/);
-    await expect(page.locator('.layer h1')).toBeFocused();
+    await expect(page.locator('.layer .cap-x')).toBeFocused();
     await expect(page.locator('.layer .steps')).not.toHaveClass(/pinned/);
   });
 });
@@ -105,7 +106,7 @@ for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
       const hl = await page.evaluate(() => history.length);
       await page.locator('.proj[data-k="1"] .btn').click();
       await expect(page).toHaveURL(/\/lab\/one\/work\/english-prep\/$/);
-      await expect(page.locator('.layer h1')).toBeFocused();
+      await expect(page.locator('.layer .cap-x')).toBeFocused();
       await expect(page.locator('#main')).toHaveJSProperty('inert', true);
       expect(await page.evaluate(() => history.length)).toBe(hl + 1);
       /* Back closes it; Home did not move under the layer */
@@ -116,7 +117,7 @@ for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
       expect(Math.abs(await page.evaluate(() => scrollY) - y0)).toBeLessThan(2);
       /* forward reopens it; the Close button takes the same step back */
       await page.goForward();
-      await expect(page.locator('.layer h1')).toBeFocused();
+      await expect(page.locator('.layer .cap-x')).toBeFocused();
       await page.locator('.layer [data-close]').click();
       await expect(page.locator('.layer')).toHaveCount(0);
       await expect(page).toHaveURL(/\/lab\/one-work\/$/);
@@ -127,7 +128,11 @@ for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
 
 test.describe('the flight (desktop)', () => {
   test.use(desktop);
-  const pose = (page: Page) => page.evaluate(() => [...document.querySelectorAll<HTMLElement>('#work .fl-hero, #work .fl-side, #work .txt-in')].map((e) => e.style.transform).join('|'));
+  /* the poses of the blocks the flight draws: a block more than 1.6 views away is off screen and is left as
+     it was (flight.ts), so only the blocks within that window make the picture */
+  const pose = (page: Page) => page.evaluate(() => [...document.querySelectorAll<HTMLElement>('#work .proj')]
+    .filter((p) => Math.abs(p.getBoundingClientRect().top / innerHeight) <= 1.6)
+    .flatMap((p) => [...p.querySelectorAll<HTMLElement>('.fl-hero, .fl-side, .txt-in')]).map((e) => e.style.transform).join('|'));
   const at = (page: Page, slug: string, f: number) => page.evaluate(([s, f]) => scrollTo({ top: document.getElementById(s as string)!.getBoundingClientRect().top + scrollY + (f as number) * innerHeight, behavior: 'instant' }), [slug, f]);
 
   test('nothing is pinned but the last block, and every value follows the scroll position', async ({ page }) => {
@@ -168,7 +173,7 @@ test.describe('the flight (desktop)', () => {
     await at(page, 'recto', 0.25); await page.waitForTimeout(400);
     await page.locator('#recto .fl-hero').click({ force: true });
     await expect(page).toHaveURL(/\/lab\/one\/work\/recto\/$/);
-    await expect(page.locator('.layer h1')).toBeFocused();
+    await expect(page.locator('.layer .cap-x')).toBeFocused();
     const rail = page.locator('.layer .rail.in-layer');
     await expect(rail).toBeVisible();
     /* Overview, Facts, one bead per step, How it's made, Next (Recto has no numbers and no quote yet) */
@@ -192,4 +197,103 @@ test.describe('the flight (desktop)', () => {
 test('on Home every project link stays under the site base once', async ({ page }) => {
   await page.goto('lab/one/?still');
   for (const slug of PROJECTS) await expect(page.locator(`#${slug} .btn`)).toHaveAttribute('href', `${BASE}lab/one/work/${slug}/`);
+});
+
+test.describe('round 3: capsules, cutaway, rail sheet (desktop)', () => {
+  test.use(desktop);
+  const at = (page: Page, slug: string) => page.evaluate((s) => scrollTo({ top: document.getElementById(s)!.getBoundingClientRect().top + scrollY, behavior: 'instant' }), slug);
+
+  test('the close is its own capsule, labelled first, folded after 4 s and on later opens; one height for both', async ({ page }) => {
+    await page.goto('lab/one/');
+    await at(page, 'recto'); await page.waitForTimeout(400);
+    await page.locator('#recto .btn').click();
+    await expect(page.locator('.layer.settled')).toHaveCount(1);
+    const c = page.locator('.layer .cap-c'), a = page.locator('.layer .cap-a');
+    await expect(page.locator('.layer .caps')).not.toHaveClass(/folded/);
+    await expect(page.locator('.layer .cap-lb')).toBeVisible();
+    await expect(page.locator('.layer .cap-kbd')).toHaveText('esc');
+    /* two capsules, apart, on one line and one height (T13, T14) */
+    await page.waitForTimeout(500);
+    const [bc, ba] = [await c.boundingBox(), await a.boundingBox()];
+    expect(Math.round(bc!.height)).toBe(Math.round(ba!.height));
+    expect(Math.round(bc!.y)).toBe(Math.round(ba!.y));
+    expect(ba!.x - (bc!.x + bc!.width)).toBeGreaterThanOrEqual(11);
+    /* the cross never shrinks (the phone bug of round 2 squeezed it to 12 px) */
+    expect((await page.locator('.layer .cap-x .icon').boundingBox())!.width).toBeGreaterThanOrEqual(19);
+    await expect(page.locator('.layer .caps')).toHaveClass(/folded/, { timeout: 6000 });
+    await page.waitForTimeout(400);
+    expect(Math.round((await c.boundingBox())!.width)).toBe(Math.round(bc!.height));
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.layer')).toHaveCount(0);
+    await page.locator('#recto .btn').click();
+    await expect(page.locator('.layer .caps')).toHaveClass(/folded/);
+    await page.keyboard.press('Escape');
+  });
+
+  test('how it is made is the cutaway: one slab and one labelled entry per layer, every item kept', async ({ page }) => {
+    await page.goto('lab/one/');
+    await at(page, 'recto'); await page.waitForTimeout(400);
+    await page.locator('#recto .btn').click();
+    await expect(page.locator('.layer.settled')).toHaveCount(1);
+    await expect(page.locator('.layer .how-crop')).toHaveCount(0);
+    await expect(page.locator('.layer .cut .pl')).toHaveCount(5);
+    await expect(page.locator('.layer .cut-i')).toHaveCount(5);
+    await expect(page.locator('.layer .cut-i .cut-name').first()).toContainText('Browser tab');
+    await expect(page.locator('.layer .cut-items li')).toHaveCount(6);
+    /* the drawing follows the section's progress: closed and undrawn below the view, apart once in view */
+    const hp = () => page.locator('.layer .cut').evaluate((e) => +getComputedStyle(e).getPropertyValue('--hp'));
+    await page.evaluate(() => { const l = document.querySelector('.layer')!; const c = l.querySelector('.p-how')!; l.scrollTop = c.getBoundingClientRect().top + l.scrollTop - innerHeight; });
+    await page.waitForTimeout(300);
+    const low = await hp();
+    await page.evaluate(() => { const l = document.querySelector('.layer')!; const c = l.querySelector('.p-how')!; l.scrollTop = c.getBoundingClientRect().top + l.scrollTop - 100; });
+    await page.waitForTimeout(300);
+    expect(low).toBeLessThan(0.2);
+    expect(await hp()).toBeGreaterThan(0.8);
+    await page.keyboard.press('Escape');
+  });
+
+  test('a click on the rail opens the sheet with each title level with its bead; Escape closes only the sheet', async ({ page }) => {
+    await page.goto('lab/one/');
+    await at(page, 'english-prep'); await page.waitForTimeout(600);
+    const y0 = await page.evaluate(() => scrollY);
+    const hit = (await page.locator('#rail .rail-track-hit').boundingBox())!;
+    await page.mouse.click(hit.x + 30, hit.y + hit.height / 2);
+    await expect(page.locator('#rail')).toHaveClass(/is-sheet/);
+    await expect(page.locator('.rail-glass')).toHaveClass(/on/);
+    expect(Math.abs(await page.evaluate(() => scrollY) - y0)).toBeLessThan(2);
+    await page.waitForTimeout(900);
+    const off = await page.evaluate(() => {
+      const m = [...document.querySelectorAll('#rail .rail-m')].map((e) => { const r = e.getBoundingClientRect(); return r.top + r.height / 2; });
+      const t = [...document.querySelectorAll('#rail .rail-i')].map((e) => { const r = e.getBoundingClientRect(); return r.top + r.height / 2; });
+      return Math.max(...m.map((y, i) => Math.abs(y - t[i])));
+    });
+    expect(off).toBeLessThan(1.5);
+    expect(await page.locator('#rail li.rail-g').evaluateAll((l) => l.map((e) => (e as HTMLElement).dataset.g))).toEqual(expect.arrayContaining(['Work', 'Eren', 'The record']));
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#rail')).not.toHaveClass(/is-sheet/);
+    /* a row goes to its section and closes the sheet */
+    await page.mouse.click(hit.x + 30, hit.y + hit.height / 2);
+    await expect(page.locator('#rail')).toHaveClass(/is-sheet/);
+    await page.locator('#rail .rail-i', { hasText: 'Photos' }).click();
+    await expect(page.locator('#rail')).not.toHaveClass(/is-sheet/);
+    await expect.poll(() => page.evaluate(() => document.getElementById('photos')!.getBoundingClientRect().top)).toBeLessThan(400);
+  });
+});
+
+test.describe('round 3: capsules on the phone', () => {
+  test.use(phone);
+  test('close at the left gutter, actions at the right one, one height', async ({ page }) => {
+    await page.goto('lab/one/');
+    await page.evaluate(() => scrollTo({ top: document.getElementById('recto')!.getBoundingClientRect().top + scrollY, behavior: 'instant' }));
+    await page.waitForTimeout(400);
+    await page.locator('#recto .btn').click();
+    await expect(page.locator('.layer.settled')).toHaveCount(1);
+    await page.waitForTimeout(600);
+    const c = (await page.locator('.layer .cap-c').boundingBox())!, a = (await page.locator('.layer .cap-a').boundingBox())!;
+    expect(Math.round(c.x)).toBe(16);
+    expect(Math.round(390 - (a.x + a.width))).toBe(16);
+    expect(Math.round(c.height)).toBe(Math.round(a.height));
+    expect(c.height).toBeGreaterThanOrEqual(52);
+    expect((await page.locator('.layer .cap-x .icon').boundingBox())!.width).toBeGreaterThanOrEqual(19);
+  });
 });

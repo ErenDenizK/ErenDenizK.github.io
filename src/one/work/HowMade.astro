@@ -14,7 +14,7 @@ interface Props { items: string[]; layers?: { name: string; items: number[] }[];
 const { items, layers, id } = Astro.props;
 
 /* the drawing, in user units = CSS px at the desktop width (the phone scales the whole figure) */
-const W = 360, A = 170, B = 62, T = 6, P = 76, C = 10, PAD = 14;
+const W = 360, A = 170, B = 62, T = 6, P = 76, PAD = 14;   // the closed pitch (10 px) lives in work.css
 const n = layers?.length ?? 0;
 const H = 2 * PAD + 2 * B + T + (n - 1) * P;
 const mid = PAD + B + ((n - 1) * P) / 2;
