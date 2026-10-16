@@ -73,7 +73,7 @@ html.js:not(.still) .work .pr-shade { will-change: opacity; }
 .w-title .wm { color: var(--wm-c, var(--ink)); }
 .w-promise { width: fit-content; margin: var(--s-3) auto var(--s-5); max-width: 30em; font: 400 var(--fs-body)/1.55 var(--f-sans); color: var(--ink-2); text-wrap: balance; }
 @media (max-width: 699.98px) {
-  .set-link { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; padding: 4px var(--gut) 12px; margin: 0 calc(-1 * var(--gut));
+  .set-link { justify-content: safe center; overflow-x: auto; scrollbar-width: none; padding: 4px var(--gut) 12px; margin: 0 calc(-1 * var(--gut));
     scroll-snap-type: x proximity; }
   .set-link::-webkit-scrollbar { display: none; }
   .set-link .pr { flex: 0 0 72vw; scroll-snap-align: center; }

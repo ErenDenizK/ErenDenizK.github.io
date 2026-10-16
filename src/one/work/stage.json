@@ -2,7 +2,7 @@
   "$comment": "Work's stage data (phase3 design-spec.md 3.3.1): per project, the focal point of each capture for the square phone crop ([x, y] as fractions of the screen; default the centre) and the UI fragments that float in front of the stack. A prop is a crop of one of the project's own captures, in CSS pixels of its 1440 x 900 view; `at` places it on the front print, in fractions of the print width ([left, top, width]), and `turn` in degrees. Run node src/one/work/tools/props.mjs after a change. This file moves into each project's content (fields `focus` and `props`) when the schema in src/content.config.ts takes them.",
   "recto": {
     "focus": {
-      "markup-palette": [0.4, 0.5],
+      "markup-palette": [0.28, 0.5],
       "library": [0.5, 0.45],
       "light-table": [0.3, 0.4]
     },
