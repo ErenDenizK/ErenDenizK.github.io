@@ -13,7 +13,9 @@
    Motion (a pure function of the chapter's --sp, scene.css; reversible; stroke-dashoffset, transform and
    opacity only): the rings draw from the inside out and the ground fades in, the tape draws from the
    reel, the spine runs on down, each mark lands as the line reaches it and its row follows, the year
-   strip's months fill from January, the tail draws last. The recorder is the Record's (media.ts): it
+   strip's months fill from January, the tail draws last. Round four: the title rises over --sp 0.08 to
+   0.18 and the dek over 0.13 to 0.23, so on a phone the title is up before the dek (at its 0.4 floor)
+   is read; at 0.18 / 0.25 the dek stood under an empty title mask while the tape was already drawn. The recorder is the Record's (media.ts): it
    floats, on desktop it turns with the scroll through its lean frames while no pointer is near and
    leans toward a pointer near it, and a press plays its clip; on phones it stays the floating poster
    (data-spin="off", spec v3 §8.4). Still twins: drawn complete, the recorder's poster.
@@ -92,13 +94,13 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
 
       <div class="rs-body">
         <header class="rs-head">
-          <h2 class="rs-title" data-lines style="--a: 0.18; --w: 0.1">{site.log.title}</h2>
-          <p class="rs-dek" data-rise style="--a: 0.25; --w: 0.1">{site.log.dek}</p>
+          <h2 class="rs-title" data-lines style="--a: 0.08; --w: 0.1">{site.log.title}</h2>
+          <p class="rs-dek" data-rise style="--a: 0.13; --w: 0.1">{site.log.dek}</p>
         </header>
 
         <div class="rs-year">
           <p class="rs-y"><span class="y">{year}</span><span class="meta" title={since}>{count}</span></p>
-          <YearStrip year={year} entries={inYear} projects={projects} />
+          <YearStrip year={year} entries={inYear} projects={projects} base={url('record/')} />
         </div>
 
         <div class="rs-spine">
@@ -172,8 +174,8 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
   .rs-rings .sp { opacity: 0.1; }
   .rs-rings .strand { opacity: 0.3; stroke-width: calc(1.2 / var(--S-n)); }
   /* motion: the rings draw from the inside out over --sp 0 to 0.12, the dashed ones and the spokes fade
-     in with them, the ground comes up under the object, then the tape draws (0.1 to 0.16) */
-  :global(html.motion) .rstrip { --kr: clamp(0, var(--sp) / 0.14, 1); --ktape: clamp(0, (var(--sp) - 0.14) / 0.08, 1); }
+     in with them, the ground comes up under the object, then the tape draws (0.1 to 0.19) */
+  :global(html.motion) .rstrip { --kr: clamp(0, var(--sp) / 0.14, 1); --ktape: clamp(0, (var(--sp) - 0.1) / 0.09, 1); }
   :global(html.motion) .rs-rings .rg { --k: clamp(0, (var(--sp) - 0.02 - var(--i) * 0.01) / 0.06, 1); stroke-dasharray: 1 1; stroke-dashoffset: calc(1 - var(--k)); }
   :global(html.motion) .rs-rings .dash { stroke-dasharray: calc(2 / var(--S-n)) calc(6 / var(--S-n)); stroke-dashoffset: 0; opacity: calc(0.17 * var(--k)); }
   :global(html.motion) .rs-rings .sp { opacity: calc(0.1 * var(--kr)); }
@@ -202,7 +204,7 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
   .rstrip :global(.ym.on .ym-l) { color: var(--ink-2); }
   .rstrip :global(a.ym:hover .ym-l) { color: var(--ink); }
   /* the months fill from January as the strip comes up */
-  :global(html.motion) .rstrip :global(.ym) { --k: clamp(0, (var(--sp) - 0.28 - var(--m, 0) * 0.008) / 0.04, 1); }
+  :global(html.motion) .rstrip :global(.ym) { --k: clamp(0, (var(--sp) - 0.22 - var(--m, 0) * 0.008) / 0.04, 1); }
   :global(html.motion) .rstrip :global(.ym-ticks i) { transform: scaleY(var(--k)); opacity: calc(0.3 + 0.7 * var(--k)); }
   .rstrip :global(.ym:nth-child(2)) { --m: 1; } .rstrip :global(.ym:nth-child(3)) { --m: 2; } .rstrip :global(.ym:nth-child(4)) { --m: 3; }
   .rstrip :global(.ym:nth-child(5)) { --m: 4; } .rstrip :global(.ym:nth-child(6)) { --m: 5; } .rstrip :global(.ym:nth-child(7)) { --m: 6; }
@@ -212,18 +214,21 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
   /* ---------- the spine: one line from Now through the rows; it draws down with the scroll ---------- */
   .rs-spine { position: relative; margin-top: var(--s-4); }
   /* the tape, now the spine: one line from the head's top through the rows, drawn down after the tape's
-     curve (0.16 onward); it stops above the tail and the link */
+     curve (0.19 onward); it stops above the tail and the link */
   .rs-body::before { content: ""; position: absolute; left: var(--spine-x); top: 0; height: calc(100% - 72px - 44px); width: 1.5px; translate: -0.75px 0; transform-origin: 50% 0;
     background: linear-gradient(180deg, var(--tape), var(--rule-s) var(--to-now, 260px)); }
-  :global(html.motion) .rs-body::before { transform: scaleY(clamp(0, (var(--sp) - 0.22) / 0.4, 1)); }
-  /* each line on the spine: mark, then row. The spine draws over --sp 0.22 to 0.62, so its tip runs about
-     a fifth of a screen above the window's foot at every width (measured: one px of scroll is 0.00046 to
-     0.00049 of --sp at 1440, 1180, 800 and 390). --f is where a mark sits down the line (0.35 Now, then
-     the rows), so each lands as the line reaches it and its row follows. */
+  :global(html.motion) .rs-body::before { transform: scaleY(clamp(0, (var(--sp) - 0.19) / 0.37, 1)); }
+  /* each line on the spine: mark, then row. The spine draws over --sp 0.19 to 0.56 (round four; it was
+     0.22 to 0.62, later than spec v3 §8.2). Measured with tools in the round-four person shots: a row was
+     fully readable only once its top had climbed to 0.67-0.71 of the window at 1440 and 1180 and to
+     0.57-0.66 at 390, so the reader waited on the text in the lower third. Now each row is complete
+     at 0.78-0.82 of the window (0.68-0.81 on the phone), while it is still entering. One px of scroll is 0.00046 to 0.00049 of --sp at
+     1440, 1180, 800 and 390. --f is where a mark sits down the line (0.35 Now, then the rows), so each
+     lands as the line reaches it and its row follows. */
   .rs-now, .rstrip :global(.spine > .entry) {
     position: relative; display: grid; grid-template-columns: var(--gutter) var(--spine-w) minmax(0, var(--rec-col)); align-items: baseline; padding: 26px 0;
   }
-  :global(html.motion) .rs-now, :global(html.motion) .rstrip :global(.spine > .entry) { --at: calc(0.22 + 0.4 * var(--f, 0.35)); --k: clamp(0, (var(--sp) - var(--at)) / 0.03, 1); --kt: clamp(0, (var(--sp) - var(--at) - 0.01) / 0.04, 1); }
+  :global(html.motion) .rs-now, :global(html.motion) .rstrip :global(.spine > .entry) { --at: calc(0.19 + 0.37 * var(--f, 0.35)); --k: clamp(0, (var(--sp) - var(--at)) / 0.03, 1); --kt: clamp(0, (var(--sp) - var(--at) - 0.01) / 0.04, 1); }
   .rstrip :global(.spine > .entry:nth-child(1)) { --f: 0.48; } .rstrip :global(.spine > .entry:nth-child(2)) { --f: 0.65; } .rstrip :global(.spine > .entry:nth-child(3)) { --f: 0.87; }
   .rstrip :global(.spine > .entry::before) { content: ""; position: absolute; left: calc(var(--gutter) + var(--spine-w)); width: min(var(--rec-col), calc(100% - var(--gutter) - var(--spine-w))); top: 0; height: 1px; background: var(--line-1); }
   .rstrip :global(.e-date) { grid-column: 1; grid-row: 1; color: var(--ink-3); white-space: nowrap; }
@@ -271,7 +276,25 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
   .rstrip :global(.r-title) { margin-top: 6px; font: 400 var(--fs-h4) / 1.25 var(--f-serif); }
   .rstrip :global(.r-items) { margin-top: 12px; display: grid; gap: 4px; }
   .rstrip :global(.r-items li) { position: relative; padding-left: 18px; font: 400 var(--fs-small) / 1.5 var(--f-sans); color: var(--ink-2); }
+  /* the thumbnail of an essay or a release (record-language §2.3, the Record's 16:10 plate). Round four:
+     at 1440 the right half of the rows was bare, because the rows' text ends at 28 em and the block hangs
+     left of the centred head. From 1240 px the plate stands in the free margin right of the content
+     column, top-aligned with its row's title, as on the Record; it arrives with its row (the same --kt)
+     from 24 px further right, and brightens 1.06 on the row's hover. Below 1240 px it stays hidden: the
+     margin is under 200 px there. Notes have no plate, so nothing is drawn beside them (no placeholder). */
   .rstrip :global(.e-thumb) { display: none; }
+  @media (min-width: 1240px) {
+    .rstrip :global(.spine > .entry.has-thumb .e-thumb) { display: block; position: absolute; top: 30px; left: calc(var(--gutter) + var(--spine-w) + min(var(--rec-col), 100% - var(--gutter) - var(--spine-w)) + 40px);
+      width: clamp(176px, calc((100vw - var(--rec-w)) / 2 + 100px), 232px); aspect-ratio: 16 / 10; border-radius: 6px; overflow: hidden;
+      background: color-mix(in srgb, var(--p) 10%, var(--ground)); box-shadow: 0 18px 40px -22px rgb(0 0 0 / 0.8); }
+    .rstrip :global(.e-thumb picture), .rstrip :global(.e-thumb img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .rstrip :global(.e-thumb img) { transition: filter var(--t-press) var(--ease-out); }
+    .rstrip :global(.e-thumb::after) { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.1); pointer-events: none; }
+    .rstrip :global(.e-plate) { display: grid; place-items: center; width: 100%; height: 100%; }
+    .rstrip :global(.e-plate svg) { width: 82%; height: auto; }
+    .rstrip :global(.entry:hover .e-thumb img) { filter: brightness(1.06); }
+    :global(html.motion) .rstrip :global(.spine > .entry .e-thumb) { opacity: var(--kt); transform: translateX(calc((1 - var(--kt)) * 24px)); }
+  }
   /* hit sizes (spec v3 §9.6): on a fine pointer the date and project links are padded to 24 px without
      moving the line; on touch the whole row is one target (a note's date link spans the row like an
      entry's title link) and the project names read as text, so a tap is never ambiguous */
@@ -285,19 +308,30 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
   /* press: the Record's links answer within 120 ms (scale 0.98) */
   .rstrip :global(a.ym) { transition: scale var(--t-press) var(--ease-out); }
   .rstrip :global(a.ym:active), .rs-all:active { scale: 0.98; }
+  /* round four (review row T26: every input answers). The audit (tools/silent.mjs, CDP forced states)
+     found three links with no hover or press response: the project names and an essay's title. A project
+     name draws a 1 px underline in its own colour from the left (200 ms) and sinks on press; a pressed
+     row's mark grows to 1.5 and its title dims to --ink-2 while the finger or button is down, so the
+     press is felt before the navigation starts. */
+  .rstrip :global(.pj) { background: linear-gradient(currentColor, currentColor) 0 calc(100% - 3px) / 0 1px no-repeat;
+    transition: background-size 200ms var(--ease-out), scale var(--t-press) var(--ease-out), color var(--t-press); }
+  .rstrip :global(.pj:hover) { background-size: 100% 1px; }
+  .rstrip :global(.pj:active) { scale: 0.97; }
+  .rstrip :global(.entry:active .e-mark) { scale: 1.5; }
+  .rstrip :global(.entry .e-link:active) { color: var(--ink-2); }
 
   /* ---------- the hand-over: the spine runs on, dashed, to a quiet link ---------- */
   .rs-tail { position: relative; height: 72px; }
   .rs-tail::before { content: ""; position: absolute; left: var(--spine-x); top: 0; bottom: 0; width: 1px; translate: -0.5px 0; transform-origin: 50% 0;
     background: repeating-linear-gradient(180deg, var(--rule-s) 0 4px, transparent 4px 9px); }
-  :global(html.motion) .rs-tail::before { transform: scaleY(clamp(0, (var(--sp) - 0.62) / 0.03, 1)); }
+  :global(html.motion) .rs-tail::before { transform: scaleY(clamp(0, (var(--sp) - 0.56) / 0.03, 1)); }
   .rs-all { transition: scale var(--t-press) var(--ease-out); display: grid; grid-template-columns: var(--gutter) var(--spine-w) auto auto; justify-content: start; align-items: center; gap: 0; min-height: 44px; color: var(--ink); width: fit-content; }
   .all-mark { grid-column: 2; justify-self: center; width: 11px; height: 11px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--ink-3); transition: scale var(--t-press) var(--ease-out), box-shadow var(--t-press); }
   .all-t { grid-column: 3; font: 500 var(--fs-small) / 1 var(--f-sans); padding-right: var(--s-2); }
   .rs-all :global(.icon) { color: var(--ink-3); transition: color var(--t-press), translate 200ms var(--ease-out); }
   .rs-all:hover .all-mark { scale: 1.3; box-shadow: inset 0 0 0 1.5px var(--record-1); }
   .rs-all:hover :global(.icon) { color: var(--ink); translate: 2px 0; }
-  :global(html.motion) .rs-all { --k: clamp(0, (var(--sp) - 0.65) / 0.04, 1); opacity: var(--k); transform: translateY(calc((1 - var(--k)) * var(--rise))); }
+  :global(html.motion) .rs-all { --k: clamp(0, (var(--sp) - 0.59) / 0.04, 1); opacity: var(--k); transform: translateY(calc((1 - var(--k)) * var(--rise))); }
 
   /* ---------- phone: the Record's phone grid (spine at the left, the date above each row) ---------- */
   @media (max-width: 699.98px) {

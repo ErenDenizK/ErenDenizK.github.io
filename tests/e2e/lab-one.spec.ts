@@ -238,7 +238,38 @@ test.describe('the person\'s part, desktop', () => {
     await first.locator('.pc-open').click();
     const vp = page.viewportSize()!;
     await page.mouse.click(vp.width / 2, vp.height / 2);
-    await expect(page.locator('[data-pc-dialog] [data-big-card]')).toHaveClass(/is-flipped/);
+    const big = page.locator('[data-pc-dialog] [data-big-card]');
+    await expect(big).toHaveClass(/is-flipped/);
+    /* round four: the press turns it once, never twice (its click is not a second request) */
+    await page.waitForTimeout(1200);
+    await expect(big).toHaveClass(/is-flipped/);
+  });
+
+  test('round four: a postcard press that lands before the large view\'s code loads is kept and opens it', async ({ page }) => {
+    await page.goto(PAGE);
+    const table = page.locator('[data-pc-table]');
+    /* at the top of the page the person's part is far away, so its module has not loaded yet */
+    await expect(table).toHaveAttribute('data-pc-early', '');
+    await page.locator('[data-postcard="1"] .pc-open').evaluate((b) => (b as HTMLButtonElement).click());
+    await table.scrollIntoViewIfNeeded();
+    const dlg = page.locator('[data-pc-dialog]');
+    await expect(dlg).toHaveAttribute('open', '');
+    await expect(table).not.toHaveAttribute('data-pc-pending', /.*/);
+    await dlg.locator('[data-pv-close]').click();
+    await expect(dlg).not.toHaveAttribute('open', '');
+  });
+
+  test('round four: the table photographs are fetched at page load, before the chapter comes near', async ({ page }) => {
+    await page.goto(PAGE);
+    await expect.poll(() => page.locator('.pc-pic img').evaluateAll((els) => els.every((e) => (e as HTMLImageElement).complete && (e as HTMLImageElement).naturalWidth > 0)), { timeout: 8000 }).toBe(true);
+    await expect(page.locator('.pc-pic.is-in')).toHaveCount(3);
+  });
+
+  test('round four: the ID card has its grooved, turning surface on both faces (T27)', async ({ page }) => {
+    await page.goto(PAGE);
+    await expect(page.locator('#card .idc-front .idc-cd')).toHaveCount(1);
+    await expect(page.locator('#card .idc-back .idc-cd')).toHaveCount(1);
+    expect(await page.locator('#card .idc-front .idc-tex').evaluate((e) => getComputedStyle(e, '::before').backgroundImage)).toMatch(/repeating-radial-gradient/);
   });
 
   test('the Record strip speaks the Record\'s language: marks on a spine, a year strip, serif titles, no pills', async ({ page }) => {
@@ -251,6 +282,18 @@ test.describe('the person\'s part, desktop', () => {
     expect(await strip.locator('.rs-title').evaluate((e) => getComputedStyle(e).fontFamily)).toMatch(/Newsreader/);
     await expect(strip.locator('.btn')).toHaveCount(0);
     await expect(strip.locator('a.rs-all')).toHaveAttribute('href', /record\/$/);
+    /* round four: the strip shows three rows, so its months link to their rows on the Record */
+    for (const href of await strip.locator('a.ym').evaluateAll((els) => els.map((e) => e.getAttribute('href')))) expect(href).toMatch(/record\/#\S+/);
+    /* round four (T26): a project name answers a hover (its underline draws) */
+    const pj = strip.locator('.pj').first();
+    await pj.scrollIntoViewIfNeeded();
+    await pj.hover();
+    await expect.poll(() => pj.evaluate((e) => getComputedStyle(e).backgroundSize)).toMatch(/^100%/);
+    /* round four: at 1440 an essay's plate stands in the margin right of the content column */
+    const plate = await strip.locator('.entry.has-thumb .e-thumb').boundingBox(), main = await strip.locator('.entry.has-thumb .e-main').boundingBox();
+    expect(plate!.width).toBeGreaterThan(170);
+    expect(plate!.x).toBeGreaterThan(main!.x + 600);
+    expect(plate!.x + plate!.width).toBeLessThan(1440 - 48);
     /* spec v3 §8: the recorder stands above the chapter's title (weight 500, the sections' one role), its
        tape leaves it and becomes the spine at the head, and it never takes the spin loop on Home */
     expect(await strip.locator('.rs-title').evaluate((e) => getComputedStyle(e).fontWeight)).toBe('500');
@@ -386,4 +429,29 @@ test.describe('the name and the glass (round 4)', () => {
     expect(now.blur).toBe('blur(22px) saturate(1.5)');
     expect(now.off).toBe('rgb(161, 157, 150)'); /* --ink-3 */
   });
+});
+
+test('round four (V5): on a phone the postcard back\'s lower block stays tight and inside the card', async ({ browser }) => {
+  const ctx = await browser.newContext({ ...phone, deviceScaleFactor: 3 });
+  const page = await ctx.newPage();
+  await page.goto(PAGE);
+  const first = page.locator('[data-postcard="0"] .pc-open');
+  await first.scrollIntoViewIfNeeded();
+  await first.click();
+  const dlg = page.locator('[data-pc-dialog]');
+  await expect(dlg).toHaveAttribute('open', '');
+  await page.waitForTimeout(900);
+  await dlg.locator('[data-pv-turn]').click();
+  await expect(dlg.locator('[data-big-card]')).toHaveClass(/is-flipped/);
+  const m = await dlg.locator('.big-back').evaluate((back) => {
+    const r = back.getBoundingClientRect();
+    const em = (sel: string) => { const c = getComputedStyle(back.querySelector(sel)!); return parseFloat(c.letterSpacing) / parseFloat(c.fontSize); };
+    const right = Math.max(...[...back.querySelectorAll('.bk-col dt, .bk-col dd, .bk-col .hex')].map((e) => e.getBoundingClientRect().right));
+    return { dt: em('.bk-col dt'), micro: em('.bk-micro'), head: em('.bk-head .no'), over: right - (r.right - r.width * 0.08 + 1) };
+  });
+  expect(m.dt).toBeLessThanOrEqual(0.13);
+  expect(m.micro).toBeLessThanOrEqual(0.21);
+  expect(m.head).toBeLessThanOrEqual(0.13);
+  expect(m.over).toBeLessThanOrEqual(0);
+  await ctx.close();
 });

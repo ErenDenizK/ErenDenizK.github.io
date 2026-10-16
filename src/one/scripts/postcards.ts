@@ -98,6 +98,8 @@ export function initPostcards() {
     for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; }
   }, { rootMargin: '150% 0px' });
   near.observe(table);
+  /* round four: the idle fetch and the tone plates live in Postcards.astro's own script, which runs at
+     page load (this module loads only when the person's part comes near) */
 
   /* ---------- the table ---------- */
   let raf = 0, last = 0, acc = 0, up = -1, phase = 0;
@@ -179,7 +181,7 @@ export function initPostcards() {
   const closeBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-close]');
   const turnBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-turn]');
   const cursor = dlg.querySelector<HTMLElement>('[data-pv-cursor]');
-  let open: HTMLElement | null = null, busy: VT | null = null, pushed = false, queued = false, foldT = 0, opening = false;
+  let open: HTMLElement | null = null, busy: VT | null = null, pushed = false, queued = false, foldT = 0, opening = false, eaten = 0;
   const fold = () => caps?.classList.add('folded');
   /* the face toward the viewer turns the card (its button is the live one; the other face is inert) */
   const turnCard = () => stage.querySelector<HTMLButtonElement>('[data-face]:not([inert]) [data-turn]')?.click();
@@ -252,6 +254,11 @@ export function initPostcards() {
   };
   /* a second press on the table card while it is already growing is the queued turn, not a new open */
   for (const pc of cards) pc.querySelector('.pc-open')?.addEventListener('click', () => { if (opening || open) { queued = true; return; } show(pc); });
+  /* a press that came before this module loaded (Postcards.astro keeps it) opens its card now */
+  delete table.dataset.pcEarly;
+  const early = cards.find((c) => c.dataset.postcard === table.dataset.pcPending);
+  delete table.dataset.pcPending;
+  if (early) show(early);
   dlg.addEventListener('cancel', (e) => { e.preventDefault(); hide(); });
   closeBtn?.addEventListener('click', () => hide());
   turnBtn?.addEventListener('click', () => { if (busy) queued = true; else turnCard(); });
@@ -263,6 +270,17 @@ export function initPostcards() {
   document.addEventListener('pointerdown', (e) => {
     if (!opening || !busy || e.button !== 0 || onCaps(e.target)) return;
     queued = true;
+    eaten = performance.now();
+  }, true);
+  /* the click that ends that press is the same request: if it lands after the card (on its turn button)
+     it would turn the card a second time (round-three critique, weak point 9), so it is consumed once */
+  document.addEventListener('click', (e) => {
+    /* the queued turn itself is a script click (turnCard): never consume it */
+    if (!eaten || !e.isTrusted) return;
+    /* a click more than 1 s later is a new press (the snapshot can swallow the first one entirely) */
+    const late = performance.now() - eaten > 1000;
+    eaten = 0;
+    if (!late && (e.target as Element | null)?.closest?.('[data-big-card]')) { e.preventDefault(); e.stopPropagation(); }
   }, true);
   addEventListener('popstate', () => { if (open) hide(true); });
 

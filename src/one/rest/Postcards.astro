@@ -177,6 +177,35 @@ const cards = list.map((p, i) => {
   </section>
 )}
 
+<script>
+  /* Round four (round-three critique, weak point 2; rows G2, G6): the table photographs were fetched only
+     when the person's part came near (scripts/rest.ts loads late), so a long jump from the rail landed
+     on grey cards for up to 2 s. This runs at page load: once the page has loaded and the main thread is
+     idle (at most 1.2 s later) the three small files are fetched at low priority. Until a file is decoded
+     its plate shows the photograph's own tone (CSS), and the picture fades in over 240 ms when it lands.
+     Without JavaScript nothing changes (the images stay lazy and fully opaque). */
+  const table = document.querySelector<HTMLElement>('[data-pc-table]');
+  if (table) {
+    const imgs = [...table.querySelectorAll<HTMLImageElement>('.pc-pic img')];
+    table.dataset.pcFade = '';
+    for (const im of imgs) {
+      const ok = () => im.closest('.pc-pic')?.classList.add('is-in');
+      if (im.complete && im.naturalWidth) ok(); else im.addEventListener('load', ok, { once: true });
+    }
+    const early = () => { for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; } };
+    const idle = (f: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(f, { timeout: 1200 }) : setTimeout(f, 1200));
+    if (document.readyState === 'complete') idle(early); else addEventListener('load', () => idle(early), { once: true });
+    /* the large view's code loads when the person's part comes near; after a long rail jump a press can
+       land before it. That press is kept here and initPostcards opens its card, so no tap is lost. */
+    table.dataset.pcEarly = '';
+    table.addEventListener('click', (e) => {
+      if (!('pcEarly' in table.dataset)) return;
+      const pc = (e.target as Element | null)?.closest?.<HTMLElement>('.pc-open')?.closest<HTMLElement>('[data-postcard]');
+      if (pc) table.dataset.pcPending = pc.dataset.postcard;
+    });
+  }
+</script>
+
 <style>
   .photos { position: relative; padding: 0 var(--gut); text-align: center; }
   /* the city the photographs were taken in, engraved, as the table's far horizon (line-art set, 8 %) */
@@ -210,6 +239,10 @@ const cards = list.map((p, i) => {
   .pc-guil { position: absolute; z-index: -1; left: -14%; bottom: -16%; width: 62%; height: auto; max-width: none; opacity: 0.11; pointer-events: none; }
   .pc-pic { position: relative; display: block; border-radius: 2px; overflow: hidden; }
   .pc-pic img { width: 100%; height: auto; aspect-ratio: var(--ratio); }
+  /* before its file is decoded the plate is the photograph's own tone, not a grey box (scripts/postcards.ts) */
+  :global(html.js) .pc-pic { background: radial-gradient(120% 90% at 40% 30%, color-mix(in srgb, var(--tone) 46%, #1a1814), color-mix(in srgb, var(--tone) 18%, #0f0e0c)); }
+  .table[data-pc-fade] .pc-pic img { opacity: 0; transition: opacity 240ms var(--ease-out); }
+  .table[data-pc-fade] .pc-pic.is-in img { opacity: 1; }
   .pc-pic::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.14); pointer-events: none; }
   .pc-edge { position: absolute; left: 14px; right: 14px; bottom: 11px; display: flex; justify-content: space-between; align-items: baseline; text-align: left; }
   .pc-edge i { font: italic 400 var(--fs-body) / 1 var(--f-serif); color: var(--ink); }
@@ -457,6 +490,19 @@ const cards = list.map((p, i) => {
     .pc-big .big.land .bk-col .pal { display: none; }
     .pc-big .big.land .bk-study { top: 44%; height: 22%; }
     .pc-big .big.land .bk-msg { top: 22%; }
+    /* the lower block on a phone (review row V5). On a 358 px card the type floors (10 px labels, 14 px
+       values) sit 1.4 times larger against the card than at 1440, and the desktop tracking (0.16 to
+       0.34 em) then spread the labels, the hex row and the micro line across the whole width. Measured at
+       390 x 844, DPR 3: the floors come down one step, the tracking follows the smaller size, and the
+       colophon's columns take their content's width instead of fixed fractions, so the block reads as
+       one tight group under the signature. */
+    .pc-big .bk-head .no { font-size: 10px; letter-spacing: 0.12em; }
+    .pc-big .bk-col { grid-template-columns: auto auto minmax(0, 1fr); gap: calc(6 * var(--u)); }
+    .pc-big .one-place .bk-col { grid-template-columns: auto minmax(0, 1fr); }
+    .pc-big .bk-col dt { font-size: 9px; letter-spacing: 0.12em; }
+    .pc-big .bk-col dd { font-size: 13px; margin-top: 5px; }
+    .pc-big .bk-col .hex { font-size: 9px; letter-spacing: 0.01em; }
+    .pc-big .bk-micro { font-size: 6px; letter-spacing: 0.2em; }
   }
   /* reduced motion: the turn is a crossfade, no burn-in, the back drawn at once */
   html.still .pc-big .idc-card { transform: none !important; }
