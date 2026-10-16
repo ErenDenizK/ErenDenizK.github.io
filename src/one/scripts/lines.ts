@@ -1,7 +1,7 @@
 /* Lines in masks (spec v2 §2.1, motion contract rule 9; scene.css). Each [data-lines] element holds
    plain text. After the fonts have loaded, its words are measured and regrouped into one mask per line
    (.ln > .ln-i, the line's index as --i), so a heading rises line by line as a function of its scene's
-   --p. The split is done again when the element's width changes. Screen readers read the same words
+   --sp. The split is done again when the element's width changes. Screen readers read the same words
    (aria-label keeps the sentence whole). Under reduced motion or ?still nothing is split. */
 import { motion } from './bus';
 
