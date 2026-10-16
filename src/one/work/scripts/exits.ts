@@ -36,7 +36,8 @@ export function initExits(l: HTMLElement, back: () => void): Exits {
     const icon = l.querySelector('.cap-xi .icon')?.cloneNode(true);
     if (icon) cur.append(icon);
     const lb = document.createElement('b');
-    lb.textContent = 'Close';
+    /* the word comes from content (site.json work.close), through the capsule's own label */
+    lb.textContent = l.querySelector('.cap-lb')?.textContent?.trim() || l.querySelector('[data-close]')?.getAttribute('aria-label') || '';
     cur.append(lb);
     l.append(cur);
     const head = l.querySelector<HTMLElement>('.pt');
