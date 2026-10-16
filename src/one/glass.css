@@ -1,0 +1,80 @@
+/* The glass family (glass study V7, round 4; spec v3 §5.1). One body, one rim and one aura light for every
+   glass object: the tab pill (Bar.astro .tabs), the layer's capsules (work.css .glass), the photo view's
+   capsules (Postcards.astro .pv-glass) and the two close cursors. Each component keeps its own layout
+   and paints with these properties: background var(--glass-fill), backdrop-filter var(--glass-blur),
+   box-shadow var(--glass-edge), var(--glass-shadow); its active item takes --glass-bed, a hovered item
+   background-color var(--glass-hover) and box-shadow var(--glass-hover-glow).
+
+   Light enters from above and gathers below in the current aura: a 1 px rim, white at the top and --a1
+   at the foot; a faint specular band inside the top edge; an --a1 caustic inside the lower edge; a faint
+   --a1 glow in the body. The aura parts are written here, on the objects, because --a1 differs per
+   object: the field's light on Home, the project's pigments inside an opened project (.pres sets them).
+
+   Lab switches (html[data-glass], set before first paint by the layout; spec v3 §9):
+     a    (default, also without JavaScript) the CSS family above.
+     b    a + an SVG displacement rim (scripts/glass-b.ts). Chromium draws backdrop-filter: url() only,
+          so Safari and Firefox keep a. The blur drops to 12 px, or the bend cannot be seen.
+     c    a + a WebGL lens light per object (scripts/glass-c.ts), on a GPU that is not a software
+          renderer (?glassforce=1 skips that gate). WebGL cannot read the page's pixels, so it adds light
+          only; the body stays a's.
+     now  the round-3 recipe, for comparison (owner, 2026-10-16: "the new glass looks good"). */
+
+:is(.tabs, .glass, .pv-glass, .cursor-x, .pv-cursor, .cursor-x b, .pv-cursor b) {
+  --glass-glow: color-mix(in oklab, var(--a1) 15%, transparent);
+  --glass-fill: radial-gradient(70% 110% at 50% 150%, var(--glass-glow), transparent 72%), var(--glass-bg);
+  --glass-edge: inset 0 -9px 12px -9px color-mix(in oklab, var(--a1) 34%, transparent),
+    inset 0 8px 10px -9px rgb(255 255 255 / 0.07), 0 0 0 0.5px rgb(0 0 0 / 0.38);
+  /* the active tab: 7 % light with the aura glowing up from under it */
+  --glass-bed: radial-gradient(60% 120% at 50% 140%, color-mix(in oklab, var(--a1) 36%, transparent), transparent 72%), rgb(255 255 255 / 0.07);
+  --glass-bed-edge: inset 0 1px 0 rgb(255 255 255 / 0.07), inset 0 -1px 0 color-mix(in oklab, var(--a1) 22%, transparent);
+  /* a hovered capsule item takes the same light, weaker, so a pressed capsule reads like the tab. It is a
+     colour and an inset glow, not a gradient: both transition, so the light rises instead of snapping on */
+  --glass-hover: rgb(255 255 255 / 0.06);
+  --glass-hover-glow: inset 0 -10px 14px -8px color-mix(in oklab, var(--a1) 30%, transparent);
+  --glass-rim: linear-gradient(180deg, rgb(255 255 255 / 0.17) 0%, rgb(255 255 255 / 0.035) 34%,
+    rgb(255 255 255 / 0.035) 62%, color-mix(in oklab, var(--a1) 42%, transparent) 100%);
+}
+:is(.tabs, .glass, .pv-glass) { position: relative; }
+/* the rim: a 1 px ring cut by a mask out of a vertical gradient (no border, no layout change) */
+:is(.tabs, .glass, .pv-glass, .cursor-x, .pv-cursor)::before {
+  content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: var(--glass-rim);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+/* ---------- now: the round-3 recipe ---------- */
+html[data-glass="now"] { --glass-label-off: var(--ink-3); }
+html[data-glass="now"] :is(.tabs, .glass, .pv-glass, .cursor-x, .pv-cursor, .cursor-x b, .pv-cursor b) {
+  --glass-bg: rgb(30 30 34 / 0.62);
+  --glass-blur: blur(22px) saturate(1.5);
+  --glass-fill: var(--glass-bg);
+  --glass-edge: inset 0 0 0 1px rgb(255 255 255 / 0.07), inset 0 1px 0 rgb(255 255 255 / 0.05);
+  --glass-shadow: 0 12px 40px -16px rgb(0 0 0 / 0.7);
+  --glass-bed: radial-gradient(60% 120% at 50% 140%, color-mix(in oklab, var(--a1) 34%, transparent), transparent 72%), rgb(255 255 255 / 0.08);
+  --glass-bed-edge: inset 0 1px 0 rgb(255 255 255 / 0.06);
+  --glass-hover: var(--fill-2);
+  --glass-hover-glow: inset 0 0 0 0 transparent;
+}
+html[data-glass="now"] :is(.tabs, .glass, .pv-glass, .cursor-x, .pv-cursor)::before { display: none; }
+
+/* ---------- b: the lens rim (scripts/glass-b.ts sets --glass-lens and .g-lens, in Chromium only) ---------- */
+html[data-glass="b"] :is(.tabs, .glass, .pv-glass) { --glass-bg: rgb(22 22 26 / 0.52); }
+html[data-glass="b"] .g-lens {
+  -webkit-backdrop-filter: var(--glass-lens) blur(12px) saturate(1.8) brightness(0.5);
+  backdrop-filter: var(--glass-lens) blur(12px) saturate(1.8) brightness(0.5);
+}
+
+/* ---------- c: the WebGL lens light, added over the CSS body and under the labels (backdrop-filter makes
+   each object a stacking context, so z-index -1 stays inside it) ---------- */
+.g-gl { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; border-radius: inherit; pointer-events: none; mix-blend-mode: plus-lighter; }
+
+/* ---------- the still twins of transparency ---------- */
+@media (prefers-reduced-transparency: reduce) {
+  :is(.tabs, .glass, .pv-glass, .cursor-x, .pv-cursor, .cursor-x b, .pv-cursor b) {
+    --glass-bg: rgb(30 30 34 / 0.94); --glass-blur: none;
+  }
+}
+@media (forced-colors: active) {
+  :is(.tabs, .glass, .pv-glass, .cursor-x, .pv-cursor)::before, .g-gl { display: none; }
+}

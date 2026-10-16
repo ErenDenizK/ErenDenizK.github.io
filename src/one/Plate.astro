@@ -38,8 +38,15 @@
     background: var(--signal); box-shadow: 0 0 14px 4px rgb(255 90 90 / 0.5); opacity: 0.8;
   }
 
+  /* phones draw the narrow construction: its circle stays clear of the two-line name and its horizon
+     meets the signal at y 600. The rule was lost with the photograph twin on 2026-10-16 (2b25532), which
+     left the 1440 px drawing on phones, its circle and horizon crossing the name (type study V8). */
   @media (max-width: 699.98px) {
-  
+    .construct.wide { display: none; }
+    .construct.narrow { display: block; }
+    .sig { top: 600px; }
+  }
+
   /* ---------- arrival (spec §4.1): the lines draw, the signal comes last ---------- */
   :global(html.motion) .dr { stroke-dasharray: 1; animation: draw var(--t-draw) var(--ease-draw) both; }
   :global(html.motion) .dot { animation: fade 1600ms var(--ease-ui) 600ms backwards; }

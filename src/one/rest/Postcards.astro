@@ -269,21 +269,21 @@ const cards = list.map((p, i) => {
   html:not(.fine) .pc-big { touch-action: none; }
 
   /* ---------- the ways out (spec v3 §4.2, §5.1): two capsules on the tab bar's glass ---------- */
-  .pv-caps { display: flex; align-items: center; gap: var(--glass-gap, 12px); }
-  .pv-glass { display: flex; padding: var(--glass-pad, 4px); border-radius: var(--r-pill);
-    background: var(--glass-bg, rgb(30 30 34 / 0.62)); -webkit-backdrop-filter: var(--glass-blur, blur(22px) saturate(1.5)); backdrop-filter: var(--glass-blur, blur(22px) saturate(1.5));
-    box-shadow: var(--glass-edge, inset 0 0 0 1px rgb(255 255 255 / 0.07), inset 0 1px 0 rgb(255 255 255 / 0.05)), var(--glass-shadow, 0 12px 40px -16px rgb(0 0 0 / 0.7)); }
-  .pv-glass button { min-height: var(--glass-item, 40px); display: inline-flex; align-items: center; border-radius: var(--r-pill); padding: 0;
+  .pv-caps { display: flex; align-items: center; gap: var(--glass-gap); }
+  .pv-glass { display: flex; padding: var(--glass-pad); border-radius: var(--r-pill);
+    background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-edge), var(--glass-shadow); }
+  .pv-glass button { min-height: var(--glass-item); display: inline-flex; align-items: center; border-radius: var(--r-pill); padding: 0;
     font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink); white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent;
-    transition: background-color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
-  .pv-glass button:hover { background: var(--fill-2); }
+    transition: background-color var(--t-quick) var(--ease-ui), box-shadow var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
+  .pv-glass button:hover { background-color: var(--glass-hover); box-shadow: var(--glass-hover-glow); }
   .pv-glass button:active { scale: 0.96; }
   .pv-glass button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
   .pv-turn { gap: 8px; padding: 0 18px !important; }
   .pv-turn :global(.icon) { color: var(--ink-2); }
   /* the close: a cross in a round slot, then "Close" and the esc key cap, which fold away from the left
      edge (300 ms; the words fade in the first 120 ms) after the first close of the session, 4 s, or a pull */
-  .pv-xi { position: relative; flex: none; display: grid; place-items: center; width: var(--glass-item, 40px); height: var(--glass-item, 40px); }
+  .pv-xi { position: relative; flex: none; display: grid; place-items: center; width: var(--glass-item); height: var(--glass-item); }
   .pv-xi :global(.icon) { grid-area: 1 / 1; }
   .pv-more { display: grid; grid-template-columns: 1fr; transition: grid-template-columns 300ms var(--ease-out); }
   .pv-more-in { display: flex; align-items: center; gap: 10px; min-width: 0; overflow: hidden; transition: opacity 120ms var(--ease-ui); }
@@ -306,12 +306,12 @@ const cards = list.map((p, i) => {
      cross; a click there closes, as it always did */
   .pv-cursor { position: fixed; z-index: 2; left: 0; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%;
     display: grid; place-items: center; pointer-events: none; color: var(--ink);
-    background: var(--glass-bg, rgb(30 30 34 / 0.62)); -webkit-backdrop-filter: var(--glass-blur, blur(22px) saturate(1.5)); backdrop-filter: var(--glass-blur, blur(22px) saturate(1.5));
-    box-shadow: var(--glass-edge, inset 0 0 0 1px rgb(255 255 255 / 0.07)), var(--glass-shadow, 0 12px 40px -16px rgb(0 0 0 / 0.7));
+    background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-edge), var(--glass-shadow);
     opacity: 0; scale: 0.6; transition: opacity var(--t-quick) var(--ease-ui), scale var(--t-ui) var(--ease-out); }
   .pv-cursor b { position: absolute; top: calc(100% + 6px); left: 50%; translate: -50% 0; padding: 4px 8px; border-radius: 999px;
     font: 500 var(--fs-cap) / 1 var(--f-sans); color: var(--ink); white-space: nowrap;
-    background: var(--glass-bg, rgb(28 28 32 / .72)); -webkit-backdrop-filter: var(--glass-blur, blur(22px)); backdrop-filter: var(--glass-blur, blur(22px)); box-shadow: var(--glass-edge, none); }
+    background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-edge); }
   .pc-big.cur-x .pv-cursor { opacity: 1; scale: 1; }
   .pc-big.cur-x, .pc-big.cur-x .big-stage { cursor: none; }
   :global(html.still) .pv-cursor { scale: 1; transition: opacity var(--t-quick) linear; }
