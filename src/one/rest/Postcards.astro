@@ -497,13 +497,31 @@ const cards = list.map((p, i) => {
        colophon's columns take their content's width instead of fixed fractions, so the block reads as
        one tight group under the signature. */
     .pc-big .bk-head .no { font-size: 10px; letter-spacing: 0.12em; }
-    .pc-big .bk-col { grid-template-columns: auto auto minmax(0, 1fr); gap: calc(6 * var(--u)); }
+    .pc-big .bk-col { grid-template-columns: auto auto minmax(0, 1fr); gap: 18px; }
     .pc-big .one-place .bk-col { grid-template-columns: auto minmax(0, 1fr); }
     .pc-big .bk-col dt { font-size: 9px; letter-spacing: 0.12em; }
     .pc-big .bk-col dd { font-size: 13px; margin-top: 5px; }
     .pc-big .bk-col .hex { font-size: 9px; letter-spacing: 0.01em; }
     .pc-big .bk-micro { font-size: 6px; letter-spacing: 0.2em; }
+    /* round five (review row V13, both readings of "açılmış"). Spread: the signature, the colophon and the
+       micro line now stand as one group, 20 px apart, under the note, instead of the colophon sitting on the
+       card's foot with a dead band above it; the micro line's tracking follows its size, and
+       it fades at its end instead of being cut mid-word. Washed out: the lower text was --ink-3 and a 32 %
+       micro line on the card's dark ground (measured on cards 01 and 03: labels 6.3 and 7.0:1, hex 6.3 and
+       6.9:1, micro 2.2 and 1.9:1); the labels and the hex row now take the card's own ink (8.2 to 10.5:1),
+       the micro line 3.0 to 3.6:1, and the colour bar a
+       hairline so its darkest band (#120F0F on card 03) is still a band and not a hole. */
+    .pc-big .bk-col { bottom: 11.6%; gap: 20px; }
+    .pc-big .bk-col dt { font-size: 9.5px; letter-spacing: 0.11em; color: color-mix(in srgb, var(--ink-t) 72%, var(--ink-3)); }
+    .pc-big .bk-col dd { font-size: 14px; }
+    .pc-big .bk-col .bar { height: 5px; box-shadow: 0 0 0 1px rgb(255 248 238 / 0.16); }
+    .pc-big .bk-col .hex { font-size: 9.5px; color: color-mix(in srgb, var(--ink-t) 55%, var(--ink-2)); }
+    .pc-big .bk-micro { bottom: 5.6%; font-size: 6.5px; letter-spacing: 0.15em; color: color-mix(in srgb, var(--ink-t) 50%, transparent); }
+    .pc-big .bk-msg { top: 58.5%; }
+    .pc-big .big.land .bk-col { bottom: 14%; }
   }
+  /* the micro line fades out at its end on every size (a hard cut through a word read as a mistake) */
+  .pc-big .bk-micro { -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent); mask-image: linear-gradient(90deg, #000 78%, transparent); }
   /* reduced motion: the turn is a crossfade, no burn-in, the back drawn at once */
   html.still .pc-big .idc-card { transform: none !important; }
   html.still .pc-big .big-face { backface-visibility: visible; transition: opacity 150ms linear; }
