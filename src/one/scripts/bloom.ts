@@ -98,7 +98,9 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
     tagG.className = 'bl-tag-g';
     const tagN = document.createElement('span');
     tagN.className = 'bl-tag-n';
-    tag.append(tagG, tagN);
+    const tagO = document.createElement('span');
+    tagO.className = 'bl-tag-o';
+    tag.append(tagG, tagN, tagO);
     fx.append(svg, pool, thumb, tag);
     nav.parentElement!.insertBefore(veil, nav);
     nav.parentElement!.insertBefore(fx, nav);
@@ -153,6 +155,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       tau = Math.max(FOLLOW, tau - dt * 0.6);
       const next = Math.abs(target - y) < 0.5 ? target : y + (target - y) * k;
       api.setY(next, 'instant');
+      echo();
       if (Math.abs(target - next) >= 0.5) raf = requestAnimationFrame(follow); else last = 0;
     };
     const showTag = (i: number, y: number, quiet: boolean) => {
@@ -166,17 +169,44 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       tag.style.setProperty('--a', secs[i].a);
       tag.classList.toggle('quiet', quiet);
       tag.classList.add('on');
-      if (i === shown) return;
+      if (i === shown) { echo(); return; }
       const dir = shown < 0 ? 0 : i > shown ? 1 : -1;
       shown = i;
       /* the part's name, unless it only repeats the section's ("The record" over "Record") */
       const gl = groups[i];
       tagG.textContent = gl && !gl.toLowerCase().includes(secs[i].label.toLowerCase()) ? gl : '';
       tagN.textContent = secs[i].label;
-      if (!still() && dir) tagN.animate([{ opacity: 0.2, translate: `0 ${dir * 9}px`, filter: 'blur(2px)' }, { opacity: 1, translate: '0 0', filter: 'blur(0)' }],
+      tagO.textContent = `${tagG.textContent ? tagG.textContent + ' · ' : ''}${String(i + 1).padStart(2, '0')} / ${String(n).padStart(2, '0')}`;
+      /* the roll fades through filter: opacity(), which multiplies with the CSS opacity, so a name that gives
+         way to its title (echo) never flashes back in for the roll's 220 ms */
+      echo();
+      if (!still() && dir) tagN.animate([{ translate: `0 ${dir * 9}px`, filter: 'opacity(0.2) blur(2px)' }, { translate: '0 0', filter: 'opacity(1) blur(0)' }],
         { duration: 220, easing: 'cubic-bezier(.22, 1, .36, 1)' });
     };
-    const hideTag = () => { tag.classList.remove('on'); shown = -1; };
+    const hideTag = () => { tag.classList.remove('on', 'echo'); shown = -1; };
+    /* No word shown twice (round five; round-four critique §3: on the phone "Eat Map" stood beside the
+       project's own "Eat Map"). Each section's own title on the page is found once: the leaf elements of
+       18 px type or more whose text is the section's name, or contains it, or is contained in it ("The
+       record" for "Record", "Eren Deniz Kuyucaklıoğlu" for "Eren"). While one of them is in view, the big
+       name beside the thumb steps back and the tag keeps only its part and the section's number
+       ("Work · 03 / 10"), so the reader still feels where the thumb is and reads the name once, on the page. */
+    const norm = (t: string) => t.replace(/\s+/g, ' ').trim().toLowerCase();
+    const titles: (HTMLElement[] | undefined)[] = [];
+    const titlesOf = (i: number) => (titles[i] ??= (() => {
+      const l = norm(secs[i].label);
+      return [secs[i].el, ...secs[i].el.querySelectorAll<HTMLElement>('*')].filter((e) => {
+        if (e.closest('.rail, .bl-fx') || !e.textContent || e.childElementCount > 2) return false;
+        const t = norm(e.textContent);
+        if (t.length < 3 || t.length > 40 || !(t === l || t.includes(l) || l.includes(t))) return false;
+        return parseFloat(getComputedStyle(e).fontSize) >= 18;
+      });
+    })());
+    const echo = () => {
+      if (shown < 0 || tag.classList.contains('quiet')) { tag.classList.remove('echo'); return; }
+      const top = parseFloat(getComputedStyle(root).getPropertyValue('--bar-h')) || 64;
+      const on = titlesOf(shown).some((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.bottom > top && r.top < innerHeight; });
+      tag.classList.toggle('echo', on);
+    };
     const moveThumb = (y: number) => {
       thumbY = Math.max(top0, Math.min(top0 + n * slot, y));
       const a = axis();

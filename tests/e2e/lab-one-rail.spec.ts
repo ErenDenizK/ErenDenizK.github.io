@@ -196,6 +196,49 @@ test.describe('phone', () => {
   });
 });
 
+test.describe('phone, no word twice', () => {
+  test.use({ ...phone, deviceScaleFactor: 3 });
+
+  /* round five (round-four critique §3): while a section's own title is on screen, the scrub's big name
+     steps back and only the part and the number stay, so "Eat Map" never stands beside "Eat Map" */
+  test('the scrub name gives way to the section\'s own title', async ({ page, context }) => {
+    await page.goto('lab/one/');
+    await page.waitForTimeout(800);
+    const cdp = await context.newCDPSession(page);
+    const b = await col(page);
+    const x = b.x + 22;
+    let y = b.y + 6;
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+    await page.waitForTimeout(450);
+    await expect(page.locator('#rail')).toHaveClass(/is-scrub/);
+    let echoes = 0;
+    for (; y < b.y + b.height - 6; y += 10) {
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y }] });
+      await page.waitForTimeout(260);
+      const s = await page.evaluate(() => {
+        const tag = document.querySelector('.bl-tag')!;
+        const name = (document.querySelector('.bl-tag-n')!.textContent ?? '').trim().toLowerCase();
+        const bar = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--bar-h')) || 64;
+        const twin = [...document.querySelectorAll<HTMLElement>('[data-rail-sec] :is(h1, h2, h3)')].some((h) => {
+          const t = (h.textContent ?? '').replace(/\s+/g, ' ').trim().toLowerCase();
+          const r = h.getBoundingClientRect();
+          return (t === name || t.includes(name)) && r.bottom > bar && r.top < innerHeight && parseFloat(getComputedStyle(h).fontSize) >= 18;
+        });
+        return { name, twin, echo: tag.classList.contains('echo') };
+      });
+      if (!s.twin) continue;
+      expect(s.echo, `"${s.name}" shown twice`).toBe(true);
+      echoes++;
+      /* the name steps back on a 180 ms fade: settled, it is gone */
+      await page.waitForTimeout(260);
+      const op = await page.evaluate(() => document.querySelector('.bl-tag')!.classList.contains('echo') ? +getComputedStyle(document.querySelector('.bl-tag-n')!).opacity : 0);
+      expect(op).toBeLessThan(0.05);
+    }
+    expect(echoes).toBeGreaterThan(2);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  });
+});
+
 test.describe('reduced motion', () => {
   test.use({ ...desktop, contextOptions: { reducedMotion: 'reduce' } });
   test('the names appear at once and still', async ({ page }) => {
