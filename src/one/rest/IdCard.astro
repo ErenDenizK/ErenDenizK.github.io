@@ -129,6 +129,8 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
 <style>
   /* Sizes are fractions of the card's width (container units), so the card is one drawing at any size.
      The card is 5:8, close to an event badge. */
+  /* touch: the turn is the feedback; the browser's tap flash tinted the whole card blue for a frame */
+  .idc, .idc :global(button) { -webkit-tap-highlight-color: transparent; }
   .idc {
     /* the live card's token names, pointed at the two-page set (spec v2 §3.5.1) */
     --about: var(--gold-ink, #f3b886); --f-display: var(--f-serif); --f-ui: var(--f-sans);

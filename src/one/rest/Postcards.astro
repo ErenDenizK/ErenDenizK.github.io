@@ -257,7 +257,7 @@ const cards = list.map((p, i) => {
   .pc-big .big-back { transform: rotateY(180deg); }
   .pc-big .big-back, .pc-big .is-flipped .big-front { opacity: 0; }
   .pc-big .is-flipped .big-back { opacity: 1; }
-  .pc-big .idc-turn { position: absolute; inset: 0; z-index: 4; width: 100%; height: 100%; border-radius: inherit; background: transparent; cursor: pointer; }
+  .pc-big .idc-turn { -webkit-tap-highlight-color: transparent; position: absolute; inset: 0; z-index: 4; width: 100%; height: 100%; border-radius: inherit; background: transparent; cursor: pointer; }
   .pc-big .is-held .idc-turn { cursor: grabbing; }
   .pc-big .idc-turn:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
   .pc-big .big-face[inert] { pointer-events: none; }
