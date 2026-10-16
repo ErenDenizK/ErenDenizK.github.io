@@ -98,6 +98,18 @@ export function initPostcards() {
     for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; }
   }, { rootMargin: '150% 0px' });
   near.observe(table);
+  /* round four: the IntersectionObserver alone still left the cards grey for up to 2 s after a long jump
+     from the rail (the fetch started only on arrival). Once the page has loaded and the main thread is
+     idle, the three small files are fetched anyway; until a file is decoded its plate shows the
+     photograph's own tone (CSS), and the picture fades in over 240 ms when it lands. */
+  const early = () => { near.disconnect(); for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; } };
+  const idle = (f: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(f, { timeout: 4000 }) : setTimeout(f, 1200));
+  if (document.readyState === 'complete') idle(early); else addEventListener('load', () => idle(early), { once: true });
+  table.dataset.pcFade = '';
+  for (const im of imgs) {
+    const ok = () => im.closest('.pc-pic')?.classList.add('is-in');
+    if (im.complete && im.naturalWidth) ok(); else im.addEventListener('load', ok, { once: true });
+  }
 
   /* ---------- the table ---------- */
   let raf = 0, last = 0, acc = 0, up = -1, phase = 0;
@@ -179,7 +191,7 @@ export function initPostcards() {
   const closeBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-close]');
   const turnBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-turn]');
   const cursor = dlg.querySelector<HTMLElement>('[data-pv-cursor]');
-  let open: HTMLElement | null = null, busy: VT | null = null, pushed = false, queued = false, foldT = 0, opening = false;
+  let open: HTMLElement | null = null, busy: VT | null = null, pushed = false, queued = false, foldT = 0, opening = false, eaten = 0;
   const fold = () => caps?.classList.add('folded');
   /* the face toward the viewer turns the card (its button is the live one; the other face is inert) */
   const turnCard = () => stage.querySelector<HTMLButtonElement>('[data-face]:not([inert]) [data-turn]')?.click();
@@ -263,6 +275,16 @@ export function initPostcards() {
   document.addEventListener('pointerdown', (e) => {
     if (!opening || !busy || e.button !== 0 || onCaps(e.target)) return;
     queued = true;
+    eaten = performance.now();
+  }, true);
+  /* the click that ends that press is the same request: if it lands after the card (on its turn button)
+     it would turn the card a second time (round-three critique, weak point 9), so it is consumed once */
+  document.addEventListener('click', (e) => {
+    if (!eaten) return;
+    /* a click more than 1 s later is a new press (the snapshot can swallow the first one entirely) */
+    const late = performance.now() - eaten > 1000;
+    eaten = 0;
+    if (!late && (e.target as Element | null)?.closest?.('[data-big-card]')) { e.preventDefault(); e.stopPropagation(); }
   }, true);
   addEventListener('popstate', () => { if (open) hide(true); });
 
