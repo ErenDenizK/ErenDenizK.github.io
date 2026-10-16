@@ -197,6 +197,18 @@ test.describe('the person\'s part, desktop', () => {
     expect(await strip.locator('.rs-title').evaluate((e) => getComputedStyle(e).fontFamily)).toMatch(/Newsreader/);
     await expect(strip.locator('.btn')).toHaveCount(0);
     await expect(strip.locator('a.rs-all')).toHaveAttribute('href', /record\/$/);
+    /* spec v3 §8: the recorder stands above the chapter's title (weight 500, the sections' one role), its
+       tape leaves it and becomes the spine at the head, and it never takes the spin loop on Home */
+    expect(await strip.locator('.rs-title').evaluate((e) => getComputedStyle(e).fontWeight)).toBe('500');
+    const obj = await strip.locator('.rs-obj').boundingBox(), title = await strip.locator('.rs-title').boundingBox();
+    expect(obj!.y + obj!.height).toBeLessThanOrEqual(title!.y);
+    await expect(strip.locator('.rs-media')).toHaveAttribute('data-spin', 'off');
+    const tape = await strip.locator('.rs-tape').boundingBox(), body = await strip.locator('.rs-body').boundingBox();
+    const spineX = await strip.locator('.rs-body').evaluate((e) => { const r = e.getBoundingClientRect(), b = getComputedStyle(e, '::before'); return r.left + parseFloat(b.left); });
+    expect(Math.abs(tape!.x - spineX)).toBeLessThan(1.5);
+    expect(Math.abs(tape!.y + tape!.height - body!.y)).toBeLessThan(1.5);
+    /* the drawing never widens the page */
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => innerWidth));
   });
 
   test('scroll scenes are functions of position: the same place shows the same frame on the way back', async ({ page }) => {
