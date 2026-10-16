@@ -34,7 +34,7 @@ ul, ol { list-style: none; }
 a { color: inherit; text-decoration: none; }
 img, svg, video, picture { display: block; max-width: 100%; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: var(--r-focus); }
 /* a heading that takes focus by script (an opened project's title) is a reading position, not a control */
 :is(h1, h2, h3)[tabindex="-1"]:focus-visible { outline: none; }
 ::selection { background: rgb(232 227 221 / 0.85); color: var(--ground); }
@@ -53,9 +53,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .it { font-style: italic; }
 p { text-wrap: pretty; }
 
-/* a link inside running text: colour and underline in 150 ms (spec §4.9) */
+/* a link inside running text: colour and underline in --t-quick (spec §4.9) */
 .tl { text-decoration: underline; text-decoration-color: var(--ink-4); text-underline-offset: 0.22em; text-decoration-thickness: 1px;
-  transition: color 150ms var(--ease-ui), text-decoration-color 150ms var(--ease-ui); }
+  transition: color var(--t-quick) var(--ease-ui), text-decoration-color var(--t-quick) var(--ease-ui); }
 .tl:hover { text-decoration-color: currentColor; color: var(--ink); }
 
 /* ---------- chips and buttons ---------- */
@@ -63,7 +63,7 @@ p { text-wrap: pretty; }
   display: inline-flex; align-items: center; gap: var(--s-2); min-height: 32px; padding: 0 var(--s-3);
   border-radius: var(--r-chip); background: var(--fill-1); box-shadow: inset 0 0 0 1px var(--line-1);
   font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink);
-  transition: background-color 150ms var(--ease-ui), box-shadow 150ms var(--ease-ui), scale var(--t-press) var(--ease-ui);
+  transition: background-color var(--t-quick) var(--ease-ui), box-shadow var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui);
 }
 .chip:hover { background: var(--fill-2); box-shadow: inset 0 0 0 1px var(--line-2); }
 .chip:active { scale: 0.98; }
@@ -72,7 +72,7 @@ p { text-wrap: pretty; }
   display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: 44px; padding: 0 var(--s-5);
   border-radius: var(--r-pill); font: 500 15px / 1 var(--f-sans);
   background: var(--fill-2); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-2);
-  transition: background-color 150ms var(--ease-ui), box-shadow 150ms var(--ease-ui), scale var(--t-press) var(--ease-ui);
+  transition: background-color var(--t-quick) var(--ease-ui), box-shadow var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui);
 }
 .btn:hover { background: var(--fill-3); box-shadow: inset 0 0 0 1px var(--line-3); }
 .btn:active { scale: 0.98; }

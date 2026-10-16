@@ -49,7 +49,7 @@ const sizes = '(min-width: 700px) 579px, calc(100vw - 32px)';
 )}
 
 <style>
-  .bost { position: relative; margin-top: 44px; padding: 0 var(--gut) 0; color: var(--ink); }
+  .bost { position: relative; margin-top: 0; padding: 0 var(--gut) 0; color: var(--ink); }
   .draw { position: absolute; left: 50%; top: 50%; width: 1440px; height: 1240px; margin: -620px 0 0 -720px; max-width: none; opacity: 0.1; pointer-events: none; overflow: visible; }
   .draw path, .draw circle { vector-effect: non-scaling-stroke; }
   .frame { position: relative; width: 579px; margin: 0 auto; }
@@ -61,7 +61,7 @@ const sizes = '(min-width: 700px) 579px, calc(100vw - 32px)';
   .dev { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
   .dev.grey { background: #6d6d6d; mix-blend-mode: saturation; }
   .dev.dim { background: rgb(14 16 28 / 0.5); }
-  .bcap { position: absolute; right: calc(100% + 48px); bottom: 0; width: 300px; text-align: right; }
+  .bcap { position: absolute; right: calc(100% + var(--s-6)); bottom: 0; width: 300px; text-align: right; }
   .note { font: italic 400 var(--fs-h3) / 1.25 var(--f-serif); letter-spacing: -0.01em; color: var(--ink); text-wrap: balance; }
   .place { margin-top: var(--s-3); font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); }
 
@@ -80,7 +80,7 @@ const sizes = '(min-width: 700px) 579px, calc(100vw - 32px)';
     .bcap { position: static; width: auto; margin-top: var(--s-5); text-align: left; }
   }
   @media (max-width: 699.98px) {
-    .bost { margin-top: var(--s-6); }
+    .bost { margin-top: 0; }
     .draw { display: none; }
     .frame { width: 100%; }
     .photo { height: auto; aspect-ratio: 3 / 4; }

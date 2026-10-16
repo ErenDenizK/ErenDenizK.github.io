@@ -6,7 +6,7 @@
    transform at the click, so a frame clicked mid-flight grows from where it is; the page's clock and
    the field pause before the transition starts.
    Every project has a real URL: open pushes it, Close, Escape and Back all take the one history step
-   back. Without view transitions (or with reduced motion) the layer changes at once, with a 150 ms fade. */
+   back. Without view transitions (or with reduced motion) the layer changes at once, with a --t-quick (160 ms) fade. */
 import type { Flight, Proj } from './flight';
 import { pauseTicker, createSmoother } from '../../scripts/ticker';
 import { createRail, type Rail } from '../../../scripts/rail';
@@ -183,7 +183,7 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     if (!canVT() || o.ua) {
       if (motion() === 'full' && !o.ua) {
         l.classList.add('fade-out');
-        setTimeout(() => { if (layer === l) { drop(); done(); } }, 150);
+        setTimeout(() => { if (layer === l) { drop(); done(); } }, 160);
       } else { drop(); done(); }
       return;
     }

@@ -87,9 +87,24 @@
 
   /* shape and depth: on dark, a lighter plane plus a hairline plus a shadow */
   --r-print: 3px; --r-chip: 6px; --r-screen: 10px; --r-card: 16px; --r-pill: 999px;
+  --r-focus: 6px;              /* every focus ring (spec v3 §9.5) */
+  --r-panel: 14px;             /* small panels: the rail's hover titles */
+  --r-sheet: 28px;             /* the rail's sheet (spec v3 §7) */
+  --r-phone: 26px;             /* a phone frame */
   --e-card: inset 0 0 0 1px var(--line-1), inset 0 1px 0 rgb(255 255 255 / 0.04);
   --e-print: 0 1px 2px rgb(0 0 0 / 0.5), 0 18px 40px -12px rgb(0 0 0 / 0.7);
   --e-lift: 0 2px 4px rgb(0 0 0 / 0.5), 0 40px 90px -24px rgb(0 0 0 / 0.8);
+
+  /* glass: the tab bar's recipe, shared by the tabs, the layer's capsules, the photo view's capsules, the
+     close cursor and the rail's sheet (spec v3 §5.1). The blur is raised to 22 px and saturated so text
+     behind it breaks up instead of reading through. */
+  --glass-bg: rgb(30 30 34 / 0.62);
+  --glass-blur: blur(22px) saturate(1.5);
+  --glass-edge: inset 0 0 0 1px rgb(255 255 255 / 0.07), inset 0 1px 0 rgb(255 255 255 / 0.05);
+  --glass-shadow: 0 12px 40px -16px rgb(0 0 0 / 0.7);
+  --glass-pad: 4px;
+  --glass-item: 40px;          /* 44 px under a coarse pointer (below) */
+  --glass-gap: 12px;           /* between two capsules */
 
   /* z-index map, shared by PART A and PART B. The field and the plates sit at 0 and paint in document
      order before main; main is no stacking context, so its content paints over them and a glass object's
@@ -102,6 +117,7 @@
   --t-press: 120ms;
   --t-quick: 160ms;
   --t-ui: 300ms;
+  --t-sheet: 420ms;            /* the rail's sheet, the capsules coming in (spec v3 §9.7) */
   --t-swap: 500ms;
   --t-reveal: 700ms;
   --t-move: 900ms;
@@ -120,8 +136,10 @@
   --ease-exit: cubic-bezier(0.55, 0.055, 0.675, 0.19);
   --ease-settle: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-draw: cubic-bezier(0.34, 0.22, 0.47, 0.84);
-  --ease-reel: cubic-bezier(0.33, 1, 0.68, 1);   /* the deck reel in Work (draft) */
 }
+
+/* a finger needs a 44 px target: the glass items grow (spec v3 §9.6) */
+@media (pointer: coarse) { :root { --glass-item: 44px; } }
 
 /* phone: smaller steps, a lower bar, shorter stagger and rises (spec §2.3, §4.1, §4.2) */
 @media (max-width: 699.98px) {
