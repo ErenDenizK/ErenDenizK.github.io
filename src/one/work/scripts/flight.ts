@@ -26,7 +26,7 @@ export interface Proj {
   art: HTMLElement | null; layers: ArtLayer[]; tags: HTMLElement[];
   lines: { el: HTMLElement; o: number; mask: boolean }[];
   stops: SVGGElement[]; route: SVGPathElement | null;
-  short: boolean; top: number; pin: number; artY: number; artH: number; artW: number; stageY: number; stopY: number[];
+  short: boolean; top: number; pin: number;
 }
 export interface Flight {
   projects: Proj[];
@@ -50,6 +50,8 @@ const D = { lead: 1.1, lag: 0.94, side: [0.82, 1.18], bend: 14, sideBend: 10, tu
 const P = { lead: 1.08, lag: 0.96, side: [0.92, 1.08], bend: 0, sideBend: 0, turn: -1, turnK: 1.5, sideTurn: [-3, 3], sideTurnK: 1, yaw: 0, scale: 0.06, skewMax: 3 };
 /* skew from velocity: 0.004 deg per px/s, so a brisk 1500 px/s reaches the 6 deg clamp */
 const SKEW_K = 0.004;
+/* the hold's rise of the drawing (spec v3 §9.2: 18 % of the view); its layers part a little by depth */
+const HOLD_RISE = 0.18;
 
 export function initFlight(sec: HTMLElement): Flight {
   const phoneMq = matchMedia('(max-width: 699.98px)');
@@ -65,11 +67,10 @@ export function initFlight(sec: HTMLElement): Flight {
       btn: el.querySelector<HTMLAnchorElement>('.btn')!,
       art: el.querySelector<HTMLElement>('.fl-art'), layers: [], tags: [...el.querySelectorAll<HTMLElement>('.fl-tag')],
       lines: [], stops: [...el.querySelectorAll<SVGGElement>('.fl-stop')], route: el.querySelector<SVGPathElement>('.fl-route-line'),
-      short: el.hasAttribute('data-short'), top: 0, pin: 0, artY: 0, artH: 0, artW: 0, stageY: 0, stopY: [],
+      short: el.hasAttribute('data-short'), top: 0, pin: 0,
     };
   });
-  const tear = sec.querySelector<HTMLElement>('.w-tear');
-  let tearTop = 0, paused = false;
+  let paused = false;
   /* one cache per property, so an unchanged value is never written again */
   const cache = { transform: new Map<Element, string>(), opacity: new Map<Element, string>(), strokeDashoffset: new Map<Element, string>(), visibility: new Map<Element, string>() };
   const put = (el: Element, prop: keyof typeof cache, v: string) => {
@@ -122,10 +123,7 @@ export function initFlight(sec: HTMLElement): Flight {
       const r = p.el.getBoundingClientRect();
       p.top = r.top + sy;
       p.pin = p.el.hasAttribute('data-last') ? Math.max(0, p.el.offsetHeight - p.stage.offsetHeight) : 0;
-      if (p.art) { p.artY = p.art.offsetTop; p.artH = p.art.offsetHeight; p.artW = p.art.offsetWidth; p.stageY = p.stage.offsetTop; }
-      p.stopY = p.stops.map((g) => g.transform.baseVal.consolidate()?.matrix.f ?? 0);
     }
-    if (tear) tearTop = tear.getBoundingClientRect().top + sy;
     kick();
   }
 
@@ -164,19 +162,25 @@ export function initFlight(sec: HTMLElement): Flight {
     const settling = Math.abs(tx - px) > 0.002 || Math.abs(ty - py) > 0.002;
 
     for (const p of projects) {
-      let u = (p.top - y) / vh;
+      const u0 = (p.top - y) / vh;
+      let u = u0;
       const pinU = p.pin / vh;
       if (pinU > 0) u = u > 0 ? u : u >= -pinU ? 0 : u + pinU;
       if (u > 1.6 || u < -1.6) { loop(p, false); continue; }
       const au = Math.abs(u);
+      /* the hold (spec v3 §9.2): h runs 0 to 1 while the last block is held, so the held view is never one
+         still picture: the drawing rises into the empty upper half, the frame recedes a little, the texts
+         leave ahead of the torn edge and the route reaches its last place as the hold ends */
+      const h = pinU > 0 ? clamp(-u0 / pinU) : 0;
 
       /* the hero */
       const d = u < 0 ? N.lead : N.lag;
       const hy = (d - 1) * u * vh;
       const rx = clamp(-N.bend * u, -18, 18);
       const rz = N.turn - N.turnK * u;
-      const sc = 1 - N.scale * Math.pow(Math.min(au, 1.4), 1.5);
-      put(p.hero, 'transform', `translate3d(0, ${f1(hy)}px, 0) perspective(1400px) rotateX(${f2(rx)}deg) rotate(${f2(rz)}deg) skewY(${f2(sk)}deg) scale(${f3(sc)})`);
+      const sc = (1 - N.scale * Math.pow(Math.min(au, 1.4), 1.5)) * (1 - 0.05 * h);
+      const hz = rz - 1.2 * h;
+      put(p.hero, 'transform', `translate3d(0, ${f1(hy - 0.05 * h * vh)}px, 0) perspective(1400px) rotateX(${f2(rx + 4 * h)}deg) rotate(${f2(hz)}deg) skewY(${f2(sk)}deg) scale(${f3(sc)})`);
       if (p.twin) put(p.twin, 'opacity', f3(smooth(0.22, 0.8, au)));
       if (p.short) loop(p, au < 0.6);
 
@@ -191,9 +195,10 @@ export function initFlight(sec: HTMLElement): Flight {
 
       /* the drawing, its layers at their depths, leaning toward the pointer */
       const artOp = 1 - smooth(0.45, 1.05, au);
+      if (p.art && pinU > 0) put(p.art, 'transform', `translate3d(0, ${f1(-HOLD_RISE * h * vh)}px, 0)`);
       for (const l of p.layers) {
         if (l.still) continue;
-        const ly = (l.depth - 1) * u * vh + py * l.px;
+        const ly = (l.depth - 1) * (u - 0.6 * h) * vh + py * l.px;
         put(l.el, 'transform', `translate3d(${f1(-px * l.px)}px, ${f1(ly)}px, 0)`);
         put(l.el, 'opacity', f3(artOp));
         put(l.el, 'visibility', artOp > 0 ? 'visible' : 'hidden');
@@ -204,29 +209,33 @@ export function initFlight(sec: HTMLElement): Flight {
       });
 
       /* the texts: the block at 0.9x, each line rising in its mask, leaving by the exit rise */
-      put(p.txt, 'transform', `translate3d(0, ${f1(-0.1 * u * vh)}px, 0) skewY(${f2(sk * 0.5)}deg)`);
+      /* the texts' lines leave during the hold, ahead of the torn edge: at 1440 the button is gone by the
+         hold's middle, before the edge's teeth reach it (a white button seen between the teeth read as a
+         torn blob). On the phone the edge never reaches them (they sit in the upper half and the hold is
+         short), so they only begin to leave. The block drifts up ahead of the edge as it rises (12 % of
+         the view at 1440, 5 % on the phone), so the edge never meets a line still showing. */
+      const ut = u - h * (phone ? 0.15 : 1.2);
+      put(p.txt, 'transform', `translate3d(0, ${f1(-0.1 * u * vh - h * (phone ? 0.05 : 0.12) * vh)}px, 0) skewY(${f2(sk * 0.5)}deg)`);
       for (const ln of p.lines) {
-        const pin = easeOut(clamp((0.62 - ln.o - u) / 0.42));
-        const pout = easeIn(clamp((-u - 0.16 - ln.o * 0.5) / 0.34));
+        const pin = easeOut(clamp((0.62 - ln.o - ut) / 0.42));
+        const pout = easeIn(clamp((-ut - 0.16 - ln.o * 0.5) / 0.34));
         const yy = ln.mask ? (1 - pin) * 112 - pout * 30 : (1 - pin) * 40 - pout * 30;
         const skw = (1 - pin) * 4;
         put(ln.el, 'transform', `translate3d(0, ${f1(yy)}%, 0) skewY(${f2(skw)}deg)`);
         put(ln.el, 'opacity', f3(ln.mask ? 1 - pout : pin * (1 - pout)));
       }
 
-      /* the last block: the places light up ahead of the torn edge, and the route joins them (W7) */
-      if (p.stops.length && tear && p.art) {
-        const edgeY = tearTop - y;                                  // the edge's place in the view
-        const stageTop = (p.top - y) + (pinU > 0 && p.top - y < 0 ? Math.min(-(p.top - y), p.pin) : 0) + p.stageY;
-        const s = Math.min(p.artW / 1600, p.artH / 1000), oy = (p.artH - 1000 * s) / 2;
-        let lit = 0;
+      /* the last block: its places light up one by one along the route, from the block's arrival (a third
+         of a view before rest) to the end of the hold, so the route is whole when the torn edge takes the
+         view (W7, spec v3 §9.2) */
+      if (p.stops.length && p.art) {
+        const n = p.stops.length;
+        const t = clamp((0.35 - u0) / (0.35 + Math.max(pinU, 0.05)));
         p.stops.forEach((g, i) => {
-          const sy = stageTop + p.artY + oy + p.stopY[i] * s;
-          const a = smooth(sy + 300, sy + 40, edgeY);
-          if (i) lit += a;
+          const a = n > 1 ? smooth(i / n - 0.04, (i + 1) / n, t) : t;
           put(g, 'opacity', f3(0.25 + 0.75 * a));
         });
-        if (p.route) put(p.route, 'strokeDashoffset', f3(1 - lit / Math.max(1, p.stops.length - 1)));
+        if (p.route) put(p.route, 'strokeDashoffset', f3(1 - smooth(0.5 / n, 1, t)));
       }
     }
     return settling;
