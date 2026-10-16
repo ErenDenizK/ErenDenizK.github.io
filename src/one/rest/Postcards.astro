@@ -163,7 +163,7 @@ const cards = list.map((p, i) => {
   .city { position: absolute; left: 50%; bottom: -150px; width: 1600px; max-width: none; height: auto; margin-left: -800px; opacity: 0.08; pointer-events: none;
     -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
   :global(html.motion) .city { transform: translateY(calc((var(--sp) - 0.5) * 16vh)); }
-  .photos-lede { margin: var(--s-4) auto 0; max-width: 30em; font: 400 var(--fs-body) / 1.6 var(--f-sans); color: var(--ink-2); }
+  .photos-lede { margin: var(--s-4) auto 0; max-width: 30em; font: 400 var(--fs-body) / var(--lh-lede) var(--f-sans); color: var(--ink-2); }
 
   /* ---------- the table: three cards on parallel planes (rotateZ only), stacked by z-index ---------- */
   .table { position: relative; margin: var(--s-8) auto 0; display: flex; justify-content: center; align-items: center; perspective: 1400px; }

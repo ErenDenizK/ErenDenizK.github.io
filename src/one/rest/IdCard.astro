@@ -235,14 +235,19 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
 
   .idc-name { margin-top: 5.4cqi; font: 400 9.4cqi/0.98 var(--f-display); letter-spacing: -0.018em; pointer-events: none; }
   .idc-name span, .idc-role span { display: block; }
-  .idc-role { margin-top: 3cqi; margin-bottom: 4cqi; font: 400 4.3cqi/1.4 var(--f-ui); color: var(--ink-2); pointer-events: none; }
+  .idc-role { margin-top: 3cqi; margin-bottom: 4cqi; font: 400 4.5cqi/1.4 var(--f-ui); color: var(--ink-2); pointer-events: none; }
 
   .idc-foot { margin-top: auto; padding-top: 3cqi; display: flex; align-items: center; gap: 1.4cqi; border-top: 1px solid var(--rule); }
   .idc-link, .idc-links a { position: relative; z-index: 2; }
   .idc-link {
     display: inline-flex; align-items: center; gap: 1.8cqi; min-height: 32px; padding: 0 2cqi; margin-left: -2cqi;
-    font: 400 4.3cqi/1 var(--f-ui); color: var(--ink-2); text-decoration: none; border-radius: 6px;
+    font: 400 4.5cqi/1 var(--f-ui); color: var(--ink-2); text-decoration: none; border-radius: var(--r-chip);
+    transition: scale var(--t-press) var(--ease-out);
   }
+  /* press state (spec v3 §9.6): the link sinks a little while held */
+  .idc-link:active, .idc-links a:active { scale: 0.98; }
+  /* touch: a 44 px tall target, grown by padding into the foot's own space, not by a bigger font */
+  @media (pointer: coarse) { .idc-link { min-height: 44px; margin-block: -6px; } }
   .idc-link + .idc-link { margin-left: 0; }
   .idc-link:hover { color: var(--ink); }
   .idc-link .icon { color: var(--ink-3); }
@@ -263,7 +268,7 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
   .idc-links { margin-top: auto; }
   .idc-links li { border-top: 1px solid var(--rule); }
   .idc-links li:last-child { border-bottom: 1px solid var(--rule); }
-  .idc-links a { display: flex; align-items: center; gap: 2.4cqi; min-height: 44px; font: 400 4.6cqi/1 var(--f-ui); color: var(--ink); text-decoration: none; border-radius: 6px; }
+  .idc-links a { display: flex; align-items: center; gap: 2.4cqi; min-height: 44px; font: 400 4.5cqi/1 var(--f-ui); color: var(--ink); text-decoration: none; border-radius: var(--r-chip); transition: scale var(--t-press) var(--ease-out); }
   .idc-links .idc-ln { margin-right: auto; }
   .idc-links .idc-note { color: var(--ink-3); font-size: 4cqi; }
   .idc-links a:hover .idc-note { color: var(--ink-2); }
@@ -299,7 +304,8 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
     position: absolute; left: 7cqi; right: 7cqi; bottom: 2.1cqi; overflow: hidden; white-space: nowrap; pointer-events: none;
     font: 500 2.4cqi/1 var(--f-ui); letter-spacing: 0.32em; color: color-mix(in srgb, var(--about) 28%, transparent);
   }
-  /* the type floor: 12 px on the smallest card (spec v2 §2.1) */
+  /* the type floor: 12 px on the smallest card (spec v2 §2.1); the rest of the small type is one step,
+     4.5 % of the card (13.5 px at 300), so there is no 12.9 / 13.8 pair (spec v3 §9.1) */
   .idc-issued, .idc-links .idc-note, .idc-cap { font-size: max(12px, 4cqi); }
 
   /* without JavaScript the card cannot turn: the front stands alone (it carries the name, the school and

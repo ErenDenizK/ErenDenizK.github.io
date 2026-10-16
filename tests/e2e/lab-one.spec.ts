@@ -55,7 +55,7 @@ for (const [size, opts] of [['desktop', desktop], ['tablet', tablet], ['phone', 
   test(`no sideways scroll at ${size}`, async ({ browser }) => {
     const ctx = await browser.newContext(opts);
     const page = await ctx.newPage();
-    for (const q of ['', '?still', '?card=lanes']) {
+    for (const q of ['', '?still', '?photo=flat']) {
       await page.goto(PAGE + q);
       await page.waitForTimeout(400);
       const r = await page.evaluate(() => ({ over: document.documentElement.scrollWidth - document.documentElement.clientWidth, iw: innerWidth, cw: document.documentElement.clientWidth }));
