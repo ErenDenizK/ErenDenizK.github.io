@@ -57,7 +57,7 @@
    belong to the flight only. */
 .work { position: relative; padding: var(--s-9) var(--gut) var(--s-8); }
 .proj { position: relative; max-width: 760px; margin: 0 auto var(--s-10); scroll-margin-top: 0;
-  --art-ink: color-mix(in srgb, var(--a1) 72%, var(--ink)); --art-o: .2; }
+  --art-ink: color-mix(in srgb, var(--a1) 72%, var(--ink)); --art-o: .16; }
 .proj:last-of-type { margin-bottom: 0; }
 .fl-stage { position: relative; isolation: isolate; }
 .fl-art { position: absolute; z-index: 0; left: 50%; top: -18%; width: max(1100px, 150%); aspect-ratio: 1.6; translate: -50% 0;
@@ -129,7 +129,7 @@
   html.js:not(.still) .work .pr-twin img { filter: grayscale(1) brightness(.78) contrast(1.05); }
 
   html.js:not(.still) .work .fl-side { display: block; position: absolute; z-index: 2; width: var(--sw); transform-origin: 50% 50%; }
-  html.js:not(.still) .work .fl-side .pr { --shade: .5; }
+  html.js:not(.still) .work .fl-side .pr { --shade: .64; }
   html.js:not(.still) .work .fl-side .pr-mount { padding: 6px 6px 20px; }
   html.js:not(.still) .work .fl-side .pr-cap { display: none; }
   html.js:not(.still) .work .fl-side-r { left: calc(100% - var(--sw) * .3); top: calc(var(--htop) + 90px); transform: perspective(1200px) rotateY(-24deg) rotate(5deg); }
