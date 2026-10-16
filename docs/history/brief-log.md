@@ -630,3 +630,17 @@ Dictated, Turkish. Every sentence is an item in `docs/feedback/2026-10-16-lab-on
 12. GitHub: chase every achievement through real work; adopt Recto's pull-request decision
     (PRC-17) here and elsewhere if needed.
 13. Keep everything in a file as a plan; work until all of it is clean in the owner's eyes.
+
+### 2026-10-16, afternoon (review of round two)
+
+Dictated, Turkish. Every point is a row T1–T21 in `docs/feedback/2026-10-16-lab-one-review.md`.
+Short form: the card's place next to How I work (`?card=lanes`) is right; the postcard back needs its
+own study (fill, type, texture, maybe drawings); the card photo feels flat (try 2.5D); the
+recorder has a phone render bug; the bottom edk stays for now but is cut off (later, on request);
+think about the role of 3D objects on the new page and fit the loved recorder into it; the rail's
+jump panel should grow from the side with a light blur; the lanyard must react to every card
+motion; the "How it's made" object needs a better design; the opened project's bottom bar must be
+aligned glass, with the close apart on the left; leaving an enlarged photo or an opened project
+must be clearer (users got stuck), without an ugly big button; the Home Record strip feels pasted
+from outside the new language; the drawings, colours and animations are very good; continue the
+listed next steps. The owner will do the GitHub settings at the computer; remind at the next gap.
