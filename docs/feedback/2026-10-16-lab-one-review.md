@@ -11,6 +11,11 @@ Round 2 (2026-10-16): a row is set to built only where the critic's frame sequen
 `/lab/one/` at 1440 x 900 and 390 x 844 (headless Chromium, not real hardware). The evidence, the
 verdict for every row and the rows still partly done are in the round's critique.
 
+Round 3 (2026-10-16): the same rule. The integrator's frame sequences (1440 x 900, 390 x 844 touch,
+and the Record strip at 390 x 844, DPR 3) set T1, T2, T3, T6, T8, T9, T10, T11, T13, T14, T15, T20 and
+T23 to built. Headless Chromium only: the glass blur, the pull gestures and the recorder on a real
+iPhone are not checked. The verdicts and the weak points are in the round-three critique.
+
 ## Overall
 
 | Id | The owner said | What it means for the work | Status |
@@ -61,7 +66,7 @@ verdict for every row and the rows still partly done are in the round's critique
 |---|---|---|---|
 | C1 | The ID card feels like a much buggier version; nothing like the previous one. Swing, interactivity, the flip on a hard shake, the general flip, the hover: all buggy, catching, ugly. | Drop the reimplemented card. | built |
 | C2 | Take the previous card exactly (the version the owner loved) and improve it: a bit more texture, a livelier photo, and on hover the card and the rope sway as feedback. | Port the live `IdCard` (dev before the two-page line) unchanged, then add: denser texture, a livelier photo, hover sway of card and lanyard. | open |
-| C3 | Not sure the card belongs there in the order. | The lead proposes its place; shown on the lab page. | open |
+| C3 | Not sure the card belongs there in the order. | The lead proposes its place; shown on the lab page. | closed (T1: next to How I work) |
 | C4 | How I work (By hand / With agents): much more readable now, but the previous design was much more elegant: two lanes with a slow effect like falling drops. Now it looks cheap. | Bring back the previous tracks figure's design and its drop motion; keep today's readability. | built |
 
 ## Photos (postcards)
@@ -93,10 +98,70 @@ verdict for every row and the rows still partly done are in the round's critique
 |---|---|---|---|
 | H1 | Commits are in the owner's name to feature the GitHub profile and the portfolio (LinkedIn cannot be used for some reasons). | Keep authorship as set up. | closed |
 | H2 | Chase all GitHub achievements, through real work, never fake. | A plan of the achievements that real work earns. | open |
-| H3 | Recto decided this already: move to pull requests (PRC-17), which earn the badges missing so far. Adapt it here and to the other projects if needed. | Lanes land on `dev` through pull requests with merge commits; a CLAUDE.md rule with the owner's comment (given). | open |
+| H3 | Recto decided this already: move to pull requests (PRC-17), which earn the badges missing so far. Adapt it here and to the other projects if needed. | Lanes land on `dev` through pull requests with merge commits; a CLAUDE.md rule with the owner's comment (given). | closed (rule in CLAUDE.md, PR #1) |
 
 ## Process
 
 | Id | The owner said | What it means for the work | Status |
 |---|---|---|---|
 | X1 | Study every sentence; skip none; list them; keep everything in a file as a plan so nothing is lost. | This file. | closed |
+
+## Round 3 (owner, 2026-10-16, after round 2)
+
+Kept as said; the lead's classification in the last column (task, note, or decided).
+
+| Id | The owner said | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| T1 | The card's place with `?card=lanes` is very nice, the right place. | Make the lanes placement the default; drop the switch. | task | built |
+| T2 | The "Eren" signature on the postcard back is nice, but the back needs a much more balanced fill and empty space: a special study. Not only postcard logic. Better than before; think more about how to make it fuller and more elegant; maybe drawings on the backs; work on fill, font, type size and texture. | A dedicated postcard-back study: layout grid, type scale, texture, a drawing per card. | task | built |
+| T3 | The card photo feels very flat and 2D. Maybe a 2.5D try; not sure about a moving portrait. | Try a 2.5D (depth-layered) photo on the ID card; show it as a lab switch against today's. | task | built |
+| T4 | The owner's own actions (default branch, delete head branches) will be done at the computer; remind at the next gap. | The lead reminds in the next report. | note | open |
+| T5 | Which round is this? The plans are right; continue. | Round 3; the open list of round 2 carries on. | decided | closed |
+| T6 | The Record's 3D object has a small mobile render problem. | Reproduce and fix the recorder object on phones. | task | built |
+| T7 | The edk at the very bottom stays for now, but it is cut off from the rest of the page. A better thing may be designed much later, only when the owner asks. | No work now; recorded as a known weak point. | note | open |
+| T8 | With the 3D objects gone from most of the page, the owner is unsure. Two remain: edk (not well received) and the recorder (loved, but alone). Think, research and evaluate: new 3D objects from scratch? Where? In the background? The owner loves the recorder object and does not want it gone; fit it better into the whole page. | A study of the 3D objects' role on the new page, with options and a recommendation; the recorder stays. | task | built |
+| T9 | The panel that opens when the rail is clicked is good and makes jumping easy, but it should match the rail's lively look: maybe it grows from the side instead of a small window, blurs the background slightly, a bit more Apple design. | Redesign the rail's jump panel: grows from the rail's edge, light backdrop blur. | task | built |
+| T10 | The lanyard does not move when the card moves by itself: on the small hover response and the phone's first swing. It must react to those too, not only to pulling. | The lanyard follows every card motion (hover sway, idle, entrance). | task | built |
+| T11 | In the opened project, the "How it's made" part's object is a bad object; design something much better. | Replace that object with a designed piece. | task | built |
+| T12 | The rest of the opened project is good. | Keep it. | decided | closed |
+| T13 | The bottom bar in the opened project is not aligned (texts and buttons), and does not feel like glass. It need not be liquid glass, but like the Home/Record tab at the top. | Rebuild the capsule on the bar's glass, aligned on one baseline and one height. | task | built |
+| T14 | Separate the close (cross) from the go-to-project part: the cross on the left, the rest on its right, aligned and the same height, but apart. | Two capsules: close alone on the left, the actions on the right. | task | built |
+| T15 | In tests, many users did not notice how to leave an enlarged photo (click the dark space) or an opened project (the cross at the left) and got stuck. Make leaving clearer; not a huge ugly button: creative solutions. | Exit affordances for the photo view and the project layer: visible, designed, not a big button. | task | built |
+| T16 | The Record could also come next, but this page still has many improvements to make. | Finish Home first; Record page after. | decided | closed |
+| T17 | The background drawings are very good, the colours are very good, the animations are really beautiful: a good prototype. Moving the card was good. | Keep the drawings, colours and motion. | decided | closed |
+| T18 | Ask about anything missing; the owner can dictate. Same plan and discipline. | Questions only where a gap remains. | note | closed |
+| T19 | It is a presentational artwork; every detail thought through. Look into these points in the visuals too. | The critic checks every new piece frame by frame. | task | open |
+| T20 | The Record part reached by scrolling down Home does not fit the new page's design language: it feels copy-pasted from outside. Harmonise and improve it. | Rework the Home Record strip so it is born from the new page's language while keeping the Record's identity. | task | built |
+| T21 | Continue the next steps already listed (tests and the open rows). | The round-2 open rows (G5, G7 follow-ups, partly rows) continue. | task | open |
+
+## Coverage audit (lead, 2026-10-16)
+
+A cross-check of the owner's last four messages against this file found nothing misread, four
+items noted but dropped, and open rows that no build lane owned. New rows:
+
+| Id | Source | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| T22 | message 1 ("HyperFrames or an alternative") | Decide with the owner whether composed motion-graphic loops (HyperFrames renders here) are made for the project presentations and the hero, or why not. | owner question | open |
+| T23 | message 2 (no repetition) | A lab-one test that finds no repeated sentence of 5+ words outside the brief; re-run after the postcard and Record strip changes. | task | built |
+| T24 | message 3 (all achievements, real work) | A short list for the owner of the real-work routes beyond the PR flow (READMEs worth starring, Discussions answers), with who does each. | task | open |
+| T25 | message 3 (PRs in the other projects too) | Pass the PR rule to the English Prep chat through the owner; H3 here is done (CLAUDE.md rule). | task | open |
+| T26 | messages 1 and 3 (motion everywhere, no empty wait; G6) | List every interactive element that gives no motion response and assign it to a lane. | task | open |
+| T27 | message 3 (C2, card texture) | A denser texture on both faces of the ported ID card. | task | open |
+
+Rows G2, G3, G6, G7, G8, M1, M2 and E1 stay open and must be owned by a lane in every round until
+closed. C3 is answered by T1; H3 is done (the rule is in CLAUDE.md since PR #1).
+
+## Round 4 (owner, 2026-10-16, night; answers and new points)
+
+| Id | The owner said | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| V1 | HyperFrames: wait; certainly used later, maybe one round per app once everything is done. In-page animation goes well. | T22 deferred to after Home and Record are done. | decided | closed |
+| V2 | Other achievements: no rush. The current ones have not appeared yet; unclear why. | Check why Pull Shark / YOLO did not show (likely the default branch is still `main`); report. | task | open |
+| V3 | English Prep is archived; no change there for now. | T25 closed. | decided | closed |
+| V4 | The tape-as-spine Record idea may not be bad; the owner tests in the morning. The project-objects idea was not clear. | Explain the objects options simply with pictures in the next report. | note | open |
+| V5 | The postcard-back drawings look good; the text at the bottom spreads a bit; maybe a phone problem; measure on the phone too. | Fix the postcard back's lower text block on phones; every measurement at 390 as well as 1440. | task | open |
+| V6 | The rail's opened panel looks very ugly in the shot. The plain rail at the right is good. The rail needs two more parts: press-and-hold to drag (scrub), and a menu on click that is a showcase. Never a separate drawer or window. A click should feel like touching something alive that grows or reveals from that point: a water drop pressed spreads lower and wider; a closed palm whose fingers open. The background blur is gradual and natural from the side, not inside a window, to bring the text and the pressed rail forward; above all on phones. Fonts, taps and motion must be expert, professional and artistic, not a technical feature: every light, colour and motion detail matters; a masterpiece; creative, meticulous, measured. | Redesign the rail interaction: hold-to-scrub; a click that blooms from the rail point (no panel box); edge-graded backdrop blur; typographic and motion craft; iterate several versions and judge them frame by frame. | task | open |
+| V7 | The new glass looks good. Should the bottom capsules and the top Home/Record tab be the same glass? Different? Real refraction, or would it hurt performance; GPU on capable devices? The top one's light changes with the aura and feels more like glass; the bottom ones are nicely minimal. Let each take the best of the other; test several versions to find the right one. | A glass study: one family for the tab and the capsules; aura-tinted light, minimal body; optional refraction on capable GPUs with a fallback; versions as lab switches with measured cost. | task | open |
+| V8 | The owner's father found the name's typeface at the top cheap. The owner thinks it is elegant and personal rather than product-like. Review all references, portfolios and research again; evaluate candidate typefaces yourself, why and why not; follow the research and the lead's view. | A typeface study for the name (and display role): candidates against the references; a recommendation; candidates as a lab switch; the owner decides. | task | open |
+| V9 | Keep working through the night: open work first, then small improvements (no big changes), then iterate the rail. | Continue the open rows; rail iterations. | task | open |
+| V10 | Check again that nothing that turned into a note in earlier messages was left undone; gather everything. | A second coverage pass over all owner messages. | task | open |

@@ -79,8 +79,9 @@ const moving = () => motionOK() && !refused;
 const spinOff = /[?&]spin=0\b/.test(location.search);
 const idleBlend = /[?&]idle=blend\b/.test(location.search);
 /** The loop a slot plays: the real-rendered spin on phones and tablets where there is one; the blended
-    idle only for the ?idle=blend comparison. Otherwise there is no loop: the poster floats. */
-const loopOf = (m: Manifest) => (!desktopTier() && !spinOff && m.spin) || (idleBlend ? m.idle : undefined);
+    idle only for the ?idle=blend comparison. Otherwise there is no loop: the poster floats. A slot with
+    data-spin="off" (the Home Record strip, spec v3 §8.4) never takes the spin. */
+const loopOf = (m: Manifest, el?: Slot) => (!desktopTier() && !spinOff && el?.dataset.spin !== 'off' && m.spin) || (idleBlend ? m.idle : undefined);
 /** The loop's sources for this slot: of the spin's sizes, the smallest that covers the stage's device
     pixels (Work's 92 px emblem at DPR 3 is 276: the 320 loop, not the 1040 one), else the largest. */
 function loopSources(el: Slot, m: Manifest, loop: { sources: Source[] }): Source[] {
@@ -341,7 +342,7 @@ function wake(el: Slot) {
   getManifest(layer._manifest).then((m) => {
     if (!m || !layer.isConnected || el._layer !== layer || !visible.has(el) || benched(el) || layer.classList.contains('arriving')) return;
     const dir = dirOf(layer._manifest!);
-    const loop = loopOf(m);
+    const loop = loopOf(m, el);
     if (loop && !layer._idleFailed && !layer._idle) {
       const v = makeVideo(loopSources(el, m, loop), dir, true, 'm-idle');
       /* where the loop holds the rest pose (the spin: from holdFrom to its end), so a tap can wait for it */
@@ -810,14 +811,23 @@ const away = () => { if (!ptrIn) return; ptrIn = false; aimSoon(); };
 document.documentElement.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') away(); });
 document.addEventListener('mouseleave', away);
 addEventListener('blur', away);
-addEventListener('scroll', () => { if (ptrIn) aimSoon(); }, { passive: true });
+/* a slot with data-lean="scroll" (the Home Record strip, spec v3 §8.2) re-aims on every scroll too */
+const scrollLean = (el: Slot) => el.dataset.lean === 'scroll';
+addEventListener('scroll', () => { if (ptrIn || [...visible].some(scrollLean)) aimSoon(); }, { passive: true });
 function aimSoon() { if (!raf) raf = requestAnimationFrame(aimAll); }
 function aimAll() {
   raf = 0;
   visible.forEach((el) => {
     const r = el.getBoundingClientRect();
     if (!r.width) return;
-    const { mx, my } = ptrIn ? aim(r, px, py) : { mx: 0, my: 0 };
+    let { mx, my } = ptrIn ? aim(r, px, py) : { mx: 0, my: 0 };
+    /* no pointer near: an opted-in slot turns with its place in the window instead, a pure function of
+       the scroll position (frontal at the window's middle, about 10 degrees of yaw at either edge, and a
+       slight pitch toward the reader), so scrolling back plays the same poses backwards */
+    if (!mx && !my && scrollLean(el) && moving()) {
+      const p = Math.min(1, Math.max(-1, ((r.top + r.height / 2) / innerHeight - 0.5) * 2));
+      mx = -0.45 * p; my = -0.25 * p;
+    }
     el.style.setProperty('--gx', (50 + mx * 28).toFixed(1) + '%');
     el.style.setProperty('--gy', (40 + my * 24).toFixed(1) + '%');
     const layer = el._layer, seq = layer?._seq;

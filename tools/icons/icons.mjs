@@ -157,6 +157,28 @@ export const ICONS = [
     },
   },
   {
+    // Turn over (spec v3 §4.2): the photo view's turn button. Three quarters of a circle ending in
+    // arrowH's head, turning clockwise, the way the card turns. The arc is a fine polyline (the rules
+    // have no arc primitive); the head's arms are arrowH's at the arc's tangent.
+    name: 'turn',
+    label: 'Turn over',
+    optical: 'xy',
+    animate: 'turn',
+    draw: (g) => {
+      const { c, H, o } = g
+      const R = 0.8 * H
+      const a0 = -30, a1 = 240, N = 24
+      const at = (deg) => [c + R * Math.cos((deg * Math.PI) / 180), c + R * Math.sin((deg * Math.PI) / 180)]
+      const arc = Array.from({ length: N + 1 }, (_, i) => at(a0 + ((a1 - a0) * i) / N))
+      const E = arc[N]
+      const t = (a1 * Math.PI) / 180
+      const tx = -Math.sin(t), ty = Math.cos(t) // the direction of travel at the end (clockwise on screen)
+      const hp = grid(o.head * o.arrowSpan * 2 * H * 0.78)
+      const arm = (s) => [E[0] - hp * (tx * Math.SQRT1_2 - s * ty * Math.SQRT1_2), E[1] - hp * (ty * Math.SQRT1_2 + s * tx * Math.SQRT1_2)]
+      return [line(arc), line([arm(1), E, arm(-1)])]
+    },
+  },
+  {
     name: 'menu',
     label: 'Menu',
     optical: '',

@@ -12,15 +12,21 @@ const placeholder = z.object({ placeholder: z.string() });
 const textOrPlaceholder = z.union([z.string(), placeholder]);
 
 /** One section of a case study (what, why, how, learned, next). */
-const section = z
-  .object({
-    text: z.string().optional(),
-    items: z.array(z.string()).optional(),
-    quote: z.string().optional(),
-    numbers: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
-    placeholder: z.string().optional(),
-  })
-  .refine((s) => s.text || s.items || s.quote || s.placeholder, 'a section needs text, items, quote or placeholder');
+const sectionShape = z.object({
+  text: z.string().optional(),
+  items: z.array(z.string()).optional(),
+  quote: z.string().optional(),
+  numbers: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
+  placeholder: z.string().optional(),
+});
+const filled = (s: z.infer<typeof sectionShape>) => !!(s.text || s.items || s.quote || s.placeholder);
+const section = sectionShape.refine(filled, 'a section needs text, items, quote or placeholder');
+/* "How it's made" may group its items into the product's layers, drawn as the cutaway on Home (spec v3
+   §6): each layer names itself and points at items by their index. It adds no facts of its own. */
+const howSection = sectionShape
+  .extend({ layers: z.array(z.object({ name: z.string(), items: z.array(z.number().int().min(0)).min(1) })).min(2).max(6).optional() })
+  .refine(filled, 'a section needs text, items, quote or placeholder')
+  .refine((s) => !s.layers || s.layers.every((l) => l.items.every((i) => i < (s.items?.length ?? 0))), 'a layer points at an item that does not exist');
 
 const accent = z.object({
   color: z.string().regex(/^#[0-9a-f]{6}$/i),
@@ -109,7 +115,7 @@ const projects = defineCollection({
     })).max(4).optional(),
     what: section,
     why: section,
-    how: section,
+    how: howSection,
     learned: section,
     next: section,
     draft: z.boolean().default(false),
