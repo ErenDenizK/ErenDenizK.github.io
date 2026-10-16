@@ -48,6 +48,9 @@
   --aura-open: 0.32;           /* pool centre where no text sits */
   --aura-quiet: 0.08;          /* the most light any text block may stand on */
   --signal: #ff6b6b;
+  /* the card and the postcards are one family: one gold ink, one foil, one guilloché (spec v2 §2.6) */
+  --gold-ink: rgb(243 184 134);
+  --foil: conic-gradient(from var(--fa, 150deg), #f3b886, #f6dcc4, #c9d4ff, #efb1cb, #f3b886);
 
   /* type: faces */
   --f-serif: "Newsreader", "Newsreader Fallback", Georgia, serif;

@@ -5,13 +5,12 @@
    show through it. Its top edge is torn: an irregular edge with a faint light fibre line, drawn at build
    time from a fixed seed, so every build draws the same edge. The ID card hangs from that edge.
    P1: the tear is a static edge; its motion over the last Work scene is P2 (spec §4.7). */
-import IdCard from './IdCard.astro';
+import CardEnd from './CardEnd.astro';
 import Tracks from './Tracks.astro';
 import Path from './Path.astro';
 import Postcards from './Postcards.astro';
 import Now from './Now.astro';
 import RecordPointer from './RecordPointer.astro';
-import Contact from './Contact.astro';
 import Foot from '../Foot.astro';
 import { SETS, auraAttr, auraVars } from '../aura.mjs';
 
@@ -31,13 +30,12 @@ const fibre = `M${edge}`;
     <path class="t-fibre" d={fibre} />
   </svg>
   <div class="sheet">
-    <IdCard />
     <Tracks />
     <Path />
     <Postcards />
     <Now />
     <RecordPointer />
-    <Contact />
+    <CardEnd />
     <Foot />
   </div>
 </section>
