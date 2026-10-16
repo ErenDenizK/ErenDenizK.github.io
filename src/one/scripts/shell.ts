@@ -3,12 +3,15 @@
 import { initField } from './field';
 import { initArrive } from './arrive';
 import { initScrub } from './scrub';
+import { initTicker } from './ticker';
 import { pauseField, motion } from './bus';
 import { initRail } from '../../scripts/rail';
 import { initClock } from '../../scripts/clock';
 
 const root = document.documentElement;
 
+/* the one scroll source and clock first: everything scroll-linked subscribes to it (spec v2 §7) */
+initTicker();
 initField();
 initScrub();
 initArrive();
