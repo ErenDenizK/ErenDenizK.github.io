@@ -34,7 +34,19 @@
    hanging card twists on its lanyard and settles in two decaying oscillations (k 60, ζ 0.3, about
    1.2 s); with the rope the clip also swings out once, without it (touch) the card swings a few
    degrees about its clip. Any press, key or hover takes over and the twist settles on the turn
-   spring. None under reduced motion, Save-Data or ?still. */
+   spring. None under reduced motion, Save-Data or ?still.
+
+   Round two on the two-page Home (spec v2 §3.5.1; review row C2). The physics above is unchanged;
+   three things are added:
+   - the entrance waits until the card is on screen (Home is long: at page load the card is far below),
+     and only then listens for the press or key that takes over;
+   - the guilloché under the type turns 1 deg per 10 deg of the card's turn (--gr), so the engraving
+     catches the light;
+   - hover sway: a pointer that enters the card or its rope gives the clip one sideways push through the
+     integrator (the pointer's speed x 0.35, at most 140 px/s; 60 px/s away from the entry side when the
+     pointer barely moves). It stays under SPIN_FROM, so it never spins: card and lanyard sway a few
+     degrees together and settle. One push per entry, none while held, none without the rope (touch,
+     reduced motion). */
 import { mq, motionOK } from '../../scripts/env';
 
 type Spring = { x: number; v: number; to: number };
@@ -310,6 +322,7 @@ function setup(el: HTMLElement) {
     body!.style.setProperty('--gy', (26 + pitch * 3).toFixed(1) + '%');
     body!.style.setProperty('--glare', clamp(0.3 + gl.x * 0.7 + Math.abs(local) / 40 + Math.abs(swingDeg) / 30, 0, 1).toFixed(3));
     body!.style.setProperty('--fa', (150 + local * 5 + swingDeg * 4).toFixed(1) + 'deg');
+    body!.style.setProperty('--gr', (local * 0.1 + swingDeg * 0.1).toFixed(2) + 'deg');
   }
 
   function land() {
@@ -399,6 +412,32 @@ function setup(el: HTMLElement) {
     kick();
   });
   el.addEventListener('pointerleave', () => { tx.to = ty.to = 0; gl.to = 0; kick(); });
+
+  /* hover sway (round two, see the header): the pointer's recent speed, measured on the page */
+  let px = 0, pt = 0, pv = 0, inside = false;
+  addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    const dt = e.timeStamp - pt;
+    if (dt > 0 && dt < 120) pv += ((e.clientX - px) / (dt / 1000) - pv) * 0.5; else pv = 0;
+    px = e.clientX; pt = e.timeStamp;
+  }, { passive: true });
+  el.addEventListener('pointerover', (e) => {
+    if (inside || e.pointerType !== 'mouse') return;
+    const t = e.target as Element;
+    if (!t.closest('[data-card-body], [data-rope-hit]')) return;
+    inside = true;
+    if (!live || drag || spinning) return;
+    const r = body.getBoundingClientRect();
+    let v = clamp(pv * 0.35, -140, 140);
+    if (Math.abs(v) < 60) v = e.clientX < r.left + r.width / 2 ? 60 : -60;
+    const c = pts[SEG];
+    c.px = c.x - v * H;
+    kick();
+  });
+  el.addEventListener('pointerout', (e) => {
+    const to = e.relatedTarget as Element | null;
+    if (!to || !to.closest?.('[data-card-body], [data-rope-hit]') || !el.contains(to)) inside = false;
+  });
 
   /* hold (the hanging card only): grab the card or its rope, pull, let go or fling */
   function setLive() {
@@ -516,6 +555,12 @@ function setup(el: HTMLElement) {
     entering = 0; // the twist and swing settle on the turn spring from wherever they are
   }
   function enter() {
+    if (!motionOK()) return;
+    /* round two: wait until the card is on screen */
+    const io = new IntersectionObserver((es) => { if (es.some((x) => x.isIntersecting)) { io.disconnect(); begin(); } }, { threshold: 0.35 });
+    io.observe(body!);
+  }
+  function begin() {
     if (!motionOK()) return;
     const stop = () => { takeOver(); off(); };
     const off = () => { removeEventListener('pointerdown', stop, true); removeEventListener('keydown', stop, true); };

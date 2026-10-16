@@ -9,8 +9,7 @@ import IdCard from './IdCard.astro';
 import { rosette } from './guilloche';
 
 const big = [
-  rosette({ cx: 560, cy: 560, R: 96, r: 25, d: 46, scale: 4.1, pens: 4, spread: 0.1, steps: 2400 }),
-  rosette({ cx: 560, cy: 560, R: 70, r: 18, d: 30, scale: 3.2, pens: 3, spread: 0.12, steps: 1800 }),
+  rosette({ cx: 560, cy: 560, R: 96, r: 25, d: 66, scale: 3.9, pens: 2, spread: 0.04, steps: 2400 }),
 ];
 ---
 <section class="card-ch" id="card" data-rail-sec="Card" data-scene>
@@ -26,7 +25,7 @@ const big = [
   .card-ch { position: relative; padding: 236px 0 0; display: grid; justify-items: center; }
   .rose {
     position: absolute; left: 50%; top: 50%; width: 1120px; height: 1120px; max-width: none; margin: -560px 0 0 -560px;
-    fill: none; stroke: var(--gold-ink); stroke-width: 1; opacity: 0.07; pointer-events: none;
+    fill: none; stroke: var(--gold-ink); stroke-width: 1; opacity: 0.06; pointer-events: none;
   }
   .rose path { vector-effect: non-scaling-stroke; }
   :global(html.motion) .rose { transform: rotate(calc((var(--p) - 0.5) * 20deg)); }

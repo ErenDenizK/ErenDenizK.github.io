@@ -7,13 +7,15 @@
    or Space turns it over. The front keeps both links, so nothing needs the turn. Behaviour:
    src/one/scripts/card3d.ts. */
 import Icon from '../../components/Icon.astro';
+import { rosette } from './guilloche';
+import grain from '../../assets/photos/grain.png?url';
 import { getSite, isPlaceholder } from '../../lib/site';
-import p360a from '../../assets/photos/gate-card-360.avif?url';
-import p640a from '../../assets/photos/gate-card-640.avif?url';
-import p360w from '../../assets/photos/gate-card-360.webp?url';
-import p640w from '../../assets/photos/gate-card-640.webp?url';
-import p960a from '../../assets/photos/gate-card-960.avif?url';
-import p960w from '../../assets/photos/gate-card-960.webp?url';
+import p360a from '../../assets/photos/gate-card-live-360.avif?url';
+import p640a from '../../assets/photos/gate-card-live-640.avif?url';
+import p360w from '../../assets/photos/gate-card-live-360.webp?url';
+import p640w from '../../assets/photos/gate-card-live-640.webp?url';
+import p960a from '../../assets/photos/gate-card-live-960.avif?url';
+import p960w from '../../assets/photos/gate-card-live-960.webp?url';
 
 const site = await getSite();
 const card = site.about.card;
@@ -25,6 +27,14 @@ const links = [
   { name: 'GitHub', icon: 'github', href: gh, note: ghHandle },
   ...(li ? [{ name: 'LinkedIn', icon: 'linkedin', href: li, note: '' }] : []),
 ];
+/* round two (spec v2 §3.5.1): the guilloché under the type, two rosettes on each face (card units: the
+   face is 500 x 800), and the micro line along the lower edge */
+const guil = [
+  { d: rosette({ cx: 0, cy: 0, R: 60, r: 16, d: 41, scale: 2.4, pens: 4, spread: 0.05 }), x: 84, y: 700 },
+  { d: rosette({ cx: 0, cy: 0, R: 50, r: 13, d: 35, scale: 2.1, pens: 3, spread: 0.06 }), x: 440, y: 170 },
+];
+const city = site.about.chapters.flatMap((c) => c.facts ?? []).find(([key]) => key === 'City')?.[1];
+const micro = [site.mark, k.school, city].filter(Boolean).join(' · ').toUpperCase();
 const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
 ---
 <div class="idc" data-card="hang" role="group" aria-roledescription={card.label} aria-label={`${card.label}: ${site.name}`}>
@@ -53,24 +63,30 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
       <div class="idc-card" data-card-body>
         <div class="idc-face idc-front" data-face>
           <button class="idc-turn" type="button" data-turn aria-label="Turn the card over"></button>
+          <span class="idc-tex" aria-hidden="true" style={`--grain: url("${grain}")`}><svg class="idc-guil" viewBox="0 0 500 800" preserveAspectRatio="none" focusable="false">{guil.map((g) => <g transform={`translate(${g.x} ${g.y})`}><path d={g.d} /></g>)}</svg></span>
           <div class="idc-head">
             <span class="idc-mark">{site.mark}</span>
             <span class="idc-issued">{card.issued}</span>
           </div>
+          <div class="idc-win">
           <picture class="idc-photo">
             <source type="image/avif" srcset={`${p360a} 360w, ${p640a} 640w, ${p960a} 960w`} sizes="(min-width: 900px) 280px, 230px" />
             <img src={p640w} srcset={`${p360w} 360w, ${p640w} 640w, ${p960w} 960w`} sizes="(min-width: 900px) 280px, 230px" alt={site.about.selfie.alt} width="640" height="640" decoding="async" draggable="false" />
           </picture>
+          <span class="idc-lam" aria-hidden="true"></span>
+          </div>
           <p class="idc-name">{site.nameLines.map((l) => <span>{l}</span>)}</p>
           <p class="idc-role"><span>{k.study} · {k.year}</span><span>{k.school}</span></p>
           <div class="idc-foot">
             {links.map((l) => <a class="idc-link" href={l.href} rel="me">{l.name}<Icon name="arrow-up-right" /></a>)}
             <span class="idc-seal" aria-hidden="true"></span>
           </div>
+          <span class="idc-micro" aria-hidden="true">{micro}</span>
           <span class="idc-glare" aria-hidden="true"></span>
         </div>
         <div class="idc-face idc-back" data-face>
           <button class="idc-turn" type="button" data-turn aria-label="Turn the card back to the front"></button>
+          <span class="idc-tex" aria-hidden="true" style={`--grain: url("${grain}")`}><svg class="idc-guil" viewBox="0 0 500 800" preserveAspectRatio="none" focusable="false">{guil.map((g) => <g transform={`translate(${g.x} ${g.y})`}><path d={g.d} /></g>)}</svg></span>
           <div class="idc-head">
             <span class="idc-issued">{card.label}</span>
             <span class="idc-issued">{site.host}</span>
@@ -83,6 +99,7 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
             ))}
           </ul>
           <p class="idc-cap">{site.about.selfie.caption}</p>
+          <span class="idc-micro" aria-hidden="true">{micro}</span>
           <span class="idc-glare" aria-hidden="true"></span>
         </div>
       </div>
@@ -255,6 +272,33 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
   .idc-hint span { display: none; }
   :global(.fine) .idc-hint .h-drag { display: inline; }
   :global(html:not(.fine)) .idc-hint .h-tap { display: inline; }
+
+  /* ---------- round two (spec v2 §3.5.1): texture, a livelier photo ---------- */
+  /* the guilloché and the paper fibre lie under the type: z-index -1 inside the face's own stacking
+     context (its mask makes one), so the text and the photo paint over them */
+  .idc-tex { position: absolute; inset: 0; z-index: -1; border-radius: inherit; overflow: hidden; pointer-events: none; }
+  .idc-tex::after { content: ""; position: absolute; inset: 0; background: var(--grain) repeat; background-size: 64px; mix-blend-mode: overlay; opacity: 0.9; }
+  .idc-guil { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: var(--about); stroke-width: 1; opacity: 0.11; }
+  .idc-guil path { vector-effect: non-scaling-stroke; rotate: var(--gr, 0deg); }
+  /* the photo, seated as a window under a laminate band that moves with the glare */
+  .idc-win { position: relative; margin-top: 4.4cqi; border-radius: 2.4cqi; pointer-events: none; }
+  .idc-win .idc-photo { margin-top: 0; }
+  .idc-win::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.55), inset 0 1px 0 rgb(255 244 230 / 0.22);
+  }
+  .idc-lam {
+    position: absolute; inset: 0; border-radius: inherit; overflow: hidden; mix-blend-mode: screen; opacity: calc(0.1 + var(--glare) * 0.22);
+    background: linear-gradient(115deg, transparent 20%, rgb(243 184 134 / 0.5) 34%, rgb(246 220 196 / 0.35) 40%, rgb(201 212 255 / 0.45) 47%, rgb(239 177 203 / 0.4) 53%, transparent 66%) no-repeat;
+    background-size: 260% 260%; background-position: var(--gx) var(--gy);
+  }
+  /* the micro line along the lower edge: security print, decoration only */
+  .idc-micro {
+    position: absolute; left: 7cqi; right: 7cqi; bottom: 2.1cqi; overflow: hidden; white-space: nowrap; pointer-events: none;
+    font: 500 2.4cqi/1 var(--f-ui); letter-spacing: 0.32em; color: color-mix(in srgb, var(--about) 28%, transparent);
+  }
+  /* the type floor: 12 px on the smallest card (spec v2 §2.1) */
+  .idc-issued, .idc-links .idc-note, .idc-cap { font-size: max(12px, 4cqi); }
 
   /* without JavaScript the card cannot turn: the front stands alone (it carries the name, the school and
      both links; the back's line repeats the two tracks further down the page) */
