@@ -276,7 +276,8 @@
 .steps.pinned .st-list { position: relative; flex: 1; width: 100%; }
 .steps.pinned .st { position: absolute; inset: 0; margin: 0; display: flex; flex-direction: column; align-items: center; }
 .steps.pinned .st:not(:first-child) { visibility: hidden; }
-.steps.pinned { --win-w: min(880px, calc((var(--sv) - 380px) * 1.6)); }
+/* the window leaves room for the labels above and for two lines of text above the action capsule below */
+.steps.pinned { --win-w: min(880px, calc((var(--sv) - 460px) * 1.6)); }
 /* the window: the screens slide inside it, so the next one comes up over the last within its frame */
 .steps.pinned .st-frame { position: relative; width: var(--win-w); aspect-ratio: 16 / 10; overflow: hidden; border-radius: var(--r-screen);
   box-shadow: var(--e-lift), 0 0 0 1px rgb(255 255 255 / .07); }
