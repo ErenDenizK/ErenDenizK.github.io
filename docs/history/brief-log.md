@@ -597,3 +597,36 @@ Dictated, Turkish; the message was sent twice. Condensed.
    decisions leave a gap. The project slowed down circling failed prototypes; copying even one of
    the liked references well would give a good result; be creative.
 10. Desktop and phone may be different designs; do not force one scheme on both.
+
+### 2026-10-16 (review of `/lab/one/`)
+
+Dictated, Turkish. Every sentence is an item in `docs/feedback/2026-10-16-lab-one-review.md`
+(ids G, M, W, O, C, P, R, E, H, X); this is the short form.
+
+1. The first screen is acceptable, simple and nice. The order of the parts is right; their
+   presentation fails. Nothing may look cheap. Treat it as an art project: every frame flawless.
+2. Scrolling catches because the design is wrong, not because of durations. Motion must feel
+   oiled, polished, floating, as on a pond. Every scroll animates, also in reverse; text slides
+   and shapes itself with the scroll; every interaction gets a visible response, never an empty
+   wait (long animations are fine).
+3. Work: no long rotating deck and no page swap while scrolling; Robin's flow, frames flying in
+   the air while scrolling; the click open is good, keep it. Small line drawings behind each
+   project (a temple, a small cyberpunk scene) beside the aura. Less piling (objects, pages).
+   Eat Map must not be a long empty scroll.
+4. Opened project: needs the scroll bar; scrolling inside must animate continuously.
+5. ID card: the new one is buggy in every way; take the previous loved version exactly and add
+   texture, a livelier photo and a hover sway of card and rope. Its place in the order is open.
+6. How I work: more readable now, but the previous two-lane design with falling drops was far
+   more elegant; bring it back.
+7. Photos: picking up and turning catches; letting go has no animation; reimagine the postcard
+   from scratch (modern, an artwork, especially the back and the frame), not a stock postcard;
+   hovering a photo should pick it up and place it on top, not pass through the others.
+8. The Bostancı plate shows almost nothing; use the large, uncropped, vertical photo or nothing.
+9. The Record strip must follow the Record page's design language; the owner likes the Record
+   page a lot (its 3D object, its animations). Define that language.
+10. Still empty in places: textures and drawings in the background.
+11. Before the Record: audit tokens, fill and space ratios, and motion. Read Shopify and the
+    others again and list every feature they have against ours, for the same fullness.
+12. GitHub: chase every achievement through real work; adopt Recto's pull-request decision
+    (PRC-17) here and elsewhere if needed.
+13. Keep everything in a file as a plan; work until all of it is clean in the owner's eyes.

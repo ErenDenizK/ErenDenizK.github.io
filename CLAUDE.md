@@ -37,10 +37,13 @@ dated, and the newest line wins.
 
 ## Rules
 
-- GitHub has two branches only: `main` and `dev`. Work on `dev`. Never push to or merge into
-  `main` (ADR-0004); the owner pulls `dev` into `main` by hand. Pushes to `dev` deploy the live
-  site once CI passes: run `npm run verify` before every push, read its real result, and never
-  push work in progress. Agents work in their own git worktree outside the repo folder (for
+- GitHub has two long-lived branches: `main` and `dev`. Never push to or merge into `main`
+  (ADR-0004); the owner pulls `dev` into `main` by hand. Work lands on `dev` through pull requests
+  (owner, 2026-10-16; Recto's PRC-17): each lane is a short-lived branch `lane/<topic>`, pushed,
+  opened as a PR into `dev`, and merged with a merge commit (never squash) once `npm run verify`
+  passed locally and CI is green; GitHub deletes the branch after the merge. The reason: real work
+  shows on the owner's profile (`docs/research/2026-10-github-achievements.md`). A merge into `dev`
+  deploys the live site: read verify's real result, and never merge work in progress. Agents work in their own git worktree outside the repo folder (for
   example under the session scratchpad) on a local `wip/<topic>` branch. Those branches are never
   pushed and are deleted after the lead merges them into `dev`.
 - Every commit names the owner as author (`author.name` / `author.email` in the repo's git
