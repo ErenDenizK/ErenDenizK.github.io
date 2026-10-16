@@ -3,9 +3,11 @@
    no sideways scroll at the three check sizes and at 320 px, and a complete page in both still twins:
    reduced motion (nothing waits, every scene at rest, no fixed field) and no JavaScript (every part
    present, the postcards captioned, the card's front alone). Then, on desktop: the Bostancı photograph
-   whole; the ported ID card (turns by keyboard and by click, a drag swings it on its rope without turning
-   it, a hover sways it); the postcards (a hover puts the card on top and it stays there; the large view
-   turns and returns by Escape and by Back); the Record strip in the Record's language; and scroll scenes
+   whole; the ported ID card (in chapter I between How I work and Path; turns by keyboard and by click, a
+   drag swings it on its rope without turning it, a hover sways it and its lean bends the rope; the photo
+   in depth, flat with ?photo=flat); the postcards (a hover puts the card on top and it stays there; the
+   large view opens with focus on its labelled close, turns by its turn capsule and by a press made while
+   it is still growing, draws its back, and returns by Escape, by the close and by Back); the Record strip in the Record's language; and scroll scenes
    that are pure functions of position (the same place shows the same frame on the way down and back up).
    PART B's Work has its own spec. */
 import { test, expect, type Page } from '@playwright/test';
@@ -55,7 +57,7 @@ for (const [size, opts] of [['desktop', desktop], ['tablet', tablet], ['phone', 
   test(`no sideways scroll at ${size}`, async ({ browser }) => {
     const ctx = await browser.newContext(opts);
     const page = await ctx.newPage();
-    for (const q of ['', '?still', '?card=lanes']) {
+    for (const q of ['', '?still', '?photo=flat']) {
       await page.goto(PAGE + q);
       await page.waitForTimeout(400);
       const r = await page.evaluate(() => ({ over: document.documentElement.scrollWidth - document.documentElement.clientWidth, iw: innerWidth, cw: document.documentElement.clientWidth }));
@@ -156,6 +158,37 @@ test.describe('the person\'s part, desktop', () => {
     await expect(card, 'a drag is not a click').not.toHaveClass(/is-flipped/);
   });
 
+  test('the card hangs in chapter I, between How I work and Path, with no switch to move it', async ({ page }) => {
+    await page.goto(PAGE + '?card=end');
+    const order = await page.evaluate(() => ['#how', '#card', '#path', '#photos'].map((s) => document.querySelector(s)!.getBoundingClientRect().top));
+    expect([...order].sort((a, b) => a - b)).toEqual(order);
+    await expect(page.locator('.chapter.ch-1 #card')).toHaveCount(1);
+  });
+
+  test('the lanyard follows the card: a hover lean alone bends the rope', async ({ page }) => {
+    await page.goto(PAGE);
+    await page.locator('#card').evaluate((e) => e.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(3200);
+    const box = (await page.locator('#card .idc-card').boundingBox())!;
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.waitForTimeout(1500);
+    const d0 = await page.locator('#card [data-rope-path]').getAttribute('d');
+    await page.mouse.move(box.x + box.width * 0.95, box.y + box.height / 2, { steps: 8 });
+    await page.waitForTimeout(900);
+    expect(await page.locator('#card [data-rope-path]').getAttribute('d'), 'the lean moved the rope').not.toBe(d0);
+  });
+
+  test('the photo is in depth by default and flat with ?photo=flat', async ({ page }) => {
+    await page.goto(PAGE);
+    const relief = page.locator('#card .idc-relief');
+    await relief.scrollIntoViewIfNeeded();
+    await expect(relief).toHaveClass(/is-ready/);
+    expect(await relief.evaluate((e) => getComputedStyle(e).display)).toBe('block');
+    await page.goto(PAGE + '?photo=flat');
+    expect(await page.locator('#card .idc-relief').evaluate((e) => getComputedStyle(e).display)).toBe('none');
+    await expect(page.locator('#card .idc-photo img')).toBeVisible();
+  });
+
   test('a hovered postcard ends on top and stays there; the large view turns and returns by Escape and by Back', async ({ page }) => {
     await page.goto(PAGE);
     const first = page.locator('[data-postcard="0"]');
@@ -175,8 +208,12 @@ test.describe('the person\'s part, desktop', () => {
     await expect(dlg).toHaveAttribute('open', '');
     const big = dlg.locator('[data-big-card]');
     await expect(big).toBeVisible();
-    await page.keyboard.press('Enter');
+    /* the way out is the first thing a keyboard reaches; the turn capsule turns the card and the back draws */
+    await expect(dlg.locator('[data-pv-close]')).toBeFocused();
+    await dlg.locator('[data-pv-turn]').click();
     await expect(big).toHaveClass(/is-flipped/);
+    await expect(big).toHaveClass(/is-drawn/);
+    await expect(big.locator('.bk-plate svg')).toHaveCount(1);
     await page.keyboard.press('Escape');
     await expect(dlg).not.toHaveAttribute('open', '');
     await expect(first.locator('.pc-open')).toBeFocused();
@@ -185,6 +222,23 @@ test.describe('the person\'s part, desktop', () => {
     await page.goBack();
     await expect(dlg).not.toHaveAttribute('open', '');
     expect(new URL(page.url()).pathname).toMatch(/lab\/one\/$/);
+    /* the labelled close closes, and after the first close it starts folded */
+    await page.locator('[data-postcard="2"] .pc-open').click();
+    await expect(dlg).toHaveAttribute('open', '');
+    await expect(dlg.locator('[data-pv-caps]')).toHaveClass(/folded/);
+    await dlg.locator('[data-pv-close]').click();
+    await expect(dlg).not.toHaveAttribute('open', '');
+  });
+
+  test('a press while the large view is still growing is kept and turns the card when it lands', async ({ page }) => {
+    await page.goto(PAGE);
+    const first = page.locator('[data-postcard="0"]');
+    await first.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(600);
+    await first.locator('.pc-open').click();
+    const vp = page.viewportSize()!;
+    await page.mouse.click(vp.width / 2, vp.height / 2);
+    await expect(page.locator('[data-pc-dialog] [data-big-card]')).toHaveClass(/is-flipped/);
   });
 
   test('the Record strip speaks the Record\'s language: marks on a spine, a year strip, serif titles, no pills', async ({ page }) => {
@@ -197,6 +251,18 @@ test.describe('the person\'s part, desktop', () => {
     expect(await strip.locator('.rs-title').evaluate((e) => getComputedStyle(e).fontFamily)).toMatch(/Newsreader/);
     await expect(strip.locator('.btn')).toHaveCount(0);
     await expect(strip.locator('a.rs-all')).toHaveAttribute('href', /record\/$/);
+    /* spec v3 §8: the recorder stands above the chapter's title (weight 500, the sections' one role), its
+       tape leaves it and becomes the spine at the head, and it never takes the spin loop on Home */
+    expect(await strip.locator('.rs-title').evaluate((e) => getComputedStyle(e).fontWeight)).toBe('500');
+    const obj = await strip.locator('.rs-obj').boundingBox(), title = await strip.locator('.rs-title').boundingBox();
+    expect(obj!.y + obj!.height).toBeLessThanOrEqual(title!.y);
+    await expect(strip.locator('.rs-media')).toHaveAttribute('data-spin', 'off');
+    const tape = await strip.locator('.rs-tape').boundingBox(), body = await strip.locator('.rs-body').boundingBox();
+    const spineX = await strip.locator('.rs-body').evaluate((e) => { const r = e.getBoundingClientRect(), b = getComputedStyle(e, '::before'); return r.left + parseFloat(b.left); });
+    expect(Math.abs(tape!.x - spineX)).toBeLessThan(1.5);
+    expect(Math.abs(tape!.y + tape!.height - body!.y)).toBeLessThan(1.5);
+    /* the drawing never widens the page */
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(await page.evaluate(() => innerWidth));
   });
 
   test('scroll scenes are functions of position: the same place shows the same frame on the way back', async ({ page }) => {
@@ -219,4 +285,47 @@ test.describe('the person\'s part, desktop', () => {
     await page.waitForTimeout(300);
     expect(await read()).toEqual(a);
   });
+});
+
+/* Review row T23 (the owner: no repetition): outside the brief, which names the projects on purpose, no
+   sentence of five or more words appears twice in the page's visible text. Sentences are cut at . ! ? and
+   at line ends; letter case and spacing are ignored. */
+test('no sentence of five or more words is said twice outside the brief', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(PAGE + '?still');
+  const text = await page.evaluate(() => {
+    const brief = document.querySelector('#brief');
+    const out: string[] = [];
+    for (const el of document.querySelectorAll<HTMLElement>('main h1, main h2, main h3, main p, main li, main figcaption, main blockquote')) {
+      if (brief?.contains(el) || el.closest('template, [hidden], [aria-hidden="true"]')) continue;
+      if (el.querySelector('p, li, h2, h3')) continue;
+      out.push(el.innerText);
+    }
+    return out;
+  });
+  expect(text.length, 'text blocks read').toBeGreaterThan(20);
+  const seen = new Map<string, number>();
+  for (const block of text) for (const raw of block.split(/[.!?\n]+/)) {
+    const t = raw.toLowerCase().replace(/\s+/g, ' ').trim();
+    if (t.split(' ').length >= 5) seen.set(t, (seen.get(t) ?? 0) + 1);
+  }
+  const twice = [...seen].filter(([, n]) => n > 1).map(([t]) => t);
+  expect(twice, 'sentences said more than once').toEqual([]);
+});
+
+test('touch: the strap is a rope too (driven by the card, never by a hand), and the photo view closes from its capsule', async ({ browser }) => {
+  const ctx = await browser.newContext(phone);
+  const page = await ctx.newPage();
+  await page.goto(PAGE);
+  const card = page.locator('#card .idc');
+  await card.scrollIntoViewIfNeeded();
+  await expect(card).toHaveClass(/is-rope/);
+  const first = page.locator('[data-postcard="0"] .pc-open');
+  await first.scrollIntoViewIfNeeded();
+  await first.click();
+  const dlg = page.locator('[data-pc-dialog]');
+  await expect(dlg).toHaveAttribute('open', '');
+  await dlg.locator('[data-pv-close]').click();
+  await expect(dlg).not.toHaveAttribute('open', '');
+  await ctx.close();
 });

@@ -37,6 +37,17 @@ how:
     - Every export is re-opened and checked before download.
     - Redaction removes the content under each mark, then re-reads the output.
     - End-to-end tests run in Chromium, Firefox and WebKit.
+  layers:
+    - name: "Browser tab"
+      items: [1]
+    - name: "Web Worker"
+      items: [0]
+    - name: "Your files, on the device"
+      items: [2]
+    - name: "Export check"
+      items: [3, 4]
+    - name: "Tests in three engines"
+      items: [5]
 learned:
   placeholder: owner to write
 next:

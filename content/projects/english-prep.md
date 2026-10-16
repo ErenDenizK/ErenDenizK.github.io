@@ -40,6 +40,15 @@ how:
     - Zero runtime dependencies, and no innerHTML.
     - Everything is stored in the learner's own browser.
     - Content is validated in CI; questions are reviewed blind.
+  layers:
+    - name: "Static files"
+      items: [0]
+    - name: "The page"
+      items: [1]
+    - name: "The learner's browser storage"
+      items: [2]
+    - name: "CI validation and blind review"
+      items: [3]
 learned:
   placeholder: owner to write
 next:

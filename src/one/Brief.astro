@@ -45,7 +45,7 @@ const year = k.year.charAt(0).toLowerCase() + k.year.slice(1);
 </section>
 
 <style>
-  .brief { position: relative; padding: 196px var(--gut) 0; min-height: 690px; text-align: center; }
+  .brief { position: relative; padding: 196px var(--gut) var(--s-9); text-align: center; }
   .brief-in { width: min(var(--w-text), 100%); margin: 0 auto; }
   .name { font-size: var(--fs-h2); }
   .lede { margin: var(--s-5) auto 0; max-width: 34em; }
@@ -53,11 +53,13 @@ const year = k.year.charAt(0).toLowerCase() + k.year.slice(1);
   .row { display: flex; align-items: center; justify-content: center; gap: var(--s-4); flex-wrap: wrap; }
   .v { font: 400 var(--fs-body) / 1.4 var(--f-sans); color: var(--ink); }
   .when { color: var(--ink-3); }
+  /* the Record link is a 44 px target without moving the line (spec v3 §9.6) */
+  .v .tl { display: inline-block; padding-block: 12px; margin-block: -12px; }
   .short { display: none; }
   .chips { display: flex; gap: var(--s-2); flex-wrap: wrap; justify-content: center; }
 
   @media (max-width: 699.98px) {
-    .brief { padding-top: 112px; min-height: 700px; }
+    .brief { padding-top: 112px; padding-bottom: var(--s-8); }
     .lede { margin-top: var(--s-4); }
     .rows { margin-top: var(--s-6); }
     .row { flex-direction: column; gap: var(--s-2); }

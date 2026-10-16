@@ -1,0 +1,99 @@
+/* The rail's sheet on the two-page site (spec v3 §7, review row T9: "grows from the side instead of a
+   small window, blurs the background slightly"). Only the opt-in `sheet` of scripts/rail.ts creates the
+   classes styled here, and only layouts/One.astro loads this file, so the live site's rail is unchanged.
+   A full-height glass sheet grows from the right edge over a light veil (clip-path and transform only, so
+   nothing is laid out again while it moves); the rail stays where it is and becomes the sheet's spine:
+   the beads spread to one row each and every title stands level with its bead. The hover titles of
+   src/styles/rail.css remain the small state; the sheet is the click (or tap) state. */
+
+.rail-veil, .rail-glass { position: fixed; pointer-events: none; }
+.rail-veil {
+  inset: 0; z-index: 59;
+  background: rgb(18 18 20 / 0.14);
+  -webkit-backdrop-filter: blur(3px) saturate(0.9); backdrop-filter: blur(3px) saturate(0.9);
+  opacity: 0; transition: opacity var(--t-ui) var(--ease-ui);
+}
+.rail-veil.on { opacity: 1; pointer-events: auto; }
+.rail-glass {
+  z-index: 61; top: 0; right: 0; bottom: 0; width: 340px;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; gap: 10px;
+  padding: 0 44px calc(32px + env(safe-area-inset-bottom)) 32px;
+  border-radius: var(--r-sheet) 0 0 var(--r-sheet);
+  /* light gathering toward the rail: the glass deepens from its open edge to the spine */
+  background: linear-gradient(90deg, rgb(30 30 34 / 0), rgb(30 30 34 / 0.5) 30%), var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  box-shadow: inset 1px 0 0 rgb(255 255 255 / 0.07), -40px 0 80px -40px rgb(0 0 0 / 0.7);
+  clip-path: inset(0 0 0 100% round var(--r-sheet) 0 0 var(--r-sheet));
+  transition: clip-path 300ms var(--ease-ui) 40ms, visibility 0s linear 340ms;
+  visibility: hidden;
+}
+.rail-glass.on {
+  pointer-events: auto; visibility: visible;
+  clip-path: inset(0 0 0 0 round var(--r-sheet) 0 0 var(--r-sheet));
+  transition: clip-path var(--t-sheet) var(--kl-settle-ease, var(--ease-out)), visibility 0s;
+}
+.rail-gfoot { margin: 0; font: 400 var(--fs-label) / 1 var(--f-sans); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.rail-gbar { display: block; width: 100%; height: 2px; border-radius: 1px; background: rgb(255 255 255 / 0.08); overflow: hidden; position: relative; }
+.rail-gbar::after { content: ""; position: absolute; inset: 0; transform-origin: 0 50%; scale: var(--p, 0) 1;
+  background: linear-gradient(90deg, var(--ink-4), var(--ink-2)); }
+.rail-gkeys { font: 400 var(--fs-cap) / 1 var(--f-sans); color: var(--ink-4); }
+html:not(.fine) .rail-gkeys { display: none; }
+
+/* the hover titles stop short of the 44 px column, so a click on the column itself opens the sheet
+   (a click on a title still goes to its section) */
+html.rail-on .rail:not(.is-sheet) .rail-i { padding-right: 0; margin-right: 44px; }
+
+/* the rail over the glass while the sheet is open; the column takes no clip, the hover panel steps back */
+html:root .rail.rail.is-sheet { clip-path: none; }
+/* the beads stay over the glass while it opens and closes (the shared rail.css puts the rail at 21) */
+.rail-glass ~ .rail { z-index: 62; }
+html:root .rail.rail.is-sheet .rail-sheet::before { opacity: 0; }
+html:root .rail.rail.is-sheet .rail-sheet { margin-top: var(--st2, var(--st)); }
+html:root .rail.rail.is-sheet .rail-foot { display: none; }
+/* the beads spread to one row each (--row, set by rail.ts), and a group's first bead keeps its header's room */
+html:root .rail.rail.is-sheet .rail-m { margin: calc((var(--row) - 12px) / 2) 0; }
+html:root .rail.rail.is-sheet .rail-m:not(.on, .done) { margin: calc((var(--row) - 10px) / 2) 0; }
+html:root .rail.rail.is-sheet .rail-m.on.on { height: calc(var(--row) - 14px); margin: 3px 0; width: 3px; box-shadow: 0 0 12px var(--a); }
+html:root .rail.rail.is-sheet .rail-m.rail-mg { margin-top: calc((var(--row) - 12px) / 2 + var(--gap)); }
+html:root .rail.rail.is-sheet .rail-m.rail-mg:not(.on, .done) { margin-top: calc((var(--row) - 10px) / 2 + var(--gap)); }
+html:root .rail.rail.is-sheet .rail-m.rail-mg.on.on { margin-top: calc(3px + var(--gap)); }
+
+/* the rows: right-aligned, 16 px left of their bead; the current one a serif title */
+html:root .rail.rail.is-sheet .rail-list > li { position: relative; }
+html:root .rail.rail.is-sheet .rail-list > li.rail-g:not(:first-child) { margin-top: var(--gap); }
+html:root .rail.rail.is-sheet .rail-list > li.rail-g::before {
+  content: attr(data-g); position: absolute; right: 30px; bottom: 100%; padding-bottom: 4px;
+  font: 500 11px / 1 var(--f-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-4); white-space: nowrap;
+}
+html:root .rail.rail.is-sheet .rail-i { height: var(--row); padding: 0 30px 0 24px; font: 500 15px / 1 var(--f-sans); }
+html:root .rail.rail.is-sheet .rail-t { opacity: 1; max-width: 272px; }
+html:root .rail.rail.is-sheet .rail-i .rail-t { color: var(--ink-3); }
+html:root .rail.rail.is-sheet .rail-i.done .rail-t { color: var(--ink-2); }
+html:root .rail.rail.is-sheet .rail-i:hover .rail-t, html:root .rail.rail.is-sheet .rail-i:focus-visible .rail-t { color: var(--ink); }
+html:root .rail.rail.is-sheet .rail-i.on .rail-t { font: 400 21px / 1 var(--f-serif); letter-spacing: -0.01em; color: var(--ink); }
+html:root .rail.rail.is-sheet .rail-i:focus-visible { border-radius: var(--r-focus); }
+html:root .rail.rail.is-sheet .rail-i:active .rail-t { scale: 0.98; }
+/* rows slide in from 24 px to the right, from the current row outward, so no word is ever cut by the
+   growing clip; leaving, they go first and together (scripts/rail.ts animates them) */
+
+/* touch: the same sheet; the rows hang from the 44 px button's column, one 46 px row each */
+@media (forced-colors: none) {
+  html.rail-touch .rail.rail.is-sheet .rail-sheet {
+    display: block; position: absolute; top: 0; right: 0; translate: none; margin: var(--st2) 0 0;
+    width: max-content; max-width: none; max-height: none; overflow: visible; background: none; box-shadow: none; border-radius: 0;
+  }
+  html.rail-touch .rail.rail.is-sheet .rail-list { padding: 0; }
+  html.rail-touch .rail.rail.is-sheet .rail-i { height: var(--row); padding: 0 24px 0 24px; justify-content: flex-end; font-size: 17px; box-shadow: none; }
+  html.rail-touch .rail.rail.is-sheet .rail-i.on .rail-t { font-size: 24px; }
+  html.rail-touch .rail.rail.is-sheet .rail-list > li.rail-g::before { right: 24px; }
+  html.rail-touch .rail.rail.is-sheet .rail-foot { display: none; }
+  html.rail-touch .rail-glass { width: min(330px, 84vw); padding: 0 40px calc(28px + env(safe-area-inset-bottom)) 24px; }
+}
+
+/* reduced motion: the sheet and the veil cross-fade, nothing grows or slides */
+@media (prefers-reduced-motion: reduce) {
+  .rail-glass, .rail-glass.on { clip-path: none; opacity: 0; transition: opacity 150ms linear, visibility 0s linear 150ms; }
+  .rail-glass.on { opacity: 1; transition: opacity 150ms linear, visibility 0s; }
+}
+/* touch: the beads step aside over a picture (rail.css), but never while they are the sheet's spine */
+html.rail-touch .rail.rail.is-sheet .rail-track { opacity: 1; }

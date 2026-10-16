@@ -321,3 +321,85 @@ language, which the owner rejected (R1).** Do not build §6 as written. Amend it
 7. **Fix §3's defects first** (year page, the droplet-out square, the bright arrival frame) on the live
    page, so the port starts from a clean baseline. Port only after frame sheets match the
    before/after screenshots in this file.
+
+---
+
+## 6. The strip on Home (round three, spec v3 §8; rows T6, T8, T20, R1, R2)
+
+Status: built on `/lab/one/` in round three (`src/one/rest/RecordStrip.astro`). It replaces §4.3 and
+§4.4 for the strip; §4.2 (what it shows) still holds. ADR-0018 records the objects decision.
+
+### 6.1 Grammar
+
+- **A frontispiece.** The recorder stands centred on the page axis above the chapter's title, 300 px
+  on desktop, on a dark local ground (a radial pool 1.7 times the object, `rgb(13 13 15 / 0.92)` at
+  the centre). Behind it is the strip's own line drawing: nine reel rings around the left reel (every
+  third dashed), five small dashed rings around the right reel, six construction spokes and one loose
+  strand from the right reel, in Record blue. The drawing fades with distance from the reel (a trace
+  where text stands) and is cut out of the object's circle.
+- **The tape becomes the spine.** One 1.5 px line in Record blue at 55 % leaves the object under its
+  left reel, turns in an S to the spine's place and runs straight down beside the title, the dek and
+  the year strip into the spine. Between the head and "Now" it fades from the tape's blue to the rule
+  colour, so the spine below Now is the Record's own line.
+- **A centred head.** "The record" at `--fs-h2`, weight 500 (the sections' one role, as How I work and
+  Photos); the dek centred, at most 30 em.
+- **One left edge.** `--rec-w` is 960 px, so the content column starts on the 340 px edge of How I work
+  at 1440; the year and the dates hang in the margin to its left.
+- **One entry-title size.** Notes and essays both set their title at 21 px, weight 430 (19 px on
+  phones). A release keeps its large version name in the project's colour; it is a different shape.
+- **Phone.** The chapter hangs on the spine: the recorder (176 px) stands at the right inside the
+  gutter, the head and the year strip start right of the spine, and the tape leaves the object and
+  turns down into the spine above the title. Only the six inner rings and three small ones are drawn.
+
+### 6.2 Motion (a pure function of the chapter's `--sp`; reversible)
+
+Measured: one px of scroll is 0.00046 to 0.00049 of the strip's `--sp` at 1440, 1180, 800 and 390 px,
+so one set of windows serves every width.
+
+| `--sp` | What moves |
+|---|---|
+| 0 to 0.14 | The ground fades in under the object; the rings draw from the inside out (0.02 + 0.01 per ring, 0.06 each); the dashed rings and the spokes fade in with them |
+| 0.14 to 0.22 | The tape draws from the object to the spine's top; the strand draws with it |
+| 0.18 to 0.3 | The title rises in its line masks, then the dek |
+| 0.22 to 0.62 | The spine draws down; its tip runs about a fifth of a screen above the window's foot |
+| 0.28 onward | The year strip's months fill from January |
+| 0.22 + 0.4 f | Each mark lands where the line reaches it (f: its place down the line, 0.35 for Now, then 0.48, 0.65, 0.87) and its row follows |
+| 0.62 to 0.69 | The dashed tail, then "The whole record" |
+
+Desktop: the recorder turns with the scroll through its lean frames while no pointer is near (frontal
+at the window's middle, about 10 degrees of yaw at either edge), leans toward a pointer near it, and a
+press plays its clip. Phone: the floating poster (no spin loop) until the device check. Still twins
+(reduced motion, `?still`, no JavaScript): everything drawn complete, the poster.
+
+Only `stroke-dashoffset`, `transform` and `opacity` move. The tape's dash is measured in screen pixels
+(the box's diagonal times 1.07), because a non-scaling stroke cannot use `pathLength`.
+
+### 6.3 Rules that keep the glass clean
+
+- No ancestor of `.m-stage` creates a stacking context (no `z-index`, transform, filter, mask, opacity
+  below 1 or containment on the slot or its wrappers). Checked with `round3/tools/stack.mjs`.
+- The ground, the drawing and the tape are positioned siblings painted before the object; the text
+  column is positioned after them, so it paints above the drawing.
+- The drawing is clipped to the strip's width and fades in above the strip, so it never reaches into
+  Photos and never widens the page.
+
+### 6.4 Hit sizes and the hand-over
+
+- Fine pointer: the date and project links are padded to 24 px without moving the line. Touch: the
+  whole row is one target (a note's date link spans the row), the project names read as text, links
+  inside a note's text stay tappable.
+- Press: "The whole record" and the month links scale to 0.98 in 120 ms.
+- "The whole record" names the strip's `.m-stage` `stage` on click, the name the Record page gives its
+  recorder (`transitions.css`), so the object flies into the Record's head where cross-document view
+  transitions exist; elsewhere a plain navigation. No droplet plays from Home.
+
+### 6.5 Open
+
+- The month links of the Home year strip point at `#<slug>` anchors that exist only on the Record page
+  (compact rows carry no id). They should point at `record/#<slug>`; `YearStrip.astro` is shared, so
+  the fix needs an opt-in prop.
+- The Record page names neither its spine nor its year strip, so only the object carries over; the line
+  does not yet grow into the Record's spine.
+- The Istanbul plate of the Photos chapter runs behind the space above the recorder on phones; it is
+  out of the object's circle at rest but not masked (the plate belongs to the Photos chapter).
+- Phone month bars stay 30 px wide: a 44 px hit area per month would overlap its neighbours.

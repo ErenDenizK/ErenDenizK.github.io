@@ -1,7 +1,8 @@
 ---
 /* A project's presentation (phase3 design-spec.md 3.3.4): hero and head, facts, the outcome and the
-   steps, numbers, why, how it's made, the next project, and the capsule. Dia's measured order on
-   Notion's columns, everything on the centre axis. Parts without data are left out.
+   steps, numbers, why, how it's made (the cutaway, HowMade.astro), the next project, and the two
+   capsules (spec v3 §5). Dia's measured order on Notion's columns, everything on the centre axis. Parts
+   without data are left out.
    One component for both forms: mode "layer" is cloned by scripts/open.ts into the layer over Home;
    mode "page" is the static twin at <base>work/<slug>/, complete without JavaScript.
    data-vt names the elements that share a view-transition name with Work's flight (scripts/open.ts).
@@ -11,6 +12,7 @@ import Shot from './Shot.astro';
 import Obj from './Obj.astro';
 import Print from './Print.astro';
 import Stepper from './Stepper.astro';
+import HowMade from './HowMade.astro';
 import Icon from '../../components/Icon.astro';
 import type { Model } from './data';
 interface Props { m: Model; next?: Model; mode: 'layer' | 'page' }
@@ -28,6 +30,7 @@ const titleId = `${m.slug}-${mode}-title`;
     <div class="pg-grain"></div>
   </div>
   <div class="pb" data-vt="body">
+    <div class="pb-in">
     <header class="pt" data-rail-sec="Overview">
       <div class="pt-stage">
         {sides.map((s, k) => (
@@ -75,15 +78,8 @@ const titleId = `${m.slug}-${mode}-title`;
     {m.how && (
       <section class="p-how" data-rail-sec="How it's made" aria-labelledby={`${m.slug}-${mode}-how`}>
         <h2 class="label" id={`${m.slug}-${mode}-how`}>How it's made</h2>
-        <div class="how-card">
-          <ul class="how-list">{m.how.map((x) => <li>{x}</li>)}</ul>
-          {m.howCrop && (
-            <picture class="how-crop" aria-hidden="true">
-              <source type="image/avif" srcset={m.howCrop.avif} sizes="(max-width: 699.98px) 80vw, 560px" />
-              <source type="image/webp" srcset={m.howCrop.webp} sizes="(max-width: 699.98px) 80vw, 560px" />
-              <img src={m.howCrop.src} alt="" width={m.howCrop.w} height={m.howCrop.h} loading="lazy" decoding="async" />
-            </picture>
-          )}
+        <div class:list={['how-card', { 'how-cut': m.howLayers }]}>
+          <HowMade items={m.how} layers={m.howLayers} id={`${m.slug}-${mode}-how`} />
         </div>
       </section>
     )}
@@ -98,13 +94,29 @@ const titleId = `${m.slug}-${mode}-title`;
       </a>
     )}
 
-    <nav class="capsule" aria-label={m.title} data-vt-cap>
-      <a class="cap-x" href={`${m.home}#${m.slug}`} data-close aria-label="Close"><Icon name="close" size={20} weight="medium" /></a>
-      {m.live && (
-        <a class="cap-go" href={m.live.href} style={`--fill: ${m.live.fill}; --fill-ink: ${m.live.ink}`}>{m.live.label}<Icon name="arrow-up-right" size={16} weight="medium" /></a>
-      )}
-      {m.code && <a class="cap-code" href={m.code.href}>{m.code.label}<Icon name="arrow-up-right" size={16} weight="medium" /></a>}
-      {!m.code && m.linksNote && <span class="cap-note">{m.linksNote}</span>}
-    </nav>
+    </div>
+
+    {/* the bottom bar (spec v3 §5): two glass capsules, the close alone and the actions. The close is
+        labelled on the first open ("Close" and an esc key cap on fine pointers) and folds to the cross
+        after the first close, the first scroll or 4 s (scripts/open.ts). The ring fills while a finger
+        pulls the layer past its top or its end (§4.1). */}
+    <div class="caps" data-caps>
+      <div class="glass cap-c">
+        <a class="cap-x" href={`${m.home}#${m.slug}`} data-close aria-label="Close">
+          <span class="cap-xi">
+            <svg class="cap-ring" viewBox="0 0 44 44" aria-hidden="true" focusable="false"><circle cx="22" cy="22" r="20.5" pathLength="100" /></svg>
+            <Icon name="close" size={20} weight="medium" />
+          </span>
+          <span class="cap-more" aria-hidden="true"><span class="cap-more-in"><span class="cap-lb">Close</span><kbd class="cap-kbd">esc</kbd></span></span>
+        </a>
+      </div>
+      <nav class="glass cap-a" aria-label={m.title}>
+        {m.live && (
+          <a class="cap-go" href={m.live.href} style={`--fill: ${m.live.fill}; --fill-ink: ${m.live.ink}`}>{m.live.label}<Icon name="arrow-up-right" size={16} weight="medium" /></a>
+        )}
+        {m.code && <a class="cap-code" href={m.code.href}>{m.code.label}<Icon name="arrow-up-right" size={16} weight="medium" /></a>}
+        {!m.code && m.linksNote && <span class="cap-note">{m.linksNote}</span>}
+      </nav>
+    </div>
   </div>
 </article>

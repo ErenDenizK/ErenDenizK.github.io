@@ -42,7 +42,11 @@ const tabs = [['home', 'Home', home], ['record', 'Record', url('record/')]] as c
   .mark {
     justify-self: start; display: inline-flex; align-items: baseline; gap: 3px; min-height: 44px; align-items: center;
     font: 500 24px / 1 var(--f-serif); letter-spacing: -0.01em; color: var(--ink);
+    transition: opacity var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui);
   }
+  /* every press is felt (spec v3 §9.6): the mark dims on hover and gives under the finger */
+  .mark:hover { opacity: 0.82; }
+  .mark:active { scale: 0.98; }
   .mark .dot {
     width: 6px; height: 6px; border-radius: 50%; align-self: flex-end; margin-bottom: 14px;
     background: var(--a1); box-shadow: 0 0 10px var(--a1);
@@ -50,16 +54,18 @@ const tabs = [['home', 'Home', home], ['record', 'Record', url('record/')]] as c
   }
 
   .tabs {
-    display: flex; gap: 2px; padding: 4px; border-radius: var(--r-pill);
-    background: rgb(30 30 34 / 0.62); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
-    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07), 0 12px 40px -16px rgb(0 0 0 / 0.7);
+    display: flex; gap: 2px; padding: var(--glass-pad); border-radius: var(--r-pill);
+    background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-edge), var(--glass-shadow);
   }
+  /* the glass tokens (tokens.css) are shared with the opened project's capsules: one height, one label size */
   .tabs a {
-    position: relative; isolation: isolate; min-height: 40px; padding: 0 20px; display: inline-flex; align-items: center;
-    border-radius: var(--r-pill); font: 500 15px / 1 var(--f-sans); color: var(--ink-3);
-    transition: color 150ms var(--ease-ui), background-color 150ms var(--ease-ui);
+    position: relative; isolation: isolate; min-height: var(--glass-item); padding: 0 20px; display: inline-flex; align-items: center;
+    border-radius: var(--r-pill); font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink-3);
+    transition: color var(--t-quick) var(--ease-ui), background-color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui);
   }
   .tabs a:hover { color: var(--ink); }
+  .tabs a:active { scale: 0.98; }
   .tabs a:focus-visible { outline-offset: -2px; border-radius: var(--r-pill); }
   .tabs a[aria-current="page"] { color: var(--ink); }
   /* the active bed: 8 % light with the current aura glowing up from under it */

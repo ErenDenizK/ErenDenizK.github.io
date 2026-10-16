@@ -5,16 +5,27 @@
      photograph's own light (a blurred copy of itself at 38 % brightness, plus grain), a foil hairline
      (the ID card's foil), one edge line (the place in italic serif, the index in tabular figures), the
      ID card's guilloché low left, and gold crop marks that show only while the card is held.
-   - Back: a header row (the mark, "Photograph · 01 / 03"); a stamp cut from the photograph with a
-     scalloped edge; a postmark of two thin gold rings with the place on the ring and the mark in the
-     middle, whose cancellation is five lines traced from the photograph's own luminance; the note in
-     italic serif, signed; a gold divider with a diamond at the golden section; the five colours the
-     photograph is made of; the place on ruled lines; a micro line along the lower edge. Every value
-     comes from content/site.json (home.postcards) or is measured from the file (tools/photos/live.mjs).
+   - Back (spec v3 §2; review rows T2, P4): an artwork about one photograph. The photograph's own scene
+     as an engraved line drawing is the hero (src/one/rest/art/pc-<photo>.svg, tools/illustrations/
+     postcards/); the photograph itself is set into the drawing as the stamp, on a cream mount with a
+     dashed keyline, and one small ring with the place overlaps it. Then the note in italic serif, the
+     "Eren" signature with one ink flourish, and one colophon row (Place, City, its colours as one
+     proportional bar and three hex values). Each back takes its ground from the photograph's darkest
+     colour and its ink from its tone, on laid paper under the grain. Landscape: the drawing fills the
+     left half, the right column holds the stamp, the message, five colour bands and the colophon.
+     Every value comes from content/site.json (home.postcards) or tools/photos/live.mjs.
+     Motion (§2.5): as the back comes face-on the drawing draws itself on (construction, then lines,
+     then hatching), the stamp lands, the ring settles, the flourish draws last; a later turn replays
+     only the flourish. Reduced motion: drawn at once.
    Table (desktop): three cards side by side on parallel planes; hover picks one up without passing
    through another (scripts/postcards.ts). Phone: a loose pile, tap to open. A click or a tap grows the
    card into the large view, where the ID card's engine (card3d.ts, tilt) swings it by a drag and turns
-   it over. Still twins: without JavaScript the fronts stand with their place and note under them. */
+   it over. Leaving it (spec v3 §4, row T15): two glass capsules under the card, [Close esc] and
+   [Turn it over] (on phones fixed at the bottom, close at the left gutter, turn at the right); a close
+   cursor over the dark space; the page shows behind a light blur; a swipe down on touch fills a ring
+   round the cross and closes past 96 px. Still twins: without JavaScript the fronts stand with their
+   place and note under them. */
+import Icon from '../../components/Icon.astro';
 import { getSite, url } from '../../lib/site';
 import manifest from '../../assets/photos/postcards.json';
 import meta from '../../assets/photos/postcards-meta.json';
@@ -27,13 +38,17 @@ const list = site.home.postcards ?? [];
 const photos = site.about.chapters.find((c) => c.id === 'photos');
 const lede = photos?.text[0]?.split(/(?<=\.)\s/)[0] ?? '';
 const files = import.meta.glob<string>('../../assets/photos/pc-*.{avif,webp}', { eager: true, query: '?url', import: 'default' });
+/* the backs' drawings, inlined so the back can draw them on and colour them with its own ink */
+/* the drawings are fetched when the large view first opens (postcards.ts), not inlined: inline, the three
+   came to about 15 KB of the page's first-paint budget for a face that is seen only after a turn */
+const drawings = import.meta.glob<string>('./art/pc-*.svg', { eager: true, query: '?url', import: 'default' });
 const file = (stem: string, w: number | 'full', ext: 'avif' | 'webp') => {
   const f = files[`../../assets/photos/pc-${stem}-${w}.${ext}`];
   if (!f) throw new Error(`missing pc-${stem}-${w}.${ext}: run npm run photos`);
   return f;
 };
 type M = { width: number; height: number; widths: number[]; full: number; tone: string };
-type Meta = { palette: { hex: string; share: number }[]; rows: number[][] };
+type Meta = { palette: { hex: string; share: number }[]; deep: string; crop: string; drawing?: string };
 const REST = [-5, 2, -2, 3];
 const n = list.length;
 const pad = (i: number) => String(i).padStart(2, '0');
@@ -42,16 +57,8 @@ const guil = url('lab/one/guil/pc.svg');
 /** relative luminance of a hex colour, for the ink on a colour band */
 const lum = (h: string) => { const v = [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16) / 255).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
 
-/** a cancellation line through a luminance row: 48 samples over `w`, smoothed by midpoint quadratics */
-function wave(row: number[], w: number, y: number, amp: number) {
-  const pts = row.map((v, i) => [(i / (row.length - 1)) * w, y + (0.5 - v) * amp] as const);
-  let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
-  for (let i = 1; i < pts.length - 1; i++) {
-    const [x, yy] = pts[i], [nx, ny] = pts[i + 1];
-    d += ` Q${x.toFixed(1)} ${yy.toFixed(1)} ${((x + nx) / 2).toFixed(1)} ${((yy + ny) / 2).toFixed(1)}`;
-  }
-  return d;
-}
+/** the signature's flourish: one hand stroke under "Eren" (viewBox 200 x 44) */
+const FLOURISH = 'M4 26C24 34 52 30 70 20C84 12 70 6 62 14C54 24 90 34 130 24C160 16 182 12 198 16';
 
 const cards = list.map((p, i) => {
   const m = (manifest as Record<string, M>)[p.photo];
@@ -61,18 +68,20 @@ const cards = list.map((p, i) => {
   const big = (ext: 'avif' | 'webp') => [...m.widths.map((w) => `${file(p.photo, w, ext)} ${w}w`), ...(m.full ? [`${file(p.photo, 'full', ext)} ${m.full}w`] : [])].join(', ');
   const land = m.width > m.height;
   const parts = p.place.split(',').map((s) => s.trim()).filter(Boolean);
+  /* the colophon: a missing field is hidden, never filled (content rule) */
   const rules = parts.length > 1 ? [['Place', parts.slice(0, -1).join(', ')], ['City', parts[parts.length - 1]]] : [['City', parts[0]]];
   if (p.date) rules.push(['Date', p.date]);
   const ringUnit = `${p.place.toUpperCase()} · `;
-  const ring = ringUnit.repeat(Math.max(1, Math.ceil(34 / ringUnit.length)));
-  const waves = mm.rows.map((r, k) => wave(r, 300, 76 + k * 14, 18));
+  const ring = ringUnit.repeat(Math.max(1, Math.ceil(22 / ringUnit.length)));
+  const svg = mm.drawing ? drawings[`./art/pc-${mm.drawing}.svg`] : undefined;
   return {
     ...p, i, land, w: m.width, h: m.height, rest: REST[i % REST.length], tone: m.tone,
     avif: set('avif'), webp: set('webp'), src: file(p.photo, m.widths[0], 'webp'), small: file(p.photo, m.widths[0], 'webp'),
     /* the large card's shape: the photograph whole inside a 3.2 % mount with a 10 % caption band */
     bratio: 1 / ((0.936 * m.height) / m.width + 0.132),
     bigAvif: big('avif'), bigWebp: big('webp'), idx: `${pad(i + 1)} / ${pad(n)}`,
-    palette: mm.palette.map((q) => ({ ...q, light: lum(q.hex) > 0.45 })), rules, ring, waves, micro: `${site.mark} · ${t.credit} · ${p.place}`.toUpperCase(),
+    palette: mm.palette.map((q) => ({ ...q, light: lum(q.hex) > 0.45 })), rules, ring, micro: `${site.mark} · ${t.credit} · ${p.place}`.toUpperCase(),
+    deep: mm.deep, crop: mm.crop, svg, no: pad(i + 1), of: pad(n),
     name: `${t.of} ${p.place}`,
   };
 });
@@ -115,32 +124,28 @@ const cards = list.map((p, i) => {
                   <span class="pc-edge"><i>{c.place}</i><b>{c.idx}</b></span>
                   <span class="idc-glare" aria-hidden="true"></span>
                 </div>
-                <div class="big-face big-back" data-face>
+                <div class:list={['big-face', 'big-back', !c.note && 'no-note', !c.svg && 'no-drawing', c.rules.length < 2 && 'one-place']} data-face style={`--deep: ${c.deep}; --crop: ${c.crop}`}>
                   <button class="idc-turn" type="button" data-turn aria-label={t.back}></button>
-                  <img class="bk-guil" src={guil} alt="" width="220" height="220" loading="lazy" decoding="async" />
-                  <p class="bk-head" aria-hidden="true"><span class="mk">{site.mark}</span><span class="lb">{t.credit} · {c.idx}</span></p>
-                  <span class="bk-stamp" aria-hidden="true"><span></span></span>
-                  <svg class="bk-post" viewBox="0 0 500 200" aria-hidden="true" focusable="false">
-                    <defs><path id={`pc-ring-${c.i}`} d="M400 100 m-72 0 a72 72 0 1 1 144 0 a72 72 0 1 1 -144 0" /></defs>
-                    {c.waves.map((d) => <path class="wv" d={d} transform="translate(16 -52)" />)}
-                    <circle cx="400" cy="100" r="88" /><circle cx="400" cy="100" r="54" />
-                    <text class="rg"><textPath href={`#pc-ring-${c.i}`} textLength="448" lengthAdjust="spacing">{c.ring}</textPath></text>
-                    <text class="mk" x="400" y="112" text-anchor="middle">{site.mark}</text>
+                  <span class="bk-paper" aria-hidden="true"></span>
+                  <p class="bk-head" aria-hidden="true"><span class="mk">{site.mark}</span><span class="no">{t.credit} <b>{c.no}</b> / {c.of}</span></p>
+                  {c.svg && <div class="bk-plate" aria-hidden="true" data-plate={c.svg} />}
+                  <span class="bk-stamp" aria-hidden="true"><i></i></span>
+                  <svg class="bk-ring" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+                    <defs><path id={`pc-ring-${c.i}`} d="M60 60m-43 0a43 43 0 1 1 86 0a43 43 0 1 1-86 0" /></defs>
+                    <circle cx="60" cy="60" r="56" /><circle class="in" cx="60" cy="60" r="31" />
+                    <text class="rg"><textPath href={`#pc-ring-${c.i}`} textLength="268" lengthAdjust="spacing">{c.ring}</textPath></text>
+                    <text class="mk" x="60" y="67" text-anchor="middle">{site.mark}</text>
                   </svg>
-                  {c.note && (
-                    <div class="bk-msg">
-                      <p class="bk-note">{c.note}</p>
-                      <p class="bk-sig">{site.firstName}</p>
-                    </div>
-                  )}
-                  {c.land && <span class="bk-study" aria-hidden="true" style={`--rows: ${c.palette.map((p) => `${Math.max(0.06, p.share).toFixed(3)}fr`).join(' ')}`}>{c.palette.map((p) => <i style={`--c: ${p.hex}; --t: ${p.light ? '#1c1a17' : 'rgb(232 227 221 / 0.78)'}`}><span>{p.hex.toUpperCase()}</span><span>{Math.round(p.share * 100)} %</span></i>)}</span>}
-                  <span class="bk-div" aria-hidden="true"><i></i></span>
-                  <div class="bk-pal">
-                    <ul aria-label="The photograph's colours">{c.palette.map((p) => <li style={`--c: ${p.hex}`}><span class="vh">{p.hex}</span></li>)}</ul>
-                    <p class="hex" aria-hidden="true">{c.palette.slice(0, 3).map((p) => p.hex.toUpperCase()).join(' ')}</p>
+                  <div class="bk-msg">
+                    {c.note && <p class="bk-note">{c.note}</p>}
+                    <p class="bk-sig">{site.firstName}<svg viewBox="0 0 200 44" aria-hidden="true" focusable="false"><path pathLength="1" d={FLOURISH} /></svg></p>
                   </div>
-                  <dl class="bk-rules">{c.rules.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
-                  <span class="bk-micro" aria-hidden="true">{`${c.micro} · ${c.micro}`}</span>
+                  {c.land && <span class="bk-study" aria-hidden="true" style={`--cols: ${c.palette.map((p) => `${Math.max(0.04, p.share).toFixed(3)}fr`).join(' ')}`}>{c.palette.map((p) => <i style={`--c: ${p.hex}`}></i>)}</span>}
+                  <dl class="bk-col">
+                    {c.rules.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+                    <div class="pal"><dt>Its colours</dt><dd><span class="bar" role="img" aria-label={c.palette.map((p) => p.hex).join(', ')}>{c.palette.map((p) => <i style={`--c: ${p.hex}; --s: ${p.share}`}></i>)}</span><span class="hex" aria-hidden="true">{c.palette.slice(0, 3).map((p) => p.hex.toUpperCase()).join(' · ')}</span></dd></div>
+                  </dl>
+                  <span class="bk-micro" aria-hidden="true">{`${c.micro} · ${c.micro} · ${c.micro}`}</span>
                   <span class="idc-glare" aria-hidden="true"></span>
                 </div>
               </div>
@@ -152,7 +157,22 @@ const cards = list.map((p, i) => {
     <p class="photos-hint"><span class="h-fine">{(t.table ?? t.hint).fine}</span><span class="h-touch">{(t.table ?? t.hint).touch}</span></p>
     <dialog class="pc-big" data-pc-dialog aria-label={t.head}>
       <div class="big-stage" data-big-stage></div>
-      <p class="big-hint"><span class="h-fine">{t.hint.fine}</span><span class="h-touch">{t.hint.touch}</span></p>
+      {/* the ways out (spec v3 §4.2): the labelled close, folded after its first use, and the turn */}
+      <div class="pv-caps" data-pv-caps>
+        <div class="pv-glass">
+          <button class="pv-x" type="button" data-pv-close aria-label="Close">
+            <span class="pv-xi">
+              <svg class="pv-ring" viewBox="0 0 44 44" aria-hidden="true" focusable="false"><circle cx="22" cy="22" r="20.5" pathLength="100" /></svg>
+              <Icon name="close" size={20} weight="medium" />
+            </span>
+            <span class="pv-more" aria-hidden="true"><span class="pv-more-in"><span class="pv-lb">Close</span><kbd class="pv-kbd">esc</kbd></span></span>
+          </button>
+        </div>
+        <div class="pv-glass">
+          <button class="pv-turn" type="button" data-pv-turn><Icon name="turn" size={16} weight="medium" /><span>{t.turn}</span></button>
+        </div>
+      </div>
+      <span class="pv-cursor" data-pv-cursor aria-hidden="true"><Icon name="close" size={20} weight="medium" /><b>Close</b></span>
     </dialog>
   </section>
 )}
@@ -163,7 +183,7 @@ const cards = list.map((p, i) => {
   .city { position: absolute; left: 50%; bottom: -150px; width: 1600px; max-width: none; height: auto; margin-left: -800px; opacity: 0.08; pointer-events: none;
     -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
   :global(html.motion) .city { transform: translateY(calc((var(--sp) - 0.5) * 16vh)); }
-  .photos-lede { margin: var(--s-4) auto 0; max-width: 30em; font: 400 var(--fs-body) / 1.6 var(--f-sans); color: var(--ink-2); }
+  .photos-lede { margin: var(--s-4) auto 0; max-width: 30em; font: 400 var(--fs-body) / var(--lh-lede) var(--f-sans); color: var(--ink-2); }
 
   /* ---------- the table: three cards on parallel planes (rotateZ only), stacked by z-index ---------- */
   .table { position: relative; margin: var(--s-8) auto 0; display: flex; justify-content: center; align-items: center; perspective: 1400px; }
@@ -187,7 +207,7 @@ const cards = list.map((p, i) => {
     background: var(--foil); opacity: 0.45;
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
     mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
-  .pc-guil, .bk-guil { position: absolute; z-index: -1; left: -14%; bottom: -16%; width: 62%; height: auto; max-width: none; opacity: 0.11; pointer-events: none; }
+  .pc-guil { position: absolute; z-index: -1; left: -14%; bottom: -16%; width: 62%; height: auto; max-width: none; opacity: 0.11; pointer-events: none; }
   .pc-pic { position: relative; display: block; border-radius: 2px; overflow: hidden; }
   .pc-pic img { width: 100%; height: auto; aspect-ratio: var(--ratio); }
   .pc-pic::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.14); pointer-events: none; }
@@ -208,9 +228,9 @@ const cards = list.map((p, i) => {
   .pc-cap { display: none; margin-top: var(--s-3); color: var(--ink-3); font: 400 var(--fs-small) / 1.5 var(--f-sans); }
   .pc-cap .note { display: block; color: var(--ink-2); font-style: italic; }
   :global(html:not(.js)) .pc-cap { display: block; }
-  .photos-hint, .big-hint { margin-top: var(--s-7); font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); }
-  .photos-hint span, .big-hint span { display: none; }
-  :global(html.fine) :is(.photos-hint, .big-hint) .h-fine, :global(html:not(.fine)) :is(.photos-hint, .big-hint) .h-touch { display: inline; }
+  .photos-hint { margin-top: var(--s-7); font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); }
+  .photos-hint span { display: none; }
+  :global(html.fine) .photos-hint .h-fine, :global(html:not(.fine)) .photos-hint .h-touch { display: inline; }
   :global(html:not(.js)) .photos-hint { display: none; }
   /* scroll: the cards come up onto the table, the middle one first (a pure function of --sp) */
   :global(html.motion) .pc { --k: clamp(0, (var(--sp) - 0.1 - var(--o, 0) * 0.025) / 0.14, 1); }
@@ -231,6 +251,8 @@ const cards = list.map((p, i) => {
     .pc-edge { left: 10px; right: 10px; bottom: 9px; }
     .pc-edge i { font-size: var(--fs-small); }
     .photos-hint { margin-top: var(--s-5); }
+    /* the capsules where the project's are: fixed at the bottom, close at the left gutter, turn at the right */
+    .pv-caps { position: fixed; left: 16px; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom)); justify-content: space-between; }
   }
 
   /* ---------- the large view ---------- */
@@ -240,9 +262,59 @@ const cards = list.map((p, i) => {
     display: none; flex-direction: column; align-items: center; justify-content: center; gap: var(--s-4);
   }
   .pc-big[open] { display: flex; }
-  .pc-big::backdrop { background: rgb(18 18 20 / 0.72); }
+  /* the page stays in sight behind a light blur, so the view reads as a layer over it (spec v3 §4.1) */
+  .pc-big::backdrop { background: rgb(18 18 20 / 0.5); -webkit-backdrop-filter: blur(10px) saturate(0.8); backdrop-filter: blur(10px) saturate(0.8);
+    opacity: calc(1 - var(--pull, 0) * 0.005); }
   .big-stage { perspective: 1600px; }
-  .big-hint { margin-top: 0; }
+  html:not(.fine) .pc-big { touch-action: none; }
+
+  /* ---------- the ways out (spec v3 §4.2, §5.1): two capsules on the tab bar's glass ---------- */
+  .pv-caps { display: flex; align-items: center; gap: var(--glass-gap, 12px); }
+  .pv-glass { display: flex; padding: var(--glass-pad, 4px); border-radius: var(--r-pill);
+    background: var(--glass-bg, rgb(30 30 34 / 0.62)); -webkit-backdrop-filter: var(--glass-blur, blur(22px) saturate(1.5)); backdrop-filter: var(--glass-blur, blur(22px) saturate(1.5));
+    box-shadow: var(--glass-edge, inset 0 0 0 1px rgb(255 255 255 / 0.07), inset 0 1px 0 rgb(255 255 255 / 0.05)), var(--glass-shadow, 0 12px 40px -16px rgb(0 0 0 / 0.7)); }
+  .pv-glass button { min-height: var(--glass-item, 40px); display: inline-flex; align-items: center; border-radius: var(--r-pill); padding: 0;
+    font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink); white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    transition: background-color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
+  .pv-glass button:hover { background: var(--fill-2); }
+  .pv-glass button:active { scale: 0.96; }
+  .pv-glass button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+  .pv-turn { gap: 8px; padding: 0 18px !important; }
+  .pv-turn :global(.icon) { color: var(--ink-2); }
+  /* the close: a cross in a round slot, then "Close" and the esc key cap, which fold away from the left
+     edge (300 ms; the words fade in the first 120 ms) after the first close of the session, 4 s, or a pull */
+  .pv-xi { position: relative; flex: none; display: grid; place-items: center; width: var(--glass-item, 40px); height: var(--glass-item, 40px); }
+  .pv-xi :global(.icon) { grid-area: 1 / 1; }
+  .pv-more { display: grid; grid-template-columns: 1fr; transition: grid-template-columns 300ms var(--ease-out); }
+  .pv-more-in { display: flex; align-items: center; gap: 10px; min-width: 0; overflow: hidden; transition: opacity 120ms var(--ease-ui); }
+  .pv-more-in > :last-child { margin-right: 14px; }
+  :global(html:not(.fine)) .pv-lb { margin-right: 16px; }
+  .pv-lb { color: var(--ink-2); }
+  .pv-kbd { font: 500 11px / 1 var(--f-sans); letter-spacing: 0.04em; color: var(--ink-3); padding: 4px 6px; border-radius: 5px; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12); }
+  :global(html:not(.fine)) .pv-kbd { display: none; }
+  .pv-caps.folded .pv-more { grid-template-columns: 0fr; }
+  .pv-caps.folded .pv-more-in { opacity: 0; }
+  /* the pull ring: drawn around the cross as a finger pulls the card down toward the close */
+  .pv-ring { position: absolute; inset: 0; width: 100%; height: 100%; rotate: -90deg; pointer-events: none; overflow: visible; }
+  .pv-ring circle { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: var(--pull, 0) 100; opacity: calc(var(--pull, 0) * 0.05); }
+  .pv-caps.armed .pv-ring circle { stroke: var(--gold-ink); }
+  /* arrival: the capsules rise 16 px and fade in after the card lands, the close first */
+  :global(html.motion) .pc-big .pv-glass { transition: opacity 420ms var(--ease-out), translate 420ms var(--ease-out); }
+  :global(html.motion) .pc-big .pv-glass + .pv-glass { transition-delay: 60ms; }
+  :global(html.motion) .pc-big:not(.settled) .pv-glass { opacity: 0; translate: 0 16px; }
+  /* the close cursor (fine pointers): over the dark space the pointer becomes a small glass disc with the
+     cross; a click there closes, as it always did */
+  .pv-cursor { position: fixed; z-index: 2; left: 0; top: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%;
+    display: grid; place-items: center; pointer-events: none; color: var(--ink);
+    background: var(--glass-bg, rgb(30 30 34 / 0.62)); -webkit-backdrop-filter: var(--glass-blur, blur(22px) saturate(1.5)); backdrop-filter: var(--glass-blur, blur(22px) saturate(1.5));
+    box-shadow: var(--glass-edge, inset 0 0 0 1px rgb(255 255 255 / 0.07)), var(--glass-shadow, 0 12px 40px -16px rgb(0 0 0 / 0.7));
+    opacity: 0; scale: 0.6; transition: opacity var(--t-quick) var(--ease-ui), scale var(--t-ui) var(--ease-out); }
+  .pv-cursor b { position: absolute; top: calc(100% + 6px); left: 50%; translate: -50% 0; padding: 4px 8px; border-radius: 999px;
+    font: 500 var(--fs-cap) / 1 var(--f-sans); color: var(--ink); white-space: nowrap;
+    background: var(--glass-bg, rgb(28 28 32 / .72)); -webkit-backdrop-filter: var(--glass-blur, blur(22px)); backdrop-filter: var(--glass-blur, blur(22px)); box-shadow: var(--glass-edge, none); }
+  .pc-big.cur-x .pv-cursor { opacity: 1; scale: 1; }
+  .pc-big.cur-x, .pc-big.cur-x .big-stage { cursor: none; }
+  :global(html.still) .pv-cursor { scale: 1; transition: opacity var(--t-quick) linear; }
 </style>
 <style is:global>
   /* the large card is cloned from a template, so its rules are global (scoped to .pc-big) */
@@ -277,74 +349,116 @@ const cards = list.map((p, i) => {
   .pc-big .big-front .pc-edge i { font-size: max(15px, calc(4.2 * var(--u))); }
   .pc-big .big-front .pc-edge b { font-size: max(12px, calc(2.8 * var(--u))); }
 
-  /* back: a card about the photograph (spec v2 §3.6.3); positions are fractions of the card */
-  .pc-big .big-back { color: var(--ink); background: linear-gradient(165deg, #1c1a17, #11100e 72%); }
-  .pc-big .big-back::after { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--grain) repeat; background-size: 64px; mix-blend-mode: overlay; }
-  .pc-big .bk-guil { width: 70%; left: -18%; bottom: -20%; }
-  .pc-big .bk-head { position: absolute; left: 7%; right: 7%; top: 6%; display: flex; justify-content: space-between; align-items: baseline; }
-  .pc-big .bk-head .mk { font: 400 max(17px, calc(5 * var(--u))) / 1 var(--f-serif); }
-  .pc-big .bk-head .lb { font: 500 max(12px, calc(2.4 * var(--u))) / 1 var(--f-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-  /* the stamp: a crop of the photograph on a cream backing, scalloped every 9 px */
-  .pc-big .bk-stamp { position: absolute; right: 7%; top: 13%; width: 22%; aspect-ratio: 4 / 5; background: #efe7d8;
-    -webkit-mask: radial-gradient(circle at 4.5px 4.5px, transparent 2.6px, #000 3px) -4.5px -4.5px / 9px 9px, linear-gradient(#000 0 0) 50% 50% / calc(100% - 9px) calc(100% - 9px) no-repeat;
-    mask: radial-gradient(circle at 4.5px 4.5px, transparent 2.6px, #000 3px) -4.5px -4.5px / 9px 9px, linear-gradient(#000 0 0) 50% 50% / calc(100% - 9px) calc(100% - 9px) no-repeat;
-    filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.4)); }
-  .pc-big .bk-stamp span { position: absolute; inset: 9%; background: var(--img) 50% 50% / cover; }
-  /* the postmark: rings with the place, the mark in the middle, the cancellation running left. Its user
-     units are twice the drawn size, so no text in it is ever below a browser's minimum font size */
-  .pc-big .bk-post { position: absolute; right: 22%; top: 26%; width: 64%; overflow: visible; fill: none; stroke: color-mix(in srgb, var(--gold-ink) 75%, transparent); stroke-width: 1; }
-  .pc-big .bk-post circle, .pc-big .bk-post .wv { vector-effect: non-scaling-stroke; }
-  .pc-big .bk-post .wv { stroke: color-mix(in srgb, var(--gold-ink) 60%, transparent); }
-  .pc-big .bk-post text { fill: color-mix(in srgb, var(--gold-ink) 85%, transparent); stroke: none; text-rendering: geometricPrecision; }
-  .pc-big .bk-post .rg { font: 500 13.2px / 1 var(--f-sans); letter-spacing: 3.2px; }
-  .pc-big .bk-post .mk { font: 400 30px / 1 var(--f-serif); }
-  .pc-big .bk-msg { position: absolute; left: 7%; width: 57%; top: 45%; }
-  .pc-big .bk-note { font: italic 400 max(17px, calc(5.4 * var(--u))) / 1.22 var(--f-serif); color: var(--ink); text-wrap: pretty; }
-  .pc-big .bk-sig { margin-top: 0.8em; font: italic 400 max(15px, calc(3.6 * var(--u))) / 1 var(--f-serif); color: var(--gold-ink); }
-  .pc-big .bk-div { position: absolute; left: 7%; right: 7%; top: 67%; height: 1px; background: linear-gradient(90deg, color-mix(in srgb, var(--gold-ink) 70%, transparent), color-mix(in srgb, var(--gold-ink) 25%, transparent)); }
-  .pc-big .bk-div i { position: absolute; left: 61.8%; top: -3px; width: 7px; height: 7px; background: var(--gold-ink); rotate: 45deg; }
-  .pc-big .bk-pal { position: absolute; left: 7%; top: 71%; width: 40%; }
-  .pc-big .bk-pal ul { display: flex; gap: calc(1.4 * var(--u)); }
-  .pc-big .bk-pal li { width: calc(6 * var(--u)); aspect-ratio: 1; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12); }
-  .pc-big .bk-pal .hex { margin-top: calc(1.6 * var(--u)); font: 500 max(12px, calc(2.3 * var(--u))) / 1.3 var(--f-sans); letter-spacing: 0.06em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-  .pc-big .bk-rules { position: absolute; right: 7%; top: 70%; width: 46%; }
-  .pc-big .bk-rules div { display: grid; grid-template-columns: 30% 1fr; align-items: baseline; padding: calc(1.4 * var(--u)) 0; border-bottom: 1px solid var(--line-2); }
-  .pc-big .bk-rules dt { font: 500 max(12px, calc(2.3 * var(--u))) / 1 var(--f-sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
-  .pc-big .bk-rules dd { font: 400 max(15px, calc(3.6 * var(--u))) / 1.2 var(--f-serif); color: var(--ink); }
-  .pc-big .bk-micro { position: absolute; left: 7%; right: 7%; bottom: 3.2%; overflow: hidden; white-space: nowrap; font: 500 max(7px, calc(1.6 * var(--u))) / 1 var(--f-sans); letter-spacing: 0.32em; color: color-mix(in srgb, var(--gold-ink) 34%, transparent); }
-  /* a landscape back: the same order in two columns; the left column is a study of the photograph's
-     colours (five bands, each as tall as its share of the picture), under the note when there is one */
+  /* ---------- the back (spec v3 §2): positions are fractions of the card, type in --u ---------- */
+  /* ground: the photograph's darkest colour in the card brown, a faint pool of its tone at the upper left;
+     ink: its tone toward cream, so each card writes in its own colour */
+  .pc-big .big-back { --ink-t: color-mix(in srgb, var(--tone) 78%, #f3e6cf); --rule-t: color-mix(in srgb, var(--ink-t) 22%, transparent);
+    color: var(--ink);
+    background:
+      radial-gradient(120% 70% at 22% 14%, color-mix(in srgb, var(--tone) 9%, transparent), transparent 70%),
+      linear-gradient(170deg, color-mix(in srgb, var(--deep) 55%, #1b1915), color-mix(in srgb, var(--deep) 40%, #0f0e0c) 80%); }
+  .pc-big .big-back > :not(.idc-turn, .idc-glare) { position: absolute; }
+  /* laid paper: chain lines every 6u and fine laid lines every 3 px, under the grain */
+  .pc-big .bk-paper { inset: 0; z-index: -1; pointer-events: none;
+    background:
+      repeating-linear-gradient(90deg, rgb(255 244 228 / 0.035) 0 1px, transparent 1px calc(6 * var(--u))),
+      repeating-linear-gradient(0deg, rgb(255 244 228 / 0.018) 0 1px, transparent 1px 3px); }
+  .pc-big .bk-paper::after { content: ""; position: absolute; inset: 0; background: var(--grain) repeat; background-size: 64px; mix-blend-mode: overlay; opacity: 0.9; }
+  .pc-big .bk-head { left: 8%; right: 8%; top: 5.6%; display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: calc(1.6 * var(--u)); border-bottom: 1px solid var(--rule-t); }
+  .pc-big .bk-head .mk { font: 400 max(17px, calc(4.6 * var(--u))) / 1 var(--f-serif); letter-spacing: -0.01em; }
+  .pc-big .bk-head .no { font: 500 max(11px, calc(2.1 * var(--u))) / 1 var(--f-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .pc-big .bk-head .no b { font-weight: 500; color: var(--ink-t); }
+  /* the plate: the drawing, faded at its edges so it never ends in a hard box */
+  .pc-big .bk-plate { left: 4%; right: 4%; top: 11.5%; height: 47%; color: var(--ink-t); opacity: 0.66; pointer-events: none;
+    -webkit-mask: radial-gradient(70% 66% at 50% 48%, #000 62%, transparent 100%); mask: radial-gradient(70% 66% at 50% 48%, #000 62%, transparent 100%); }
+  .pc-big .bk-plate svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .pc-big .bk-plate .f { opacity: 0.55; }
+  .pc-big .bk-plate .h { opacity: 0.4; }
+  .pc-big .bk-plate .d { stroke-dasharray: 2 5; }
+  /* the stamp: the photograph set into the drawing, on a cream mount with a dashed keyline */
+  .pc-big .bk-stamp { right: 8%; top: 15.5%; width: 23%; aspect-ratio: 4 / 5; padding: calc(1.1 * var(--u)); background: #efe6d6; rotate: 2deg;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 0.45), 0 10px 24px -10px rgb(0 0 0 / 0.7);
+    translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * 4px); }
+  .pc-big .bk-stamp::before { content: ""; position: absolute; inset: calc(0.5 * var(--u)); border: 1px dashed rgb(28 24 18 / 0.28); pointer-events: none; }
+  .pc-big .bk-stamp i { display: block; width: 100%; height: 100%; background: var(--img) var(--crop, 50% 50%) / cover; }
+  /* the ring: one small postmark over the stamp's lower corner, the place on it, the mark inside */
+  .pc-big .bk-ring { right: 3.5%; top: 34%; width: 16%; aspect-ratio: 1; overflow: visible; fill: none; stroke: var(--ink-t); stroke-width: 1; opacity: 0.75; pointer-events: none; }
+  .pc-big .bk-ring circle { vector-effect: non-scaling-stroke; }
+  .pc-big .bk-ring .in { stroke-dasharray: 1 3; }
+  .pc-big .bk-ring text { fill: var(--ink-t); stroke: none; font: 500 9.5px / 1 var(--f-sans); letter-spacing: 2.4px; text-rendering: geometricPrecision; }
+  .pc-big .bk-ring .mk { font: 400 22px / 1 var(--f-serif); letter-spacing: 0; }
+  /* the message: the note, then the signature with one flourish */
+  .pc-big .bk-msg { left: 8%; right: 14%; top: 60%; }
+  .pc-big .bk-note { font: italic 400 max(17px, calc(5.4 * var(--u))) / 1.24 var(--f-serif); color: var(--ink); text-wrap: balance; }
+  .pc-big .bk-sig { position: relative; display: inline-block; margin-top: calc(2.6 * var(--u)); font: italic 400 max(18px, calc(6.2 * var(--u))) / 1 var(--f-serif); color: var(--ink-t); }
+  .pc-big .bk-sig svg { position: absolute; left: -8%; bottom: -62%; width: 240%; height: 90%; overflow: visible; fill: none; stroke: var(--ink-t); stroke-width: 1.2; stroke-linecap: round; opacity: 0.8; }
+  /* the colophon: one rule, three columns (two without a place) */
+  .pc-big .bk-col { left: 8%; right: 8%; bottom: 8.4%; display: grid; grid-template-columns: 0.8fr 0.8fr 1.5fr; gap: calc(3 * var(--u)); padding-top: calc(2 * var(--u)); border-top: 1px solid var(--rule-t); }
+  .pc-big .one-place .bk-col { grid-template-columns: 1fr 1.6fr; }
+  .pc-big .bk-col dt { font: 500 max(10px, calc(1.8 * var(--u))) / 1 var(--f-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
+  .pc-big .bk-col dd { margin-top: calc(1.2 * var(--u)); font: 400 max(14px, calc(3.3 * var(--u))) / 1.15 var(--f-serif); color: var(--ink); }
+  .pc-big .bk-col .bar { display: flex; height: calc(1.4 * var(--u)); margin-top: calc(0.6 * var(--u)); border-radius: 1px; overflow: hidden; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06); }
+  .pc-big .bk-col .bar i { flex: var(--s) 0 0; background: var(--c); }
+  .pc-big .bk-col .hex { display: block; margin-top: calc(1 * var(--u)); white-space: nowrap; font: 500 max(10px, calc(1.7 * var(--u))) / 1 var(--f-sans); letter-spacing: 0.04em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .pc-big .bk-micro { left: 8%; right: 8%; bottom: 3.4%; overflow: hidden; white-space: nowrap; font: 500 max(7px, calc(1.4 * var(--u))) / 1 var(--f-sans); letter-spacing: 0.34em; color: color-mix(in srgb, var(--ink-t) 32%, transparent); }
+  /* no note: the plate takes the message's place; no drawing: the message moves up (no placeholder) */
+  .pc-big .no-note .bk-plate { height: 58%; }
+  .pc-big .no-note .bk-msg { top: 74%; }
+  .pc-big .no-drawing .bk-msg { top: 40%; }
+  /* landscape: the plate fills the left half; the right column holds the stamp, the message, five
+     colour bands (each as wide as its share) and the colophon */
   .pc-big .bk-study { display: none; }
-  .pc-big .big.land .bk-study { display: grid; position: absolute; left: 7%; top: 22%; bottom: 14%; width: 38%; grid-template-rows: var(--rows); gap: 3px; }
-  .pc-big .big.land .bk-msg + .bk-study { top: 52%; }
-  .pc-big .bk-study i { display: flex; align-items: flex-end; justify-content: space-between; padding: 0 calc(1.4 * var(--u)) calc(1 * var(--u)); border-radius: 2px; background: var(--c);
-    font: 500 max(12px, calc(2.1 * var(--u))) / 1 var(--f-sans); font-style: normal; letter-spacing: 0.06em; color: var(--t); font-variant-numeric: tabular-nums; }
-  .pc-big .big.land .bk-pal { display: none; }
-  .pc-big .big.land .bk-guil { width: 34%; left: -8%; bottom: -12%; }
-  .pc-big .big.land .bk-stamp { width: 14%; top: 15%; }
-  .pc-big .big.land .bk-post { width: 44%; right: 18%; top: 24%; }
-  .pc-big .big.land .bk-msg { top: 22%; width: 38%; }
-  .pc-big .big.land .bk-div { left: 54%; top: 62%; }
-  .pc-big .big.land .bk-rules { left: 54%; right: 7%; width: auto; top: 67%; }
+  .pc-big .big.land .bk-head { left: 5.5%; right: 5.5%; top: 7%; }
+  .pc-big .big.land .bk-plate { left: 3%; right: 46%; top: 15%; height: auto; bottom: 9%; }
+  .pc-big .big.land .bk-stamp { right: 5.5%; top: 19%; width: 15%; }
+  .pc-big .big.land .bk-ring { right: 17%; top: 31%; width: 12%; }
+  .pc-big .big.land .bk-msg { left: 57%; right: 24%; top: 21%; }
+  .pc-big .big.land .no-note .bk-msg { top: 24%; }
+  .pc-big .big.land .no-note .bk-sig { font-size: max(22px, calc(8 * var(--u))); }
+  .pc-big .big.land .bk-study { display: grid; left: 57%; right: 5.5%; top: 46%; height: 26%; grid-template-columns: var(--cols); gap: 3px; }
+  .pc-big .big.land .bk-study i { border-radius: 1px; background: var(--c); }
+  .pc-big .big.land .bk-col { left: 57%; right: 5.5%; bottom: 11%; grid-template-columns: 1fr 1.6fr; }
+  .pc-big .big.land .bk-col .bar { display: none; }
+  .pc-big .big.land .bk-micro { left: 5.5%; right: 5.5%; }
+
+  /* the back's motion (spec v3 §2.5). card3d.ts adds .is-drawn once the back first comes face-on and keeps
+     it for the view; .is-back-on while it faces the viewer. Construction fades in, then the lines draw
+     on, then the fine lines and the hatching; the stamp lands 200 ms after, then the ring; the flourish
+     draws last, and again (alone, sooner) on every later turn to the back. */
+  html.motion .pc-big .bk-plate path[pathLength] { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+  html.motion .pc-big .bk-plate .d { opacity: 0; }
+  html.motion .pc-big .bk-stamp { opacity: 0; scale: 1.04; rotate: 4deg; }
+  html.motion .pc-big .bk-ring { opacity: 0; rotate: -12deg; }
+  html.motion .pc-big .bk-sig path { stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+  html.motion .pc-big .is-drawn .bk-plate path[pathLength] { stroke-dashoffset: 0; transition: stroke-dashoffset 1400ms var(--ease-draw) 120ms; }
+  html.motion .pc-big .is-drawn .bk-plate path.f { transition-delay: 300ms; }
+  html.motion .pc-big .is-drawn .bk-plate path.h { transition-delay: 520ms; transition-duration: 1500ms; }
+  html.motion .pc-big .is-drawn .bk-plate .d { opacity: 1; transition: opacity 500ms var(--ease-out); }
+  html.motion .pc-big .is-drawn .bk-stamp { opacity: 1; scale: 1; rotate: 2deg; transition: opacity 240ms var(--ease-out) 320ms, scale 380ms var(--ease-settle) 320ms, rotate 380ms var(--ease-settle) 320ms; }
+  html.motion .pc-big .is-drawn .bk-ring { opacity: 0.75; rotate: 0deg; transition: opacity 300ms var(--ease-out) 560ms, rotate 520ms var(--ease-out) 560ms; }
+  html.motion .pc-big .is-drawn.is-back-on .bk-sig path { stroke-dashoffset: 0; transition: stroke-dashoffset 600ms var(--ease-draw) var(--fd, 1500ms); }
+  .pc-big .no-drawing { --fd: 300ms; }
 
   /* the morph: the small card's face and the large card share one name while it grows */
   .pc.is-hero .pc-mount, .pc-big .big.is-hero { view-transition-name: pc-hero; }
   ::view-transition-group(pc-hero) { animation-duration: 640ms; animation-timing-function: var(--ease-path); }
+  html.pc-vt::view-transition-group(*), html.pc-vt::view-transition-old(*), html.pc-vt::view-transition-new(*) { animation-duration: 640ms; }
   ::view-transition-old(pc-hero), ::view-transition-new(pc-hero) { height: 100%; object-fit: cover; }
 
   @media (max-width: 699.98px) {
     .pc-big .big.port { height: auto; width: min(calc(100vw - 32px), calc(76svh * var(--ratio))); }
     .pc-big .big.land { width: calc(100vw - 32px); }
-    .pc-big .bk-msg { width: 86%; top: 42%; }
-    .pc-big .bk-note { font-size: 17px; }
-    .pc-big .bk-pal { top: 71%; width: 86%; }
-    .pc-big .bk-rules { left: 7%; right: 7%; width: auto; top: 81%; }
-    .pc-big .bk-rules div { padding: 4px 0; }
-    .pc-big .big.land .bk-msg { top: 22%; width: 40%; }
-    .pc-big .big.land .bk-note { font-size: 15px; }
-    .pc-big .big.land .bk-study i span { display: none; }
+    /* the ring's lettering would fall under 5 px on a phone card: the ring keeps its circles and the mark */
+    .pc-big .bk-ring .rg { display: none; }
+    /* the landscape back at 358 x 298: no ring, City alone in the colophon (the bands show the colours) */
+    .pc-big .big.land .bk-ring { display: none; }
+    .pc-big .big.land .bk-col { grid-template-columns: 1fr; bottom: 12%; }
+    .pc-big .big.land .bk-col .pal { display: none; }
+    .pc-big .big.land .bk-study { top: 44%; height: 22%; }
+    .pc-big .big.land .bk-msg { top: 22%; }
   }
-  /* reduced motion: the turn is a crossfade, no burn-in */
+  /* reduced motion: the turn is a crossfade, no burn-in, the back drawn at once */
   html.still .pc-big .idc-card { transform: none !important; }
   html.still .pc-big .big-face { backface-visibility: visible; transition: opacity 150ms linear; }
   html.still .pc-big .big-back { transform: none; }

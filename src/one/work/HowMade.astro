@@ -1,0 +1,75 @@
+---
+/* "How it's made" as the cutaway (spec v3 §6, review row T11: the tilted screenshot crop was "a bad
+   object"). A line drawing of the product's layers in the engraved language of the project's scene: thin
+   isometric slabs stacked into an exploded diagram, joined by dashed construction lines at their corners,
+   each numbered. The layers are data (`how.layers`: a name and the indices of its items), so the drawing
+   is built here from the content and adds no facts. The list stays the accessible content: on wide windows
+   its entries stand left and right of the drawing with a short leader to their slab; on phones the drawing
+   stands above the numbered list.
+   Motion (work.css, a pure function of the section's view progress --hp, so it runs both ways): the slabs
+   draw from the bottom one up, then separate from a closed stack, then the labels and leaders arrive.
+   Without scroll timelines, with reduced motion and without JavaScript --hp stays 1: drawn and apart.
+   Without layers the section is the list alone, with no picture. */
+interface Props { items: string[]; layers?: { name: string; items: number[] }[]; id: string }
+const { items, layers, id } = Astro.props;
+
+/* the drawing, in user units = CSS px at the desktop width (the phone scales the whole figure) */
+const W = 360, A = 170, B = 62, T = 6, P = 76, PAD = 14;   // the closed pitch (10 px) lives in work.css
+const n = layers?.length ?? 0;
+const H = 2 * PAD + 2 * B + T + (n - 1) * P;
+const mid = PAD + B + ((n - 1) * P) / 2;
+const x0 = W / 2 - A, x1 = W / 2 + A, cx = W / 2;
+const face = `M${x0} 0L${cx} ${-B}L${x1} 0L${cx} ${B}Z`;
+const slab = `M${x0} 0V${T}L${cx} ${B + T}L${x1} ${T}V0`;
+const inner = (k: number) => `M${cx - A * k} 0L${cx} ${-B * k}L${cx + A * k} 0L${cx} ${B * k}Z`;
+/* one engraved texture per slab, so the layers read as different things: rows, a grid, rings. A point
+   on the face is L + u (Top - L) + v (Bottom - L), u and v from 0 to 1. */
+const pt = (u: number, v: number) => `${(x0 + A * (u + v)).toFixed(1)} ${(B * (v - u)).toFixed(1)}`;
+function hatch(i: number): string {
+  const r: string[] = [];
+  const kind = i % 3;
+  if (kind === 0) for (const v of [0.3, 0.42, 0.54, 0.66]) r.push(`M${pt(0.22, v)}L${pt(v > 0.5 ? 0.62 : 0.78, v)}`);
+  if (kind === 1) for (const t of [0.3, 0.5, 0.7]) r.push(`M${pt(t, 0.22)}L${pt(t, 0.78)}`, `M${pt(0.22, t)}L${pt(0.78, t)}`);
+  if (kind === 2) for (const k of [0.16, 0.3, 0.44]) r.push(`M${cx - A * k} 0A${A * k} ${B * k} 0 1 0 ${cx + A * k} 0A${A * k} ${B * k} 0 1 0 ${cx - A * k} 0`);
+  return r.join('');
+}
+const used = new Set(layers?.flatMap((l) => l.items) ?? []);
+const rest = items.filter((_, i) => !used.has(i));
+const two = (k: number) => String(k + 1).padStart(2, '0');
+---
+{layers && n >= 2 ? (
+  <div class="cut" style={`--n: ${n}; --h: ${H}px; --mid: ${mid}px`}>
+    <svg class="cut-art" viewBox={`0 0 ${W} ${H}`} width={W} height={H} fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      {/* construction: the stack's axis and the dashed lines through the slabs' outer corners */}
+      <g class="cut-con">
+        <path class="d" d={`M${cx} ${-B - 24}V${(n - 1) * P + B + T + 24}`} />
+        <path class="d" d={`M${x0} 0V${(n - 1) * P}M${x1} 0V${(n - 1) * P}M${cx} ${B + T}V${(n - 1) * P + B + T}`} />
+      </g>
+      {/* the slabs, the lowest first so each one above covers the one under it */}
+      {layers.map((_, j) => {
+        const i = n - 1 - j;
+        return (
+          <g class="pl" style={`--i: ${i}; --k: ${j}; --o: ${i - (n - 1) / 2}`}>
+            <path class="pl-slab" pathLength="1" d={slab} />
+            <path class="pl-fill" d={face} />
+            <path class="pl-face" pathLength="1" d={face} />
+            <path class="pl-in d" d={inner(0.82)} />
+            <path class="pl-h h" pathLength="1" d={hatch(i)} />
+            <text class="pl-n" x={cx} y={B - 16} text-anchor="middle">{two(i)}</text>
+          </g>
+        );
+      })}
+    </svg>
+    <ol class="cut-list" aria-labelledby={id}>
+      {layers.map((l, i) => (
+        <li class:list={['cut-i', i % 2 ? 'cut-r' : 'cut-l']} style={`--y: ${PAD + B + i * P}px`}>
+          <span class="cut-name label"><span class="cut-n" aria-hidden="true">{two(i)}</span>{l.name}</span>
+          <ul class="cut-items">{l.items.map((k) => <li>{items[k]}</li>)}</ul>
+        </li>
+      ))}
+    </ol>
+    {rest.length > 0 && <ul class="how-list cut-rest">{rest.map((x) => <li>{x}</li>)}</ul>}
+  </div>
+) : (
+  <ul class="how-list">{items.map((x) => <li>{x}</li>)}</ul>
+)}
