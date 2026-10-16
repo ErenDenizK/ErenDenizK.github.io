@@ -8,8 +8,9 @@ when a round closes, copy this file to `docs/history/` and start a fresh one. Cl
 ## Where we are (2026-10-16)
 
 - **The owner reviewed `/lab/one/`** (2026-10-16): every point is a row in
-  [`docs/feedback/2026-10-16-lab-one-review.md`](feedback/2026-10-16-lab-one-review.md); round 2 works
-  through it. Work now lands on `dev` through pull requests (CLAUDE.md).
+  [`docs/feedback/2026-10-16-lab-one-review.md`](feedback/2026-10-16-lab-one-review.md); round 2 is
+  built (2026-10-16): 19 rows built, 13 partly, 2 open (G5 token audit, G7 parity follow-up); see the
+  tracker's Status column and `docs/research/2026-10-round2-critique.md`. Work now lands on `dev` through pull requests (CLAUDE.md).
 
 - **The new Home is on `/lab/one/`** (2026-10-16): built by the two-page line; the live site is
   unchanged until the owner approves it.
