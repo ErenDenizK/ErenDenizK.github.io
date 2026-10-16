@@ -46,7 +46,11 @@
      integrator (the pointer's speed x 0.35, at most 140 px/s; 60 px/s away from the entry side when the
      pointer barely moves). It stays under SPIN_FROM, so it never spins: card and lanyard sway a few
      degrees together and settle. One push per entry, none while held, none without the rope (touch,
-     reduced motion). */
+     reduced motion).
+   - the tilting card (a postcard in its large view, spec v2 §3.6.4, rows P2 and P3) can be swung by a
+     mouse drag: the turn follows the hand on a rubber band (at most 18 deg across, 12 deg up and down)
+     and the release springs back on the same ui spring as the lean, so letting go animates as smoothly
+     as picking up. A drag is not a click: it does not turn the card. */
 import { mq, motionOK } from '../../scripts/env';
 
 type Spring = { x: number; v: number; to: number };
@@ -399,9 +403,45 @@ function setup(el: HTMLElement) {
     raf = requestAnimationFrame(frame);
   }
 
+  /* round two: a mouse drag swings the tilting card (see the header) */
+  let td: { id: number; x: number; y: number; moved: boolean } | null = null;
+  if (!hang) {
+    body.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || !canTilt()) return;
+      td = { id: e.pointerId, x: e.clientX, y: e.clientY, moved: false };
+    });
+    el.addEventListener('pointermove', (e) => {
+      if (!td || e.pointerId !== td.id) return;
+      const dx = e.clientX - td.x, dy = e.clientY - td.y;
+      if (!td.moved) {
+        if (Math.hypot(dx, dy) < 5) return;
+        td.moved = true;
+        el.setPointerCapture(e.pointerId);
+        el.classList.add('is-held');
+      }
+      ty.to = band(dx * 0.09, 18);
+      tx.to = -band(dy * 0.07, 12);
+      gl.to = 1;
+      kick();
+    });
+    const tend = (e: PointerEvent) => {
+      if (!td || e.pointerId !== td.id) return;
+      if (td.moved) {
+        tx.to = ty.to = 0;
+        suppress = true;
+        setTimeout(() => { suppress = false; }, 0);
+        el.classList.remove('is-held');
+      }
+      td = null;
+      kick();
+    };
+    el.addEventListener('pointerup', tend);
+    el.addEventListener('pointercancel', tend);
+  }
+
   /* hover: lean toward the pointer (fine pointers only) */
   el.addEventListener('pointermove', (e) => {
-    if (e.pointerType !== 'mouse' || drag || spinning || !canTilt()) return;
+    if (e.pointerType !== 'mouse' || drag || td || spinning || !canTilt()) return;
     takeOver();
     const r = body.getBoundingClientRect();
     const nx = clamp((e.clientX - (r.left + r.width / 2)) / (r.width / 2), -1, 1);

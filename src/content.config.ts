@@ -275,6 +275,8 @@ const site = defineCollection({
       postcard: z.object({
         of: z.string(), turn: z.string(), back: z.string(), head: z.string(), credit: z.string(),
         hint: z.object({ fine: z.string(), touch: z.string() }),
+        /** the line under the table of postcards on the two-page Home (spec v2 §3.6) */
+        table: z.object({ fine: z.string(), touch: z.string() }).optional(),
       }),
       chapters: z.array(z.object({
         /** the chapter's anchor: about/#<id> */

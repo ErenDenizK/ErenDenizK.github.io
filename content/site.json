@@ -263,6 +263,10 @@
       "hint": {
         "fine": "Click to turn it over, or pick it up and let go",
         "touch": "Tap to turn it over"
+      },
+      "table": {
+        "fine": "Pick one up, or click it to look closer",
+        "touch": "Tap one to look closer"
       }
     }
   }
