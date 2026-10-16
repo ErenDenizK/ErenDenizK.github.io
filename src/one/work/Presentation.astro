@@ -25,14 +25,14 @@ const titleId = `${m.slug}-${mode}-title`;
     <div class="pg-grain"></div>
   </div>
   <div class="pb" data-vt="body">
-    <header class="ph">
-      <div class="ph-stage">
+    <header class="pt">
+      <div class="pt-stage">
         {sides.map((s, k) => (
           <div class:list={['side', k ? 'side-r' : 'side-l']} data-vt={`side-${k + 1}`}>
             <Print m={m} s={s} i={k + 1} n={m.prints.length} sizes="360px" />
           </div>
         ))}
-        {front && <Obj o={m.obj} sizes="360px" cls="ph-obj" />}
+        {front && <Obj o={m.obj} sizes="360px" cls="pt-obj" />}
         <figure class:list={['hero', { 'hero-obj': !front }]} data-vt="shot" data-phone-frame={front?.phone ? '' : undefined}>
           {front
             ? <Shot s={front} sizes={HERO} phoneSizes="calc(100vw - 32px)" eager={mode === 'page'} cls="hero-img" />
@@ -45,7 +45,7 @@ const titleId = `${m.slug}-${mode}-title`;
           )}
         </figure>
       </div>
-      <div class="ph-head">
+      <div class="pt-head">
         <div class="hush" aria-hidden="true"></div>
         <p class="p-meta label" data-vt="meta">{m.metaLong}</p>
         <h1 class="p-title" id={titleId} tabindex="-1" data-vt="title"><span class:list={['wm', m.wmClass]} style={m.wordmark} lang="en">{m.title}</span></h1>

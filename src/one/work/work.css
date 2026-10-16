@@ -171,8 +171,8 @@ html.js:not(.still) .work .pr-shade { will-change: opacity; }
 .pres :is(.facts, .p-outcome, .st-txt, .p-nums, .p-quote, .p-next-title)::before { content: ""; position: absolute; inset: -60px -100px; z-index: -1; pointer-events: none;
   background: radial-gradient(closest-side, var(--hush), rgb(18 18 20 / 0)); }
 
-.ph { position: relative; padding-top: calc(var(--bar-h) + 20px); text-align: center; }
-.ph-stage { position: relative; width: var(--hero-w); margin: 0 auto; }
+.pt { position: relative; padding-top: calc(var(--bar-h) + 20px); text-align: center; }
+.pt-stage { position: relative; width: var(--hero-w); margin: 0 auto; }
 .hero { position: relative; z-index: 2; aspect-ratio: 16 / 10; border-radius: var(--r-screen); overflow: hidden; background: #0b0b0d;
   box-shadow: var(--e-lift), 0 0 0 1px rgb(255 255 255 / .07), 0 0 160px -40px color-mix(in srgb, var(--a1) 45%, transparent); }
 .hero picture { position: absolute; inset: 0; }
@@ -186,8 +186,8 @@ html.js:not(.still) .work .pr-shade { will-change: opacity; }
 .side-r { left: 92.5%; rotate: 5deg; }
 .side .pr { --shade: .4; }
 .side .pr-mount { background: var(--raised); }
-.ph-obj { position: absolute; z-index: 0; width: 42%; aspect-ratio: 1; right: -24%; top: -18%; rotate: 8deg; opacity: .9; }
-.ph-head { position: relative; z-index: 3; max-width: calc(var(--w-text) + 2 * var(--gut)); margin: var(--s-6) auto 0; padding: 0 var(--gut); }
+.pt-obj { position: absolute; z-index: 0; width: 42%; aspect-ratio: 1; right: -24%; top: -18%; rotate: 8deg; opacity: .9; }
+.pt-head { position: relative; z-index: 3; max-width: calc(var(--w-text) + 2 * var(--gut)); margin: var(--s-6) auto 0; padding: 0 var(--gut); }
 .p-title { width: fit-content; margin: var(--s-3) auto; font-size: var(--fs-title); line-height: 1; font-weight: inherit; outline: none; }
 .p-title .wm { color: var(--wm-c, var(--ink)); }
 .p-promise { width: fit-content; max-width: 30em; margin: 0 auto; font: 400 var(--fs-lede)/1.5 var(--f-sans); letter-spacing: -.005em; color: var(--ink-2); text-wrap: balance; }
@@ -270,15 +270,15 @@ html.js:not(.still) .work .pr-shade { will-change: opacity; }
 
 @media (max-width: 699.98px) {
   .pres { --hero-w: calc(100vw - 32px); }
-  .ph { padding-top: calc(var(--bar-h) + 12px); }
-  .side, .ph-obj { display: none; }
+  .pt { padding-top: calc(var(--bar-h) + 12px); }
+  .side, .pt-obj { display: none; }
   /* on a phone the text column is the whole width: the pools keep to the corners */
   .pg-p1 { transform: translate(0, -44vh) scale(1.4, 1.2); }
   .pg-p2 { transform: translate(-58vw, 44vh) scale(1, 1.1); }
   .pg-p3 { transform: translate(58vw, -10vh) scale(.9, 1.1); }
   .hero[data-phone-frame] { aspect-ratio: 1; }
   .hero[data-phone-frame] :is(.hero-img, .pr-img) { object-position: var(--pfx, 50%) var(--pfy, 0%); }
-  .ph-head { margin-top: var(--s-5); }
+  .pt-head { margin-top: var(--s-5); }
   .p-title { margin: var(--s-2) auto; }
   .facts { grid-template-columns: 1fr 1fr; max-width: 390px; gap: var(--s-4) var(--s-5); margin-top: var(--s-6); }
   .facts div:nth-child(odd):last-child { grid-column: 1 / -1; }

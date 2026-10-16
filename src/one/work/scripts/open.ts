@@ -42,7 +42,7 @@ export function initOpen(sec: HTMLElement, deck: Deck) {
     const set = (sel: string, n: string) => name(l.querySelector(sel), on ? n : '');
     set('[data-vt="paper"]', 'paper'); set('[data-vt="shot"]', 'shot'); set('[data-vt="body"]', 'body');
     set('[data-vt="meta"]', 'meta'); set('[data-vt="title"]', 'title'); set('[data-vt="promise"]', 'promise');
-    if (!phone()) { set('[data-vt="side-1"]', 'side-1'); set('[data-vt="side-2"]', 'side-2'); set('.ph-obj', 'obj'); }
+    if (!phone()) { set('[data-vt="side-1"]', 'side-1'); set('[data-vt="side-2"]', 'side-2'); set('.pt-obj', 'obj'); }
   }
 
   /* the layer from the project's template; the hero and the flanking prints show exactly the deck's
