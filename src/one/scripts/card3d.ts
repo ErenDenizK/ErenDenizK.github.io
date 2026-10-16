@@ -151,6 +151,11 @@ function setup(el: HTMLElement) {
   const ropeUp = [...(rope?.querySelectorAll<SVGPathElement>('[data-rope-up]') ?? [])];
   const textStops = [...(rope?.querySelectorAll<SVGStopElement>('[data-rope-tstop]') ?? [])];
   const hold = el.querySelector<HTMLElement>('.idc-hold');
+  /* the floor shadow (round five, round-four critique §6): it stayed a full card-sized dark block while the
+     card turned, so the frame where the card stood edge-on showed a thin card beside a dark soft rectangle.
+     It now narrows with the card's projected width (|cos yaw|, never under 22 %) and lightens with it. */
+  const shade = el.querySelector<HTMLElement>('.idc-shadow');
+  let shadeW = -1;
 
   const still = () => mq.reduce.matches;
   const canTilt = () => mq.fine.matches && !still();
@@ -373,6 +378,10 @@ function setup(el: HTMLElement) {
     const pitch = tx.x;
     body!.style.transform = still() ? '' : `rotateX(${pitch.toFixed(2)}deg) rotateY(${yaw.toFixed(2)}deg)`;
     showFaces(yaw);
+    if (shade) {
+      const w = still() ? 1 : 0.22 + 0.78 * Math.abs(Math.cos((yaw * Math.PI) / 180));
+      if (Math.abs(w - shadeW) > 0.004) { shadeW = w; shade.style.transform = w > 0.996 ? '' : `scaleX(${w.toFixed(3)})`; shade.style.opacity = w > 0.996 ? '' : (0.35 + 0.65 * w).toFixed(3); }
+    }
     if (hold && !live) hold.style.transform = still() || Math.abs(ep.x) < 0.005 ? '' : `rotate(${ep.x.toFixed(3)}deg)`;
     if (live) {
       const c = pts[SEG];
