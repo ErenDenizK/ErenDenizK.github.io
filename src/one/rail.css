@@ -1,99 +1,159 @@
-/* The rail's sheet on the two-page site (spec v3 §7, review row T9: "grows from the side instead of a
-   small window, blurs the background slightly"). Only the opt-in `sheet` of scripts/rail.ts creates the
-   classes styled here, and only layouts/One.astro loads this file, so the live site's rail is unchanged.
-   A full-height glass sheet grows from the right edge over a light veil (clip-path and transform only, so
-   nothing is laid out again while it moves); the rail stays where it is and becomes the sheet's spine:
-   the beads spread to one row each and every title stands level with its bead. The hover titles of
-   src/styles/rail.css remain the small state; the sheet is the click (or tap) state. */
+/* The rail's hold-to-scrub and bloom on the two-page Home (review row V6; scripts/bloom.ts; the numbers in
+   docs/design/rail-bloom.md). The beads keep the look of src/styles/rail.css. Only bloom.ts sets
+   html.rail-bloom and creates the .bl-* parts, and only layouts/One.astro loads this file, so the live
+   site's rail is unchanged. There is no panel and no box: the names stand on the page, which blurs and
+   darkens on a gradient from the right edge. */
 
-.rail-veil, .rail-glass { position: fixed; pointer-events: none; }
-.rail-veil {
-  inset: 0; z-index: 59;
-  background: rgb(18 18 20 / 0.14);
-  -webkit-backdrop-filter: blur(3px) saturate(0.9); backdrop-filter: blur(3px) saturate(0.9);
-  opacity: 0; transition: opacity var(--t-ui) var(--ease-ui);
+/* ---------- the column: one 44 px button over the beads, for every pointer ---------- */
+html.rail-bloom .rail.rail { width: 44px; clip-path: none; transition: none; }
+html.rail-bloom .rail:is(.is-bloom, .is-scrub) { z-index: 63; }
+html.rail-bloom .rail .rail-track-hit { display: none; }
+html.rail-bloom .rail.rail .rail-btn {
+  display: block; position: absolute; top: 0; bottom: 0; right: 0; z-index: 3;
+  width: 44px; min-height: 44px; padding: 0; margin: 0;
+  background: none; border: 0; border-radius: 12px 0 0 12px; color: inherit; cursor: pointer;
+  /* a vertical swipe on the rail still scrolls the page; a held finger takes it (bloom.ts) */
+  touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
 }
-.rail-veil.on { opacity: 1; pointer-events: auto; }
-.rail-glass {
-  z-index: 61; top: 0; right: 0; bottom: 0; width: 340px;
-  display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end; gap: 10px;
-  padding: 0 44px calc(32px + env(safe-area-inset-bottom)) 32px;
-  border-radius: var(--r-sheet) 0 0 var(--r-sheet);
-  /* light gathering toward the rail: the glass deepens from its open edge to the spine */
-  background: linear-gradient(90deg, rgb(30 30 34 / 0), rgb(30 30 34 / 0.5) 30%), var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
-  box-shadow: inset 1px 0 0 rgb(255 255 255 / 0.07), -40px 0 80px -40px rgb(0 0 0 / 0.7);
-  clip-path: inset(0 0 0 100% round var(--r-sheet) 0 0 var(--r-sheet));
-  transition: clip-path 300ms var(--ease-ui) 40ms, visibility 0s linear 340ms;
-  visibility: hidden;
+html.rail-bloom .rail .rail-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+/* the beads under a resting mouse lengthen, as on the live rail */
+html.rail-bloom .rail:has(.rail-btn:hover) .rail-m:not(.on, .done) { width: 10px; background: var(--ink-3); }
+/* focus on the button never spreads the beads (the live rail spreads them for its hover titles) */
+html.rail-bloom.rail-on .rail:is(.is-open, :focus-within):not(.is-scrub) .rail-m:not(.on, .done) { margin: 1px 0; }
+html.rail-bloom.rail-on .rail:is(.is-open, :focus-within):not(.is-scrub) .rail-m:is(.on, .done) { margin: 0; }
+html.rail-bloom.rail-on .rail:is(.is-open, :focus-within):not(.is-scrub) .rail-m.on { height: var(--bead-on); }
+/* a picture under the column hides the beads on touch (rail.css), never while they are in use */
+html.rail-bloom .rail:is(.is-bloom, .is-scrub) .rail-track { opacity: 1; }
+
+/* ---------- hold to scrub: the column breathes open to one --slot per section, on the beads' spring ---------- */
+html.rail-bloom .rail.rail.is-scrub .rail-track { gap: 0; }
+html.rail-bloom .rail.rail.is-scrub .rail-m { margin: calc((var(--slot) - 2px) / 2) 0; }
+html.rail-bloom .rail.rail.is-scrub .rail-m.done { margin: calc((var(--slot) - 4px) / 2) 0; }
+/* the thumb is the only line while scrubbing: the current bead (which follows the page, a beat behind)
+   becomes a dot in its light, so two lines never stand side by side */
+html.rail-bloom .rail.rail.is-scrub .rail-m.on { width: 4px; height: 4px; border-radius: 2px; margin: calc((var(--slot) - 4px) / 2) 0; background: var(--ar); }
+html.rail-bloom .rail.rail.is-scrub .rail-m.on::after { opacity: 0; }
+/* the tick as the thumb passes a bead: a short swell, the visual half of the detent */
+.rail-m.tick { animation: bl-tick 280ms var(--ease-out); }
+@keyframes bl-tick { 30% { scale: 1.9 1.6; background-color: var(--ink); } }
+
+/* ---------- the names: absolutely placed on the arc by bloom.ts (--r, --t, --h) ---------- */
+html.rail-bloom .rail.rail .rail-sheet {
+  display: block; position: absolute; inset: 0; margin: 0; translate: none;
+  width: auto; max-width: none; max-height: none; overflow: visible;
+  background: none; box-shadow: none; border-radius: 0; visibility: hidden; pointer-events: none;
 }
-.rail-glass.on {
-  pointer-events: auto; visibility: visible;
-  clip-path: inset(0 0 0 0 round var(--r-sheet) 0 0 var(--r-sheet));
-  transition: clip-path var(--t-sheet) var(--kl-settle-ease, var(--ease-out)), visibility 0s;
+html.rail-bloom .rail.rail.is-bloom .rail-sheet { visibility: visible; }
+html.rail-bloom .rail.rail .rail-sheet::before, html.rail-bloom .rail.rail .rail-foot { display: none; }
+html.rail-bloom .rail.rail .rail-list { position: absolute; inset: 0; padding: 0; margin: 0; }
+html.rail-bloom .rail.rail .rail-list > li { position: absolute; right: var(--r, 0); top: var(--t, 0); height: var(--h, 40px); margin: 0; }
+html.rail-bloom .rail.rail .rail-i {
+  height: 100%; padding: 0 0 0 20px; gap: 16px; justify-content: flex-end; box-shadow: none; pointer-events: auto;
+  font: 400 23px / 1 var(--f-serif); letter-spacing: -0.006em; font-optical-sizing: auto;
+  border-radius: var(--r-focus);
 }
-.rail-gfoot { margin: 0; font: 400 var(--fs-label) / 1 var(--f-sans); color: var(--ink-3); font-variant-numeric: tabular-nums; }
-.rail-gbar { display: block; width: 100%; height: 2px; border-radius: 1px; background: rgb(255 255 255 / 0.08); overflow: hidden; position: relative; }
-.rail-gbar::after { content: ""; position: absolute; inset: 0; transform-origin: 0 50%; scale: var(--p, 0) 1;
-  background: linear-gradient(90deg, var(--ink-4), var(--ink-2)); }
-.rail-gkeys { font: 400 var(--fs-cap) / 1 var(--f-sans); color: var(--ink-4); }
-html:not(.fine) .rail-gkeys { display: none; }
-
-/* the hover titles stop short of the 44 px column, so a click on the column itself opens the sheet
-   (a click on a title still goes to its section) */
-html.rail-on .rail:not(.is-sheet) .rail-i { padding-right: 0; margin-right: 44px; }
-
-/* the rail over the glass while the sheet is open; the column takes no clip, the hover panel steps back */
-html:root .rail.rail.is-sheet { clip-path: none; }
-/* the beads stay over the glass while it opens and closes (the shared rail.css puts the rail at 21) */
-.rail-glass ~ .rail { z-index: 62; }
-html:root .rail.rail.is-sheet .rail-sheet::before { opacity: 0; }
-html:root .rail.rail.is-sheet .rail-sheet { margin-top: var(--st2, var(--st)); }
-html:root .rail.rail.is-sheet .rail-foot { display: none; }
-/* the beads spread to one row each (--row, set by rail.ts), and a group's first bead keeps its header's room */
-html:root .rail.rail.is-sheet .rail-m { margin: calc((var(--row) - 12px) / 2) 0; }
-html:root .rail.rail.is-sheet .rail-m:not(.on, .done) { margin: calc((var(--row) - 10px) / 2) 0; }
-html:root .rail.rail.is-sheet .rail-m.on.on { height: calc(var(--row) - 14px); margin: 3px 0; width: 3px; box-shadow: 0 0 12px var(--a); }
-html:root .rail.rail.is-sheet .rail-m.rail-mg { margin-top: calc((var(--row) - 12px) / 2 + var(--gap)); }
-html:root .rail.rail.is-sheet .rail-m.rail-mg:not(.on, .done) { margin-top: calc((var(--row) - 10px) / 2 + var(--gap)); }
-html:root .rail.rail.is-sheet .rail-m.rail-mg.on.on { margin-top: calc(3px + var(--gap)); }
-
-/* the rows: right-aligned, 16 px left of their bead; the current one a serif title */
-html:root .rail.rail.is-sheet .rail-list > li { position: relative; }
-html:root .rail.rail.is-sheet .rail-list > li.rail-g:not(:first-child) { margin-top: var(--gap); }
-html:root .rail.rail.is-sheet .rail-list > li.rail-g::before {
-  content: attr(data-g); position: absolute; right: 30px; bottom: 100%; padding-bottom: 4px;
-  font: 500 11px / 1 var(--f-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-4); white-space: nowrap;
+html.rail-bloom .rail.rail .rail-t {
+  opacity: 1; max-width: none; overflow: visible; color: var(--ink-3);
+  transition: color 180ms var(--ease-out), translate 220ms var(--ease-out);
 }
-html:root .rail.rail.is-sheet .rail-i { height: var(--row); padding: 0 30px 0 24px; font: 500 15px / 1 var(--f-sans); }
-html:root .rail.rail.is-sheet .rail-t { opacity: 1; max-width: 272px; }
-html:root .rail.rail.is-sheet .rail-i .rail-t { color: var(--ink-3); }
-html:root .rail.rail.is-sheet .rail-i.done .rail-t { color: var(--ink-2); }
-html:root .rail.rail.is-sheet .rail-i:hover .rail-t, html:root .rail.rail.is-sheet .rail-i:focus-visible .rail-t { color: var(--ink); }
-html:root .rail.rail.is-sheet .rail-i.on .rail-t { font: 400 21px / 1 var(--f-serif); letter-spacing: -0.01em; color: var(--ink); }
-html:root .rail.rail.is-sheet .rail-i:focus-visible { border-radius: var(--r-focus); }
-html:root .rail.rail.is-sheet .rail-i:active .rail-t { scale: 0.98; }
-/* rows slide in from 24 px to the right, from the current row outward, so no word is ever cut by the
-   growing clip; leaving, they go first and together (scripts/rail.ts animates them) */
-
-/* touch: the same sheet; the rows hang from the 44 px button's column, one 46 px row each */
-@media (forced-colors: none) {
-  html.rail-touch .rail.rail.is-sheet .rail-sheet {
-    display: block; position: absolute; top: 0; right: 0; translate: none; margin: var(--st2) 0 0;
-    width: max-content; max-width: none; max-height: none; overflow: visible; background: none; box-shadow: none; border-radius: 0;
-  }
-  html.rail-touch .rail.rail.is-sheet .rail-list { padding: 0; }
-  html.rail-touch .rail.rail.is-sheet .rail-i { height: var(--row); padding: 0 24px 0 24px; justify-content: flex-end; font-size: 17px; box-shadow: none; }
-  html.rail-touch .rail.rail.is-sheet .rail-i.on .rail-t { font-size: 24px; }
-  html.rail-touch .rail.rail.is-sheet .rail-list > li.rail-g::before { right: 24px; }
-  html.rail-touch .rail.rail.is-sheet .rail-foot { display: none; }
-  html.rail-touch .rail-glass { width: min(330px, 84vw); padding: 0 40px calc(28px + env(safe-area-inset-bottom)) 24px; }
+html.rail-bloom .rail.rail .rail-i.done .rail-t { color: var(--ink-2); }
+/* the current one, in its section's light (every accent is at least 5.5:1 on the ground: rail.css) */
+html.rail-bloom .rail.rail .rail-i.on .rail-t { color: var(--a); text-shadow: 0 0 22px color-mix(in srgb, var(--a) 42%, transparent); }
+html.rail-bloom .rail.rail .rail-i:is(:hover, :focus-visible) .rail-t { color: var(--ink); translate: -3px 0; }
+html.rail-bloom .rail.rail .rail-i.on:is(:hover, :focus-visible) .rail-t { color: var(--a); }
+html.rail-bloom .rail.rail .rail-i:active .rail-t { scale: 0.98; }
+html.rail-bloom .rail.rail .rail-i:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+/* each name's own bead, in the rail's three shapes: ahead a dash, behind a dot in its light, current a line */
+.bl-dot { flex: none; position: relative; width: 12px; height: 24px; }
+.bl-dot::before {
+  content: ""; position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 8px; height: 2px; border-radius: 1px; background: var(--ink-4);
+  transition: width 200ms var(--ease-out), background-color 200ms var(--ease-out);
 }
+.rail-i.done .bl-dot::before { width: 4px; height: 4px; border-radius: 2px; background: var(--ar); }
+.rail-i.on .bl-dot::before {
+  width: 3px; height: 22px; border-radius: 1.5px; background: var(--a);
+  box-shadow: 0 0 10px 1px color-mix(in srgb, var(--a) 55%, transparent);
+}
+.rail-i:not(.on, .done):is(:hover, :focus-visible) .bl-dot::before { width: 12px; background: var(--ink-3); }
 
-/* reduced motion: the sheet and the veil cross-fade, nothing grows or slides */
+/* ---------- the veil: blur in four layers, each stronger and narrower toward the rail, under a shade on the
+   same gradient. It has no edge anywhere: at --bw from the right it is nothing. ---------- */
+.bl-veil {
+  --bw: min(1040px, 76vw);
+  --vo: 0;
+  position: fixed; inset: 0; z-index: var(--z-rail); pointer-events: none; visibility: hidden;
+  transition: visibility 0s linear 320ms;
+}
+/* the fade is on each layer, never on the veil: an ancestor below full opacity is a backdrop root (Filter
+   Effects 2), so its blur layers would see nothing behind them until the fade ended, then pop in */
+.bl-veil > i, .bl-veil::after { opacity: 0; transition: opacity 320ms var(--ease-out); }
+.bl-veil.on, .bl-veil.scrub { visibility: visible; transition: visibility 0s; }
+.bl-veil.on { pointer-events: auto; }
+.bl-veil.on > i, .bl-veil.on::after { opacity: 1; transition-duration: 460ms; }
+.bl-veil.scrub > i, .bl-veil.scrub::after { opacity: 0.8; transition-duration: 260ms; }
+.bl-veil > i { position: absolute; top: 0; bottom: 0; right: 0; }
+/* each layer is only as wide as its mask reaches, so the blurs cost 2.5 views of area, not 4 */
+.bl-veil > i:nth-child(1) { width: var(--bw); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+  -webkit-mask-image: linear-gradient(to left, #000 70%, transparent); mask-image: linear-gradient(to left, #000 70%, transparent); }
+.bl-veil > i:nth-child(2) { width: calc(var(--bw) * 0.78); -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
+  -webkit-mask-image: linear-gradient(to left, #000 59%, transparent); mask-image: linear-gradient(to left, #000 59%, transparent); }
+.bl-veil > i:nth-child(3) { width: calc(var(--bw) * 0.56); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  -webkit-mask-image: linear-gradient(to left, #000 46%, transparent); mask-image: linear-gradient(to left, #000 46%, transparent); }
+.bl-veil > i:nth-child(4) { width: calc(var(--bw) * 0.36); -webkit-backdrop-filter: blur(18px) saturate(0.85); backdrop-filter: blur(18px) saturate(0.85);
+  -webkit-mask-image: linear-gradient(to left, #000 22%, transparent); mask-image: linear-gradient(to left, #000 22%, transparent); }
+.bl-veil::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to left, rgb(13 13 15 / 0.8), rgb(13 13 15 / 0.66) calc(var(--bw) * 0.22),
+    rgb(13 13 15 / 0.36) calc(var(--bw) * 0.55), rgb(13 13 15 / 0.1) calc(var(--bw) * 0.82), rgb(13 13 15 / 0) var(--bw));
+}
+html.rail-touch .bl-veil { --bw: 100vw; }
+
+/* ---------- the effects: the arc, the pool of light, the scrub thumb and its name ---------- */
+.bl-fx { position: fixed; inset: 0; z-index: calc(var(--z-rail) + 1); pointer-events: none; }
+.bl-arc { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; color: var(--ink); opacity: 0; transition: opacity 220ms var(--ease-out); }
+.bl-arc path { fill: none; stroke: url(#bl-arc-g); stroke-width: 1; }
+.bl-fx.on .bl-arc { opacity: 0.16; transition-duration: 360ms; }
+.bl-pool {
+  position: absolute; left: var(--ox); top: var(--oy); width: 160px; height: 160px; border-radius: 50%;
+  /* an eased falloff (no kink, so no edge reads as a lens): 36, 24, 13, 5, 1.5, 0 % */
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--a) 36%, transparent), color-mix(in srgb, var(--a) 24%, transparent) 24%,
+    color-mix(in srgb, var(--a) 13%, transparent) 46%, color-mix(in srgb, var(--a) 5%, transparent) 68%, color-mix(in srgb, var(--a) 1.5%, transparent) 86%, transparent);
+  transform: translate(-50%, -46%) scale(2.6, 4.4); opacity: 0; transition: opacity 300ms var(--ease-out);
+}
+.bl-fx.on .bl-pool { opacity: 1; }
+.bl-thumb {
+  position: absolute; left: var(--x); top: var(--y); width: 5px; height: 26px; border-radius: 2.5px; translate: -50% -50%;
+  background: var(--a);
+  box-shadow: 0 0 0 1px rgb(13 13 15 / 0.6), 0 0 14px 2px color-mix(in srgb, var(--a) 60%, transparent), 0 0 44px 10px color-mix(in srgb, var(--a) 20%, transparent);
+  opacity: 0; scale: 0.4 0.2;
+  transition: opacity 160ms var(--ease-out), scale var(--kl-pop, 600ms) var(--kl-pop-ease, var(--ease-out)), background-color 200ms;
+}
+.bl-fx.scrub .bl-thumb { opacity: 1; scale: 1; }
+.bl-tag {
+  position: absolute; right: var(--x); top: var(--y); translate: 0 -50%;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 7px; white-space: nowrap;
+  opacity: 0; transition: opacity 160ms var(--ease-out);
+}
+.bl-tag.on { opacity: 1; }
+.bl-tag-g { font: 500 10.5px / 1 var(--f-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); }
+.bl-tag-g:empty { display: none; }
+.bl-tag-n {
+  font: 400 30px / 1 var(--f-serif); letter-spacing: -0.012em; color: var(--ink);
+  text-shadow: 0 0 26px color-mix(in srgb, var(--a) 40%, transparent);
+}
+/* a resting mouse: only the name, small, with a halo of ground so it reads over anything */
+.bl-tag.quiet .bl-tag-g { display: none; }
+.bl-tag.quiet .bl-tag-n { font: 400 var(--fs-label) / 1 var(--f-sans); letter-spacing: 0; color: var(--ink-2);
+  text-shadow: 0 0 3px var(--ground), 0 0 10px var(--ground), 0 0 18px var(--ground); }
+
+/* ---------- touch: the same, sized for a thumb (46 px rows: bloom.ts) ---------- */
+html.rail-touch.rail-bloom .rail.rail .rail-i { font-size: 22px; padding-left: 16px; gap: 14px; }
+html.rail-touch .bl-tag-n { font-size: 28px; }
+
+/* reduced motion: the veil and the names arrive at once and still; the thumb has no swell */
 @media (prefers-reduced-motion: reduce) {
-  .rail-glass, .rail-glass.on { clip-path: none; opacity: 0; transition: opacity 150ms linear, visibility 0s linear 150ms; }
-  .rail-glass.on { opacity: 1; transition: opacity 150ms linear, visibility 0s; }
+  .bl-veil, .bl-veil > i, .bl-veil::after, .bl-arc, .bl-pool, .bl-tag, .bl-thumb { transition: none; }
+  .rail-m.tick { animation: none; }
 }
-/* touch: the beads step aside over a picture (rail.css), but never while they are the sheet's spine */
-html.rail-touch .rail.rail.is-sheet .rail-track { opacity: 1; }
+html.still .bl-veil, html.still .bl-veil > i, html.still .bl-veil::after, html.still .bl-arc, html.still .bl-pool, html.still .bl-tag, html.still .bl-thumb { transition: none; }
