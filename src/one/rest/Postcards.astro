@@ -243,10 +243,24 @@ const cards = list.map((p, i) => {
   :global(html.js) .pc-pic { background: radial-gradient(120% 90% at 40% 30%, color-mix(in srgb, var(--tone) 46%, #1a1814), color-mix(in srgb, var(--tone) 18%, #0f0e0c)); }
   .table[data-pc-fade] .pc-pic img { opacity: 0; transition: opacity 240ms var(--ease-out); }
   .table[data-pc-fade] .pc-pic.is-in img { opacity: 1; }
-  .pc-pic::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.14); pointer-events: none; }
+  .pc-pic::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.12), inset 1px 1px 0 1px rgb(255 248 238 / 0.08), inset -1px -1px 0 1px rgb(0 0 0 / 0.22); }
+  .pc-pic { box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35), 0 1px 0 1px rgb(255 246 230 / 0.05); }
   .pc-edge { position: absolute; left: 14px; right: 14px; bottom: 11px; display: flex; justify-content: space-between; align-items: baseline; text-align: left; }
   .pc-edge i { font: italic 400 var(--fs-body) / 1 var(--f-serif); color: var(--ink); }
   .pc-edge b { font: 500 var(--fs-cap) / 1 var(--f-sans); letter-spacing: 0.06em; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  /* the front frame, one step more designed (review row P4, round five), from an intaglio print's parts:
+     - the plate mark: a debossed line round the mount, a little inside its edge (light below, shade above,
+       as a pressed edge catches the light), so the mount reads as pressed paper and not as a dark box;
+     - a bevelled window: the photograph's keyline is a mat's cut, lit on its upper and left side;
+     - a leader: a hairline runs between the place and the index, so the edge line is one set line
+       (a colophon), not two labels at the corners. */
+  .pc-edge { gap: 10px; }
+  .pc-edge i { order: 0; } .pc-edge b { order: 2; }
+  .pc-edge::after { content: ""; order: 1; flex: 1; align-self: center; height: 1px; translate: 0 1px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--gold-ink) 34%, transparent), color-mix(in srgb, var(--ink) 12%, transparent)); }
+  .pc-mount::after, .pc-big .big-front::after { content: ""; position: absolute; inset: 5px; z-index: 2; border-radius: 2px; pointer-events: none;
+    box-shadow: inset 0 1px 0 rgb(0 0 0 / 0.38), inset 0 -1px 0 rgb(255 246 230 / 0.07), 0 1px 0 rgb(255 246 230 / 0.06), 0 -1px 0 rgb(0 0 0 / 0.3); }
   /* the proof marks: gold crop marks at the corners, shown while the card is held */
   .pc-proof i { position: absolute; width: 14px; height: 14px; border: 0 solid color-mix(in srgb, var(--gold-ink) 80%, transparent); opacity: 0; transition: opacity var(--t-ui) var(--ease-out); pointer-events: none; }
   .pc-proof i:nth-child(1) { left: -10px; top: -10px; border-left-width: 1px; border-top-width: 1px; }
@@ -373,7 +387,11 @@ const cards = list.map((p, i) => {
   .pc-big .big-front { padding: calc(3.2 * var(--u)) calc(3.2 * var(--u)) calc(10 * var(--u)); }
   .pc-big .big-pic { position: relative; display: block; height: 100%; border-radius: 2px; overflow: hidden; }
   .pc-big .big-pic img { width: 100%; height: 100%; object-fit: cover; }
-  .pc-big .big-pic::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.14); }
+  .pc-big .big-pic::after { content: ""; position: absolute; inset: 0; z-index: 1;
+    box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.12), inset 1px 1px 0 1px rgb(255 248 238 / 0.08), inset -1px -1px 0 1px rgb(0 0 0 / 0.22); }
+  .pc-big .big-pic { box-shadow: 0 0 0 1px rgb(0 0 0 / 0.35), 0 1px 0 1px rgb(255 246 230 / 0.05); overflow: hidden; }
+  .pc-big .big-front::after { inset: calc(1.4 * var(--u)); }
+  .pc-big .big-front .pc-edge { gap: calc(3 * var(--u)); }
   /* the burn-in (brief 2026-10-15: Darkroom's burn-in "much faster, with its small coloured detail"; review
      row V24). The print comes up under the safelight first, a dim red monochrome, then takes its colour:
      a grey saturation layer takes the colour out, a safelight red multiplied over it tints the grey print
