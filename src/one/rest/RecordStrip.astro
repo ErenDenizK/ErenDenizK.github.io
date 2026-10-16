@@ -1,0 +1,198 @@
+---
+/* Chapter III, the signal: Now and the Record strip (spec v2 §3.7; review rows R1, R2), built to
+   record-language §4. A cut of the Record itself, in its own language: serif titles, the date spine with
+   its marks by kind, colour for "which project" only, the year strip of the newest year with every
+   tick, the three newest rows (LogRow, compact), a dashed tail and a quiet link, and the recorder at the
+   head's right on one Record-blue pool. Now is the spine's first line: "Now" in the date gutter, the
+   month's sentence in reading serif, a slowly breathing open mark on the spine. No uppercase labels, no
+   kind words, no pills.
+   Motion (a pure function of the chapter's --sp, scene.css; reversible): the spine draws down, each mark
+   lands as the line reaches it and its row follows, the year strip's months fill from January, the
+   tail draws last, the pool behind the recorder brightens. The recorder itself is the Record's
+   (media.ts): it floats, leans toward a pointer near it and plays its clip on a press; phones get its
+   spin loop. Hover: the Record's own (the mark grows 1.3x, the title brightens). Still twins: drawn
+   complete, the recorder's poster. Hidden while the Record is empty. */
+import Media from '../../components/Media.astro';
+import LogRow from '../../components/LogRow.astro';
+import YearStrip from '../../components/YearStrip.astro';
+import Icon from '../../components/Icon.astro';
+import { getSite, getLog, getProjects, entryYear, monYear, url } from '../../lib/site';
+import { SETS, auraAttr, auraVars } from '../aura.mjs';
+import '../media.css';
+
+const site = await getSite();
+const log = await getLog();
+const projects = await getProjects();
+const rows = log.slice(0, 3);
+const year = rows.length ? entryYear(rows[0]) : '';
+const inYear = log.filter((e) => entryYear(e) === year);
+const count = `${inYear.length} ${inYear.length === 1 ? 'entry' : 'entries'}`;
+const first = log.length ? log[log.length - 1].data.date : null;
+const since = first ? `${log.length} ${log.length === 1 ? 'entry' : 'entries'} since ${monYear(first)}` : '';
+const [nowWord, ...nowRest] = site.now.label.split(',');
+---
+{rows.length > 0 && (
+  <section class="rstrip" id="record" data-rail-sec="Record" data-scene data-rail-accent={SETS.record[0]} data-aura={auraAttr(SETS.record)} style={auraVars(SETS.record)}>
+    <div class="rs-in">
+      <header class="rs-head">
+        <h2 class="rs-title" data-lines style="--a: 0.04; --w: 0.12">{site.log.title}</h2>
+        <p class="rs-dek" data-rise style="--a: 0.07; --w: 0.12">{site.log.dek}</p>
+        <div class="rs-obj">
+          <span class="rs-pool" aria-hidden="true"></span>
+          <Media obj="recorder" slot="home-record" class="rs-media" sizes="(min-width: 900px) 280px, 136px" />
+        </div>
+      </header>
+
+      <div class="rs-year">
+        <p class="rs-y"><span class="y">{year}</span><span class="meta" title={since}>{count}</span></p>
+        <YearStrip year={year} entries={inYear} projects={projects} />
+      </div>
+
+      <div class="rs-spine">
+        <div class="rs-now" id="now" data-rail-sec="Now">
+          <span class="e-date meta">{nowWord}</span>
+          <span class="now-mark" aria-hidden="true"></span>
+          <div class="now-main">
+            <p class="now-t">{site.now.text}</p>
+            {nowRest.length > 0 && <p class="meta">{nowRest.join(',').trim()}</p>}
+          </div>
+        </div>
+        <ul class="spine rs-rows">
+          {rows.map((e) => <LogRow e={e} projects={projects} compact />)}
+        </ul>
+        <div class="rs-tail" aria-hidden="true"></div>
+        <a class="rs-all" href={url('record/')}><span class="all-mark" aria-hidden="true"></span><span class="all-t">The whole record</span><Icon name="arrow-right" /></a>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  /* the Record's grid (record-language §2.3), in the new set's names (tokens.css) */
+  .rstrip { --gutter: var(--rec-gutter); --spine-w: var(--rec-spine); --spine-x: calc(var(--gutter) + var(--spine-w) / 2); --log: var(--record-1); --rule-s: var(--line-3);
+    position: relative; padding: 0 var(--gut); }
+  .rs-in { position: relative; width: min(var(--rec-w), 100%); margin: 0 auto; }
+  .rstrip :global(.meta) { font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+  /* ---------- head: the title and dek on the content column, the recorder at the right ---------- */
+  .rs-head { position: relative; display: grid; grid-template-columns: calc(var(--gutter) + var(--spine-w)) minmax(0, var(--rec-col)) 1fr; align-items: start; }
+  .rs-title { grid-column: 2; font: 400 var(--fs-h2) / 1.1 var(--f-serif); letter-spacing: -0.02em; margin-left: -0.03em; }
+  .rs-dek { grid-column: 2; margin-top: var(--s-3); max-width: 34em; font: 400 var(--fs-body) / 1.5 var(--f-sans); color: var(--ink-2); }
+  .rs-obj { grid-column: 3; grid-row: 1 / span 2; justify-self: end; position: relative; width: 280px; margin: -64px -8px -120px 0; }
+  .rs-pool { position: absolute; inset: -30%; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--record-1) 11%, transparent), transparent); }
+  :global(html.motion) .rs-pool { opacity: clamp(0, var(--sp) / 0.2, 1); }
+
+  /* ---------- the year: in the gutter, the strip over the content column ---------- */
+  .rs-year { display: grid; grid-template-columns: calc(var(--gutter) + var(--spine-w)) minmax(0, var(--rec-col)); align-items: end; margin-top: var(--s-7); }
+  .rs-y { display: grid; gap: 2px; padding-bottom: 22px; }
+  .rs-y .y { font: 400 var(--fs-h4) / 1 var(--f-serif); font-variant-numeric: lining-nums tabular-nums; }
+  .rstrip :global(.ystrip) { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); max-width: var(--rec-col); }
+  .rstrip :global(.ym) { display: grid; grid-template-rows: 40px auto; padding: 0 3px; border-radius: 4px; }
+  .rstrip :global(.ym-ticks) { display: flex; flex-direction: column-reverse; justify-content: flex-start; gap: 3px; padding-bottom: 6px; border-bottom: 1px solid var(--line-2); position: relative; }
+  .rstrip :global(.ym-ticks i) { display: block; height: 4px; border-radius: 2px; background: var(--c); transform-origin: 50% 100%; }
+  .rstrip :global(.ym-ticks i.t-note) { width: 45%; }
+  .rstrip :global(.ym-ticks i.t-release) { height: 6px; }
+  .rstrip :global(.ym-more) { position: absolute; right: 0; top: 0; font: 500 var(--fs-cap) / 1 var(--f-sans); color: var(--ink-3); }
+  .rstrip :global(.ym-l) { padding-top: 7px; font: 400 var(--fs-cap) / 1 var(--f-sans); color: var(--ink-3); }
+  .rstrip :global(.ym.on .ym-l) { color: var(--ink-2); }
+  .rstrip :global(a.ym:hover .ym-l) { color: var(--ink); }
+  /* the months fill from January as the strip comes up */
+  :global(html.motion) .rstrip :global(.ym) { --k: clamp(0, (var(--sp) - 0.06 - var(--m, 0) * 0.014) / 0.05, 1); }
+  :global(html.motion) .rstrip :global(.ym-ticks i) { transform: scaleY(var(--k)); opacity: calc(0.3 + 0.7 * var(--k)); }
+  .rstrip :global(.ym:nth-child(2)) { --m: 1; } .rstrip :global(.ym:nth-child(3)) { --m: 2; } .rstrip :global(.ym:nth-child(4)) { --m: 3; }
+  .rstrip :global(.ym:nth-child(5)) { --m: 4; } .rstrip :global(.ym:nth-child(6)) { --m: 5; } .rstrip :global(.ym:nth-child(7)) { --m: 6; }
+  .rstrip :global(.ym:nth-child(8)) { --m: 7; } .rstrip :global(.ym:nth-child(9)) { --m: 8; } .rstrip :global(.ym:nth-child(10)) { --m: 9; }
+  .rstrip :global(.ym:nth-child(11)) { --m: 10; } .rstrip :global(.ym:nth-child(12)) { --m: 11; }
+
+  /* ---------- the spine: one line from Now through the rows; it draws down with the scroll ---------- */
+  .rs-spine { position: relative; margin-top: var(--s-4); }
+  .rs-spine::before { content: ""; position: absolute; left: var(--spine-x); top: 0; height: calc(100% - 72px - 44px); width: 1px; translate: -0.5px 0; transform-origin: 50% 0;
+    background: var(--rule-s); }
+  :global(html.motion) .rs-spine::before { transform: scaleY(clamp(0, (var(--sp) - 0.1) / 0.2, 1)); }
+  /* each line on the spine: mark, then row; --r is its place down the spine (0 Now, 1..3 the rows) */
+  .rs-now, .rstrip :global(.spine > .entry) {
+    position: relative; display: grid; grid-template-columns: var(--gutter) var(--spine-w) minmax(0, var(--rec-col)); align-items: baseline; padding: 26px 0;
+  }
+  :global(html.motion) :is(.rs-now, .rstrip .spine > .entry) { --k: clamp(0, (var(--sp) - 0.1 - var(--r, 0) * 0.05) / 0.05, 1); --kt: clamp(0, (var(--sp) - 0.115 - var(--r, 0) * 0.05) / 0.06, 1); }
+  .rstrip :global(.spine > .entry:nth-child(1)) { --r: 1; } .rstrip :global(.spine > .entry:nth-child(2)) { --r: 2; } .rstrip :global(.spine > .entry:nth-child(3)) { --r: 3; }
+  .rstrip :global(.spine > .entry::before) { content: ""; position: absolute; left: calc(var(--gutter) + var(--spine-w)); width: min(var(--rec-col), calc(100% - var(--gutter) - var(--spine-w))); top: 0; height: 1px; background: var(--line-1); }
+  .rstrip :global(.e-date) { grid-column: 1; grid-row: 1; color: var(--ink-3); white-space: nowrap; }
+  .rstrip :global(a.e-date:hover) { color: var(--ink); text-decoration: underline; }
+  .rstrip :global(.e-main), .now-main { grid-column: 3; grid-row: 1; min-width: 0; }
+  :global(html.motion) .rstrip :is(:global(.e-main), :global(.e-date), .now-main) { opacity: calc(0.12 + 0.88 * var(--kt)); transform: translateY(calc((1 - var(--kt)) * var(--rise))); }
+
+  /* marks by shape (record-language §2.3); each cuts the spine with a ring of ground */
+  .rstrip :global(.e-mark), .now-mark { grid-column: 2; grid-row: 1; align-self: start; justify-self: center; width: 11px; height: 11px; margin-top: var(--mark-y, 10px); border-radius: 50%;
+    background: var(--m, var(--p, var(--log))); box-shadow: 0 0 0 4px var(--ground); transition: scale var(--t-press) var(--ease-out); }
+  .rstrip :global(.s-note .e-mark) { width: 8px; height: 8px; --mark-y: 13px; }
+  .rstrip :global(.s-essay .e-mark) { width: 13px; height: 13px; --mark-y: 9px; box-shadow: none;
+    -webkit-mask: radial-gradient(circle, transparent 3.4px, #000 3.9px); mask: radial-gradient(circle, transparent 3.4px, #000 3.9px); }
+  .rstrip :global(.s-release .e-mark) { width: 10px; height: 10px; --mark-y: 15px; box-shadow: 0 0 0 2.5px var(--ground), 0 0 0 4px color-mix(in srgb, var(--p) 80%, transparent), 0 0 0 7px var(--ground); }
+  .rstrip :global(.entry:hover .e-mark), .rstrip :global(.entry:focus-within .e-mark) { scale: 1.3; }
+  :global(html.motion) .rstrip :is(:global(.e-mark), .now-mark) { transform: scale(calc(0.4 + 0.6 * var(--k))); opacity: var(--k); }
+  /* Now's mark: open, breathing slowly (the strip's one ambient loop) */
+  .now-mark { --mark-y: 8px; background: var(--ground); box-shadow: inset 0 0 0 1.5px var(--record-1), 0 0 0 4px var(--ground); }
+  .now-mark::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid var(--record-1); opacity: 0; }
+  :global(html.motion) .now-mark { position: relative; }
+  :global(html.motion) .now-mark::after { animation: now-breathe 4.2s var(--ease-ui) infinite; }
+  :global(html.layer-open) .now-mark::after { animation-play-state: paused; }
+  @keyframes now-breathe { 0% { opacity: 0.55; transform: scale(0.6); } 70%, 100% { opacity: 0; transform: scale(1.5); } }
+  .now-t { font: 430 21px / 1.5 var(--f-serif); color: var(--read); max-width: 28em; text-wrap: pretty; }
+  .now-main .meta { margin-top: 10px; color: var(--record-1); }
+
+  /* the rows, in the Record's type */
+  .rstrip :global(.n-text) { font: 430 21px / 1.5 var(--f-serif); color: var(--read); max-width: 28em; text-wrap: pretty;
+    display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .rstrip :global(.n-text a) { color: #a8d3ff; }
+  .rstrip :global(.s-note .e-meta) { margin-top: 10px; }
+  .rstrip :global(.e-title) { font: 400 var(--fs-h4) / 1.25 var(--f-serif); letter-spacing: -0.012em; text-wrap: balance; }
+  .rstrip :global(.e-link) { color: inherit; transition: color var(--t-press); }
+  .rstrip :global(.e-link::after) { content: ""; position: absolute; inset: 0; z-index: 0; }
+  .rstrip :global(.entry:hover .e-link) { color: var(--ink-hi); }
+  .rstrip :global(.e-link:focus-visible) { outline: none; }
+  .rstrip :global(.e-link:focus-visible::after) { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: 8px; }
+  .rstrip :global(.e-dek) { margin-top: 8px; color: var(--ink-2); max-width: 34em; font: 400 var(--fs-body) / 1.5 var(--f-sans); }
+  .rstrip :global(.e-meta) { margin-top: 12px; position: relative; z-index: 1; width: fit-content; }
+  .rstrip :global(.pj) { color: var(--p-ink, color-mix(in srgb, var(--p) 86%, var(--ink))); font-weight: 500; }
+  .rstrip :global(.sep) { color: var(--ink-4); padding: 0 0.4em; }
+  .rstrip :global(.r-name) { font: 400 var(--fs-h2) / 1.08 var(--f-serif); color: var(--p-ink, color-mix(in srgb, var(--p) 88%, var(--ink))); }
+  .rstrip :global(.r-title) { margin-top: 6px; font: 400 var(--fs-h4) / 1.25 var(--f-serif); }
+  .rstrip :global(.r-items) { margin-top: 12px; display: grid; gap: 4px; }
+  .rstrip :global(.r-items li) { position: relative; padding-left: 18px; font: 400 var(--fs-small) / 1.5 var(--f-sans); color: var(--ink-2); }
+  .rstrip :global(.e-thumb) { display: none; }
+
+  /* ---------- the hand-over: the spine runs on, dashed, to a quiet link ---------- */
+  .rs-tail { position: relative; height: 72px; }
+  .rs-tail::before { content: ""; position: absolute; left: var(--spine-x); top: 0; bottom: 0; width: 1px; translate: -0.5px 0; transform-origin: 50% 0;
+    background: repeating-linear-gradient(180deg, var(--rule-s) 0 4px, transparent 4px 9px); }
+  :global(html.motion) .rs-tail::before { transform: scaleY(clamp(0, (var(--sp) - 0.3) / 0.06, 1)); }
+  .rs-all { display: grid; grid-template-columns: var(--gutter) var(--spine-w) auto auto; justify-content: start; align-items: center; gap: 0; min-height: 44px; color: var(--ink); width: fit-content; }
+  .all-mark { grid-column: 2; justify-self: center; width: 11px; height: 11px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--ink-3); transition: scale var(--t-press) var(--ease-out), box-shadow var(--t-press); }
+  .all-t { grid-column: 3; font: 500 var(--fs-small) / 1 var(--f-sans); padding-right: var(--s-2); }
+  .rs-all :global(.icon) { color: var(--ink-3); transition: color var(--t-press), translate 200ms var(--ease-out); }
+  .rs-all:hover .all-mark { scale: 1.3; box-shadow: inset 0 0 0 1.5px var(--record-1); }
+  .rs-all:hover :global(.icon) { color: var(--ink); translate: 2px 0; }
+  :global(html.motion) .rs-all { --k: clamp(0, (var(--sp) - 0.34) / 0.05, 1); opacity: var(--k); transform: translateY(calc((1 - var(--k)) * var(--rise))); }
+
+  /* ---------- phone: the Record's phone grid (spine at the left, the date above each row) ---------- */
+  @media (max-width: 699.98px) {
+    .rstrip { --gutter: 0px; --spine-w: 22px; }
+    .rs-head { grid-template-columns: minmax(0, 1fr) auto; }
+    .rs-title { grid-column: 1; grid-row: 1; align-self: center; }
+    .rs-dek { grid-column: 1 / -1; grid-row: 2; }
+    .rs-obj { grid-column: 2; grid-row: 1; width: 136px; margin: -36px -16px -40px 0; }
+    .rs-year { grid-template-columns: 1fr; gap: 14px; margin-top: var(--s-6); }
+    .rs-y { display: flex; align-items: baseline; gap: 12px; padding: 0; }
+    .rstrip :global(.ym) { padding: 0 2px; }
+    .rs-now, .rstrip :global(.spine > .entry) { grid-template-columns: var(--spine-w) minmax(0, 1fr); padding: 22px 0; }
+    .rstrip :global(.e-mark), .now-mark { grid-column: 1; grid-row: 1 / span 2; --mark-y: 4px !important; }
+    .rstrip :global(.e-date) { grid-column: 2; grid-row: 1; margin-bottom: 6px; }
+    .rstrip :global(.e-main), .now-main { grid-column: 2; grid-row: 2; }
+    .rstrip :global(.spine > .entry::before) { left: var(--spine-w); }
+    .rstrip :global(.n-text), .now-t { font-size: 19px; }
+    .rs-all { grid-template-columns: var(--spine-w) auto auto; }
+    .all-mark { grid-column: 1; }
+    .all-t { grid-column: 2; }
+  }
+</style>

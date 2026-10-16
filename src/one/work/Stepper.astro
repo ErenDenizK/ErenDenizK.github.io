@@ -1,9 +1,10 @@
 ---
-/* The steps of a presentation (phase3 design-spec.md 3.3.4, part 3; Dia's pinned accordion on the
-   centre axis). The markup is the linear form (the phone, reduced motion, no JavaScript): per step the
-   screen, then its number, title and body. scripts/stepper.ts pins it on wide windows and changes the
-   step in time when the next step's threshold crosses the middle of the view. A step without a caption
-   shows its screen and its number only. A clip step plays the signature clip while it is the one shown. */
+/* The steps of a presentation (spec v2 §3.4, O3). The markup is the linear form (the phone, reduced
+   motion, no JavaScript): per step the screen, then its number, title and body. scripts/stepper.ts
+   holds it in a sticky stage on wide windows and moves from step to step as a pure function of the
+   scroll (the next screen slides over the last, the text rolls over in masks, the index rule glides).
+   .st-mark elements are the rail's beads, one per step. A step without a caption shows its screen and
+   its number only. A clip step plays the signature clip while it is the one shown. */
 import Shot from './Shot.astro';
 import type { Model } from './data';
 interface Props { m: Model }
@@ -11,14 +12,18 @@ const { m } = Astro.props;
 const two = (k: number) => String(k + 1).padStart(2, '0');
 ---
 <section class="steps" data-steps style={`--n: ${m.steps.length}`}>
+  {m.steps.map((s, k) => <i class="st-mark" data-rail-sec={s.title ?? `Step ${two(k)}`} aria-hidden="true"></i>)}
   <div class="st-stick">
-    <ol class="st-idx" aria-hidden="true">
-      {m.steps.map((s, k) => <li data-k={k}><span class="st-num">{two(k)}</span>{s.title && <span> {s.title}</span>}</li>)}
-    </ol>
+    <div class="st-head" aria-hidden="true">
+      <ol class="st-idx">
+        {m.steps.map((s, k) => <li data-k={k}><span class="st-num">{two(k)}</span>{s.title && <span> {s.title}</span>}</li>)}
+      </ol>
+      <i class="st-rule"></i>
+    </div>
     <ol class="st-list">
       {m.steps.map((s, k) => (
         <li class="st" data-k={k} data-phone-frame={s.phone ? '' : undefined}>
-          <figure class="st-shot">
+          <div class="st-frame"><figure class="st-shot">
             <Shot s={s} sizes="(max-width: 699.98px) calc(100vw - 32px), 880px" phoneSizes="min(72vw, 300px)" cls="st-img" />
             {s.clip && (
               <video class="st-video" muted playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1">
@@ -26,11 +31,12 @@ const two = (k: number) => String(k + 1).padStart(2, '0');
                 {s.clip.wide.map((v) => <source data-src={v.src} type={v.type} media={s.clip?.phone ? '(min-width: 700px)' : undefined} />)}
               </video>
             )}
-          </figure>
+            <i class="st-dim" aria-hidden="true"></i>
+          </figure></div>
           <div class="st-txt">
-            <p class="st-n label">{two(k)}</p>
-            {s.title && <h3 class="st-title">{s.title}</h3>}
-            {s.body && <p class="st-body">{s.body}</p>}
+            <div class="st-ln"><p class="st-n label">{two(k)} / {two(m.steps.length - 1)}</p></div>
+            {s.title && <div class="st-ln"><h3 class="st-title">{s.title}</h3></div>}
+            {s.body && <div class="st-ln"><p class="st-body">{s.body}</p></div>}
           </div>
         </li>
       ))}

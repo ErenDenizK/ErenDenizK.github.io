@@ -1,28 +1,118 @@
 {
-  "$comment": "Work's stage data (phase3 design-spec.md 3.3.1): per project, the focal point of each capture for the square phone crop ([x, y] as fractions of the screen; default the centre) and the UI fragments that float in front of the stack. A prop is a crop of one of the project's own captures, in CSS pixels of its 1440 x 900 view; `at` places it on the front print, in fractions of the print width ([left, top, width]), and `turn` in degrees. Run node src/one/work/tools/props.mjs after a change. This file moves into each project's content (fields `focus` and `props`) when the schema in src/content.config.ts takes them.",
+  "$comment": "Work's stage data (phase3 design-spec.md 3.3.1, spec v2 §3.3.1): per project, the capture that leads as the hero frame (`hero`, default the reel's first), the focal point of each capture for the square phone crop ([x, y] as fractions of the screen; default the centre) and the UI fragments that float in front of the stack. A prop is a crop of one of the project's own captures, in CSS pixels of its 1440 x 900 view; `at` places it on the front print, in fractions of the print width ([left, top, width]), and `turn` in degrees. Run node src/one/work/tools/props.mjs after a change. This file moves into each project's content (fields `focus` and `props`) when the schema in src/content.config.ts takes them.",
   "recto": {
+    "hero": "library",
     "focus": {
-      "markup-palette": [0.28, 0.5],
-      "library": [0.5, 0.45],
-      "light-table": [0.3, 0.4]
+      "markup-palette": [
+        0.28,
+        0.5
+      ],
+      "library": [
+        0.5,
+        0.45
+      ],
+      "light-table": [
+        0.3,
+        0.4
+      ]
     },
     "props": [
-      { "capture": "light-table", "crop": [561, 840, 318, 44], "radius": 22, "at": [-0.17, 0.585, 0.5], "turn": -4, "phone": true },
-      { "capture": "library", "crop": [556, 467, 138, 36], "radius": 18, "at": [0.84, 0.07, 0.22], "turn": 6 }
+      {
+        "capture": "light-table",
+        "crop": [
+          561,
+          840,
+          318,
+          44
+        ],
+        "radius": 22,
+        "at": [
+          -0.17,
+          0.585,
+          0.5
+        ],
+        "turn": -4,
+        "phone": true
+      },
+      {
+        "capture": "library",
+        "crop": [
+          556,
+          467,
+          138,
+          36
+        ],
+        "radius": 18,
+        "at": [
+          0.84,
+          0.07,
+          0.22
+        ],
+        "turn": 6
+      }
     ]
   },
   "english-prep": {
     "focus": {
-      "home": [0.35, 0.35],
-      "lesson": [0.5, 0.3],
-      "question": [0.5, 0.3],
-      "home-phone": [0.5, 0.2],
-      "lesson-phone": [0.5, 0.18],
-      "question-phone": [0.5, 0.25]
+      "home": [
+        0.35,
+        0.35
+      ],
+      "lesson": [
+        0.5,
+        0.3
+      ],
+      "question": [
+        0.5,
+        0.3
+      ],
+      "home-phone": [
+        0.5,
+        0.2
+      ],
+      "lesson-phone": [
+        0.5,
+        0.18
+      ],
+      "question-phone": [
+        0.5,
+        0.25
+      ]
     },
     "props": [
-      { "capture": "question", "crop": [424, 234, 592, 60], "radius": 9, "at": [-0.1, 0.58, 0.6], "turn": -2.5, "phone": true },
-      { "capture": "home", "crop": [250, 356, 135, 52], "radius": 9, "at": [0.9, 0.08, 0.15], "turn": 4 }
+      {
+        "capture": "question",
+        "crop": [
+          424,
+          234,
+          592,
+          60
+        ],
+        "radius": 9,
+        "at": [
+          -0.1,
+          0.58,
+          0.6
+        ],
+        "turn": -2.5,
+        "phone": true
+      },
+      {
+        "capture": "home",
+        "crop": [
+          250,
+          356,
+          135,
+          52
+        ],
+        "radius": 9,
+        "at": [
+          0.9,
+          0.08,
+          0.15
+        ],
+        "turn": 4
+      }
     ]
   }
 }

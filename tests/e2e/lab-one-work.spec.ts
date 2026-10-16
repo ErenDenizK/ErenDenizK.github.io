@@ -1,9 +1,12 @@
-/* PART B's lab (src/one/work/, phase3 design-spec.md 3.3 and 8): Work on its scratch page /lab/one-work/
-   and the static twin of each presentation at /lab/one/work/<slug>/. Hidden like every lab page; no
-   horizontal overflow at the three widths; the still twin (no JavaScript, reduced motion) is a complete
-   list whose links open complete pages; the open and close keep one history step and the focus. */
+/* Work (src/one/work/, spec v2 §3.3 to §3.4): on its scratch page /lab/one-work/ and on /lab/one/, and
+   the static twin of each presentation at /lab/one/work/<slug>/. Hidden like every lab page; no
+   horizontal overflow at the four widths; the still twin (no JavaScript, reduced motion) is a complete
+   list whose links open complete pages; the flight is a pure function of the scroll position (no pin
+   but the last block's hold, the same picture on the way back); the open works from a frame in mid
+   flight and keeps one history step and the focus; the opened project has its rail and scrubbed steps. */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone, PROJECTS } from './helpers';
+import { BASE } from '../../playwright.config';
 
 const LAB = 'lab/one-work/';
 const page_ = (slug: string) => `lab/one/work/${slug}/`;
@@ -21,13 +24,13 @@ test('the lab pages are hidden: noindex and out of the sitemap', async ({ page, 
 for (const [label, size] of [['1440', desktop], ['1180', tablet], ['390', phone], ['320', { ...phone, viewport: { width: 320, height: 640 } }]] as const) {
   test.describe(`${label} px`, () => {
     test.use(size);
-    test(`no horizontal overflow on the deck, in each open project and on each static page (${label})`, async ({ page }) => {
+    test(`no horizontal overflow in the flight, in each open project and on each static page (${label})`, async ({ page }) => {
       const fails: string[] = [];
       await page.goto(LAB);
       for (const [k, slug] of PROJECTS.entries()) {
-        await page.evaluate((k) => scrollTo({ top: document.querySelectorAll<HTMLElement>('.slot')[k].getBoundingClientRect().top + scrollY, behavior: 'instant' }), k);
+        await page.evaluate((k) => scrollTo({ top: document.querySelectorAll<HTMLElement>('.proj')[k].getBoundingClientRect().top + scrollY, behavior: 'instant' }), k);
         await page.waitForTimeout(500);
-        if (await overflow(page) > 0) fails.push(`deck at ${slug}`);
+        if (await overflow(page) > 0) fails.push(`flight at ${slug}`);
         await page.locator(`.proj[data-k="${k}"] .btn`).click();
         await expect(page.locator('.layer h1')).toBeFocused();
         const lo = await page.evaluate(() => { const l = document.querySelector('.layer')!; return l.scrollWidth - l.clientWidth; });
@@ -48,16 +51,15 @@ test.describe('the still twin', () => {
   test.use({ ...desktop, javaScriptEnabled: false });
   test('without JavaScript Work is a complete list and every project opens a complete page', async ({ page }) => {
     await page.goto(LAB);
-    const work = page.locator('#work');
-    expect(await work.evaluate((e) => getComputedStyle(e).display)).not.toBe('grid');
+    await expect(page.locator('#work')).not.toHaveAttribute('data-live', '');
+    await expect(page.locator('.fl-side').first()).toBeHidden();
     for (const slug of PROJECTS) {
-      const slot = page.locator(`.slot#${slug}`);
-      await expect(slot).toHaveAttribute('data-aura', /^#[0-9a-f]{6} #[0-9a-f]{6} #[0-9a-f]{6}$/);
-      const proj = page.locator(`.proj[data-slug="${slug}"]`);
+      const proj = page.locator(`.proj#${slug}`);
+      await expect(proj).toHaveAttribute('data-aura', /^#[0-9a-f]{6} #[0-9a-f]{6} #[0-9a-f]{6}$/);
       await expect(proj.locator('.w-title')).toBeVisible();
       await expect(proj.locator('.w-promise')).toBeVisible();
       await expect(proj.locator('.btn')).toHaveAttribute('href', new RegExp(`/lab/one/work/${slug}/$`));
-      expect(await proj.locator('.pr').count()).toBeGreaterThan(0);
+      await expect(proj.locator('.fl-hero .pr')).toBeVisible();
     }
     await page.locator('.proj[data-slug="recto"] .btn').click();
     await expect(page).toHaveURL(/\/lab\/one\/work\/recto\/$/);
@@ -80,9 +82,10 @@ test.describe('the still twin', () => {
 
 test.describe('reduced motion', () => {
   test.use({ ...desktop, contextOptions: { reducedMotion: 'reduce' } });
-  test('no pinned deck, and the open is immediate', async ({ page }) => {
+  test('no flight, and the open is immediate', async ({ page }) => {
     await page.goto(LAB);
-    expect(await page.locator('#work').evaluate((e) => getComputedStyle(e).display)).not.toBe('grid');
+    await expect(page.locator('#work')).not.toHaveAttribute('data-live', '');
+    expect(await page.locator('.proj#recto .fl-hero').evaluate((e) => getComputedStyle(e).transform)).toBe('none');
     await page.locator('.proj[data-slug="english-prep"] .btn').click();
     await expect(page).toHaveURL(/\/lab\/one\/work\/english-prep\/$/);
     await expect(page.locator('.layer h1')).toBeFocused();
@@ -93,16 +96,12 @@ test.describe('reduced motion', () => {
 for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
   test.describe(label, () => {
     test.use(size);
-    test(`open and close keep one history step, the deck and the focus (${label})`, async ({ page }) => {
+    test(`open and close keep one history step, Home's place and the focus (${label})`, async ({ page }) => {
       await page.goto(LAB);
       await page.waitForTimeout(300);
-      await page.evaluate(() => scrollTo({ top: document.querySelectorAll<HTMLElement>('.slot')[1].getBoundingClientRect().top + scrollY, behavior: 'instant' }));
+      await page.evaluate(() => scrollTo({ top: document.querySelectorAll<HTMLElement>('.proj')[1].getBoundingClientRect().top + scrollY, behavior: 'instant' }));
       await page.waitForTimeout(600);
       const y0 = await page.evaluate(() => scrollY);
-      await expect(page.locator('.proj[data-k="1"]')).toHaveAttribute('data-on', '');
-      await expect(page.locator('.w-idx [data-idx]')).toHaveText('02');
-      /* the texts' swap has played out (a click on a moving target makes Playwright scroll the page) */
-      await page.waitForFunction(() => document.getAnimations().every((a) => a.playState !== 'running' || (a.effect?.getTiming().iterations ?? 1) === Infinity));
       const hl = await page.evaluate(() => history.length);
       await page.locator('.proj[data-k="1"] .btn').click();
       await expect(page).toHaveURL(/\/lab\/one\/work\/english-prep\/$/);
@@ -125,3 +124,72 @@ for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
     });
   });
 }
+
+test.describe('the flight (desktop)', () => {
+  test.use(desktop);
+  const pose = (page: Page) => page.evaluate(() => [...document.querySelectorAll<HTMLElement>('#work .fl-hero, #work .fl-side, #work .txt-in')].map((e) => e.style.transform).join('|'));
+  const at = (page: Page, slug: string, f: number) => page.evaluate(([s, f]) => scrollTo({ top: document.getElementById(s as string)!.getBoundingClientRect().top + scrollY + (f as number) * innerHeight, behavior: 'instant' }), [slug, f]);
+
+  test('nothing is pinned but the last block, and every value follows the scroll position', async ({ page }) => {
+    await page.goto('lab/one/');
+    await expect(page.locator('#work')).toHaveAttribute('data-live', '');
+    const sticky = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>('#work *')].filter((e) => getComputedStyle(e).position === 'sticky').map((e) => e.closest('.proj')?.id));
+    expect(sticky).toEqual(['eat-map']);
+    /* the same place gives the same picture, coming from above or from below (reversible, no timers) */
+    await at(page, 'recto', 0.3); await page.waitForTimeout(900);
+    const down = await pose(page);
+    await at(page, 'english-prep', 0.4); await page.waitForTimeout(400);
+    await at(page, 'recto', 0.3); await page.waitForTimeout(900);
+    expect(await pose(page)).toBe(down);
+    /* at rest the hero stands nearly flat and in colour; in flight it bends and greys */
+    await at(page, 'recto', 0); await page.waitForTimeout(400);
+    expect(+(await page.locator('#recto .pr-twin').evaluate((e) => getComputedStyle(e).opacity))).toBeLessThan(0.05);
+    await at(page, 'recto', 0.6); await page.waitForTimeout(400);
+    expect(+(await page.locator('#recto .pr-twin').evaluate((e) => getComputedStyle(e).opacity))).toBeGreaterThan(0.3);
+    expect(await page.locator('#recto .fl-hero').evaluate((e) => e.style.transform)).toMatch(/rotateX\(-?[1-9]/);
+  });
+
+  test('the drawings load as layers, and the places of the last one light ahead of the torn edge', async ({ page }) => {
+    await page.goto('lab/one/');
+    for (const slug of PROJECTS) {
+      await at(page, slug, 0);
+      await expect(page.locator(`#${slug} .fl-art.live .fl-layer`)).toHaveCount(3);
+    }
+    const lit = () => page.locator('#eat-map .fl-stop').evaluateAll((g) => g.map((x) => +getComputedStyle(x).opacity));
+    await at(page, 'eat-map', 0); await page.waitForTimeout(300);
+    const before = await lit();
+    await at(page, 'eat-map', 0.5); await page.waitForTimeout(300);
+    const after = await lit();
+    expect(after.reduce((a, b) => a + b)).toBeGreaterThan(before.reduce((a, b) => a + b));
+  });
+
+  test('a frame clicked in mid flight opens its project; the layer has its rail and scrubbed steps', async ({ page }) => {
+    await page.goto('lab/one/');
+    await at(page, 'recto', 0.25); await page.waitForTimeout(400);
+    await page.locator('#recto .fl-hero').click({ force: true });
+    await expect(page).toHaveURL(/\/lab\/one\/work\/recto\/$/);
+    await expect(page.locator('.layer h1')).toBeFocused();
+    const rail = page.locator('.layer .rail.in-layer');
+    await expect(rail).toBeVisible();
+    /* Overview, Facts, one bead per step, How it's made, Next (Recto has no numbers and no quote yet) */
+    await expect(rail.locator('.rail-m')).toHaveCount(2 + 3 + 2);
+    const steps = page.locator('.layer .steps');
+    await expect(steps).toHaveClass(/pinned/);
+    /* halfway through the first boundary both screens show, the next one sliding over the last */
+    const y = await steps.evaluate((s) => { const l = s.closest('.layer')!; return s.getBoundingClientRect().top + l.scrollTop + 0.5 * 0.7 * innerHeight; });
+    await page.evaluate((y) => { document.querySelector('.layer')!.scrollTop = y; }, y);
+    await page.waitForTimeout(300);
+    const shots = await page.locator('.layer .st').evaluateAll((st) => st.map((e) => [getComputedStyle(e).visibility, new DOMMatrix(getComputedStyle(e.querySelector('.st-shot')!).transform).m42]));
+    expect(shots[0][0]).toBe('visible');
+    expect(shots[1][0]).toBe('visible');
+    expect(shots[1][1]).toBeGreaterThan(20);
+    expect(shots[1][1]).toBeLessThan(500);
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.layer')).toHaveCount(0);
+  });
+});
+
+test('on Home every project link stays under the site base once', async ({ page }) => {
+  await page.goto('lab/one/?still');
+  for (const slug of PROJECTS) await expect(page.locator(`#${slug} .btn`)).toHaveAttribute('href', `${BASE}lab/one/work/${slug}/`);
+});

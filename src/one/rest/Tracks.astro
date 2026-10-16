@@ -1,62 +1,171 @@
 ---
-/* How I work (design spec §3.4 item 2): the two tracks, the one place for what each teaches and for the
-   quote. Desktop: two lane cards mirrored about the axis, a thin line between them that meets at "Both
-   matter."; phone: the lanes stacked, joined by one vertical line on the axis. Content: the "work"
-   chapter of content/site.json. */
+/* How I work (spec v2 §3.5.3; review row C4): the live About figure (src/pages/about.astro, .tracks)
+   brought back at today's sizes: two thin lanes, a light falling down each, a U where they meet and the
+   node "Both matter.", then the quote. No cards and no boxes. Four type sizes: the title (--fs-h2),
+   the lane labels, "Both matter." and the quote (--fs-h3), the items, the lede and the italic serif
+   "gives" line (--fs-body), and the meta (--fs-label).
+   Scroll (a pure function of the chapter's --sp, scene.css): the title and the labels rise in line
+   masks, the items rise 6 % apart, the two lines draw down, then the U draws from both sides to the
+   middle and the node lights. All of it plays backwards on the way up.
+   The drops: each line carries a falling light with a comet tail (periods 7.0 s and 5.6 s, independent
+   phases; a second, fainter drop on the agents' lane). Each drop runs on into the U and down into the
+   node, which brightens once as it arrives. scripts/tracks.ts measures the route (offset-path) and
+   pauses the drops off screen. This is the chapter's one ambient loop. Still twins: the figure is
+   drawn and a drop rests at the top of each line.
+   Texture: faint rain hairlines in the margins at 0.7x, the brief's rain come back as drops.
+   Phone: the lanes stacked, the agents' line continuing the hand's line, no U; the node and "Both
+   matter." follow the second lane. Content: the "work" chapter of content/site.json. */
 import { getSite } from '../../lib/site';
 const site = await getSite();
 const ch = site.about.chapters.find((c) => c.id === 'work');
 const tr = ch?.tracks;
+
+/* rain: hairlines in the two margins, a fixed seed so every build draws the same rain */
+let seed = 11;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const rain = Array.from({ length: 46 }, (_, i) => {
+  const side = i % 2;
+  const x = side ? 1440 - 40 - rnd() * 330 : 40 + rnd() * 330;
+  const y = rnd() * 1500, len = 50 + rnd() * 130;
+  return `M${x.toFixed(0)} ${y.toFixed(0)}v${len.toFixed(0)}`;
+}).join('');
+const lanes = tr?.lanes.map((l, j) => ({ ...l, j, a: 0.12 + j * 0.03 })) ?? [];
 ---
 {ch && tr && (
-  <section class="strip tracks" id="how" data-rail-sec={ch.title}>
-    <h2 class="label strip-label" data-arrive>{ch.title}</h2>
-    {ch.text[0] && <p class="lead lede" data-arrive>{ch.text[0]}</p>}
-    <div class="lanes" data-arrive-group>
-      <div class="pair">
-        {tr.lanes.map((l, i) => (
-          <div class:list={['lane', i ? 'r' : 'l']} data-arrive="img">
-            <h3 class="h4 lane-t">{l.label}</h3>
-            <ul class="items">{l.items.map((it) => <li>{it}</li>)}</ul>
-            <p class="teach"><span class="label">{tr.teaches}</span><span class="gives">{l.gives}</span></p>
-          </div>
-        ))}
-      </div>
-      <p class="meet h4" data-arrive>{tr.meet}</p>
+  <section class="how" id="how" data-rail-sec={ch.title} data-scene>
+    <svg class="rain" viewBox="0 0 1440 1700" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="rain-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3b886" stop-opacity="0" /><stop offset="1" stop-color="#f3b886" stop-opacity="0.22" /></linearGradient>
+      </defs>
+      <path d={rain} stroke="url(#rain-g)" />
+    </svg>
+    <div class="how-in">
+      <h2 class="how-t h2" data-lines style="--a: 0.04; --w: 0.16">{ch.title}</h2>
+      {ch.text[0] && <p class="how-lede" data-rise style="--a: 0.08; --w: 0.18">{ch.text[0]}</p>}
+      <figure class="tracks" data-tracks>
+        <div class="tr-lanes">
+          {lanes.map((l) => (
+            <div class:list={['tr-lane', `tr-lane--${l.j}`]} style={`--a: ${l.a}`}>
+              <h3 class="tr-label" data-lines style={`--a: ${l.a}; --w: 0.14`}>{l.label}</h3>
+              <ul class="tr-items">{l.items.map((it, i) => <li data-rise style={`--a: ${(l.a + 0.03 + i * 0.022).toFixed(3)}; --w: 0.14`}>{it}</li>)}</ul>
+              <p class="tr-gives" data-rise style={`--a: ${(l.a + 0.11).toFixed(3)}; --w: 0.14`}><span class="meta">{tr.teaches}</span><span class="g">{l.gives}</span></p>
+            </div>
+          ))}
+        </div>
+        <div class="tr-meet" aria-hidden="true"><i class="u-l"></i><i class="u-r"></i></div>
+        <figcaption class="tr-end"><span class="tr-node" aria-hidden="true"><i class="n0"></i><i class="n1"></i></span><span class="tr-meet-t">{tr.meet}</span></figcaption>
+        <i class="drop d0" aria-hidden="true"></i>
+        <i class="drop d1" aria-hidden="true"></i>
+        <i class="drop d1b" aria-hidden="true"></i>
+      </figure>
+      {ch.quote && <blockquote class="quote"><p data-lines style="--a: 0.36; --w: 0.16">{ch.quote}</p></blockquote>}
     </div>
-    {ch.quote && <blockquote class="quote h3 it" data-arrive><p>{ch.quote}</p></blockquote>}
   </section>
 )}
 
 <style>
-  .tracks { text-align: center; }
-  .lead { max-width: 30em; margin: var(--s-4) auto 0; }
-  .lanes { margin: var(--s-7) auto 0; width: min(var(--w-wide), 100%); }
-  /* the two lanes, mirrored about the axis; between them a hairline at their middle, and from its centre
-     a line down to the meeting line */
-  .pair { position: relative; display: grid; grid-template-columns: 400px 400px; justify-content: center; column-gap: 120px; }
-  .pair::before { content: ""; position: absolute; left: calc(50% - 60px); width: 120px; top: 50%; height: 1px; background: var(--line-3); }
-  .pair::after {
-    content: ""; position: absolute; left: 50%; top: 50%; bottom: calc(-1 * var(--s-6) + 6px); width: 1px;
-    background: linear-gradient(var(--line-3), color-mix(in srgb, var(--person-1) 60%, transparent));
-  }
-  .lane {
-    position: relative; padding: var(--s-6); border-radius: var(--r-card); text-align: left;
-    background: var(--fill-1); box-shadow: var(--e-card);
-  }
-  .lane-t { color: var(--ink); }
-  .lane.l .lane-t { color: color-mix(in srgb, var(--person-1) 70%, var(--ink)); }
-  .items { margin-top: var(--s-4); display: grid; gap: var(--s-2); font: 400 var(--fs-body) / 1.5 var(--f-sans); color: var(--ink-2); }
-  .teach { margin-top: var(--s-5); padding-top: var(--s-4); box-shadow: inset 0 1px 0 var(--line-1); display: grid; gap: var(--s-1); }
-  .gives { font: 500 var(--fs-body) / 1.4 var(--f-sans); color: var(--ink); }
-  .meet { margin-top: var(--s-6); color: color-mix(in srgb, var(--person-1) 55%, var(--ink)); }
-  .quote { max-width: 24em; margin: var(--s-8) auto 0; color: var(--ink); }
+  .how { position: relative; padding: 0 var(--gut); }
+  .rain { position: absolute; left: 0; top: -10%; width: 100%; height: 120%; max-width: none; fill: none; stroke-width: 1; pointer-events: none; }
+  .rain path { vector-effect: non-scaling-stroke; }
+  :global(html.motion) .rain { transform: translateY(calc((var(--sp) - 0.5) * 30vh)); }
+  .how-in { position: relative; width: min(760px, 100%); margin: 0 auto; }
+  .how-t { text-align: center; }
+  .how-lede { margin: var(--s-4) auto 0; max-width: 30em; text-align: center; font: 400 var(--fs-body) / 1.6 var(--f-sans); color: var(--ink-2); }
 
-  /* narrow: the lanes stacked, joined by one vertical line on the axis */
-  @media (max-width: 999.98px) {
-    .pair { grid-template-columns: minmax(0, 400px); row-gap: var(--s-7); }
-    .pair::before { display: none; }
-    .pair::after { top: 0; z-index: -1; background: linear-gradient(var(--line-3) 0, var(--line-3) 85%, color-mix(in srgb, var(--person-1) 60%, transparent)); }
-    .lane { text-align: center; background: color-mix(in srgb, var(--paper-2) 92%, transparent); }
+  /* ---------- the figure (about.astro .tracks, at today's sizes) ---------- */
+  .tracks { --tg: 64px; --lc: var(--ink-2); position: relative; margin: var(--s-8) 0 0; }
+  .tr-lanes { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--tg); }
+  .tr-lane { --lc: var(--ink-2); position: relative; padding: 2px 0 26px 28px; }
+  .tr-lane--1 { --lc: var(--gold-ink); }
+  /* the line: drawn down by the scroll (scale from the top), complete in the still twins */
+  .tr-lane::before {
+    content: ""; position: absolute; left: 3.5px; top: 8px; bottom: 0; width: 1px; transform-origin: 50% 0;
+    background: linear-gradient(var(--lc), color-mix(in srgb, var(--lc) 35%, transparent)); opacity: 0.6;
+  }
+  :global(html.motion) .tr-lane::before { --k: clamp(0, (var(--sp) - var(--a)) / 0.2, 1); transform: scaleY(var(--k)); }
+  .tr-label { font: 400 var(--fs-h3) / 1.15 var(--f-serif); letter-spacing: -0.01em; color: var(--ink); }
+  .tr-lane--1 .tr-label { color: color-mix(in srgb, var(--gold-ink) 75%, var(--ink)); }
+  .tr-items { margin-top: 14px; display: grid; gap: 9px; font: 400 var(--fs-body) / 1.45 var(--f-sans); color: var(--ink-2); }
+  .tr-items li { position: relative; }
+  .tr-items li::before { content: ""; position: absolute; left: -26.5px; top: 0.62em; width: 4px; height: 4px; border-radius: 50%; background: color-mix(in srgb, var(--lc) 70%, transparent); }
+  .tr-gives { margin-top: 18px; display: grid; gap: 4px; }
+  .tr-gives .meta { font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); }
+  .tr-gives .g { font: italic 400 var(--fs-body) / 1.4 var(--f-serif); color: var(--ink); }
+
+  /* where they meet: a U from one track to the other, drawn from both sides to the middle */
+  .tr-meet { position: relative; margin-left: 3.5px; width: calc(50% + var(--tg) / 2); height: 34px; }
+  .tr-meet i { position: absolute; top: 0; bottom: 0; width: 50%; border: 1px solid var(--line-2); border-top: 0; }
+  .u-l { left: 0; border-right: 0 !important; border-radius: 0 0 0 26px; }
+  .u-r { right: 0; border-left: 0 !important; border-radius: 0 0 26px 0; }
+  :global(html.motion) .tr-meet { --k: clamp(0, (var(--sp) - 0.33) / 0.06, 1); }
+  :global(html.motion) .u-l { clip-path: inset(0 calc((1 - var(--k)) * 100%) 0 0); }
+  :global(html.motion) .u-r { clip-path: inset(0 0 0 calc((1 - var(--k)) * 100%)); }
+  .tr-end {
+    --mid: calc((50% + var(--tg) / 2) / 2 + 3.5px);
+    position: relative; margin-top: 18px; padding-left: calc(var(--mid) - 7px);
+    display: flex; align-items: center; gap: 14px; font: 400 var(--fs-h3) / 1.2 var(--f-serif); color: var(--ink);
+  }
+  .tr-end::before { content: ""; position: absolute; left: var(--mid); top: -18px; height: 11px; width: 1px; background: var(--line-2); }
+  .tr-node { position: relative; width: 14px; height: 14px; border-radius: 50%; flex: none; background: radial-gradient(circle, var(--gold-ink) 0 3px, transparent 4px), color-mix(in srgb, var(--gold-ink) 16%, transparent); box-shadow: 0 0 18px color-mix(in srgb, var(--gold-ink) 45%, transparent); }
+  .tr-node i { position: absolute; inset: -9px; border-radius: 50%; opacity: 0; background: radial-gradient(closest-side, color-mix(in srgb, var(--gold-ink) 70%, transparent), transparent); }
+  :global(html.motion) .tr-end { --k: clamp(0, (var(--sp) - 0.37) / 0.06, 1); }
+  :global(html.motion) .tr-node { opacity: var(--k); transform: scale(calc(0.4 + 0.6 * var(--k))); }
+  :global(html.motion) .tr-meet-t { opacity: calc(0.2 + 0.8 * var(--k)); transform: translateX(calc((1 - var(--k)) * -10px)); }
+
+  /* ---------- the drops ---------- */
+  /* still twin: a drop rests at the top of each line (the live figure's ::after, held still) */
+  .tr-lane::after { content: ""; position: absolute; left: 0; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: var(--lc); box-shadow: 0 0 12px var(--lc), 0 0 2px var(--lc); }
+  :global(html.motion) .tracks.routed .tr-lane::after { display: none; }
+  .drop { display: none; position: absolute; pointer-events: none; --c: var(--ink-2); }
+  .d1, .d1b { --c: var(--gold-ink); }
+  /* routed (scripts/tracks.ts): each drop is a 64 px comet travelling its offset path, head first */
+  :global(html.motion) .tracks.routed .drop {
+    display: block; left: 0; top: 0; width: 64px; height: 8px; border-radius: 4px; box-shadow: none;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--c) 35%, transparent) 70%, var(--c) calc(100% - 4px), transparent);
+    offset-rotate: auto; offset-anchor: calc(100% - 4px) 50%; transform-origin: calc(100% - 4px) 50%; offset-distance: 0%; opacity: 0;
+    animation: drop var(--t) linear var(--ph) infinite paused;
+  }
+  :global(html.motion) .tracks.routed .drop::after { content: ""; position: absolute; right: 0; top: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 12px var(--c), 0 0 2px var(--c); }
+  :global(html.motion) .tracks.routed .d0 { offset-path: var(--r0); --t: 7s; --ph: -1.2s; }
+  :global(html.motion) .tracks.routed .d1 { offset-path: var(--r1); --t: 5.6s; --ph: -3.6s; }
+  :global(html.motion) .tracks.routed .d1b { offset-path: var(--r1); --t: 5.6s; --ph: -0.8s; --c: color-mix(in srgb, var(--gold-ink) 55%, transparent); }
+  /* the node brightens once as each drop arrives (the same clock as its drop) */
+  :global(html.motion) .tracks.routed .n0 { animation: node 7s linear -1.2s infinite paused; }
+  :global(html.motion) .tracks.routed .n1 { animation: node 5.6s linear -3.6s infinite paused; }
+  :global(html.motion) .tracks.routed.on :is(.drop, .n0, .n1) { animation-play-state: running; }
+  :global(html.layer-open) .tracks.routed :is(.drop, .n0, .n1) { animation-play-state: paused !important; }
+  /* the fall accelerates down the line and eases into the node; it fades in at the top, and into the node */
+  @keyframes drop {
+    0% { offset-distance: 0%; opacity: 0; animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
+    8% { opacity: 1; }
+    86% { opacity: 1; }
+    90% { offset-distance: 100%; opacity: 0; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+  @keyframes node { 0%, 84% { opacity: 0; transform: scale(0.6); } 89% { opacity: 1; transform: scale(1.5); } 100% { opacity: 0; transform: scale(1.9); } }
+
+  /* ---------- the quote ---------- */
+  .quote { position: relative; margin: var(--s-8) 0 0; padding-left: 28px; max-width: 680px; }
+  .quote::before { content: ""; position: absolute; left: 0; top: 0.3em; bottom: 0.3em; width: 2px; border-radius: 1px; background: linear-gradient(var(--gold-ink), transparent); }
+  .quote p { font: italic 400 var(--fs-h3) / 1.24 var(--f-serif); letter-spacing: -0.012em; color: var(--ink); text-wrap: balance; }
+
+  /* ---------- phone: the lanes stacked, the agents' line continuing the hand's line ---------- */
+  @media (max-width: 699.98px) {
+    .rain { display: none; }
+    .how-t, .how-lede { text-align: left; }
+    .how-lede { margin-left: 0; }
+    .tracks { margin-top: var(--s-7); }
+    .tr-lanes { grid-template-columns: minmax(0, 1fr); }
+    .tr-lane { padding-left: 26px; }
+    .tr-lane--1 { padding-top: 22px; }
+    .tr-lane--1::before { top: 0; }
+    .tr-items li::before { left: -24.5px; }
+    .tr-meet { width: 1px; height: 18px; }
+    .tr-meet i { display: none; }
+    .tr-meet::before { content: ""; position: absolute; inset: 0; background: var(--line-2); }
+    .tr-end { --mid: 3.5px; margin-top: 0; padding-left: 0; }
+    .tr-end::before { display: none; }
+    .tr-node { margin-left: -3px; }
+    .quote { padding-left: 20px; }
   }
 </style>

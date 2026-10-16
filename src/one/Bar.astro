@@ -36,6 +36,8 @@ const tabs = [['home', 'Home', home], ['record', 'Record', url('record/')]] as c
     opacity: 0; transition: opacity var(--t-ui) var(--ease-ui);
   }
   :global(html.moved) .bar::before, :global(html:not(.js)) .bar::before { opacity: 1; }
+  /* over an open project the band is a backing: the layer's text scrolls right under the bar (spec v2 §3.4) */
+  :global(html.layer-open) .bar::before { inset: 0 0 -32px; background: linear-gradient(var(--ground) 0%, rgb(18 18 20 / 0.96) 62%, rgb(18 18 20 / 0)); }
 
   .mark {
     justify-self: start; display: inline-flex; align-items: baseline; gap: 3px; min-height: 44px; align-items: center;
