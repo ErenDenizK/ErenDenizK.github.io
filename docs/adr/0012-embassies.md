@@ -1,6 +1,6 @@
 # ADR-0012: Embassies are built from each product's world.json, the kit's light field and real captures
 
-**Status:** technique decided by the agent (CLAUDE.md: "decide technique yourself and record it");
+**Status:** **Superseded by the two-page direction (2026-10-15); a new ADR follows.** The project presentation is re-made inside Home, after Dia and Notion Calendar (brief log, 2026-10-15, late night). `world.json` and `npm run worlds` stay as data and tooling until the new ADR says otherwise. Earlier status: technique decided by the agent (CLAUDE.md: "decide technique yourself and record it");
 the look is proposed until the owner has seen it · **Rests on:** brief §7 (2026-10-09: "Embassies
 (project views enter each app's own world inside the portfolio's frame)"; *Family vision*; *boost and
 the family kit*), `docs/design/family.md` §2.5, §3.1, §3.2, `docs/family-kit/` (presentation.md,

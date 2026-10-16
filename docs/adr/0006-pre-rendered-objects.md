@@ -1,6 +1,6 @@
 # ADR-0006: Objects are pre-rendered Cycles frames; real time is only glue
 
-**Status:** accepted 2026-10-09 (owner: "fake it with very high-resolution photos and video; a
+**Status:** **Item 5 (the droplet between tabs) is superseded by the two-page direction (2026-10-15); a new ADR follows.** The rest stands: objects stay pre-rendered (option a) and may be reused. Earlier status: accepted 2026-10-09 (owner: "fake it with very high-resolution photos and video; a
 still first, the moving version behind it"); **real-time 3D on desktop declined 2026-10-11:** the
 owner chose to stay pre-rendered and fix it (option a; brief log, 2026-10-11). Before that, **under
 review 2026-10-10:** the owner finds the
@@ -38,7 +38,8 @@ Premium 3D sites mostly pay for the look offline and keep real time thin.
 4. **Interaction.** The pointer maps onto the grid, blending the four nearest frames, and comes
    to rest on an exact frame. Micro-interactions play their clip. Wide glows and the project
    colour live in CSS, not in the media.
-5. **Tab change.** The old object's droplet clip plays forward, a short crossfade at the shared
+5. *(Superseded 2026-10-15 by the two-page direction: there are no tabs to change between.)*
+   **Tab change.** The old object's droplet clip plays forward, a short crossfade at the shared
    droplet, the new object's clip plays backward: one clip per object, not one per pair.
 6. **Tiers.** Desktop: everything. Phone: poster, idle loop (the object's spin loop instead where its
    manifest has one, 2026-10-10: `research/2026-10-phone-motion.md`; every object since 2026-10-11, with

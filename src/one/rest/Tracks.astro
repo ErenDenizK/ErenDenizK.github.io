@@ -1,0 +1,62 @@
+---
+/* How I work (design spec §3.4 item 2): the two tracks, the one place for what each teaches and for the
+   quote. Desktop: two lane cards mirrored about the axis, a thin line between them that meets at "Both
+   matter."; phone: the lanes stacked, joined by one vertical line on the axis. Content: the "work"
+   chapter of content/site.json. */
+import { getSite } from '../../lib/site';
+const site = await getSite();
+const ch = site.about.chapters.find((c) => c.id === 'work');
+const tr = ch?.tracks;
+---
+{ch && tr && (
+  <section class="strip tracks" id="how" data-rail-sec={ch.title}>
+    <h2 class="label strip-label" data-arrive>{ch.title}</h2>
+    {ch.text[0] && <p class="lead lede" data-arrive>{ch.text[0]}</p>}
+    <div class="lanes" data-arrive-group>
+      <div class="pair">
+        {tr.lanes.map((l, i) => (
+          <div class:list={['lane', i ? 'r' : 'l']} data-arrive="img">
+            <h3 class="h4 lane-t">{l.label}</h3>
+            <ul class="items">{l.items.map((it) => <li>{it}</li>)}</ul>
+            <p class="teach"><span class="label">{tr.teaches}</span><span class="gives">{l.gives}</span></p>
+          </div>
+        ))}
+      </div>
+      <p class="meet h4" data-arrive>{tr.meet}</p>
+    </div>
+    {ch.quote && <blockquote class="quote h3 it" data-arrive><p>{ch.quote}</p></blockquote>}
+  </section>
+)}
+
+<style>
+  .tracks { text-align: center; }
+  .lead { max-width: 30em; margin: var(--s-4) auto 0; }
+  .lanes { margin: var(--s-7) auto 0; width: min(var(--w-wide), 100%); }
+  /* the two lanes, mirrored about the axis; between them a hairline at their middle, and from its centre
+     a line down to the meeting line */
+  .pair { position: relative; display: grid; grid-template-columns: 400px 400px; justify-content: center; column-gap: 120px; }
+  .pair::before { content: ""; position: absolute; left: calc(50% - 60px); width: 120px; top: 50%; height: 1px; background: var(--line-3); }
+  .pair::after {
+    content: ""; position: absolute; left: 50%; top: 50%; bottom: calc(-1 * var(--s-6) + 6px); width: 1px;
+    background: linear-gradient(var(--line-3), color-mix(in srgb, var(--person-1) 60%, transparent));
+  }
+  .lane {
+    position: relative; padding: var(--s-6); border-radius: var(--r-card); text-align: left;
+    background: var(--fill-1); box-shadow: var(--e-card);
+  }
+  .lane-t { color: var(--ink); }
+  .lane.l .lane-t { color: color-mix(in srgb, var(--person-1) 70%, var(--ink)); }
+  .items { margin-top: var(--s-4); display: grid; gap: var(--s-2); font: 400 var(--fs-body) / 1.5 var(--f-sans); color: var(--ink-2); }
+  .teach { margin-top: var(--s-5); padding-top: var(--s-4); box-shadow: inset 0 1px 0 var(--line-1); display: grid; gap: var(--s-1); }
+  .gives { font: 500 var(--fs-body) / 1.4 var(--f-sans); color: var(--ink); }
+  .meet { margin-top: var(--s-6); color: color-mix(in srgb, var(--person-1) 55%, var(--ink)); }
+  .quote { max-width: 24em; margin: var(--s-8) auto 0; color: var(--ink); }
+
+  /* narrow: the lanes stacked, joined by one vertical line on the axis */
+  @media (max-width: 999.98px) {
+    .pair { grid-template-columns: minmax(0, 400px); row-gap: var(--s-7); }
+    .pair::before { display: none; }
+    .pair::after { top: 0; z-index: -1; background: linear-gradient(var(--line-3) 0, var(--line-3) 85%, color-mix(in srgb, var(--person-1) 60%, transparent)); }
+    .lane { text-align: center; background: color-mix(in srgb, var(--paper-2) 92%, transparent); }
+  }
+</style>

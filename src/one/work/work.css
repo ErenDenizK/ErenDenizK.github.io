@@ -1,0 +1,334 @@
+/* Work (PART B of phase3 design-spec.md): the prints, the deck, the presentation and the open / close
+   transition. Tokens only (src/one/tokens.css); every rule is scoped to .work, .pres or .layer so the
+   shell's styles never meet these. The markup is the still twin (a list); the deck is the block under
+   "Deck" and applies only with JavaScript and motion. */
+@import "../../styles/wordmarks.css";
+@import "../../../tools/icons/out/icons.css";
+
+:root { --sv: 100vh; }
+@supports (height: 100svh) { :root { --sv: 100svh; } }
+
+/* ---------- shared roles ---------- */
+:is(.work, .pres) .label { font: 500 var(--fs-label)/1.2 var(--f-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+:is(.work, .pres) .hush { position: absolute; inset: -80px -140px; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, var(--hush), rgb(18 18 20 / 0)); }
+:is(.work, .pres) .wm { line-height: 1; }
+.work .btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: var(--r-pill);
+  font: 500 var(--fs-small)/1 var(--f-sans); background: var(--ink); color: var(--ground);
+  transition: background-color 150ms var(--ease-ui), transform var(--t-press) var(--ease-ui); }
+.work .btn:hover { background: var(--ink-hi); }
+.work .btn:active { transform: scale(.97); }
+
+/* ---------- a print ---------- */
+.pr { position: relative; }
+.pr-in { position: relative; transform-origin: 50% 60%; }
+.pr-mount { position: relative; background: var(--paper); border-radius: var(--r-print); padding: 12px 12px 34px;
+  box-shadow: var(--e-print), inset 0 0 0 1px rgb(255 255 255 / .05); }
+.pr-mount::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: url("../../assets/photos/grain.png") repeat; background-size: 96px; opacity: .9; }
+.pr-screen { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 1px; background: #0b0b0d; }
+.pr-screen picture { position: absolute; inset: 0; }
+.pr-img { width: 100%; height: 100%; object-fit: cover; object-position: var(--fx) var(--fy); }
+.pr-cap { position: absolute; left: 14px; right: 14px; bottom: 11px; display: flex; justify-content: space-between; gap: 12px;
+  font: 500 11px/1.2 var(--f-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+.pr-cap span:first-child { overflow: hidden; text-overflow: ellipsis; }
+.pr-shade { position: absolute; inset: 0; z-index: 2; border-radius: inherit; background: var(--ground); opacity: var(--shade, 0); pointer-events: none; }
+/* the deck writes the shade every frame of a shuffle: its own layer, so the print under it never repaints */
+html.js:not(.still) .work .pr-shade { will-change: opacity; }
+/* a project without screens: its object on its own paper, lit by its light */
+.pr-obj { background: radial-gradient(62% 72% at 50% 58%, color-mix(in srgb, var(--a1) 30%, transparent), transparent 72%),
+  radial-gradient(90% 60% at 50% 100%, color-mix(in srgb, var(--a3) 60%, transparent), transparent 80%), var(--paper); }
+.pr-object { position: absolute; inset: 4% 26% 2%; }
+.pr-object img, .obj-img { width: 100%; height: 100%; object-fit: contain; }
+/* the object is light: its poster and loops are drawn on black and added to what is under them. The
+   blend sits on the outermost box, so the box's own opacity and turn do not isolate it. */
+.obj { pointer-events: none; mix-blend-mode: plus-lighter; }
+.obj video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0;
+  transition: opacity 600ms var(--ease-ui); }
+.obj video.on { opacity: 1; }
+.obj picture { position: relative; width: 100%; height: 100%; }
+@media (max-width: 699.98px) {
+  .pr-mount { padding: 8px 8px 26px; }
+  .pr-screen { aspect-ratio: 1; }
+  .pr-img { object-position: var(--pfx) var(--pfy); }
+  .pr-cap { left: 10px; right: 10px; bottom: 8px; }
+}
+
+/* ---------- Work, the still twin: a list (no JavaScript, reduced motion, ?still) ---------- */
+.work { position: relative; padding: var(--s-9) var(--gut) var(--s-8); }
+.w-chrome { text-align: center; margin-bottom: var(--s-7); }
+.w-idx b { color: var(--ink); font-weight: 500; }
+.w-count { display: none; }
+.proj { position: relative; max-width: var(--w-stage); margin: 0 auto var(--s-9); }
+.proj:last-of-type { margin-bottom: 0; }
+.slot { position: absolute; inset: 0; pointer-events: none; scroll-margin-top: calc(var(--bar-h) + 16px); }
+.set-box { position: relative; }
+.set-link { display: flex; gap: var(--s-5); justify-content: center; align-items: flex-start; }
+.set-link .pr { flex: 0 1 360px; min-width: 0; }
+.set-obj, .prop { display: none; }
+.txt { position: relative; text-align: center; margin-top: var(--s-6); }
+.txt-in { position: relative; padding: 0 var(--gut); }
+.w-meta { width: fit-content; margin: 0 auto var(--s-3); }
+.w-title { width: fit-content; font-size: var(--fs-title); line-height: 1; margin: 0 auto; font-weight: inherit; }
+.w-title .wm { color: var(--wm-c, var(--ink)); }
+.w-promise { width: fit-content; margin: var(--s-3) auto var(--s-5); max-width: 30em; font: 400 var(--fs-body)/1.55 var(--f-sans); color: var(--ink-2); text-wrap: balance; }
+@media (max-width: 699.98px) {
+  .set-link { justify-content: safe center; overflow-x: auto; scrollbar-width: none; padding: 4px var(--gut) 12px; margin: 0 calc(-1 * var(--gut));
+    scroll-snap-type: x proximity; }
+  .set-link::-webkit-scrollbar { display: none; }
+  .set-link .pr { flex: 0 0 72vw; scroll-snap-align: center; }
+}
+
+/* ---------- Work, the deck (JavaScript and motion; spec 3.3.1, 4.5) ----------
+   One grid: each project's .slot is a row of scroll; the chrome, every set and every text block span all
+   rows and stick to the top, so the whole stage is pinned by the compositor. scripts/deck.ts writes the
+   poses. Before it runs, the first project stands at rest and the others wait out of sight. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.still) .work {
+    display: grid; grid-template-columns: 100%; grid-template-rows: var(--rows); padding: 0;
+    --pw: max(380px, min(52vw, 720px, calc((var(--sv) - 484px) * 1.6 + 24px)));
+    --ph: calc(46px + (var(--pw) - 24px) / 1.6);
+    --top: calc(var(--bar-h) + 58px);
+  }
+  html.js:not(.still) .work .w-chrome,
+  html.js:not(.still) .work .set,
+  html.js:not(.still) .work .txt { grid-column: 1; grid-row: 1 / -1; position: sticky; top: 0; height: var(--sv); align-self: start; margin: 0; pointer-events: none; }
+  html.js:not(.still) .work .w-chrome { z-index: 4; }
+  html.js:not(.still) .work .w-idx { position: absolute; left: 0; right: 0; top: calc(var(--bar-h) + 16px); }
+  html.js:not(.still) .work .w-count { display: inline; }
+  html.js:not(.still) .work .w-count b { display: inline-block; }
+  html.js:not(.still) .work .proj { display: contents; }
+  html.js:not(.still) .work .slot { position: relative; inset: auto; grid-column: 1; grid-row: var(--row); scroll-margin-top: 0; }
+  html.js:not(.still) .work .set { z-index: 1; }
+  html.js:not(.still) .work .txt { z-index: 3; }
+  html.js:not(.still) .work .set-box { position: absolute; left: 50%; top: var(--top); width: var(--pw); height: var(--ph); margin-left: calc(var(--pw) / -2);
+    pointer-events: auto; transform-origin: 50% 70%; will-change: transform, opacity; }
+  html.js:not(.still) .work .set-link { display: block; position: absolute; inset: 0; z-index: 1; cursor: pointer; overflow: visible; padding: 0; margin: 0; }
+  html.js:not(.still) .work .set-link .pr { position: absolute; left: 0; top: 0; width: 100%; will-change: transform; }
+  /* rest poses (spec 3.3.1), the same numbers scripts/deck.ts starts from */
+  html.js:not(.still) .work .pr[data-pos="0"] { z-index: 3; transform: rotate(-1.6deg); }
+  html.js:not(.still) .work .pr[data-pos="1"] { z-index: 2; transform: translate(calc(var(--pw) * .104), calc(var(--pw) * -.027)) rotate(4.2deg); --shade: .38; }
+  html.js:not(.still) .work .pr[data-pos="2"] { z-index: 1; transform: translate(calc(var(--pw) * -.125), calc(var(--pw) * -.009)) rotate(-6.5deg); --shade: .5; }
+  html.js:not(.still) .work .pr[data-pos="0"] .pr-mount { box-shadow: var(--e-lift), 0 0 120px -30px color-mix(in srgb, var(--a1) 36%, transparent), inset 0 0 0 1px rgb(255 255 255 / .06); }
+  html.js:not(.still) .work .set-obj { display: block; position: absolute; z-index: 0; left: calc(var(--pw) * .78); top: calc(var(--pw) * -.164);
+    width: calc(var(--pw) * .6); aspect-ratio: 1; rotate: 8deg; opacity: .95;
+    /* inside the pinned stage the object cannot reach the field to add its light, so its black is made
+       transparent instead (#w-light: alpha from the brightness) */
+    mix-blend-mode: normal; filter: url(#w-light); }
+  html.js:not(.still) .work .prop { display: block; position: absolute; z-index: 5; left: calc(var(--pw) * var(--x)); top: calc(var(--pw) * var(--y));
+    width: calc(var(--pw) * var(--w)); rotate: var(--turn); pointer-events: none; }
+  html.js:not(.still) .work .prop img { width: 100%; height: auto; aspect-ratio: var(--ar); border-radius: calc(var(--pw) * var(--w) * var(--radf));
+    box-shadow: 0 2px 4px rgb(0 0 0 / .45), 0 18px 40px -10px rgb(0 0 0 / .8); }
+  html.js:not(.still) .work .txt-in { position: absolute; left: 0; right: 0; top: calc(var(--top) + var(--ph) + 34px); opacity: 0; }
+  html.js:not(.still) .work .proj[data-on] .txt-in { opacity: 1; }
+  html.js:not(.still) .work .proj[data-on] .txt-in :is(a, button) { pointer-events: auto; }
+  html.js:not(.still) .work:not([data-live]) .proj[data-k="0"] .txt-in { opacity: 1; }
+  html.js:not(.still) .work:not([data-live]) .proj:not([data-k="0"]) .set { visibility: hidden; }
+  /* the open project leaves the stage while its layer is up (its prints and texts are in the layer) */
+  html.js:not(.still) .work .proj.opened :is(.set-box, .txt-in) { visibility: hidden; }
+
+  @media (hover: hover) and (pointer: fine) {
+    html.js:not(.still) .work .pr-in { transition: transform 300ms var(--ease-out), filter 300ms var(--ease-out); }
+    html.js:not(.still) .work .set-box:hover .pr-in { transition-duration: 200ms; }
+    html.js:not(.still) .work .set-box:hover .pr[data-pos="0"] .pr-in { transform: translateY(-4px) scale(1.02); filter: saturate(1.1); }
+    html.js:not(.still) .work .set-box:hover .pr[data-pos="1"] .pr-in { transform: rotate(2deg); }
+    html.js:not(.still) .work .set-box:hover .pr[data-pos="2"] .pr-in { transform: rotate(-2deg); }
+  }
+  html.js:not(.still) .work .set-link:active .pr[data-pos="0"] .pr-in { transform: scale(.98); transition: transform var(--t-press) var(--ease-ui); }
+
+  @media (max-width: 699.98px) {
+    html.js:not(.still) .work { --pw: calc(100vw - 72px); --ph: calc(var(--pw) + 18px); --top: calc(var(--bar-h) + 48px); }
+    html.js:not(.still) .work .pr[data-pos="0"] { transform: rotate(-1deg); }
+    html.js:not(.still) .work .pr[data-pos="1"] { transform: translate(calc(var(--pw) * .038), calc(var(--pw) * -.031)) rotate(3deg); }
+    html.js:not(.still) .work .pr[data-pos="2"] { transform: translate(calc(var(--pw) * -.044), calc(var(--pw) * -.013)) rotate(-3.5deg); }
+    html.js:not(.still) .work .set-obj { width: 200px; left: calc(var(--pw) - 140px); top: -70px; }
+    html.js:not(.still) .work .prop:not(.prop-phone) { display: none; }
+    html.js:not(.still) .work .prop-phone { --w2: min(.9, var(--w) * 1.5); left: calc(var(--pw) * -.06); top: calc(var(--pw) * .84); width: calc(var(--pw) * var(--w2)); }
+    html.js:not(.still) .work .prop-phone img { border-radius: calc(var(--pw) * var(--w2) * var(--radf)); }
+    html.js:not(.still) .work .txt-in { top: calc(var(--top) + var(--ph) + 40px); }
+    html.js:not(.still) .work .w-promise { max-width: 22em; }
+  }
+}
+
+/* ---------- the presentation (spec 3.3.4): the layer over Home, and the static page ---------- */
+.layer { position: fixed; inset: 0; z-index: 50; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; outline: none; }
+.layer::-webkit-scrollbar { display: none; }
+.layer.fade { animation: one-in 150ms var(--ease-ui) both; }
+.layer.fade-out { animation: one-out 150ms var(--ease-ui) both; }
+.pres { position: relative; isolation: isolate; min-height: 100%; color: var(--ink); overflow-x: clip; padding-bottom: 0;
+  --hero-w: min(800px, calc(100vw - 2 * var(--gut)), max(520px, calc((var(--sv) - 400px) * 1.6))); }
+.pres-page { min-height: 100vh; }
+.pg { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--paper); pointer-events: none; }
+.pg-pool { position: absolute; width: 512px; height: 512px; left: 50%; top: 50%; margin: -256px 0 0 -256px; border-radius: 50%; mix-blend-mode: plus-lighter; }
+.pg-p1 { background: radial-gradient(closest-side, color-mix(in srgb, var(--a1) 28%, transparent), transparent); transform: translate(0, -46vh) scale(2.6, 1.6); }
+.pg-p2 { background: radial-gradient(closest-side, color-mix(in srgb, var(--a3) 22%, transparent), transparent); transform: translate(-42vw, 8vh) scale(1.6, 1.8); }
+.pg-p3 { background: radial-gradient(closest-side, color-mix(in srgb, var(--a2) 18%, transparent), transparent); transform: translate(42vw, 4vh) scale(1.5, 1.8); }
+.pg-grain { position: absolute; inset: 0; background: url("../../assets/photos/grain.png") repeat; background-size: 128px; }
+.pb { position: relative; padding-bottom: 0; }
+.pres .hush { inset: -70px -120px; }
+/* every text block of a presentation can sit over a pool of its light: each carries the hush (spec 2.6) */
+.pres :is(.facts, .p-outcome, .st-txt, .p-nums, .p-quote, .p-next-title) { position: relative; isolation: isolate; }
+.pres :is(.facts, .p-outcome, .st-txt, .p-nums, .p-quote, .p-next-title)::before { content: ""; position: absolute; inset: -60px -100px; z-index: -1; pointer-events: none;
+  background: radial-gradient(closest-side, var(--hush), rgb(18 18 20 / 0)); }
+
+.pt { position: relative; padding-top: calc(var(--bar-h) + 20px); text-align: center; }
+.pt-stage { position: relative; width: var(--hero-w); margin: 0 auto; }
+.hero { position: relative; z-index: 2; aspect-ratio: 16 / 10; border-radius: var(--r-screen); overflow: hidden; background: #0b0b0d;
+  box-shadow: var(--e-lift), 0 0 0 1px rgb(255 255 255 / .07), 0 0 160px -40px color-mix(in srgb, var(--a1) 45%, transparent); }
+.hero picture { position: absolute; inset: 0; }
+.hero :is(.hero-img, .pr-img), .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--fx, 50%) var(--fy, 0%); }
+.hero-video { object-position: top; opacity: 0; transition: opacity 400ms var(--ease-ui); }
+.hero-video.on { opacity: 1; }
+.hero-obj { background: radial-gradient(60% 60% at 50% 55%, color-mix(in srgb, var(--a1) 26%, transparent), transparent 70%), var(--raised); }
+.hero-object { position: absolute; inset: 6% 22%; }
+.side { position: absolute; z-index: 1; top: 22%; width: 45%; }
+.side-l { right: 92.5%; rotate: -6deg; }
+.side-r { left: 92.5%; rotate: 5deg; }
+.side .pr { --shade: .4; }
+.side .pr-mount { background: var(--raised); }
+.pt-obj { position: absolute; z-index: 0; width: 42%; aspect-ratio: 1; right: -24%; top: -18%; rotate: 8deg; opacity: .9; }
+.pt-head { position: relative; z-index: 3; max-width: calc(var(--w-text) + 2 * var(--gut)); margin: var(--s-6) auto 0; padding: 0 var(--gut); }
+.p-title { width: fit-content; margin: var(--s-3) auto; font-size: var(--fs-title); line-height: 1; font-weight: inherit; outline: none; }
+.p-title .wm { color: var(--wm-c, var(--ink)); }
+.p-promise { width: fit-content; max-width: 30em; margin: 0 auto; font: 400 var(--fs-lede)/1.5 var(--f-sans); letter-spacing: -.005em; color: var(--ink-2); text-wrap: balance; }
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-6); max-width: calc(var(--w-wide) + 2 * var(--gut)); margin: var(--s-9) auto 0; padding: 0 var(--gut); text-align: center; }
+.facts dt { margin-bottom: var(--s-1); }
+.facts dd { margin: 0; font: 400 var(--fs-small)/1.5 var(--f-sans); color: var(--ink); text-wrap: balance; }
+
+.p-outcome { max-width: calc(760px + 2 * var(--gut)); margin: var(--s-9) auto var(--s-8); padding: 0 var(--gut); text-align: center;
+  font: 400 var(--fs-h3)/1.25 var(--f-serif); letter-spacing: -.012em; color: var(--ink); text-wrap: balance; }
+
+/* steps, linear (phones, reduced motion, no JavaScript) */
+.steps { max-width: calc(var(--w-wide) + 2 * var(--gut)); margin: 0 auto; padding: 0 var(--gut); }
+.st-idx { display: none; }
+.st { margin: 0 auto var(--s-8); text-align: center; }
+.st-shot { position: relative; width: min(880px, 100%); margin: 0 auto; aspect-ratio: 16 / 10; overflow: hidden; border-radius: var(--r-screen); background: #0b0b0d;
+  box-shadow: var(--e-lift), 0 0 0 1px rgb(255 255 255 / .07); }
+.st-shot picture { position: absolute; inset: 0; }
+.st-img, .st-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.st-video { opacity: 0; transition: opacity 300ms var(--ease-ui); }
+.st-video.on { opacity: 1; }
+.st-txt { max-width: 36em; margin: var(--s-5) auto 0; }
+.st-title { margin: var(--s-2) 0 0; font: 500 var(--fs-h4)/1.3 var(--f-sans); letter-spacing: -.01em; color: var(--ink); text-wrap: balance; }
+.st-body { margin-top: var(--s-2); font: 400 var(--fs-body)/1.65 var(--f-sans); color: var(--ink-2); text-wrap: pretty; }
+.st-body::first-letter { text-transform: uppercase; }
+@media (max-width: 699.98px) {
+  .st[data-phone-frame] .st-shot { width: min(72vw, 300px); aspect-ratio: 390 / 844; border-radius: 26px; }
+}
+
+/* steps, pinned (scripts/stepper.ts adds .pinned on wide windows with motion) */
+.steps.pinned { position: relative; max-width: none; padding: 0; height: calc(var(--sv) * .9 * var(--n) + var(--sv) * .1); }
+.steps.pinned .st-stick { position: sticky; top: 0; height: var(--sv); display: flex; flex-direction: column; align-items: center;
+  padding: calc(var(--bar-h) + 12px) var(--gut) 104px; }
+.steps.pinned .st-idx { display: flex; justify-content: center; gap: var(--s-6); flex-wrap: wrap; margin-bottom: var(--s-5); }
+.steps.pinned .st-idx li { font: 500 var(--fs-label)/1.2 var(--f-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3);
+  padding-bottom: 6px; box-shadow: inset 0 -2px 0 transparent; transition: color var(--t-ui) var(--ease-ui), box-shadow var(--t-ui) var(--ease-ui); cursor: pointer; }
+.steps.pinned .st-idx li.on { color: var(--ink); box-shadow: inset 0 -2px 0 var(--ink); }
+.steps.pinned .st-list { position: relative; flex: 1; width: 100%; }
+.steps.pinned .st { position: absolute; inset: 0; margin: 0; pointer-events: none; }
+.steps.pinned .st.on { pointer-events: auto; }
+.steps.pinned .st-shot { width: min(880px, calc((var(--sv) - 360px) * 1.6)); opacity: 0; transform: translateY(24px);
+  transition: transform 500ms var(--ease-soft), opacity 500ms var(--ease-soft); }
+.steps.pinned .st.on .st-shot { opacity: 1; transform: none; }
+.steps.pinned .st.was .st-shot { opacity: 0; transform: translateY(-24px); }
+.steps.pinned .st-txt { opacity: 0; transition: opacity var(--t-ui) var(--ease-ui); }
+.steps.pinned .st.on .st-txt { opacity: 1; transition-delay: 150ms; }
+
+.p-nums { display: flex; justify-content: center; gap: var(--s-8); margin: var(--s-9) auto 0; padding: 0 var(--gut); text-align: center; }
+.p-nums div { display: flex; flex-direction: column-reverse; gap: var(--s-1); }
+.p-nums dd { margin: 0; font: 500 var(--fs-h2)/1.1 var(--f-serif); letter-spacing: -.02em; color: var(--ink); font-variant-numeric: lining-nums; }
+.p-quote { margin: var(--s-9) auto 0; padding: 0 var(--gut); max-width: calc(26em + 2 * var(--gut)); text-align: center; }
+.p-quote p { font: italic 400 var(--fs-h3)/1.3 var(--f-serif); letter-spacing: -.01em; color: var(--ink); text-wrap: balance; }
+.p-quote p::before { content: "\201C"; }
+.p-quote p::after { content: "\201D"; }
+.p-how { max-width: calc(var(--w-wide) + 2 * var(--gut)); margin: var(--s-9) auto 0; padding: 0 var(--gut); text-align: center; }
+.p-how h2 { margin-bottom: var(--s-5); font-weight: 500; }
+.how-card { position: relative; text-align: left; padding: var(--s-6) var(--s-6) 0; border-radius: var(--r-card); background: var(--raised); box-shadow: var(--e-card); margin-bottom: 96px; }
+.how-list { columns: 2; column-gap: var(--s-7); }
+.how-list li { break-inside: avoid; padding: 0 0 var(--s-4); font: 400 var(--fs-body)/1.55 var(--f-sans); color: var(--ink); text-wrap: pretty; }
+.how-crop { display: block; width: min(560px, 76%); aspect-ratio: 16 / 6; margin: var(--s-5) auto -96px; overflow: hidden; border-radius: var(--r-screen) var(--r-screen) 0 0;
+  box-shadow: var(--e-lift), 0 0 0 1px rgb(255 255 255 / .07); rotate: -1.2deg; }
+.how-crop img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.p-next { display: block; position: relative; margin: var(--s-9) auto 0; padding-top: var(--s-6); text-align: center; height: min(420px, 52svh); overflow: hidden; }
+.p-next-label { display: block; }
+.p-next-title { display: block; margin-top: var(--s-2); font-size: var(--fs-h2); }
+.p-next-title .wm { color: var(--wm-c, var(--ink)); }
+.p-next-print { display: block; width: min(560px, 78vw); margin: var(--s-6) auto 0; rotate: 2.5deg; transition: translate 300ms var(--ease-out); }
+.p-next:hover .p-next-print { translate: 0 -8px; }
+.p-next .pr { --shade: .3; }
+
+.capsule { position: fixed; z-index: 62; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); translate: -50% 0; display: flex; gap: 4px; padding: 4px;
+  border-radius: var(--r-pill); background: rgb(28 30 34 / .72); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / .08), 0 16px 40px -12px rgb(0 0 0 / .8); }
+.capsule :is(a, .cap-note) { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; border-radius: var(--r-pill);
+  font: 500 var(--fs-small)/1 var(--f-sans); color: var(--ink); white-space: nowrap; transition: background-color 150ms var(--ease-ui); }
+.capsule a:hover { background: var(--fill-2); }
+.capsule .cap-x { width: 44px; padding: 0; justify-content: center; background: var(--fill-2); }
+.capsule .cap-go { background: var(--fill); color: var(--fill-ink); }
+.capsule .cap-go:hover { background: color-mix(in srgb, var(--fill) 88%, #fff); }
+.capsule .cap-note { color: var(--ink-3); padding: 0 18px 0 12px; }
+
+@media (max-width: 699.98px) {
+  .pres { --hero-w: calc(100vw - 32px); }
+  .pt { padding-top: calc(var(--bar-h) + 12px); }
+  .side, .pt-obj { display: none; }
+  /* on a phone the text column is the whole width: the pools keep to the corners */
+  .pg-p1 { transform: translate(0, -44vh) scale(1.4, 1.2); }
+  .pg-p2 { transform: translate(-58vw, 44vh) scale(1, 1.1); }
+  .pg-p3 { transform: translate(58vw, -10vh) scale(.9, 1.1); }
+  .hero[data-phone-frame] { aspect-ratio: 1; }
+  .hero[data-phone-frame] :is(.hero-img, .pr-img) { object-position: var(--pfx, 50%) var(--pfy, 0%); }
+  .pt-head { margin-top: var(--s-5); }
+  .p-title { margin: var(--s-2) auto; }
+  .facts { grid-template-columns: 1fr 1fr; max-width: 390px; gap: var(--s-4) var(--s-5); margin-top: var(--s-6); }
+  .facts div:nth-child(odd):last-child { grid-column: 1 / -1; }
+  .p-outcome { margin: var(--s-8) auto var(--s-7); }
+  .p-nums { gap: var(--s-6); margin-top: var(--s-8); }
+  .p-quote, .p-how { margin-top: var(--s-8); }
+  .how-card { padding: var(--s-5) var(--s-5) 0; margin-bottom: 72px; }
+  .how-list { columns: 1; }
+  .how-crop { width: 88%; margin-bottom: -72px; }
+  .p-next { margin-top: var(--s-8); height: min(360px, 46svh); }
+  .capsule { bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .capsule :is(a, .cap-note) { padding: 0 16px; }
+}
+
+/* ---------- open and close (spec 4.8): same-document view transitions ----------
+   scripts/open.ts names the shared elements just before and just after the change. The groups are
+   ordered by z-index, so the paper stays under the screens it carries. */
+@keyframes one-in { from { opacity: 0; } }
+@keyframes one-out { to { opacity: 0; } }
+::view-transition-group(*) { animation-duration: calc(var(--t-open) * var(--vt-k, 1)); animation-timing-function: var(--ease-path); }
+html.vt-close::view-transition-group(*) { animation-duration: calc(var(--t-close) * var(--vt-k, 1)); }
+::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+::view-transition-group(paper-old) { z-index: 1; }
+::view-transition-group(paper) { z-index: 2; }
+::view-transition-group(obj) { z-index: 3; mix-blend-mode: plus-lighter; }
+/* the body (facts, steps, the capsule) sits under the shared screens and texts: it carries the hush */
+::view-transition-group(body) { z-index: 4; }
+::view-transition-group(side-1), ::view-transition-group(side-2) { z-index: 5; animation-timing-function: var(--ease-soft); }
+::view-transition-group(prop-1), ::view-transition-group(prop-2) { z-index: 8; }
+::view-transition-group(side-1) { animation-delay: calc(100ms * var(--vt-k, 1)); }
+::view-transition-group(side-2) { animation-delay: calc(170ms * var(--vt-k, 1)); }
+::view-transition-group(shot) { z-index: 6; }
+::view-transition-group(meta), ::view-transition-group(title), ::view-transition-group(promise) { z-index: 7; animation-duration: calc(700ms * var(--vt-k, 1)); }
+/* texts keep their own size while their box travels: no stretched letters, only a cross-fade */
+::view-transition-old(meta), ::view-transition-new(meta), ::view-transition-old(title), ::view-transition-new(title),
+::view-transition-old(promise), ::view-transition-new(promise) { block-size: 100%; object-fit: none; object-position: 50% 50%; }
+::view-transition-old(shot) { display: none; }
+::view-transition-new(shot) { height: 100%; object-fit: cover; object-position: top; animation: none; }
+::view-transition-old(paper), ::view-transition-new(paper) { width: 100%; height: 100%; }
+::view-transition-old(paper) { animation: one-out calc(260ms * var(--vt-k, 1)) var(--ease-ui) both; }
+::view-transition-new(paper) { animation: one-in calc(200ms * var(--vt-k, 1)) var(--ease-ui) both; }
+::view-transition-old(paper-old) { animation: one-out calc(500ms * var(--vt-k, 1)) var(--ease-ui) both; }
+::view-transition-old(body) { animation: one-out calc(200ms * var(--vt-k, 1)) var(--ease-ui) both; }
+::view-transition-new(body) { animation: one-in calc(400ms * var(--vt-k, 1)) var(--ease-out) calc(500ms * var(--vt-k, 1)) both; }
+html.vt-close::view-transition-old(paper) { animation: one-out calc(300ms * var(--vt-k, 1)) var(--ease-ui) calc(420ms * var(--vt-k, 1)) both; }
+html.vt-close::view-transition-new(paper) { animation: one-in calc(260ms * var(--vt-k, 1)) var(--ease-ui) calc(300ms * var(--vt-k, 1)) both; }
+html.vt-close::view-transition-group(side-1), html.vt-close::view-transition-group(side-2) { animation-delay: 0ms; animation-timing-function: var(--ease-settle); }
+html.vt-close::view-transition-old(shot) { display: block; animation: one-out calc(300ms * var(--vt-k, 1)) var(--ease-ui) calc(280ms * var(--vt-k, 1)) both; height: 100%; object-fit: cover; object-position: top; }
+html.vt-close::view-transition-new(shot) { animation: one-in calc(260ms * var(--vt-k, 1)) var(--ease-ui) calc(260ms * var(--vt-k, 1)) both; }
+@media (max-width: 699.98px) {
+  ::view-transition-group(*) { animation-duration: calc(650ms * var(--vt-k, 1)); }
+  html.vt-close::view-transition-group(*) { animation-duration: calc(600ms * var(--vt-k, 1)); }
+}

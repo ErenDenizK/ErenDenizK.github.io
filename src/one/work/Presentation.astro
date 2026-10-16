@@ -1,0 +1,107 @@
+---
+/* A project's presentation (phase3 design-spec.md 3.3.4): hero and head, facts, the outcome and the
+   steps, numbers, why, how it's made, the next project, and the capsule. Dia's measured order on
+   Notion's columns, everything on the centre axis. Parts without data are left out.
+   One component for both forms: mode "layer" is cloned by scripts/open.ts into the layer over Home;
+   mode "page" is the static twin at <base>work/<slug>/, complete without JavaScript.
+   data-vt names the elements that share a view-transition name with the deck (scripts/open.ts). */
+import Shot from './Shot.astro';
+import Obj from './Obj.astro';
+import Print from './Print.astro';
+import Stepper from './Stepper.astro';
+import Icon from '../../components/Icon.astro';
+import type { Model } from './data';
+interface Props { m: Model; next?: Model; mode: 'layer' | 'page' }
+const { m, next, mode } = Astro.props;
+const front = m.prints[0];
+const sides = m.prints.slice(1, 3);
+const vars = `--a1: ${m.aura[0]}; --a2: ${m.aura[1]}; --a3: ${m.aura[2]}; --paper: ${m.paper}; --raised: ${m.raised}`;
+const HERO = '(max-width: 699.98px) calc(100vw - 32px), 800px';
+const titleId = `${m.slug}-${mode}-title`;
+---
+<article class:list={['pres', `pres-${mode}`]} data-pres={m.slug} style={vars} aria-labelledby={titleId}>
+  <div class="pg" data-vt="paper" aria-hidden="true">
+    <div class="pg-pool pg-p1"></div><div class="pg-pool pg-p2"></div><div class="pg-pool pg-p3"></div>
+    <div class="pg-grain"></div>
+  </div>
+  <div class="pb" data-vt="body">
+    <header class="pt">
+      <div class="pt-stage">
+        {sides.map((s, k) => (
+          <div class:list={['side', k ? 'side-r' : 'side-l']} data-vt={`side-${k + 1}`}>
+            <Print m={m} s={s} i={k + 1} n={m.prints.length} sizes="360px" />
+          </div>
+        ))}
+        {front && <Obj o={m.obj} sizes="360px" cls="pt-obj" />}
+        <figure class:list={['hero', { 'hero-obj': !front }]} data-vt="shot" data-phone-frame={front?.phone ? '' : undefined}>
+          {front
+            ? <Shot s={front} sizes={HERO} phoneSizes="calc(100vw - 32px)" eager={mode === 'page'} cls="hero-img" />
+            : <Obj o={m.obj} sizes="(max-width: 699.98px) 90vw, 640px" cls="hero-object" loop="spin" />}
+          {front && m.heroClip && (
+            <video class="hero-video" muted playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1">
+              {m.heroClip.phone?.map((v) => <source data-src={v.src} type={v.type} media="(max-width: 699.98px)" />)}
+              {m.heroClip.wide.map((v) => <source data-src={v.src} type={v.type} media={m.heroClip?.phone ? '(min-width: 700px)' : undefined} />)}
+            </video>
+          )}
+        </figure>
+      </div>
+      <div class="pt-head">
+        <div class="hush" aria-hidden="true"></div>
+        <p class="p-meta label" data-vt="meta">{m.metaLong}</p>
+        <h1 class="p-title" id={titleId} tabindex="-1" data-vt="title"><span class:list={['wm', m.wmClass]} style={m.wordmark} lang="en">{m.title}</span></h1>
+        <p class="p-promise" data-vt="promise">{m.summary}</p>
+      </div>
+      {m.facts.length > 0 && (
+        <dl class="facts">
+          {m.facts.map(([k, v]) => <div><dt class="label">{k}</dt><dd>{v}</dd></div>)}
+        </dl>
+      )}
+    </header>
+
+    {m.outcome && <p class="p-outcome">{m.outcome}</p>}
+    {m.steps.length > 0 && <Stepper m={m} />}
+
+    {m.numbers && (
+      <dl class="p-nums">
+        {m.numbers.map((x) => <div><dt class="label">{x.label}</dt><dd>{x.value}</dd></div>)}
+      </dl>
+    )}
+
+    {m.quote && <blockquote class="p-quote"><p>{m.quote}</p></blockquote>}
+
+    {m.how && (
+      <section class="p-how" aria-labelledby={`${m.slug}-${mode}-how`}>
+        <h2 class="label" id={`${m.slug}-${mode}-how`}>How it's made</h2>
+        <div class="how-card">
+          <ul class="how-list">{m.how.map((x) => <li>{x}</li>)}</ul>
+          {m.howCrop && (
+            <picture class="how-crop" aria-hidden="true">
+              <source type="image/avif" srcset={m.howCrop.avif} sizes="(max-width: 699.98px) 80vw, 560px" />
+              <source type="image/webp" srcset={m.howCrop.webp} sizes="(max-width: 699.98px) 80vw, 560px" />
+              <img src={m.howCrop.src} alt="" width={m.howCrop.w} height={m.howCrop.h} loading="lazy" decoding="async" />
+            </picture>
+          )}
+        </div>
+      </section>
+    )}
+
+    {next && (
+      <a class="p-next" href={next.href} data-next={next.slug} style={`--a1: ${next.aura[0]}; --paper: ${next.paper}`}>
+        <span class="p-next-label label">Next</span>
+        <span class="p-next-title"><span class:list={['wm', next.wmClass]} style={next.wordmark} lang="en">{next.title}</span></span>
+        <span class="p-next-print" data-vt-next="paper">
+          {next.prints[0] ? <Print m={next} s={next.prints[0]} i={0} n={next.prints.length} sizes="(max-width: 699.98px) 80vw, 560px" /> : <Print m={next} i={0} n={1} sizes="560px" />}
+        </span>
+      </a>
+    )}
+
+    <nav class="capsule" aria-label={m.title} data-vt-cap>
+      <a class="cap-x" href={`${m.home}#${m.slug}`} data-close aria-label="Close"><Icon name="close" size={20} weight="medium" /></a>
+      {m.live && (
+        <a class="cap-go" href={m.live.href} style={`--fill: ${m.live.fill}; --fill-ink: ${m.live.ink}`}>{m.live.label}<Icon name="arrow-up-right" size={16} weight="medium" /></a>
+      )}
+      {m.code && <a class="cap-code" href={m.code.href}>{m.code.label}<Icon name="arrow-up-right" size={16} weight="medium" /></a>}
+      {!m.code && m.linksNote && <span class="cap-note">{m.linksNote}</span>}
+    </nav>
+  </div>
+</article>

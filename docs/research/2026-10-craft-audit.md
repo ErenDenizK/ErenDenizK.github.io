@@ -1,6 +1,6 @@
 # Research: craft audit of prototype E, and a type and motion system (2026-10-09)
 
-**Status:** current, partly reversed. Its type and motion systems are built; the removal of the
+**Status:** history since 2026-10-15: its type and motion systems belong to the four-page site and are re-made in the new token set (two-page direction). Before that: current, partly reversed. Its type and motion systems are built; the removal of the
 Istanbul clock (§1, P1.4) was reversed by the owner on 2026-10-10. Paths under `scratchpad/` cited
 here were session scratch, not kept.
 

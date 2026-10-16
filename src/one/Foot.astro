@@ -1,0 +1,42 @@
+---
+/* The footer (design spec §3.4 item 8): the edk glass object in the gold aura, so the page ends on the
+   signature (a bookend), then how the site is made and the licence line. The object is its poster at
+   first (pre-rendered, ADR-0006); its idle loop plays only while it is on screen and motion is welcome
+   (scripts/foot.ts in shell). */
+import { getSite } from '../lib/site';
+import { poster } from '../lib/media';
+import { readManifest } from '../lib/files.mjs';
+const site = await getSite();
+const obj = poster('edk');
+const m = readManifest('edk');
+const idle: { src: string; type: string }[] = m?.idle?.sources?.map((s: { src: string; type: string }) => ({ src: `${obj.manifest?.replace(/manifest\.json$/, '')}${s.src}`, type: s.type })) ?? [];
+const made = site.about.colophon.find(([k]) => k === 'The site');
+---
+<footer class="foot" id="end">
+  <div class="obj" data-arrive="img">
+    <picture class="poster">
+      {obj.sources.map((s) => <source type={s.type} srcset={s.srcset} sizes="240px" />)}
+      <img src={obj.src} alt="The edk mark as a glass object" width={obj.w} height={obj.h} loading="lazy" decoding="async" />
+    </picture>
+    {idle.length > 0 && (
+      <video class="loop" data-loop muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
+        {idle.map((s) => <source src={s.src} type={s.type} />)}
+      </video>
+    )}
+  </div>
+  {made && <p class="made small">{made[0]} {made[1]}</p>}
+  <p class="lic label">© 2026 {site.name}. Code MIT; photos, renders and text all rights reserved.</p>
+  {/* draft copy (owner to confirm): the licence wording above is the design lead's (spec §3.4 item 8, owner 2026-10-15 item 5) */}
+</footer>
+
+<style>
+  .foot { display: grid; justify-items: center; text-align: center; padding: var(--s-9) var(--gut) var(--s-8); }
+  .obj { position: relative; width: 240px; aspect-ratio: 1; }
+  .obj > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .poster img, .loop { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: plus-lighter; }
+  .poster { mix-blend-mode: plus-lighter; }
+  .loop { opacity: 0; transition: opacity 400ms var(--ease-ui); }
+  .loop.is-on { opacity: 1; }
+  .made { margin-top: var(--s-5); max-width: 34em; color: var(--ink-2); }
+  .lic { margin-top: var(--s-4); max-width: 46em; text-transform: none; letter-spacing: 0.01em; line-height: 1.5; }
+</style>

@@ -1,0 +1,22 @@
+---
+/* The two-page site, Home, on its lab page (design spec; owner, 2026-10-15): noindex, linked from
+   nowhere, out of the sitemap (astro.config.mjs filters /lab/). PART A (the shell) places the brief, the
+   Work slot, the person's part and the footer; PART B owns <Work />. Nothing here goes to a live page
+   before the owner has tried it (charter §7). */
+import One from '../../layouts/One.astro';
+import Plate from '../../one/Plate.astro';
+import Brief from '../../one/Brief.astro';
+import Work from '../../one/Work.astro';
+import Rest from '../../one/rest/Rest.astro';
+import { getSite, getProjects, url } from '../../lib/site';
+
+const site = await getSite();
+const projects = await getProjects();
+const base = url('lab/one/');
+---
+<One title={`${site.name} (lab: one)`} description={site.description} home={base} tab="home" noindex>
+  <Plate slot="plates" />
+  <Brief />
+  <Work projects={projects} base={base} />
+  <Rest />
+</One>

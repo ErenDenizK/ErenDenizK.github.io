@@ -236,7 +236,18 @@ const site = defineCollection({
     description: z.string(),
     links: z.object({ github: z.url(), linkedin: z.union([z.url(), placeholder]) }),
     now: z.object({ label: z.string(), text: z.string() }),
-    home: z.object({ showcase: z.object({ title: z.string(), all: z.string(), kicker: z.string(), cta: z.string(), also: z.string() }) }),
+    home: z.object({
+      showcase: z.object({ title: z.string(), all: z.string(), kicker: z.string(), cta: z.string(), also: z.string() }),
+      /** The photos on the two-page Home (lab page /lab/one/, design spec 3.4 item 4), in order. Each is a
+          file stem in content/photos/; run `npm run photos` after adding one. A note left out is not shown. */
+      postcards: z.array(z.object({
+        photo: z.string().regex(/^[a-z0-9-]+$/),
+        alt: z.string(),
+        note: z.string().optional(),
+        place: z.string(),
+        date: z.string().optional(),
+      })).max(4).optional(),
+    }),
     work: z.object({
       kicker: z.string(), title: z.string(), dek: z.string(), byHand: z.string(),
       /** The one way into a project's focus view from its section. */

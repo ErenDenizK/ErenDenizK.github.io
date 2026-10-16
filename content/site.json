@@ -21,7 +21,7 @@
   },
   "now": {
     "label": "Now, October 2026",
-    "text": "First term of Computer Engineering at YTU. Recto is in public beta; English Prep is at 0.75."
+    "text": "Rebuilding this site as one page, from scratch."
   },
   "home": {
     "showcase": {
@@ -30,7 +30,26 @@
       "kicker": "Building now",
       "cta": "Take a look",
       "also": "Also building"
-    }
+    },
+    "postcards": [
+      {
+        "photo": "park-through-lens",
+        "alt": "The university's inner courtyard on a sunny afternoon, trees and a lawn, seen through a tinted lens held close to the camera.",
+        "note": "The inner courtyard at YTÜ, through a tinted lens.",
+        "place": "YTÜ, Istanbul"
+      },
+      {
+        "photo": "metro-platform",
+        "alt": "An Istanbul metro platform: a train passes in motion blur under warm light, and people walk away along the platform, seen from behind.",
+        "place": "Istanbul"
+      },
+      {
+        "photo": "cat-sunset-silhouette",
+        "alt": "A tabby kitten silhouetted on a sea wall, the sun low over the Sea of Marmara.",
+        "note": "A kitten on the sea wall, the sun low over the Marmara.",
+        "place": "Istanbul"
+      }
+    ]
   },
   "work": {
     "kicker": "Three products, all in development",

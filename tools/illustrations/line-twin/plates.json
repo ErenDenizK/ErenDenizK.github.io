@@ -1,0 +1,24 @@
+{
+  "bostanci": {
+    "photo": "content/photos/bostanci-rain-dusk.jpg",
+    "note": "The brief's plate (design spec 1.2, 3.2). The crop puts the red signal (photo x 557, y 1522) on the crop's centre axis, 222 px below its top; the busy band of station buildings (the top 32 %) keeps only its strongest edges.",
+    "crop": [
+      0,
+      1300,
+      1114,
+      2576
+    ],
+    "scale": 2.4,
+    "bands": "0:0.32:97.5,0.32:1:93.5",
+    "turd": 500,
+    "widths": [
+      1440,
+      900
+    ],
+    "quality": 60,
+    "signal": [
+      557,
+      222
+    ]
+  }
+}

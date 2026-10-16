@@ -1,6 +1,6 @@
 # Research: About as a personal page, and photographs as postcards (2026-10-11)
 
-**Status:** current, except the pile (§3), which the owner replaced on 2026-10-11 (afternoon) with postcards spread through the page; see ADR-0008, amendment "postcards through the page". Rests on the owner's words of 2026-10-11 (brief log): About is "soulless: plain
+**Status:** partly superseded 2026-10-15 by the two-page direction: the About page goes and its material moves to Home; the postcard technique holds (ADR-0008). Before that: current, except the pile (§3), which the owner replaced on 2026-10-11 (afternoon) with postcards spread through the page; see ADR-0008, amendment "postcards through the page". Rests on the owner's words of 2026-10-11 (brief log): About is "soulless: plain
 text and three photos"; postcards should be "more interactive"; "research what makes a photo frame
 richer and more fun, and how photos are presented digitally". The direction at the end is what
 `src/pages/about.astro` built; `PostcardPile.astro` is gone with the pile, and the postcards are

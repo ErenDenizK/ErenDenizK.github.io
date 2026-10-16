@@ -1,6 +1,6 @@
 # Research: the Work page (2026-10-10)
 
-**Status:** current. Direction A ("the stage") is on `dev` and recorded in ADR-0014; the owner chose
+**Status:** superseded 2026-10-15 by the two-page direction: Work is no longer a page; the projects become photo frames inside Home (brief log, 2026-10-15, late night; ADR-0014 superseded). Kept as the record. Before that: current. Direction A ("the stage") is on `dev` and recorded in ADR-0014; the owner chose
 it on 2026-10-11 and kept the frames. Directions B and C exist only as static mock screenshots.
 
 **Why:** brief, "Projects and Work" (2026-10-10, evening): "My projects page is a bit empty. There

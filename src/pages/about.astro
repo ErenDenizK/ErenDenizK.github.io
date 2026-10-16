@@ -33,8 +33,6 @@ const links = [
 
 /* the postcard files, by the photo's stem: pc-<stem>-<width>.<avif|webp> */
 const files = import.meta.glob<string>('../assets/photos/pc-*.{avif,webp}', { eager: true, query: '?url', import: 'default' });
-/* the painted depth maps (tools/photos/depth.py), for the "depth" presentation */
-const depths = import.meta.glob<string>('../assets/photos/depth-*.png', { eager: true, query: '?url', import: 'default' });
 const manifest = postcards as Record<string, { width: number; height: number; widths: number[]; full?: number; tone: string }>;
 /* what each placement is drawn at (the styles below): sizes never promise less than the box */
 const SIZES = {
@@ -53,7 +51,7 @@ function photo(stem: string, place: keyof typeof SIZES) {
     stem, src: files[`../assets/photos/pc-${stem}-${m.widths[0]}.webp`], small: files[`../assets/photos/pc-${stem}-${m.widths[0]}.webp`],
     srcset: set('webp'), avif: set('avif'), sizes: SIZES[place],
     width: m.width, height: m.height, tone: m.tone,
-    full: full?.avif && full.webp ? full : undefined, depth: depths[`../assets/photos/depth-${stem}.png`],
+    full: full?.avif && full.webp ? full : undefined,
   };
 }
 const num = (i: number) => String(i + 1).padStart(2, '0');

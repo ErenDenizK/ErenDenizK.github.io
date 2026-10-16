@@ -113,3 +113,19 @@ The other Record concepts (A, the valve microphone; B and B2, the tape decks; H2
 that writes; round 4's concepts 1 and 3) have no media here. Their renders and verdicts are in
 `docs/research/2026-10-record-object.md` and its images in `docs/research/assets/`; their scripts,
 where they were committed, are in `tools/objects/concepts/`.
+
+## photo-depth/: the depth maps of the `?photos=3` trial
+
+**What it was.** Concept 3 of the photo trial of 2026-10-11, "Depth": a window over a photograph
+that moved with the pointer, driven by a painted depth map (white near, black far). The maps
+(`depth-<stem>.png`, 256 px wide, 8-bit grey) were painted by `depth.py` from planes read off each
+photograph and snapped to its edges with a guided filter
+(`docs/research/2026-10-photo-presentation.md` §3.3).
+
+**What the owner said.** 2026-10-11, late: the three alternatives are gimmicks. 2026-10-15: the
+postcard stays the concept, "at most a slight, unbreakable depth" in the enlarged view.
+
+**Why it is kept.** The maps are derived from the owner's photographs, and the two-page direction
+(2026-10-15, late night) asks for 2.5D layered backgrounds, where a depth map can help. The
+component and its script were deleted (`docs/history/removed-2026-10-15.md`). `depth.py` still
+writes to `src/assets/photos/`; change `OUT` before it is run again.

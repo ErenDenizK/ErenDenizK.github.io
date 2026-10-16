@@ -16,7 +16,8 @@ site is a choice made with the owner; nothing here is shown just because it exis
 Each has a `-1000.webp` preview. About's postcards are made from the originals by
 `tools/photos/postcards.mjs` (`npm run photos`) at the widths they are shown, never upscaled; the
 script also measures each photo's light colour (`tone`), and writes the whole photograph at its own
-width (`pc-<stem>-full`); both serve only the trial presentations behind `?photos=1|2|3`
-(`docs/research/2026-10-photo-presentation.md`, rejected 2026-10-11), as do the depth maps painted
-by `tools/photos/depth.py`, which exist only for `?photos=3`. Added 2026-10-10 (owner: "use them where they fit; you don't
+width (`pc-<stem>-full`). Both served the trial presentations behind `?photos=1|2|3`
+(`docs/research/2026-10-photo-presentation.md`, rejected 2026-10-11, code removed 2026-10-15); they
+are kept for the postcard v2 enlarged view. The depth maps of that trial are in
+`media/archive/photo-depth/`. Added 2026-10-10 (owner: "use them where they fit; you don't
 have to use them all").
