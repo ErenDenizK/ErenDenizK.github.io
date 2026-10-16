@@ -339,8 +339,10 @@ html.layer-open .layer .rail-plain.in-layer { display: block !important; view-tr
   .pg-p1 { transform: translate(0, -44vh) scale(1.4, 1.2); }
   .pg-p2 { transform: translate(-58vw, 44vh) scale(1, 1.1); }
   .pg-p3 { transform: translate(58vw, -10vh) scale(.9, 1.1); }
-  .hero[data-phone-frame] { aspect-ratio: 1; }
-  .hero[data-phone-frame] :is(.hero-img, .pr-img) { object-position: var(--pfx, 50%) var(--pfy, 0%); }
+  /* a phone capture stays a whole phone screen: the open grows it from the tall frame in Work's flight
+     into a tall hero, never into a square crop of its top (spec v2 §3.3.3) */
+  .hero[data-phone-frame] { width: min(280px, 72vw); margin: 0 auto; aspect-ratio: 390 / 844; border-radius: 26px; }
+  .hero[data-phone-frame] :is(.hero-img, .pr-img) { object-position: 50% 0%; }
   .pt-head { margin-top: var(--s-5); }
   .p-title { margin: var(--s-2) auto; }
   .facts { grid-template-columns: 1fr 1fr; max-width: 390px; gap: var(--s-4) var(--s-5); margin-top: var(--s-6); }
