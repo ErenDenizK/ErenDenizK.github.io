@@ -287,6 +287,32 @@ test.describe('the person\'s part, desktop', () => {
   });
 });
 
+/* Review row T23 (the owner: no repetition): outside the brief, which names the projects on purpose, no
+   sentence of five or more words appears twice in the page's visible text. Sentences are cut at . ! ? and
+   at line ends; letter case and spacing are ignored. */
+test('no sentence of five or more words is said twice outside the brief', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(PAGE + '?still');
+  const text = await page.evaluate(() => {
+    const brief = document.querySelector('#brief');
+    const out: string[] = [];
+    for (const el of document.querySelectorAll<HTMLElement>('main h1, main h2, main h3, main p, main li, main figcaption, main blockquote')) {
+      if (brief?.contains(el) || el.closest('template, [hidden], [aria-hidden="true"]')) continue;
+      if (el.querySelector('p, li, h2, h3')) continue;
+      out.push(el.innerText);
+    }
+    return out;
+  });
+  expect(text.length, 'text blocks read').toBeGreaterThan(20);
+  const seen = new Map<string, number>();
+  for (const block of text) for (const raw of block.split(/[.!?\n]+/)) {
+    const t = raw.toLowerCase().replace(/\s+/g, ' ').trim();
+    if (t.split(' ').length >= 5) seen.set(t, (seen.get(t) ?? 0) + 1);
+  }
+  const twice = [...seen].filter(([, n]) => n > 1).map(([t]) => t);
+  expect(twice, 'sentences said more than once').toEqual([]);
+});
+
 test('touch: the strap is a rope too (driven by the card, never by a hand), and the photo view closes from its capsule', async ({ browser }) => {
   const ctx = await browser.newContext(phone);
   const page = await ctx.newPage();
