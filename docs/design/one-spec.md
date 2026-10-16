@@ -82,13 +82,14 @@ No mono face (it would cost about 20 KB of first paint). Labels are Inter 500, u
 | `--fs-lede` | 20 | 18 | 1.55 | -0.005 em | Inter 400 | the brief's lede, promises in an open project |
 | `--fs-h4` | 24 | 20 | 1.3 | -0.01 em | Inter 500 | step titles, card titles |
 | `--fs-h3` | 29 | 24 | 1.25 | -0.012 em | Newsreader 400 | outcome lines, the quote, "Now" |
-| `--fs-h2` | 42 | 32 | 1.1 | -0.02 em | Newsreader 500 | the name; the Record title |
+| `--fs-name` | 48 | 34 | 1.04 | -0.025 / -0.02 em | Newsreader Name 380 (opsz 72) | the name (charter §3, round 4) |
+| `--fs-h2` | 42 | 32 | 1.1 | -0.02 em | Newsreader 500 | the Record title (the name until round 4) |
 | `--fs-title` | 72 | 44 | 1.0 | wordmark's own | wordmark face | project titles in Work and in an open project only |
 
 - The ratio above body is 1.2 per step (17, 20, 24, 29, 35, 42; 51 and 61 are not used) [D]. Phone
   display type falls to 0.61 of desktop, headings to 0.76 to 0.83: inside the measured 0.4 to 0.7
   band [M], kept a little larger because the owner shares the site on a phone [O].
-- Caps [O, provisional]: brief and the rest at most 48 / 34 px: we use 42 / 32. Work and the open
+- Caps [O, provisional]: brief and the rest at most 48 / 34 px: the name uses 48 / 34 (round 4). Work and the open
   project at most 80 / 45 px: we use 72 / 44.
 - At most 6 sizes in one viewport, all 9 on the page.
 - `text-wrap: balance` on every heading and promise; `pretty` on body.

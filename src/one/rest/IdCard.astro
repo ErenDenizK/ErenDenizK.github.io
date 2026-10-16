@@ -82,7 +82,7 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
       <div class="idc-card" data-card-body>
         <div class="idc-face idc-front" data-face>
           <button class="idc-turn" type="button" data-turn aria-label="Turn the card over"></button>
-          <span class="idc-tex" aria-hidden="true" style={`--grain: url("${grain}")`}><span class="idc-guil">{guil.map((g) => <img src={g.src} style={g.style} alt="" loading="lazy" decoding="async" />)}</span></span>
+          <span class="idc-tex" aria-hidden="true" style={`--grain: url("${grain}")`}><span class="idc-cd"></span><span class="idc-guil">{guil.map((g) => <img src={g.src} style={g.style} alt="" loading="lazy" decoding="async" />)}</span></span>
           <div class="idc-head">
             <span class="idc-mark">{site.mark}</span>
             <span class="idc-issued">{card.issued}</span>
@@ -118,7 +118,7 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
         </div>
         <div class="idc-face idc-back" data-face>
           <button class="idc-turn" type="button" data-turn aria-label="Turn the card back to the front"></button>
-          <span class="idc-tex" aria-hidden="true" style={`--grain: url("${grain}")`}><span class="idc-guil">{guil.map((g) => <img src={g.src} style={g.style} alt="" loading="lazy" decoding="async" />)}</span></span>
+          <span class="idc-tex" aria-hidden="true" style={`--grain: url("${grain}")`}><span class="idc-cd"></span><span class="idc-guil">{guil.map((g) => <img src={g.src} style={g.style} alt="" loading="lazy" decoding="async" />)}</span></span>
           <div class="idc-head">
             <span class="idc-issued">{card.label}</span>
             <span class="idc-issued">{site.host}</span>
@@ -287,6 +287,12 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
   .idc-link + .idc-link { margin-left: 0; }
   .idc-link:hover { color: var(--ink); }
   .idc-link .icon { color: var(--ink-3); }
+  /* row T26: a hovered link answers with motion too, the way the Record strip's "whole record" does: its
+     arrow (every one points up and out) steps 1.5 px along its own direction */
+  .idc-link .icon, .idc-links .icon:last-child { transition: color var(--t-press), translate 200ms var(--ease-out); }
+  .idc-link:hover .icon { color: var(--ink-2); translate: 1.5px -1.5px; }
+  .idc-links a:hover .icon:last-child { color: var(--ink-2); translate: 1.5px -1.5px; }
+  :global(html.still) .idc-link:hover .icon, :global(html.still) .idc-links a:hover .icon:last-child { translate: none; }
   /* the security foil: a small hologram whose rings catch the light as the card turns */
   .idc-seal {
     margin-left: auto; width: 8.4cqi; height: 8.4cqi; border-radius: 50%; pointer-events: none;
@@ -322,6 +328,25 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
   .idc-tex { position: absolute; inset: 0; z-index: -1; border-radius: inherit; overflow: hidden; pointer-events: none; }
   .idc-tex::after { content: ""; position: absolute; inset: 0; background: var(--grain) repeat; background-size: 64px; mix-blend-mode: overlay; opacity: 0.9; }
   .idc-guil { position: absolute; inset: 0; opacity: 0.11; }
+  /* round four (review rows T27, C2, V23; spec v1 §4.1 "a CD-like interference sheen"): a denser
+     surface on both faces, the front included. The owner asked for density, not realism. Two layers
+     under the type, both centred on one point off the lower left corner (18 % 96 %, near the lower
+     rosette), so they read as one pressed disc:
+     - the grooves: fine concentric rings, a 0.9cqi period (2.7 px on the 300 px card, 8 device px at
+       DPR 3), light and dark at 3.5 % each, always visible as a woven-looking stock;
+     - the sheen: a rainbow in four 90 deg spokes (the foil's colours) cut by the same rings, turning
+       with the card (--fa, card3d.ts), shown most where the glare falls (--gx, --gy) and rising with
+       --glare. At rest it is a trace (about 13 % before the masks); in a lean the spokes sweep across the rings, the way
+       light runs round a CD.
+     Reduced motion and no JavaScript: the same layers at their rest values. */
+  .idc-tex::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-radial-gradient(circle at 18% 96%, rgb(255 244 230 / 0.035) 0 0.3cqi, rgb(0 0 0 / 0.035) 0.3cqi 0.6cqi, transparent 0.6cqi 0.9cqi); }
+  .idc-cd { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: calc(0.06 + var(--glare, 0.3) * 0.22);
+    background: repeating-conic-gradient(from var(--fa, 150deg) at 18% 96%, #f3b886 0deg, #efb1cb 22deg, #c9d4ff 45deg, #9fe0d0 67deg, #f3b886 90deg);
+    -webkit-mask: repeating-radial-gradient(circle at 18% 96%, #000 0 0.3cqi, rgb(0 0 0 / 0.3) 0.3cqi 0.9cqi), radial-gradient(circle at var(--gx, 50%) var(--gy, 26%), #000, rgb(0 0 0 / 0.35) 55%, rgb(0 0 0 / 0.2));
+    -webkit-mask-composite: source-in;
+    mask: repeating-radial-gradient(circle at 18% 96%, #000 0 0.3cqi, rgb(0 0 0 / 0.3) 0.3cqi 0.9cqi), radial-gradient(circle at var(--gx, 50%) var(--gy, 26%), #000, rgb(0 0 0 / 0.35) 55%, rgb(0 0 0 / 0.2));
+    mask-composite: intersect; }
   .idc-guil img { position: absolute; max-width: none; rotate: var(--gr, 0deg); }
   /* the photo, seated as a window under a laminate band that moves with the glare */
   .idc-win { position: relative; margin-top: 4.4cqi; border-radius: 2.4cqi; pointer-events: none; }

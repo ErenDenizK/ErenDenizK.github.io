@@ -560,6 +560,13 @@ Each line names its lane and file. "Shared" files have the owner list in section
 
 `--glass-*` tokens (5.1) for the tab bar, capsules, photo view capsules, close cursor and rail panel.
 
+Round 4 (glass study V7): the tokens hold the body, blur, specular band, hairline and drop; the aura parts
+(rim foot, caustic, body glow, the active bed and the hover beds) are written on each object in
+`src/one/glass.css`, because `--a1` differs per object (the field on Home, the project's pigments in an
+opened project). Components paint with `--glass-fill`, `--glass-blur`, `--glass-edge`, `--glass-shadow`,
+`--glass-bed`, `--glass-hover` and `--glass-label-off`. Lab switches `?glass=a|b|c|now`; values and
+reasons in the charter §4.
+
 ### 9.5 Radii
 
 New tokens `--r-panel: 14px` (rail desktop states, small panels), `--r-sheet: 28px` (the rail sheet),

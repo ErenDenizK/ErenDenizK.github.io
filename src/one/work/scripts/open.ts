@@ -9,6 +9,7 @@
    back. Without view transitions (or with reduced motion) the layer changes at once, with a --t-quick (160 ms) fade. */
 import type { Flight, Proj } from './flight';
 import { pauseTicker, createSmoother } from '../../scripts/ticker';
+import { bloom } from '../../scripts/bloom';
 import { createRail, type Rail } from '../../../scripts/rail';
 import { motion, emit, pauseField } from './bus';
 import { initStepper, type Stepper } from './stepper';
@@ -111,7 +112,7 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     const pres = l.querySelector<HTMLElement>('.pres')!;
     rail = createRail({
       scroller: l, host: l, sections: [...pres.querySelectorAll<HTMLElement>('[data-rail-sec]')], content: pres,
-      flat: l, id: 'layer-rail', extraClass: 'in-layer', sheet: {},
+      flat: l, id: 'layer-rail', extraClass: 'in-layer', ext: bloom(() => undefined),
       offset: () => (parseFloat(getComputedStyle(root).getPropertyValue('--bar-h')) || 76) + 16,
     });
     clipT = window.setTimeout(() => playHero(l), 300);

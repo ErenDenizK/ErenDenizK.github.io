@@ -14,6 +14,15 @@
 @font-face { font-family: "Newsreader"; font-style: italic; font-weight: 400 500; font-display: swap; src: url("../fonts/newsreader-italic-latin.woff2") format("woff2");
   unicode-range: U+0020-007E, U+00A0-00FF, U+0131, U+2010-2014, U+2018-201A, U+201C-201E, U+2022, U+2026, U+2032, U+2039-203A, U+20AC, U+2122; }
 @font-face { font-family: "Newsreader"; font-style: italic; font-weight: 400 500; font-display: swap; src: url("../fonts/newsreader-italic-tr.woff2") format("woff2"); unicode-range: U+011E-011F, U+0130, U+015E-015F; }
+/* the name and the mark (tools/fonts/name.py): static display instances of the letters a name uses; a
+   character outside them falls back to Newsreader glyph by glyph. Playfair and Fraunces are lab switches
+   (tokens.css) and download only when chosen. */
+@font-face { font-family: "Newsreader Name"; font-style: normal; font-weight: 380; font-display: swap; src: url("../fonts/name-newsreader.woff2") format("woff2");
+  unicode-range: U+0020, U+0027, U+002D-002E, U+0041-005A, U+0061-007A, U+00C7, U+00D6, U+00DC, U+00E7, U+00F6, U+00FC, U+011E-011F, U+0130-0131, U+015E-015F; }
+@font-face { font-family: "Playfair Name"; font-style: normal; font-weight: 380; font-display: swap; src: url("../fonts/name-playfair.woff2") format("woff2");
+  unicode-range: U+0020, U+0027, U+002D-002E, U+0041-005A, U+0061-007A, U+00C7, U+00D6, U+00DC, U+00E7, U+00F6, U+00FC, U+011E-011F, U+0130-0131, U+015E-015F; }
+@font-face { font-family: "Fraunces Name"; font-style: normal; font-weight: 320; font-display: swap; src: url("../fonts/name-fraunces.woff2") format("woff2");
+  unicode-range: U+0020, U+0027, U+002D-002E, U+0041-005A, U+0061-007A, U+00C7, U+00D6, U+00DC, U+00E7, U+00F6, U+00FC, U+011E-011F, U+0130-0131, U+015E-015F; }
 @font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Liberation Sans"), local("Helvetica"); size-adjust: 105%; ascent-override: 92%; descent-override: 23%; line-gap-override: 0%; }
 @font-face { font-family: "Newsreader Fallback"; src: local("Times New Roman"), local("Liberation Serif"), local("Times"); size-adjust: 100.5%; ascent-override: 73%; descent-override: 26.4%; line-gap-override: 0%; }
 
@@ -50,6 +59,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .h4 { font: 500 var(--fs-h4) / 1.3 var(--f-sans); letter-spacing: -0.01em; text-wrap: balance; }
 .h3 { font: 400 var(--fs-h3) / 1.25 var(--f-serif); letter-spacing: -0.012em; text-wrap: balance; }
 .h2 { font: 500 var(--fs-h2) / 1.1 var(--f-serif); letter-spacing: -0.02em; text-wrap: balance; }
+/* the name: its own face, size and tracking (tokens.css, charter §3); the Record title keeps .h2 */
+.name { font: var(--name-wght) var(--fs-name) / var(--name-lh) var(--f-name); letter-spacing: var(--name-track); text-wrap: balance; }
 .it { font-style: italic; }
 p { text-wrap: pretty; }
 

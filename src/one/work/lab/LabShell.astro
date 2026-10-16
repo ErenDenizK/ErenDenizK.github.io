@@ -4,6 +4,7 @@
    the faces, the tokens, a light field that answers setAura, the grain, html.js / html.still before
    first paint, and the answers to one:layer-open / one:layer-close (inert #main). */
 import '../../tokens.css';
+import '../../glass.css';
 import './demo.css';
 import interLatin from '../../../fonts/inter-latin.woff2?url';
 import newsLatin from '../../../fonts/newsreader-latin.woff2?url';
@@ -27,6 +28,8 @@ const { title } = Astro.props;
     (function () {
       var d = document.documentElement;
       d.classList.add('js');
+      /* the glass family's lab versions (src/one/glass.css), as on Home */
+      var g = /[?&]glass=(a|b|c|now)\b/.exec(location.search); d.dataset.glass = g ? g[1] : 'a';
       if (/[?&]still\b/.test(location.search) || matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('still');
       /* the stand-in bus (src/one/work/scripts/bus.ts falls back to these when PART A's is missing) */
       addEventListener('one:layer-open', function () { var m = document.getElementById('main'); if (m) m.inert = true; d.classList.add('layer-open'); });
