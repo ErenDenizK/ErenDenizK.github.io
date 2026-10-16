@@ -119,7 +119,7 @@ const cards = list.map((p, i) => {
                   <picture class="big-pic">
                     <source type="image/avif" srcset={c.bigAvif} sizes={c.land ? 'min(92vw, 920px)' : 'min(60vw, 520px)'} />
                     <img src={c.src} srcset={c.bigWebp} sizes={c.land ? 'min(92vw, 920px)' : 'min(60vw, 520px)'} alt={c.alt} width={c.w} height={c.h} decoding="async" draggable="false" />
-                    <span class="big-dev" aria-hidden="true"></span>
+                    <span class="big-dev" aria-hidden="true"></span><span class="big-safe" aria-hidden="true"></span>
                   </picture>
                   <span class="pc-edge"><i>{c.place}</i><b>{c.idx}</b></span>
                   <span class="idc-glare" aria-hidden="true"></span>
@@ -374,10 +374,19 @@ const cards = list.map((p, i) => {
   .pc-big .big-pic { position: relative; display: block; height: 100%; border-radius: 2px; overflow: hidden; }
   .pc-big .big-pic img { width: 100%; height: 100%; object-fit: cover; }
   .pc-big .big-pic::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.14); }
-  /* the burn-in: the photograph develops from grey to colour as it arrives (opacity only) */
-  .pc-big .big-dev { position: absolute; inset: 0; background: #77736d; mix-blend-mode: saturation; opacity: 0; pointer-events: none; }
-  html.motion .pc-big .big-dev { animation: pc-develop 600ms var(--ease-out) 160ms backwards; }
-  @keyframes pc-develop { from { opacity: 1; } }
+  /* the burn-in (brief 2026-10-15: Darkroom's burn-in "much faster, with its small coloured detail"; review
+     row V24). The print comes up under the safelight first, a dim red monochrome, then takes its colour:
+     a grey saturation layer takes the colour out, a safelight red multiplied over it tints the grey print
+     red and dark. The red leaves first (gone by 61 % of the run), the grey after it (gone by 86 %), so the
+     print passes red, then a warm grey, then colour. 640 ms from 60 ms after the press: about a quarter of
+     Darkroom's 2600 ms, and it ends with the 640 ms morph, so the card lands in colour. Opacity only. */
+  .pc-big :is(.big-dev, .big-safe) { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+  .pc-big .big-dev { background: #77736d; mix-blend-mode: saturation; }
+  .pc-big .big-safe { background: #c4553e; mix-blend-mode: multiply; }
+  html.motion .pc-big .big-dev { animation: pc-develop 640ms linear 60ms backwards; }
+  html.motion .pc-big .big-safe { animation: pc-safe 640ms linear 60ms backwards; }
+  @keyframes pc-develop { 0%, 34% { opacity: 1; animation-timing-function: cubic-bezier(.45, 0, .3, 1); } 86% { opacity: 0; } }
+  @keyframes pc-safe { 0% { opacity: 0.92; animation-timing-function: cubic-bezier(.3, 0, .4, 1); } 61% { opacity: 0; } }
   .pc-big .big-front .pc-edge { left: calc(3.6 * var(--u)); right: calc(3.6 * var(--u)); bottom: calc(3.6 * var(--u)); }
   .pc-big .big-front .pc-edge i { font-size: max(15px, calc(4.2 * var(--u))); }
   .pc-big .big-front .pc-edge b { font-size: max(12px, calc(2.8 * var(--u))); }
