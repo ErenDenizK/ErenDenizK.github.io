@@ -19,6 +19,11 @@ initClock();
 const moved = () => root.classList.toggle('moved', scrollY > 8);
 addEventListener('scroll', moved, { passive: true });
 moved();
+/* an open project scrolls its own layer under the bar: the band follows the layer's scroll there */
+document.addEventListener('scroll', (e) => {
+  const t = e.target;
+  if (t instanceof HTMLElement && t.classList.contains('layer')) root.classList.toggle('moved', t.scrollTop > 8);
+}, { capture: true, passive: true });
 
 /* PART B opens a project as a layer over Home: the field pauses, Home goes inert, the page rail hides */
 const main = document.getElementById('main');
@@ -31,6 +36,7 @@ document.addEventListener('one:layer-close', () => {
   pauseField(false);
   main?.removeAttribute('inert');
   root.classList.remove('layer-open');
+  moved();
 });
 
 /* the person's part loads its interactive pieces when it comes near */

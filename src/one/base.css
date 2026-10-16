@@ -125,3 +125,6 @@ html.motion [data-arrive="img"].in {
 /* ---------- the plates layer: drawings that scroll with the page (spec §4.3, L1 and L2) ---------- */
 .plates { position: absolute; z-index: var(--z-plate); left: 0; right: 0; top: 0; height: 2400px; overflow: clip; pointer-events: none; }
 html.layer-open #rail, html.layer-open .rail-plain { display: none !important; }
+/* Work's open and close are view transitions over the whole view: the bar stays on top of the growing
+   paper (its groups paint above Work's groups, which use z-index 1 to 8). */
+::view-transition-group(bar), ::view-transition-group(mark-dot), ::view-transition-group(tab-ind) { z-index: 20; }
