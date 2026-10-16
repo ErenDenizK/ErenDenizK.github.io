@@ -17,7 +17,17 @@
    ID card's engine (card3d.ts, tilt) swings it by a mouse drag and springs it back on release, and turns
    it on a click (the turn spring, no wobble past the face). Opening pushes one history step, so Back
    closes; Escape and a click outside close and go back that step; the card lands on top of the pile and
-   focus returns to it. Reduced motion: no physics, no morph; the turn is a crossfade. */
+   focus returns to it. Reduced motion: no physics, no morph; the turn is a crossfade.
+
+   Round three (spec v3 §4.2, rows T15, G4, G6, P2):
+   - the ways out: focus goes to the labelled close on open; the close folds to its cross after the first
+     close of the session (remembered with the project layer's key), after 4 s or on a pull; a turn
+     capsule turns the card; over the dark space a fine pointer becomes a glass close disc; on touch a
+     downward pull moves the card on a rubber band, fills a ring round the cross and closes past 96 px;
+   - input always answers: a press while the card is still growing (the view transition) is kept and
+     turns the card as soon as it lands;
+   - the three table photographs load eagerly, at low priority, once the chapter is within 1.5 screens,
+     so a jump from the rail never lands on grey cards. */
 import { initCards } from './card3d';
 import { motion } from './bus';
 
@@ -26,14 +36,27 @@ const UI: [number, number] = [300, 30];
 const LAND: [number, number] = [120, 2 * 0.75 * Math.sqrt(120)];
 const H = 1 / 240;
 const sp = (): Sp => ({ x: 0, v: 0, to: 0 });
+/* the close's fold, shared with the project layer (src/one/work/scripts/exits.ts uses the same key) */
+const FOLD_KEY = 'one-close-folded';
+const FOLD_MS = 4000;
+const PULL = 96;   // px of finger travel that closes
+const BAND = 120;  // the rubber band's reach
+const wasFolded = () => { try { return sessionStorage.getItem(FOLD_KEY) === '1'; } catch { return false; } };
+const rememberFold = () => { try { sessionStorage.setItem(FOLD_KEY, '1'); } catch { /* storage blocked: the fold is only a convenience */ } };
 const step = (s: Sp, [k, c]: [number, number], h: number) => { s.v += (-k * (s.x - s.to) - c * s.v) * h; s.x += s.v * h; };
 const still = (s: Sp, e: number) => Math.abs(s.x - s.to) < e && Math.abs(s.v) < e * 4;
 
 type VT = { finished: Promise<void>; skipTransition(): void };
+/* html.pc-vt holds every group of the morph to the card's own 640 ms (the page's groups default to the
+   900 ms open tempo, which kept the card unresponsive for over a second, row G4) */
 const vt = (f: () => void): VT | null => {
   const d = document as Document & { startViewTransition?: (f: () => void) => VT };
   if (motion() === 'reduced' || !d.startViewTransition) { f(); return null; }
-  return d.startViewTransition(f);
+  const html = document.documentElement;
+  html.classList.add('pc-vt');
+  const t = d.startViewTransition(f);
+  t.finished.finally(() => html.classList.remove('pc-vt'));
+  return t;
 };
 
 export function initPostcards() {
@@ -47,6 +70,15 @@ export function initPostcards() {
   const stack = cards.map((_, i) => i).sort((a, b) => +cards[a].classList.contains('land') - +cards[b].classList.contains('land'));
   const order = () => stack.forEach((i, k) => cards[i].style.setProperty('--z', String(k + 1)));
   order();
+
+  /* ---------- eager photographs (G6, P2) ---------- */
+  const imgs = [...table.querySelectorAll<HTMLImageElement>('.pc-pic img')];
+  const near = new IntersectionObserver((es) => {
+    if (!es.some((e) => e.isIntersecting)) return;
+    near.disconnect();
+    for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; }
+  }, { rootMargin: '150% 0px' });
+  near.observe(table);
 
   /* ---------- the table ---------- */
   let raf = 0, last = 0, acc = 0, up = -1, phase = 0;
@@ -124,13 +156,29 @@ export function initPostcards() {
 
   /* ---------- the large view ---------- */
   const stage = dlg.querySelector<HTMLElement>('[data-big-stage]')!;
-  let open: HTMLElement | null = null, busy: VT | null = null, pushed = false;
+  const caps = dlg.querySelector<HTMLElement>('[data-pv-caps]');
+  const closeBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-close]');
+  const turnBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-turn]');
+  const cursor = dlg.querySelector<HTMLElement>('[data-pv-cursor]');
+  let open: HTMLElement | null = null, busy: VT | null = null, pushed = false, queued = false, foldT = 0;
+  const fold = () => caps?.classList.add('folded');
+  /* the face toward the viewer turns the card (its button is the live one; the other face is inert) */
+  const turnCard = () => stage.querySelector<HTMLButtonElement>('[data-face]:not([inert]) [data-turn]')?.click();
+  const settle = () => {
+    dlg.classList.add('settled');
+    if (queued) { queued = false; turnCard(); }
+  };
   const show = (pc: HTMLElement) => {
     if (busy) { busy.skipTransition(); busy = null; }
     const i = cards.indexOf(pc);
     if (up === i) drop(i);
     const tpl = pc.querySelector<HTMLTemplateElement>('template[data-big]')!;
     pc.classList.add('is-hero');
+    queued = false;
+    dlg.classList.remove('settled', 'cur-x');
+    caps?.classList.toggle('folded', wasFolded());
+    clearTimeout(foldT);
+    foldT = window.setTimeout(fold, FOLD_MS);
     busy = vt(() => {
       pc.classList.remove('is-hero');
       pc.classList.add('is-out');
@@ -140,9 +188,10 @@ export function initPostcards() {
       const big = stage.querySelector<HTMLElement>('[data-big-card]')!;
       big.classList.add('is-hero');
       initCards(stage);
-      big.querySelector<HTMLElement>('[data-turn]')?.focus({ preventScroll: true });
+      /* a keyboard user hears "Close, button" first (spec v3 §4.2) */
+      closeBtn?.focus({ preventScroll: true });
     });
-    const named = () => stage.querySelector('[data-big-card]')?.classList.remove('is-hero');
+    const named = () => { stage.querySelector('[data-big-card]')?.classList.remove('is-hero'); settle(); };
     if (busy) busy.finished.finally(() => { busy = null; named(); }); else named();
     if (!pushed) { history.pushState({ ...(history.state || {}), postcard: i }, ''); pushed = true; }
   };
@@ -150,6 +199,10 @@ export function initPostcards() {
     const pc = open;
     if (!pc) return;
     if (busy) { busy.skipTransition(); busy = null; }
+    clearTimeout(foldT);
+    rememberFold();
+    queued = false;
+    dlg.classList.remove('cur-x');
     const big = stage.querySelector<HTMLElement>('[data-big-card]');
     /* the large card returns face up, so the morph lands on the photograph */
     big?.classList.add('is-hero');
@@ -159,6 +212,11 @@ export function initPostcards() {
     big?.querySelectorAll<HTMLElement>('[data-face]').forEach((f, k) => { f.style.opacity = k ? '0' : '1'; });
     busy = vt(() => {
       dlg.close();
+      dlg.classList.remove('settled');
+      stage.style.transform = '';
+      caps?.style.removeProperty('--pull');
+      dlg.style.removeProperty('--pull');
+      caps?.classList.remove('armed');
       stage.replaceChildren();
       pc.classList.remove('is-out');
       pc.classList.add('is-hero');
@@ -171,6 +229,62 @@ export function initPostcards() {
   };
   for (const pc of cards) pc.querySelector('.pc-open')?.addEventListener('click', () => show(pc));
   dlg.addEventListener('cancel', (e) => { e.preventDefault(); hide(); });
-  dlg.addEventListener('click', (e) => { if (!(e.target as Element).closest('[data-big-card]')) hide(); });
+  closeBtn?.addEventListener('click', () => hide());
+  turnBtn?.addEventListener('click', () => { if (busy) queued = true; else turnCard(); });
+  const onCard = (t: EventTarget | null) => !!(t as Element | null)?.closest?.('[data-big-card], [data-pv-caps]');
+  dlg.addEventListener('click', (e) => { if (!onCard(e.target)) hide(); });
+  /* G4: while the card grows, the transition's snapshot covers the page and takes the press; keep it */
+  document.addEventListener('pointerdown', (e) => {
+    if (!busy || !open || e.button !== 0) return;
+    const r = stage.getBoundingClientRect();
+    if (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) queued = true;
+  }, true);
   addEventListener('popstate', () => { if (open) hide(true); });
+
+  /* the close cursor: fine pointers, over the dark space only (over the card the hand stays the grab hand) */
+  dlg.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse' || !cursor) return;
+    const on = !onCard(e.target) && !!open;
+    dlg.classList.toggle('cur-x', on);
+    if (on) cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+  });
+  dlg.addEventListener('pointerleave', () => dlg.classList.remove('cur-x'));
+
+  /* touch: a downward pull moves the card on a rubber band and fills the ring round the cross */
+  let y0 = 0, x0 = 0, dir = 0, d = 0;
+  const setPull = (px: number) => {
+    d = px;
+    const b = (BAND * px) / (px + BAND);
+    stage.style.transform = px ? `translateY(${b.toFixed(1)}px) scale(${(1 - b / 1800).toFixed(4)})` : '';
+    const k = Math.min(100, (px / PULL) * 100);
+    caps?.style.setProperty('--pull', k.toFixed(1));
+    dlg.style.setProperty('--pull', k.toFixed(1));
+    caps?.classList.toggle('armed', px >= PULL);
+  };
+  const onCaps = (t: EventTarget | null) => !!(t as Element | null)?.closest?.('[data-pv-caps]');
+  dlg.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1 || !open || motion() === 'reduced' || onCaps(e.target)) { dir = 2; return; }
+    y0 = e.touches[0].clientY; x0 = e.touches[0].clientX; dir = 0;
+  }, { passive: true });
+  dlg.addEventListener('touchmove', (e) => {
+    if (dir === 2 || e.touches.length !== 1) return;
+    const dy = e.touches[0].clientY - y0, dx = e.touches[0].clientX - x0;
+    if (!dir) {
+      if (dy > 8 && dy > Math.abs(dx) * 1.2) { dir = 1; fold(); }
+      else if (Math.hypot(dx, dy) > 8) { dir = 2; return; }
+      else return;
+    }
+    setPull(Math.max(0, dy - 8));
+  }, { passive: true });
+  const endPull = () => {
+    if (dir !== 1) { dir = 0; return; }
+    dir = 0;
+    /* past the close point the card leaves from where the finger let it go */
+    if (d >= PULL) { hide(); return; }
+    const from = stage.style.transform;
+    setPull(0);
+    if (from) stage.animate([{ transform: from }, { transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.22, 1, .36, 1)' });
+  };
+  dlg.addEventListener('touchend', endPull, { passive: true });
+  dlg.addEventListener('touchcancel', endPull, { passive: true });
 }

@@ -50,7 +50,14 @@
    - the tilting card (a postcard in its large view, spec v2 §3.6.4, rows P2 and P3) can be swung by a
      mouse drag: the turn follows the hand on a rubber band (at most 18 deg across, 12 deg up and down)
      and the release springs back on the same ui spring as the lean, so letting go animates as smoothly
-     as picking up. A drag is not a click: it does not turn the card. */
+     as picking up. A drag is not a click: it does not turn the card.
+
+   Round three (spec v3 §2.5, §3.3):
+   - the lean as depth: --px and --py on the card body (-1 to 1, from the lean springs), read by layers
+     that sit in front of or behind the face (the ID card's cut photo, the postcard's stamp);
+   - the back's reveal: .is-back-on while the back faces the viewer (within 25 deg of face-on), and
+     .is-drawn from the first time it does, kept for the view, so the postcard's drawing draws once and
+     only its flourish replays (--fd shortens the flourish's wait after the first time). */
 import { mq, motionOK } from '../../scripts/env';
 
 type Spring = { x: number; v: number; to: number };
@@ -133,6 +140,7 @@ function setup(el: HTMLElement) {
   let tookOver = false;
   let spinning = false, landing = false;
   let raf = 0, last = 0, acc = 0, suppress = false;
+  let backOn = false, drawn = false;
 
   /* rope state, in px relative to the anchor */
   const pts: Pt[] = Array.from({ length: SEG + 1 }, () => ({ x: 0, y: 0, px: 0, py: 0 }));
@@ -327,6 +335,19 @@ function setup(el: HTMLElement) {
     body!.style.setProperty('--glare', clamp(0.3 + gl.x * 0.7 + Math.abs(local) / 40 + Math.abs(swingDeg) / 30, 0, 1).toFixed(3));
     body!.style.setProperty('--fa', (150 + local * 5 + swingDeg * 4).toFixed(1) + 'deg');
     body!.style.setProperty('--gr', (local * 0.1 + swingDeg * 0.1).toFixed(2) + 'deg');
+    body!.style.setProperty('--px', clamp(ty.x / 14, -1, 1).toFixed(3));
+    body!.style.setProperty('--py', clamp(-tx.x / 10, -1, 1).toFixed(3));
+    /* the back's reveal (round three): face-on within 25 deg */
+    const on = Math.cos((yaw * Math.PI) / 180) < -0.906;
+    if (on !== backOn) {
+      backOn = on;
+      el.classList.toggle('is-back-on', on);
+      if (on && !drawn) {
+        drawn = true;
+        el.classList.add('is-drawn');
+        setTimeout(() => el.style.setProperty('--fd', '150ms'), 2400);
+      }
+    }
   }
 
   function land() {
