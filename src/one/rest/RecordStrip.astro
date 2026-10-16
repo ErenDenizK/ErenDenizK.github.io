@@ -306,6 +306,17 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
   /* press: the Record's links answer within 120 ms (scale 0.98) */
   .rstrip :global(a.ym) { transition: scale var(--t-press) var(--ease-out); }
   .rstrip :global(a.ym:active), .rs-all:active { scale: 0.98; }
+  /* round four (review row T26: every input answers). The audit (tools/silent.mjs, CDP forced states)
+     found three links with no hover or press response: the project names and an essay's title. A project
+     name draws a 1 px underline in its own colour from the left (200 ms) and sinks on press; a pressed
+     row's mark grows to 1.5 and its title dims to --ink-2 while the finger or button is down, so the
+     press is felt before the navigation starts. */
+  .rstrip :global(.pj) { background: linear-gradient(currentColor, currentColor) 0 calc(100% - 3px) / 0 1px no-repeat;
+    transition: background-size 200ms var(--ease-out), scale var(--t-press) var(--ease-out), color var(--t-press); }
+  .rstrip :global(.pj:hover) { background-size: 100% 1px; }
+  .rstrip :global(.pj:active) { scale: 0.97; }
+  .rstrip :global(.entry:active .e-mark) { scale: 1.5; }
+  .rstrip :global(.entry .e-link:active) { color: var(--ink-2); }
 
   /* ---------- the hand-over: the spine runs on, dashed, to a quiet link ---------- */
   .rs-tail { position: relative; height: 72px; }
