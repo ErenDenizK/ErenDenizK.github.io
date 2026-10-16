@@ -57,7 +57,22 @@
      that sit in front of or behind the face (the ID card's cut photo, the postcard's stamp);
    - the back's reveal: .is-back-on while the back faces the viewer (within 25 deg of face-on), and
      .is-drawn from the first time it does, kept for the view, so the postcard's drawing draws once and
-     only its flourish replays (--fd shortens the flourish's wait after the first time). */
+     only its flourish replays (--fd shortens the flourish's wait after the first time).
+   - the lanyard follows every motion of the card (spec v3 §3.5, review rows T10 and C1). Before, the
+     hover lean and the entrance twist turned only the card body, so the card moved "by itself" while
+     the lanyard stood still. Now (no new physics, the same Verlet rope):
+     1. the lean is a torque on the clip: each step a sideways force -900 px/s² x sin(lean) on the rope's
+        last point, so the rope bends a few pixels as the pointer leans the card and relaxes on the same
+        hang spring; a pitch lifts the clip toward the viewer by L (1 - cos pitch) / 2;
+     2. the card's yaw (the entrance twist, the turn) twists the strap's lower 30 %: that part of the
+        ribbon narrows by |cos yaw| and shows its plain back face past 90 deg (the lettering is masked off
+        it), so a turned card hangs from a half-twisted strap, as a real one does;
+     3. touch gets the rope too, without the hand: the strap is the same renderer, and the entrance push
+        swings strap and card together instead of the card swinging about a fixed clip;
+     4. the hover sway's push and the lean's force add, so sway and lean read as one motion;
+     5. at rest nothing moves (ADR-0008), but a page scroll while the card is in view drags the rope's
+        middle sideways a little (-0.04 x the scroll speed, at most 60 px/s), and on touch tips the photo's
+        layers (--py, at most 0.3), so a scroll is felt and the card never wanders. */
 import { mq, motionOK } from '../../scripts/env';
 
 type Spring = { x: number; v: number; to: number };
@@ -106,6 +121,11 @@ const WALL = 40; // px: the soft walls push back over this distance before the c
 const WALL_K = 900; // 1/s²: stops a 1200 px/s card within WALL
 const BOUNCE = 0.3; // restitution at a limit
 const TWIST_MAX = 12; // deg, while held
+/* round three: the lanyard follows the card (see the header) */
+const K_LEAN = 900; // px/s² per radian of lean, sideways on the clip
+const TWIST_PART = 0.3; // the strap's lower part that twists with the card's yaw
+const SCROLL_DRAG = 0.04, SCROLL_DRAG_MAX = 60; // px/s at the rope's middle per px/s of scroll, and the cap
+const SCROLL_TILT = 0.3; // the most a scroll tips the photo's layers (--py)
 
 type Pt = { x: number; y: number; px: number; py: number };
 
@@ -126,11 +146,16 @@ function setup(el: HTMLElement) {
   const rope = el.querySelector<SVGSVGElement>('[data-card-rope]');
   const ropePath = rope?.querySelector<SVGPathElement>('[data-rope-path]');
   const ropeFade = rope?.querySelector<SVGLinearGradientElement>('linearGradient');
+  /* round three: the strap's lower part, drawn narrower as it twists, and the lettering's mask */
+  const ropeLow = [...(rope?.querySelectorAll<SVGPathElement>('[data-rope-low]') ?? [])];
+  const ropeUp = [...(rope?.querySelectorAll<SVGPathElement>('[data-rope-up]') ?? [])];
+  const textStops = [...(rope?.querySelectorAll<SVGStopElement>('[data-rope-tstop]') ?? [])];
   const hold = el.querySelector<HTMLElement>('.idc-hold');
 
   const still = () => mq.reduce.matches;
   const canTilt = () => mq.fine.matches && !still();
-  const canHold = () => hang && canTilt() && !!(swing && anchor && rope && ropePath);
+  /* the rope runs wherever motion is welcome (round three: touch too); only a fine pointer may hold it */
+  const canRope = () => hang && !still() && !!(swing && anchor && rope && ropePath);
 
   let flipped = false;
   const tx = sp(), ty = sp(), fl = sp(), gl = sp(), th = sp(), tw = sp();
@@ -141,6 +166,8 @@ function setup(el: HTMLElement) {
   let spinning = false, landing = false;
   let raf = 0, last = 0, acc = 0, suppress = false;
   let backOn = false, drawn = false;
+  /* a scroll's tip of the photo's layers (touch), a spring back to 0 */
+  const sv = sp();
 
   /* rope state, in px relative to the anchor */
   const pts: Pt[] = Array.from({ length: SEG + 1 }, () => ({ x: 0, y: 0, px: 0, py: 0 }));
@@ -173,6 +200,14 @@ function setup(el: HTMLElement) {
   faceState();
   showFaces(0);
   el.classList.add('is-live');
+  /* round three: the photo's depth layers show together, once all of them are decoded */
+  const relief = el.querySelector<HTMLElement>('.idc-relief');
+  if (relief) {
+    const imgs = [...relief.querySelectorAll('img')];
+    const ready = () => Promise.all(imgs.map((im) => (im.complete && im.naturalWidth ? Promise.resolve() : im.decode()))).then(() => relief.classList.add('is-ready'), () => {});
+    if (imgs.every((im) => im.complete && im.naturalWidth)) relief.classList.add('is-ready');
+    else imgs.forEach((im) => im.addEventListener('load', () => { void ready(); }, { once: true }));
+  }
 
   function turn() {
     const hadFocus = el.contains(document.activeElement);
@@ -208,6 +243,7 @@ function setup(el: HTMLElement) {
     damp = 2 * 0.9 * Math.sqrt(G / L);
     limits();
     if (ropeFade) ropeFade.setAttribute('y2', String(Math.min(0.6 * L, 140)));
+    rope?.querySelector('[data-rope-tgrad]')?.setAttribute('y2', String(L));
     /* hang the rope straight and let it settle offline, so the page opens on the rope's own rest */
     for (let i = 0; i <= SEG; i++) { const p = pts[i]; p.x = p.px = 0; p.y = p.py = (restY * i) / SEG; }
     settling = true;
@@ -232,13 +268,15 @@ function setup(el: HTMLElement) {
       vy = along * uy + (vy - along * uy) * k;
       c.px = c.x - vx; c.py = c.y - vy;
     }
+    /* round three: the card's lean pushes its clip sideways (the lean's torque on the clip) */
+    const lean = settling || drag ? 0 : -K_LEAN * Math.sin((ty.x * Math.PI) / 180);
     for (let i = 1; i <= SEG; i++) {
       const p = pts[i];
       if (drag && drag.pin === i) continue;
       const f = i === SEG ? 0.9995 : 0.985; // the strap itself is light and damps quickly
       const vx = (p.x - p.px) * f, vy = (p.y - p.py) * f;
       p.px = p.x; p.py = p.y;
-      p.x += vx; p.y += vy + G * h * h;
+      p.x += vx + (i === SEG ? lean * h * h : 0); p.y += vy + G * h * h;
     }
     /* soft walls: over the last WALL px before a side limit, a spring pushes the clip back */
     if (!settling && (!drag || drag.pin !== SEG)) {
@@ -295,23 +333,38 @@ function setup(el: HTMLElement) {
     return { x: x * k, y: y * k };
   }
 
-  function renderRope() {
+  /** The clip's lift toward the viewer as the card pitches (round three), px. */
+  const lift = () => restY * (1 - Math.cos((tx.x * Math.PI) / 180)) * 0.5;
+  function renderRope(yaw = 0) {
     if (!ropePath) return;
     /* the drawn rope ends exactly at the card's clip: any difference between the simulated and the
        laid-out rest is spread along the rope */
-    const ex = 0 - simRest.x, ey = restY - simRest.y;
-    let d = '';
-    let qx = 0, qy = 0;
-    for (let i = 0; i <= SEG; i++) {
-      const f = i / SEG;
-      const x = pts[i].x + ex * f, y = pts[i].y + ey * f;
-      if (i === 0) d = `M${x.toFixed(1)} ${y.toFixed(1)}`;
-      else if (i === SEG) d += ` Q${qx.toFixed(1)} ${qy.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`;
-      else if (i > 1) d += ` Q${qx.toFixed(1)} ${qy.toFixed(1)} ${((qx + x) / 2).toFixed(1)} ${((qy + y) / 2).toFixed(1)}`;
-      else d += ` L${((x) / 2).toFixed(1)} ${(y / 2).toFixed(1)}`;
-      qx = x; qy = y;
+    const ex = 0 - simRest.x, ey = restY - simRest.y - lift();
+    const P = pts.map((p, i) => [p.x + (ex * i) / SEG, p.y + (ey * i) / SEG]);
+    /* one smooth path through the points from a to b: quadratics through the midpoints */
+    const trace = (a: number, b: number) => {
+      const mid = (i: number) => [(P[i][0] + P[i + 1][0]) / 2, (P[i][1] + P[i + 1][1]) / 2];
+      const f = (q: number[]) => `${q[0].toFixed(1)} ${q[1].toFixed(1)}`;
+      let d = `M${f(a === 0 ? P[0] : mid(a - 1 >= 0 ? a - 1 : 0))}`;
+      if (a === 0) d += ` L${f(mid(0))}`;
+      for (let i = Math.max(1, a); i < b; i++) d += ` Q${f(P[i])} ${f(i + 1 === SEG && b === SEG ? P[SEG] : mid(i))}`;
+      return d;
+    };
+    ropePath.setAttribute('d', trace(0, SEG));
+    if (!ropeLow.length) return;
+    /* the twist: the lower part narrows by |cos yaw| and shows its back face past 90 deg */
+    const k = Math.round(SEG * (1 - TWIST_PART));
+    const c = Math.cos((yaw * Math.PI) / 180);
+    const up = trace(0, k), low = trace(k, SEG);
+    for (const e of ropeUp) e.setAttribute('d', up);
+    for (const e of ropeLow) { e.setAttribute('d', low); e.style.strokeWidth = `calc(${Math.max(0.1, Math.abs(c)).toFixed(3)} * var(--sw))`; }
+    rope!.classList.toggle('is-back', c < 0);
+    const vis = c <= 0.3 ? 0 : (c - 0.3) / 0.7;
+    if (textStops.length === 2) {
+      textStops[0].setAttribute('offset', ((k - 0.8) / SEG).toFixed(3));
+      textStops[1].setAttribute('offset', ((k + 0.2) / SEG).toFixed(3));
+      textStops[1].setAttribute('stop-opacity', vis.toFixed(3));
     }
-    ropePath.setAttribute('d', d);
   }
 
   function render() {
@@ -323,8 +376,8 @@ function setup(el: HTMLElement) {
     if (hold && !live) hold.style.transform = still() || Math.abs(ep.x) < 0.005 ? '' : `rotate(${ep.x.toFixed(3)}deg)`;
     if (live) {
       const c = pts[SEG];
-      swing!.style.transform = `translate(${(c.x - simRest.x).toFixed(2)}px, ${(c.y - simRest.y).toFixed(2)}px) rotate(${th.x.toFixed(4)}rad)`;
-      renderRope();
+      swing!.style.transform = `translate(${(c.x - simRest.x).toFixed(2)}px, ${(c.y - simRest.y - lift()).toFixed(2)}px) rotate(${th.x.toFixed(4)}rad)`;
+      renderRope(yaw);
     } else if (swing) swing.style.transform = '';
     /* the light is fixed above and to the left; its reflection moves as the visible face turns */
     let local = ((yaw + 90) % 360 + 360) % 360 - 90;
@@ -335,8 +388,9 @@ function setup(el: HTMLElement) {
     body!.style.setProperty('--glare', clamp(0.3 + gl.x * 0.7 + Math.abs(local) / 40 + Math.abs(swingDeg) / 30, 0, 1).toFixed(3));
     body!.style.setProperty('--fa', (150 + local * 5 + swingDeg * 4).toFixed(1) + 'deg');
     body!.style.setProperty('--gr', (local * 0.1 + swingDeg * 0.1).toFixed(2) + 'deg');
-    body!.style.setProperty('--px', clamp(ty.x / 14, -1, 1).toFixed(3));
-    body!.style.setProperty('--py', clamp(-tx.x / 10, -1, 1).toFixed(3));
+    /* the depth layers follow every motion: the lean, the entrance twist, the swing, a scroll (touch) */
+    body!.style.setProperty('--px', clamp((ty.x + en.x * 0.6 + twist * 0.5) / 14 + th.x * 1.2, -1, 1).toFixed(3));
+    body!.style.setProperty('--py', clamp(-tx.x / 10 + sv.x + ep.x / 20, -1, 1).toFixed(3));
     /* the back's reveal (round three): face-on within 25 deg */
     const on = Math.cos((yaw * Math.PI) / 180) < -0.906;
     if (on !== backOn) {
@@ -381,7 +435,7 @@ function setup(el: HTMLElement) {
         th.to = SWING_MAX * Math.tanh(a / SWING_MAX);
         step(th, HANG, H);
       }
-      step(tx, UI, H); step(ty, UI, H); step(gl, UI, H); step(tw, UI, H);
+      step(tx, UI, H); step(ty, UI, H); step(gl, UI, H); step(tw, UI, H); step(sv, UI, H);
       const ent = entering && t - entering < ENTER_MS ? ENTER : TURN;
       step(en, ent, H); step(ep, ent, H);
       if (spinning) {
@@ -399,11 +453,11 @@ function setup(el: HTMLElement) {
       for (const p of pts) if (Math.abs(p.x - p.px) > eps || Math.abs(p.y - p.py) > eps) { moving = true; break; }
       moving ||= !rest(th, eps < 0.01 ? 0.0008 : 0.004);
     }
-    const done = !drag && !moving && !spinning && rest(tx, 0.02) && rest(ty, 0.02) && rest(fl, 0.05) && rest(gl, 0.002) && rest(tw, 0.02) && rest(en, 0.02) && rest(ep, 0.01);
+    const done = !drag && !moving && !spinning && rest(tx, 0.02) && rest(ty, 0.02) && rest(fl, 0.05) && rest(gl, 0.002) && rest(tw, 0.02) && rest(en, 0.02) && rest(ep, 0.01) && rest(sv, 0.002);
     if (done) {
       entering = 0;
       if (el.dataset.entrance === 'play') el.dataset.entrance = 'done';
-      for (const s of [tx, ty, gl, tw, th, en, ep]) { s.x = s.to; s.v = 0; }
+      for (const s of [tx, ty, gl, tw, th, en, ep, sv]) { s.x = s.to; s.v = 0; }
       fl.x = fl.to = flipped ? 180 : 0; fl.v = 0;
       for (const p of pts) { p.px = p.x; p.py = p.y; }
       /* within a pixel and a half of rest, the rope takes its rest shape exactly, and the card hangs
@@ -502,7 +556,7 @@ function setup(el: HTMLElement) {
 
   /* hold (the hanging card only): grab the card or its rope, pull, let go or fling */
   function setLive() {
-    const on = canHold();
+    const on = canRope();
     if (on === live) return;
     live = on;
     el.classList.toggle('is-rope', live);
@@ -518,7 +572,7 @@ function setup(el: HTMLElement) {
     addEventListener('resize', () => { clearTimeout(rs); rs = window.setTimeout(remeasure, 120); });
 
     const start = (e: PointerEvent, onRope: boolean) => {
-      if (e.button !== 0 || e.pointerType === 'touch' || !live || (e.target as Element).closest('a')) return;
+      if (e.button !== 0 || e.pointerType === 'touch' || !live || !canTilt() || (e.target as Element).closest('a')) return;
       limits();
       const a = anchor!.getBoundingClientRect();
       const hx = e.clientX - a.left, hy = e.clientY - a.top;
@@ -608,6 +662,28 @@ function setup(el: HTMLElement) {
     el.addEventListener('lostpointercapture', end);
 
     enter();
+
+    /* round three: a scroll is felt (see the header, point 5) */
+    let ly = scrollY, lt = performance.now(), seen = false, quiet = 0;
+    new IntersectionObserver((es) => { seen = es.some((x) => x.isIntersecting); }).observe(el);
+    addEventListener('scroll', () => {
+      const now = performance.now(), dt = (now - lt) / 1000, dy = scrollY - ly;
+      ly = scrollY; lt = now;
+      if (!seen || still() || !motionOK() || dt <= 0 || dt > 0.2 || drag) return;
+      const v = dy / dt;
+      if (live) {
+        const j = pts[SEG >> 1];
+        const cur = (j.x - j.px) / H;
+        const want = clamp(cur + clamp(-SCROLL_DRAG * v, -SCROLL_DRAG_MAX, SCROLL_DRAG_MAX) * 0.25, -SCROLL_DRAG_MAX, SCROLL_DRAG_MAX);
+        j.px = j.x - want * H;
+      }
+      if (!mq.fine.matches) {
+        sv.to = clamp(v / 4000, -SCROLL_TILT, SCROLL_TILT);
+        clearTimeout(quiet);
+        quiet = window.setTimeout(() => { sv.to = 0; kick(); }, 120);
+      }
+      kick();
+    }, { passive: true });
   }
 
   /* ---- the entrance (see the header) ---- */
@@ -653,7 +729,7 @@ function setup(el: HTMLElement) {
   }
 
   const reset = () => {
-    for (const s of [tx, ty, gl, th, tw, en, ep]) { s.x = s.to = 0; s.v = 0; }
+    for (const s of [tx, ty, gl, th, tw, en, ep, sv]) { s.x = s.to = 0; s.v = 0; }
     entering = 0;
     spinning = landing = false;
     fl.x = fl.to = flipped ? 180 : 0; fl.v = 0;

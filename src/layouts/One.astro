@@ -54,11 +54,13 @@ const springs = tempoCSS(TEMPOS.portfolio);
       var still = matchMedia('(prefers-reduced-motion: reduce)').matches || /[?&]still\b/.test(q);
       d.classList.add(still ? 'still' : 'motion');
       d.classList.toggle('fine', matchMedia('(hover: hover) and (pointer: fine)').matches);
-      /* lab switches (spec §9): Work's form, the postcard caption, the open tempo */
+      /* lab switches (spec §9): Work's form, the postcard caption, the open tempo, the card's photo */
       var pick = function (k, ok, def) { var m = new RegExp('[?&]' + k + '=([a-z0-9]+)').exec(q); return m && ok.indexOf(m[1]) >= 0 ? m[1] : def; };
       d.dataset.work = pick('work', ['deck', 'drift'], 'deck');
       d.dataset.cap = pick('cap', ['line', 'large'], 'large');
       d.dataset.open = pick('open', ['900', '1400'], '900');
+      /* the ID card's photo: three cut layers in depth, or the flat photo (spec v3 §3.4) */
+      d.dataset.photo = pick('photo', ['flat', 'layers'], 'layers');
     })();
   </script>
 </head>
