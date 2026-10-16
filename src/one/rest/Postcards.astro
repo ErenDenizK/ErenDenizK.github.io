@@ -177,6 +177,27 @@ const cards = list.map((p, i) => {
   </section>
 )}
 
+<script>
+  /* Round four (round-three critique, weak point 2; rows G2, G6): the table photographs were fetched only
+     when the person's part came near (scripts/rest.ts loads late), so a long jump from the rail landed
+     on grey cards for up to 2 s. This runs at page load: once the page has loaded and the main thread is
+     idle (at most 1.2 s later) the three small files are fetched at low priority. Until a file is decoded
+     its plate shows the photograph's own tone (CSS), and the picture fades in over 240 ms when it lands.
+     Without JavaScript nothing changes (the images stay lazy and fully opaque). */
+  const table = document.querySelector<HTMLElement>('[data-pc-table]');
+  if (table) {
+    const imgs = [...table.querySelectorAll<HTMLImageElement>('.pc-pic img')];
+    table.dataset.pcFade = '';
+    for (const im of imgs) {
+      const ok = () => im.closest('.pc-pic')?.classList.add('is-in');
+      if (im.complete && im.naturalWidth) ok(); else im.addEventListener('load', ok, { once: true });
+    }
+    const early = () => { for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; } };
+    const idle = (f: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(f, { timeout: 1200 }) : setTimeout(f, 1200));
+    if (document.readyState === 'complete') idle(early); else addEventListener('load', () => idle(early), { once: true });
+  }
+</script>
+
 <style>
   .photos { position: relative; padding: 0 var(--gut); text-align: center; }
   /* the city the photographs were taken in, engraved, as the table's far horizon (line-art set, 8 %) */

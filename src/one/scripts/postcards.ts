@@ -98,18 +98,8 @@ export function initPostcards() {
     for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; }
   }, { rootMargin: '150% 0px' });
   near.observe(table);
-  /* round four: the IntersectionObserver alone still left the cards grey for up to 2 s after a long jump
-     from the rail (the fetch started only on arrival). Once the page has loaded and the main thread is
-     idle, the three small files are fetched anyway; until a file is decoded its plate shows the
-     photograph's own tone (CSS), and the picture fades in over 240 ms when it lands. */
-  const early = () => { near.disconnect(); for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; } };
-  const idle = (f: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(f, { timeout: 4000 }) : setTimeout(f, 1200));
-  if (document.readyState === 'complete') idle(early); else addEventListener('load', () => idle(early), { once: true });
-  table.dataset.pcFade = '';
-  for (const im of imgs) {
-    const ok = () => im.closest('.pc-pic')?.classList.add('is-in');
-    if (im.complete && im.naturalWidth) ok(); else im.addEventListener('load', ok, { once: true });
-  }
+  /* round four: the idle fetch and the tone plates live in Postcards.astro's own script, which runs at
+     page load (this module loads only when the person's part comes near) */
 
   /* ---------- the table ---------- */
   let raf = 0, last = 0, acc = 0, up = -1, phase = 0;
