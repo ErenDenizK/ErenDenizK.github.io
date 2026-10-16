@@ -93,6 +93,8 @@
 @media (max-width: 699.98px) {
   .proj { max-width: 420px; }
   .pr[data-phone-frame] .pr-screen { aspect-ratio: 390 / 844; }
+  /* a glass object keeps the wide frame on phones: it has no focal point to crop to */
+  .fl-hero .pr-obj { aspect-ratio: 16 / 10; }
   .fl-hero:has(.pr[data-phone-frame]) { width: 234px; margin: 0 auto; }
   .fl-art { width: 950px; top: -6%; }
 }
@@ -106,7 +108,7 @@
     --hh: calc((var(--hw) - 16px) / 1.6 + 36px);
     --htop: calc(var(--bar-h) + 28px);
     --sw: calc(var(--hw) * .58); }
-  html.js:not(.still) .work .proj { max-width: none; margin: 0; height: calc(.95 * var(--sv)); }
+  html.js:not(.still) .work .proj { max-width: none; margin: 0; height: calc(.95 * var(--sv)); pointer-events: none; }
   html.js:not(.still) .work .proj[data-short] { --hw: min(600px, 46vw, calc((var(--sv) - 400px) * 1.6 + 16px)); }
   html.js:not(.still) .work .fl-stage { position: absolute; left: 0; right: 0; top: 0; height: var(--sv); pointer-events: none; }
   /* the last block holds still while the torn paper rises over it (W7) */
@@ -148,13 +150,15 @@
   html.js:not(.still) .work .fl-hero:active .pr-in { transform: scale(.985); transition: transform var(--t-press) var(--ease-ui); }
 
   /* the torn paper of the person's part (W7): it rises over the held last block at the page's speed */
-  html.js:not(.still) .work .w-tear { display: block; position: relative; z-index: 0; height: calc(1.1 * var(--sv));
-    margin: calc(-.75 * var(--sv)) 0 calc(-.35 * var(--sv)); pointer-events: none; }
-  html.js:not(.still) #work + .rest > .tear { visibility: hidden; }
+  /* it starts at the view's foot when the hold begins and is opaque exactly as far as the held stage
+     reaches (0.75 of a view), then hands over to the person's part in a short fade */
+  html.js:not(.still) .work .w-tear { display: block; position: relative; z-index: 0; height: calc(.86 * var(--sv));
+    margin: calc(-.75 * var(--sv)) 0 calc(-.11 * var(--sv)); pointer-events: none; }
+  html.js:not(.still) #work ~ .rest > .tear { display: none; }
   .w-edge { display: none; position: absolute; left: 0; top: -46px; width: 100%; height: 48px; overflow: visible; }
   .w-edge-fill { fill: var(--paper); }
   .w-edge-fibre { fill: none; stroke: var(--line-2); stroke-width: 1; vector-effect: non-scaling-stroke; }
-  .w-sheet { position: absolute; inset: 0; background: linear-gradient(var(--paper) 0 64%, rgb(23 23 26 / 0) 100%); }
+  .w-sheet { position: absolute; inset: 0; background: linear-gradient(var(--paper) 0 87%, rgb(23 23 26 / 0) 100%); }
   .w-edge-1440 { display: block; }
   @media (max-width: 1099.98px) { .w-edge-1440 { display: none; } .w-edge-820 { display: block; } }
   @media (max-width: 699.98px) { .w-edge-820 { display: none; } .w-edge-390 { display: block; } }
@@ -171,7 +175,7 @@
     html.js:not(.still) .work .fl-art { width: 950px; top: 4%; }
     html.js:not(.still) .work .txt { top: calc(var(--htop) + var(--hh) + 18px); }
     html.js:not(.still) .work .w-promise { max-width: 22em; }
-    html.js:not(.still) .work .w-tear { margin-top: calc(-.5 * var(--sv)); height: calc(.9 * var(--sv)); margin-bottom: calc(-.3 * var(--sv)); }
+    html.js:not(.still) .work .w-tear { margin-top: calc(-.5 * var(--sv)); height: calc(.6 * var(--sv)); margin-bottom: calc(-.1 * var(--sv)); }
   }
 }
 
@@ -241,23 +245,57 @@
   .st[data-phone-frame] .st-shot { width: min(72vw, 300px); aspect-ratio: 390 / 844; border-radius: 26px; }
 }
 
-/* steps, pinned (scripts/stepper.ts adds .pinned on wide windows with motion) */
-.steps.pinned { position: relative; max-width: none; padding: 0; height: calc(var(--sv) * .9 * var(--n) + var(--sv) * .1); }
+/* steps, held and scrubbed (scripts/stepper.ts adds .pinned on wide windows with motion; spec v2 §3.4).
+   Each step owns --st-len views of scroll; the stage stays one view tall. */
+.st-mark { position: absolute; left: 0; width: 1px; height: 1px; pointer-events: none; }
+.steps { position: relative; }
+.st-head, .st-dim { display: none; }
+.st-ln { overflow: hidden; padding: .06em 0 .26em; margin: -.06em 0 -.26em; }
+.steps.pinned { max-width: none; padding: 0; height: calc(var(--sv) * var(--st-len, .7) * (var(--n) - 1) + var(--sv)); }
 .steps.pinned .st-stick { position: sticky; top: 0; height: var(--sv); display: flex; flex-direction: column; align-items: center;
-  padding: calc(var(--bar-h) + 12px) var(--gut) 104px; }
-.steps.pinned .st-idx { display: flex; justify-content: center; gap: var(--s-6); flex-wrap: wrap; margin-bottom: var(--s-5); }
+  padding: calc(var(--bar-h) + 16px) var(--gut) 104px; }
+.steps.pinned .st-head { display: block; position: relative; margin-bottom: var(--s-5); }
+.steps.pinned .st-idx { display: flex; justify-content: center; gap: var(--s-6); flex-wrap: nowrap; }
 .steps.pinned .st-idx li { font: 500 var(--fs-label)/1.2 var(--f-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3);
-  padding-bottom: 6px; box-shadow: inset 0 -2px 0 transparent; transition: color var(--t-ui) var(--ease-ui), box-shadow var(--t-ui) var(--ease-ui); cursor: pointer; }
-.steps.pinned .st-idx li.on { color: var(--ink); box-shadow: inset 0 -2px 0 var(--ink); }
+  padding-bottom: 8px; cursor: pointer; white-space: nowrap; }
+.steps.pinned .st-idx li:first-child { color: var(--ink); }
+/* the rule under the labels: 1 px wide at rest, scaled to a label's width and moved under it */
+.steps.pinned .st-rule { position: absolute; left: 0; bottom: 0; width: 1px; height: 2px; background: var(--ink); transform-origin: 0 50%; border-radius: 1px; }
 .steps.pinned .st-list { position: relative; flex: 1; width: 100%; }
-.steps.pinned .st { position: absolute; inset: 0; margin: 0; pointer-events: none; }
-.steps.pinned .st.on { pointer-events: auto; }
-.steps.pinned .st-shot { width: min(880px, calc((var(--sv) - 360px) * 1.6)); opacity: 0; transform: translateY(24px);
-  transition: transform 500ms var(--ease-soft), opacity 500ms var(--ease-soft); }
-.steps.pinned .st.on .st-shot { opacity: 1; transform: none; }
-.steps.pinned .st.was .st-shot { opacity: 0; transform: translateY(-24px); }
-.steps.pinned .st-txt { opacity: 0; transition: opacity var(--t-ui) var(--ease-ui); }
-.steps.pinned .st.on .st-txt { opacity: 1; transition-delay: 150ms; }
+.steps.pinned .st { position: absolute; inset: 0; margin: 0; display: flex; flex-direction: column; align-items: center; }
+.steps.pinned .st:not(:first-child) { visibility: hidden; }
+.steps.pinned { --win-w: min(880px, calc((var(--sv) - 380px) * 1.6)); }
+/* the window: the screens slide inside it, so the next one comes up over the last within its frame */
+.steps.pinned .st-frame { position: relative; width: var(--win-w); aspect-ratio: 16 / 10; overflow: hidden; border-radius: var(--r-screen);
+  box-shadow: var(--e-lift), 0 0 0 1px rgb(255 255 255 / .07); }
+.steps.pinned .st-shot { width: 100%; transform-origin: 50% 0; border-radius: 0; box-shadow: 0 -18px 36px -8px rgb(0 0 0 / .75); will-change: transform; }
+.steps.pinned .st:first-child .st-frame { background: #0b0b0d; }
+.steps.pinned .st:not(:first-child) .st-shot { transform: translateY(100%); }
+.steps.pinned .st-dim { display: block; position: absolute; inset: 0; z-index: 3; background: #000; opacity: 0; pointer-events: none; }
+.steps.pinned .st-txt { position: absolute; left: 50%; translate: -50% 0; top: calc(var(--win-w) / 1.6 + 24px); width: min(36em, 100%); margin: 0; }
+.steps.pinned .st-txt .st-ln > * { will-change: transform; }
+.steps.pinned .st:not(:first-child) .st-txt .st-ln > * { opacity: 0; }
+.steps.pinned .st-shot, .steps.pinned .st-txt { pointer-events: auto; }
+/* phones and narrow windows with motion: each screen rises by its own view timeline (CSS only) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.js:not(.still) .steps:not(.pinned) .st-shot { animation: st-rise linear both, st-leave linear both; animation-timeline: view(), view();
+      animation-range: entry 0% cover 35%, exit 20% exit 100%; }
+    html.js:not(.still) .pres .pt .hero { animation: hero-push linear both; animation-timeline: scroll(nearest); animation-range: 0 40vh; }
+    html.js:not(.still) .pres .facts { animation: st-rise linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+  }
+}
+@keyframes st-rise { from { transform: translateY(28px) scale(.97); opacity: .6; } }
+@keyframes st-leave { to { transform: scale(.96); opacity: .7; } }
+@keyframes hero-push { to { transform: scale(1.06); } }
+/* the layer's rail (spec v2 §3.4): inside the layer, over its content */
+.layer .rail.in-layer { position: fixed; z-index: 63; view-transition-name: none; }
+html.layer-open .layer .rail-plain.in-layer { display: block !important; view-transition-name: none; }
+/* the project's line art as the layer's quiet ground */
+.pg-art { position: absolute; left: 50%; top: 50%; width: max(1600px, 110vw); aspect-ratio: 1.6; translate: -50% -50%; opacity: .06;
+  background: color-mix(in srgb, var(--a1) 70%, var(--ink));
+  -webkit-mask: var(--art) center / 100% 100% no-repeat; mask: var(--art) center / 100% 100% no-repeat; }
+@media (max-width: 699.98px) { .pg-art { width: 1100px; opacity: .07; } }
 
 .p-nums { display: flex; justify-content: center; gap: var(--s-8); margin: var(--s-9) auto 0; padding: 0 var(--gut); text-align: center; }
 .p-nums div { display: flex; flex-direction: column-reverse; gap: var(--s-1); }

@@ -25,7 +25,7 @@ export function loadArt(box: HTMLElement, phone: boolean, done: (layers: ArtLaye
     const groups = ['back', 'mid', 'front'];
     const [, , VW, VH] = (src.getAttribute('viewBox') || '0 0 1600 1000').split(/[ ,]+/).map(Number);
     /* each layer's image is cut to its drawing's box (inside the view box): less area to composite */
-    const probe = document.importNode(src, true) as SVGSVGElement;
+    const probe = document.importNode(src, true) as unknown as SVGSVGElement;
     probe.setAttribute('style', 'position:absolute;left:-9999px;top:0;width:1600px;height:1000px;visibility:hidden');
     document.body.append(probe);
     const boxes: Record<string, [number, number, number, number]> = {};
