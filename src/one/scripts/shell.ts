@@ -19,7 +19,12 @@ initScrub();
 initScene();
 initLines();
 initArrive();
-initRail();
+/* the rail's sheet (spec v3 §7): rows grouped by the page's three parts */
+initRail({
+  sheet: {
+    group: (el) => el.closest('#record') ? 'The record' : el.closest('#work') ? 'Work' : el.closest('[data-part="rest"]') ? 'Eren' : undefined,
+  },
+});
 initClock();
 
 /* the quiet band under the bar, once the page has moved */

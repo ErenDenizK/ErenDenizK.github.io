@@ -23,11 +23,13 @@ const ROW = 28;            // one title per 28 px row at least; each row is a li
 const TMARK = 8;           // touch: the least room one mark needs on the column
 const DRAG = 4;            // pointer travel before a press on a title becomes a drag
 const SCREENS = [2, 6];    // a page without sections gets one bead per screen, between these
-const PAST = 4.5;          // contrast the lit marks behind you keep against the ground (≥ 3:1, 1.4.11)
+const PAST = 4.5;
+const SHEET_ROW = [36, 46];  // the sheet's row pitch: fine pointer, touch (spec v3 §7.1)
+const SHEET_GAP = 30;      // the room a group header takes above its first row          // contrast the lit marks behind you keep against the ground (≥ 3:1, 1.4.11)
 type RGB = [number, number, number];
 type Mode = 'rungs' | 'plain' | 'none';
 
-interface Sec { el: HTMLElement; label: string; a: string; ar: string; top: number; start: number; end: number }
+interface Sec { el: HTMLElement; label: string; a: string; ar: string; top: number; start: number; end: number; g?: string }
 /** what a bead stands for: a section, or (a page without sections) a stretch of the page */
 interface Unit { start: number; end: number; m: HTMLElement }
 
@@ -49,17 +51,23 @@ export interface RailOpts {
   offset: () => number;
   minutes?: number;
   extraClass?: string;
+  /** Opt-in, off by default so the live site keeps the small panel. The two-page Home (spec v3 §7, review
+      row T9): a click on the column (a drag still scrubs) or a tap opens a full-height glass sheet that
+      grows from the rail's edge over a light veil, its rows level with the beads; `group` names the group
+      a section belongs to, shown as a small header above the group's first row. The look is in
+      src/one/rail.css; Escape, the veil, a row or a swipe to the right closes it. */
+  sheet?: { group?: (el: HTMLElement) => string | undefined };
 }
 export interface Rail { measure(): void; destroy(): void; mode(): Mode }
 
 /** The page's rail (every page). The project sheet makes its own with createRail (scripts/sheet.ts). */
-export function initRail() {
+export function initRail(opts: { sheet?: RailOpts['sheet'] } = {}) {
   const main = document.getElementById('main');
   if (!main) return;
   const sections = [...main.querySelectorAll<HTMLElement>('[data-rail-sec], [data-rail-heads] h2[id]')];
   const minutes = +(main.querySelector<HTMLElement>('[data-rail-minutes]')?.dataset.railMinutes ?? 0);
   const rail = createRail({
-    host: main.parentElement!, before: main, sections, content: main, flat: root, id: 'rail', minutes,
+    host: main.parentElement!, before: main, sections, content: main, flat: root, id: 'rail', minutes, sheet: opts.sheet,
     offset: () => (parseFloat(getComputedStyle(root).getPropertyValue('--bar-h')) || 84) + 24,
   });
   /* the pointer or forced colours changed: the classes the head script set follow (the sheet's rail reads them too) */
@@ -136,8 +144,10 @@ export function createRail(o: RailOpts): Rail {
     if (!s.id) s.id = o.id + '-s-' + i;
     const accent = s.closest<HTMLElement>('[data-rail-accent]')?.dataset.railAccent || pageAccent;
     const rgb = resolve(accent, o.host);
-    return { el: s, label: (s.dataset.railSec || s.textContent || '').trim(), a: css(rgb), ar: css(rest(rgb)), top: 0, start: 0, end: 0 };
+    return { el: s, label: (s.dataset.railSec || s.textContent || '').trim(), a: css(rgb), ar: css(rest(rgb)), top: 0, start: 0, end: 0, g: o.sheet?.group?.(s) };
   });
+  /* the sheet's group starts: a header above the row, and the same room above its bead */
+  const gstart = secs.map((s, i) => !!o.sheet && !!s.g && (i === 0 || secs[i - 1].g !== s.g));
   const mark = (a: string, ar: string) => {
     const m = document.createElement('i');
     m.className = 'rail-m';
@@ -161,12 +171,34 @@ export function createRail(o: RailOpts): Rail {
     li.append(a);
     list.append(li);
     const m = mark(s.a, s.ar);
+    if (gstart[i]) { li.dataset.g = s.g!; li.classList.add('rail-g'); if (i > 0) m.classList.add('rail-mg'); }
     ladder.append(m);
     marks.push(m);
     return a;
   });
   /* the titles are only built where there are sections to mark */
   if (secs.length >= 2) o.host.insertBefore(nav, plain);
+  /* the sheet's glass and the veil over the page sit beside the nav, not in it: the nav is translated,
+     which would hold a fixed child inside its own box */
+  let veil: HTMLElement | null = null, glass: HTMLElement | null = null, gfoot: HTMLElement | null = null, gbar: HTMLElement | null = null;
+  if (o.sheet && secs.length >= 2) {
+    veil = document.createElement('div');
+    veil.className = 'rail-veil';
+    veil.setAttribute('aria-hidden', 'true');
+    glass = document.createElement('div');
+    glass.className = 'rail-glass';
+    glass.setAttribute('aria-hidden', 'true');
+    gfoot = document.createElement('p');
+    gfoot.className = 'rail-gfoot';
+    gbar = document.createElement('i');
+    gbar.className = 'rail-gbar';
+    const keys = document.createElement('span');
+    keys.className = 'rail-gkeys';
+    keys.textContent = 'Esc to close';
+    glass.append(gfoot, gbar, keys);
+    o.host.insertBefore(veil, nav);
+    o.host.insertBefore(glass, nav);
+  }
   const screens: HTMLElement[] = [];
 
   let vh = 0, max = 0, cur = -1, raf = 0, mode: Mode = 'none';
@@ -223,11 +255,18 @@ export function createRail(o: RailOpts): Rail {
     const n = units.length;
     const first = barH / 2 - (n - 1) / 2 * ROW;
     sheet.style.setProperty('--st', Math.round(first - ROW / 2) + 'px');
+    if (o.sheet) {
+      const r = SHEET_ROW[touch() ? 1 : 0];
+      const gaps = gstart.filter((g, i) => g && i > 0).length;
+      nav.style.setProperty('--row', r + 'px');
+      nav.style.setProperty('--gap', SHEET_GAP + 'px');
+      sheet.style.setProperty('--st2', Math.round(barH / 2 - (n * r + gaps * SHEET_GAP) / 2) + 'px');
+    }
     links.forEach((a) => (a.parentElement as HTMLElement).style.setProperty('--mt', '0px'));
   }
 
   function setMode(m: Mode) {
-    if (m !== 'rungs') setOpen(false);
+    if (m !== 'rungs') { setOpen(false); setSheet(false); }
     mode = m;
     nav.hidden = m !== 'rungs';
     plain.hidden = m !== 'plain';
@@ -266,6 +305,7 @@ export function createRail(o: RailOpts): Rail {
     foot.textContent = o.minutes
       ? (p >= 0.99 ? 'At the end' : `About ${Math.max(1, Math.ceil(o.minutes * (1 - p)))} min left`)
       : `${Math.round(p * 100)}% down the page`;
+    if (gfoot && gbar) { gfoot.textContent = foot.textContent; gbar.style.setProperty('--p', p.toFixed(3)); }
   }
   function clear() {
     if (!media.length) { box().classList.remove('is-over'); return; }
@@ -301,6 +341,29 @@ export function createRail(o: RailOpts): Rail {
   /* ---------- hover: the titles open after a short intent delay and close a little after leaving ---------- */
   let openT = 0, closeT = 0;
   function setOpen(v: boolean) { nav.classList.toggle('is-open', v); btn.setAttribute('aria-expanded', String(v)); }
+  /* the sheet (opt-in): the rows enter from the current one outward, 24 ms apart */
+  let sheetOn = false, outT = 0;
+  function setSheet(v: boolean) {
+    if (!glass || v === sheetOn) return;
+    sheetOn = v;
+    clearTimeout(outT);
+    const rows = links.map((a) => a.parentElement as HTMLElement);
+    rows.forEach((r) => r.getAnimations().forEach((x) => x.cancel()));
+    glass.classList.toggle('on', v);
+    veil!.classList.toggle('on', v);
+    root.classList.toggle('rail-sheet-on', v);
+    btn.setAttribute('aria-expanded', String(v));
+    if (v) {
+      nav.classList.add('is-sheet');
+      if (!reduce()) rows.forEach((r, j) => r.animate([{ opacity: 0, translate: '24px 0' }, { opacity: 1, translate: '0 0' }],
+        { duration: 420, delay: 60 + Math.abs(j - Math.max(0, cur)) * 24, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'backwards' }));
+      return;
+    }
+    setOpen(false);
+    if (reduce()) { nav.classList.remove('is-sheet'); return; }
+    rows.forEach((r) => r.animate([{ opacity: 1, translate: '0 0' }, { opacity: 0, translate: '24px 0' }], { duration: 160, easing: 'cubic-bezier(.4, 0, 1, 1)', fill: 'forwards' }));
+    outT = window.setTimeout(() => { nav.classList.remove('is-sheet'); rows.forEach((r) => r.getAnimations().forEach((x) => x.cancel())); }, 170);
+  }
   nav.addEventListener('pointerenter', (e) => {
     if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
     clearTimeout(closeT);
@@ -317,7 +380,7 @@ export function createRail(o: RailOpts): Rail {
      the same while the beads morph) is the place in the page. A press goes there (smooth, or instant under
      reduced motion) and a drag continues from there; a click on a title goes to its section. Escape during
      a drag puts the page back. ---------- */
-  let drag: { id: number; y0: number; s0: number; on: boolean; host: HTMLElement } | null = null;
+  let drag: { id: number; y0: number; s0: number; on: boolean; host: HTMLElement; tap?: boolean } | null = null;
   let swallow = false;
   const fromTrack = (clientY: number) => {
     const r = track().getBoundingClientRect();
@@ -331,6 +394,8 @@ export function createRail(o: RailOpts): Rail {
     if (onTitle) return;             // a title: a click goes to its section, a drag still scrubs
     e.preventDefault();
     host.setPointerCapture(e.pointerId);
+    /* with the sheet, a press on the column is a click that opens it; only a drag moves the page */
+    if (glass && host === nav) { drag.tap = true; return; }
     host.classList.add('is-drag');
     setY(fromTrack(e.clientY), reduce() ? 'instant' : 'smooth');
   };
@@ -355,7 +420,9 @@ export function createRail(o: RailOpts): Rail {
   const end = (e?: Event) => {
     if (!drag) return;
     const was = drag.on;
+    const tap = !!drag.tap && !was && (!e || e.type === 'pointerup');
     drag = null;
+    if (tap) setSheet(!sheetOn);
     plain.classList.remove('is-drag');
     nav.classList.remove('is-drag');
     if (!was) return;
@@ -378,9 +445,11 @@ export function createRail(o: RailOpts): Rail {
     e.preventDefault();
     go(+a.dataset.i!, e.detail === 0);
     if (touch()) setOpen(false);
+    setSheet(false);
   });
   /* touch: the button opens and closes the sheet; a tap outside or Escape closes it */
   btn.addEventListener('click', () => {
+    if (glass) { setSheet(!sheetOn); if (sheetOn && btn.matches(':focus-visible')) links[Math.max(0, cur)].focus(); return; }
     const v = !nav.classList.contains('is-open');
     setOpen(v);
     if (v && btn.matches(':focus-visible')) links[Math.max(0, cur)].focus();
@@ -391,6 +460,22 @@ export function createRail(o: RailOpts): Rail {
   addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && touch() && nav.classList.contains('is-open')) { setOpen(false); btn.focus(); }
   }, sig);
+  /* the sheet takes Escape first, so it never also closes what lies under it (an opened project) */
+  if (glass) addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sheetOn) { e.preventDefault(); e.stopImmediatePropagation(); setSheet(false); if (touch()) btn.focus(); }
+  }, { capture: true, signal: ac.signal });
+  /* the sheet closes on the veil, and on a swipe to the right over it */
+  veil?.addEventListener('click', () => setSheet(false), sig);
+  if (glass) {
+    let sx = 0, sy = 0;
+    for (const t of [glass, nav, veil!]) {
+      t.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, passive);
+      t.addEventListener('touchend', (e) => {
+        const c = e.changedTouches[0];
+        if (sheetOn && c.clientX - sx > 56 && Math.abs(c.clientY - sy) < 48) setSheet(false);
+      }, passive);
+    }
+  }
   nav.addEventListener('keydown', (e) => {
     const i = links.indexOf(document.activeElement as HTMLAnchorElement);
     if (i < 0) return;
@@ -427,10 +512,11 @@ export function createRail(o: RailOpts): Rail {
       ac.abort();
       ro?.disconnect();
       cancelAnimationFrame(raf);
-      clearTimeout(openT); clearTimeout(closeT); clearTimeout(liveT);
+      clearTimeout(openT); clearTimeout(closeT); clearTimeout(liveT); clearTimeout(outT);
       if (drag) root.classList.remove('rail-grab');
       o.flat.classList.remove('rail-flat');
-      nav.remove(); plain.remove();
+      root.classList.remove('rail-sheet-on');
+      nav.remove(); plain.remove(); veil?.remove(); glass?.remove();
     },
   };
 }

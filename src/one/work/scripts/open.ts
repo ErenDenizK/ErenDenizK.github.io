@@ -111,7 +111,7 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     const pres = l.querySelector<HTMLElement>('.pres')!;
     rail = createRail({
       scroller: l, host: l, sections: [...pres.querySelectorAll<HTMLElement>('[data-rail-sec]')], content: pres,
-      flat: l, id: 'layer-rail', extraClass: 'in-layer',
+      flat: l, id: 'layer-rail', extraClass: 'in-layer', sheet: {},
       offset: () => (parseFloat(getComputedStyle(root).getPropertyValue('--bar-h')) || 76) + 16,
     });
     clipT = window.setTimeout(() => playHero(l), 300);
