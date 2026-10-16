@@ -13,7 +13,9 @@
    Motion (a pure function of the chapter's --sp, scene.css; reversible; stroke-dashoffset, transform and
    opacity only): the rings draw from the inside out and the ground fades in, the tape draws from the
    reel, the spine runs on down, each mark lands as the line reaches it and its row follows, the year
-   strip's months fill from January, the tail draws last. The recorder is the Record's (media.ts): it
+   strip's months fill from January, the tail draws last. Round four: the title rises over --sp 0.08 to
+   0.18 and the dek over 0.13 to 0.23, so on a phone the title is up before the dek (at its 0.4 floor)
+   is read; at 0.18 / 0.25 the dek stood under an empty title mask while the tape was already drawn. The recorder is the Record's (media.ts): it
    floats, on desktop it turns with the scroll through its lean frames while no pointer is near and
    leans toward a pointer near it, and a press plays its clip; on phones it stays the floating poster
    (data-spin="off", spec v3 §8.4). Still twins: drawn complete, the recorder's poster.
@@ -92,8 +94,8 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
 
       <div class="rs-body">
         <header class="rs-head">
-          <h2 class="rs-title" data-lines style="--a: 0.18; --w: 0.1">{site.log.title}</h2>
-          <p class="rs-dek" data-rise style="--a: 0.25; --w: 0.1">{site.log.dek}</p>
+          <h2 class="rs-title" data-lines style="--a: 0.08; --w: 0.1">{site.log.title}</h2>
+          <p class="rs-dek" data-rise style="--a: 0.13; --w: 0.1">{site.log.dek}</p>
         </header>
 
         <div class="rs-year">
