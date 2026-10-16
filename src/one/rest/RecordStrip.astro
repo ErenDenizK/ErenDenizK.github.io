@@ -1,17 +1,23 @@
 ---
-/* Chapter III, the signal: Now and the Record strip (spec v2 §3.7; review rows R1, R2), built to
-   record-language §4. A cut of the Record itself, in its own language: serif titles, the date spine with
-   its marks by kind, colour for "which project" only, the year strip of the newest year with every
-   tick, the three newest rows (LogRow, compact), a dashed tail and a quiet link, and the recorder at the
-   head's right on one Record-blue pool. Now is the spine's first line: "Now" in the date gutter, the
-   month's sentence in reading serif, a slowly breathing open mark on the spine. No uppercase labels, no
-   kind words, no pills.
-   Motion (a pure function of the chapter's --sp, scene.css; reversible): the spine draws down, each mark
-   lands as the line reaches it and its row follows, the year strip's months fill from January, the
-   tail draws last, the pool behind the recorder brightens. The recorder itself is the Record's
-   (media.ts): it floats, leans toward a pointer near it and plays its clip on a press; phones get its
-   spin loop. Hover: the Record's own (the mark grows 1.3x, the title brightens). Still twins: drawn
-   complete, the recorder's poster. Hidden while the Record is empty. */
+/* Chapter III, the signal: Now and the Record strip (spec v3 §8; review rows T6, T8, T20, R1, R2), built
+   to record-language §4 and §6. A cut of the Record itself, in its own language: serif titles, the date
+   spine with its marks by kind, colour for "which project" only, the year strip of the newest year with
+   every tick, the three newest rows (LogRow, compact), a dashed tail and a quiet link. Now is the spine's
+   first line: "Now" in the date gutter, the month's sentence in reading serif, a slowly breathing open
+   mark on the spine. No uppercase labels, no kind words, no pills.
+   The head is the new page's grammar (spec v3 §8.1): a frontispiece, the recorder centred above the
+   chapter's centred title (phones: at the right, the head on the spine), standing on its own dark ground
+   in its own line drawing (reel rings around the left reel, construction spokes, a loose strand from the
+   right reel). The recorder's tape leaves it under the left reel and becomes the spine: one line from
+   the object to the last row.
+   Motion (a pure function of the chapter's --sp, scene.css; reversible; stroke-dashoffset, transform and
+   opacity only): the rings draw from the inside out and the ground fades in, the tape draws from the
+   reel, the spine runs on down, each mark lands as the line reaches it and its row follows, the year
+   strip's months fill from January, the tail draws last. The recorder is the Record's (media.ts): it
+   floats, on desktop it turns with the scroll through its lean frames while no pointer is near and
+   leans toward a pointer near it, and a press plays its clip; on phones it stays the floating poster
+   (data-spin="off", spec v3 §8.4). Still twins: drawn complete, the recorder's poster.
+   Hidden while the Record is empty. */
 import Media from '../../components/Media.astro';
 import LogRow from '../../components/LogRow.astro';
 import YearStrip from '../../components/YearStrip.astro';
@@ -30,58 +36,156 @@ const count = `${inYear.length} ${inYear.length === 1 ? 'entry' : 'entries'}`;
 const first = log.length ? log[log.length - 1].data.date : null;
 const since = first ? `${log.length} ${log.length === 1 ? 'entry' : 'entries'} since ${monYear(first)}` : '';
 const [nowWord, ...nowRest] = site.now.label.split(',');
+
+/* The reel drawing, in units of the object's size S, centred on the left reel of the poster (at 0.375 S,
+   0.53 S of the slot; the right reel at 0.63 S). Circles are drawn as two arcs from the top, so each ring
+   draws on from twelve o'clock. Every third ring is dashed. Rings past the sixth are desktop only. */
+const f = (n: number) => +n.toFixed(4);
+const ring = (cx: number, r: number) => `M${f(cx)} ${f(-r)}A${f(r)} ${f(r)} 0 1 1 ${f(cx)} ${f(r)}A${f(r)} ${f(r)} 0 1 1 ${f(cx)} ${f(-r)}`;
+const RIGHT = 0.255;   // the right reel, from the left one
+const rings = Array.from({ length: 9 }, (_, i) => ({ d: ring(0, 0.5 + i * 0.17), dashed: i % 3 === 2, i, wide: i > 5 }));
+const small = Array.from({ length: 5 }, (_, i) => ({ d: ring(RIGHT, 0.3 + i * 0.16), i, wide: i > 2 }));
+const spokes = Array.from({ length: 6 }, (_, i) => {
+  const a = (i * Math.PI) / 3 + 0.3;
+  return `M${f(Math.cos(a) * 0.45)} ${f(Math.sin(a) * 0.45)}L${f(Math.cos(a) * 1.9)} ${f(Math.sin(a) * 1.9)}`;
+});
 ---
 {rows.length > 0 && (
   <section class="rstrip" id="record" data-rail-sec="Record" data-scene data-rail-accent={SETS.record[0]} data-aura={auraAttr(SETS.record)} style={auraVars(SETS.record)}>
-    <div class="rs-in">
-      <header class="rs-head">
-        <h2 class="rs-title" data-lines style="--a: 0.04; --w: 0.12">{site.log.title}</h2>
-        <p class="rs-dek" data-rise style="--a: 0.07; --w: 0.12">{site.log.dek}</p>
-        <div class="rs-obj">
-          <span class="rs-pool" aria-hidden="true"></span>
-          <Media obj="recorder" slot="home-record" class="rs-media" sizes="(min-width: 900px) 280px, 136px" />
-        </div>
-      </header>
+    <div class="rs-art" aria-hidden="true">
+      <svg class="rs-rings" viewBox="-2 -2 4 4" focusable="false">
+        <defs>
+          {/* the drawing fades with distance from the reel, so no text stands on more than a trace of it,
+              and it is cut out of the object's circle, so no line crosses the glass (spec v3 §8.4) */}
+          <radialGradient id="rs-fade" cx="0" cy="0" r="2" gradientUnits="userSpaceOnUse">
+            <stop offset="0.31" stop-color="#fff" /><stop offset="0.45" stop-color="#8f8f8f" /><stop offset="0.7" stop-color="#4d4d4d" /><stop offset="0.975" stop-color="#000" />
+          </radialGradient>
+          <radialGradient id="rs-hole" cx="0.125" cy="-0.03" r="0.56" gradientUnits="userSpaceOnUse">
+            <stop offset="0.76" stop-color="#000" stop-opacity="1" /><stop offset="1" stop-color="#000" stop-opacity="0" />
+          </radialGradient>
+          <mask id="rs-mask" maskUnits="userSpaceOnUse" x="-2" y="-2" width="4" height="4">
+            <rect x="-2" y="-2" width="4" height="4" fill="url(#rs-fade)" />
+            <circle cx="0.125" cy="-0.03" r="0.56" fill="url(#rs-hole)" />
+          </mask>
+        </defs>
+        <g mask="url(#rs-mask)">
+          {spokes.map((d) => <path class="sp" d={d} />)}
+          {rings.map((r) => <path class:list={['rg', { dash: r.dashed, wide: r.wide }]} d={r.d} pathLength="1" style={`--i: ${r.i}`} />)}
+          {small.map((r) => <path class:list={['rg', 'dash', 'sm', { wide: r.wide }]} d={r.d} style={`--i: ${r.i + 1}`} />)}
+          <path class="strand" d={`M${RIGHT} 0.27C${RIGHT + 0.07} 0.55 0.6 0.66 1.12 0.78`} pathLength="1" />
+        </g>
+      </svg>
+    </div>
 
-      <div class="rs-year">
-        <p class="rs-y"><span class="y">{year}</span><span class="meta" title={since}>{count}</span></p>
-        <YearStrip year={year} entries={inYear} projects={projects} />
+    <div class="rs-in">
+      <div class="rs-front">
+        <span class="rs-pool" aria-hidden="true"></span>
+        {/* the tape: from under the left reel to the spine's top, an S that ends going straight down; the
+            box stretches with the column, the stroke does not (non-scaling) */}
+        <div class="rs-tape" aria-hidden="true">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><path d="M100 0C100 72 0 28 0 100" /></svg>
+        </div>
+        <div class="rs-obj">
+          <Media obj="recorder" slot="home-record" class="rs-media" sizes="(min-width: 700px) 300px, 176px" spin="off" lean="scroll" />
+        </div>
       </div>
 
-      <div class="rs-spine">
-        <div class="rs-now" id="now" data-rail-sec="Now">
-          <span class="e-date meta">{nowWord}</span>
-          <span class="now-mark" aria-hidden="true"></span>
-          <div class="now-main">
-            <p class="now-t">{site.now.text}</p>
-            {nowRest.length > 0 && <p class="meta">{nowRest.join(',').trim()}</p>}
-          </div>
+      <div class="rs-body">
+        <header class="rs-head">
+          <h2 class="rs-title" data-lines style="--a: 0.18; --w: 0.1">{site.log.title}</h2>
+          <p class="rs-dek" data-rise style="--a: 0.2; --w: 0.1">{site.log.dek}</p>
+        </header>
+
+        <div class="rs-year">
+          <p class="rs-y"><span class="y">{year}</span><span class="meta" title={since}>{count}</span></p>
+          <YearStrip year={year} entries={inYear} projects={projects} />
         </div>
-        <ul class="spine rs-rows">
-          {rows.map((e) => <LogRow e={e} projects={projects} compact />)}
-        </ul>
-        <div class="rs-tail" aria-hidden="true"></div>
-        <a class="rs-all" href={url('record/')}><span class="all-mark" aria-hidden="true"></span><span class="all-t">The whole record</span><Icon name="arrow-right" /></a>
+
+        <div class="rs-spine">
+          <div class="rs-now" id="now" data-rail-sec="Now">
+            <span class="e-date meta">{nowWord}</span>
+            <span class="now-mark" aria-hidden="true"></span>
+            <div class="now-main">
+              <p class="now-t">{site.now.text}</p>
+              {nowRest.length > 0 && <p class="meta">{nowRest.join(',').trim()}</p>}
+            </div>
+          </div>
+          <ul class="spine rs-rows">
+            {rows.map((e) => <LogRow e={e} projects={projects} compact />)}
+          </ul>
+          <div class="rs-tail" aria-hidden="true"></div>
+          <a class="rs-all" href={url('record/')}><span class="all-mark" aria-hidden="true"></span><span class="all-t">The whole record</span><Icon name="arrow-right" /></a>
+        </div>
       </div>
     </div>
   </section>
 )}
 
+<script>
+  /* The hand-over (spec v3 R1, record-language §4.5): "The whole record" names the strip's recorder `stage`,
+     the name the Record page gives its own recorder (transitions.css), so in browsers with cross-document
+     view transitions the object flies from the strip into the Record's head; elsewhere a plain navigation.
+     The name is set only on this click, so no other transition on Home captures the object, and no
+     droplet plays (the page's .media.stage class is not set). Back from the Record clears it. */
+  const all = document.querySelector<HTMLAnchorElement>('#record .rs-all');
+  const stage = () => document.querySelector<HTMLElement>('#record .rs-media .m-stage');
+  all?.addEventListener('click', () => { const s = stage(); if (s) s.style.viewTransitionName = 'stage'; });
+  addEventListener('pageshow', () => { const s = stage(); if (s) s.style.viewTransitionName = ''; });
+</script>
+
 <style>
-  /* the Record's grid (record-language §2.3), in the new set's names (tokens.css) */
+  /* the Record's grid (record-language §2.3), in the new set's names (tokens.css). --S is the object's size
+     (--S-n the same as a number, for the drawing's stroke in its own units); --pad the run of tape from
+     the object's foot down to the head */
   .rstrip { --gutter: var(--rec-gutter); --spine-w: var(--rec-spine); --spine-x: calc(var(--gutter) + var(--spine-w) / 2); --log: var(--record-1); --rule-s: var(--line-3);
-    position: relative; padding: 0 var(--gut); }
+    --S: 300px; --S-n: 300; --pad: 56px; --tape: color-mix(in srgb, var(--record-1) 55%, transparent);
+    position: relative; padding: 0 var(--gut); overflow-x: clip; }
   .rs-in { position: relative; width: min(var(--rec-w), 100%); margin: 0 auto; }
   .rstrip :global(.meta) { font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); font-variant-numeric: tabular-nums; }
 
-  /* ---------- head: the title and dek on the content column, the recorder at the right ---------- */
-  .rs-head { position: relative; display: grid; grid-template-columns: calc(var(--gutter) + var(--spine-w)) minmax(0, var(--rec-col)) 1fr; align-items: start; }
-  .rs-title { grid-column: 2; font: 400 var(--fs-h2) / 1.1 var(--f-serif); letter-spacing: -0.02em; margin-left: -0.03em; }
-  .rs-dek { grid-column: 2; margin-top: var(--s-3); max-width: 34em; font: 400 var(--fs-body) / 1.5 var(--f-sans); color: var(--ink-2); }
-  .rs-obj { grid-column: 3; grid-row: 1 / span 2; justify-self: end; position: relative; width: 280px; margin: -64px -8px -120px 0; }
-  .rs-pool { position: absolute; inset: -30%; border-radius: 50%; pointer-events: none;
-    background: radial-gradient(closest-side, color-mix(in srgb, var(--record-1) 11%, transparent), transparent); }
-  :global(html.motion) .rs-pool { opacity: clamp(0, var(--sp) / 0.2, 1); }
+  /* ---------- the frontispiece: the recorder on its dark ground, centred above the head ----------
+     No z-index and no isolating property on anything around the object (spec v3 §8.4): the stage's
+     plus-lighter must reach the dark ground, or the poster's black square shows. Everything here is
+     positioned and paints in document order: the drawing, the ground, the tape, then the object. */
+  .rs-front { position: relative; height: calc(var(--S) + var(--pad)); }
+  .rs-obj { position: relative; width: var(--S); margin: 0 auto; }
+  .rs-pool { position: absolute; left: calc(50% - var(--S) * 0.85); top: calc(var(--S) * -0.35); width: calc(var(--S) * 1.7); aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(closest-side, rgb(13 13 15 / 0.92), rgb(13 13 15 / 0.7) 55%, transparent); }
+  /* the tape: from under the left reel (0.36 S, 0.8 S of the slot) to the spine's top at the head */
+  .rs-tape { position: absolute; left: var(--spine-x); top: calc(var(--S) * 0.8); width: calc(50% - var(--S) * 0.14 - var(--spine-x)); height: calc(var(--S) * 0.2 + var(--pad)); pointer-events: none;
+    container-type: size; }
+  .rs-tape svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  /* --L: the curve's length on screen. pathLength cannot be used with a non-scaling stroke (the dash is
+     then measured in neither space), so the length is the box's diagonal times 1.07 (this S curve is 1.03
+     to 1.09 times its chord for every box the layouts make) */
+  .rs-tape path { fill: none; stroke: var(--tape); stroke-width: 1.5px; vector-effect: non-scaling-stroke;
+    --L: calc(hypot(100cqw, 100cqh) * 1.07); }
+
+  /* the reel drawing: centred on the left reel, four S wide; clipped to a band that fades in above the
+     strip, so the rings never reach into Photos, and to the strip's full width */
+  .rs-art { position: absolute; left: 0; right: 0; top: -160px; bottom: 0; overflow: clip; pointer-events: none;
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 160px); mask-image: linear-gradient(180deg, transparent, #000 160px); }
+  .rs-rings { position: absolute; left: calc(50% - var(--S) * 0.125 - var(--S) * 2); top: calc(160px + var(--S) * 0.53 - var(--S) * 2); width: calc(var(--S) * 4); height: calc(var(--S) * 4); max-width: none; overflow: visible; }
+  .rs-rings path { fill: none; stroke: var(--record-1); stroke-width: calc(1 / var(--S-n)); }
+  .rs-rings .rg { opacity: 0.2; }
+  .rs-rings .dash { opacity: 0.17; stroke-dasharray: calc(2 / var(--S-n)) calc(6 / var(--S-n)); }
+  .rs-rings .sp { opacity: 0.1; }
+  .rs-rings .strand { opacity: 0.3; stroke-width: calc(1.2 / var(--S-n)); }
+  /* motion: the rings draw from the inside out over --sp 0 to 0.12, the dashed ones and the spokes fade
+     in with them, the ground comes up under the object, then the tape draws (0.1 to 0.16) */
+  :global(html.motion) .rstrip { --kr: clamp(0, var(--sp) / 0.14, 1); --ktape: clamp(0, (var(--sp) - 0.14) / 0.08, 1); }
+  :global(html.motion) .rs-rings .rg { --k: clamp(0, (var(--sp) - 0.02 - var(--i) * 0.01) / 0.06, 1); stroke-dasharray: 1 1; stroke-dashoffset: calc(1 - var(--k)); }
+  :global(html.motion) .rs-rings .dash { stroke-dasharray: calc(2 / var(--S-n)) calc(6 / var(--S-n)); stroke-dashoffset: 0; opacity: calc(0.17 * var(--k)); }
+  :global(html.motion) .rs-rings .sp { opacity: calc(0.1 * var(--kr)); }
+  :global(html.motion) .rs-rings .strand { stroke-dasharray: 1 1; stroke-dashoffset: calc(1 - var(--ktape)); }
+  :global(html.motion) .rs-pool { opacity: var(--kr); }
+  :global(html.motion) .rs-tape path { stroke-dasharray: var(--L) var(--L); stroke-dashoffset: calc((1 - var(--ktape)) * var(--L)); }
+
+  /* ---------- head: the chapter's title and dek, centred on the page axis like How I work and Photos ---------- */
+  .rs-body { position: relative; }
+  .rs-head { position: relative; text-align: center; padding-top: var(--s-4); }
+  .rs-title { font: 500 var(--fs-h2) / 1.1 var(--f-serif); letter-spacing: -0.02em; }
+  .rs-dek { margin: var(--s-3) auto 0; max-width: 30em; font: 400 var(--fs-body) / 1.5 var(--f-sans); color: var(--ink-2); text-wrap: pretty; }
 
   /* ---------- the year: in the gutter, the strip over the content column ---------- */
   .rs-year { display: grid; grid-template-columns: calc(var(--gutter) + var(--spine-w)) minmax(0, var(--rec-col)); align-items: end; margin-top: var(--s-7); }
@@ -98,7 +202,7 @@ const [nowWord, ...nowRest] = site.now.label.split(',');
   .rstrip :global(.ym.on .ym-l) { color: var(--ink-2); }
   .rstrip :global(a.ym:hover .ym-l) { color: var(--ink); }
   /* the months fill from January as the strip comes up */
-  :global(html.motion) .rstrip :global(.ym) { --k: clamp(0, (var(--sp) - 0.06 - var(--m, 0) * 0.014) / 0.05, 1); }
+  :global(html.motion) .rstrip :global(.ym) { --k: clamp(0, (var(--sp) - 0.28 - var(--m, 0) * 0.008) / 0.04, 1); }
   :global(html.motion) .rstrip :global(.ym-ticks i) { transform: scaleY(var(--k)); opacity: calc(0.3 + 0.7 * var(--k)); }
   .rstrip :global(.ym:nth-child(2)) { --m: 1; } .rstrip :global(.ym:nth-child(3)) { --m: 2; } .rstrip :global(.ym:nth-child(4)) { --m: 3; }
   .rstrip :global(.ym:nth-child(5)) { --m: 4; } .rstrip :global(.ym:nth-child(6)) { --m: 5; } .rstrip :global(.ym:nth-child(7)) { --m: 6; }
@@ -107,20 +211,25 @@ const [nowWord, ...nowRest] = site.now.label.split(',');
 
   /* ---------- the spine: one line from Now through the rows; it draws down with the scroll ---------- */
   .rs-spine { position: relative; margin-top: var(--s-4); }
-  .rs-spine::before { content: ""; position: absolute; left: var(--spine-x); top: 0; height: calc(100% - 72px - 44px); width: 1px; translate: -0.5px 0; transform-origin: 50% 0;
-    background: var(--rule-s); }
-  :global(html.motion) .rs-spine::before { transform: scaleY(clamp(0, (var(--sp) - 0.1) / 0.2, 1)); }
-  /* each line on the spine: mark, then row; --r is its place down the spine (0 Now, 1..3 the rows) */
+  /* the tape, now the spine: one line from the head's top through the rows, drawn down after the tape's
+     curve (0.16 onward); it stops above the tail and the link */
+  .rs-body::before { content: ""; position: absolute; left: var(--spine-x); top: 0; height: calc(100% - 72px - 44px); width: 1.5px; translate: -0.75px 0; transform-origin: 50% 0;
+    background: linear-gradient(180deg, var(--tape), var(--rule-s) var(--to-now, 260px)); }
+  :global(html.motion) .rs-body::before { transform: scaleY(clamp(0, (var(--sp) - 0.22) / 0.4, 1)); }
+  /* each line on the spine: mark, then row. The spine draws over --sp 0.22 to 0.62, so its tip runs about
+     a fifth of a screen above the window's foot at every width (measured: one px of scroll is 0.00046 to
+     0.00049 of --sp at 1440, 1180, 800 and 390). --f is where a mark sits down the line (0.35 Now, then
+     the rows), so each lands as the line reaches it and its row follows. */
   .rs-now, .rstrip :global(.spine > .entry) {
     position: relative; display: grid; grid-template-columns: var(--gutter) var(--spine-w) minmax(0, var(--rec-col)); align-items: baseline; padding: 26px 0;
   }
-  :global(html.motion) :is(.rs-now, .rstrip .spine > .entry) { --k: clamp(0, (var(--sp) - 0.1 - var(--r, 0) * 0.05) / 0.05, 1); --kt: clamp(0, (var(--sp) - 0.115 - var(--r, 0) * 0.05) / 0.06, 1); }
-  .rstrip :global(.spine > .entry:nth-child(1)) { --r: 1; } .rstrip :global(.spine > .entry:nth-child(2)) { --r: 2; } .rstrip :global(.spine > .entry:nth-child(3)) { --r: 3; }
+  :global(html.motion) .rs-now, :global(html.motion) .rstrip :global(.spine > .entry) { --at: calc(0.22 + 0.4 * var(--f, 0.35)); --k: clamp(0, (var(--sp) - var(--at)) / 0.03, 1); --kt: clamp(0, (var(--sp) - var(--at) - 0.01) / 0.04, 1); }
+  .rstrip :global(.spine > .entry:nth-child(1)) { --f: 0.48; } .rstrip :global(.spine > .entry:nth-child(2)) { --f: 0.65; } .rstrip :global(.spine > .entry:nth-child(3)) { --f: 0.87; }
   .rstrip :global(.spine > .entry::before) { content: ""; position: absolute; left: calc(var(--gutter) + var(--spine-w)); width: min(var(--rec-col), calc(100% - var(--gutter) - var(--spine-w))); top: 0; height: 1px; background: var(--line-1); }
   .rstrip :global(.e-date) { grid-column: 1; grid-row: 1; color: var(--ink-3); white-space: nowrap; }
   .rstrip :global(a.e-date:hover) { color: var(--ink); text-decoration: underline; }
   .rstrip :global(.e-main), .now-main { grid-column: 3; grid-row: 1; min-width: 0; }
-  :global(html.motion) .rstrip :is(:global(.e-main), :global(.e-date), .now-main) { opacity: calc(0.12 + 0.88 * var(--kt)); transform: translateY(calc((1 - var(--kt)) * var(--rise))); }
+  :global(html.motion) .rstrip :global(.e-main), :global(html.motion) .rstrip :global(.e-date), :global(html.motion) .now-main { opacity: calc(0.12 + 0.88 * var(--kt)); transform: translateY(calc((1 - var(--kt)) * var(--rise))); }
 
   /* marks by shape (record-language §2.3); each cuts the spine with a ring of ground */
   .rstrip :global(.e-mark), .now-mark { grid-column: 2; grid-row: 1; align-self: start; justify-self: center; width: 11px; height: 11px; margin-top: var(--mark-y, 10px); border-radius: 50%;
@@ -130,7 +239,7 @@ const [nowWord, ...nowRest] = site.now.label.split(',');
     -webkit-mask: radial-gradient(circle, transparent 3.4px, #000 3.9px); mask: radial-gradient(circle, transparent 3.4px, #000 3.9px); }
   .rstrip :global(.s-release .e-mark) { width: 10px; height: 10px; --mark-y: 15px; box-shadow: 0 0 0 2.5px var(--ground), 0 0 0 4px color-mix(in srgb, var(--p) 80%, transparent), 0 0 0 7px var(--ground); }
   .rstrip :global(.entry:hover .e-mark), .rstrip :global(.entry:focus-within .e-mark) { scale: 1.3; }
-  :global(html.motion) .rstrip :is(:global(.e-mark), .now-mark) { transform: scale(calc(0.4 + 0.6 * var(--k))); opacity: var(--k); }
+  :global(html.motion) .rstrip :global(.e-mark), :global(html.motion) .now-mark { transform: scale(calc(0.4 + 0.6 * var(--k))); opacity: var(--k); }
   /* Now's mark: open, breathing slowly (the strip's one ambient loop) */
   .now-mark { --mark-y: 8px; background: var(--ground); box-shadow: inset 0 0 0 1.5px var(--record-1), 0 0 0 4px var(--ground); }
   .now-mark::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; border: 1px solid var(--record-1); opacity: 0; }
@@ -146,7 +255,9 @@ const [nowWord, ...nowRest] = site.now.label.split(',');
     display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .rstrip :global(.n-text a) { color: #a8d3ff; }
   .rstrip :global(.s-note .e-meta) { margin-top: 10px; }
-  .rstrip :global(.e-title) { font: 400 var(--fs-h4) / 1.25 var(--f-serif); letter-spacing: -0.012em; text-wrap: balance; }
+  /* one entry-title size: an essay's title is set like a note (21 / 430); it differs by its mark and its
+     dek (spec v3 §8.1) */
+  .rstrip :global(.e-title) { font: 430 21px / 1.4 var(--f-serif); letter-spacing: -0.005em; color: var(--read); text-wrap: balance; }
   .rstrip :global(.e-link) { color: inherit; transition: color var(--t-press); }
   .rstrip :global(.e-link::after) { content: ""; position: absolute; inset: 0; z-index: 0; }
   .rstrip :global(.entry:hover .e-link) { color: var(--ink-hi); }
@@ -161,28 +272,48 @@ const [nowWord, ...nowRest] = site.now.label.split(',');
   .rstrip :global(.r-items) { margin-top: 12px; display: grid; gap: 4px; }
   .rstrip :global(.r-items li) { position: relative; padding-left: 18px; font: 400 var(--fs-small) / 1.5 var(--f-sans); color: var(--ink-2); }
   .rstrip :global(.e-thumb) { display: none; }
+  /* hit sizes (spec v3 §9.6): on a fine pointer the date and project links are padded to 24 px without
+     moving the line; on touch the whole row is one target (a note's date link spans the row like an
+     entry's title link) and the project names read as text, so a tap is never ambiguous */
+  .rstrip :global(a.e-date), .rstrip :global(.pj) { padding-block: 4px; margin-block: -4px; }
+  .rstrip :global(.pj) { display: inline-block; }
+  @media (pointer: coarse) {
+    .rstrip :global(a.e-date::after) { content: ""; position: absolute; inset: 0; z-index: 0; }
+    .rstrip :global(.e-meta) { pointer-events: none; }
+    .rstrip :global(.n-text a) { position: relative; z-index: 1; }
+  }
+  /* press: the Record's links answer within 120 ms (scale 0.98) */
+  .rstrip :global(a.ym) { transition: scale var(--t-press) var(--ease-out); }
+  .rstrip :global(a.ym:active), .rs-all:active { scale: 0.98; }
 
   /* ---------- the hand-over: the spine runs on, dashed, to a quiet link ---------- */
   .rs-tail { position: relative; height: 72px; }
   .rs-tail::before { content: ""; position: absolute; left: var(--spine-x); top: 0; bottom: 0; width: 1px; translate: -0.5px 0; transform-origin: 50% 0;
     background: repeating-linear-gradient(180deg, var(--rule-s) 0 4px, transparent 4px 9px); }
-  :global(html.motion) .rs-tail::before { transform: scaleY(clamp(0, (var(--sp) - 0.3) / 0.06, 1)); }
-  .rs-all { display: grid; grid-template-columns: var(--gutter) var(--spine-w) auto auto; justify-content: start; align-items: center; gap: 0; min-height: 44px; color: var(--ink); width: fit-content; }
+  :global(html.motion) .rs-tail::before { transform: scaleY(clamp(0, (var(--sp) - 0.62) / 0.03, 1)); }
+  .rs-all { transition: scale var(--t-press) var(--ease-out); display: grid; grid-template-columns: var(--gutter) var(--spine-w) auto auto; justify-content: start; align-items: center; gap: 0; min-height: 44px; color: var(--ink); width: fit-content; }
   .all-mark { grid-column: 2; justify-self: center; width: 11px; height: 11px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--ink-3); transition: scale var(--t-press) var(--ease-out), box-shadow var(--t-press); }
   .all-t { grid-column: 3; font: 500 var(--fs-small) / 1 var(--f-sans); padding-right: var(--s-2); }
   .rs-all :global(.icon) { color: var(--ink-3); transition: color var(--t-press), translate 200ms var(--ease-out); }
   .rs-all:hover .all-mark { scale: 1.3; box-shadow: inset 0 0 0 1.5px var(--record-1); }
   .rs-all:hover :global(.icon) { color: var(--ink); translate: 2px 0; }
-  :global(html.motion) .rs-all { --k: clamp(0, (var(--sp) - 0.34) / 0.05, 1); opacity: var(--k); transform: translateY(calc((1 - var(--k)) * var(--rise))); }
+  :global(html.motion) .rs-all { --k: clamp(0, (var(--sp) - 0.65) / 0.04, 1); opacity: var(--k); transform: translateY(calc((1 - var(--k)) * var(--rise))); }
 
   /* ---------- phone: the Record's phone grid (spine at the left, the date above each row) ---------- */
   @media (max-width: 699.98px) {
-    .rstrip { --gutter: 0px; --spine-w: 22px; }
-    .rs-head { grid-template-columns: minmax(0, 1fr) auto; }
-    .rs-title { grid-column: 1; grid-row: 1; align-self: center; }
-    .rs-dek { grid-column: 1 / -1; grid-row: 2; }
-    .rs-obj { grid-column: 2; grid-row: 1; width: 136px; margin: -36px -16px -40px 0; }
-    .rs-year { grid-template-columns: 1fr; gap: 14px; margin-top: var(--s-6); }
+    /* phone (spec v3 §8.1): the chapter hangs on the spine. The recorder stands at the right inside the
+       gutter (its glow and shadow end before the screen edge and the rail), the head and the year strip
+       start right of the spine, and the tape leaves the object and turns down into the spine above the
+       title. Only the six inner rings and three small ones are drawn. */
+    .rstrip { --gutter: 0px; --spine-w: 22px; --S: 176px; --S-n: 176; --pad: 28px; }
+    .rs-obj { margin: 0 0 0 auto; }
+    .rs-pool { left: auto; right: calc(var(--S) * -0.35); }
+    .rs-tape { width: calc(100% - var(--S) * 0.64 - var(--spine-x)); }
+    .rs-rings { left: calc(100% - var(--gut) - var(--S) * 0.625 - var(--S) * 2); }
+    .rs-rings .wide { display: none; }
+    .rs-head { text-align: left; padding-left: var(--spine-w); padding-top: var(--s-3); }
+    .rs-dek { margin-left: 0; }
+    .rs-year { grid-template-columns: 1fr; gap: 14px; margin-top: var(--s-6); padding-left: var(--spine-w); }
     .rs-y { display: flex; align-items: baseline; gap: 12px; padding: 0; }
     .rstrip :global(.ym) { padding: 0 2px; }
     .rs-now, .rstrip :global(.spine > .entry) { grid-template-columns: var(--spine-w) minmax(0, 1fr); padding: 22px 0; }
@@ -190,7 +321,7 @@ const [nowWord, ...nowRest] = site.now.label.split(',');
     .rstrip :global(.e-date) { grid-column: 2; grid-row: 1; margin-bottom: 6px; }
     .rstrip :global(.e-main), .now-main { grid-column: 2; grid-row: 2; }
     .rstrip :global(.spine > .entry::before) { left: var(--spine-w); }
-    .rstrip :global(.n-text), .now-t { font-size: 19px; }
+    .rstrip :global(.n-text), .rstrip :global(.e-title), .now-t { font-size: 19px; }
     .rs-all { grid-template-columns: var(--spine-w) auto auto; }
     .all-mark { grid-column: 1; }
     .all-t { grid-column: 2; }

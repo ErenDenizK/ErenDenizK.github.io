@@ -79,7 +79,7 @@
   --lh-list: 1.5;
   --lh-lede: 1.6;
   /* the Record's grid, named for the new set (spec v2 §2.5; record-language §2.3) */
-  --rec-gutter: 64px; --rec-spine: 36px; --rec-col: 680px; --rec-thumb: 244px; --rec-w: 1060px;
+  --rec-gutter: 64px; --rec-spine: 36px; --rec-col: 680px; --rec-thumb: 244px; --rec-w: 960px;   /* 960: the column starts on the 340 px edge of How I work (spec v3 §9.3) */
   --gut: clamp(16px, 3.05vw + 4.1px, 48px);
 
   /* columns, all centred on the page axis */

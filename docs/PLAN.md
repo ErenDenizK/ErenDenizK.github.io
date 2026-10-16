@@ -40,7 +40,7 @@ build tracks at a time.
 
 | Phase | Track | Station | Next check |
 |---|---|---|---|
-| **A Two pages** | the new Home on `/lab/one/` (brief on the Bostancı plate, Work as a deck of prints that opens in place into Dia/Notion-style presentations, the person, photos as postcards, now, Record strip, contact); spec `docs/design/one-spec.md` | built 2026-10-16 (two-page line, WORKFLOW §2.1); verify green | owner tries `/lab/one/` on the iPhone and desktop; switches `?open=900\|1400`, `?cap=line\|large`, `?still` |
+| **A Two pages** | the new Home on `/lab/one/` (brief on the Bostancı plate, Work as frames in Robin's flight that open in place into Dia/Notion-style presentations, the person, photos as postcards, now, Record strip, contact); spec `docs/design/one-spec.md` | built 2026-10-16 (two-page line, WORKFLOW §2.1); verify green | owner tries `/lab/one/` on the iPhone and desktop; switches `?open=900\|1400`, `?cap=line\|large`, `?still` |
 | A | performance on real hardware | open: headless frame times are 2–4× heavier than the live pages (software GPU here) | the owner's iPhone; then trim layers if it stutters |
 | A | P2 motion: tear in motion, index flight, pointer parallax, scroll-linked colour, `?work=drift` | plan | after the owner's first look |
 | A | Record page in the new tokens; the tab between the two pages | plan | after Home is approved |
@@ -71,6 +71,7 @@ build tracks at a time.
 The 2026-10-15 batch is answered (brief log, 2026-10-15, evening). Owner actions left:
 
 - Set `dev` as the default branch on GitHub (Settings, Default branch).
+- Turn on "Automatically delete head branches" (Settings, General, Pull Requests).
 - Delete the remote branch `claude/portfolio-site-design-n38jml` (Branches page); the proxy refuses
   deletes from here.
 - Any other session or clone of this repo (Family chat, the owner's computer): re-sync to the
@@ -85,4 +86,4 @@ look checks.
 - Hand-written and school work in its own lighter format.
 - A Turkish locale; a custom domain (`edk.dev` or similar); research on hosting and open-sourcing
   AI-built projects.
-- 2.5D photo, once the owner picks a photo that suits it.
+- (moved to round 3, row T3: the ID card photo in 2.5D)
