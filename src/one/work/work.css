@@ -129,6 +129,9 @@
   html.js:not(.still) .work .pr-twin img { filter: grayscale(1) brightness(.78) contrast(1.05); }
 
   html.js:not(.still) .work .fl-side { display: block; position: absolute; z-index: 2; width: var(--sw); transform-origin: 50% 50%; }
+  /* decode before reveal (review V17): out of sight until its picture is decoded (scripts/flight.ts) */
+  html.js:not(.still) .work .fl-side { opacity: 0; transition: opacity 240ms var(--ease-ui); }
+  html.js:not(.still) .work .fl-side.ready { opacity: 1; }
   html.js:not(.still) .work .fl-side .pr { --shade: .64; }
   html.js:not(.still) .work .fl-side .pr-mount { padding: 6px 6px 20px; }
   html.js:not(.still) .work .fl-side .pr-cap { display: none; }

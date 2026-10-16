@@ -232,6 +232,42 @@ export function initFlight(sec: HTMLElement): Flight {
     return settling;
   }
 
+  /* ---- the prints are never grey (review V17; round 2 and 3 critiques: lazy side frames showed their
+     empty screen for up to 2 s after a jump from the rail). Three things:
+     1. near: a block within two views of the view fetches its pictures now (the browser's own lazy
+        distance is too short for a rail jump, which crosses thousands of pixels in half a second);
+     2. a jump: a press on the rail (Home's rail or its bloom), its keys, or a scroll faster than
+        4000 px/s fetches every picture of Work at once (the few side frames are all that is lazy);
+     3. decode before reveal: a side frame stays out of sight (opacity 0) until its picture is decoded,
+        then comes in over 240 ms, so no frame ever shows an empty screen. ---- */
+  const warmed = new WeakSet<Proj>();
+  function warmProj(p: Proj) {
+    if (warmed.has(p)) return;
+    warmed.add(p);
+    /* phones never show the side frames (here or in the layer): their pictures stay unfetched */
+    const sel = phoneMq.matches ? '.fl-hero img[loading="lazy"]' : 'img[loading="lazy"]';
+    p.el.querySelectorAll<HTMLImageElement>(sel).forEach((im) => { im.loading = 'eager'; });
+    if (phoneMq.matches) { p.sides.forEach((s) => s.classList.add('ready')); return; }
+    p.sides.forEach((s) => {
+      const im = s.querySelector<HTMLImageElement>('.pr-screen img');
+      if (!im) { s.classList.add('ready'); return; }
+      const ok = () => s.classList.add('ready');
+      (im.complete && im.naturalWidth ? im.decode() : new Promise((r, j) => { im.addEventListener('load', r, { once: true }); im.addEventListener('error', j, { once: true }); }).then(() => im.decode()))
+        .then(ok, ok);
+    });
+  }
+  const warmAll = () => projects.forEach(warmProj);
+  const near = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const p = projects.find((x) => x.el === e.target);
+    if (p) { warmProj(p); near.unobserve(p.el); }
+  }), { rootMargin: '200% 0px' });
+  projects.forEach((p) => near.observe(p.el));
+  const railish = (t: EventTarget | null) => t instanceof Element && !!t.closest('.rail, .rail-plain, [data-rail]') && !t.closest('.layer');
+  document.addEventListener('pointerdown', (e) => { if (railish(e.target)) warmAll(); }, { passive: true, capture: true });
+  document.addEventListener('keydown', (e) => { if (railish(e.target)) warmAll(); }, { capture: true });
+  onFrame((f) => { if (Math.abs(f.v) > 4000) warmAll(); return false; });
+
   /* ---- start ---- */
   measure();
   projects.forEach((p) => {
