@@ -46,12 +46,16 @@ const ease = (name: string, fb: string) => {
   return v && CSS.supports('transition-timing-function', v) ? v : fb;
 };
 
+/* Home's rail and an opened project's rail both use this; the root class stays while either lives */
+let live = 0;
+
 export function bloom(group: (el: HTMLElement) => string | undefined) {
   return (api: RailApi) => {
     const { nav, btn, links, marks, secs } = api;
     const n = secs.length;
     const ac = new AbortController();
     const sig = { signal: ac.signal };
+    live++;
     root.classList.add('rail-bloom');
     nav.dataset.bloom = VARIANT;
     const groups = secs.map((s) => group(s.el));
@@ -126,7 +130,9 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       const j = Math.min(n - 1, Math.floor(w)), f = w - j;
       const a = api.start(j), b = j + 1 < n ? api.start(j + 1) : max;
       const span = j + 1 < n ? b - a : 2 * (max - a);   // half a slot below the last bead reaches the end
-      return { y: Math.min(max, a + f * span), i: j };
+      /* rounded up: a section start can be fractional and the scroll position whole; landing below it would
+         leave the rail naming the section before the one under the thumb */
+      return { y: Math.min(max, Math.ceil(a + f * span)), i: j };
     };
     const layoutScrub = () => {
       const railH = nav.getBoundingClientRect().height;
@@ -270,11 +276,10 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
     };
 
     /* ---------- tap to bloom ---------- */
-    let open = false, origin = { x: 0, y: 0 }, piv = { x: 0, y: 0 }, closeT = 0, sy = 0;
+    let open = false, origin = { x: 0, y: 0 }, piv = { x: 0, y: 0 }, sy = 0;
     const slots: { x: number; y: number; dx: number }[] = [];
 
     function openAt(y0: number, k: number, keyboard: boolean) {
-      clearTimeout(closeT);
       rows.forEach((r) => r.getAnimations().forEach((x) => x.cancel()));
       open = true;
       sy = api.y();
@@ -363,7 +368,9 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
         if (VARIANT === 'drop') {
           /* from the press point: each name rises out of it, its own delay by its distance from the point */
           const delay = 40 + 30 * dk ** 0.85;
-          const ox = origin.x - s.x, oy = origin.y - s.y;
+          /* all the way from the rail, and 70 % of the way from the press height: the names leave the point in
+             order instead of from one pixel, so none is ever drawn over another */
+          const ox = origin.x - s.x, oy = (origin.y - s.y) * 0.7;
           li.animate([{ transform: `translate(${ox}px, ${oy}px) scale(.5)` }, { transform: 'none' }], { duration: 760, delay, easing: glide, fill: 'backwards' });
           /* the name is still unseen while the drop leaves the point, so nothing piles up there */
           li.animate([{ opacity: 0, filter: 'blur(10px)' }, { opacity: 0, filter: 'blur(8px)', offset: 0.16 }, { opacity: 1, filter: 'blur(0)' }],
@@ -398,18 +405,18 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       if (!root.classList.contains('layer-open')) pauseField(false);
       veil.classList.remove('on');
       fx.classList.remove('on');
-      clearTimeout(closeT);
       const done = () => { nav.classList.remove('is-bloom'); rows.forEach((r) => { r.getAnimations().forEach((x) => x.cancel()); r.style.transformOrigin = ''; }); };
       if (focusBtn) btn.focus({ preventScroll: true });
       if (still()) { done(); return; }
-      rows.forEach((li, j) => {
+      const outs = rows.map((li, j) => {
         li.getAnimations().forEach((x) => x.cancel());
         const s = slots[j];
         const keep = j === chosen;
-        li.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translate(${(origin.x - s.x) * 0.3}px, ${(origin.y - s.y) * (keep ? 0 : 0.18)}px) scale(${keep ? 1 : 0.94})` }],
+        return li.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translate(${(origin.x - s.x) * 0.3}px, ${(origin.y - s.y) * (keep ? 0 : 0.18)}px) scale(${keep ? 1 : 0.94})` }],
           { duration: keep ? 340 : 200, delay: keep ? 60 : 0, easing: 'cubic-bezier(.4, 0, 1, 1)', fill: 'forwards' });
       });
-      closeT = window.setTimeout(done, 420);
+      /* the names leave on the document timeline; the bloom ends when they have (a reopen cancels them) */
+      Promise.all(outs.map((x) => x.finished)).then(() => { if (!open) done(); }, () => {});
     }
 
     /* choosing a name goes there; the chosen one leaves last */
@@ -444,17 +451,19 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       t.addEventListener('touchend', (e) => { const c = e.changedTouches[0]; if (open && c.clientX - tx > 56 && Math.abs(c.clientY - ty) < 48) close(false); }, { passive: true, signal: ac.signal });
     }
     addEventListener('wheel', () => { if (open) close(false); }, { passive: true, signal: ac.signal });
-    addEventListener('scroll', () => { if (open && Math.abs(api.y() - sy) > 48) close(false); }, { passive: true, signal: ac.signal });
+    /* any scroller (the page, or an opened project's layer) */
+    document.addEventListener('scroll', () => { if (open && Math.abs(api.y() - sy) > 48) close(false); }, { passive: true, capture: true, signal: ac.signal });
     addEventListener('resize', () => { if (open) close(false); }, { passive: true, signal: ac.signal });
-    document.addEventListener('one:layer-open', () => { close(false); endScrub(false); }, sig);
+    if (!nav.classList.contains('in-layer')) document.addEventListener('one:layer-open', () => { close(false); endScrub(false); }, sig);
 
     return {
       mode(m: string) { if (m !== 'rungs') { close(false); endScrub(false); } },
       destroy() {
         ac.abort();
         cancelAnimationFrame(raf);
-        clearTimeout(holdT); clearTimeout(closeT);
-        root.classList.remove('rail-bloom', 'rail-grab');
+        clearTimeout(holdT);
+        if (--live <= 0) root.classList.remove('rail-bloom');
+        root.classList.remove('rail-grab');
         veil.remove(); fx.remove();
       },
     };

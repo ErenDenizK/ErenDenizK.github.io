@@ -83,11 +83,12 @@ html.rail-bloom .rail.rail .rail-i:focus-visible { outline: 2px solid var(--focu
   --bw: min(1040px, 76vw);
   --vo: 0;
   position: fixed; inset: 0; z-index: var(--z-rail); pointer-events: none; visibility: hidden;
-  transition: visibility 0s linear 320ms;
+  transition: visibility 0s linear 380ms;
 }
 /* the fade is on each layer, never on the veil: an ancestor below full opacity is a backdrop root (Filter
    Effects 2), so its blur layers would see nothing behind them until the fade ended, then pop in */
-.bl-veil > i, .bl-veil::after { opacity: 0; transition: opacity 320ms var(--ease-out); }
+/* leaving, the page comes back on an even curve, a little slower than the names go */
+.bl-veil > i, .bl-veil::after { opacity: 0; transition: opacity 380ms var(--ease-ui); }
 .bl-veil.on, .bl-veil.scrub { visibility: visible; transition: visibility 0s; }
 .bl-veil.on { pointer-events: auto; }
 .bl-veil.on > i, .bl-veil.on::after { opacity: 1; transition-duration: 460ms; }
@@ -104,10 +105,18 @@ html.rail-bloom .rail.rail .rail-i:focus-visible { outline: 2px solid var(--focu
   -webkit-mask-image: linear-gradient(to left, #000 22%, transparent); mask-image: linear-gradient(to left, #000 22%, transparent); }
 .bl-veil::after {
   content: ""; position: absolute; inset: 0;
-  background: linear-gradient(to left, rgb(13 13 15 / 0.8), rgb(13 13 15 / 0.66) calc(var(--bw) * 0.22),
-    rgb(13 13 15 / 0.36) calc(var(--bw) * 0.55), rgb(13 13 15 / 0.1) calc(var(--bw) * 0.82), rgb(13 13 15 / 0) var(--bw));
+  background: linear-gradient(to left, rgb(13 13 15 / 0.82), rgb(13 13 15 / 0.7) calc(var(--bw) * 0.22),
+    rgb(13 13 15 / 0.44) calc(var(--bw) * 0.55), rgb(13 13 15 / 0.14) calc(var(--bw) * 0.82), rgb(13 13 15 / 0) var(--bw));
 }
+/* touch: a long name can reach 80 px from the left edge of a phone, so the blur and the shade reach across
+   the whole width and only thin out toward the left (measured over a white capture in an opened project) */
 html.rail-touch .bl-veil { --bw: 100vw; }
+html.rail-touch .bl-veil > i:nth-child(2) { width: 100%; }
+html.rail-touch .bl-veil > i:nth-child(3) { width: 86%; }
+html.rail-touch .bl-veil > i:nth-child(4) { width: 64%; }
+html.rail-touch .bl-veil::after {
+  background: linear-gradient(to left, rgb(13 13 15 / 0.84), rgb(13 13 15 / 0.74) 40%, rgb(13 13 15 / 0.5) 72%, rgb(13 13 15 / 0.26));
+}
 
 /* ---------- the effects: the arc, the pool of light, the scrub thumb and its name ---------- */
 .bl-fx { position: fixed; inset: 0; z-index: calc(var(--z-rail) + 1); pointer-events: none; }
@@ -155,5 +164,6 @@ html.rail-touch .bl-tag-n { font-size: 28px; }
 @media (prefers-reduced-motion: reduce) {
   .bl-veil, .bl-veil > i, .bl-veil::after, .bl-arc, .bl-pool, .bl-tag, .bl-thumb { transition: none; }
   .rail-m.tick { animation: none; }
+  html.rail-bloom .rail.rail .rail-t { transition: color 120ms linear; translate: none !important; }
 }
 html.still .bl-veil, html.still .bl-veil > i, html.still .bl-veil::after, html.still .bl-arc, html.still .bl-pool, html.still .bl-tag, html.still .bl-thumb { transition: none; }
