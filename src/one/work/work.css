@@ -1,7 +1,7 @@
-/* Work (PART B of phase3 design-spec.md): the prints, the deck, the presentation and the open / close
+/* Work (spec v2 §3.3 to §3.4): the prints, the flight, the presentation and the open / close
    transition. Tokens only (src/one/tokens.css); every rule is scoped to .work, .pres or .layer so the
-   shell's styles never meet these. The markup is the still twin (a list); the deck is the block under
-   "Deck" and applies only with JavaScript and motion. */
+   shell's styles never meet these. The markup is the still twin (a list); the flight is the block under
+   "the flight" and applies only with JavaScript and motion. */
 @import "../../styles/wordmarks.css";
 @import "../../../tools/icons/out/icons.css";
 
@@ -33,8 +33,6 @@
   font: 500 11px/1.2 var(--f-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
 .pr-cap span:first-child { overflow: hidden; text-overflow: ellipsis; }
 .pr-shade { position: absolute; inset: 0; z-index: 2; border-radius: inherit; background: var(--ground); opacity: var(--shade, 0); pointer-events: none; }
-/* the deck writes the shade every frame of a shuffle: its own layer, so the print under it never repaints */
-html.js:not(.still) .work .pr-shade { will-change: opacity; }
 /* a project without screens: its object on its own paper, lit by its light */
 .pr-obj { background: radial-gradient(62% 72% at 50% 58%, color-mix(in srgb, var(--a1) 30%, transparent), transparent 72%),
   radial-gradient(90% 60% at 50% 100%, color-mix(in srgb, var(--a3) 60%, transparent), transparent 80%), var(--paper); }
@@ -54,99 +52,126 @@ html.js:not(.still) .work .pr-shade { will-change: opacity; }
   .pr-cap { left: 10px; right: 10px; bottom: 8px; }
 }
 
-/* ---------- Work, the still twin: a list (no JavaScript, reduced motion, ?still) ---------- */
+/* ---------- Work, the still twin: a list (no JavaScript, reduced motion, ?still; spec v2 §7) ----------
+   Each project: its drawing at rest, its hero frame, its texts. Side frames, tags and the moving tear
+   belong to the flight only. */
 .work { position: relative; padding: var(--s-9) var(--gut) var(--s-8); }
-.w-chrome { text-align: center; margin-bottom: var(--s-7); }
-.w-idx b { color: var(--ink); font-weight: 500; }
-.w-count { display: none; }
-.proj { position: relative; max-width: var(--w-stage); margin: 0 auto var(--s-9); }
+.proj { position: relative; max-width: 760px; margin: 0 auto var(--s-10); scroll-margin-top: 0;
+  --art-ink: color-mix(in srgb, var(--a1) 72%, var(--ink)); --art-o: .2; }
 .proj:last-of-type { margin-bottom: 0; }
-.slot { position: absolute; inset: 0; pointer-events: none; scroll-margin-top: calc(var(--bar-h) + 16px); }
-.set-box { position: relative; }
-.set-link { display: flex; gap: var(--s-5); justify-content: center; align-items: flex-start; }
-.set-link .pr { flex: 0 1 360px; min-width: 0; }
-.set-obj, .prop { display: none; }
-.txt { position: relative; text-align: center; margin-top: var(--s-6); }
-.txt-in { position: relative; padding: 0 var(--gut); }
-.w-meta { width: fit-content; margin: 0 auto var(--s-3); }
-.w-title { width: fit-content; font-size: var(--fs-title); line-height: 1; margin: 0 auto; font-weight: inherit; }
+.fl-stage { position: relative; isolation: isolate; }
+.fl-art { position: absolute; z-index: 0; left: 50%; top: -18%; width: max(1100px, 150%); aspect-ratio: 1.6; translate: -50% 0;
+  color: var(--art-ink); pointer-events: none; }
+/* the drawing as a mask until its layers load (and for good in the still twin) */
+.fl-art::before { content: ""; position: absolute; inset: 0; background: currentColor; opacity: var(--art-o);
+  -webkit-mask: var(--art) center / 100% 100% no-repeat; mask: var(--art) center / 100% 100% no-repeat; }
+.fl-art.live::before { display: none; }
+.fl-ink { position: absolute; inset: 0; }
+.fl-layer { position: absolute; max-width: none; }
+/* the places of a drawing and the route between them (the last block, W7): lit in the still twin */
+.fl-route { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.fl-route path, .fl-route ellipse { vector-effect: non-scaling-stroke; }
+.fl-route-line { fill: none; stroke: var(--a1); stroke-width: 1.5; stroke-dasharray: 1 1; stroke-dashoffset: 0; opacity: .55; }
+.fl-stop ellipse { fill: none; stroke: var(--a1); stroke-width: 1.25; }
+.fl-stop .fl-stop-in { fill: var(--a1); stroke: none; opacity: .7; }
+.fl-tag, .fl-side, .w-tear { display: none; }
+.fl-hero { position: relative; z-index: 2; display: block; }
+.fl-hero .pr-mount { padding: 8px 8px 28px;
+  box-shadow: var(--e-lift), 0 0 140px -30px color-mix(in srgb, var(--a1) 38%, transparent), inset 0 0 0 1px rgb(255 255 255 / .06); }
+.fl-hero .pr-cap { font-size: var(--fs-cap); letter-spacing: .02em; text-transform: none; left: 12px; right: 12px; bottom: 8px; }
+.pr-twin { display: none; }
+.proj[data-short] { max-width: 560px; }
+.txt { position: relative; z-index: 3; text-align: center; margin-top: var(--s-5); }
+.txt-in { position: relative; isolation: isolate; padding: 0 var(--gut); }
+.w-meta { margin: 0 auto var(--s-3); }
+.w-title { font-size: var(--fs-title); line-height: 1; margin: 0 auto; font-weight: inherit; }
 .w-title .wm { color: var(--wm-c, var(--ink)); }
-.w-promise { width: fit-content; margin: var(--s-3) auto var(--s-5); max-width: 30em; font: 400 var(--fs-body)/1.55 var(--f-sans); color: var(--ink-2); text-wrap: balance; }
+.w-promise { margin: var(--s-3) auto var(--s-5); max-width: 30em; font: 400 var(--fs-body)/1.55 var(--f-sans); color: var(--ink-2); text-wrap: balance; }
+/* a line in its mask (spec v2 §2.1): padded so no ascender or descender is cut at rest */
+.work .ln { display: block; overflow: hidden; padding: .06em 0 .26em; margin: -.06em 0 -.26em; }
+.work .li { display: inline-block; }
 @media (max-width: 699.98px) {
-  .set-link { justify-content: safe center; overflow-x: auto; scrollbar-width: none; padding: 4px var(--gut) 12px; margin: 0 calc(-1 * var(--gut));
-    scroll-snap-type: x proximity; }
-  .set-link::-webkit-scrollbar { display: none; }
-  .set-link .pr { flex: 0 0 72vw; scroll-snap-align: center; }
+  .proj { max-width: 420px; }
+  .pr[data-phone-frame] .pr-screen { aspect-ratio: 390 / 844; }
+  .fl-hero:has(.pr[data-phone-frame]) { width: 234px; margin: 0 auto; }
+  .fl-art { width: 950px; top: -6%; }
 }
 
-/* ---------- Work, the deck (JavaScript and motion; spec 3.3.1, 4.5) ----------
-   One grid: each project's .slot is a row of scroll; the chrome, every set and every text block span all
-   rows and stick to the top, so the whole stage is pinned by the compositor. scripts/deck.ts writes the
-   poses. Before it runs, the first project stands at rest and the others wait out of sight. */
+/* ---------- Work, the flight (JavaScript and motion; spec v2 §3.3) ----------
+   Each block is normal flow, one view tall at rest (its stage). scripts/flight.ts writes transforms and
+   opacities only. Before it runs, every block already stands at its rest pose, so nothing jumps. */
 @media (prefers-reduced-motion: no-preference) {
-  html.js:not(.still) .work {
-    display: grid; grid-template-columns: 100%; grid-template-rows: var(--rows); padding: 0;
-    --pw: max(380px, min(52vw, 720px, calc((var(--sv) - 484px) * 1.6 + 24px)));
-    --ph: calc(46px + (var(--pw) - 24px) / 1.6);
-    --top: calc(var(--bar-h) + 58px);
-  }
-  html.js:not(.still) .work .w-chrome,
-  html.js:not(.still) .work .set,
-  html.js:not(.still) .work .txt { grid-column: 1; grid-row: 1 / -1; position: sticky; top: 0; height: var(--sv); align-self: start; margin: 0; pointer-events: none; }
-  html.js:not(.still) .work .w-chrome { z-index: 4; }
-  html.js:not(.still) .work .w-idx { position: absolute; left: 0; right: 0; top: calc(var(--bar-h) + 16px); }
-  html.js:not(.still) .work .w-count { display: inline; }
-  html.js:not(.still) .work .w-count b { display: inline-block; }
-  html.js:not(.still) .work .proj { display: contents; }
-  html.js:not(.still) .work .slot { position: relative; inset: auto; grid-column: 1; grid-row: var(--row); scroll-margin-top: 0; }
-  html.js:not(.still) .work .set { z-index: 1; }
-  html.js:not(.still) .work .txt { z-index: 3; }
-  html.js:not(.still) .work .set-box { position: absolute; left: 50%; top: var(--top); width: var(--pw); height: var(--ph); margin-left: calc(var(--pw) / -2);
-    pointer-events: auto; transform-origin: 50% 70%; will-change: transform, opacity; }
-  html.js:not(.still) .work .set-link { display: block; position: absolute; inset: 0; z-index: 1; cursor: pointer; overflow: visible; padding: 0; margin: 0; }
-  html.js:not(.still) .work .set-link .pr { position: absolute; left: 0; top: 0; width: 100%; will-change: transform; }
-  /* rest poses (spec 3.3.1), the same numbers scripts/deck.ts starts from */
-  html.js:not(.still) .work .pr[data-pos="0"] { z-index: 3; transform: rotate(-1.6deg); }
-  html.js:not(.still) .work .pr[data-pos="1"] { z-index: 2; transform: translate(calc(var(--pw) * .104), calc(var(--pw) * -.027)) rotate(4.2deg); --shade: .38; }
-  html.js:not(.still) .work .pr[data-pos="2"] { z-index: 1; transform: translate(calc(var(--pw) * -.125), calc(var(--pw) * -.009)) rotate(-6.5deg); --shade: .5; }
-  html.js:not(.still) .work .pr[data-pos="0"] .pr-mount { box-shadow: var(--e-lift), 0 0 120px -30px color-mix(in srgb, var(--a1) 36%, transparent), inset 0 0 0 1px rgb(255 255 255 / .06); }
-  html.js:not(.still) .work .set-obj { display: block; position: absolute; z-index: 0; left: calc(var(--pw) * .78); top: calc(var(--pw) * -.164);
-    width: calc(var(--pw) * .6); aspect-ratio: 1; rotate: 8deg; opacity: .95;
-    /* inside the pinned stage the object cannot reach the field to add its light, so its black is made
-       transparent instead (#w-light: alpha from the brightness) */
-    mix-blend-mode: normal; filter: url(#w-light); }
-  html.js:not(.still) .work .prop { display: block; position: absolute; z-index: 5; left: calc(var(--pw) * var(--x)); top: calc(var(--pw) * var(--y));
-    width: calc(var(--pw) * var(--w)); rotate: var(--turn); pointer-events: none; }
-  html.js:not(.still) .work .prop img { width: 100%; height: auto; aspect-ratio: var(--ar); border-radius: calc(var(--pw) * var(--w) * var(--radf));
-    box-shadow: 0 2px 4px rgb(0 0 0 / .45), 0 18px 40px -10px rgb(0 0 0 / .8); }
-  html.js:not(.still) .work .txt-in { position: absolute; left: 0; right: 0; top: calc(var(--top) + var(--ph) + 34px); opacity: 0; }
-  html.js:not(.still) .work .proj[data-on] .txt-in { opacity: 1; }
-  html.js:not(.still) .work .proj[data-on] .txt-in :is(a, button) { pointer-events: auto; }
-  html.js:not(.still) .work:not([data-live]) .proj[data-k="0"] .txt-in { opacity: 1; }
-  html.js:not(.still) .work:not([data-live]) .proj:not([data-k="0"]) .set { visibility: hidden; }
-  /* the open project leaves the stage while its layer is up (its prints and texts are in the layer) */
-  html.js:not(.still) .work .proj.opened :is(.set-box, .txt-in) { visibility: hidden; }
+  html.js:not(.still) .work { padding: 0;
+    --hw: min(760px, 56vw, calc((var(--sv) - 400px) * 1.6 + 16px));
+    --hh: calc((var(--hw) - 16px) / 1.6 + 36px);
+    --htop: calc(var(--bar-h) + 28px);
+    --sw: calc(var(--hw) * .58); }
+  html.js:not(.still) .work .proj { max-width: none; margin: 0; height: calc(.95 * var(--sv)); }
+  html.js:not(.still) .work .proj[data-short] { --hw: min(600px, 46vw, calc((var(--sv) - 400px) * 1.6 + 16px)); }
+  html.js:not(.still) .work .fl-stage { position: absolute; left: 0; right: 0; top: 0; height: var(--sv); pointer-events: none; }
+  /* the last block holds still while the torn paper rises over it (W7) */
+  html.js:not(.still) .work .proj[data-last] { height: calc(1.75 * var(--sv)); }
+  html.js:not(.still) .work .proj[data-last] .fl-stage { position: sticky; }
+  html.js:not(.still) .work .fl-art { top: -2%; width: max(1520px, 106vw); }
+  html.js:not(.still) .work .fl-route-line { stroke-dashoffset: 1; }
+  html.js:not(.still) .work :is(.fl-layer-back, .fl-layer-front),
+  html.js:not(.still) .work :is(.fl-hero, .fl-side, .fl-tag, .txt-in, .li) { will-change: transform; }
+
+  html.js:not(.still) .work .fl-hero { position: absolute; left: 50%; top: var(--htop); width: var(--hw); margin-left: calc(var(--hw) / -2);
+    z-index: 3; pointer-events: auto; transform: rotate(-1deg); transform-origin: 50% 50%; }
+  html.js:not(.still) .work .pr-twin { display: block; position: absolute; inset: 0; z-index: 1; opacity: 0; will-change: opacity; }
+  html.js:not(.still) .work .pr-twin picture { position: absolute; inset: 0; }
+  html.js:not(.still) .work .pr-twin img { filter: grayscale(1) brightness(.78) contrast(1.05); }
+
+  html.js:not(.still) .work .fl-side { display: block; position: absolute; z-index: 2; width: var(--sw); transform-origin: 50% 50%; }
+  html.js:not(.still) .work .fl-side .pr { --shade: .5; }
+  html.js:not(.still) .work .fl-side .pr-mount { padding: 6px 6px 20px; }
+  html.js:not(.still) .work .fl-side .pr-cap { display: none; }
+  html.js:not(.still) .work .fl-side-r { left: calc(100% - var(--sw) * .3); top: calc(var(--htop) + 90px); transform: perspective(1200px) rotateY(-24deg) rotate(5deg); }
+  html.js:not(.still) .work .fl-side-l { left: calc(var(--sw) * -.7); top: calc(var(--sv) * .56); transform: perspective(1200px) rotateY(24deg) rotate(-5deg); }
+
+  html.js:not(.still) .work .fl-tag { display: block; position: absolute; z-index: 1; font: 500 var(--fs-cap)/1 var(--f-sans); letter-spacing: .08em; text-transform: uppercase;
+    color: color-mix(in srgb, var(--ink-3) 70%, transparent); white-space: nowrap; }
+  html.js:not(.still) .work .fl-tag-1 { right: calc(50% + var(--hw) / 2 + 110px); top: 27%; }
+  html.js:not(.still) .work .fl-tag-2 { left: calc(50% + var(--hw) / 2 + 120px); top: 64%; }
+  html.js:not(.still) .work .fl-tag-3 { right: calc(50% + var(--hw) / 2 + 70px); top: 71%; }
+
+  html.js:not(.still) .work .txt { position: absolute; left: 0; right: 0; top: calc(var(--htop) + var(--hh) + 20px); margin: 0; }
+  html.js:not(.still) .work .txt-in :is(a, button) { pointer-events: auto; }
+  /* the open project leaves the flight while its layer is up */
+  html.js:not(.still) .work .proj.opened :is(.fl-hero, .fl-side, .txt-in) { visibility: hidden; }
 
   @media (hover: hover) and (pointer: fine) {
-    html.js:not(.still) .work .pr-in { transition: transform 300ms var(--ease-out), filter 300ms var(--ease-out); }
-    html.js:not(.still) .work .set-box:hover .pr-in { transition-duration: 200ms; }
-    html.js:not(.still) .work .set-box:hover .pr[data-pos="0"] .pr-in { transform: translateY(-4px) scale(1.02); filter: saturate(1.1); }
-    html.js:not(.still) .work .set-box:hover .pr[data-pos="1"] .pr-in { transform: rotate(2deg); }
-    html.js:not(.still) .work .set-box:hover .pr[data-pos="2"] .pr-in { transform: rotate(-2deg); }
+    html.js:not(.still) .work .fl-hero .pr-in { transition: transform 300ms var(--ease-out); }
+    html.js:not(.still) .work .fl-hero:hover .pr-in { transform: translateY(-4px) scale(1.02); transition-duration: 200ms; }
   }
-  html.js:not(.still) .work .set-link:active .pr[data-pos="0"] .pr-in { transform: scale(.98); transition: transform var(--t-press) var(--ease-ui); }
+  html.js:not(.still) .work .fl-hero:active .pr-in { transform: scale(.985); transition: transform var(--t-press) var(--ease-ui); }
 
+  /* the torn paper of the person's part (W7): it rises over the held last block at the page's speed */
+  html.js:not(.still) .work .w-tear { display: block; position: relative; z-index: 0; height: calc(1.1 * var(--sv));
+    margin: calc(-.75 * var(--sv)) 0 calc(-.35 * var(--sv)); pointer-events: none; }
+  html.js:not(.still) #work + .rest > .tear { visibility: hidden; }
+  .w-edge { display: none; position: absolute; left: 0; top: -46px; width: 100%; height: 48px; overflow: visible; }
+  .w-edge-fill { fill: var(--paper); }
+  .w-edge-fibre { fill: none; stroke: var(--line-2); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .w-sheet { position: absolute; inset: 0; background: linear-gradient(var(--paper) 0 64%, rgb(23 23 26 / 0) 100%); }
+  .w-edge-1440 { display: block; }
+  @media (max-width: 1099.98px) { .w-edge-1440 { display: none; } .w-edge-820 { display: block; } }
+  @media (max-width: 699.98px) { .w-edge-820 { display: none; } .w-edge-390 { display: block; } }
+
+  /* the phone: its own composition, not a smaller desktop (spec v2 §3.3.3) */
   @media (max-width: 699.98px) {
-    html.js:not(.still) .work { --pw: calc(100vw - 72px); --ph: calc(var(--pw) + 18px); --top: calc(var(--bar-h) + 48px); }
-    html.js:not(.still) .work .pr[data-pos="0"] { transform: rotate(-1deg); }
-    html.js:not(.still) .work .pr[data-pos="1"] { transform: translate(calc(var(--pw) * .038), calc(var(--pw) * -.031)) rotate(3deg); }
-    html.js:not(.still) .work .pr[data-pos="2"] { transform: translate(calc(var(--pw) * -.044), calc(var(--pw) * -.013)) rotate(-3.5deg); }
-    html.js:not(.still) .work .set-obj { width: 200px; left: calc(var(--pw) - 140px); top: -70px; }
-    html.js:not(.still) .work .prop:not(.prop-phone) { display: none; }
-    html.js:not(.still) .work .prop-phone { --w2: min(.9, var(--w) * 1.5); left: calc(var(--pw) * -.06); top: calc(var(--pw) * .84); width: calc(var(--pw) * var(--w2)); }
-    html.js:not(.still) .work .prop-phone img { border-radius: calc(var(--pw) * var(--w2) * var(--radf)); }
-    html.js:not(.still) .work .txt-in { top: calc(var(--top) + var(--ph) + 40px); }
+    html.js:not(.still) .work { --hw: calc(100vw - 40px); --hh: calc(var(--hw) + 18px); --htop: calc(var(--bar-h) + 24px); }
+    html.js:not(.still) .work .proj { height: var(--sv); }
+    html.js:not(.still) .work .proj:has(.fl-hero .pr[data-phone-frame]) { height: calc(1.15 * var(--sv)); --hw: 234px; --hh: calc(218px * 844 / 390 + 34px); }
+    html.js:not(.still) .work .proj[data-short] { --hw: calc(100vw - 72px); --hh: calc((var(--hw) - 16px) / 1.6 + 34px); }
+    html.js:not(.still) .work .proj[data-last] { height: calc(1.5 * var(--sv)); }
+    html.js:not(.still) .work .fl-hero { margin-left: calc(var(--hw) / -2); }
+    html.js:not(.still) .work .fl-side, html.js:not(.still) .work .fl-tag { display: none; }
+    html.js:not(.still) .work .fl-art { width: 950px; top: 4%; }
+    html.js:not(.still) .work .txt { top: calc(var(--htop) + var(--hh) + 18px); }
     html.js:not(.still) .work .w-promise { max-width: 22em; }
+    html.js:not(.still) .work .w-tear { margin-top: calc(-.5 * var(--sv)); height: calc(.9 * var(--sv)); margin-bottom: calc(-.3 * var(--sv)); }
   }
 }
 

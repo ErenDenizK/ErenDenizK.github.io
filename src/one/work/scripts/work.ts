@@ -1,6 +1,6 @@
-/* Work's entry (PART B of phase3 design-spec.md). Home: the deck and the open / close. The static
-   project page: its steps, its hero clip, and Close going back when it came from Home. */
-import { initDeck } from './deck';
+/* Work's entry (spec v2 §3.3, §3.4). Home: the flight and the open / close. The static project page:
+   its steps, its hero clip, and Close going back when it came from Home. */
+import { initFlight } from './flight';
 import { initOpen } from './open';
 import { initStepper } from './stepper';
 import { motion } from './bus';
@@ -11,7 +11,7 @@ export function initWork() {
   const sec = document.getElementById('work');
   if (!sec || sec.dataset.ready) return;
   sec.dataset.ready = '1';
-  initOpen(sec, initDeck(sec));
+  initOpen(sec, initFlight(sec));
 }
 
 export function initStatic() {

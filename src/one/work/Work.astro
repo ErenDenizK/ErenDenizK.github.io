@@ -1,14 +1,20 @@
 ---
-/* Work (PART B of phase3 design-spec.md; sections 3.3, 4.5, 4.8 and 7.5). One section, one element per
-   project with the attributes PART A's rail and field read (id, data-rail-sec, data-rail-accent,
-   data-aura), and one presentation per project in a <template> that scripts/open.ts turns into the
-   layer. The markup is the still twin: without JavaScript, under reduced motion or with ?still it is a
-   vertical list (each project's prints side by side, then its text) and every "Take a look" is a real
-   link to the project's static page. With JavaScript and motion, work.css turns the same nodes into the
-   deck: one pinned stage, each project a slot of scroll ((1 + 0.35 x (prints - 1)) screens). */
+/* Work: the flight (spec v2 §3.3; owner's review 2026-10-16, rows W1 to W7). No pin, no shuffle, no
+   page swap. Each project is a block of normal page flow; its frames, drawings, tags and texts move with
+   the scroll at their own depths (scripts/flight.ts), as pure functions of the block's place in the view.
+
+   One block per project: the line art behind (art/<slug>.svg, three layers), two or three words of its
+   stack in the margins, its other screens as dim side frames, the hero frame (the first screen on its
+   paper, with a greyscale twin that fades out near the centre) and the texts. A project without screens
+   gets a short block (its glass object on its paper). The last block holds still for a moment while the
+   torn paper of the person's part slides up over it, and the places of its drawing light up, one by one,
+   ahead of the edge (W7).
+
+   The markup is the still twin: without JavaScript, under reduced motion or with ?still it is a list of
+   heroes with their texts and the drawing at rest, and every "Take a look" is a real link to the
+   project's static page. One presentation per project waits in a <template> for scripts/open.ts. */
 import './work.css';
 import Print from './Print.astro';
-import Obj from './Obj.astro';
 import Presentation from './Presentation.astro';
 import { models } from './data';
 import { getSite, type Project } from '../../lib/site';
@@ -17,51 +23,76 @@ const { projects, base = '/lab/one/' } = Astro.props;
 const site = await getSite();
 const list = await models(projects, base);
 const two = (k: number) => String(k).padStart(2, '0');
-const slotLen = (n: number) => 1 + 0.35 * (Math.max(n, 1) - 1);
-const rows = [...list.map((m) => `calc(${slotLen(m.prints.length).toFixed(2)} * var(--sv))`), 'var(--sv)'].join(' ');
-const propSizes = (w: number) => `(max-width: 699.98px) ${Math.round(330 * w)}px, ${Math.round(700 * w)}px`;
-const PRINT = '(max-width: 699.98px) calc((100vw - 88px) * 1.6), min(52vw, 720px)';
+const HERO = '(max-width: 699.98px) calc(100vw - 40px), min(56vw, 760px)';
+const SIDE = '(max-width: 699.98px) 1px, 460px';
+
+/* the torn edge (spec v2 §3.3.4): generated per width from one seed, so a phone never gets a 1440 px
+   edge squeezed into 390 px (it read as a saw blade in the first comp). Points every 6 to 28 px of the
+   width it is drawn for, 10 to 26 px down, with an occasional deeper bite. */
+function edge(w: number, seed: number) {
+  let s = seed;
+  const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const pts: [number, number][] = [];
+  for (let x = 0; x < w; x += 6 + rnd() * 22) pts.push([x, 10 + rnd() * 16 + (rnd() < 0.12 ? rnd() * 10 : 0)]);
+  pts.push([w, 18]);
+  const line = pts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(' L');
+  return { w, fill: `M0 48 L${line} L${w} 48 Z`, fibre: `M${line}` };
+}
+const edges = [edge(390, 11), edge(820, 23), edge(1440, 7)];
 ---
-<section id="work" class="work" data-part="work" aria-labelledby="work-h" style={`--rows: ${rows}`} data-count={list.length}>
-  <div class="w-chrome">
-    <h2 id="work-h" class="w-idx label">{site.home.showcase.title}<span class="w-count" aria-hidden="true"> <b data-idx>01</b> / {two(list.length)}</span></h2>
-  </div>
-  {list.map((m, k) => (
-    <div class="proj" data-slug={m.slug} data-k={k} data-n={Math.max(m.prints.length, 1)}
-      style={`--a1: ${m.aura[0]}; --a2: ${m.aura[1]}; --a3: ${m.aura[2]}; --paper: ${m.paper}; --row: ${k + 1}`}>
-      <div class="slot" id={m.slug} data-rail-sec={m.title} data-rail-accent={m.aura[0]} data-aura={m.aura.join(' ')}></div>
-      <div class="set">
-        <div class="set-box">
-          <a class="set-link" href={m.href} tabindex="-1" aria-hidden="true" data-open={m.slug}>
-            {m.prints.length
-              ? m.prints.map((s, i) => <Print m={m} s={s} i={i} n={m.prints.length} sizes={PRINT} />)
-              : <Print m={m} i={0} n={1} sizes={PRINT} />}
-          </a>
-          {m.prints.length > 0 && <Obj o={m.obj} sizes="(max-width: 699.98px) 200px, 400px" cls="set-obj" />}
-          {m.props.map((p) => (
-            <picture class:list={['prop', { 'prop-phone': p.phone }]} aria-hidden="true"
-              style={`--x: ${p.at[0]}; --y: ${p.at[1]}; --w: ${p.at[2]}; --turn: ${p.turn}deg; --ar: ${p.w} / ${p.h}; --radf: ${(p.radius / p.w).toFixed(4)}`}>
-              <source type="image/avif" srcset={p.pic.avif} sizes={propSizes(p.at[2])} />
-              <source type="image/webp" srcset={p.pic.webp} sizes={propSizes(p.at[2])} />
-              <img src={p.pic.src} alt="" width={p.w} height={p.h} loading="lazy" decoding="async" />
-            </picture>
+<section id="work" class="work" data-part="work" aria-labelledby="work-h" data-count={list.length}>
+  <h2 id="work-h" class="vh">{site.home.showcase.title}</h2>
+  {list.map((m, k) => {
+    const short = m.prints.length === 0;
+    const last = k === list.length - 1;
+    return (
+      <div class="proj" id={m.slug} data-slug={m.slug} data-k={k} data-short={short ? '' : undefined} data-last={last ? '' : undefined}
+        data-rail-sec={m.title} data-rail-accent={m.aura[0]} data-aura={m.aura.join(' ')}
+        style={`--a1: ${m.aura[0]}; --a2: ${m.aura[1]}; --a3: ${m.aura[2]}; --paper: ${m.paper}${m.art ? `; --art: url("${m.art.url}")` : ''}`}>
+        <div class="fl-stage">
+          {m.art && (
+            <div class="fl-art" data-art={m.art.url} aria-hidden="true">
+              {m.art.stops.length > 0 && (
+                <svg class="fl-route" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid meet" focusable="false">
+                  <path class="fl-route-line" d={'M' + m.art.stops.map(([x, y]) => `${x} ${y}`).join(' L')} pathLength="1" />
+                  {m.art.stops.map(([x, y]) => <g class="fl-stop" transform={`translate(${x} ${y})`}><ellipse rx="34" ry="9" /><ellipse class="fl-stop-in" rx="14" ry="4" /></g>)}
+                </svg>
+              )}
+            </div>
+          )}
+          {m.tags.map((t, i) => <span class={`fl-tag fl-tag-${i + 1}`} aria-hidden="true">{t}</span>)}
+          {m.prints.slice(1, 3).map((s, i) => (
+            <div class={`fl-side fl-side-${i ? 'r' : 'l'}`} aria-hidden="true">
+              <Print m={m} s={s} i={i + 1} n={m.prints.length} sizes={SIDE} />
+            </div>
           ))}
+          <a class="fl-hero" href={m.href} tabindex="-1" aria-hidden="true" data-open={m.slug}>
+            {short
+              ? <Print m={m} i={0} n={1} sizes={HERO} num={`${two(k + 1)} / ${two(list.length)}`} />
+              : <Print m={m} s={m.prints[0]} i={0} n={m.prints.length} sizes={HERO} twin num={`${two(k + 1)} / ${two(list.length)}`} />}
+          </a>
+          <div class="txt">
+            <div class="txt-in">
+              <div class="hush" aria-hidden="true"></div>
+              <p class="w-meta label" data-part="meta"><span class="ln"><span class="li">{m.meta}</span></span></p>
+              <h3 class="w-title" data-part="title"><span class="ln"><span class="li"><span class:list={['wm', m.wmClass]} style={m.wordmark} lang="en">{m.title}</span></span></span></h3>
+              <p class="w-promise" data-part="promise" data-lines>{m.summary}</p>
+              <p class="w-acts" data-part="acts"><a class="btn" href={m.href} data-open={m.slug}>{site.work.cta}</a></p>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="txt">
-        <div class="txt-in">
-          <div class="hush" aria-hidden="true"></div>
-          <p class="w-meta label" data-part="meta">{m.meta}</p>
-          <h3 class="w-title" data-part="title"><span class:list={['wm', m.wmClass]} style={m.wordmark} lang="en">{m.title}</span></h3>
-          <p class="w-promise" data-part="promise">{m.summary}</p>
-          <p class="w-acts" data-part="acts"><a class="btn" href={m.href} data-open={m.slug}>{site.work.cta}</a></p>
-        </div>
-      </div>
-    </div>
-  ))}
-  <svg class="w-defs" width="0" height="0" aria-hidden="true" focusable="false" style="position: absolute">
-    <filter id="w-light" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  1.25 1.25 1.25 0 0" /></filter>
-  </svg>
+    );
+  })}
+  <div class="w-tear" aria-hidden="true">
+    {edges.map((e) => (
+      <svg class={`w-edge w-edge-${e.w}`} viewBox={`0 0 ${e.w} 48`} preserveAspectRatio="none" focusable="false">
+        <path class="w-edge-fill" d={e.fill} />
+        <path class="w-edge-fibre" d={e.fibre} />
+      </svg>
+    ))}
+    <div class="w-sheet"></div>
+  </div>
   {list.map((m) => (
     <template id={`pres-${m.slug}`} data-pres-tpl={m.slug}>
       <Presentation m={m} next={list.find((x) => x.slug === m.next?.slug)} mode="layer" />
