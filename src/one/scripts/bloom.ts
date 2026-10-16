@@ -228,6 +228,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       if (open) close(false);
       press.scrub = true;
       clearTimeout(holdT);
+      give(null);
       if (!btn.hasPointerCapture(press.id)) try { btn.setPointerCapture(press.id); } catch { /* gone */ }
       layoutScrub();
       nav.classList.add('is-scrub');
@@ -265,6 +266,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       if (type === 'mouse') { e.preventDefault(); btn.setPointerCapture(e.pointerId); }
       clearTimeout(holdT);
       holdT = window.setTimeout(startScrub, HOLD[type]);
+      if (!open && !still()) give(e.clientY);
     }, sig);
     btn.addEventListener('pointermove', (e) => {
       if (!press) {
@@ -280,7 +282,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       const d = Math.hypot(e.clientX - press.x0, e.clientY - press.y0);
       if (d < SLOP[press.type]) return;
       if (press.type === 'mouse') startScrub();
-      else { clearTimeout(holdT); press = null; }   // a swipe: the platform scrolls
+      else { clearTimeout(holdT); press = null; give(null); }   // a swipe: the platform scrolls
     }, sig);
     btn.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !press) hideTag(); }, sig);
     /* while a finger scrubs, its moves are the rail's, not the page's (the button keeps touch-action: pan-y
@@ -293,13 +295,14 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       const p = press;
       press = null;
       clearTimeout(holdT);
+      give(null);
       if (e.type !== 'pointerup') return;
       swallow = true;
       setTimeout(() => { swallow = false; }, 0);
       if (open) close(false); else openAt(p.y0, nearest(p.y0), false);
     };
     btn.addEventListener('pointerup', up, sig);
-    btn.addEventListener('pointercancel', (e) => { if (press && e.pointerId === press.id) { if (press.scrub) endScrub(false); else { clearTimeout(holdT); press = null; } } }, sig);
+    btn.addEventListener('pointercancel', (e) => { if (press && e.pointerId === press.id) { if (press.scrub) endScrub(false); else { clearTimeout(holdT); press = null; give(null); } } }, sig);
     btn.addEventListener('lostpointercapture', (e) => { if (press?.scrub && e.pointerId === press.id) endScrub(false); }, sig);
     /* the keyboard (and a pointer's click, which the press already handled) */
     btn.addEventListener('click', (e) => {
@@ -310,6 +313,20 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       openAt(r.top + r.height / 2, c, true);
     }, sig);
 
+    /* the give (round five, review row V14: "the press point gives, then spreads wider, things open
+       outward"): while a press is down, the beads around it sink toward the screen's edge and shrink, most
+       at the press point and fading over about 18 px, as a surface gives under a fingertip. A tap then
+       blooms out of that dimple; a hold turns it into the scrub; a swipe lets it go. The beads come back
+       on their own 160 ms ease. */
+    const give = (y: number | null) => {
+      nav.classList.toggle('is-press', y !== null);
+      marks.forEach((m) => {
+        if (y === null) { m.style.removeProperty('--g'); return; }
+        const r = m.getBoundingClientRect();
+        const g = Math.exp(-(((r.top + r.height / 2 - y) / 18) ** 2));
+        if (g > 0.02) m.style.setProperty('--g', g.toFixed(3)); else m.style.removeProperty('--g');
+      });
+    };
     const nearest = (y: number) => {
       let best = 0, bd = Infinity;
       marks.forEach((m, i) => { const r = m.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - y); if (d < bd) { bd = d; best = i; } });

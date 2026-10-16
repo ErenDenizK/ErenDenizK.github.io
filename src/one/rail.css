@@ -30,6 +30,16 @@ html.rail-bloom.rail-on .rail:is(.is-open, :focus-within):not(.is-scrub) .rail-m
 /* a picture under the column hides the beads on touch (rail.css), never while they are in use */
 html.rail-bloom .rail:is(.is-bloom, .is-scrub) .rail-track { opacity: 1; }
 
+/* the give under a press (bloom.ts, --g from 0 to 1 by distance from the press): the beads sink up to
+   3 px toward the edge and shrink to 70 %, then come back on the same ease when the press ends */
+html.rail-bloom .rail .rail-m {
+  translate: calc(var(--g, 0) * 3px) 0; scale: calc(1 - var(--g, 0) * 0.3);
+  transition: width var(--d-2) var(--ease-out), height var(--d-4) var(--spring-ui), margin var(--d-4) var(--spring-ui),
+    border-radius var(--d-2) var(--ease-out), background-color var(--d-2) var(--ease-out),
+    translate 160ms var(--ease-out), scale 160ms var(--ease-out);
+}
+html.rail-bloom .rail.is-press .rail-m { transition-duration: var(--d-2), var(--d-4), var(--d-4), var(--d-2), var(--d-2), 90ms, 90ms; }
+
 /* ---------- hold to scrub: the column breathes open to one --slot per section, on the beads' spring ---------- */
 html.rail-bloom .rail.rail.is-scrub .rail-track { gap: 0; }
 html.rail-bloom .rail.rail.is-scrub .rail-m { margin: calc((var(--slot) - 2px) / 2) 0; }
