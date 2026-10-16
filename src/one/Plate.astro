@@ -1,15 +1,14 @@
 ---
-/* The brief's plate (design spec §1.2, §3.2): the line twin of the Bostancı platform at dusk, traced
-   from the owner's photograph (tools/illustrations/line-twin/), with construction lines drawn over it
-   and the red signal light on the page axis. It is L1 of the layers: it scrolls more slowly than the
-   text for the first screen (spec §4.3). The twin loads after first paint (it is a mask image, which
-   the browser fetches when it paints the plate, never before the text) and reveals outward from the
-   signal on arrival. Geometry: the station's roof line, where the rails meet, lies 550 px below the top of
-   the 1440 px twin and 344 px below the top of the 900 px one; the twin is placed so that this line meets
-   the horizon at the signal (y 560 desktop, y 600 phone). The sky above it (lamp posts that read as
-   specks at 20 %) is masked out. */
-import twin1440 from '../assets/plates/bostanci-1440.webp?url';
-import twin900 from '../assets/plates/bostanci-900.webp?url';
+/* The brief's plate (design spec §1.2, §3.2): the owner's Bostancı platform photograph at blue hour,
+   graded dark (tools/illustrations/plate-photo.py), with construction lines drawn over it and the red
+   signal light on the page axis. It is L1 of the layers: it scrolls more slowly than the text for the
+   first screen (spec §4.3), and reveals outward from the signal on arrival. Geometry: the point where the
+   platform lines meet lies 550 px below the top of the 1440 px plate and 344 px below the top of the
+   900 px one; the plate is placed so that this point meets the horizon at the signal (y 560 desktop,
+   y 600 phone). The sky above it is masked out. The traced line twin (tools/illustrations/line-twin/)
+   read as blotches at page size, so the photograph replaced it (2026-10-16). */
+import twin1440 from '../assets/plates/bostanci-photo-1440.webp?url';
+import twin900 from '../assets/plates/bostanci-photo-900.webp?url';
 ---
 <div class="plate" data-scrub="0 100" style={`--twin-l: url("${twin1440}"); --twin-s: url("${twin900}")`}>
   <div class="twin"></div>
@@ -38,15 +37,13 @@ import twin900 from '../assets/plates/bostanci-900.webp?url';
   .plate { position: absolute; left: 0; right: 0; top: 0; height: 2200px; color: var(--ink); }
   .twin {
     position: absolute; left: 50%; top: 10px; width: 1440px; height: 1649px; margin-left: -720px;
-    background: var(--ink); opacity: 0.2;
-    /* three masks: the drawing, a band that begins under the rows and ends under Work, and the reveal
-       that opens outward from the signal (radius --rv) */
-    -webkit-mask: var(--twin-l) 0 0 / 100% 100% no-repeat,
-      linear-gradient(180deg, transparent 0, transparent 515px, #000 590px, #000 1150px, transparent 1450px),
+    background: var(--twin-l) 50% 0 / 1440px auto no-repeat; opacity: 0.72;
+    /* the owner's photograph, graded dark (tools/illustrations/plate-photo.py); two masks: a band that
+       begins under the rows and ends under Work, and the reveal that opens outward from the signal */
+    -webkit-mask: linear-gradient(180deg, transparent 0, transparent 515px, #000 590px, #000 1150px, transparent 1450px),
       radial-gradient(circle at 50% 550px, #000 calc(var(--rv) - 18%), transparent var(--rv));
-    -webkit-mask-composite: source-in, source-in;
-    mask: var(--twin-l) 0 0 / 100% 100% no-repeat,
-      linear-gradient(180deg, transparent 0, transparent 515px, #000 590px, #000 1150px, transparent 1450px),
+    -webkit-mask-composite: source-in;
+    mask: linear-gradient(180deg, transparent 0, transparent 515px, #000 590px, #000 1150px, transparent 1450px),
       radial-gradient(circle at 50% 550px, #000 calc(var(--rv) - 18%), transparent var(--rv));
     mask-composite: intersect;
   }
@@ -63,12 +60,11 @@ import twin900 from '../assets/plates/bostanci-900.webp?url';
   @media (max-width: 699.98px) {
     .twin {
       top: 256px; width: 900px; height: 1031px; margin-left: -450px;
-      -webkit-mask: var(--twin-s) 0 0 / 100% 100% no-repeat,
-        linear-gradient(180deg, transparent 0, transparent 290px, #000 350px, #000 760px, transparent 980px),
+      background-image: var(--twin-s); background-size: 900px auto;
+      -webkit-mask: linear-gradient(180deg, transparent 0, transparent 290px, #000 350px, #000 760px, transparent 980px),
         radial-gradient(circle at 50% 344px, #000 calc(var(--rv) - 18%), transparent var(--rv));
-      -webkit-mask-composite: source-in, source-in;
-      mask: var(--twin-s) 0 0 / 100% 100% no-repeat,
-        linear-gradient(180deg, transparent 0, transparent 290px, #000 350px, #000 760px, transparent 980px),
+      -webkit-mask-composite: source-in;
+      mask: linear-gradient(180deg, transparent 0, transparent 290px, #000 350px, #000 760px, transparent 980px),
         radial-gradient(circle at 50% 344px, #000 calc(var(--rv) - 18%), transparent var(--rv));
       mask-composite: intersect;
     }
