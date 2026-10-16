@@ -174,3 +174,26 @@ closed. C3 is answered by T1; H3 is done (the rule is in CLAUDE.md since PR #1).
 | V8 | The owner's father found the name's typeface at the top cheap. The owner thinks it is elegant and personal rather than product-like. Review all references, portfolios and research again; evaluate candidate typefaces yourself, why and why not; follow the research and the lead's view. | A typeface study for the name (and display role): candidates against the references; a recommendation; candidates as a lab switch; the owner decides. | task | built (default Newsreader display at 48/34 px; the owner decides) |
 | V9 | Keep working through the night: open work first, then small improvements (no big changes), then iterate the rail. | Continue the open rows; rail iterations. | task | in work |
 | V10 | Check again that nothing that turned into a note in earlier messages was left undone; gather everything. | A second coverage pass over all owner messages. | task | built (coverage pass two) |
+
+## Coverage pass two (2026-10-17, night)
+
+Sixteen rows from the second coverage audit (`docs/research/2026-10-coverage-pass-two.md`).
+
+| Id | Source | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| V11 | coverage pass two (I1) | Answer the owner's model question in the morning report: every turn of this session ran on the same main model; no turn ran on the small one. | note (answer owed) | closed |
+| V12 | coverage pass two (J2) | One-line answer: HyperFrames renders HTML compositions to video files; in-page motion stays CSS and scripts. So it fits the later per-app video round, not the page. | note (answer owed) | closed |
+| V13 | coverage pass two (J9) | The postcard back's lower text on phones: check both readings of "açılmış" (spacing spread and colour washed out) at 390 DPR 3; show the before/after picture and ask which was meant. | task | open |
+| V14 | coverage pass two (J16, O2) | Judge the bloom variants by feel (the press point gives, then spreads wider; things open outwards), not by drawing a drop or a palm. Apply the chosen rail to the opened project's rail too, so there is one rail. | task | open |
+| V15 | coverage pass two (J20-J22) | Glass default: the lead keeps version A as the default, because the owner asked that the tab and the capsules each take the best of the other, and A also fixes the inactive tab label (1.9:1 over white). Today's glass stays one word away at `?glass=now`; the owner picks. | decided (lead; owner may overrule) | open |
+| V16 | coverage pass two (J24, J7, D5) | One morning question sheet, Turkish, each with a picture and a lab link: rail variants, glass versions, name typefaces, project objects (V4, with drawings), tape-as-spine, `?photo=flat | layers`, `?cap=line | open |
+| V17 | coverage pass two (G-rows rule) | Give the unowned leftovers an owner this round (a small Work-leftovers lane or the integrator): Work grey prints after a jump, the 1.6-2 s open wait, the Eat Map hold (spec 9.2), the parity plan column, the postcard front frame, the band before edk, silent elements outside the person area, the "Close" label as content. | task | open |
+| V18 | coverage pass two (T6, T10, T13, T15, M1, M2) | A five-minute iPhone checklist for the owner (recorder `?spin`, glass blur, both pulls, rope on the first swing, scroll feel), with what "good" looks like; results update those rows. | task (owner) | open |
+| V19 | coverage pass two (T15) | T15 counts as done only after two or three people find both exits unaided, as in the owner's own test. | note | open |
+| V20 | coverage pass two (doc truth) | Tracker statuses: T22 closed (V1), T25 closed (V3), T24 deferred (V2), T9 superseded by V6, T8 "waiting for the owner" (V4), R1 merged into T20; add "partly" to the status values and use it. | task | open |
+| V21 | coverage pass two (I, J) | Brief log entries for 2026-10-16 evening and night; brief.md lines for T1, V6, V7, the masterpiece and phone-measurement standard, V1, V3; mark the 2026-10-09 "Desktop first" line superseded. | task | open |
+| V22 | coverage pass two (doc truth) | Refresh PLAN (where we are, phases 3 rows, morning questions, drop English Prep item), HANDOFF (round 2-4 state, metro photos, hero object, decisions) and the 10-16 journal. | task | open |
+| V23 | coverage pass two (A15) | T27 wording: "a CD-like surface or similar; density, not realism; visible on the front too" (brief line 60), passed to whoever builds it. | task | open |
+| V24 | coverage pass two (A12) | Check the postcard burn-in against "too slow"; keep the small colour detail the owner liked. | task | open |
+| V25 | coverage pass two (D3, V8) | Give the type study the provisional 48/34 px answer: the name's size and weight, not only the face, may be what reads cheap; include size in the switch. | note | open |
+| V26 | coverage pass two (A19) | Dictation inside artifacts: the owner said not to bother if heavy; keep as a note, no work. | note | closed |
