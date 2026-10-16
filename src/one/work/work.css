@@ -71,7 +71,7 @@
 /* the places of a drawing and the route between them (the last block, W7): lit in the still twin */
 .fl-route { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .fl-route path, .fl-route ellipse { vector-effect: non-scaling-stroke; }
-.fl-route-line { fill: none; stroke: var(--a1); stroke-width: 1.5; stroke-dasharray: 1 1; stroke-dashoffset: 0; opacity: .55; }
+.fl-route-line { fill: none; stroke: var(--a1); stroke-width: 1.5; stroke-dasharray: 1 1; stroke-dashoffset: 0; opacity: .4; }
 .fl-stop ellipse { fill: none; stroke: var(--a1); stroke-width: 1.25; }
 .fl-stop .fl-stop-in { fill: var(--a1); stroke: none; opacity: .7; }
 .fl-tag, .fl-side, .w-tear { display: none; }
@@ -112,10 +112,13 @@
   html.js:not(.still) .work .proj[data-short] { --hw: min(600px, 46vw, calc((var(--sv) - 400px) * 1.6 + 16px)); }
   html.js:not(.still) .work .fl-stage { position: absolute; left: 0; right: 0; top: 0; height: var(--sv); pointer-events: none; }
   /* the last block holds still while the torn paper rises over it (W7) */
-  html.js:not(.still) .work .proj[data-last] { height: calc(1.75 * var(--sv)); }
+  html.js:not(.still) .work .proj[data-last] { height: calc(1.5 * var(--sv)); }
   html.js:not(.still) .work .proj[data-last] .fl-stage { position: sticky; }
   html.js:not(.still) .work .fl-art { top: -2%; width: max(1520px, 106vw); }
   html.js:not(.still) .work .fl-route-line { stroke-dashoffset: 1; }
+  /* the places of the short block's drawing sit low in it: lift the drawing so they ring the frame and
+     stay out of the texts' hush (spec v2 §5.3) */
+  html.js:not(.still) .work .proj[data-short] .fl-art { top: -24%; }
   html.js:not(.still) .work :is(.fl-layer-back, .fl-layer-front),
   html.js:not(.still) .work :is(.fl-hero, .fl-side, .fl-tag, .txt-in, .li) { will-change: transform; }
 
@@ -150,15 +153,15 @@
   html.js:not(.still) .work .fl-hero:active .pr-in { transform: scale(.985); transition: transform var(--t-press) var(--ease-ui); }
 
   /* the torn paper of the person's part (W7): it rises over the held last block at the page's speed */
-  /* it starts at the view's foot when the hold begins and is opaque exactly as far as the held stage
-     reaches (0.75 of a view), then hands over to the person's part in a short fade */
-  html.js:not(.still) .work .w-tear { display: block; position: relative; z-index: 0; height: calc(.86 * var(--sv));
-    margin: calc(-.75 * var(--sv)) 0 calc(-.11 * var(--sv)); pointer-events: none; }
+  /* it starts at the view's foot when the hold (half a view) begins and is opaque exactly as far as the
+     held stage reaches, then hands over to the person's part in a short fade */
+  html.js:not(.still) .work .w-tear { display: block; position: relative; z-index: 0; height: calc(.6 * var(--sv));
+    margin: calc(-.5 * var(--sv)) 0 calc(-.1 * var(--sv)); pointer-events: none; }
   html.js:not(.still) #work ~ .rest > .tear { display: none; }
   .w-edge { display: none; position: absolute; left: 0; top: -46px; width: 100%; height: 48px; overflow: visible; }
   .w-edge-fill { fill: var(--paper); }
   .w-edge-fibre { fill: none; stroke: var(--line-2); stroke-width: 1; vector-effect: non-scaling-stroke; }
-  .w-sheet { position: absolute; inset: 0; background: linear-gradient(var(--paper) 0 87%, rgb(23 23 26 / 0) 100%); }
+  .w-sheet { position: absolute; inset: 0; background: linear-gradient(var(--paper) 0 83%, rgb(23 23 26 / 0) 100%); }
   .w-edge-1440 { display: block; }
   @media (max-width: 1099.98px) { .w-edge-1440 { display: none; } .w-edge-820 { display: block; } }
   @media (max-width: 699.98px) { .w-edge-820 { display: none; } .w-edge-390 { display: block; } }
@@ -169,13 +172,13 @@
     html.js:not(.still) .work .proj { height: var(--sv); }
     html.js:not(.still) .work .proj:has(.fl-hero .pr[data-phone-frame]) { height: calc(1.15 * var(--sv)); --hw: 234px; --hh: calc(218px * 844 / 390 + 34px); }
     html.js:not(.still) .work .proj[data-short] { --hw: calc(100vw - 72px); --hh: calc((var(--hw) - 16px) / 1.6 + 34px); }
-    html.js:not(.still) .work .proj[data-last] { height: calc(1.5 * var(--sv)); }
+    html.js:not(.still) .work .proj[data-last] { height: calc(1.4 * var(--sv)); }
     html.js:not(.still) .work .fl-hero { margin-left: calc(var(--hw) / -2); }
     html.js:not(.still) .work .fl-side, html.js:not(.still) .work .fl-tag { display: none; }
     html.js:not(.still) .work .fl-art { width: 950px; top: 4%; }
     html.js:not(.still) .work .txt { top: calc(var(--htop) + var(--hh) + 18px); }
     html.js:not(.still) .work .w-promise { max-width: 22em; }
-    html.js:not(.still) .work .w-tear { margin-top: calc(-.5 * var(--sv)); height: calc(.6 * var(--sv)); margin-bottom: calc(-.1 * var(--sv)); }
+    html.js:not(.still) .work .w-tear { margin-top: calc(-.4 * var(--sv)); height: calc(.5 * var(--sv)); margin-bottom: calc(-.1 * var(--sv)); }
   }
 }
 
