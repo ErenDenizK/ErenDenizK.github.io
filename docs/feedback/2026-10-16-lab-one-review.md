@@ -61,7 +61,7 @@ verdict for every row and the rows still partly done are in the round's critique
 |---|---|---|---|
 | C1 | The ID card feels like a much buggier version; nothing like the previous one. Swing, interactivity, the flip on a hard shake, the general flip, the hover: all buggy, catching, ugly. | Drop the reimplemented card. | built |
 | C2 | Take the previous card exactly (the version the owner loved) and improve it: a bit more texture, a livelier photo, and on hover the card and the rope sway as feedback. | Port the live `IdCard` (dev before the two-page line) unchanged, then add: denser texture, a livelier photo, hover sway of card and lanyard. | open |
-| C3 | Not sure the card belongs there in the order. | The lead proposes its place; shown on the lab page. | open |
+| C3 | Not sure the card belongs there in the order. | The lead proposes its place; shown on the lab page. | closed (T1: next to How I work) |
 | C4 | How I work (By hand / With agents): much more readable now, but the previous design was much more elegant: two lanes with a slow effect like falling drops. Now it looks cheap. | Bring back the previous tracks figure's design and its drop motion; keep today's readability. | built |
 
 ## Photos (postcards)
@@ -93,7 +93,7 @@ verdict for every row and the rows still partly done are in the round's critique
 |---|---|---|---|
 | H1 | Commits are in the owner's name to feature the GitHub profile and the portfolio (LinkedIn cannot be used for some reasons). | Keep authorship as set up. | closed |
 | H2 | Chase all GitHub achievements, through real work, never fake. | A plan of the achievements that real work earns. | open |
-| H3 | Recto decided this already: move to pull requests (PRC-17), which earn the badges missing so far. Adapt it here and to the other projects if needed. | Lanes land on `dev` through pull requests with merge commits; a CLAUDE.md rule with the owner's comment (given). | open |
+| H3 | Recto decided this already: move to pull requests (PRC-17), which earn the badges missing so far. Adapt it here and to the other projects if needed. | Lanes land on `dev` through pull requests with merge commits; a CLAUDE.md rule with the owner's comment (given). | closed (rule in CLAUDE.md, PR #1) |
 
 ## Process
 
@@ -128,3 +128,20 @@ Kept as said; the lead's classification in the last column (task, note, or decid
 | T19 | It is a presentational artwork; every detail thought through. Look into these points in the visuals too. | The critic checks every new piece frame by frame. | task | open |
 | T20 | The Record part reached by scrolling down Home does not fit the new page's design language: it feels copy-pasted from outside. Harmonise and improve it. | Rework the Home Record strip so it is born from the new page's language while keeping the Record's identity. | task | open |
 | T21 | Continue the next steps already listed (tests and the open rows). | The round-2 open rows (G5, G7 follow-ups, partly rows) continue. | task | open |
+
+## Coverage audit (lead, 2026-10-16)
+
+A cross-check of the owner's last four messages against this file found nothing misread, four
+items noted but dropped, and open rows that no build lane owned. New rows:
+
+| Id | Source | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| T22 | message 1 ("HyperFrames or an alternative") | Decide with the owner whether composed motion-graphic loops (HyperFrames renders here) are made for the project presentations and the hero, or why not. | owner question | open |
+| T23 | message 2 (no repetition) | A lab-one test that finds no repeated sentence of 5+ words outside the brief; re-run after the postcard and Record strip changes. | task | open |
+| T24 | message 3 (all achievements, real work) | A short list for the owner of the real-work routes beyond the PR flow (READMEs worth starring, Discussions answers), with who does each. | task | open |
+| T25 | message 3 (PRs in the other projects too) | Pass the PR rule to the English Prep chat through the owner; H3 here is done (CLAUDE.md rule). | task | open |
+| T26 | messages 1 and 3 (motion everywhere, no empty wait; G6) | List every interactive element that gives no motion response and assign it to a lane. | task | open |
+| T27 | message 3 (C2, card texture) | A denser texture on both faces of the ported ID card. | task | open |
+
+Rows G2, G3, G6, G7, G8, M1, M2 and E1 stay open and must be owned by a lane in every round until
+closed. C3 is answered by T1; H3 is done (the rule is in CLAUDE.md since PR #1).
