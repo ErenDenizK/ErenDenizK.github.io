@@ -254,6 +254,11 @@ export function initPostcards() {
   };
   /* a second press on the table card while it is already growing is the queued turn, not a new open */
   for (const pc of cards) pc.querySelector('.pc-open')?.addEventListener('click', () => { if (opening || open) { queued = true; return; } show(pc); });
+  /* a press that came before this module loaded (Postcards.astro keeps it) opens its card now */
+  delete table.dataset.pcEarly;
+  const early = cards.find((c) => c.dataset.postcard === table.dataset.pcPending);
+  delete table.dataset.pcPending;
+  if (early) show(early);
   dlg.addEventListener('cancel', (e) => { e.preventDefault(); hide(); });
   closeBtn?.addEventListener('click', () => hide());
   turnBtn?.addEventListener('click', () => { if (busy) queued = true; else turnCard(); });

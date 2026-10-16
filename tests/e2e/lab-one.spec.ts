@@ -245,6 +245,20 @@ test.describe('the person\'s part, desktop', () => {
     await expect(big).toHaveClass(/is-flipped/);
   });
 
+  test('round four: a postcard press that lands before the large view\'s code loads is kept and opens it', async ({ page }) => {
+    await page.goto(PAGE);
+    const table = page.locator('[data-pc-table]');
+    /* at the top of the page the person's part is far away, so its module has not loaded yet */
+    await expect(table).toHaveAttribute('data-pc-early', '');
+    await page.locator('[data-postcard="1"] .pc-open').evaluate((b) => (b as HTMLButtonElement).click());
+    await table.scrollIntoViewIfNeeded();
+    const dlg = page.locator('[data-pc-dialog]');
+    await expect(dlg).toHaveAttribute('open', '');
+    await expect(table).not.toHaveAttribute('data-pc-pending', /.*/);
+    await dlg.locator('[data-pv-close]').click();
+    await expect(dlg).not.toHaveAttribute('open', '');
+  });
+
   test('round four: the table photographs are fetched at page load, before the chapter comes near', async ({ page }) => {
     await page.goto(PAGE);
     await expect.poll(() => page.locator('.pc-pic img').evaluateAll((els) => els.every((e) => (e as HTMLImageElement).complete && (e as HTMLImageElement).naturalWidth > 0)), { timeout: 8000 }).toBe(true);

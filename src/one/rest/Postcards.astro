@@ -195,6 +195,14 @@ const cards = list.map((p, i) => {
     const early = () => { for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; } };
     const idle = (f: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(f, { timeout: 1200 }) : setTimeout(f, 1200));
     if (document.readyState === 'complete') idle(early); else addEventListener('load', () => idle(early), { once: true });
+    /* the large view's code loads when the person's part comes near; after a long rail jump a press can
+       land before it. That press is kept here and initPostcards opens its card, so no tap is lost. */
+    table.dataset.pcEarly = '';
+    table.addEventListener('click', (e) => {
+      if (!('pcEarly' in table.dataset)) return;
+      const pc = (e.target as Element | null)?.closest?.<HTMLElement>('.pc-open')?.closest<HTMLElement>('[data-postcard]');
+      if (pc) table.dataset.pcPending = pc.dataset.postcard;
+    });
   }
 </script>
 
