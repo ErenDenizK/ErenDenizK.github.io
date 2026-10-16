@@ -1008,6 +1008,132 @@
   ]
  },
  {
+  "icon": "turn",
+  "size": 16,
+  "weight": "regular",
+  "stroke": 1.5,
+  "weight_vs_circle": 0.8,
+  "ink_offset": [
+   -0.16,
+   0.21
+  ],
+  "box": [
+   1.88,
+   1.88,
+   14.75,
+   13.75
+  ],
+  "optical_shift": [
+   1,
+   0
+  ]
+ },
+ {
+  "icon": "turn",
+  "size": 16,
+  "weight": "medium",
+  "stroke": 1.75,
+  "weight_vs_circle": 0.8,
+  "ink_offset": [
+   -0.12,
+   0.2
+  ],
+  "box": [
+   1.75,
+   1.88,
+   14.75,
+   13.75
+  ],
+  "optical_shift": [
+   1,
+   0
+  ]
+ },
+ {
+  "icon": "turn",
+  "size": 20,
+  "weight": "regular",
+  "stroke": 1.75,
+  "weight_vs_circle": 0.79,
+  "ink_offset": [
+   -0.34,
+   0.32
+  ],
+  "box": [
+   2.75,
+   2.63,
+   18,
+   17
+  ],
+  "optical_shift": [
+   1,
+   0
+  ]
+ },
+ {
+  "icon": "turn",
+  "size": 20,
+  "weight": "medium",
+  "stroke": 2,
+  "weight_vs_circle": 0.78,
+  "ink_offset": [
+   -0.3,
+   0.31
+  ],
+  "box": [
+   2.63,
+   2.63,
+   18,
+   17
+  ],
+  "optical_shift": [
+   1,
+   0
+  ]
+ },
+ {
+  "icon": "turn",
+  "size": 24,
+  "weight": "regular",
+  "stroke": 2,
+  "weight_vs_circle": 0.78,
+  "ink_offset": [
+   -0.5,
+   0.2
+  ],
+  "box": [
+   3.63,
+   3.25,
+   21.13,
+   19.88
+  ],
+  "optical_shift": [
+   1,
+   -0.25
+  ]
+ },
+ {
+  "icon": "turn",
+  "size": 24,
+  "weight": "medium",
+  "stroke": 2.5,
+  "weight_vs_circle": 0.78,
+  "ink_offset": [
+   -0.42,
+   0.43
+  ],
+  "box": [
+   3.38,
+   3.38,
+   21.25,
+   20.25
+  ],
+  "optical_shift": [
+   1,
+   0
+  ]
+ },
+ {
   "icon": "menu",
   "size": 16,
   "weight": "regular",
