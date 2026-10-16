@@ -15,11 +15,10 @@
    through another (scripts/postcards.ts). Phone: a loose pile, tap to open. A click or a tap grows the
    card into the large view, where the ID card's engine (card3d.ts, tilt) swings it by a drag and turns
    it over. Still twins: without JavaScript the fronts stand with their place and note under them. */
-import { getSite } from '../../lib/site';
+import { getSite, url } from '../../lib/site';
 import manifest from '../../assets/photos/postcards.json';
 import meta from '../../assets/photos/postcards-meta.json';
 import grain from '../../assets/photos/grain.png?url';
-import { rosette } from './guilloche';
 import city from './art/istanbul.svg?url';
 
 const site = await getSite();
@@ -38,7 +37,7 @@ type Meta = { palette: { hex: string; share: number }[]; rows: number[][] };
 const REST = [-5, 2, -2, 3];
 const n = list.length;
 const pad = (i: number) => String(i).padStart(2, '0');
-const guil = rosette({ cx: 0, cy: 0, R: 60, r: 16, d: 41, scale: 1.5, pens: 3, spread: 0.06 });
+const guil = url('lab/one/guil/pc.svg');
 
 /** relative luminance of a hex colour, for the ink on a colour band */
 const lum = (h: string) => { const v = [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16) / 255).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
@@ -91,7 +90,7 @@ const cards = list.map((p, i) => {
             <span class="pc-card">
               <span class="pc-mount">
                 <span class="pc-blur" aria-hidden="true"></span>
-                <svg class="pc-guil" viewBox="-110 -110 220 220" aria-hidden="true" focusable="false"><path d={guil} /></svg>
+                <img class="pc-guil" src={guil} alt="" width="220" height="220" loading="lazy" decoding="async" />
                 <picture class="pc-pic">
                   <source type="image/avif" srcset={c.avif} sizes={c.land ? '(min-width: 700px) 412px, 300px' : '(min-width: 700px) 324px, 196px'} />
                   <img src={c.src} srcset={c.webp} sizes={c.land ? '(min-width: 700px) 412px, 300px' : '(min-width: 700px) 324px, 196px'} alt={c.alt} width={c.w} height={c.h} loading="lazy" decoding="async" draggable="false" />
@@ -118,7 +117,7 @@ const cards = list.map((p, i) => {
                 </div>
                 <div class="big-face big-back" data-face>
                   <button class="idc-turn" type="button" data-turn aria-label={t.back}></button>
-                  <svg class="bk-guil" viewBox="-110 -110 220 220" aria-hidden="true" focusable="false"><path d={guil} /></svg>
+                  <img class="bk-guil" src={guil} alt="" width="220" height="220" loading="lazy" decoding="async" />
                   <p class="bk-head" aria-hidden="true"><span class="mk">{site.mark}</span><span class="lb">{t.credit} · {c.idx}</span></p>
                   <span class="bk-stamp" aria-hidden="true"><span></span></span>
                   <svg class="bk-post" viewBox="0 0 500 200" aria-hidden="true" focusable="false">
@@ -188,8 +187,7 @@ const cards = list.map((p, i) => {
     background: var(--foil); opacity: 0.45;
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
     mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
-  .pc-guil, .bk-guil { position: absolute; z-index: -1; left: -14%; bottom: -16%; width: 62%; fill: none; stroke: var(--gold-ink); stroke-width: 1; opacity: 0.11; pointer-events: none; }
-  .pc-guil path, .bk-guil path { vector-effect: non-scaling-stroke; }
+  .pc-guil, .bk-guil { position: absolute; z-index: -1; left: -14%; bottom: -16%; width: 62%; height: auto; max-width: none; opacity: 0.11; pointer-events: none; }
   .pc-pic { position: relative; display: block; border-radius: 2px; overflow: hidden; }
   .pc-pic img { width: 100%; height: auto; aspect-ratio: var(--ratio); }
   .pc-pic::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.14); pointer-events: none; }

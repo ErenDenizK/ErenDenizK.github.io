@@ -6,16 +6,12 @@
    room to swing is the whole width of the chapter ([data-card-area], read by card3d.ts).
    Lab switch ?card=lanes moves this chapter between the two lanes of How I work (Rest.astro). */
 import IdCard from './IdCard.astro';
-import { rosette } from './guilloche';
+import { url } from '../../lib/site';
 
-const big = [
-  rosette({ cx: 560, cy: 560, R: 90, r: 24, d: 50, scale: 4.6, pens: 2, spread: 0.05, steps: 2400 }),
-];
+const rose = url('lab/one/guil/rose.svg');
 ---
 <section class="card-ch" id="card" data-rail-sec="Card" data-scene>
-  <svg class="rose" viewBox="0 0 1120 1120" aria-hidden="true" focusable="false">
-    {big.map((d) => <path d={d} />)}
-  </svg>
+  <img class="rose" src={rose} alt="" width="1120" height="1120" loading="lazy" decoding="async" />
   <div class="card-area" data-card-area>
     <IdCard />
   </div>
@@ -25,9 +21,8 @@ const big = [
   .card-ch { position: relative; padding: 236px 0 0; display: grid; justify-items: center; }
   .rose {
     position: absolute; left: 50%; top: 50%; width: 1120px; height: 1120px; max-width: none; margin: -560px 0 0 -560px;
-    fill: none; stroke: var(--gold-ink); stroke-width: 1; opacity: 0.07; pointer-events: none;
+    opacity: 0.07; pointer-events: none;
   }
-  .rose path { vector-effect: non-scaling-stroke; }
   :global(html.motion) .rose { transform: rotate(calc((var(--sp) - 0.5) * 20deg)); }
   /* the card's room: the whole page width, so the rope can swing wide (card3d.ts limits()) */
   .card-area { position: relative; width: 100%; display: flex; justify-content: center; }
