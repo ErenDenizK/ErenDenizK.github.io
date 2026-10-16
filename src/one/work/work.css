@@ -392,12 +392,12 @@ html.layer-open .layer .rail-plain.in-layer { display: block !important; view-tr
   box-shadow: var(--glass-edge), var(--glass-shadow); }
 .glass :is(a, .cap-note) { min-height: var(--glass-item); display: inline-flex; align-items: center; gap: 8px; padding: 0 18px; border-radius: var(--r-pill);
   font: 500 var(--fs-small)/1 var(--f-sans); color: var(--ink); white-space: nowrap; -webkit-tap-highlight-color: transparent;
-  transition: background-color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
-.glass a:hover { background: var(--glass-hover); }
+  transition: background-color var(--t-quick) var(--ease-ui), box-shadow var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
+.glass a:hover { background-color: var(--glass-hover); box-shadow: var(--glass-hover-glow); }
 .glass a:active { scale: .96; }
 .glass a:focus-visible { outline-offset: -2px; border-radius: var(--r-pill); }
 .cap-a .cap-go { background: var(--fill); color: var(--fill-ink); }
-.cap-a .cap-go:hover { background: color-mix(in srgb, var(--fill) 88%, #fff); }
+.cap-a .cap-go:hover { background: color-mix(in srgb, var(--fill) 88%, #fff); box-shadow: none; }
 .cap-a .cap-note { color: var(--ink-3); }
 /* the close: a cross in a round slot, then "Close" and the esc key cap, which fold away (width from the
    left edge, 300 ms; the words fade in the first 120 ms) */

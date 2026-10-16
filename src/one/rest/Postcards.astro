@@ -275,8 +275,8 @@ const cards = list.map((p, i) => {
     box-shadow: var(--glass-edge), var(--glass-shadow); }
   .pv-glass button { min-height: var(--glass-item); display: inline-flex; align-items: center; border-radius: var(--r-pill); padding: 0;
     font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink); white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent;
-    transition: background-color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
-  .pv-glass button:hover { background: var(--glass-hover); }
+    transition: background-color var(--t-quick) var(--ease-ui), box-shadow var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
+  .pv-glass button:hover { background-color: var(--glass-hover); box-shadow: var(--glass-hover-glow); }
   .pv-glass button:active { scale: 0.96; }
   .pv-glass button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
   .pv-turn { gap: 8px; padding: 0 18px !important; }
