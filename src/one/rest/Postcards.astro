@@ -1,88 +1,148 @@
 ---
-/* Photos (design spec §3.4 item 4): three postcards on the paper "table". Desktop: a centred fan, each
-   about 300 px wide (the landscape one 360 px), at -5°, +2° and -2°, overlapping by 12 %; phone: one under
-   the other at 80 vw, ±2°. A click or a tap grows the postcard (a shared element) into the large view,
-   centred, min(76 svh, 820 px) tall, over the ground dimmed to 70 %. There a click turns it over (the
-   kit's glide curve), a mouse drag swings it (clamped ±18°, it springs back), a tap on a phone turns it,
-   and Escape, Back or a click outside returns it to its place. The photograph develops from grey to
-   colour as it arrives (a short burn-in). Behaviour: scripts/postcards.ts.
-   The back is a divided back: the note in the real italic on the left, signed; the address side on the
-   right with a perforated stamp cut from the same photograph, a postmark ringing the place in the gold
-   ink, and the place written out on ruled lines; the credit runs up the dividing line.
-   Lab switch ?cap=line|large: the caption as one line under each card, or only in the large view
-   (default large). Without JavaScript the front stands with its place and note under it.
-   Content: content/site.json home.postcards; files: npm run photos (src/assets/photos/pc-*). */
+/* Chapter II, Photos (spec v2 §3.6; review rows P2 to P5). The postcard is designed again from its parts
+   (spec v2 §3.6.1), as an artwork card about one photograph and not a post-office form:
+   - Front: the photograph at its own aspect, never cropped, with a light keyline, in a mount made of the
+     photograph's own light (a blurred copy of itself at 38 % brightness, plus grain), a foil hairline
+     (the ID card's foil), one edge line (the place in italic serif, the index in tabular figures), the
+     ID card's guilloché low left, and gold crop marks that show only while the card is held.
+   - Back: a header row (the mark, "Photograph · 01 / 03"); a stamp cut from the photograph with a
+     scalloped edge; a postmark of two thin gold rings with the place on the ring and the mark in the
+     middle, whose cancellation is five lines traced from the photograph's own luminance; the note in
+     italic serif, signed; a gold divider with a diamond at the golden section; the five colours the
+     photograph is made of; the place on ruled lines; a micro line along the lower edge. Every value
+     comes from content/site.json (home.postcards) or is measured from the file (tools/photos/live.mjs).
+   Table (desktop): three cards side by side on parallel planes; hover picks one up without passing
+   through another (scripts/postcards.ts). Phone: a loose pile, tap to open. A click or a tap grows the
+   card into the large view, where the ID card's engine (card3d.ts, tilt) swings it by a drag and turns
+   it over. Still twins: without JavaScript the fronts stand with their place and note under them. */
 import { getSite } from '../../lib/site';
 import manifest from '../../assets/photos/postcards.json';
+import meta from '../../assets/photos/postcards-meta.json';
+import grain from '../../assets/photos/grain.png?url';
+import { rosette } from './guilloche';
+import city from './art/istanbul.svg?url';
 
 const site = await getSite();
 const t = site.about.postcard;
 const list = site.home.postcards ?? [];
+const photos = site.about.chapters.find((c) => c.id === 'photos');
+const lede = photos?.text[0]?.split(/(?<=\.)\s/)[0] ?? '';
 const files = import.meta.glob<string>('../../assets/photos/pc-*.{avif,webp}', { eager: true, query: '?url', import: 'default' });
 const file = (stem: string, w: number | 'full', ext: 'avif' | 'webp') => {
   const f = files[`../../assets/photos/pc-${stem}-${w}.${ext}`];
   if (!f) throw new Error(`missing pc-${stem}-${w}.${ext}: run npm run photos`);
   return f;
 };
+type M = { width: number; height: number; widths: number[]; full: number; tone: string };
+type Meta = { palette: { hex: string; share: number }[]; rows: number[][] };
 const REST = [-5, 2, -2, 3];
+const n = list.length;
+const pad = (i: number) => String(i).padStart(2, '0');
+const guil = rosette({ cx: 0, cy: 0, R: 60, r: 16, d: 41, scale: 1.5, pens: 3, spread: 0.06 });
+
+/** relative luminance of a hex colour, for the ink on a colour band */
+const lum = (h: string) => { const v = [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16) / 255).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+
+/** a cancellation line through a luminance row: 48 samples over `w`, smoothed by midpoint quadratics */
+function wave(row: number[], w: number, y: number, amp: number) {
+  const pts = row.map((v, i) => [(i / (row.length - 1)) * w, y + (0.5 - v) * amp] as const);
+  let d = `M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+  for (let i = 1; i < pts.length - 1; i++) {
+    const [x, yy] = pts[i], [nx, ny] = pts[i + 1];
+    d += ` Q${x.toFixed(1)} ${yy.toFixed(1)} ${((x + nx) / 2).toFixed(1)} ${((yy + ny) / 2).toFixed(1)}`;
+  }
+  return d;
+}
+
 const cards = list.map((p, i) => {
-  const m = (manifest as Record<string, { width: number; height: number; widths: number[]; full: number }>)[p.photo];
-  if (!m) throw new Error(`postcards.json has no ${p.photo}: run npm run photos`);
+  const m = (manifest as Record<string, M>)[p.photo];
+  const mm = (meta as Record<string, Meta>)[p.photo];
+  if (!m || !mm) throw new Error(`no files or measurements for ${p.photo}: run npm run photos`);
   const set = (ext: 'avif' | 'webp') => m.widths.map((w) => `${file(p.photo, w, ext)} ${w}w`).join(', ');
   const big = (ext: 'avif' | 'webp') => [...m.widths.map((w) => `${file(p.photo, w, ext)} ${w}w`), ...(m.full ? [`${file(p.photo, 'full', ext)} ${m.full}w`] : [])].join(', ');
   const land = m.width > m.height;
-  /* the postmark's ring: the place repeated until it goes round once */
-  const unit = `${p.place}${p.date ? ` · ${p.date}` : ''} · `.toUpperCase();
-  const ring = unit.repeat(Math.max(1, Math.ceil(30 / unit.length)));
-  const lines = [...p.place.split(',').map((s) => s.trim()).filter(Boolean), ...(p.date ? [p.date] : [])];
-  while (lines.length < 3) lines.push('');
+  const parts = p.place.split(',').map((s) => s.trim()).filter(Boolean);
+  const rules = parts.length > 1 ? [['Place', parts.slice(0, -1).join(', ')], ['City', parts[parts.length - 1]]] : [['City', parts[0]]];
+  if (p.date) rules.push(['Date', p.date]);
+  const ringUnit = `${p.place.toUpperCase()} · `;
+  const ring = ringUnit.repeat(Math.max(1, Math.ceil(34 / ringUnit.length)));
+  const waves = mm.rows.map((r, k) => wave(r, 300, 76 + k * 14, 18));
   return {
-    ...p, i, land, w: m.width, h: m.height, rest: REST[i % REST.length],
-    avif: set('avif'), webp: set('webp'), src: file(p.photo, m.widths[0], 'webp'),
-    bigAvif: big('avif'), bigWebp: big('webp'), stamp: file(p.photo, m.widths[0], 'webp'), ring, lines,
+    ...p, i, land, w: m.width, h: m.height, rest: REST[i % REST.length], tone: m.tone,
+    avif: set('avif'), webp: set('webp'), src: file(p.photo, m.widths[0], 'webp'), small: file(p.photo, m.widths[0], 'webp'),
+    /* the large card's shape: the photograph whole inside a 3.2 % mount with a 10 % caption band */
+    bratio: 1 / ((0.936 * m.height) / m.width + 0.132),
+    bigAvif: big('avif'), bigWebp: big('webp'), idx: `${pad(i + 1)} / ${pad(n)}`,
+    palette: mm.palette.map((q) => ({ ...q, light: lum(q.hex) > 0.45 })), rules, ring, waves, micro: `${site.mark} · ${t.credit} · ${p.place}`.toUpperCase(),
     name: `${t.of} ${p.place}`,
   };
 });
 ---
 {cards.length > 0 && (
-  <section class="strip photos" id="photos" data-rail-sec="Photos">
-    <h2 class="label strip-label" data-arrive>Photos</h2>
-    <ul class="fan" data-arrive-group>
+  <section class="photos" id="photos" data-rail-sec="Photos" data-scene style={`--grain: url("${grain}")`}>
+    <img class="city" src={city} alt="" width="1600" height="600" loading="lazy" decoding="async" />
+    <h2 class="ph-t h2" data-lines style="--a: 0.06; --w: 0.12">{photos?.title ?? 'Photos'}</h2>
+    {lede && <p class="ph-lede" data-rise style="--a: 0.09; --w: 0.12">{lede}</p>}
+    <ul class="table" data-pc-table>
       {cards.map((c) => (
-        <li class:list={['pc', c.land ? 'land' : 'port']} data-postcard={c.i} data-arrive="img" style={`--rest: ${c.rest}deg; --ratio: ${c.w} / ${c.h}`}>
+        <li class:list={['pc', c.land ? 'land' : 'port']} data-postcard={c.i} style={`--rest: ${c.rest}deg; --ratio: ${c.w} / ${c.h}; --img: url("${c.small}"); --tone: ${c.tone}`}>
+          <span class="pc-shadow" aria-hidden="true"></span>
           <button class="pc-open" type="button" aria-label={c.name} aria-haspopup="dialog">
-            <span class="pc-face">
-              <picture>
-                <source type="image/avif" srcset={c.avif} sizes={c.land ? '(min-width: 700px) 360px, 80vw' : '(min-width: 700px) 300px, 80vw'} />
-                <img src={c.src} srcset={c.webp} sizes={c.land ? '(min-width: 700px) 360px, 80vw' : '(min-width: 700px) 300px, 80vw'} alt={c.alt} width={c.w} height={c.h} loading="lazy" decoding="async" draggable="false" />
-              </picture>
+            <span class="pc-card">
+              <span class="pc-mount">
+                <span class="pc-blur" aria-hidden="true"></span>
+                <svg class="pc-guil" viewBox="-110 -110 220 220" aria-hidden="true" focusable="false"><path d={guil} /></svg>
+                <picture class="pc-pic">
+                  <source type="image/avif" srcset={c.avif} sizes={c.land ? '(min-width: 700px) 412px, 300px' : '(min-width: 700px) 324px, 196px'} />
+                  <img src={c.src} srcset={c.webp} sizes={c.land ? '(min-width: 700px) 412px, 300px' : '(min-width: 700px) 324px, 196px'} alt={c.alt} width={c.w} height={c.h} loading="lazy" decoding="async" draggable="false" />
+                </picture>
+                <span class="pc-edge" aria-hidden="true"><i>{c.place}</i><b>{c.idx}</b></span>
+              </span>
+              <span class="pc-proof" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
             </span>
           </button>
-          <p class="pc-cap small"><span class="place">{c.place}</span>{c.note && <span class="note it">{c.note}</span>}</p>
+          <p class="pc-cap"><span class="place">{c.place}</span>{c.note && <span class="note">{c.note}</span>}</p>
           <template data-big>
-            <div class:list={["big-card", c.land ? "land" : "port"]} style={`--ratio: ${c.w} / ${c.h}`} data-big-card>
-              <div class="big-face big-front">
-                <picture>
-                  <source type="image/avif" srcset={c.bigAvif} sizes={c.land ? 'min(92vw, 1100px)' : 'min(60vw, 620px)'} />
-                  <img src={c.src} srcset={c.bigWebp} sizes={c.land ? 'min(92vw, 1100px)' : 'min(60vw, 620px)'} alt={c.alt} width={c.w} height={c.h} decoding="async" draggable="false" />
-                </picture>
-              </div>
-              <div class="big-face big-back" aria-hidden="true">
-                <p class="b-head">{t.head}</p>
-                <div class="b-msg">
-                  {c.note && <p class="b-note">{c.note}</p>}
-                  <p class="b-from">{site.firstName}</p>
+            <div class:list={['big', c.land ? 'land' : 'port']} data-card="tilt" style={`--ratio: ${c.bratio.toFixed(4)}; --img: url("${c.small}"); --tone: ${c.tone}; --grain: url("${grain}")`} data-big-card>
+              <div class="idc-card" data-card-body>
+                <div class="big-face big-front" data-face>
+                  <button class="idc-turn" type="button" data-turn aria-label={t.turn}></button>
+                  <span class="pc-blur" aria-hidden="true"></span>
+                  <picture class="big-pic">
+                    <source type="image/avif" srcset={c.bigAvif} sizes={c.land ? 'min(92vw, 920px)' : 'min(60vw, 520px)'} />
+                    <img src={c.src} srcset={c.bigWebp} sizes={c.land ? 'min(92vw, 920px)' : 'min(60vw, 520px)'} alt={c.alt} width={c.w} height={c.h} decoding="async" draggable="false" />
+                    <span class="big-dev" aria-hidden="true"></span>
+                  </picture>
+                  <span class="pc-edge"><i>{c.place}</i><b>{c.idx}</b></span>
+                  <span class="idc-glare" aria-hidden="true"></span>
                 </div>
-                <p class="b-credit">{t.credit} · {site.name}</p>
-                <div class="b-addr">
-                  <span class="b-stamp" style={`--stamp: url("${c.stamp}")`}></span>
-                  <svg class="b-mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-                    <defs><path id={`pc-ring-${c.i}`} d="M50 50 m-36 0 a36 36 0 1 1 72 0 a36 36 0 1 1 -72 0" /></defs>
-                    <circle cx="50" cy="50" r="44" /><circle cx="50" cy="50" r="27" />
-                    <text><textPath href={`#pc-ring-${c.i}`}>{c.ring}</textPath></text>
-                    <path class="waves" d="M96 40c-8 4-16-4-24 0s-16-4-24 0M96 50c-8 4-16-4-24 0s-16-4-24 0M96 60c-8 4-16-4-24 0s-16-4-24 0" />
+                <div class="big-face big-back" data-face>
+                  <button class="idc-turn" type="button" data-turn aria-label={t.back}></button>
+                  <svg class="bk-guil" viewBox="-110 -110 220 220" aria-hidden="true" focusable="false"><path d={guil} /></svg>
+                  <p class="bk-head" aria-hidden="true"><span class="mk">{site.mark}</span><span class="lb">{t.credit} · {c.idx}</span></p>
+                  <span class="bk-stamp" aria-hidden="true"><span></span></span>
+                  <svg class="bk-post" viewBox="0 0 500 200" aria-hidden="true" focusable="false">
+                    <defs><path id={`pc-ring-${c.i}`} d="M400 100 m-72 0 a72 72 0 1 1 144 0 a72 72 0 1 1 -144 0" /></defs>
+                    {c.waves.map((d) => <path class="wv" d={d} transform="translate(16 -52)" />)}
+                    <circle cx="400" cy="100" r="88" /><circle cx="400" cy="100" r="54" />
+                    <text class="rg"><textPath href={`#pc-ring-${c.i}`} textLength="448" lengthAdjust="spacing">{c.ring}</textPath></text>
+                    <text class="mk" x="400" y="112" text-anchor="middle">{site.mark}</text>
                   </svg>
-                  <div class="b-lines">{c.lines.map((l) => <p>{l}</p>)}</div>
+                  {c.note && (
+                    <div class="bk-msg">
+                      <p class="bk-note">{c.note}</p>
+                      <p class="bk-sig">{site.firstName}</p>
+                    </div>
+                  )}
+                  {c.land && <span class="bk-study" aria-hidden="true" style={`--rows: ${c.palette.map((p) => `${Math.max(0.06, p.share).toFixed(3)}fr`).join(' ')}`}>{c.palette.map((p) => <i style={`--c: ${p.hex}; --t: ${p.light ? '#1c1a17' : 'rgb(232 227 221 / 0.78)'}`}><span>{p.hex.toUpperCase()}</span><span>{Math.round(p.share * 100)} %</span></i>)}</span>}
+                  <span class="bk-div" aria-hidden="true"><i></i></span>
+                  <div class="bk-pal">
+                    <ul aria-label="The photograph's colours">{c.palette.map((p) => <li style={`--c: ${p.hex}`}><span class="vh">{p.hex}</span></li>)}</ul>
+                    <p class="hex" aria-hidden="true">{c.palette.slice(0, 3).map((p) => p.hex.toUpperCase()).join(' ')}</p>
+                  </div>
+                  <dl class="bk-rules">{c.rules.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+                  <span class="bk-micro" aria-hidden="true">{`${c.micro} · ${c.micro}`}</span>
+                  <span class="idc-glare" aria-hidden="true"></span>
                 </div>
               </div>
             </div>
@@ -90,41 +150,89 @@ const cards = list.map((p, i) => {
         </li>
       ))}
     </ul>
+    <p class="ph-hint"><span class="h-fine">{(t.table ?? t.hint).fine}</span><span class="h-touch">{(t.table ?? t.hint).touch}</span></p>
     <dialog class="pc-big" data-pc-dialog aria-label={t.head}>
       <div class="big-stage" data-big-stage></div>
-      <p class="big-cap small" data-big-cap></p>
-      <p class="big-hint label"><span class="h-fine">{t.hint.fine}</span><span class="h-touch">{t.hint.touch}</span></p>
+      <p class="big-hint"><span class="h-fine">{t.hint.fine}</span><span class="h-touch">{t.hint.touch}</span></p>
     </dialog>
   </section>
 )}
 
 <style>
-  .photos { text-align: center; }
-  .fan { margin: var(--s-7) auto 0; display: flex; justify-content: center; align-items: center; padding: 0 var(--s-5); }
-  .pc { position: relative; flex: none; width: 300px; rotate: var(--rest); transition: rotate var(--t-ui) var(--ease-out), translate var(--t-ui) var(--ease-out); }
-  .pc.land { width: 360px; z-index: 2; }
-  .pc + .pc { margin-left: -36px; }
-  .pc:nth-child(3) { z-index: 1; }
-  .pc-open { display: block; width: 100%; border-radius: var(--r-print); }
-  .pc-face {
-    display: block; padding: 10px; border-radius: var(--r-print);
-    background: #e9e2d4; box-shadow: var(--e-print), inset 0 0 0 1px rgb(0 0 0 / 0.06);
-  }
-  .pc-face img { width: 100%; height: auto; aspect-ratio: var(--ratio); object-fit: cover; border-radius: 1px; }
-  @media (hover: hover) and (pointer: fine) {
-    .pc:hover { translate: 0 -6px; rotate: calc(var(--rest) * 0.6); z-index: 3; }
-  }
-  .pc-open:active .pc-face { scale: 0.98; transition: scale var(--t-press) var(--ease-ui); }
-  .pc-cap { display: none; margin-top: var(--s-3); color: var(--ink-3); }
-  .pc-cap .note { display: block; color: var(--ink-2); }
-  :global(html[data-cap="line"]) .pc-cap, :global(html:not(.js)) .pc-cap { display: block; }
-  /* the card that is in the large view leaves an empty place on the table */
-  .pc.is-out .pc-open { visibility: hidden; }
+  .photos { position: relative; padding: 0 var(--gut); text-align: center; }
+  /* the city the photographs were taken in, engraved, as the table's far horizon (line-art set, 8 %) */
+  .city { position: absolute; left: 50%; bottom: -150px; width: 1600px; max-width: none; height: auto; margin-left: -800px; opacity: 0.08; pointer-events: none;
+    -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
+  :global(html.motion) .city { transform: translateY(calc((var(--sp) - 0.5) * 16vh)); }
+  .ph-lede { margin: var(--s-4) auto 0; max-width: 30em; font: 400 var(--fs-body) / 1.6 var(--f-sans); color: var(--ink-2); }
 
+  /* ---------- the table: three cards on parallel planes (rotateZ only), stacked by z-index ---------- */
+  .table { position: relative; margin: var(--s-8) auto 0; display: flex; justify-content: center; align-items: center; perspective: 1400px; }
+  .pc { position: relative; flex: none; width: 324px; z-index: var(--z, 1); }
+  .pc.land { width: 412px; }
+  .pc + .pc { margin-left: -34px; }
+  .pc-open { display: block; width: 100%; padding: 0; border-radius: 6px; -webkit-tap-highlight-color: transparent; }
+  .pc-card { position: relative; display: block; transform: rotate(var(--rest)); transform-origin: 50% 60%; }
+  :global(html.js) .pc-card { transform: translate(var(--x, 0px), var(--y, 0px)) translateZ(var(--tz, 0px)) rotate(calc(var(--rest) + var(--r, 0deg))) scale(var(--s, 1)); }
+  /* one soft floor shadow per card; it separates as the card rises (scripts/postcards.ts sets --tz) */
+  .pc-shadow { position: absolute; left: 8%; right: 8%; top: 14%; bottom: -4%; border-radius: 12px; background: rgb(0 0 0 / 0.55); filter: blur(24px); pointer-events: none;
+    transform: translate(calc(var(--x, 0px) * 0.8), calc(var(--tz, 0px) * 0.35)) rotate(var(--rest)) scale(calc(1 + var(--tz, 0px) / 900px)); opacity: calc(0.85 - var(--tz, 0px) / 200px); }
+
+  /* the mount: the photograph's own light, blurred and dimmed, under grain; a foil hairline at the edge */
+  .pc-mount, .big-face { position: relative; display: block; overflow: hidden; border-radius: 4px; isolation: isolate;
+    background: #12110f; box-shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 22px 44px -18px rgb(0 0 0 / 0.75); }
+  .pc-mount { padding: 12px 12px 40px; }
+  .pc-blur { position: absolute; inset: -30px; z-index: -1; background: var(--img) center / cover; filter: blur(22px) brightness(0.38) saturate(1.15); }
+  .pc-blur::after { content: ""; position: absolute; inset: 0; background: var(--grain) repeat; background-size: 64px; mix-blend-mode: overlay; }
+  .pc-mount::before, .big-face::before { content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; padding: 1px; pointer-events: none;
+    background: var(--foil); opacity: 0.45;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+  .pc-guil, .bk-guil { position: absolute; z-index: -1; left: -14%; bottom: -16%; width: 62%; fill: none; stroke: var(--gold-ink); stroke-width: 1; opacity: 0.11; pointer-events: none; }
+  .pc-guil path, .bk-guil path { vector-effect: non-scaling-stroke; }
+  .pc-pic { position: relative; display: block; border-radius: 2px; overflow: hidden; }
+  .pc-pic img { width: 100%; height: auto; aspect-ratio: var(--ratio); }
+  .pc-pic::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.14); pointer-events: none; }
+  .pc-edge { position: absolute; left: 14px; right: 14px; bottom: 11px; display: flex; justify-content: space-between; align-items: baseline; text-align: left; }
+  .pc-edge i { font: italic 400 var(--fs-body) / 1 var(--f-serif); color: var(--ink); }
+  .pc-edge b { font: 500 var(--fs-cap) / 1 var(--f-sans); letter-spacing: 0.06em; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  /* the proof marks: gold crop marks at the corners, shown while the card is held */
+  .pc-proof i { position: absolute; width: 14px; height: 14px; border: 0 solid color-mix(in srgb, var(--gold-ink) 80%, transparent); opacity: 0; transition: opacity var(--t-ui) var(--ease-out); pointer-events: none; }
+  .pc-proof i:nth-child(1) { left: -10px; top: -10px; border-left-width: 1px; border-top-width: 1px; }
+  .pc-proof i:nth-child(2) { right: -10px; top: -10px; border-right-width: 1px; border-top-width: 1px; }
+  .pc-proof i:nth-child(3) { left: -10px; bottom: -10px; border-left-width: 1px; border-bottom-width: 1px; }
+  .pc-proof i:nth-child(4) { right: -10px; bottom: -10px; border-right-width: 1px; border-bottom-width: 1px; }
+  .pc.is-up .pc-proof i { opacity: 1; }
+  .pc-open:focus-visible { outline: none; }
+  .pc-open:focus-visible .pc-proof i { opacity: 1; }
+  .pc-open:active .pc-card { --s: 0.98; }
+  .pc.is-out .pc-open { visibility: hidden; }
+  .pc-cap { display: none; margin-top: var(--s-3); color: var(--ink-3); font: 400 var(--fs-small) / 1.5 var(--f-sans); }
+  .pc-cap .note { display: block; color: var(--ink-2); font-style: italic; }
+  :global(html:not(.js)) .pc-cap { display: block; }
+  .ph-hint, .big-hint { margin-top: var(--s-7); font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); }
+  .ph-hint span, .big-hint span { display: none; }
+  :global(html.fine) :is(.ph-hint, .big-hint) .h-fine, :global(html:not(.fine)) :is(.ph-hint, .big-hint) .h-touch { display: inline; }
+  :global(html:not(.js)) .ph-hint { display: none; }
+  /* scroll: the cards come up onto the table, the middle one first (a pure function of --sp) */
+  :global(html.motion) .pc { --k: clamp(0, (var(--sp) - 0.1 - var(--o, 0) * 0.025) / 0.14, 1); }
+  :global(html.motion) .pc:nth-child(1) { --o: 1; } :global(html.motion) .pc:nth-child(3) { --o: 2; }
+  :global(html.motion) .pc-open { opacity: var(--k); transform: translateY(calc((1 - var(--k)) * 56px)) rotate(calc((1 - var(--k)) * var(--rest) * 0.8)); }
+
+  /* ---------- phone: a loose pile of two small cards and the landscape card under them ---------- */
   @media (max-width: 699.98px) {
-    .fan { flex-direction: column; gap: var(--s-6); padding: 0; }
-    .pc, .pc.land { width: 80vw; rotate: calc(var(--rest) * 0.4); }
+    .ph-t, .ph-lede { text-align: left; margin-left: 0; }
+    .city { width: 1100px; margin-left: -550px; bottom: -110px; }
+    .table { display: block; height: 590px; margin-top: var(--s-6); }
+    .pc { position: absolute; width: calc(50% - 2px); max-width: 196px; }
     .pc + .pc { margin-left: 0; }
+    .pc:nth-child(1) { left: 0; top: 0; }
+    .pc:nth-child(3) { right: 0; max-width: 186px; top: 44px; }
+    .pc.land { width: min(300px, 84%); max-width: none; left: 50%; translate: -50% 0; top: 330px; }
+    .pc-mount { padding: 8px 8px 30px; }
+    .pc-edge { left: 10px; right: 10px; bottom: 9px; }
+    .pc-edge i { font-size: var(--fs-small); }
+    .ph-hint { margin-top: var(--s-5); }
   }
 
   /* ---------- the large view ---------- */
@@ -134,91 +242,112 @@ const cards = list.map((p, i) => {
     display: none; flex-direction: column; align-items: center; justify-content: center; gap: var(--s-4);
   }
   .pc-big[open] { display: flex; }
-  .pc-big::backdrop { background: rgb(18 18 20 / 0.7); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .pc-big::backdrop { background: rgb(18 18 20 / 0.72); }
   .big-stage { perspective: 1600px; }
-  .big-cap { color: var(--ink-3); max-width: 34em; padding: 0 var(--gut); }
-  .big-cap :global(.note) { display: block; color: var(--ink-2); }
-  .big-hint { color: var(--ink-3); }
-  .big-hint span { display: none; }
-  :global(html.fine) .big-hint .h-fine, :global(html:not(.fine)) .big-hint .h-touch { display: inline; }
+  .big-hint { margin-top: 0; }
 </style>
 <style is:global>
   /* the large card is cloned from a template, so its rules are global (scoped to .pc-big) */
-  @property --pc-turn { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
-  @property --pc-sw { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
-  .pc-big .big-card {
-    --h: min(76svh, 820px);
-    position: relative; display: grid; height: var(--h); aspect-ratio: var(--ratio); max-width: calc(100vw - 32px);
-    transform-style: preserve-3d; cursor: pointer; touch-action: manipulation;
-    transform: rotateZ(calc(var(--pc-sw) * 0.35)) rotateY(calc(var(--pc-turn) + var(--pc-sw)));
-    transition: --pc-turn var(--kl-glide, 710ms) var(--kl-glide-ease, ease-out);
-  }
-  /* named only while it morphs: a view-transition-name flattens the 3D turn */
-  .pc-big .big-card.is-hero { view-transition-name: pc-hero; }
-  .pc-big .big-card.is-held { cursor: grabbing; }
-  .pc-big .big-face {
-    grid-area: 1 / 1; position: relative; border-radius: 3px; overflow: hidden;
-    background: #e9e2d4; box-shadow: 0 2px 4px rgb(0 0 0 / 0.5), 0 40px 90px -24px rgb(0 0 0 / 0.85);
-    backface-visibility: hidden; -webkit-backface-visibility: hidden;
-  }
-  .pc-big .big-front { padding: 14px; }
-  .pc-big .big-front img { width: 100%; height: 100%; object-fit: cover; border-radius: 1px; }
-  /* the burn-in: the photograph develops from grey to colour as it arrives (spec §3.4 item 4) */
-  html.motion .pc-big .big-front img { animation: develop 600ms var(--ease-out) 120ms both; }
-  @keyframes develop { from { filter: grayscale(1) contrast(1.35) brightness(1.25) blur(1.5px); } }
-  /* the back: laid card stock, a divided back */
-  .pc-big .big-back {
-    transform: rotateY(180deg); color: #3a322a; text-align: left;
-    display: grid; grid-template-columns: 1fr 1px 1fr; grid-template-rows: auto 1fr; column-gap: 5%;
-    padding: 6% 6% 7%;
-    background:
-      repeating-linear-gradient(0deg, rgb(58 50 42 / 0.025) 0 1px, transparent 1px 3px),
-      radial-gradient(120% 90% at 20% 0%, #f1ebdf, #e6ddcc 70%);
-  }
-  .pc-big .b-head { grid-column: 1 / -1; font: 500 11px / 1 var(--f-sans); letter-spacing: 0.32em; text-transform: uppercase; text-align: center; color: rgb(58 50 42 / 0.78); margin-bottom: 6%; }
-  .pc-big .b-msg { grid-column: 1; align-self: center; }
-  .pc-big .b-note { font: italic 400 clamp(17px, 2.3vh, 22px) / 1.45 var(--f-serif); color: #23304a; text-wrap: pretty; }
-  .pc-big .b-from { margin-top: 1em; font: italic 500 clamp(17px, 2.3vh, 22px) / 1 var(--f-serif); color: #23304a; }
-  .pc-big .b-credit {
-    grid-column: 2; grid-row: 2; position: relative; width: 1px; background: rgb(58 50 42 / 0.35);
-    font: 500 8px / 1 var(--f-sans); letter-spacing: 0.24em; text-transform: uppercase; color: rgb(58 50 42 / 0.73);
-  }
-  .pc-big .b-credit { writing-mode: vertical-rl; rotate: 180deg; white-space: nowrap; text-indent: 0; display: flex; align-items: center; justify-content: flex-start; padding-top: 8%; overflow: visible; }
-  .pc-big .b-addr { grid-column: 3; grid-row: 2; position: relative; display: grid; grid-template-rows: auto 1fr; }
-  /* the stamp: a white paper with a perforated edge (the bites only along the edge: a solid inner field
-     plus a row of holes on every side), the photograph printed inside it */
-  .pc-big .b-stamp {
-    position: relative; justify-self: end; width: 30%; aspect-ratio: 4 / 5; background-color: #f6f1e6;
-    -webkit-mask: linear-gradient(#000 0 0) 50% 50% / calc(100% - 8px) calc(100% - 8px) no-repeat,
-      radial-gradient(circle at 50% 50%, transparent 2.1px, #000 2.5px) -4px -4px / 8px 8px;
-    mask: linear-gradient(#000 0 0) 50% 50% / calc(100% - 8px) calc(100% - 8px) no-repeat,
-      radial-gradient(circle at 50% 50%, transparent 2.1px, #000 2.5px) -4px -4px / 8px 8px;
-    filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.18));
-  }
-  .pc-big .b-stamp::before {
-    content: ""; position: absolute; inset: 7px; background: var(--stamp) center / cover; filter: saturate(0.85) contrast(1.05);
-  }
-  .pc-big .b-mark { position: absolute; right: 20%; top: 9%; width: 36%; fill: none; stroke: color-mix(in srgb, #f3b886 55%, #8a4a2e); stroke-width: 1.1; opacity: 0.8; rotate: -12deg; }
-  .pc-big .b-mark text { fill: color-mix(in srgb, #f3b886 55%, #8a4a2e); stroke: none; font: 600 7.4px / 1 var(--f-sans); letter-spacing: 1.4px; }
-  .pc-big .b-mark .waves { stroke-width: 0.9; }
-  .pc-big .b-lines { align-self: end; display: grid; gap: 0; }
-  .pc-big .b-lines p { min-height: 2.2em; padding-top: 0.6em; box-shadow: inset 0 -1px 0 rgb(58 50 42 / 0.3); font: italic 400 clamp(15px, 2vh, 19px) / 1.2 var(--f-serif); color: #23304a; }
-  /* the face turned away is never seen */
-  .pc-big .big-card.is-turned .big-front, .pc-big .big-card:not(.is-turned) .big-back { visibility: hidden; transition: visibility 0s linear calc(var(--kl-glide, 710ms) / 2); }
-  .pc-big .big-card.is-turned .big-back, .pc-big .big-card:not(.is-turned) .big-front { visibility: visible; transition: visibility 0s linear calc(var(--kl-glide, 710ms) / 2); }
-  .pc.is-hero .pc-face { view-transition-name: pc-hero; }
+  .pc-big .big { --h: min(76svh, 690px); --about: var(--gold-ink); position: relative; height: var(--h); aspect-ratio: var(--ratio); max-width: calc(100vw - 32px); container-type: size; --u: 1cqi;
+    user-select: none; -webkit-user-select: none; }
+  .pc-big .big.land { height: auto; width: min(92vw, 920px, calc(var(--h) * var(--ratio))); }
+  /* one type unit for both shapes: a landscape card's unit follows its height, so its type matches the
+     portrait card's (spec v2 §3.6.3) */
+  .pc-big .big.land > * { --u: 0.75cqh; }
+  .pc-big .idc-card { position: relative; display: grid; width: 100%; height: 100%; transform-style: preserve-3d; --gx: 50%; --gy: 26%; --glare: 0.3; }
+  .pc-big .big-face { grid-area: 1 / 1; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; text-align: left; }
+  .pc-big .big-back { transform: rotateY(180deg); }
+  .pc-big .big-back, .pc-big .is-flipped .big-front { opacity: 0; }
+  .pc-big .is-flipped .big-back { opacity: 1; }
+  .pc-big .idc-turn { position: absolute; inset: 0; z-index: 4; width: 100%; height: 100%; border-radius: inherit; background: transparent; cursor: pointer; }
+  .pc-big .is-held .idc-turn { cursor: grabbing; }
+  .pc-big .idc-turn:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+  .pc-big .big-face[inert] { pointer-events: none; }
+  .pc-big .idc-glare { position: absolute; inset: 0; z-index: 3; border-radius: inherit; pointer-events: none; opacity: var(--glare); mix-blend-mode: screen;
+    background: radial-gradient(circle at var(--gx) var(--gy), rgba(255, 244, 230, 0.16), rgba(255, 244, 230, 0.04) 32%, transparent 58%); }
+
+  /* front: the photograph in its mount */
+  .pc-big .big-front { padding: calc(3.2 * var(--u)) calc(3.2 * var(--u)) calc(10 * var(--u)); }
+  .pc-big .big-pic { position: relative; display: block; height: 100%; border-radius: 2px; overflow: hidden; }
+  .pc-big .big-pic img { width: 100%; height: 100%; object-fit: cover; }
+  .pc-big .big-pic::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.14); }
+  /* the burn-in: the photograph develops from grey to colour as it arrives (opacity only) */
+  .pc-big .big-dev { position: absolute; inset: 0; background: #77736d; mix-blend-mode: saturation; opacity: 0; pointer-events: none; }
+  html.motion .pc-big .big-dev { animation: pc-develop 600ms var(--ease-out) 160ms backwards; }
+  @keyframes pc-develop { from { opacity: 1; } }
+  .pc-big .big-front .pc-edge { left: calc(3.6 * var(--u)); right: calc(3.6 * var(--u)); bottom: calc(3.6 * var(--u)); }
+  .pc-big .big-front .pc-edge i { font-size: max(15px, calc(4.2 * var(--u))); }
+  .pc-big .big-front .pc-edge b { font-size: max(12px, calc(2.8 * var(--u))); }
+
+  /* back: a card about the photograph (spec v2 §3.6.3); positions are fractions of the card */
+  .pc-big .big-back { color: var(--ink); background: linear-gradient(165deg, #1c1a17, #11100e 72%); }
+  .pc-big .big-back::after { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--grain) repeat; background-size: 64px; mix-blend-mode: overlay; }
+  .pc-big .bk-guil { width: 70%; left: -18%; bottom: -20%; }
+  .pc-big .bk-head { position: absolute; left: 7%; right: 7%; top: 6%; display: flex; justify-content: space-between; align-items: baseline; }
+  .pc-big .bk-head .mk { font: 400 max(17px, calc(5 * var(--u))) / 1 var(--f-serif); }
+  .pc-big .bk-head .lb { font: 500 max(12px, calc(2.4 * var(--u))) / 1 var(--f-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  /* the stamp: a crop of the photograph on a cream backing, scalloped every 9 px */
+  .pc-big .bk-stamp { position: absolute; right: 7%; top: 13%; width: 22%; aspect-ratio: 4 / 5; background: #efe7d8;
+    -webkit-mask: radial-gradient(circle at 4.5px 4.5px, transparent 2.6px, #000 3px) -4.5px -4.5px / 9px 9px, linear-gradient(#000 0 0) 50% 50% / calc(100% - 9px) calc(100% - 9px) no-repeat;
+    mask: radial-gradient(circle at 4.5px 4.5px, transparent 2.6px, #000 3px) -4.5px -4.5px / 9px 9px, linear-gradient(#000 0 0) 50% 50% / calc(100% - 9px) calc(100% - 9px) no-repeat;
+    filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.4)); }
+  .pc-big .bk-stamp span { position: absolute; inset: 9%; background: var(--img) 50% 50% / cover; }
+  /* the postmark: rings with the place, the mark in the middle, the cancellation running left. Its user
+     units are twice the drawn size, so no text in it is ever below a browser's minimum font size */
+  .pc-big .bk-post { position: absolute; right: 22%; top: 26%; width: 64%; overflow: visible; fill: none; stroke: color-mix(in srgb, var(--gold-ink) 75%, transparent); stroke-width: 1; }
+  .pc-big .bk-post circle, .pc-big .bk-post .wv { vector-effect: non-scaling-stroke; }
+  .pc-big .bk-post .wv { stroke: color-mix(in srgb, var(--gold-ink) 60%, transparent); }
+  .pc-big .bk-post text { fill: color-mix(in srgb, var(--gold-ink) 85%, transparent); stroke: none; text-rendering: geometricPrecision; }
+  .pc-big .bk-post .rg { font: 500 13.2px / 1 var(--f-sans); letter-spacing: 3.2px; }
+  .pc-big .bk-post .mk { font: 400 30px / 1 var(--f-serif); }
+  .pc-big .bk-msg { position: absolute; left: 7%; width: 57%; top: 45%; }
+  .pc-big .bk-note { font: italic 400 max(17px, calc(5.4 * var(--u))) / 1.22 var(--f-serif); color: var(--ink); text-wrap: pretty; }
+  .pc-big .bk-sig { margin-top: 0.8em; font: italic 400 max(15px, calc(3.6 * var(--u))) / 1 var(--f-serif); color: var(--gold-ink); }
+  .pc-big .bk-div { position: absolute; left: 7%; right: 7%; top: 67%; height: 1px; background: linear-gradient(90deg, color-mix(in srgb, var(--gold-ink) 70%, transparent), color-mix(in srgb, var(--gold-ink) 25%, transparent)); }
+  .pc-big .bk-div i { position: absolute; left: 61.8%; top: -3px; width: 7px; height: 7px; background: var(--gold-ink); rotate: 45deg; }
+  .pc-big .bk-pal { position: absolute; left: 7%; top: 71%; width: 40%; }
+  .pc-big .bk-pal ul { display: flex; gap: calc(1.4 * var(--u)); }
+  .pc-big .bk-pal li { width: calc(6 * var(--u)); aspect-ratio: 1; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12); }
+  .pc-big .bk-pal .hex { margin-top: calc(1.6 * var(--u)); font: 500 max(12px, calc(2.3 * var(--u))) / 1.3 var(--f-sans); letter-spacing: 0.06em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .pc-big .bk-rules { position: absolute; right: 7%; top: 70%; width: 46%; }
+  .pc-big .bk-rules div { display: grid; grid-template-columns: 30% 1fr; align-items: baseline; padding: calc(1.4 * var(--u)) 0; border-bottom: 1px solid var(--line-2); }
+  .pc-big .bk-rules dt { font: 500 max(12px, calc(2.3 * var(--u))) / 1 var(--f-sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+  .pc-big .bk-rules dd { font: 400 max(15px, calc(3.6 * var(--u))) / 1.2 var(--f-serif); color: var(--ink); }
+  .pc-big .bk-micro { position: absolute; left: 7%; right: 7%; bottom: 3.2%; overflow: hidden; white-space: nowrap; font: 500 max(7px, calc(1.6 * var(--u))) / 1 var(--f-sans); letter-spacing: 0.32em; color: color-mix(in srgb, var(--gold-ink) 34%, transparent); }
+  /* a landscape back: the same order in two columns; the left column is a study of the photograph's
+     colours (five bands, each as tall as its share of the picture), under the note when there is one */
+  .pc-big .bk-study { display: none; }
+  .pc-big .big.land .bk-study { display: grid; position: absolute; left: 7%; top: 22%; bottom: 14%; width: 38%; grid-template-rows: var(--rows); gap: 3px; }
+  .pc-big .big.land .bk-msg + .bk-study { top: 52%; }
+  .pc-big .bk-study i { display: flex; align-items: flex-end; justify-content: space-between; padding: 0 calc(1.4 * var(--u)) calc(1 * var(--u)); border-radius: 2px; background: var(--c);
+    font: 500 max(12px, calc(2.1 * var(--u))) / 1 var(--f-sans); font-style: normal; letter-spacing: 0.06em; color: var(--t); font-variant-numeric: tabular-nums; }
+  .pc-big .big.land .bk-pal { display: none; }
+  .pc-big .big.land .bk-guil { width: 34%; left: -8%; bottom: -12%; }
+  .pc-big .big.land .bk-stamp { width: 14%; top: 15%; }
+  .pc-big .big.land .bk-post { width: 44%; right: 18%; top: 24%; }
+  .pc-big .big.land .bk-msg { top: 22%; width: 38%; }
+  .pc-big .big.land .bk-div { left: 54%; top: 62%; }
+  .pc-big .big.land .bk-rules { left: 54%; right: 7%; width: auto; top: 67%; }
+
+  /* the morph: the small card's face and the large card share one name while it grows */
+  .pc.is-hero .pc-mount, .pc-big .big.is-hero { view-transition-name: pc-hero; }
   ::view-transition-group(pc-hero) { animation-duration: 640ms; animation-timing-function: var(--ease-path); }
   ::view-transition-old(pc-hero), ::view-transition-new(pc-hero) { height: 100%; object-fit: cover; }
+
   @media (max-width: 699.98px) {
-    .pc-big .big-card { --h: auto; width: calc(100vw - 32px); height: auto; max-height: 76svh; }
-    .pc-big .big-card.port { width: min(calc(100vw - 32px), calc(76svh * 0.75)); }
-    .pc-big .big-back { padding: 5%; column-gap: 4%; }
-    .pc-big .b-note, .pc-big .b-from { font-size: 15px; }
-    .pc-big .b-lines p { font-size: 13px; }
+    .pc-big .big.port { height: auto; width: min(calc(100vw - 32px), calc(76svh * var(--ratio))); }
+    .pc-big .big.land { width: calc(100vw - 32px); }
+    .pc-big .bk-msg { width: 86%; top: 42%; }
+    .pc-big .bk-note { font-size: 17px; }
+    .pc-big .bk-pal { top: 71%; width: 86%; }
+    .pc-big .bk-rules { left: 7%; right: 7%; width: auto; top: 81%; }
+    .pc-big .bk-rules div { padding: 4px 0; }
+    .pc-big .big.land .bk-msg { top: 22%; width: 40%; }
+    .pc-big .big.land .bk-note { font-size: 15px; }
+    .pc-big .big.land .bk-study i span { display: none; }
   }
-  /* reduced motion: the turn is a 150 ms crossfade, no burn-in, no growing */
-  html.still .pc-big .big-card { transform: none; transition: none; }
-  html.still .pc-big .big-face { backface-visibility: visible; transition: opacity 150ms linear, visibility 0s; }
+  /* reduced motion: the turn is a crossfade, no burn-in */
+  html.still .pc-big .idc-card { transform: none !important; }
+  html.still .pc-big .big-face { backface-visibility: visible; transition: opacity 150ms linear; }
   html.still .pc-big .big-back { transform: none; }
-  html.still .pc-big .big-card.is-turned .big-front, html.still .pc-big .big-card:not(.is-turned) .big-back { opacity: 0; }
 </style>

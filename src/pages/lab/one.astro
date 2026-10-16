@@ -6,6 +6,7 @@
 import One from '../../layouts/One.astro';
 import Plate from '../../one/Plate.astro';
 import Brief from '../../one/Brief.astro';
+import Bostanci from '../../one/Bostanci.astro';
 import Work from '../../one/Work.astro';
 import Rest from '../../one/rest/Rest.astro';
 import { getSite, getProjects, url } from '../../lib/site';
@@ -17,6 +18,7 @@ const base = url('lab/one/');
 <One title={`${site.name} (lab: one)`} description={site.description} home={base} tab="home" noindex>
   <Plate slot="plates" />
   <Brief />
+  <Bostanci />
   <Work projects={projects} base={base} />
   <Rest />
 </One>

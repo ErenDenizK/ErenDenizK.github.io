@@ -1,182 +1,321 @@
 ---
-/* The ID card (design spec §3.4 item 1; brief §7: "a digital ID card like event badges"), redrawn for
-   the two-page site with the owner's notes: the lanyard and the card are one pendulum that pivots at the
-   anchor on the torn paper edge (never a card turning under a still strap), and the back has a denser
-   surface (an interference sheen, like a disc, that moves with the tilt). It drops into view and swings
-   to rest on the family kit's settle spring. A mouse can pull it and let it swing; a click, a tap,
-   Enter or Space turns it over. The front carries no links: they live in Contact (spec §3.5).
-   Behaviour: scripts/idcard.ts. Still twins: reduced motion turns it by a crossfade and it hangs still;
-   without JavaScript the front stands alone. */
-import { getSite } from '../../lib/site';
-import p360a from '../../assets/photos/gate-card-360.avif?url';
-import p640a from '../../assets/photos/gate-card-640.avif?url';
-import p960a from '../../assets/photos/gate-card-960.avif?url';
-import p360w from '../../assets/photos/gate-card-360.webp?url';
-import p640w from '../../assets/photos/gate-card-640.webp?url';
-import p960w from '../../assets/photos/gate-card-960.webp?url';
+/* The ID card (spec v2 §3.5.1; review rows C1 and C2): the live About card, ported exactly from
+   src/components/IdCard.astro and src/scripts/card3d.ts (dev, before the two-page line). Only the token
+   names are mapped to the two-page set, in the first rule of the styles below. Every field comes from
+   content/site.json. It hangs from a lanyard; on wide screens with a mouse the lanyard is a rope, and
+   the card leans toward the pointer, can be pulled by itself or its rope, flung and spun; click, Enter
+   or Space turns it over. The front keeps both links, so nothing needs the turn. Behaviour:
+   src/one/scripts/card3d.ts. */
+import Icon from '../../components/Icon.astro';
+import { rosette } from './guilloche';
+import grain from '../../assets/photos/grain.png?url';
+import { getSite, isPlaceholder } from '../../lib/site';
+import p360a from '../../assets/photos/gate-card-live-360.avif?url';
+import p640a from '../../assets/photos/gate-card-live-640.avif?url';
+import p360w from '../../assets/photos/gate-card-live-360.webp?url';
+import p640w from '../../assets/photos/gate-card-live-640.webp?url';
+import p960a from '../../assets/photos/gate-card-live-960.avif?url';
+import p960w from '../../assets/photos/gate-card-live-960.webp?url';
 
 const site = await getSite();
 const card = site.about.card;
 const k = site.kicker;
-const strap = Array.from({ length: 10 }, () => site.mark).join('  ');
+const li = isPlaceholder(site.links.linkedin) ? null : site.links.linkedin;
+const gh = site.links.github;
+const ghHandle = new URL(gh).pathname.replace(/^\/+|\/+$/g, '');
+const links = [
+  { name: 'GitHub', icon: 'github', href: gh, note: ghHandle },
+  ...(li ? [{ name: 'LinkedIn', icon: 'linkedin', href: li, note: '' }] : []),
+];
+/* round two (spec v2 §3.5.1): the guilloché under the type, two rosettes on each face (card units: the
+   face is 500 x 800), and the micro line along the lower edge */
+const guil = [
+  { d: rosette({ cx: 0, cy: 0, R: 60, r: 16, d: 41, scale: 2.4, pens: 4, spread: 0.05 }), x: 84, y: 700 },
+  { d: rosette({ cx: 0, cy: 0, R: 50, r: 13, d: 35, scale: 2.1, pens: 3, spread: 0.06 }), x: 440, y: 170 },
+];
+const city = site.about.chapters.flatMap((c) => c.facts ?? []).find(([key]) => key === 'City')?.[1];
+const micro = [site.mark, k.school, city].filter(Boolean).join(' · ').toUpperCase();
+const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
 ---
-<section class="strip about" id="about" data-rail-sec="About">
-  <div class="idc" data-idcard role="group" aria-roledescription={card.label} aria-label={`${card.label}: ${site.name}`}>
-    <div class="pend" data-pend>
-      <div class="strap" aria-hidden="true"><span>{strap}</span></div>
-      <svg class="clip" viewBox="0 0 40 56" aria-hidden="true" focusable="false">
+<div class="idc" data-card="hang" role="group" aria-roledescription={card.label} aria-label={`${card.label}: ${site.name}`}>
+  <span class="idc-anchor" data-card-anchor aria-hidden="true"></span>
+  <svg class="idc-rope" data-card-rope aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="idc-rope-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="140">
+        <stop offset="0" stop-color="#000" /><stop offset="1" stop-color="#fff" />
+      </linearGradient>
+      <mask id="idc-rope-mask" maskUnits="userSpaceOnUse" x="-4000" y="-200" width="8000" height="4000">
+        <rect x="-4000" y="-200" width="8000" height="4000" fill="url(#idc-rope-fade)" />
+      </mask>
+      <path id="idc-rope-path" data-rope-path d="M0 0 L0 1" />
+    </defs>
+    <g mask="url(#idc-rope-mask)">
+      <use href="#idc-rope-path" class="r-edge" />
+      <use href="#idc-rope-path" class="r-band" />
+      <text class="r-text"><textPath href="#idc-rope-path" startOffset="100%" text-anchor="end">{strapText}</textPath></text>
+    </g>
+    <use href="#idc-rope-path" class="r-hit" data-rope-hit />
+  </svg>
+  <div class="idc-swing" data-card-swing>
+    <div class="idc-strap" aria-hidden="true"><span>{strapText}</span></div>
+    <div class="idc-hold">
+      <div class="idc-shadow" aria-hidden="true"></div>
+      <div class="idc-card" data-card-body>
+        <div class="idc-face idc-front" data-face>
+          <button class="idc-turn" type="button" data-turn aria-label="Turn the card over"></button>
+          <span class="idc-tex" aria-hidden="true" style={`--grain: url("${grain}")`}><svg class="idc-guil" viewBox="0 0 500 800" preserveAspectRatio="none" focusable="false">{guil.map((g) => <g transform={`translate(${g.x} ${g.y})`}><path d={g.d} /></g>)}</svg></span>
+          <div class="idc-head">
+            <span class="idc-mark">{site.mark}</span>
+            <span class="idc-issued">{card.issued}</span>
+          </div>
+          <div class="idc-win">
+          <picture class="idc-photo">
+            <source type="image/avif" srcset={`${p360a} 360w, ${p640a} 640w, ${p960a} 960w`} sizes="(min-width: 900px) 280px, 230px" />
+            <img src={p640w} srcset={`${p360w} 360w, ${p640w} 640w, ${p960w} 960w`} sizes="(min-width: 900px) 280px, 230px" alt={site.about.selfie.alt} width="640" height="640" decoding="async" draggable="false" />
+          </picture>
+          <span class="idc-lam" aria-hidden="true"></span>
+          </div>
+          <p class="idc-name">{site.nameLines.map((l) => <span>{l}</span>)}</p>
+          <p class="idc-role"><span>{k.study} · {k.year}</span><span>{k.school}</span></p>
+          <div class="idc-foot">
+            {links.map((l) => <a class="idc-link" href={l.href} rel="me">{l.name}<Icon name="arrow-up-right" /></a>)}
+            <span class="idc-seal" aria-hidden="true"></span>
+          </div>
+          <span class="idc-micro" aria-hidden="true">{micro}</span>
+          <span class="idc-glare" aria-hidden="true"></span>
+        </div>
+        <div class="idc-face idc-back" data-face>
+          <button class="idc-turn" type="button" data-turn aria-label="Turn the card back to the front"></button>
+          <span class="idc-tex" aria-hidden="true" style={`--grain: url("${grain}")`}><svg class="idc-guil" viewBox="0 0 500 800" preserveAspectRatio="none" focusable="false">{guil.map((g) => <g transform={`translate(${g.x} ${g.y})`}><path d={g.d} /></g>)}</svg></span>
+          <div class="idc-head">
+            <span class="idc-issued">{card.label}</span>
+            <span class="idc-issued">{site.host}</span>
+          </div>
+          <span class="idc-emboss" aria-hidden="true">{site.mark}</span>
+          <p class="idc-line">{card.back}</p>
+          <ul class="idc-links">
+            {links.map((l) => (
+              <li><a href={l.href} rel="me"><Icon name={l.icon} size={24} /><span class="idc-ln">{l.name}</span>{l.note && <span class="idc-note">{l.note}</span>}<Icon name="arrow-up-right" /></a></li>
+            ))}
+          </ul>
+          <p class="idc-cap">{site.about.selfie.caption}</p>
+          <span class="idc-micro" aria-hidden="true">{micro}</span>
+          <span class="idc-glare" aria-hidden="true"></span>
+        </div>
+      </div>
+      <svg class="idc-clip" viewBox="0 0 40 56" aria-hidden="true" focusable="false">
         <defs>
           <linearGradient id="idc-metal" x1="0" x2="1" y1="0" y2="0">
             <stop offset="0" stop-color="#6f6a63" /><stop offset="0.35" stop-color="#d9d3ca" /><stop offset="0.6" stop-color="#9c968d" /><stop offset="1" stop-color="#57534d" />
           </linearGradient>
         </defs>
         <rect x="9" y="1" width="22" height="13" rx="3" fill="url(#idc-metal)" />
+        <rect x="12" y="4.5" width="16" height="1.2" rx="0.6" fill="#2a2724" opacity="0.5" />
         <circle cx="20" cy="22" r="7" fill="none" stroke="url(#idc-metal)" stroke-width="2.6" />
         <path d="M14.5 29.5 C 13 36, 13 44, 16 49 L 24 49 C 27 44, 27 36, 25.5 29.5" fill="none" stroke="url(#idc-metal)" stroke-width="2.6" stroke-linecap="round" />
       </svg>
-      <div class="tilt" data-tilt>
-        <div class="card" data-card>
-          <div class="face front" data-face="front">
-            <div class="head"><span class="mk">{site.mark}</span><span class="iss">{card.issued}</span></div>
-            <picture class="photo">
-              <source type="image/avif" srcset={`${p360a} 360w, ${p640a} 640w, ${p960a} 960w`} sizes="(min-width: 700px) 252px, 218px" />
-              <img src={p640w} srcset={`${p360w} 360w, ${p640w} 640w, ${p960w} 960w`} sizes="(min-width: 700px) 252px, 218px" alt={site.about.selfie.alt} width="640" height="640" loading="lazy" decoding="async" draggable="false" />
-            </picture>
-            <p class="nm">{site.nameLines.map((l) => <span>{l}</span>)}</p>
-            <p class="role"><span>{k.study} · {k.school}</span><span>{k.year}</span></p>
-            <span class="seal" aria-hidden="true"></span>
-            <span class="glare" aria-hidden="true"></span>
-          </div>
-          <div class="face back" data-face="back" aria-hidden="true">
-            <div class="head"><span class="iss">{card.label}</span><span class="iss">{site.host}</span></div>
-            <span class="emboss" aria-hidden="true">{site.mark}</span>
-            <p class="line">{card.back}</p>
-            <span class="glare" aria-hidden="true"></span>
-          </div>
-          <button class="turn" type="button" data-turn aria-pressed="false" aria-label="Turn the card over"></button>
-        </div>
-      </div>
     </div>
   </div>
-  <h2 class="label strip-label">About</h2>
-  <p class="hint small"><span class="h-click">{card.hint.click}</span><span class="h-tap">{card.hint.tap}</span></p>
-</section>
+  <p class="idc-hint">
+    <span class="h-drag">{card.hint.drag}</span><span class="h-click">{card.hint.click}</span><span class="h-tap">{card.hint.tap}</span>
+  </p>
+</div>
+
+<script>
+  import { initCards } from '../scripts/card3d';
+  initCards();
+</script>
 
 <style>
-  @property --turned { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
-  @property --rx { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
-  @property --ry { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
-  .about { position: relative; display: grid; justify-items: center; padding-top: 0; }
+  /* Sizes are fractions of the card's width (container units), so the card is one drawing at any size.
+     The card is 5:8, close to an event badge. */
   .idc {
-    --w: 300px; --strap: 168px;
-    position: relative; width: var(--w); padding-top: var(--strap); container-type: inline-size;
+    /* the live card's token names, pointed at the two-page set (spec v2 §3.5.1) */
+    --about: var(--gold-ink, #f3b886); --f-display: var(--f-serif); --f-ui: var(--f-sans);
+    --rule: var(--line-1); --t-meta: var(--fs-label); --lh-meta: 1.35;
+    --w: 300px;
+    --strap: 160px;
+    --stretch: 0px;
+    --about-foil: conic-gradient(from var(--fa, 150deg), #f3b886, #f6dcc4, #c9d4ff, #efb1cb, #f3b886);
+    position: relative; width: var(--w); container-type: inline-size;
     user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
   }
-  /* the pendulum: lanyard, clip and card turn together about the anchor on the paper's edge */
-  .pend { position: relative; transform-origin: 50% calc(-1 * var(--strap)); rotate: var(--sw, 0deg); }
-  .strap {
-    position: absolute; left: 50%; bottom: calc(100% + 3cqi); width: 6.6cqi; height: calc(var(--strap) + 1px);
+  .idc-anchor { position: absolute; left: 50%; top: calc(-1 * var(--strap)); width: 0; height: 0; }
+  /* the card turns about its clip's pivot, 9.4% of its width above it (card3d.ts measures the same) */
+  .idc-swing { position: relative; transform-origin: 50% -9.4cqi; will-change: transform; }
+
+  /* the rope (fine pointers with motion): an SVG path the script moves; its user units are px from the
+     anchor. Otherwise the still strap below stands in for it. */
+  .idc-rope { position: absolute; left: 50%; top: calc(-1 * var(--strap)); width: 1px; height: 1px; overflow: visible; display: none; pointer-events: none; }
+  :global(.js) .idc.is-rope .idc-rope { display: block; }
+  .is-rope .idc-strap { display: none; }
+  .idc-rope use { fill: none; stroke-linecap: butt; stroke-linejoin: round; }
+  .r-edge { stroke: color-mix(in srgb, var(--about) 26%, #15130f); stroke-width: 6.6cqi; }
+  .r-band { stroke: #1c1915; stroke-width: calc(6.6cqi - 2px); }
+  .r-text { font: 400 3.9cqi/1 var(--f-display); letter-spacing: 0.32em; fill: color-mix(in srgb, var(--about) 46%, #5f5b55); dominant-baseline: central; }
+  .r-hit { stroke: transparent; stroke-width: 11cqi; pointer-events: stroke; cursor: grab; }
+  .is-held .r-hit { cursor: grabbing; }
+
+  /* the lanyard: a woven band running up out of the page, its mark repeated along it */
+  .idc-strap {
+    position: absolute; left: 50%; top: calc(-1 * var(--strap)); width: 6.6cqi; height: calc(var(--strap) - 9.4cqi + var(--stretch));
     translate: -50% 0; overflow: hidden;
     background: linear-gradient(90deg, #15130f, #221e19 50%, #15130f);
-    box-shadow: inset 1px 0 0 color-mix(in srgb, var(--person-1) 26%, transparent), inset -1px 0 0 color-mix(in srgb, var(--person-1) 26%, transparent);
-    -webkit-mask-image: linear-gradient(180deg, transparent, #000 56px); mask-image: linear-gradient(180deg, transparent, #000 56px);
+    box-shadow: inset 1px 0 0 color-mix(in srgb, var(--about) 26%, transparent), inset -1px 0 0 color-mix(in srgb, var(--about) 26%, transparent);
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 min(60%, 140px)); mask-image: linear-gradient(180deg, transparent, #000 min(60%, 140px));
     display: flex; justify-content: center; align-items: flex-end;
   }
-  .strap span {
-    writing-mode: vertical-rl; white-space: nowrap; padding-bottom: 8cqi;
-    font: 400 3.9cqi / 1 var(--f-serif); letter-spacing: 0.32em; color: color-mix(in srgb, var(--person-1) 46%, #5f5b55);
+  .idc-strap span {
+    writing-mode: vertical-rl; white-space: nowrap; padding-bottom: 6cqi;
+    font: 400 3.9cqi/1 var(--f-display); letter-spacing: 0.32em; color: color-mix(in srgb, var(--about) 46%, #5f5b55);
   }
-  .clip { position: absolute; z-index: 2; left: 50%; top: -9.8cqi; width: 12cqi; translate: -50% 0; pointer-events: none; filter: drop-shadow(0 2px 2px rgb(0 0 0 / 0.5)); }
 
-  .tilt { perspective: 1100px; }
-  .card {
-    position: relative; display: grid; transform-style: preserve-3d;
-    --gx: 50%; --gy: 26%; --rx: 0deg; --ry: 0deg; --turned: 0deg;
-    transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--turned)));
-    transition: --turned var(--kl-glide, 710ms) var(--kl-glide-ease, ease-out),
-      --rx var(--tilt-t, 0ms) var(--ease-out), --ry var(--tilt-t, 0ms) var(--ease-out);
+  .idc-hold { position: relative; translate: 0 var(--stretch); perspective: 1100px; }
+  .idc-shadow {
+    position: absolute; left: 6%; right: 6%; top: 10%; bottom: -3%; border-radius: 8cqi;
+    background: rgba(0, 0, 0, 0.62); filter: blur(22px); pointer-events: none;
   }
-  /* the shadow stays outside the turning card: inside it, a turn would bring it in front of the back */
-  .tilt { position: relative; }
-  .tilt::before {
-    content: ""; position: absolute; left: 6%; right: 6%; top: 12%; bottom: -4%; border-radius: 8cqi;
-    background: rgb(0 0 0 / 0.62); filter: blur(22px);
-  }
-  .face {
-    grid-area: 1 / 1; position: relative; aspect-ratio: 5 / 8; padding: 7cqi 7cqi 6cqi; display: flex; flex-direction: column;
-    border-radius: 5cqi; color: var(--ink); overflow: hidden;
+  .idc-clip { position: absolute; z-index: 2; left: 50%; top: -9.8cqi; width: 12cqi; translate: -50% 0; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5)); }
+
+  .idc-card { position: relative; display: grid; transform-style: preserve-3d; --gx: 50%; --gy: 26%; --glare: 0.3; }
+  .idc-face {
+    grid-area: 1 / 1; position: relative; aspect-ratio: 5 / 8; padding: 6.5cqi 7cqi 6cqi;
+    display: flex; flex-direction: column;
+    border-radius: 5cqi; color: var(--ink);
     background:
-      radial-gradient(120% 70% at 100% 0%, color-mix(in srgb, var(--person-1) 10%, transparent), transparent 60%),
-      linear-gradient(165deg, #1b1916, #100f0d 70%);
-    box-shadow: inset 0 0 0 1px rgb(255 245 232 / 0.08), inset 0 1px 0 rgb(255 245 232 / 0.09);
+      radial-gradient(120% 70% at 100% 0%, color-mix(in srgb, var(--about) 9%, transparent), transparent 60%),
+      linear-gradient(165deg, #1a1815, #0f0e0c 70%);
+    box-shadow: inset 0 0 0 1px rgba(255, 245, 232, 0.07), inset 0 1px 0 rgba(255, 245, 232, 0.08);
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
     /* the slot the clip goes through, punched out of the card */
     -webkit-mask: linear-gradient(#000 0 0), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='10'%3E%3Crect width='48' height='10' rx='5'/%3E%3C/svg%3E") 50% 3.4cqi / 15cqi 3.2cqi no-repeat;
     -webkit-mask-composite: xor;
     mask: linear-gradient(#000 0 0), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='10'%3E%3Crect width='48' height='10' rx='5'/%3E%3C/svg%3E") 50% 3.4cqi / 15cqi 3.2cqi no-repeat exclude;
   }
-  /* a hairline foil edge in the sunset gold that shifts hue as the card turns */
-  .face::before {
+  /* foil edge: a hairline in the About gold that shifts hue as the card turns in the light */
+  .idc-face::before {
     content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
-    background: conic-gradient(from calc(150deg + var(--ry) * 4), #f3b886, #f6dcc4, #c9d4ff, #efb1cb, #f3b886); opacity: 0.55;
+    background: var(--about-foil); opacity: 0.5;
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
     mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   }
-  .back { transform: rotateY(180deg); }
-  /* the back: a denser surface (owner's note): the fine grooves and the interference colours of a disc
-     over the whole back, centred low; the colours turn with the tilt and are brightest where the light is */
-  .back::after {
-    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; mix-blend-mode: screen;
-    background:
-      repeating-radial-gradient(circle at 50% 70%, rgb(255 255 255 / 0.05) 0 0.6px, transparent 0.8px 2.2px),
-      repeating-conic-gradient(from calc(var(--ry) * 8 - var(--rx) * 4) at 50% 70%,
-        rgb(243 184 134 / 0.5) 0deg, rgb(201 212 255 / 0.5) 22deg, rgb(159 224 208 / 0.45) 44deg, rgb(239 177 203 / 0.5) 66deg, rgb(243 184 134 / 0.5) 90deg);
-    opacity: 0.5;
-    -webkit-mask: radial-gradient(70% 55% at var(--gx) var(--gy), #000, rgb(0 0 0 / 0.35) 70%, rgb(0 0 0 / 0.2));
-    mask: radial-gradient(70% 55% at var(--gx) var(--gy), #000, rgb(0 0 0 / 0.35) 70%, rgb(0 0 0 / 0.2));
+  .idc-back { transform: rotateY(180deg); }
+  /* the front first, whatever the engine does with backface-visibility: WebKit painted the masked back
+     face over the front on the owner's iPhone (2026-10-11). card3d.ts then fades the face turned away
+     from the viewer by the turn's angle; the classes cover the moment before it runs. */
+  .idc-back, .is-flipped .idc-front { opacity: 0; }
+  .is-flipped .idc-back { opacity: 1; }
+
+  /* the light: a soft specular glare, and a faint rainbow of the laminate only where the light falls */
+  .idc-glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: var(--glare); mix-blend-mode: screen; }
+  .idc-glare::before, .idc-glare::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+  .idc-glare::before { background: radial-gradient(circle at var(--gx) var(--gy), rgba(255, 244, 230, 0.2), rgba(255, 244, 230, 0.05) 32%, transparent 58%); }
+  .idc-glare::after {
+    opacity: 0.16;
+    background: repeating-linear-gradient(115deg, #f3b886 0, #efb1cb 6%, #c9d4ff 12%, #9fe0d0 18%, #f3b886 24%);
+    background-size: 220% 220%; background-position: var(--gx) var(--gy);
+    -webkit-mask: radial-gradient(circle at var(--gx) var(--gy), #000, transparent 42%); mask: radial-gradient(circle at var(--gx) var(--gy), #000, transparent 42%);
   }
-  .back > :not(.glare) { position: relative; z-index: 1; }
-  .head { display: flex; justify-content: space-between; align-items: baseline; }
-  .mk { font: 500 7.4cqi / 1 var(--f-serif); letter-spacing: -0.01em; }
-  .iss { font: 500 3.9cqi / 1 var(--f-sans); letter-spacing: 0.04em; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-  .photo { display: block; margin-top: 5cqi; }
-  .photo img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 2.4cqi; }
-  .nm { margin-top: 6cqi; font: 500 9.2cqi / 1 var(--f-serif); letter-spacing: -0.018em; }
-  .nm span, .role span { display: block; }
-  .role { margin-top: 3.4cqi; font: 400 4.2cqi / 1.4 var(--f-sans); color: var(--ink-2); }
-  .seal {
-    position: absolute; right: 7cqi; bottom: 6cqi; width: 8.4cqi; height: 8.4cqi; border-radius: 50%;
-    background: repeating-radial-gradient(circle, rgb(10 9 8 / 0.55) 0 0.5px, transparent 0.6px 2.4px),
-      conic-gradient(from calc(150deg + var(--ry) * 4), #f3b886, #f6dcc4, #c9d4ff, #efb1cb, #f3b886);
-    opacity: 0.72; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.22);
+
+  .idc-turn {
+    position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; padding: 0; margin: 0; border: 0; border-radius: inherit;
+    background: transparent; cursor: pointer;
   }
-  .emboss {
-    margin-top: 14cqi; align-self: center; font: 500 34cqi / 0.8 var(--f-serif); letter-spacing: -0.03em;
-    color: rgb(233 229 222 / 0.05); text-shadow: 0 -1px 0 rgb(0 0 0 / 0.55), 0 1px 0 rgb(255 245 232 / 0.08);
+  .idc-turn:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+  .is-held .idc-turn { cursor: grabbing; }
+
+  .idc-head { display: flex; justify-content: space-between; align-items: baseline; pointer-events: none; }
+  .idc-mark { font: 400 7.4cqi/1 var(--f-display); letter-spacing: -0.01em; color: var(--ink); }
+  .idc-issued { font: 400 4cqi/1 var(--f-ui); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+  .idc-photo { display: block; margin-top: 4.4cqi; pointer-events: none; }
+  .idc-photo img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 2.4cqi; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06); }
+
+  .idc-name { margin-top: 5.4cqi; font: 400 9.4cqi/0.98 var(--f-display); letter-spacing: -0.018em; pointer-events: none; }
+  .idc-name span, .idc-role span { display: block; }
+  .idc-role { margin-top: 3cqi; margin-bottom: 4cqi; font: 400 4.3cqi/1.4 var(--f-ui); color: var(--ink-2); pointer-events: none; }
+
+  .idc-foot { margin-top: auto; padding-top: 3cqi; display: flex; align-items: center; gap: 1.4cqi; border-top: 1px solid var(--rule); }
+  .idc-link, .idc-links a { position: relative; z-index: 2; }
+  .idc-link {
+    display: inline-flex; align-items: center; gap: 1.8cqi; min-height: 32px; padding: 0 2cqi; margin-left: -2cqi;
+    font: 400 4.3cqi/1 var(--f-ui); color: var(--ink-2); text-decoration: none; border-radius: 6px;
   }
-  .line { margin-top: auto; font: 400 8cqi / 1.14 var(--f-serif); letter-spacing: -0.015em; text-wrap: balance; text-align: center; }
-  .glare { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; mix-blend-mode: screen; opacity: var(--glare, 0.35);
-    background: radial-gradient(circle at var(--gx) var(--gy), rgb(255 244 230 / 0.18), rgb(255 244 230 / 0.04) 32%, transparent 58%); }
-  .turn { position: absolute; inset: 0; z-index: 3; border-radius: 5cqi; cursor: pointer; }
-  .turn:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
-  :global(.idc.is-held) .turn { cursor: grabbing; }
+  .idc-link + .idc-link { margin-left: 0; }
+  .idc-link:hover { color: var(--ink); }
+  .idc-link .icon { color: var(--ink-3); }
+  /* the security foil: a small hologram whose rings catch the light as the card turns */
+  .idc-seal {
+    margin-left: auto; width: 8.4cqi; height: 8.4cqi; border-radius: 50%; pointer-events: none;
+    background: repeating-radial-gradient(circle at 50% 50%, rgba(10, 9, 8, 0.55) 0 0.5px, transparent 0.6px 2.4px), var(--about-foil);
+    opacity: 0.72; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+  }
 
-  .strip-label { margin-top: var(--s-6); }
-  .hint { margin-top: var(--s-2); color: var(--ink-3); text-align: center; }
-  .hint span { display: none; }
-  :global(html.fine) .hint .h-click, :global(html:not(.fine)) .hint .h-tap { display: inline; }
-  :global(html:not(.js)) .hint, :global(html:not(.js)) .back, :global(html:not(.js)) .turn { display: none; }
+  /* the mark, pressed into the card stock: no colour, only light and shade */
+  .idc-emboss {
+    margin-top: 12cqi; font: 400 34cqi/0.8 var(--f-display); letter-spacing: -0.03em; pointer-events: none;
+    color: rgba(233, 229, 222, 0.045);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 245, 232, 0.07);
+  }
+  .idc-line { margin-top: 9cqi; font: 400 8cqi/1.12 var(--f-display); letter-spacing: -0.015em; text-wrap: balance; pointer-events: none; }
+  .idc-links { margin-top: auto; }
+  .idc-links li { border-top: 1px solid var(--rule); }
+  .idc-links li:last-child { border-bottom: 1px solid var(--rule); }
+  .idc-links a { display: flex; align-items: center; gap: 2.4cqi; min-height: 44px; font: 400 4.6cqi/1 var(--f-ui); color: var(--ink); text-decoration: none; border-radius: 6px; }
+  .idc-links .idc-ln { margin-right: auto; }
+  .idc-links .idc-note { color: var(--ink-3); font-size: 4cqi; }
+  .idc-links a:hover .idc-note { color: var(--ink-2); }
+  .idc-links .icon:last-child { color: var(--ink-3); }
+  .idc-cap { margin-top: 4.5cqi; font: 400 4cqi/1.35 var(--f-ui); color: var(--ink-3); pointer-events: none; }
 
-  /* the face turned away is never seen, whatever the engine does with backface-visibility */
-  .card.is-turned .front, .card:not(.is-turned) .back { visibility: hidden; transition: visibility 0s linear calc(var(--kl-glide, 710ms) / 2); }
-  .card.is-turned .back, .card:not(.is-turned) .front { visibility: visible; transition: visibility 0s linear calc(var(--kl-glide, 710ms) / 2); }
+  .idc-hint { margin-top: 18px; text-align: center; font: 400 var(--t-meta)/var(--lh-meta) var(--f-ui); color: var(--ink-3); }
+  .idc-hint span { display: none; }
+  :global(.fine) .idc-hint .h-drag { display: inline; }
+  :global(html:not(.fine)) .idc-hint .h-tap { display: inline; }
 
-  @media (max-width: 699.98px) { .idc { --w: 260px; --strap: 136px; } }
+  /* ---------- round two (spec v2 §3.5.1): texture, a livelier photo ---------- */
+  /* the guilloché and the paper fibre lie under the type: z-index -1 inside the face's own stacking
+     context (its mask makes one), so the text and the photo paint over them */
+  .idc-tex { position: absolute; inset: 0; z-index: -1; border-radius: inherit; overflow: hidden; pointer-events: none; }
+  .idc-tex::after { content: ""; position: absolute; inset: 0; background: var(--grain) repeat; background-size: 64px; mix-blend-mode: overlay; opacity: 0.9; }
+  .idc-guil { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: var(--about); stroke-width: 1; opacity: 0.11; }
+  .idc-guil path { vector-effect: non-scaling-stroke; rotate: var(--gr, 0deg); }
+  /* the photo, seated as a window under a laminate band that moves with the glare */
+  .idc-win { position: relative; margin-top: 4.4cqi; border-radius: 2.4cqi; pointer-events: none; }
+  .idc-win .idc-photo { margin-top: 0; }
+  .idc-win::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.55), inset 0 1px 0 rgb(255 244 230 / 0.22);
+  }
+  .idc-lam {
+    position: absolute; inset: 0; border-radius: inherit; overflow: hidden; mix-blend-mode: screen; opacity: calc(0.1 + var(--glare) * 0.22);
+    background: linear-gradient(115deg, transparent 20%, rgb(243 184 134 / 0.5) 34%, rgb(246 220 196 / 0.35) 40%, rgb(201 212 255 / 0.45) 47%, rgb(239 177 203 / 0.4) 53%, transparent 66%) no-repeat;
+    background-size: 260% 260%; background-position: var(--gx) var(--gy);
+  }
+  /* the micro line along the lower edge: security print, decoration only */
+  .idc-micro {
+    position: absolute; left: 7cqi; right: 7cqi; bottom: 2.1cqi; overflow: hidden; white-space: nowrap; pointer-events: none;
+    font: 500 2.4cqi/1 var(--f-ui); letter-spacing: 0.32em; color: color-mix(in srgb, var(--about) 28%, transparent);
+  }
+  /* the type floor: 12 px on the smallest card (spec v2 §2.1) */
+  .idc-issued, .idc-links .idc-note, .idc-cap { font-size: max(12px, 4cqi); }
 
-  /* reduced motion: it hangs still and turns by a 150 ms crossfade */
-  :global(html.still) .pend { rotate: none; }
-  :global(html.still) .card { transform: none; transition: none; }
-  :global(html.still) .face { backface-visibility: visible; transition: opacity 150ms linear, visibility 0s; }
-  :global(html.still) .back { transform: none; }
-  :global(html.still) .card.is-turned .front, :global(html.still) .card:not(.is-turned) .back { opacity: 0; }
+  /* without JavaScript the card cannot turn: the front stands alone (it carries the name, the school and
+     both links; the back's line repeats the two tracks further down the page) */
+  :global(html:not(.js)) .idc-back, :global(html:not(.js)) .idc-turn, :global(html:not(.js)) .idc-hint { display: none; }
+
+  /* hidden face: never hit, never focused (it is also inert) */
+  .idc-face[inert] { pointer-events: none; }
+
+  /* reduced motion: the card hangs still, and the turn is a short crossfade (audit §4.4) */
+  @media (prefers-reduced-motion: reduce) {
+    .idc-card { transform: none !important; }
+    .idc-swing { transform: none !important; }
+    .idc-face { backface-visibility: visible; transition: opacity 150ms linear; }
+    .idc-back { transform: none; opacity: 0; }
+    .is-flipped .idc-back { opacity: 1; }
+    .is-flipped .idc-front { opacity: 0; }
+    :global(.fine) .idc-hint .h-drag { display: none; }
+    :global(.fine) .idc-hint .h-click { display: inline; }
+  }
 </style>
