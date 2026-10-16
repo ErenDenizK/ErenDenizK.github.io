@@ -72,7 +72,8 @@ export type Model = {
   numbers?: { value: string; label: string }[];
   quote?: string;
   how?: string[];
-  howCrop?: Pic;
+  /** the product's layers for the cutaway (spec v3 §6): a name and the indices of its items in `how` */
+  howLayers?: { name: string; items: number[] }[];
   live?: { label: string; href: string; fill: string; ink: string };
   code?: { label: string; href: string };
   linksNote?: string;
@@ -191,8 +192,6 @@ export async function models(projects: Project[], base: string): Promise<Model[]
     const live = d.links.find((l) => l.kind === 'live');
     const code = d.links.find((l) => l.kind === 'code');
     const how = d.how.items;
-    /* How it's made bleeds a crop of the last still screen out of its card */
-    const howShot = prints[prints.length - 1];
     list.push({
       slug: p.id, title: d.title, order: d.order,
       aura: auraOf(p, w),
@@ -207,7 +206,7 @@ export async function models(projects: Project[], base: string): Promise<Model[]
       numbers: d.what.numbers,
       quote: d.why.quote,
       how: how?.length ? how : undefined,
-      howCrop: how?.length && howShot ? howShot.wide : undefined,
+      howLayers: how?.length ? d.how.layers : undefined,
       live: live ? { label: live.label, href: live.href, fill: d.accent.fill ?? (w && fills(w) ? w.accent.color : d.accent.color), ink: w?.accent.ink ?? '#121214' } : undefined,
       code: code ? { label: code.label, href: code.href } : undefined,
       linksNote: d.linksNote,
