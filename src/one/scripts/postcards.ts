@@ -280,7 +280,8 @@ export function initPostcards() {
   /* the click that ends that press is the same request: if it lands after the card (on its turn button)
      it would turn the card a second time (round-three critique, weak point 9), so it is consumed once */
   document.addEventListener('click', (e) => {
-    if (!eaten) return;
+    /* the queued turn itself is a script click (turnCard): never consume it */
+    if (!eaten || !e.isTrusted) return;
     /* a click more than 1 s later is a new press (the snapshot can swallow the first one entirely) */
     const late = performance.now() - eaten > 1000;
     eaten = 0;
