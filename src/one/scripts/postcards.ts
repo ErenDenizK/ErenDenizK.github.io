@@ -181,13 +181,15 @@ export function initPostcards() {
   const closeBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-close]');
   const turnBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-turn]');
   const cursor = dlg.querySelector<HTMLElement>('[data-pv-cursor]');
-  let open: HTMLElement | null = null, busy: VT | null = null, pushed = false, queued = false, foldT = 0, opening = false, eaten = 0;
+  let open: HTMLElement | null = null, busy: VT | null = null, pushed = false, queued = false, foldT = 0, opening = false, eaten = 0, closeQ = false;
   const fold = () => caps?.classList.add('folded');
   /* the face toward the viewer turns the card (its button is the live one; the other face is inert) */
   const turnCard = () => stage.querySelector<HTMLButtonElement>('[data-face]:not([inert]) [data-turn]')?.click();
   const settle = () => {
     opening = false;
     dlg.classList.add('settled');
+    /* a press on the dark space while the card grew asked to leave: leave now that it stands */
+    if (closeQ) { closeQ = false; queued = false; hide(); return; }
     if (queued) { queued = false; turnCard(); }
   };
   const show = (pc: HTMLElement) => {
@@ -198,6 +200,7 @@ export function initPostcards() {
     warm(tpl);
     pc.classList.add('is-hero');
     queued = false;
+    closeQ = false;
     opening = true;
     dlg.classList.remove('settled', 'cur-x');
     caps?.classList.toggle('folded', wasFolded());
@@ -269,7 +272,12 @@ export function initPostcards() {
      Before the snapshot is taken the press reaches the old page instead (the click handler above). */
   document.addEventListener('pointerdown', (e) => {
     if (!opening || !busy || e.button !== 0 || onCaps(e.target)) return;
-    queued = true;
+    /* the snapshot hides what is under the press, so the card's own box decides: on the card it is the
+       queued turn, on the dark space round it the way out (round five: a click on the dark space while
+       the card grew was taken as a turn, so the view stayed open) */
+    const r = stage.querySelector<HTMLElement>('[data-big-card]')?.getBoundingClientRect();
+    if (r && (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom)) closeQ = true;
+    else queued = true;
     eaten = performance.now();
   }, true);
   /* the click that ends that press is the same request: if it lands after the card (on its turn button)

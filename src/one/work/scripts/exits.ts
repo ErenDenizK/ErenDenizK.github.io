@@ -25,6 +25,14 @@ export function initExits(l: HTMLElement, back: () => void): Exits {
   const inner = l.querySelector<HTMLElement>('.pb-in');
   const fold = () => caps?.classList.add('folded');
   const foldT = window.setTimeout(fold, FOLD_MS);
+  /* a long action ("Open English Prep") leaves the words no room on a phone: the actions squeezed them to
+     "Cl" for the first 4 s (round-five critique). When the words are clipped, the close starts folded. */
+  const words = caps?.querySelector<HTMLElement>('.cap-more-in');
+  if (caps && words && words.scrollWidth > words.clientWidth + 1) {
+    /* folded at once, with no 300 ms fold: a half-faded "C" showed while the capsules rose */
+    caps.classList.add('fold-now', 'folded');
+    requestAnimationFrame(() => requestAnimationFrame(() => caps.classList.remove('fold-now')));
+  }
   l.addEventListener('scroll', () => { if (l.scrollTop > 8) fold(); }, passive);
 
   /* ---- the close cursor: over the empty space of the hero's band, a glass disc with the cross ---- */
@@ -36,7 +44,8 @@ export function initExits(l: HTMLElement, back: () => void): Exits {
     const icon = l.querySelector('.cap-xi .icon')?.cloneNode(true);
     if (icon) cur.append(icon);
     const lb = document.createElement('b');
-    lb.textContent = 'Close';
+    /* the word comes from content (site.json work.close), through the capsule's own label */
+    lb.textContent = l.querySelector('.cap-lb')?.textContent?.trim() || l.querySelector('[data-close]')?.getAttribute('aria-label') || '';
     cur.append(lb);
     l.append(cur);
     const head = l.querySelector<HTMLElement>('.pt');

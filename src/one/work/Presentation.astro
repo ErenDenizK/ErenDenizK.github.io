@@ -15,6 +15,7 @@ import Stepper from './Stepper.astro';
 import HowMade from './HowMade.astro';
 import Icon from '../../components/Icon.astro';
 import type { Model } from './data';
+import { getSite } from '../../lib/site';
 interface Props { m: Model; next?: Model; mode: 'layer' | 'page' }
 const { m, next, mode } = Astro.props;
 const front = m.prints[0];
@@ -22,6 +23,7 @@ const sides = m.prints.slice(1, 3);
 const vars = `--a1: ${m.aura[0]}; --a2: ${m.aura[1]}; --a3: ${m.aura[2]}; --paper: ${m.paper}; --raised: ${m.raised}${m.art ? `; --art: url("${m.art.url}")` : ''}`;
 const HERO = '(max-width: 699.98px) calc(100vw - 32px), 800px';
 const titleId = `${m.slug}-${mode}-title`;
+const close = (await getSite()).work.close;
 ---
 <article class:list={['pres', `pres-${mode}`]} data-pres={m.slug} style={vars} aria-labelledby={titleId}>
   <div class="pg" data-vt="paper" aria-hidden="true">
@@ -102,12 +104,12 @@ const titleId = `${m.slug}-${mode}-title`;
         pulls the layer past its top or its end (§4.1). */}
     <div class="caps" data-caps>
       <div class="glass cap-c">
-        <a class="cap-x" href={`${m.home}#${m.slug}`} data-close aria-label="Close">
+        <a class="cap-x" href={`${m.home}#${m.slug}`} data-close aria-label={close}>
           <span class="cap-xi">
             <svg class="cap-ring" viewBox="0 0 44 44" aria-hidden="true" focusable="false"><circle cx="22" cy="22" r="20.5" pathLength="100" /></svg>
             <Icon name="close" size={20} weight="medium" />
           </span>
-          <span class="cap-more" aria-hidden="true"><span class="cap-more-in"><span class="cap-lb">Close</span><kbd class="cap-kbd">esc</kbd></span></span>
+          <span class="cap-more" aria-hidden="true"><span class="cap-more-in"><span class="cap-lb">{close}</span><kbd class="cap-kbd">esc</kbd></span></span>
         </a>
       </div>
       <nav class="glass cap-a" aria-label={m.title}>
