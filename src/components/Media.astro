@@ -2,8 +2,8 @@
 /* The object stage (ADR-0006, media research §8): the poster paints first and is complete on its own.
    The client (scripts/media.ts) reads data-manifest after load and idle, and only then adds the idle
    loop, the lean grid, the interaction clip and the droplet change, when motion is welcome.
-   Structure: .media sizes the slot; .m-shadow (optional, multiply) darkens the real ground under the
-   object; .m-stage is one additive group (glow + ground-subtracted media, plus-lighter) and is what
+   Structure: .media sizes the slot; .m-shadow (optional, black with alpha, normal blending; S10)
+   darkens the real ground under the object; .m-stage is one additive group (glow + ground-subtracted media, plus-lighter) and is what
    morphs between pages (ADR-0007). */
 import { poster } from '../lib/media';
 /* solo: one of several stages on a page (Work); only the one the page focuses moves (scripts/media.ts, focus).
@@ -18,7 +18,7 @@ const p = poster(obj);
   {p.shadow && (
     <picture class="m-shadow-pic">
       {p.shadow.sources.map((s) => <source type={s.type} srcset={s.src} />)}
-      <img class="m-shadow" src={p.shadow.src} alt="" decoding="async" loading="lazy" />
+      <img class="m-shadow" data-blend={p.shadow.blend} src={p.shadow.src} alt="" decoding="async" loading="lazy" />
     </picture>
   )}
   <div class="m-stage">

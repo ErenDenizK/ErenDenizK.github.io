@@ -373,6 +373,37 @@ test('touch: the strap is a rope too (driven by the card, never by a hand), and 
   await ctx.close();
 });
 
+/* Round 6, row S10: on iPhone the recorder's contact shadow showed as a white square. The old file was a grey
+   map on white, drawn with multiply; a blend that lands in a layer without the dark ground returns the
+   white. The shadow is now black with alpha, drawn with normal blending: whatever layer it lands in, it
+   has no light pixel to show. */
+test('round six (S10): on a phone the recorder\'s shadow is black with alpha, with no blend mode', async ({ browser }) => {
+  const ctx = await browser.newContext(phone);
+  const page = await ctx.newPage();
+  await page.goto(PAGE);
+  const media = page.locator('#record .rs-media');
+  await media.scrollIntoViewIfNeeded();
+  const sh = media.locator('img.m-shadow');
+  await expect(sh).toHaveAttribute('data-blend', 'normal');
+  await expect.poll(() => sh.evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth)).toBeGreaterThan(0);
+  const r = await sh.evaluate((i: HTMLImageElement) => {
+    const c = document.createElement('canvas'); c.width = i.naturalWidth; c.height = i.naturalHeight;
+    const g = c.getContext('2d')!; g.drawImage(i, 0, 0);
+    const d = g.getImageData(0, 0, c.width, c.height).data;
+    let rgb = 0, alpha = 0, edge = 0;
+    for (let k = 0; k < d.length; k += 4) { rgb = Math.max(rgb, d[k], d[k + 1], d[k + 2]); alpha = Math.max(alpha, d[k + 3]); }
+    for (let x = 0; x < c.width; x++) edge = Math.max(edge, d[x * 4 + 3]);   // the top row: the far floor
+    return { blend: getComputedStyle(i).mixBlendMode, display: getComputedStyle(i).display, rgb, alpha, edge, file: i.currentSrc.split('/').pop() };
+  });
+  expect(r.file).toMatch(/^shadow-a\./);
+  expect(r.blend).toBe('normal');
+  expect(r.display).not.toBe('none');
+  expect(r.rgb, 'no light pixel anywhere in the shadow').toBeLessThanOrEqual(2);
+  expect(r.alpha, 'the shadow is there').toBeGreaterThan(100);
+  expect(r.edge, 'the far floor is clear').toBeLessThanOrEqual(2);
+  await ctx.close();
+});
+
 /* Round 4, rows V7 and V8: the name in its display instance (48 px desktop, two lines of 34 px on a phone,
    the bar mark in the same face) and the glass family, with today's settings behind lab switches. */
 test.describe('the name and the glass (round 4)', () => {
