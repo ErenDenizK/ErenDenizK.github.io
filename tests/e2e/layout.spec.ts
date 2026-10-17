@@ -13,10 +13,10 @@
 import { test, expect, type Page } from '@playwright/test';
 import { settle, fixture, PROJECTS, FIXTURE_ENTRIES } from './helpers';
 
-/* The lab page is unlinked and noindex, so not swept. The record's rows and entry pages are swept on the
-   fixture build (every kind and shape, whatever content/log holds), and its index and Recto's page there too,
-   so their lists have rows. */
-const ROUTES = ['', 'work/', 'about/', ...PROJECTS.map((p) => `work/${p}/`), 'record/', 'nope/',
+/* The two-page site (ADR-0019). The record's rows and entry pages are swept on the fixture build (every
+   kind and shape, whatever content/log holds), and its index and Recto's page there too, so their lists
+   have rows. */
+const ROUTES = ['', ...PROJECTS.map((p) => `work/${p}/`), 'record/', 'nope/',
   ...['record/', 'record/2026/', 'work/recto/', ...FIXTURE_ENTRIES.map((e) => `record/2026/${e}/`)].map(fixture)];
 
 /* A stretch up to 15 % is not visible at 3x (a 780 px phone capture drawn 292 css px wide on a 430 phone).
@@ -152,18 +152,12 @@ for (const [label, size] of SIZES) {
         await scrollThrough(page);
         for (const f of await audit(page, isPhone)) fails.push(`${label} ${path.startsWith('http') ? path : '/' + path}: ${f}`);
       }
-      /* the sheet, opened from Home and from Work (on a phone the link may open the page instead) */
-      for (const from of ['', 'work/']) {
-        await page.goto(from + '?still'); await settle(page, 300);
-        const slugs = await page.$$eval('#main a[data-p]', (as) => [...new Set(as.map((a) => (a as HTMLElement).dataset.p!))]);
-        for (const slug of slugs) {
-          if (!page.url().endsWith(from + '?still')) { await page.goto(from + '?still'); await settle(page, 300); }
-          await page.locator(`#main a[data-p="${slug}"]`).first().click();
-          await settle(page, 800);
-          await scrollThrough(page);
-          for (const f of await audit(page, isPhone)) fails.push(`${label} sheet ${slug} from /${from}: ${f}`);
-          await page.goto(from + '?still'); await settle(page, 300);
-        }
+      /* each project opened as a layer over Home (the project's own page is swept above) */
+      for (const [k, slug] of PROJECTS.entries()) {
+        await page.goto('?still'); await settle(page, 300);
+        await page.locator(`.proj[data-k="${k}"] .btn`).click();
+        await settle(page, 1700);
+        for (const f of await audit(page, isPhone)) fails.push(`${label} layer ${slug} over Home: ${f}`);
       }
       expect(fails, fails.join('\n')).toEqual([]);
     });

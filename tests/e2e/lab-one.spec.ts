@@ -1,6 +1,6 @@
-/* The two-page site's lab page, the shell and the person's part (src/pages/lab/one.astro; spec v2 §3.2,
-   §3.5 to §3.7, §8): hidden like the other workbenches (noindex, out of the sitemap, linked from nowhere),
-   no sideways scroll at the three check sizes and at 320 px, and a complete page in both still twins:
+/* Home, the shell and the person's part (src/pages/index.astro since 2026-10-17, ADR-0019; it was the lab
+   page /lab/one/; spec v2 §3.2, §3.5 to §3.7, §8): the site root (indexed, canonical, in the sitemap; the
+   old lab address redirects here and no page links to a lab page), no sideways scroll at the three check sizes and at 320 px, and a complete page in both still twins:
    reduced motion (nothing waits, every scene at rest, no fixed field) and no JavaScript (every part
    present, the postcards captioned, the card's front alone). Then, on desktop: the Bostancı photograph
    whole; the ported ID card (in chapter I between How I work and Path; turns by keyboard and by click, a
@@ -12,8 +12,11 @@
    PART B's Work has its own spec. */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone } from './helpers';
+import { BASE } from '../../playwright.config';
 
-const PAGE = 'lab/one/';
+const PAGE = '';
+/* Home's own path, after a postcard or a photo view closes */
+const HOME_PATH = new RegExp(`^${BASE.replace(/\//g, '\\/')}$`);
 /* every part of the person's chapters, by its rail label (the page's index, spec v2 §3.1) */
 const STRIPS = ['How I work', 'Path', 'Photos', 'Record', 'Now', 'Card'];
 
@@ -42,14 +45,19 @@ async function hiddenAfterScroll(page: Page) {
   return page.locator('[data-arrive], [data-rise], [data-lines], .pc-open, .stop .what').evaluateAll((els) => els.filter((e) => +getComputedStyle(e).opacity < 0.99).map((e) => e.className || e.tagName));
 }
 
-test('the lab page is hidden: noindex, out of the sitemap, linked from nowhere', async ({ page, request }) => {
+test('Home is the site root: indexed and canonical; the lab address redirects; no page links to a lab page', async ({ page, request }) => {
   await page.goto(PAGE);
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/$/);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /\/og\/home\.[\w]+\.jpg$/);
+  await expect(page.locator('link[rel="alternate"][type="application/atom+xml"]')).toHaveCount(1);
   const map = await (await request.get('sitemap-0.xml')).text();
   expect(map).not.toContain('/lab/');
-  for (const p of ['', 'record/', 'about/', 'work/']) {
+  const lab = await (await request.get('lab/one/')).text();
+  expect(lab).toMatch(new RegExp(`http-equiv="refresh" content="0; url=${BASE}"`));
+  for (const p of ['', 'record/', 'work/recto/']) {
     await page.goto(p + '?still');
-    expect(await page.locator('a[href*="lab/one"]').count(), `/${p} links to the lab`).toBe(0);
+    expect(await page.locator('a[href*="lab/"]').count(), `/${p} links to a lab page`).toBe(0);
   }
 });
 
@@ -267,7 +275,7 @@ test.describe('the person\'s part, desktop', () => {
     await expect(dlg).toHaveAttribute('open', '');
     await page.goBack();
     await expect(dlg).not.toHaveAttribute('open', '');
-    expect(new URL(page.url()).pathname).toMatch(/lab\/one\/$/);
+    expect(new URL(page.url()).pathname).toMatch(HOME_PATH);
     /* the labelled close closes, and after the first close it starts folded */
     await page.locator('[data-postcard="2"] .pc-open').click();
     await expect(dlg).toHaveAttribute('open', '');
@@ -324,7 +332,7 @@ test.describe('the person\'s part, desktop', () => {
       await expect(dlg).not.toHaveAttribute('open', '');
       await page.waitForTimeout(900);
       expect(await vts(), how).toEqual([{ skipped: false, hero: true }]);
-      expect(new URL(page.url()).pathname, how).toMatch(/lab\/one\/$/);
+      expect(new URL(page.url()).pathname, how).toMatch(HOME_PATH);
     }
   });
 

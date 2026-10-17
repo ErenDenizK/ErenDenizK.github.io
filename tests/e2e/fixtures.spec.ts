@@ -46,21 +46,20 @@ test.describe('record with entries', () => {
     await expect(page.locator('.ystrip a.ym[aria-label^="September"] .ym-ticks i')).toHaveCount(3);
     /* no controls below forty entries; the writing note sits at the foot */
     await expect(page.locator('#rec-projects, .filters, .threads, button')).toHaveCount(0);
-    await expect(page.locator('.rec-foot')).toContainText('I dictate the notes');
+    await expect(page.locator('.rec-foot #colophon')).toHaveText('How this is written');
+    await expect(page.locator('.rec-foot')).toContainText('notes I dictate');
     /* the first entry shows on the first screen */
     expect((await rows.first().boundingBox())!.y).toBeLessThan(900 - 120);
     await rows.nth(2).locator('a.e-link').click();
     await expect(page).toHaveURL(/\/record\/2026\/fixture-release\/$/);
   });
 
-  test('a project lists its entries and its thread', async ({ page }) => {
+  test('a project\'s page lists its newest entries, samples left out', async ({ page }) => {
     await page.goto('work/recto/');
-    await expect(page.locator('#in-the-record .entries .entry')).toHaveCount(5);
-    await expect(page.locator('#in-the-record .thread')).toHaveCount(1);
-    await expect(page.locator('#in-the-record .thread .t-c')).toHaveText('5 since Sep 2026');
-    await page.goto('work/english-prep/');
-    await expect(page.locator('#in-the-record .entries .entry')).toHaveCount(1);
-    await expect(page.locator('#in-the-record .thread')).toHaveCount(0);
+    const rec = page.locator('.pres-page .sy-tape li');
+    expect(await rec.count()).toBeGreaterThan(0);
+    expect(await rec.count()).toBeLessThanOrEqual(5);
+    await expect(rec.first().locator('a')).toHaveAttribute('href', /\/record\/\d{4}\/[^/]+\/$/);
   });
 
   test('entry, release, note and essay pages', async ({ page }) => {

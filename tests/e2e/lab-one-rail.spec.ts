@@ -1,4 +1,4 @@
-/* Home's rail on /lab/one/ (review row V6; src/one/scripts/bloom.ts, docs/design/rail-bloom.md): the beads
+/* Home's rail (review row V6; src/one/scripts/bloom.ts, docs/design/rail-bloom.md): the beads
    stay as on the live rail; a press held on the column scrubs the page with the section's name beside the
    thumb, and Escape puts the page back; a tap or Enter opens the names on one arc from the pressed point,
    with no panel, the current name lit; the keyboard moves through them and Escape closes; a name goes to its
@@ -19,7 +19,7 @@ test.describe('desktop', () => {
   test.use(desktop);
 
   test('the old sheet is gone; the column is one button over the beads', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await expect(page.locator('.rail-glass, .rail-veil')).toHaveCount(0);
     await expect(page.locator('html')).toHaveClass(/rail-bloom/);
     const b = await col(page);
@@ -31,7 +31,7 @@ test.describe('desktop', () => {
   });
 
   test('a click blooms the names from the pressed point on one arc; Escape closes; a name goes there', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await at(page, 'english-prep'); await page.waitForTimeout(600);
     const y0 = await page.evaluate(() => scrollY);
     const b = await col(page);
@@ -73,7 +73,7 @@ test.describe('desktop', () => {
   });
 
   test('the veil closes it, and has no box: blurred and shaded on a gradient from the right edge', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await at(page, 'recto'); await page.waitForTimeout(500);
     const b = await col(page);
     await page.mouse.click(b.x + 22, b.y + b.height / 2);
@@ -94,7 +94,7 @@ test.describe('desktop', () => {
   });
 
   test('hold to scrub: the page follows, the name surfaces, the column spreads; Escape puts the page back', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await page.waitForTimeout(600);
     const b = await col(page);
     const x = b.x + 22;
@@ -126,7 +126,7 @@ test.describe('desktop', () => {
   });
 
   test('keyboard: Enter opens with focus on the current name, arrows move, Escape returns to the column', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await at(page, 'eat-map'); await page.waitForTimeout(600);
     await page.locator('#rail .rail-btn').focus();
     await page.keyboard.press('Enter');
@@ -146,7 +146,7 @@ test.describe('phone', () => {
   test.use({ ...phone, deviceScaleFactor: 3 });
 
   test('a tap blooms 44 px rows that fit the screen, out of the thumb\'s column; the veil spans the width', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await at(page, 'photos'); await page.waitForTimeout(600);
     const b = await col(page);
     expect(Math.round(b.width)).toBe(44);
@@ -169,7 +169,7 @@ test.describe('phone', () => {
   });
 
   test('a held finger scrubs; a swipe on the rail still scrolls natively', async ({ page, context }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await page.waitForTimeout(800);
     const cdp = await context.newCDPSession(page);
     const b = await col(page);
@@ -202,7 +202,7 @@ test.describe('phone, no word twice', () => {
   /* round five (round-four critique §3): while a section's own title is on screen, the scrub's big name
      steps back and only the part and the number stay, so "Eat Map" never stands beside "Eat Map" */
   test('the scrub name gives way to the section\'s own title', async ({ page, context }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await page.waitForTimeout(800);
     const cdp = await context.newCDPSession(page);
     const b = await col(page);
@@ -242,7 +242,7 @@ test.describe('phone, no word twice', () => {
 test.describe('reduced motion', () => {
   test.use({ ...desktop, contextOptions: { reducedMotion: 'reduce' } });
   test('the names appear at once and still', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await at(page, 'recto'); await page.waitForTimeout(400);
     const b = await col(page);
     await page.mouse.click(b.x + 22, b.y + b.height / 2);
@@ -277,7 +277,7 @@ for (const [name, vp] of [['desktop', desktop], ['phone', { ...phone, deviceScal
     const tap = async (page: Page, x: number, y: number) => { if (name === 'phone') await page.touchscreen.tap(x, y); else await page.mouse.click(x, y); };
 
     test('the beads leave the rail and become the names\' markers, every name one pitch apart; they go back on close', async ({ page }) => {
-      await page.goto('lab/one/');
+      await page.goto('');
       await at(page, 'english-prep'); await page.waitForTimeout(600);
       const b = await col(page);
       await tap(page, b.x + 22, b.y + b.height * 0.55);
@@ -308,7 +308,7 @@ for (const [name, vp] of [['desktop', desktop], ['phone', { ...phone, deviceScal
     });
 
     test('a name is pressed, carried home and the page travels there, not jumps', async ({ page }) => {
-      await page.goto('lab/one/');
+      await page.goto('');
       await at(page, 'english-prep'); await page.waitForTimeout(600);
       const b = await col(page);
       await tap(page, b.x + 22, b.y + b.height * 0.55);
@@ -328,7 +328,7 @@ for (const [name, vp] of [['desktop', desktop], ['phone', { ...phone, deviceScal
     });
 
     test('the brief\'s project links travel the page to the project', async ({ page }) => {
-      await page.goto('lab/one/');
+      await page.goto('');
       await page.waitForTimeout(800);
       const chip = page.locator('#brief a.chip[href="#eat-map"]');
       const cb = (await chip.boundingBox())!;
@@ -351,7 +351,7 @@ for (const [name, vp] of [['desktop', desktop], ['phone', { ...phone, deviceScal
 test.describe('round six, reduced motion', () => {
   test.use({ ...desktop, contextOptions: { reducedMotion: 'reduce' } });
   test('the brief\'s links go at once', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await page.waitForTimeout(400);
     await page.locator('#brief a.chip[href="#english-prep"]').click();
     await page.waitForTimeout(50);

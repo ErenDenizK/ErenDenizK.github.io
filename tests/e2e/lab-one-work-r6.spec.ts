@@ -1,11 +1,11 @@
 /* Work, round 6 (src/one/work/): the horizontal flow (?work=flow, row S31), the objects preview
    (?objects=glass|line|none, S4), the How it's made plates per project (how.form, S29), the project
-   story's hidden sections (S30) and the 1400 ms open (S8). On /lab/one/ and the static project pages. */
+   story's hidden sections (S30) and the 1400 ms open (S8). On Home and the project pages (/work/<slug>/). */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, phone, PROJECTS } from './helpers';
 
-const HOME = 'lab/one/';
-const page_ = (slug: string) => `lab/one/work/${slug}/`;
+const HOME = '';
+const page_ = (slug: string) => `work/${slug}/`;
 const overflow = (page: Page) => page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
 /** scroll so that project k's block top is at the top of the view (the flow puts project k in front) */
 const toProject = (page: Page, k: number) => page.evaluate((k) => scrollTo({ top: document.querySelectorAll<HTMLElement>('.proj')[k].getBoundingClientRect().top + scrollY, behavior: 'instant' }), k);

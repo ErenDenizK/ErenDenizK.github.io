@@ -5,7 +5,8 @@ import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone, settle } from './helpers';
 
 const OUT = 'tests/shots/';
-const PAGES: [string, string][] = [['home', ''], ['work', 'work/'], ['record', 'record/'], ['about', 'about/'], ['recto', 'work/recto/'], ['eat-map', 'work/eat-map/'], ['404', 'nope/']];
+/* the two-page site (ADR-0019) */
+const PAGES: [string, string][] = [['home', ''], ['record', 'record/'], ['year', 'record/2026/'], ['recto', 'work/recto/'], ['eat-map', 'work/eat-map/'], ['404', 'nope/']];
 
 async function shoot(page: Page, name: string, errors: string[]) {
   await page.screenshot({ path: `${OUT}${name}.png` });
@@ -28,19 +29,19 @@ for (const [size, opts] of [['desktop', desktop], ['tablet', tablet], ['phone', 
       for (const [name, path] of PAGES) {
         await page.goto(path + '?still'); await settle(page, 600);
         await shoot(page, `${size}-${name}`, errors);
-        if (['home', 'work', 'about', 'recto'].includes(name)) {
+        if (['home', 'record', 'recto'].includes(name)) {
           await page.evaluate(() => scrollTo(0, innerHeight * 0.92)); await page.waitForTimeout(400);
           await shoot(page, `${size}-${name}-2`, errors);
         }
       }
     });
-    if (size !== 'phone') test(`focus view at ${size}`, async ({ page }) => {
+    test(`a project opened over Home at ${size}`, async ({ page }) => {
       const errors = watch(page);
-      await page.goto('work/?still'); await settle(page, 600);
-      await page.click('#main a[data-p="english-prep"]'); await settle(page, 1200);
-      await shoot(page, `${size}-focus-english-prep`, errors);
-      await page.evaluate(() => document.getElementById('sheet-scroll')!.scrollTo(0, 640)); await page.waitForTimeout(400);
-      await shoot(page, `${size}-focus-english-prep-2`, errors);
+      await page.goto('?still'); await settle(page, 600);
+      await page.locator('.proj[data-k="1"] .btn').click(); await settle(page, 1800);
+      await shoot(page, `${size}-layer-english-prep`, errors);
+      await page.evaluate(() => document.querySelector<HTMLElement>('.layer')!.scrollTo(0, 640)); await page.waitForTimeout(400);
+      await shoot(page, `${size}-layer-english-prep-2`, errors);
     });
   });
 }
