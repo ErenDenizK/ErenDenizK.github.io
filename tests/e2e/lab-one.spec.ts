@@ -245,6 +245,43 @@ test.describe('the person\'s part, desktop', () => {
     await expect(big).toHaveClass(/is-flipped/);
   });
 
+  test('round six (S35): every close plays one morph, never skipped, and the card shrinks back in it', async ({ page }) => {
+    /* the close's history.back() brought a popstate that closed the view a second time and skipped the
+       first morph, so the card never shrank back; record every view transition and what it animated */
+    await page.addInitScript(() => {
+      const w = window as unknown as { __vt: { skipped: boolean; hero: boolean }[] };
+      w.__vt = [];
+      const d = Document.prototype as Document & { startViewTransition?: (f: () => void) => { ready: Promise<void> } };
+      const orig = d.startViewTransition;
+      if (!orig) return;
+      d.startViewTransition = function (this: Document, f: () => void) {
+        const rec = { skipped: false, hero: false };
+        w.__vt.push(rec);
+        const t = orig.call(this, f);
+        t.ready.then(() => { rec.hero = document.getAnimations().some((a) => ((a.effect as KeyframeEffect | null)?.pseudoElement ?? '').includes('pc-hero')); }, () => { rec.skipped = true; });
+        return t;
+      };
+    });
+    await page.goto(PAGE);
+    const vts = () => page.evaluate(() => (window as unknown as { __vt: { skipped: boolean; hero: boolean }[] }).__vt.slice());
+    const dlg = page.locator('[data-pc-dialog]');
+    const card = page.locator('[data-postcard="1"]');
+    await card.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(600);
+    for (const how of ['close', 'escape', 'dark space'] as const) {
+      await card.locator('.pc-open').click();
+      await expect(dlg).toHaveClass(/settled/);
+      await page.evaluate(() => { (window as unknown as { __vt: unknown[] }).__vt.length = 0; });
+      if (how === 'close') await dlg.locator('[data-pv-close]').click();
+      else if (how === 'escape') await page.keyboard.press('Escape');
+      else await page.mouse.click(12, page.viewportSize()!.height / 2);
+      await expect(dlg).not.toHaveAttribute('open', '');
+      await page.waitForTimeout(900);
+      expect(await vts(), how).toEqual([{ skipped: false, hero: true }]);
+      expect(new URL(page.url()).pathname, how).toMatch(/lab\/one\/$/);
+    }
+  });
+
   test('round four: a postcard press that lands before the large view\'s code loads is kept and opens it', async ({ page }) => {
     await page.goto(PAGE);
     const table = page.locator('[data-pc-table]');
