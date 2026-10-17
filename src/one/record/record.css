@@ -455,6 +455,7 @@ a.pn:active { scale: 0.99; }
   .pn:last-child { text-align: left; justify-items: start; }
 }
 
-/* a year's archive: the year is the page's title; its group keeps the strip and the count but not a second
-   year heading (record-language §3 item 1) */
-.rec-year .y-label h2 { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* a year's archive: the year is the page's title; its group keeps the strip but not a second year heading
+   (record-language §3 item 1), nor a second count: the head already says "8 entries" just above it (round
+   six critique) */
+.rec-year .y-label :is(h2, .y-count) { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
