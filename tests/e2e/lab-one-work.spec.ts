@@ -294,18 +294,20 @@ test.describe('round 3: capsules and cutaway (desktop)', () => {
     await page.keyboard.press('Escape');
   });
 
-  test('how it is made is the cutaway: one slab and one labelled entry per layer, every item kept', async ({ page }) => {
+  /* round 6 (S29): Recto draws its own plate, the column in section (how.form: column); the stack cutaway
+     stays the default form and is drawn by HowMade.astro for any project without a form of its own */
+  test('how it is made is the project\'s plate: one part and one labelled entry per layer, every item kept', async ({ page }) => {
     await page.goto('lab/one/');
     await at(page, 'recto'); await page.waitForTimeout(400);
     await page.locator('#recto .btn').click();
     await expect(page.locator('.layer.settled')).toHaveCount(1);
     await expect(page.locator('.layer .how-crop')).toHaveCount(0);
-    await expect(page.locator('.layer .cut .pl')).toHaveCount(5);
-    await expect(page.locator('.layer .cut-i')).toHaveCount(5);
-    await expect(page.locator('.layer .cut-i .cut-name').first()).toContainText('Browser tab');
-    await expect(page.locator('.layer .cut-items li')).toHaveCount(6);
-    /* the drawing follows the section's progress: closed and undrawn below the view, apart once in view */
-    const hp = () => page.locator('.layer .cut').evaluate((e) => +getComputedStyle(e).getPropertyValue('--hp'));
+    await expect(page.locator('.layer .hm-column .hm-part')).toHaveCount(5);
+    await expect(page.locator('.layer .hm-column .hm-i')).toHaveCount(5);
+    await expect(page.locator('.layer .hm-i .hm-name').first()).toContainText('Browser tab');
+    await expect(page.locator('.layer .hm-items li')).toHaveCount(6);
+    /* the drawing follows the section's progress: unbuilt below the view, standing once in view */
+    const hp = () => page.locator('.layer .hm').evaluate((e) => +getComputedStyle(e).getPropertyValue('--hp'));
     await page.evaluate(() => { const l = document.querySelector('.layer')!; const c = l.querySelector('.p-how')!; l.scrollTop = c.getBoundingClientRect().top + l.scrollTop - innerHeight; });
     await page.waitForTimeout(300);
     const low = await hp();

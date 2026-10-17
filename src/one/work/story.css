@@ -5,7 +5,7 @@
 .sy::before { content: ""; position: absolute; inset: -60px -100px; z-index: -1; pointer-events: none; background: radial-gradient(closest-side, var(--hush), rgb(18 18 20 / 0)); }
 .sy-h { margin: 0 0 var(--s-4); font-weight: 500; }
 /* the statement beat stands apart from the facts above it */
-.sy-vision-wrap, .sy:has(.sy-vision) { margin-top: calc(var(--s-10) + var(--s-4)); }
+.sy:has(.sy-vision) { margin-top: calc(var(--s-10) + var(--s-4)); }
 .sy-n { color: color-mix(in srgb, var(--a1) 72%, var(--ink)); font-variant-numeric: tabular-nums; }
 /* the statement after the hero: the name's display face, large, one line of vision */
 .sy-vision { margin: 0 auto; max-width: 18em; font: 400 clamp(30px, 4.2vw, 46px)/1.15 var(--f-name, var(--f-read)); letter-spacing: -.01em; color: var(--ink); text-wrap: balance; }

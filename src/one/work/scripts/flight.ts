@@ -275,7 +275,8 @@ export function initFlight(sec: HTMLElement): Flight {
     if (warmed.has(p)) return;
     warmed.add(p);
     /* phones never show the side frames (here or in the layer): their pictures stay unfetched */
-    const sel = phoneMq.matches ? '.fl-hero img[loading="lazy"]' : 'img[loading="lazy"]';
+    /* the objects preview's pictures stay unfetched while the switch is off (objects.css) */
+    const sel = phoneMq.matches ? '.fl-hero img[loading="lazy"]' : objectsOn ? 'img[loading="lazy"]' : 'img[loading="lazy"]:not(.fl-obj img)';
     p.stage.querySelectorAll<HTMLImageElement>(sel).forEach((im) => { im.loading = 'eager'; });
     if (phoneMq.matches) { p.sides.forEach((s) => s.classList.add('ready')); return; }
     p.sides.forEach((s) => {
