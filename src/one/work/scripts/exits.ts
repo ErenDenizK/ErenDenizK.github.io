@@ -25,6 +25,10 @@ export function initExits(l: HTMLElement, back: () => void): Exits {
   const inner = l.querySelector<HTMLElement>('.pb-in');
   const fold = () => caps?.classList.add('folded');
   const foldT = window.setTimeout(fold, FOLD_MS);
+  /* a long action ("Open English Prep") leaves the words no room on a phone: the actions squeezed them to
+     "Cl" for the first 4 s (round-five critique). When the words are clipped, the close starts folded. */
+  const words = caps?.querySelector<HTMLElement>('.cap-more-in');
+  if (words && words.scrollWidth > words.clientWidth + 1) fold();
   l.addEventListener('scroll', () => { if (l.scrollTop > 8) fold(); }, passive);
 
   /* ---- the close cursor: over the empty space of the hero's band, a glass disc with the cross ---- */
