@@ -67,14 +67,18 @@ const fill = (root: ParentNode) => platesOf(root).forEach((el) => {
 
 type VT = { finished: Promise<void>; skipTransition(): void };
 /* html.pc-vt holds every group of the morph to the card's own 640 ms (the page's groups default to the
-   900 ms open tempo, which kept the card unresponsive for over a second, row G4) */
+   900 ms open tempo, which kept the card unresponsive for over a second, row G4). Round six (review row
+   S35): it stays while any morph runs; a skipped transition used to remove it under the one that
+   replaced it, so that one ran at the page's tempo. */
+let vtRunning = 0;
 const vt = (f: () => void): VT | null => {
   const d = document as Document & { startViewTransition?: (f: () => void) => VT };
   if (motion() === 'reduced' || !d.startViewTransition) { f(); return null; }
   const html = document.documentElement;
   html.classList.add('pc-vt');
+  vtRunning++;
   const t = d.startViewTransition(f);
-  t.finished.finally(() => html.classList.remove('pc-vt'));
+  t.finished.finally(() => { if (--vtRunning <= 0) { vtRunning = 0; html.classList.remove('pc-vt'); } });
   return t;
 };
 
@@ -182,6 +186,10 @@ export function initPostcards() {
   const turnBtn = dlg.querySelector<HTMLButtonElement>('[data-pv-turn]');
   const cursor = dlg.querySelector<HTMLElement>('[data-pv-cursor]');
   let open: HTMLElement | null = null, busy: VT | null = null, pushed = false, queued = false, foldT = 0, opening = false, eaten = 0, closeQ = false;
+  /* round six (review row S35): every open and close takes a number; only the newest one may run its end
+     handlers. A skipped transition's handlers still run later, and they used to overwrite busy, focus and
+     the open state of the morph that replaced it. */
+  let gen = 0, showing: HTMLElement | null = null;
   const fold = () => caps?.classList.add('folded');
   /* the face toward the viewer turns the card (its button is the live one; the other face is inert) */
   const turnCard = () => stage.querySelector<HTMLButtonElement>('[data-face]:not([inert]) [data-turn]')?.click();
@@ -206,6 +214,8 @@ export function initPostcards() {
     caps?.classList.toggle('folded', wasFolded());
     clearTimeout(foldT);
     foldT = window.setTimeout(fold, FOLD_MS);
+    const g = ++gen;
+    showing = pc;
     busy = vt(() => {
       pc.classList.remove('is-hero');
       pc.classList.add('is-out');
@@ -219,13 +229,19 @@ export function initPostcards() {
       /* a keyboard user hears "Close, button" first (spec v3 §4.2) */
       closeBtn?.focus({ preventScroll: true });
     });
-    const named = () => { stage.querySelector('[data-big-card]')?.classList.remove('is-hero'); settle(); };
-    if (busy) busy.finished.finally(() => { busy = null; named(); }); else named();
+    const named = () => { if (g !== gen) return; stage.querySelector('[data-big-card]')?.classList.remove('is-hero'); settle(); };
+    if (busy) busy.finished.finally(() => { if (g === gen) busy = null; named(); }); else named();
     if (!pushed) { history.pushState({ ...(history.state || {}), postcard: i }, ''); pushed = true; }
   };
   const hide = (fromHistory = false) => {
     const pc = open;
     if (!pc) return;
+    /* round six (review row S35): the view counts as closed from this moment. The close's history.back()
+       brings a popstate 1 to 20 ms later, before the morph's update runs; while open was still set, that
+       popstate called hide() a second time, which skipped this morph (the card never shrank back) */
+    open = null;
+    opening = false;
+    closeQ = false;
     if (busy) { busy.skipTransition(); busy = null; }
     clearTimeout(foldT);
     rememberFold();
@@ -238,6 +254,8 @@ export function initPostcards() {
     if (body) body.style.transform = '';
     big?.classList.remove('is-flipped');
     big?.querySelectorAll<HTMLElement>('[data-face]').forEach((f, k) => { f.style.opacity = k ? '0' : '1'; });
+    const g = ++gen;
+    showing = null;
     busy = vt(() => {
       dlg.close();
       dlg.classList.remove('settled');
@@ -249,9 +267,12 @@ export function initPostcards() {
       pc.classList.remove('is-out');
       pc.classList.add('is-hero');
       raise(cards.indexOf(pc));
-      open = null;
     });
-    const done = () => { pc.classList.remove('is-hero'); busy = null; pc.querySelector<HTMLElement>('.pc-open')?.focus({ preventScroll: true }); };
+    const done = () => {
+      /* a newer open of another card leaves this one's morph name to clear; a newer open of this card owns it */
+      if (g !== gen) { if (showing !== pc) pc.classList.remove('is-hero'); return; }
+      pc.classList.remove('is-hero'); busy = null; pc.querySelector<HTMLElement>('.pc-open')?.focus({ preventScroll: true });
+    };
     if (busy) busy.finished.finally(done); else done();
     if (pushed && !fromHistory) { pushed = false; history.back(); } else pushed = false;
   };

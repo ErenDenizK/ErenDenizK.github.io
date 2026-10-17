@@ -9,8 +9,9 @@
    middle and the node lights. All of it plays backwards on the way up.
    The drops: each line carries a falling light with a comet tail (periods 7.0 s and 5.6 s, independent
    phases; a second, fainter drop on the agents' lane). Each drop runs on into the U and down into the
-   node, which brightens once as it arrives. scripts/tracks.ts measures the route (offset-path) and
-   pauses the drops off screen. This is the chapter's one ambient loop. Still twins: the figure is
+   node, which brightens once as it arrives. scripts/tracks.ts measures the route, draws the drops (the
+   tail is the route itself, so it bends where the head went: round six, review row S25) and pauses
+   them off screen. This is the chapter's one ambient loop. Still twins: the figure is
    drawn and a drop rests at the top of each line.
    Texture: faint rain hairlines in the margins at 0.7x, the brief's rain come back as drops.
    The loom (engraving guide §2.6, review row S28): behind the figure, an engraved Jacquard loom. Its left
@@ -67,9 +68,6 @@ const lanes = tr?.lanes.map((l, j) => ({ ...l, j, a: 0.12 + j * 0.03 })) ?? [];
         </div>
         <div class="tr-meet" aria-hidden="true"><i class="u-l"></i><i class="u-r"></i></div>
         <figcaption class="tr-end"><span class="tr-node" aria-hidden="true"><i class="n0"></i><i class="n1"></i></span><span class="tr-meet-t">{tr.meet}</span></figcaption>
-        <i class="drop d0" aria-hidden="true"></i>
-        <i class="drop d1" aria-hidden="true"></i>
-        <i class="drop d1b" aria-hidden="true"></i>
       </figure>
       {ch.quote && <blockquote class="quote"><p data-lines style="--a: 0.36; --w: 0.16">{ch.quote}</p></blockquote>}
     </div>
@@ -134,33 +132,18 @@ const lanes = tr?.lanes.map((l, j) => ({ ...l, j, a: 0.12 + j * 0.03 })) ?? [];
   /* still twin: a drop rests at the top of each line (the live figure's ::after, held still) */
   .tr-lane::after { content: ""; position: absolute; left: 0; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: var(--lc); box-shadow: 0 0 12px var(--lc), 0 0 2px var(--lc); }
   :global(html.motion) .tracks.routed .tr-lane::after { display: none; }
-  .drop { display: none; position: absolute; pointer-events: none; --c: var(--ink-2); }
-  .d1, .d1b { --c: var(--gold-ink); }
-  /* routed (scripts/tracks.ts): each drop is a 64 px comet travelling its offset path, head first */
-  :global(html.motion) .tracks.routed .drop {
-    display: block; left: 0; top: 0; width: 64px; height: 8px; border-radius: 4px; box-shadow: none;
-    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--c) 35%, transparent) 70%, var(--c) calc(100% - 4px), transparent);
-    offset-rotate: auto; offset-anchor: calc(100% - 4px) 50%; transform-origin: calc(100% - 4px) 50%; offset-distance: 0%; opacity: 0;
-    animation: drop var(--t) linear var(--ph) infinite paused;
-  }
-  :global(html.motion) .tracks.routed .drop::after { content: ""; position: absolute; right: 0; top: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 12px var(--c), 0 0 2px var(--c); }
-  :global(html.motion) .tracks.routed .d0 { offset-path: var(--r0); --t: 7s; --ph: -1.2s; }
-  :global(html.motion) .tracks.routed .d1 { offset-path: var(--r1); --t: 5.6s; --ph: -3.6s; }
-  :global(html.motion) .tracks.routed .d1b { offset-path: var(--r1); --t: 5.6s; --ph: -0.8s; --c: color-mix(in srgb, var(--gold-ink) 55%, transparent); }
-  /* the node brightens once as each drop arrives (the same clock as its drop) */
-  :global(html.motion) .tracks.routed .n0 { animation: node 7s linear -1.2s infinite paused; }
-  :global(html.motion) .tracks.routed .n1 { animation: node 5.6s linear -3.6s infinite paused; }
-  :global(html.motion) .tracks.routed.on :is(.drop, .n0, .n1) { animation-play-state: running; }
-  :global(html.layer-open) .tracks.routed :is(.drop, .n0, .n1) { animation-play-state: paused !important; }
-  /* the fall accelerates down the line and eases into the node; it fades in at the top, and into the node */
-  @keyframes drop {
-    0% { offset-distance: 0%; opacity: 0; animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); }
-    8% { opacity: 1; }
-    86% { opacity: 1; }
-    90% { offset-distance: 100%; opacity: 0; }
-    100% { offset-distance: 100%; opacity: 0; }
-  }
-  @keyframes node { 0%, 84% { opacity: 0; transform: scale(0.6); } 89% { opacity: 1; transform: scale(1.5); } 100% { opacity: 0; transform: scale(1.9); } }
+  /* routed (scripts/tracks.ts, round six, review row S25): the drops are drawn in one SVG over the
+     figure. A drop is a head, a soft halo and a tail made of the route itself (dashes ending at the
+     head), so the tail follows every curve; the node brightens as each drop arrives (the script sets
+     n0 and n1 on the same clock). */
+  .tracks :global(.tr-drops) { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .tracks :global(.tr-route) { fill: none; stroke: none; }
+  .tracks :global(.tr-drop) { --c: var(--ink-2); opacity: 0; }
+  .tracks :global(.tr-drop.d1), .tracks :global(.tr-drop.d1b) { --c: var(--gold-ink); }
+  .tracks :global(.tr-drop path) { fill: none; stroke: var(--c); stroke-linecap: round; stroke-linejoin: round; }
+  .tracks :global(.tr-head) { fill: var(--c); }
+  .tracks :global(.tr-halo) { fill: var(--c); opacity: 0.22; filter: blur(3px); }
+  :global(html:not(.motion)) .tracks :global(.tr-drops) { display: none; }
 
   /* ---------- the quote ---------- */
   .quote { position: relative; margin: var(--s-7) 0 0; padding-left: 28px; max-width: 680px; }
