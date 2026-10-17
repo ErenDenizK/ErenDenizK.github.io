@@ -338,10 +338,14 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
        with the card (--fa, card3d.ts), shown most where the glare falls (--gx, --gy) and rising with
        --glare. At rest it is a trace (about 13 % before the masks); in a lean the spokes sweep across the rings, the way
        light runs round a CD.
+     Round five (review row V23, checked against the owner's words "a CD-like surface or similar; density,
+     not realism; visible on the front too"): the grooves met all three; the colour, at 13 % before the
+     masks, read only in a lean, and a phone has no lean at rest. Its floor rises from 6 % to 10 %, so the
+     rings carry a trace of the foil's colours near the disc's centre on a still card too.
      Reduced motion and no JavaScript: the same layers at their rest values. */
   .idc-tex::before { content: ""; position: absolute; inset: 0; pointer-events: none;
     background: repeating-radial-gradient(circle at 18% 96%, rgb(255 244 230 / 0.035) 0 0.3cqi, rgb(0 0 0 / 0.035) 0.3cqi 0.6cqi, transparent 0.6cqi 0.9cqi); }
-  .idc-cd { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: calc(0.06 + var(--glare, 0.3) * 0.22);
+  .idc-cd { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: calc(0.1 + var(--glare, 0.3) * 0.22);
     background: repeating-conic-gradient(from var(--fa, 150deg) at 18% 96%, #f3b886 0deg, #efb1cb 22deg, #c9d4ff 45deg, #9fe0d0 67deg, #f3b886 90deg);
     -webkit-mask: repeating-radial-gradient(circle at 18% 96%, #000 0 0.3cqi, rgb(0 0 0 / 0.3) 0.3cqi 0.9cqi), radial-gradient(circle at var(--gx, 50%) var(--gy, 26%), #000, rgb(0 0 0 / 0.35) 55%, rgb(0 0 0 / 0.2));
     -webkit-mask-composite: source-in;

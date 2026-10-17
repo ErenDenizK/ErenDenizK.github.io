@@ -30,6 +30,16 @@ html.rail-bloom.rail-on .rail:is(.is-open, :focus-within):not(.is-scrub) .rail-m
 /* a picture under the column hides the beads on touch (rail.css), never while they are in use */
 html.rail-bloom .rail:is(.is-bloom, .is-scrub) .rail-track { opacity: 1; }
 
+/* the give under a press (bloom.ts, --g from 0 to 1 by distance from the press): the beads sink up to
+   3 px toward the edge and shrink to 70 %, then come back on the same ease when the press ends */
+html.rail-bloom .rail .rail-m {
+  translate: calc(var(--g, 0) * 3px) 0; scale: calc(1 - var(--g, 0) * 0.3);
+  transition: width var(--d-2) var(--ease-out), height var(--d-4) var(--spring-ui), margin var(--d-4) var(--spring-ui),
+    border-radius var(--d-2) var(--ease-out), background-color var(--d-2) var(--ease-out),
+    translate 160ms var(--ease-out), scale 160ms var(--ease-out);
+}
+html.rail-bloom .rail.is-press .rail-m { transition-duration: var(--d-2), var(--d-4), var(--d-4), var(--d-2), var(--d-2), 90ms, 90ms; }
+
 /* ---------- hold to scrub: the column breathes open to one --slot per section, on the beads' spring ---------- */
 html.rail-bloom .rail.rail.is-scrub .rail-track { gap: 0; }
 html.rail-bloom .rail.rail.is-scrub .rail-m { margin: calc((var(--slot) - 2px) / 2) 0; }
@@ -163,6 +173,18 @@ html.rail-touch .bl-veil::after {
      sharp, then the section's light */
   text-shadow: 0 0 3px rgb(13 13 15 / 0.7), 0 0 14px rgb(13 13 15 / 0.55), 0 0 26px color-mix(in srgb, var(--a) 40%, transparent);
 }
+/* the section's own title is in view (bloom.ts, echo): the big name steps back and only the part and the
+   section's number stay, set where the name's foot was, so no word stands twice on the screen */
+.bl-tag-n, .bl-tag-g { transition: opacity 180ms var(--ease-out); }
+.bl-tag-o {
+  position: absolute; right: 0; bottom: 2px; white-space: nowrap;
+  font: 500 10.5px / 1 var(--f-sans); letter-spacing: 0.16em; text-transform: uppercase; font-variant-numeric: tabular-nums;
+  color: var(--ink-2); text-shadow: 0 0 3px rgb(13 13 15 / 0.8), 0 0 12px rgb(13 13 15 / 0.6);
+  opacity: 0; translate: 0 4px; transition: opacity 180ms var(--ease-out), translate 220ms var(--ease-out);
+}
+.bl-tag.echo .bl-tag-n, .bl-tag.echo .bl-tag-g { opacity: 0; }
+.bl-tag.echo .bl-tag-o { opacity: 1; translate: 0 0; }
+.bl-tag.quiet .bl-tag-o { display: none; }
 /* a resting mouse: only the name, small, with a halo of ground so it reads over anything */
 .bl-tag.quiet .bl-tag-g { display: none; }
 .bl-tag.quiet .bl-tag-n { font: 400 var(--fs-label) / 1 var(--f-sans); letter-spacing: 0; color: var(--ink-2);
@@ -174,7 +196,7 @@ html.rail-touch .bl-tag-n { font-size: 28px; }
 
 /* reduced motion: the veil and the names arrive at once and still; the thumb has no swell */
 @media (prefers-reduced-motion: reduce) {
-  .bl-veil, .bl-veil > i, .bl-veil::after, .bl-arc, .bl-pool, .bl-tag, .bl-thumb { transition: none; }
+  .bl-veil, .bl-veil > i, .bl-veil::after, .bl-arc, .bl-pool, .bl-tag, .bl-tag > *, .bl-thumb { transition: none; }
   .rail-m.tick { animation: none; }
   html.rail-bloom .rail.rail .rail-t { transition: color 120ms linear; translate: none !important; }
 }
