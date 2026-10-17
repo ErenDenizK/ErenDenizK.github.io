@@ -644,3 +644,57 @@ aligned glass, with the close apart on the left; leaving an enlarged photo or an
 must be clearer (users got stuck), without an ugly big button; the Home Record strip feels pasted
 from outside the new language; the drawings, colours and animations are very good; continue the
 listed next steps. The owner will do the GitHub settings at the computer; remind at the next gap.
+
+### 2026-10-16, evening (model check and re-reading)
+
+Dictated, Turkish. Condensed; recorded on 2026-10-17 from the coverage pass two
+(`docs/research/2026-10-coverage-pass-two.md`, message I).
+
+1. The owner's project view shows the small model. Did the last prompt go to it by mistake? Check
+   which model the last sessions used.
+2. Re-read the last three prompts and the owner's explanations; go over each point, do not only
+   note it.
+3. Work on many branches with agents.
+
+Answer (lead, for the morning report, row V11): the session transcript shows the same main model on
+every assistant turn since 2026-10-08; no turn ran on the small model.
+
+### 2026-10-16, night (answers and new points)
+
+Dictated, Turkish. Every point is a row V1-V10 in `docs/feedback/2026-10-16-lab-one-review.md`.
+Condensed; the owner's words in quotes.
+
+1. HyperFrames: wait. It will certainly be used later, maybe one round per app once everything is
+   done. In-page animation goes well. The owner does not know whether HyperFrames is for in-page
+   animation or for turning it into video.
+2. Other achievements: no rush. The current ones have not appeared although the PRs were merged;
+   unclear why.
+3. English Prep is archived; its old commits are pulled; no change there for now.
+4. The tape-as-spine Record idea may not be bad; the owner tests it in the morning. The
+   project-objects idea was not clear.
+5. The postcard-back drawings look good. "Alttaki yazı bir tık daha açılmış" (the text at the
+   bottom spread, or washed out, a little); the owner never tested on the computer, so maybe a phone
+   problem: measure on the phone too.
+6. The owner is away until about 9-10 in the morning; the work must not stop.
+7. The rail's opened panel looks very ugly in the screenshot. The plain rail at the right is good.
+   The rail needs two more parts: press and hold to drag, and a menu on click that is a showcase.
+   Never a separate drawer or window. A click should feel, "hissiyat olarak" (as a feeling), like
+   touching something alive that grows or reveals from that point: a pressed water drop that
+   spreads lower and wider; a closed palm whose fingers open. The background blur is gradual and
+   natural from the side, not inside a window, to bring the text and the pressed rail forward; above
+   all on phones. The page may not have much text at that moment anyway.
+8. Fonts, taps and motion must be expert, professional and artistic, not a technical feature: every
+   light, colour and motion detail matters; a masterpiece; creative, meticulous, measured.
+9. The new glass looks good. Same glass or different for the bottom capsules and the top
+   Home/Record tab? Real refraction, or would it hurt performance; the GPU on capable devices? The
+   top one's light changes with the aura and feels more like glass; the bottom ones are nicely
+   minimal. Let each take the best of the other; test several versions: "not something I can just
+   say change".
+10. The owner's father found the name's typeface at the top cheap. The owner thinks it is elegant
+    and personal, not product-like. Review all references, portfolios and research again; evaluate
+    candidate typefaces yourself, why and why not; follow the research and the lead's view.
+11. Some questions are still unanswered; the owner answers in the morning after testing the
+    published page.
+12. Keep working through the night: open work first; if nothing is left, research small
+    improvements (no big changes); otherwise iterate the rail. Check again that nothing that turned
+    into a note in earlier messages was left undone; gather everything.
