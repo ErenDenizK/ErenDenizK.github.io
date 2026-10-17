@@ -170,7 +170,7 @@ test.describe('the flight (desktop)', () => {
 
   test('round five (V17): the Eat Map hold is short and never one still picture', async ({ page }) => {
     await page.goto('lab/one/');
-    const hold = await page.locator('#eat-map').evaluate((p) => p.offsetHeight - p.querySelector<HTMLElement>('.fl-stage')!.offsetHeight);
+    const hold = await page.locator('#eat-map').evaluate((p: HTMLElement) => p.offsetHeight - p.querySelector<HTMLElement>('.fl-stage')!.offsetHeight);
     /* spec v3 §9.2: 300 px shorter than the half view of round 2 (450 px at 900 px), never under 120 px */
     expect(hold).toBeGreaterThanOrEqual(120);
     expect(hold).toBeLessThanOrEqual(0.5 * 900 - 300 + 1);
