@@ -433,6 +433,7 @@ html:not(.fine) .cap-lb { margin-right: 16px; }
 html:not(.fine) .cap-kbd { display: none; }
 .caps.folded .cap-more { grid-template-columns: 0fr; }
 .caps.folded .cap-more-in { opacity: 0; }
+.caps.fold-now .cap-more, .caps.fold-now .cap-more-in { transition: none; }
 /* the pull ring: drawn around the cross as a finger pulls the layer toward its close point */
 .cap-ring { position: absolute; inset: 0; width: 100%; height: 100%; rotate: -90deg; pointer-events: none; overflow: visible; }
 .cap-ring circle { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: var(--pull, 0) 100; opacity: calc(var(--pull, 0) * .05); }
