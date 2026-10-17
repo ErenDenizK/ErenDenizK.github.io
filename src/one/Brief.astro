@@ -16,9 +16,10 @@
    the lede and the rows below it on the engraved platform, quietened under the words.
 
    Arrival (html.motion; the study's clock): the grey print is there at first paint (it is the LCP), the
-   name sharpens in, the lede and rows rise by 0.9 s, the engraving radiates from the vanishing point
-   (SignalPlate), the frame draws from 0.9 s, the signal lights at 2.3 s, and the colour opens from the
-   signal over the grey print (2.4 to 4.6 s). Every entrance fills backwards only, so nothing waits.
+   name sharpens in, the construction drawing (the scaffold group) stands from first paint, the lede and
+   rows rise by 0.9 s, the other groups radiate from the vanishing point (SignalPlate), the frame draws
+   from 0.6 s, the signal lights at 1.4 s, and the colour opens from the signal over the grey print (1.5
+   to 3.5 s), so the first three seconds hold the whole arrival. Every entrance fills backwards only, so nothing waits.
    Handover into Work (a pure function of the section's --sp, scene.css, so it reverses on the way up):
    the frame and the words lift away, the colour drains back into the signal, the signal turns Recto's
    green, the engraving's structure fades and leaves its floor, and the stage lags the page.
@@ -119,7 +120,7 @@ const sizes = '(min-width: 700px) 75vh, 100vw';
   .photo { position: absolute; z-index: 1; left: var(--pl); top: var(--pt); width: var(--pw); height: var(--ph); margin: 0; overflow: hidden;
     box-shadow: 0 0 0 1px rgb(255 255 255 / 0.07), 0 30px 120px -30px rgb(40 70 200 / 0.45); }
   .photo img, .photo picture { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
-  .photo .print { filter: grayscale(1) brightness(0.6) contrast(1.06); }
+  .photo .print { filter: grayscale(1) brightness(0.72) contrast(1.08); }
   /* the dusk the camera saw: the sky deepened toward the top, so the words read on it */
   .dusk { position: absolute; inset: 0; pointer-events: none;
     background: linear-gradient(rgb(6 10 30 / 0.7), rgb(6 10 30 / 0.5) 32%, rgb(6 10 30 / 0.08) 58%, rgb(6 10 30 / 0.2)); }
@@ -156,6 +157,13 @@ const sizes = '(min-width: 700px) 75vh, 100vw';
   .note { display: block; font: italic 400 var(--fs-h3) / 1.25 var(--f-serif); letter-spacing: -0.01em; color: var(--ink-2); text-wrap: balance; }
   .place { display: block; margin-top: var(--s-2); font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); }
 
+  /* a short desktop window: the frame tightens so it still ends above the signal (58.7 % of the height) */
+  @media (min-width: 700px) and (max-height: 799.98px) {
+    .brief-in { top: 84px; padding-block: 22px 20px; }
+    .lede { margin-top: var(--s-3); }
+    .rows { margin-top: var(--s-4); gap: var(--s-2); }
+  }
+
   /* ---------- the phone: the photograph under the bar, the name in its sky ---------- */
   @media (max-width: 699.98px) {
     /* the stage rises by the plate's 16.41vw, so the photograph starts at the top of the screen, under the
@@ -190,15 +198,18 @@ const sizes = '(min-width: 700px) 75vh, 100vw';
 
   /* ---------- arrival ---------- */
   :global(html.motion) .name { animation: name-in 760ms var(--ease-out) 60ms backwards; }
-  @keyframes name-in { from { opacity: 0.6; letter-spacing: 0.01em; filter: blur(3px); } }
+  @keyframes name-in { from { opacity: 0.75; letter-spacing: 0.008em; filter: blur(2px); } }
   :global(html.motion) [data-in] { animation: brief-in 900ms var(--ease-out) var(--d) backwards; }
   @keyframes brief-in { from { opacity: 0; translate: 0 12px; } }
-  :global(html.motion) .frame-line { animation: frame-in 1400ms var(--ease-draw) 900ms backwards; }
+  :global(html.motion) .frame-line { animation: frame-in 1400ms var(--ease-draw) 600ms backwards; }
   @keyframes frame-in { from { clip-path: inset(0 50% 100% 50%); } 55% { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 -100vh 0); } }
-  :global(html.motion) .sig { animation: sig-on 700ms var(--spring, cubic-bezier(0.34, 1.56, 0.64, 1)) 2300ms backwards; }
+  :global(html.motion) .sig { animation: sig-on 700ms var(--spring, cubic-bezier(0.34, 1.56, 0.64, 1)) 1400ms backwards; }
   @keyframes sig-on { from { scale: 0; opacity: 0; } }
+  /* the construction drawing (the brief's since round one) is there at first paint: the first frame is
+     already a composition, and the other groups radiate out of it */
+  :global(html.motion) .stage :global(.sp-g[data-group="scaffold"]) { animation: none; -webkit-mask: none; mask: none; }
   /* the colour opens from the signal over the grey print, then the drain on the way to Work takes it back */
-  :global(html.motion) .photo { animation: resolve 2200ms cubic-bezier(0.6, 0, 0.3, 1) 2400ms backwards; }
+  :global(html.motion) .photo { animation: resolve 2000ms cubic-bezier(0.6, 0, 0.3, 1) 1500ms backwards; }
   @property --open { syntax: '<number>'; inherits: true; initial-value: 1; }
   @keyframes resolve { from { --open: 0; } to { --open: 1; } }
   :global(html.motion) .colour { clip-path: circle(calc(150% * var(--open) * (1 - clamp(0, (var(--hand) - 0.05) / 0.35, 1))) at var(--sx) var(--sy)); }

@@ -220,6 +220,34 @@ All content is centred on the page axis. Desktop and phone differ where noted [O
 
 ### 3.2 The brief (PART A)
 
+**Round 6 (2026-10-17, rows S32 and S33): the first screen is the brief on the Bostancı plate.** This
+note replaces the layout and the plate below; the text rules (the name, the lede, the three rows and
+their sources) are unchanged. Source: the first-screen study's comp A, "The signal". Code:
+`src/one/Brief.astro` (layout, arrival, handover) and `src/one/SignalPlate.astro` (the engraving).
+
+- Desktop: the Bostancı photograph is whole, 3:4 and the full view height. Its left edge is 21.278svh
+  left of the page axis, so its vanishing point and its red signal sit on the axis. The first-screen
+  engraving is drawn in the photograph's camera and continues it to both edges; it fades at its sides
+  and its lower edge. A hairline frame (640 px) holds the brief on the axis above the signal, and a
+  thread hangs from the frame to the signal. The photograph's note and place stand left of it,
+  bottom-aligned. On windows under 800 px tall the frame tightens so it still ends above the signal.
+- Phone: the photograph at full width from the top of the screen, under the glass bar; the name in
+  its sky; the lede and the rows below it on the engraved platform, quietened under the words. All
+  rows fit in 844 px. The note and the place follow the rows.
+- Arrival: the grey print and the construction drawing (the scaffold group: the circle, the horizon,
+  the diagonals of rounds one to five) are there at first paint. The name sharpens in, the lede and
+  rows rise by 0.9 s, the other engraving groups radiate from the vanishing point, the frame draws
+  from 0.6 s, the signal lights at 1.4 s, and the colour opens from the signal over the grey print
+  from 1.5 to 3.5 s.
+- Handover into Work, a pure function of scroll: the frame and the words lift and fade, the colour
+  drains back into the signal, the signal turns Recto's green, the engraving's structure fades and
+  then its floor, and the stage lags the page (16svh on desktop).
+- The chips travel the page to their project (S33, `scripts/travel.ts`, rail-bloom §7).
+- `Plate.astro` and `Bostanci.astro` are no longer placed on Home; their ideas live on in the
+  scaffold group and in the first screen's photograph.
+
+The text below is the round-one to round-five layout, kept as history.
+
 Desktop (comp `first-1440.png`):
 - Column `--w-text` 600 px. The name's top at y 196.
 - H1 the name (`--fs-h2`, Newsreader 500): "Eren Deniz Kuyucaklıoğlu" (`site.name`), one line.
