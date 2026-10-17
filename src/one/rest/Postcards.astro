@@ -190,7 +190,9 @@ const cards = list.map((p, i) => {
     const imgs = [...table.querySelectorAll<HTMLImageElement>('.pc-pic img')];
     table.dataset.pcFade = '';
     for (const im of imgs) {
-      const ok = () => im.closest('.pc-pic')?.classList.add('is-in');
+      /* decoded before it fades in, and so before it is needed (round six critique): a file that was loaded
+         but not decoded showed its tone plate for up to 0.7 s after a rail jump to the photos */
+      const ok = () => { im.decode().catch(() => {}).then(() => im.closest('.pc-pic')?.classList.add('is-in')); };
       if (im.complete && im.naturalWidth) ok(); else im.addEventListener('load', ok, { once: true });
     }
     const early = () => { for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; } };
@@ -520,6 +522,14 @@ const cards = list.map((p, i) => {
   ::view-transition-group(pc-hero) { animation-duration: 640ms; animation-timing-function: var(--ease-path); }
   html.pc-vt::view-transition-group(*), html.pc-vt::view-transition-old(*), html.pc-vt::view-transition-new(*) { animation-duration: 640ms; }
   ::view-transition-old(pc-hero), ::view-transition-new(pc-hero) { height: 100%; object-fit: cover; }
+  /* the dimmed, blurred backdrop comes and goes with the card (round six critique): the page's own rule
+     (work.css) gives the root no animation, so the backdrop appeared and vanished in one frame while the
+     card was still large */
+  html.pc-vt::view-transition-old(root) { animation: one-out 360ms var(--ease-ui) both; }
+  html.pc-vt::view-transition-new(root) { animation: one-in 360ms var(--ease-ui) both; }
+  /* the bar is part of the page in this morph: as its own group it stood sharp above the blur for the whole
+     morph and was blurred in one frame at the end of an open */
+  html.pc-vt .bar, html.pc-vt .bar * { view-transition-name: none !important; }
 
   @media (max-width: 699.98px) {
     .pc-big .big.port { height: auto; width: min(calc(100vw - 32px), calc(76svh * var(--ratio))); }

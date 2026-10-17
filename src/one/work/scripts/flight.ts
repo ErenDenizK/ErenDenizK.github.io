@@ -282,6 +282,13 @@ export function initFlight(sec: HTMLElement): Flight {
     /* the objects preview's pictures stay unfetched while the switch is off (objects.css) */
     const sel = phoneMq.matches ? '.fl-hero img[loading="lazy"]' : objectsOn ? 'img[loading="lazy"]' : 'img[loading="lazy"]:not(.fl-obj img)';
     p.stage.querySelectorAll<HTMLImageElement>(sel).forEach((im) => { im.loading = 'eager'; });
+    /* the hero's screens are decoded ahead too (round six critique): a loaded but undecoded picture is
+       decoded only when it enters the view, and at a steady scroll on a phone the print showed an empty
+       black screen for about 0.7 s */
+    p.stage.querySelectorAll<HTMLImageElement>('.fl-hero .pr-screen img').forEach((im) => {
+      const dec = () => im.decode().catch(() => {});
+      if (im.complete && im.naturalWidth) dec(); else im.addEventListener('load', dec, { once: true });
+    });
     if (phoneMq.matches) { p.sides.forEach((s) => s.classList.add('ready')); return; }
     p.sides.forEach((s) => {
       const im = s.querySelector<HTMLImageElement>('.pr-screen img');
