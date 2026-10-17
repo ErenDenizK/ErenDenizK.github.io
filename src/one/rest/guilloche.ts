@@ -31,7 +31,7 @@ export function rosette({ cx, cy, R, r, d, scale, pens = 5, spread = 0.12, steps
   return out.join('');
 }
 
-/* The rosettes of the person's part, each drawn once into its own SVG file (src/pages/lab/one/guil/
+/* The rosettes of the person's part, each drawn once into its own SVG file (src/pages/guil/
    [name].svg.ts) and shown as an image: inline, the six postcard copies, the two card faces and the
    chapter's rosette made Home's HTML about 270 KB gzip, past the 200 KB first-paint budget (ADR-0006).
    The ink is baked in (--gold-ink); each place sets only size, place and opacity. */

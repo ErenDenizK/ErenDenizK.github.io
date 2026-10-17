@@ -1,10 +1,16 @@
 ---
-/* A year's archive (log.md §6.1): every entry of that year, in the index's rows. */
-import Base from '../../../layouts/Base.astro';
-import Icon from '../../../components/Icon.astro';
-import Foot from '../../../components/Foot.astro';
+/* A year's archive (log.md §6.1; ADR-0019): every entry of that year, in the Record's rows, under the same
+   frontispiece. The year is the page's title, so the group's own year heading is hidden here (the
+   duplicate the round-two study found, record-language §3 item 1). */
+import One from '../../../layouts/One.astro';
+import RecordHead from '../../../one/record/RecordHead.astro';
+import RecordFoot from '../../../one/record/RecordFoot.astro';
+import Foot from '../../../one/Foot.astro';
 import LogList from '../../../components/LogList.astro';
+import { SETS, auraAttr, auraVars } from '../../../one/aura.mjs';
 import { getLog, getProjects, getSite, entryYear, url } from '../../../lib/site';
+import '../../../one/media.css';
+import '../../../one/record/record.css';
 export async function getStaticPaths() {
   const all = await getLog();
   return [...new Set(all.map(entryYear))].map((year) => ({ params: { year }, props: { entries: all.filter((e) => entryYear(e) === year) } }));
@@ -13,14 +19,17 @@ const { entries } = Astro.props as { entries: Awaited<ReturnType<typeof getLog>>
 const { year } = Astro.params;
 const site = await getSite();
 const projects = await getProjects();
+const count = `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}`;
 ---
-<Base title={`The record, ${year}`} tab="record" description={`${site.log.title}: ${entries.length} entries from ${year}.`}>
-  <div class="inner">
-    <header class="vhead">
-      <a class="qlink" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
-      <h1 class="vtitle">{year}</h1>
-    </header>
-    <LogList entries={entries} projects={projects} foldOld={false} />
+<One title={`${site.log.title}, ${year}`} description={`${site.log.title}: ${count} from ${year}.`} tab="record" og="home" page="rec-page rec-year">
+  <div class="rec" data-aura={auraAttr(SETS.record)} data-rail-accent={SETS.record[0]} style={auraVars(SETS.record)}>
+    <RecordHead title={year!} count={count} back={{ href: url('record/'), label: site.log.title }} />
+    <div class="rec-body" id="record">
+      <div class="rec-lead" aria-hidden="true"></div>
+      <LogList entries={entries} projects={projects} foldOld={false} />
+      <RecordFoot />
+    </div>
     <Foot />
   </div>
-</Base>
+  <script>import '../../../one/scripts/record';</script>
+</One>

@@ -39,7 +39,7 @@ const links = [
    face is 500 x 800), and the micro line along the lower edge */
 const guil = ([['idc-a', 84, 700], ['idc-b', 440, 170]] as const).map(([n, x, y]) => {
   const e = BOX[n];
-  return { src: url(`lab/one/guil/${n}.svg`), style: `left: ${((x - e) / 5).toFixed(2)}%; top: ${((y - e) / 8).toFixed(2)}%; width: ${(e / 2.5).toFixed(2)}%; height: ${(e / 4).toFixed(2)}%` };
+  return { src: url(`guil/${n}.svg`), style: `left: ${((x - e) / 5).toFixed(2)}%; top: ${((y - e) / 8).toFixed(2)}%; width: ${(e / 2.5).toFixed(2)}%; height: ${(e / 4).toFixed(2)}%` };
 });
 const city = site.about.chapters.flatMap((c) => c.facts ?? []).find(([key]) => key === 'City')?.[1];
 const micro = [site.mark, k.school, city].filter(Boolean).join(' · ').toUpperCase();
@@ -50,12 +50,12 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
   <svg class="idc-rope" data-card-rope aria-hidden="true" focusable="false">
     <defs>
       <linearGradient id="idc-rope-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="140">
-        <stop offset="0" stop-color="#000" /><stop offset="1" stop-color="#fff" />
+        <stop offset="0" stop-color="#000" /><stop offset="0.3" stop-color="#000" /><stop offset="1" stop-color="#fff" />
       </linearGradient>
       <mask id="idc-rope-mask" maskUnits="userSpaceOnUse" x="-4000" y="-200" width="8000" height="4000">
         <rect x="-4000" y="-200" width="8000" height="4000" fill="url(#idc-rope-fade)" />
       </mask>
-      {/* the lettering leaves the strap's lower part while that part shows its back (card3d.ts sets the stops) */}
+      {/* the lettering fades as the strap turns edge-on and is gone while it shows its back (card3d.ts sets the stops) */}
       <linearGradient id="idc-rope-tg" data-rope-tgrad gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="236">
         <stop offset="0.7" stop-color="#fff" data-rope-tstop /><stop offset="0.72" stop-color="#fff" data-rope-tstop />
       </linearGradient>
@@ -65,10 +65,11 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
       <path id="idc-rope-path" data-rope-path d="M0 0 L0 1" />
     </defs>
     <g mask="url(#idc-rope-mask)">
-      <path class="r-edge" data-rope-up d="M0 0 L0 1" />
-      <path class="r-band" data-rope-up d="M0 0 L0 1" />
-      <path class="r-edge r-low" data-rope-low d="M0 0 L0 1" />
-      <path class="r-band r-low" data-rope-low d="M0 0 L0 1" />
+      {/* the strap as a ribbon of varying width (round six, review row S18): its edge, its woven front and
+          its plain back, filled shapes that card3d.ts redraws each frame */}
+      <path class="r-edge" data-rope-edge d="M0 0" />
+      <path class="r-band" data-rope-front d="M0 0" />
+      <path class="r-band r-back" data-rope-back d="M0 0" />
       <g mask="url(#idc-rope-tmask)">
         <text class="r-text"><textPath href="#idc-rope-path" startOffset="100%" text-anchor="end">{strapText}</textPath></text>
       </g>
@@ -183,11 +184,14 @@ const strapText = Array.from({ length: 14 }, () => site.mark).join(' ');
   .idc-rope { position: absolute; left: 50%; top: calc(-1 * var(--strap)); width: 1px; height: 1px; overflow: visible; display: none; pointer-events: none; }
   :global(.js) .idc.is-rope .idc-rope { display: block; }
   .is-rope .idc-strap { display: none; }
-  .idc-rope :is(use, path) { fill: none; stroke-linecap: butt; stroke-linejoin: round; }
-  .r-edge { --sw: 6.6cqi; stroke: color-mix(in srgb, var(--about) 26%, #15130f); stroke-width: var(--sw); }
-  .r-band { --sw: calc(6.6cqi - 2px); stroke: #1c1915; stroke-width: var(--sw); }
-  /* the strap's lower part, past a half twist: its plain back face, a shade lighter (card3d.ts) */
-  .idc-rope.is-back .r-band.r-low { stroke: color-mix(in srgb, var(--about) 12%, #2a2621); }
+  .idc-rope :is(use, [data-rope-path]) { fill: none; stroke-linecap: butt; stroke-linejoin: round; }
+  /* the ribbon (round six, review row S18): the whole visible strap turns with the card; the twist itself
+     is taken up in its top part, where the strap fades out of the page. The edge is the full width, the
+     front and the back 1 px narrower on each side; the back is the plain face, a shade lighter. */
+  .r-edge, .r-band { stroke: none; }
+  .r-edge { fill: color-mix(in srgb, var(--about) 26%, #15130f); }
+  .r-band { fill: #1c1915; }
+  .r-band.r-back { fill: color-mix(in srgb, var(--about) 12%, #2a2621); }
   /* touch has the rope but no hand on it: the hit stroke must never take a scroll */
   :global(html:not(.fine)) .r-hit { pointer-events: none; }
   .r-text { font: 400 3.9cqi/1 var(--f-display); letter-spacing: 0.32em; fill: color-mix(in srgb, var(--about) 46%, #5f5b55); dominant-baseline: central; }

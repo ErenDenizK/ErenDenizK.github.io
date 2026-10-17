@@ -16,12 +16,18 @@ import { initStepper, type Stepper } from './stepper';
 import { spin } from './loops';
 import { onFirstFrame } from './frame';
 import { initExits, wasFolded, rememberFold, type Exits } from './exits';
+import { fillPlates } from './plates';
 
 type VT = { finished: Promise<void>; updateCallbackDone: Promise<void>; skipTransition(): void };
 const root = document.documentElement;
 const phone = () => matchMedia('(max-width: 699.98px)').matches;
 const canVT = () => typeof (document as unknown as { startViewTransition?: unknown }).startViewTransition === 'function' && motion() === 'full';
-const vtk = () => (/[?&]open=1400\b/.test(location.search) ? 1.55 : 1);
+/* the open tempo (owner, 2026-10-17, row S8): 1400 ms by default, since the owner found the long open
+   elegant; ?open=900 keeps the shorter tempo for side-by-side checks. Every time of the transition is
+   multiplied by this factor (work.css). Read once at load: the open pushes the project's URL, which has no
+   query, so a later read would lose the switch. */
+const VTK = /[?&]open=900\b/.test(location.search) ? 1 : 1.55;
+const vtk = () => VTK;
 const start = (fn: () => void | Promise<void>): VT => (document as unknown as { startViewTransition(f: () => void | Promise<void>): VT }).startViewTransition(fn);
 
 function name(el: Element | null | undefined, n: string) { if (el) (el as HTMLElement).style.viewTransitionName = n; }
@@ -31,6 +37,9 @@ const decode = (img: HTMLImageElement | null, ms = 350) => !img ? Promise.resolv
 export function initOpen(sec: HTMLElement, deck: Flight) {
   let layer: HTMLElement | null = null, open: Proj | null = null, vt: VT | null = null, steps: Stepper | null = null, clipT = 0;
   let rail: Rail | null = null, smoother: { destroy(): void } | null = null, exits: Exits | null = null;
+  /* set from the press that closes until the layer is gone: the history.back() of that press brings a
+     popstate later, which must not close it a second time (and skip its morph) */
+  let closing = false;
   const tpl = (slug: string) => sec.querySelector<HTMLTemplateElement>(`template[data-pres-tpl="${slug}"]`);
 
   /* the block's side of the shared names: the hero frame, its side frames, the texts */
@@ -89,6 +98,8 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     });
     /* the hero must be decoded before the new state is shown: a lazy image would only start loading then */
     l.querySelectorAll<HTMLImageElement>('.hero img').forEach((im) => (im.loading = 'eager'));
+    /* the How it's made plate comes from the project's static page (plates.ts: Home's HTML budget) */
+    fillPlates(l);
     return l;
   }
 
@@ -216,22 +227,30 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     steps?.destroy(); steps = null;
     rail?.destroy(); rail = null;
     smoother?.destroy(); smoother = null;
-    layer?.remove(); layer = null;
+    layer?.remove(); layer = null; closing = false;
     if (open) { open.el.classList.remove('opened'); emit('one:layer-close', open.slug); }
     pauseField(false);
     deck.pause(false);
     pauseTicker(false);
   }
   function closeProject(o: { ua?: boolean } = {}) {
-    if (!layer || !open) return;
+    if (!layer || !open || closing) return;
+    closing = true;
     if (vt) vt.skipTransition();
     rememberFold();
     const p = open, l = layer;
     const done = () => p.btn.focus({ preventScroll: true });
-    if (!canVT() || o.ua) {
+    /* a layer read past its hero screen (round six critique): the shared screen would fly in from above
+       while Home stood empty under it for 250 to 400 ms. Then the layer fades away over Home instead, where
+       the print already stands. */
+    const hero = l.querySelector('[data-vt="shot"]')?.getBoundingClientRect();
+    const far = !!hero && (hero.bottom < 0 || hero.top > innerHeight);
+    if (!canVT() || o.ua || far) {
       if (motion() === 'full' && !o.ua) {
-        l.classList.add('fade-out');
-        setTimeout(() => { if (layer === l) { drop(); done(); } }, 160);
+        l.classList.add('fade-out'); l.classList.toggle('far', far);
+        /* Home's print and texts stand under the fading layer, not after it */
+        if (far) { p.el.classList.remove('opened'); deck.pause(false); pauseTicker(false); pauseField(false); }
+        setTimeout(() => { if (layer === l) { drop(); done(); } }, far ? 320 : 160);
       } else { drop(); done(); }
       return;
     }
@@ -310,7 +329,9 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     else if (n && layer.contains(n)) { e.preventDefault(); next(n.dataset.next!); }
   });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && layer && !e.defaultPrevented) { e.preventDefault(); back(); } });
-  function back() { if ((history.state as { p?: string } | null)?.p) history.back(); else closeProject(); }
+  /* the close starts on the press itself (round six critique: waiting for history.back()'s popstate left
+     the press without an answer for up to 0.6 s on a phone); the popstate that follows finds it closing */
+  function back() { const pushed = !!(history.state as { p?: string } | null)?.p; closeProject(); if (pushed) history.back(); }
   addEventListener('popstate', (e) => {
     const slug = (e.state as { p?: string } | null)?.p;
     const ua = !!(e as PopStateEvent & { hasUAVisualTransition?: boolean }).hasUAVisualTransition;

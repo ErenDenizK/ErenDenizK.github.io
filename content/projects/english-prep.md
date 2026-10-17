@@ -35,6 +35,7 @@ what:
 why:
   quote: I built it for myself and friends sitting the exam.
 how:
+  form: loop
   items:
     - "No build step: plain HTML, CSS and ES modules."
     - Zero runtime dependencies, and no innerHTML.
@@ -53,4 +54,28 @@ learned:
   placeholder: owner to write
 next:
   placeholder: from the roadmap, owner to confirm
+story: lesson
+vision:
+  placeholder: owner to write
+problem:
+  placeholder: owner to write
+audience:
+  placeholder: owner to write
+decisions:
+  placeholder: owner to pick from the material in the comment below
+refuses:
+  placeholder: owner to confirm
+check:
+  placeholder: owner to confirm
 ---
+<!-- Draft material for the project story (round 6, rows S29 and S30). Never rendered: the build
+reads only the front matter. The owner writes the words (S42).
+
+vision / problem (english-prep CLAUDE.md, "Who this is for"): a learner with a real English base and
+no academic foundation: competence without the labels. The app refines; it does not teach from zero.
+problem as before / now (the lesson form): before, a textbook that teaches what you already say; now,
+the labels for what your ear already knows. Owner's words needed.
+check (world.json promise): free, no account, progress stays in your own browser.
+how.process, to confirm (the content pipeline): write, blind review, solve by hand, ship.
+next: archived; Session I complete (owner to confirm the wording).
+-->

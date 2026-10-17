@@ -1,4 +1,4 @@
-// The two-page site's pairings (lab page /lab/one/; design spec §2.4, §2.6, §8.1), measured as their own
+// The two-page site's pairings (Home and the Record since 2026-10-17, ADR-0019; design spec §2.4, §2.6, §8.1), measured as their own
 // theme "one": the tokens of src/one/tokens.css over the house tokens. Rows cover the inks on the night
 // ground, on the paper of the person's part, on each project's paper (world.json ground.frame) and on
 // "ground + aura at 0.08 additive" for every pigment of every aura set (the most light any text block may
@@ -22,7 +22,7 @@ export function oneTheme() {
   for (const m of css.matchAll(/(?:^|\})\s*:root\s*\{([^}]*)\}/g)) {
     for (const d of m[1].matchAll(/(--[\w-]+)\s*:\s*([^;]+);?/g)) overrides[d[1]] = d[2].trim();
   }
-  return { name: 'one', scope: 'one', note: `the two-page site (${ONE_FILE}, lab page /lab/one/)`, overrides };
+  return { name: 'one', scope: 'one', note: `the two-page site (${ONE_FILE}: Home and the Record)`, overrides };
 }
 
 /** A pigment added to the ground at alpha a (plus-lighter in sRGB, as the field paints it). */
@@ -89,6 +89,19 @@ export function onePairs() {
     { where: 'one: signal light', text: 'var(--signal)', on: [G], role: 'nontext' },
     { where: 'one: focus ring', text: 'var(--focus)', on: [G], role: 'nontext' },
     { where: 'one: link underline (ink-4)', text: 'var(--ink-4)', on: [G], role: 'nontext' },
+    // the Record's pages on the night ground (src/one/record/record.css; ADR-0019): what the four-page
+    // house theme measured for the Record, now on the two-page set
+    { where: 'one record: .read, .n-text, .e-title (Newsreader 430, 21)', text: 'var(--read)', on: [G], px: 19, weight: 430, role: 'body' },
+    { where: 'one record: .note-body (Newsreader 430, 23)', text: 'var(--ink)', on: [G], px: 23, weight: 430, role: 'body' },
+    { where: 'one record: links in reading text (#a8d3ff)', text: '#a8d3ff', on: [G], px: 19, weight: 430, role: 'body' },
+    { where: 'one record: .e-dek, .rh-dek, .rec-foot (ink-2)', text: 'var(--ink-2)', on: [G], px: 16, weight: 400, role: 'body' },
+    { where: 'one record: .meta, dates (13 px, ink-3)', text: 'var(--ink-3)', on: [G], px: 13, weight: 400, role: 'label' },
+    { where: 'one record: months (11 px on phones, ink-3)', text: 'var(--ink-3)', on: [G], px: 11, weight: 400, role: 'label' },
+    { where: 'one record: project name (.pj, 13 px)', text: 'var(--p-ink, color-mix(in srgb, var(--p) 86%, var(--ink)))', on: [G], px: 13, weight: 500, role: 'label', each: 'project' },
+    { where: 'one record: release name, version, key line', text: 'var(--p-ink, color-mix(in srgb, var(--p) 88%, var(--ink)))', on: [G], px: 26, weight: 400, role: 'large', each: 'project' },
+    { where: 'one record: "Next:" (one bold word, 600, 16; the house theme measured it as large)', text: 'var(--p-ink, color-mix(in srgb, var(--p) 80%, var(--ink)))', on: [G], px: 16, weight: 600, role: 'large', each: 'project' },
+    { where: 'one record: the spine (line-3)', text: 'var(--line-3)', on: [G], role: 'decor' },
+    { where: 'one record: the tape (record blue at 55 %)', text: 'color-mix(in srgb, var(--record-1) 55%, transparent)', on: [G], role: 'decor' },
   ];
   /* text over the strongest light it may stand on: ground + each pigment of each set at --aura-quiet */
   const sets = [['brief', SETS.brief], ['person', SETS.person], ['record', SETS.record], ...projects().map((p) => [p.id, projectSet(p.accent, p.world)])];

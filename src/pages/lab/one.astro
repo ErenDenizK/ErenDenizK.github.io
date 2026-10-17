@@ -1,24 +1,8 @@
 ---
-/* The two-page site, Home, on its lab page (design spec; owner, 2026-10-15): noindex, linked from
-   nowhere, out of the sitemap (astro.config.mjs filters /lab/). PART A (the shell) places the brief, the
-   Work slot, the person's part and the footer; PART B owns <Work />. Nothing here goes to a live page
-   before the owner has tried it (charter §7). */
-import One from '../../layouts/One.astro';
-import Plate from '../../one/Plate.astro';
-import Brief from '../../one/Brief.astro';
-import Bostanci from '../../one/Bostanci.astro';
-import Work from '../../one/Work.astro';
-import Rest from '../../one/rest/Rest.astro';
-import { getSite, getProjects, url } from '../../lib/site';
-
-const site = await getSite();
-const projects = await getProjects();
-const base = url('lab/one/');
+/* /lab/one/ was the new Home's workbench until it became the site root on 2026-10-17 (review row S38,
+   ADR-0019). Links the owner kept from the review rounds land on Home. Lab switches (?glass=, ?work=)
+   ride along only on Home's own URL. */
+import Redirect from '../../one/Redirect.astro';
+import { url } from '../../lib/site';
 ---
-<One title={`${site.name} (lab: one)`} description={site.description} home={base} tab="home" noindex>
-  <Plate slot="plates" />
-  <Brief />
-  <Bostanci />
-  <Work projects={projects} base={base} />
-  <Rest />
-</One>
+<Redirect to={url()} label="Home" />

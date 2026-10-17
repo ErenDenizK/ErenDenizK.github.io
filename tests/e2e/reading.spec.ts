@@ -1,11 +1,12 @@
 /* Record rows and entries read properly on phones however they are reached (owner's iPhone,
    2026-10-11): a release opened from Home, on Recto's project page, wrapped one word per line in the
    22 px spine column, because the project view's wide-screen grid for rows with a thumbnail outranked
-   the phone grid. Every row's text column must span the list less its spine, on the project pages,
-   the record and an entry's own page, and nothing may scroll sideways. The rows are the fixture build's
+   the phone grid. Every row's text column must span the list less its spine, on the Record, a year's
+   page and an entry's own page, and nothing may scroll sideways. (The four-page project view and its
+   rows went with ADR-0019; a project's page lists its entries as titles, lab-one-work.spec.ts.) The rows are the fixture build's
    (tests/fixtures/log), which gives every project rows of every shape whatever content/log holds. */
 import { test, expect, type Page } from '@playwright/test';
-import { phone, tablet, desktop, fixture, PROJECTS } from './helpers';
+import { phone, tablet, desktop, fixture } from './helpers';
 
 async function rowsReadable(page: Page) {
   const rows = await page.locator('.spine > .entry').evaluateAll((els) => els.map((li) => {
@@ -20,22 +21,20 @@ async function rowsReadable(page: Page) {
 test.describe('reading on a phone', () => {
   test.use({ ...phone, deviceScaleFactor: 3 });
 
-  for (const p of PROJECTS) {
-    test(`project ${p}: its record rows use the full column`, async ({ page }) => {
-      await page.goto(fixture(`work/${p}/`));
-      for (const r of await rowsReadable(page)) expect(r.main, r.slug).toBeGreaterThan(r.list - 40);
-      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
-    });
-  }
-
   test('the record: every row uses the full column', async ({ page }) => {
     await page.goto(fixture('record/'));
     for (const r of await rowsReadable(page)) expect(r.main, r.slug).toBeGreaterThan(r.list - 40);
   });
 
-  test('a release opened from Home reads at full width', async ({ page }) => {
-    await page.goto(fixture('work/recto/'));
-    const row = page.locator('#in-the-record .entry.s-release').first();
+  test('a year\'s page: every row uses the full column', async ({ page }) => {
+    await page.goto(fixture('record/2026/'));
+    for (const r of await rowsReadable(page)) expect(r.main, r.slug).toBeGreaterThan(r.list - 40);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
+  });
+
+  test('a release opened from the Record reads at full width', async ({ page }) => {
+    await page.goto(fixture('record/'));
+    const row = page.locator('.spine .entry.s-release').first();
     await row.scrollIntoViewIfNeeded();
     const w = await row.locator('.r-title, .r-name').first().evaluate((e) => e.getBoundingClientRect().width);
     expect(w).toBeGreaterThan(250);
@@ -49,10 +48,10 @@ test.describe('reading on a phone', () => {
 });
 
 for (const [name, use] of [['tablet', tablet], ['desktop', desktop]] as const) {
-  test(`reading, ${name}: project rows keep their thumbnail beside the text`, async ({ page }) => {
+  test(`reading, ${name}: Record rows keep their thumbnail beside the text`, async ({ page }) => {
     await page.setViewportSize(use.viewport);
-    await page.goto(fixture('work/recto/'));
-    const r = page.locator('#in-the-record .entry.has-thumb').first();
+    await page.goto(fixture('record/'));
+    const r = page.locator('.spine .entry.has-thumb').first();
     const [m, t] = await Promise.all([r.locator('.e-main').boundingBox(), r.locator('.e-thumb').boundingBox()]);
     expect(m!.width).toBeGreaterThan(250);
     expect(t!.x).toBeGreaterThan(m!.x + m!.width - 1);

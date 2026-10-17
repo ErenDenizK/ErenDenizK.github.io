@@ -23,8 +23,16 @@ const filled = (s: z.infer<typeof sectionShape>) => !!(s.text || s.items || s.qu
 const section = sectionShape.refine(filled, 'a section needs text, items, quote or placeholder');
 /* "How it's made" may group its items into the product's layers, drawn as the cutaway on Home (spec v3
    §6): each layer names itself and points at items by their index. It adds no facts of its own. */
+/* Round 6 (rows S29, S30; docs/design/project-story.md): `form` names the plate the How I made section is
+   drawn as (stack: the isometric cutaway, the default for any project; column: one drum column in
+   section; loop: a dial of stations; legend: a map's key). `process` names the steps of making it and who
+   did each. The code knows forms, never products (ADR-0002). */
 const howSection = sectionShape
-  .extend({ layers: z.array(z.object({ name: z.string(), items: z.array(z.number().int().min(0)).min(1) })).min(2).max(6).optional() })
+  .extend({
+    layers: z.array(z.object({ name: z.string(), items: z.array(z.number().int().min(0)).min(1) })).min(2).max(6).optional(),
+    form: z.enum(['stack', 'column', 'loop', 'legend']).default('stack'),
+    process: z.array(z.object({ step: z.string(), by: z.enum(['me', 'agents', 'both']) })).min(2).max(6).optional(),
+  })
   .refine(filled, 'a section needs text, items, quote or placeholder')
   .refine((s) => !s.layers || s.layers.every((l) => l.items.every((i) => i < (s.items?.length ?? 0))), 'a layer points at an item that does not exist');
 
@@ -118,6 +126,25 @@ const projects = defineCollection({
     how: howSection,
     learned: section,
     next: section,
+    /* The project story (round 6, rows S29 and S30; docs/design/project-story.md). Every field is optional
+       and takes { placeholder } until the owner writes it (S42); an unwritten section is left out with its
+       heading, its rail bead and its chapter word. `story` names the order the opened project tells them
+       in: an order, not a product (default; dia: product first, then the story; lesson: told as one of the
+       product's own "X vs Y" contrasts; legend: a short form whose text is a map's key). */
+    story: z.enum(['default', 'dia', 'lesson', 'legend']).default('default'),
+    /** One line: what the world looks like with the product (said after the hero, large). */
+    vision: textOrPlaceholder.optional(),
+    /** What was wrong before; `before` and `now` drive the lesson form's contrast block. */
+    problem: z.union([z.object({ text: z.string().optional(), before: z.string().optional(), now: z.string().optional() })
+      .refine((p) => !!(p.text || (p.before && p.now)), 'a problem needs text, or before and now'), placeholder]).optional(),
+    /** Who it is for, as moments of use: two to four short lines. */
+    audience: z.union([z.object({ cards: z.array(z.object({ line: z.string() })).min(2).max(4) }), placeholder]).optional(),
+    /** Choices with the alternative refused and the reason (shown from two rows). */
+    decisions: z.union([z.array(z.object({ chose: z.string(), over: z.string(), because: z.string(), adr: z.url().optional() })).min(2).max(5), placeholder]).optional(),
+    /** What it will not do, and why. */
+    refuses: z.union([z.object({ items: z.array(z.string()).min(1).max(5) }), placeholder]).optional(),
+    /** A claim the reader can check for themselves, and where. */
+    check: z.union([z.object({ text: z.string(), href: z.url().optional() }), placeholder]).optional(),
     draft: z.boolean().default(false),
   }),
 });

@@ -324,6 +324,31 @@ language, which the owner rejected (R1).** Do not build §6 as written. Amend it
 
 ---
 
+## 5a. The Record page on the new set (built 2026-10-17, ADR-0019; review row S38)
+
+Built in `src/pages/record/`, `src/one/record/RecordHead.astro`, `RecordFoot.astro` and `record.css`.
+
+- **Head**: §6's frontispiece in the same place as on the strip (the recorder centred at 300 px, 176 px
+  at the right on phones, on its dark ground, in engraver C's three engraving files), so the `stage`
+  flight from "The whole record" lands where it stood. The title, dek and count are centred (left on
+  phones, on the spine).
+- **One spine**: the tape leaves the recorder and runs down past the head into the years; each year
+  carries the line on to the next, the oldest fades it out. A short splice on the spine marks each
+  year at the strip's baseline. The per-year hairline of the four-page Record is gone.
+- **Rows**: the strip's grammar (§6.1): one title size (21 / 430), notes printed whole, the release
+  name at `--fs-h2`, marks by shape cutting the spine, the thumbnail beside the row from 1180 px and
+  above the text below. Rows never rise or fade on scroll.
+- **Motion**: one arrival of about three seconds (the reels wind into place, the tape draws, the title
+  rises, the spine runs down, the months fill, the first six marks land), then the reels turn with the
+  page's scroll (a scroll timeline; still where unsupported). Still twins: drawn complete.
+- **Foot**: "How this is written" (`#colophon`, the colophon line from the old About page) and the
+  feed, then the edk footer of Home.
+- **Entries**: the reading rules unchanged, on the new tokens; the project light at the top; the bar,
+  the rail and the Record's aura.
+- §3's defects: the year page's grid and doubled year are fixed (the year is the page title, its group
+  heading is hidden). The droplet is gone, so its dark square and bright frame cannot occur; the
+  `stage` flight still needs a frame check on a real device.
+
 ## 6. The strip on Home (round three, spec v3 §8; rows T6, T8, T20, R1, R2)
 
 Status: built on `/lab/one/` in round three (`src/one/rest/RecordStrip.astro`). It replaces §4.3 and

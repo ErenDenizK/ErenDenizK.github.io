@@ -4,11 +4,11 @@
    the sitemap. */
 import LabShell from '../../one/work/lab/LabShell.astro';
 import Work from '../../one/Work.astro';
-import { getProjects } from '../../lib/site';
+import { getProjects, url } from '../../lib/site';
 const projects = await getProjects();
 ---
 <LabShell title="Work lab">
   <div class="lab-note"><p>Lab · Work · the brief is PART A</p></div>
-  <Work projects={projects} base="/lab/one/" />
+  <Work projects={projects} base={url()} />
   <div class="lab-note lab-note-end"><p>Lab · the rest is PART A</p></div>
 </LabShell>

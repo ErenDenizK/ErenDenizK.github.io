@@ -31,7 +31,7 @@
      colour and an inset glow, not a gradient: both transition, so the light rises instead of snapping on */
   --glass-hover: rgb(255 255 255 / 0.06);
   --glass-hover-glow: inset 0 -10px 14px -8px color-mix(in oklab, var(--a1) 30%, transparent);
-  --glass-rim: linear-gradient(180deg, rgb(255 255 255 / 0.17) 0%, rgb(255 255 255 / 0.035) 34%,
+  --glass-rim: linear-gradient(calc(180deg + var(--g-tilt, 0deg)), rgb(255 255 255 / 0.17) 0%, rgb(255 255 255 / 0.035) 34%,
     rgb(255 255 255 / 0.035) 62%, color-mix(in oklab, var(--a1) 42%, transparent) 100%);
 }
 :is(.tabs, .glass, .pv-glass) { position: relative; }
@@ -42,6 +42,32 @@
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
 }
+
+/* ---------- the liquid motion (review row S15; scripts/glass-motion.ts) ----------
+   The script moves the body (transform) and writes where the light is: --gx/--gy (the specular spot),
+   --gl (its strength: hover .45, a press up to 1), --g-tilt (the rim's bright edge leans toward the
+   pointer, by the rim gradient's angle above), and on the pressed item --ix/--iy (the press point) and
+   --ip (the press light). These layers sit over the body and under the labels: each object and each item
+   is its own stacking group, so z-index -1 stays inside it. */
+html.g-live :is(.tabs, .glass, .pv-glass) { isolation: isolate; }
+html.g-live :is(.tabs, .glass, .pv-glass)::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background:
+    radial-gradient(46% 130% at var(--gx, 50%) var(--gy, 24%), rgb(255 255 255 / 0.15), transparent 72%),
+    radial-gradient(64% 90% at var(--gx, 50%) 120%, color-mix(in oklab, var(--a1) 46%, transparent), transparent 74%);
+  opacity: var(--gl, 0); mix-blend-mode: plus-lighter;
+}
+html.g-live :is(.tabs a, .glass a, .pv-glass button) { position: relative; isolation: isolate; }
+/* the press light: white at the press point, the aura round it, spreading as the item swells */
+html.g-live :is(.tabs a, .glass a, .pv-glass button)::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(80% 160% at var(--ix, 50%) var(--iy, 50%), rgb(255 255 255 / 0.16),
+    color-mix(in oklab, var(--a1) 34%, transparent) 46%, transparent 78%);
+  opacity: var(--ip, 0);
+}
+/* the script plays the press (the components keep a small CSS give for html:not(.g-live)). Reduced
+   motion: no shape change; the press light is a short fade */
+html.still :is(.tabs a, .glass a, .pv-glass button)::after { transition: opacity var(--t-quick) var(--ease-ui); }
 
 /* ---------- now: the round-3 recipe ---------- */
 html[data-glass="now"] { --glass-label-off: var(--ink-3); }

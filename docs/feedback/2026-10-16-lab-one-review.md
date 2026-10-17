@@ -43,6 +43,12 @@ the phone, the Eat Map hold and both filled bands. The frames set V14, V23, V24 
 for the owner's reading; V17, E1 and T26 stay partly. Headless Chromium only. The verdicts are in the
 round-five critique.
 
+Round 6 critique (2026-10-17): the frame-by-frame critic took screenshots and 50-100 ms frame sequences
+at 1440 x 900 and 390 x 844 (DPR 3, touch) of the promoted site: the first screen, a steady scroll, the
+rail, the glass, the card and lanyard, the drop, every project open and close, the flow and objects
+switches, ten photo views, the Record, an entry and the redirects. The S rows say what the frames show.
+Headless Chromium only. The verdicts and the weak points are in the round-six critique.
+
 ## Overall
 
 | Id | The owner said | What it means for the work | Status |
@@ -111,7 +117,7 @@ round-five critique.
 | Id | The owner said | What it means for the work | Status |
 |---|---|---|---|
 | R1 | The Record examples on Home do not match the Record's design language at all. | The Home strip uses the Record's design language. | merged into T20 |
-| R2 | Define the Record page's design language and build to it. The owner likes the Record page a lot, above all its 3D object and its animations. | Write the Record design language from the live Record (keep the recorder object and its motion). | partly |
+| R2 | Define the Record page's design language and build to it. The owner likes the Record page a lot, above all its 3D object and its animations. | Write the Record design language from the live Record (keep the recorder object and its motion). | built (round six: the Record page is rebuilt to `docs/design/record-language.md`, recorder and arrival kept) |
 
 ## Emptiness and decoration
 
@@ -185,7 +191,7 @@ closed (V17 names the unowned leftovers). C3 is answered by T1; H3 is done (the 
 | V1 | HyperFrames: wait; certainly used later, maybe one round per app once everything is done. In-page animation goes well. | T22 deferred to after Home and Record are done. | decided | closed |
 | V2 | Other achievements: no rush. The current ones have not appeared yet; unclear why. | Check why Pull Shark / YOLO did not show (likely the default branch is still `main`); report. | task | built (a report of the likely reasons and the owner's checks) |
 | V3 | English Prep is archived; no change there for now. | T25 closed. | decided | closed |
-| V4 | The tape-as-spine Record idea may not be bad; the owner tests in the morning. The project-objects idea was not clear. | Explain the objects options simply with pictures in the next report. | note | open |
+| V4 | The tape-as-spine Record idea may not be bad; the owner tests in the morning. The project-objects idea was not clear. | Explain the objects options simply with pictures in the next report. | note | superseded by S4 (the objects options are a lab switch) |
 | V5 | The postcard-back drawings look good; the text at the bottom spreads a bit; maybe a phone problem; measure on the phone too. | Fix the postcard back's lower text block on phones; every measurement at 390 as well as 1440. | task | built |
 | V6 | The rail's opened panel looks very ugly in the shot. The plain rail at the right is good. The rail needs two more parts: press-and-hold to drag (scrub), and a menu on click that is a showcase. Never a separate drawer or window. A click should feel like touching something alive that grows or reveals from that point: a water drop pressed spreads lower and wider; a closed palm whose fingers open. The background blur is gradual and natural from the side, not inside a window, to bring the text and the pressed rail forward; above all on phones. Fonts, taps and motion must be expert, professional and artistic, not a technical feature: every light, colour and motion detail matters; a masterpiece; creative, meticulous, measured. | Redesign the rail interaction: hold-to-scrub; a click that blooms from the rail point (no panel box); edge-graded backdrop blur; typographic and motion craft; iterate several versions and judge them frame by frame. | task | built (default drop; the owner judges the variants) |
 | V7 | The new glass looks good. Should the bottom capsules and the top Home/Record tab be the same glass? Different? Real refraction, or would it hurt performance; GPU on capable devices? The top one's light changes with the aura and feels more like glass; the bottom ones are nicely minimal. Let each take the best of the other; test several versions to find the right one. | A glass study: one family for the tab and the capsules; aura-tinted light, minimal body; optional refraction on capable GPUs with a fallback; versions as lab switches with measured cost. | task | built (default A; the owner picks a version) |
@@ -215,3 +221,79 @@ Sixteen rows from the second coverage audit (`docs/research/2026-10-coverage-pas
 | V24 | coverage pass two (A12) | Check the postcard burn-in against "too slow"; keep the small colour detail the owner liked. | task | built (round 5: safelight red, warm grey, colour in 640 ms, 60 ms after the press) |
 | V25 | coverage pass two (D3, V8) | Give the type study the provisional 48/34 px answer: the name's size and weight, not only the face, may be what reads cheap; include size in the switch. | note | open |
 | V26 | coverage pass two (A19) | Dictation inside artifacts: the owner said not to bother if heavy; keep as a note, no work. | note | closed |
+
+## Round 6 (owner, 2026-10-17: answers to the morning sheet and a long brief)
+
+Status values: open, in work, partly, built (waiting for the owner), closed. Kind: task, note, decided, owner question.
+
+### Answers to the morning sheet
+
+| Id | The owner said | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| S1 | Rail opening: drop. When it opens from the side, no dots may stay behind at the side: the dots must move and become part of the new part, so it feels born from the rail and grown out of it, not a new thing opening. Share your view. The current design looks very elegant in the picture. | The beads themselves travel out along the curve and become the markers beside their names; none stays on the rail; they travel back on close. (Lead's view: agreed; it is the missing half of "born from the rail".) | task | built (round six critique: the beads leave the rail and become the markers, 390 and 1440 frames) |
+| S2 | Glass: A. Watch the implementation: the Bostancı section's colour is blue but the glass looks green in the picture. | Check the aura colour each glass takes per section; Bostancı/brief must read blue. | task | built (the bar's glass is blue over the first screen at 1440 and 390) |
+| S3 | Name typeface: Newsreader display cut. | Keep as default; drop the switch later. | decided | closed |
+| S4 | Project objects: option 2, but not fully understood; explain better or let me test: only one picture (option 1) was given and it looked OK. A better preview of options 1 and 2. | Build both as a lab switch (`?objects=glass|line|none`) with real renders, so the owner can test. | task | built (waiting for the owner: `?objects=glass|line|none` renders all three at 1440 and 390) |
+| S5 | Tape as the timeline: nice, keep. | Keep. | decided | closed |
+| S6 | Card photo: layered; only small cut errors, above all at the right shoulder; separate them flawlessly. | Recut the 2.5D layers; the blurred background no longer sticks to the shoulder. | task | built (tilted card at 1440, DPR 2: no blurred part on the right shoulder) |
+| S7 | Postcard back "açılmış": does not remember; the fix is good. | Close V13. | decided | closed |
+| S8 | Caption when enlarged, open 900 ms; did not see the differences; the long animation felt quite elegant. | Keep the caption choice; make 1400 ms the open default, since the owner found the long one elegant. | decided | closed |
+| S9 | iPhone notes come in the next dictation. | Wait. | note | open |
+
+### The brief
+
+| Id | The owner said | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| S10 | On phones the Record's 3D object shows as a white square box, colours inverted, like a render problem. | Find and fix the recorder's phone rendering (blend mode over video on iOS Safari is the first suspect). | task | waiting for the owner (headless phone renders the recorder correctly; an iPhone check is owed) |
+| S11 | Progress is good. | Note. | note | closed |
+| S12 | Phone optimisation may be an issue, but last: first all features, design and animation work and are tuned; then optimise, refactor, only on the owner's manual instruction. Not a task now. | No optimisation or refactor work unless the owner asks; record it. | decided | closed |
+| S13 | The rail: equal spacing between the names when open; now some are very close and some not; it looks cheap; more orderly. | Equal rhythm between bloom labels (and between groups). | task | built (one 40 px pitch between the names at 1440 and 390) |
+| S14 | Clicking a name (e.g. Work): the rail must acknowledge the click inside itself; now it closes without animation and scrolls slowly to Work. | A press state on the chosen label, then an animated close that carries the choice, then the scroll. | task | built (the name is pressed, carried home, the page travels; the browser tap box is removed) |
+| S15 | The glass blocks need animation: hover and press are cheap CSS now. Like Apple's Liquid Glass: like water, a water drop: on hover a slight change of shape; on press grow and shrink; for every glass button; a joyful language; every animation visible, not short and hidden, as long as it does not stutter. | A liquid-glass motion system for all glass buttons (shape, press, release), measured. | task | built (press swells and releases at 390; the hover change at 1440 is subtle) |
+| S16 | The page overall is beautiful; the drawings are nice. | Note. | note | closed |
+| S17 | ID card: the edge of the shoulder is not cut cleanly in 2.5D; a blurred part that should go to the background is joined to the shoulder and turns with it. | Same as S6. | task | built (same as S6) |
+| S18 | Turning the lanyard: it breaks and turns from the middle of the rope; it should turn as a whole from the part above the page (front and back). | The rope pivots from its off-screen top; no visible kink. | task | built (the ribbon turns whole from its off-page top; no kink in 33 ms frames) |
+| S19 | The rope's reactions to motion are good. | Keep. | decided | closed |
+| S20 | Background drawings are very elegant; the moving ones are better than the fixed ones. Only: the moving English Prep and Eat Map drawings run into each other too much: a mess. Shared lines or transitions are fine, but not this much. | Separate the project scenes in motion; controlled overlap only at the handover. | task | built (the English Prep scene has left before Eat Map's rises in the handover stills) |
+| S21 | Eat Map's city drawing behind is very low quality. This is a huge design project; work finely. | Redraw Eat Map's scene. | task | built (waiting for the owner's eye: a market street rising out of its map) |
+| S22 | The park drawing behind the lens photo is nice; the walking man looks like a stick figure. Remove it or make a better illustration (a fully realistic man may be too much). | Remove or redraw the walker. | task | built (the walker is removed) |
+| S23 | The metro and the cat drawings are both very bad: not pleasing, not realistic, imitate the photo at low quality, like a cheap AI line. Rework both completely; think long; special agent flows for the drawings, also to improve the existing ones. | Redraw the metro and the cat backs. | task | partly (both redrawn: the metro cutaway reads well; the cat is still an outline icon on a good sea) |
+| S24 | The owner loves the drawings idea; it must be flawless, artistic, harmonious, with fine craft and many details, well thought and well checked. A large budget: time, agents, everything needed. The Recto temple and English Prep drawings are good (simpler). | A dedicated engraving line with art direction, several illustrators and a reviewer. | task | partly (standing row: the line exists; the owner judges) |
+| S25 | How I work (By hand / With agents) is good on phone and desktop, but the drop does not feel right: its tail is buggy; when the drop turns left the tail snaps 90 degrees. Design a smoother, beautiful drop; work on the drop separately. | Redesign the drop and its tail (continuous path, no snap). | task | built (the drop and its tail follow the route without a snap at 390 and 1440) |
+| S26 | The pattern of the owner's briefs: the idea is good, now work the fine details (drops, drawings). | Note for every lane: refine, do not replace accepted ideas. | note | closed |
+| S27 | The Record part has no drawing behind it; fill it with drawings. | A Record scene. | task | built (an exploded tape transport behind the strip and the Record head; faint by design) |
+| S28 | Behind How I work there is a squared, boxy drawing whose subject cannot be understood; redo it with something good. | Replace the How I work background drawing. | task | built (the loom replaces the boxy plan) |
+| S29 | How I made is very good for every project, but all three are the same design: could each be different, specific to the project? A good start. | Per-project How I made designs. | task | partly (Recto has the column, English Prep the loop; Eat Map shows no How I made section) |
+| S30 | Longer project explanations: vision, why it was made; How I made exists; what else? Look at how the references and the web explain projects; grow the content, not just to grow it: list options, pick the best, build variants and choose the best. | A project-story study and variants (sections, order, depth) per project. | task | partly (the story sections exist and stay hidden until the owner writes them, S42) |
+| S31 | The photos coming up from below while scrolling: good, or would a horizontal, turning, living, cylinder-like flow of flying sheets be better than the vertical stack? Evaluate. | Build a horizontal flow as a lab switch next to today's vertical one and judge it. | task | built (waiting for the owner: `?work=flow` flies the sheets sideways at 1440 and 390) |
+| S32 | The biggest point: every scroll stage improved, but the first impression is very weak: only text, little drawing, a tiny bit of Bostancı at the bottom; it feels half-finished. Screenshot desktop and phone without scrolling: the back is empty, the drawing insufficient, the composition alone is very bad. Content is fine; the design must improve. Look at the Renaissance edition again. | Redesign the first screen's composition (desktop and phone) with the engravings and the photo; options; the content stays. | task | partly (the new composition stands; at 1440 headless the colour arrives as a cut, see the round six critique) |
+| S33 | The buttons on the first screen that go to the projects jump at once; they must travel animated through the page. | Animated in-page travel from the brief's links (the same feel as the rail). | task | built (the brief's links fly a dot to the rail and travel the page) |
+| S34 | Two drawing concepts: Istanbul (the Bosphorus, the Maiden's Tower, different places of Istanbul) for long work; and YTU's Davutpaşa campus, which is very elegant, from reference images. | Two engraving series; ask the owner for Davutpaşa reference photos. | task | partly (Istanbul plates and a provisional Davutpaşa study on `/lab/engravings/` only) |
+| S35 | The photos' animations are good; sometimes the going-back animation does not load when entering or leaving a photo (also by button). Maybe a phone issue. | Find the intermittent missing close animation of the photo view. | task | built (ten opens and closes at 390: every close morphs; the backdrop now fades) |
+| S36 | Behind Recto it is still a bit empty; the lines are nice, but more around it. | Fuller Recto scene. | task | built (a walled precinct round the temple) |
+| S37 | Turn every sentence into a report; gather everything left from earlier messages; nothing left over. | Coverage pass three. | task | open |
+| S38 | Move on to the Record page too. The owner loves the new version (lab/one): drop the old version and work as if this is the product; it has become a real vision. | Promote the new Home to the site's root, retire the old pages with redirects, and build the Record page in the new language. | task | built (Home at the root, redirects and the Record checked at 1440 and 390) |
+| S39 | A new week; a much more flexible budget: use many agents and complex structures; no 2-builder or 4-agent limit; build the system as needed. | Pace rule in CLAUDE.md changes (owner's comment given). | decided | closed |
+| S40 | It is an artistic page: every structure carries an idea, a thought, an effort. | The standard. | note | closed |
+| S41 | Small details left between the big points: close them with the owner's design vision; ask if needed. | The lead closes small gaps. | note | closed |
+| S42 | Texts and content are updated later on the owner's word; now visuals and animations. | Content later. | decided | closed |
+| S43 | Give these drawings a name to refer to them. | Name: "the engravings" (Turkish: "gravürler"). | decided | closed |
+| S44 | Say what research, technique, skill, connection or reference photos are needed for flawless drawings. | Ask the owner (Davutpaşa photos, Istanbul places). | owner question | open |
+| S45 | Check the project files, old prompts, CLAUDE.md and old things; keep the project clean. | Clean-up station this round. | task | partly (the four-page code is removed; the round's docs clean-up is not reviewed) |
+
+### Round 6 additions (owner, 2026-10-17, a second message; information, not a new priority)
+
+| Id | The owner said | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| S46 | Davutpaşa reference photos sent (five). The place meant is the Orta Bahçe: the central courtyard inside the old barracks, a rectangular historic building with trees and paths in the middle; iconic; students spend much time there. | Draw the Davutpaşa engraving of the Orta Bahçe from `docs/research/references/davutpasa/` (references only, never published). | task | partly (provisional study on the lab page) |
+| S47 | Swipe-to-close (photo view, project) was not noticed even by the owner; it catches a bit and is not obvious; partly an optimisation problem. | Make the pull-to-close discoverable and smooth (with S15's motion language). | task | open |
+| S48 | The engravings move while scrolling and have a multi-layer structure: check their motion and depth as carefully as their drawing. | The art review grades each engraving in motion (layer speeds, separation, depth), not only still. | task | partly (separation checked in the handover; layer speeds not graded) |
+| S49 | Performance optimisation may go on in small steps without breaking the flow; big steps are not needed, but performance should improve a little at every stage, or everything tangles. | Revises S12: small, safe performance work in every round; no large refactor without the owner. | decided | closed |
+| S50 | The owner likes the work system; keep looking for improvements to the project and to the workflow, for quality and speed. | Note for the lead. | note | closed |
+
+### Round 6 notes (owner, 2026-10-17, after the round closed)
+
+| Id | The owner said | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| S51 | Test round 6 before any big new work. | Round 7 was stopped before it changed anything; round 6 ships first; round 7 waits for the owner's test. | decided | closed |
+| S52 | Not sure about the first-screen plate from the pictures. For something new and creative the owner has not approved (above all the Home's first screen), first show a quick concept: a rough sketch or a spoken description of the idea in minutes, before an hour of engraving. Fill the page with meaningful things, not lines everywhere that tire the eyes. | New rule: a new creative concept gets a concept sheet (rough sketches, the idea in words) and the owner's yes before full work; refinements of approved pieces go straight on. | decided | closed |

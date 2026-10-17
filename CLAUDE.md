@@ -2,8 +2,8 @@
 
 Eren Deniz Kuyucaklıoğlu's (they/them) personal site at `erendenizk.github.io`: presentation
 first, a public record of continuous work, grown level by level over four years. Since
-2026-10-15 it is moving to two pages, Home and Record, with one shared token set; the live
-four-page site runs until the new Home replaces it and is not the model for new work. Read
+2026-10-17 the two-page site is live: Home (`/`) and the Record (`/record/`), with one shared token
+set (ADR-0019); the four-page site is retired (its old addresses redirect). Read
 "Current intent" in `docs/brief.md` before any work; it is the owner's intent, every line is
 dated, and the newest line wins.
 
@@ -48,8 +48,12 @@ dated, and the newest line wins.
   pushed and are deleted after the lead merges them into `dev`.
 - Every commit names the owner as author (`author.name` / `author.email` in the repo's git
   config) and Claude as the signed committer, with the session's co-author trailer.
-- Pace: research and review up to four agents at a time, builders two. This is a default, not a
-  hard rule: run more when the gain is clear, fewer when the weekly limit is tight.
+- Pace: no fixed agent limit (owner, 2026-10-17): the lead sizes the line to the work, runs
+  agents in parallel where their files do not overlap, and keeps one integrator per merge.
+- Models (owner, 2026-10-17; only 5.5 models): Opus 5.5 for the lead, design, the engravings, studies
+  that decide, the critic and the integrator; Sonnet 5.5 for builders with a settled spec, the
+  archivist and long reads; Haiku 5.5 for searches, inventories and log reading. Effort `medium`; never
+  `xhigh` or `max`. The table, the guards and the metrics: `docs/process/model-routing.md`.
 - English for the site, docs and commits. The owner talks in Turkish, often by dictation:
   read through transcription errors and confirm names.
 - How to ask: every question to the owner comes with a short plain-language brief of the
@@ -73,8 +77,8 @@ dated, and the newest line wins.
   different designs (owner, 2026-10-15); never force one scheme onto both.
 - Never write symbols (arrows, ticks, crosses) as characters: use `tools/icons`. Objects are
   pre-rendered media (ADR-0006); the owner kept pre-rendering on 2026-10-11 (option a). ADR-0007
-  (four tabs, the project sheet) is superseded by the two-page direction; the new routing ADR
-  replaces it.
+  (four tabs, the project sheet) is superseded by ADR-0019 (two pages; a project opens over Home
+  and keeps its address `/work/<slug>/`).
 
 ## Log entries
 

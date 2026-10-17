@@ -144,8 +144,50 @@ Switch with `?bloom=drop|palm|fan`.
   steps, How it's made and Next) would be one argument in `open.ts`, which belongs to the Work lane:
   noted for it, not done here.
 
-## 7. Open
+## 7. Round six (review rows S1, S13, S14, S33; owner 2026-10-17)
+
+The owner chose `drop` and asked for three refinements. The accepted ideas stay; only their missing parts
+were added. Code: `bloom.ts`, `rail.css`, the new `src/one/scripts/travel.ts`; `rail.ts` only gained
+`top(i)` in the `ext` API (where `go(i)` lands). Tests: `lab-one-rail.spec.ts`, "round six".
+
+- Born from the rail (S1). In `drop` the beads themselves travel. Each name's dot starts exactly on its
+  bead, in the bead's shape (scaled from the dot's line, dot or dash), and the bead is hidden in the same
+  frame, so no bead stays on the rail. The path follows the bloom: the dot leaves the rail sideways first,
+  then glides along the arc to its row (16 sampled keyframes, `cubic-bezier(.22, 1, .36, 1)`, 680 ms,
+  delay 30 + 34 d^0.85 ms by distance d from the pressed row). The name grows out of its own dot, leftward
+  and unblurring, from 40 % of the dot's trip (520 ms). On close the names go back into their dots
+  (200 ms) and the dots travel home along the same path (440 ms, `cubic-bezier(.45, 0, .2, 1)`); each
+  bead shows again on the frame its dot lands. `palm` and `fan` keep the round-four motion and leave the
+  beads on the rail. Still twin: the beads are hidden while the names are open, with no travel.
+- Equal rhythm (S13). Every name is exactly one pitch apart (40 px fine, 46 px touch). The 14 / 10 px gaps
+  between the page's parts made pitches of 40 and 54 px side by side, which read as careless. The parts
+  now show as 12 px breaks in the arc line (an SVG mask), so the rhythm is even and the parts still read.
+  The arc's gradient and mask ids are unique per rail, so Home's rail and a project's rail never share one.
+- The chosen name (S14). Press: the name gives (0.96, 4 px toward its dot) and takes its section's light,
+  its dot grows into the lit line with a ring of light leaving it (560 ms), and the other names step back
+  to 42 %. The close starts once the press has been seen for 150 ms. The other names leave first; after
+  110 ms the chosen row rides home along the arc with its dot (640 ms), the name drawing into the dot,
+  and the dot lands on its bead, which swells once in the section's light. The page starts to travel
+  180 ms after the close starts, so the veil clears over a page already moving.
+- Travel (S14, S33). One function, `travel()`: the page is scrolled frame by frame, so every scroll scene
+  on the way plays. Duration clamp(480 + 340 log2(1 + d / vh), 760, 1600) ms; curve
+  `cubic-bezier(.55, 0, .12, 1)`; the target is read again every frame; a wheel, a touch, a key or a press
+  stops it. Its clock is the document timeline, so a slowed timeline slows it with the CSS motion (the
+  frame sequences depend on this). Reduced motion: the page goes at once.
+- The brief's project links (S33). The chip gives (0.93, 560 ms spring), a copy of its dot flies on an
+  arc into the project's bead on the rail (680 ms), the bead swells in the project's colour, and the page
+  travels there from 260 ms, landing where the rail's name would land. The hash follows with
+  `replaceState`; a keyboard press moves focus to the project. Without JavaScript the chip is the anchor.
+- Measured (headless Chromium, software rendering, frame sequences 50 ms apart at 1440 x 900 and 390 x 844,
+  DPR 3): no name is drawn over another in the entrance; the rail is empty from the first frame; English
+  Prep to Photos travels 3,860 px in 1.3 s; the brief's English Prep chip lands on the section at both sizes.
+  Frame intervals during a full chip travel: median 67 ms at 1440, 33 ms at 390, because the software
+  renderer draws the scroll scenes slowly. This must be measured on a real phone (S49).
+
+## 8. Open
 
 - Safari on a real iPhone: the hold under `touch-action: pan-y`, the vibration (iOS has none), and the
   blur layers' cost at DPR 3.
 - The owner judges the three entrances on the published lab page.
+- The owner judges the travel's pace (S14 said the old one was slow) and whether the chip's dot flight
+  should stay once the liquid-glass press (S15) exists.

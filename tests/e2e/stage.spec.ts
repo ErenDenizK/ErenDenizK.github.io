@@ -1,25 +1,26 @@
-/* The Home object on the default path (site audit 2026-10-10 §3-4; ADR-0006 amendment of 2026-10-10):
-   it leans toward a pointer near it and not one across the page, returns to rest when the pointer
-   leaves the window, re-aims after a scroll, settles on an exact frame without turning back, hops
-   from the rest pose when pressed while leaning, the droplet plays at its own rate, and reduced
-   motion keeps the still poster. The lean's state is read from the layer (media.ts, `_seq`), as yaw in
+/* The Record's recorder in its head (site audit 2026-10-10 §3-4; ADR-0006 amendment of 2026-10-10;
+   ADR-0019: the object the owner loves, unchanged on the two-page Record): it leans toward a pointer near
+   it and not one across the page, returns to rest when the pointer leaves the window, re-aims after a
+   scroll, settles on an exact frame without turning back, hops from the rest pose when pressed while
+   leaning, and reduced motion keeps the still poster. (The four-page Home's edk object and its droplet
+   between tabs went with that page; no droplet plays between the two pages.) The lean's state is read from the layer (media.ts, `_seq`), as yaw in
    degrees from the rest pose, so the checks hold for any grid density (2026-10-10: 2° or 1° columns). */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop } from './helpers';
 
 const lean = (page: Page) => page.evaluate(() => {
-  const l = document.querySelector('.media.stage .m-layer:not(.leaving)') as any;
+  const l = document.querySelector('.rh .media .m-layer:not(.leaving)') as any;
   const q = l?._seq;
   const deg = (u: number) => (u * (q.m.cols - 1) - q.m.center.col) * (q.m.stepDeg?.yaw ?? 2);
   return q?.ok ? { u: deg(q.cur.u), tu: deg(q.target.u), centre: 0, exact: q.drawn.exact, on: l.classList.contains('seq-on'), clip: l.classList.contains('clip-on') } : null;
 });
 
-test.describe('Home object, desktop', () => {
+test.describe('the recorder, desktop', () => {
   test.use(desktop);
 
   async function ready(page: Page) {
-    await page.goto('');
-    const box = (await page.locator('.media.stage').boundingBox())!;
+    await page.goto('record/');
+    const box = (await page.locator('.rh .media').boundingBox())!;
     const cx = box.x + box.width / 2, cy = box.y + box.height / 2;
     await page.mouse.move(cx + 40, cy);
     await expect.poll(() => lean(page), { timeout: 20_000 }).not.toBeNull();
@@ -64,7 +65,7 @@ test.describe('Home object, desktop', () => {
     await page.mouse.move(cx - 150, cy, { steps: 6 });
     await expect.poll(async () => (await lean(page))!.u, { timeout: 5000 }).toBeLessThan(-3);
     await page.evaluate(() => {
-      const l = document.querySelector('.media.stage .m-layer:not(.leaving)') as any;
+      const l = document.querySelector('.rh .media .m-layer:not(.leaving)') as any;
       (window as any).__hopAt = null;
       new MutationObserver(() => { if (l.classList.contains('clip-on') && (window as any).__hopAt === null) (window as any).__hopAt = (l._seq.cur.u - 0.5) * 32; }).observe(l, { attributes: true, attributeFilter: ['class'] });
     });
@@ -76,23 +77,16 @@ test.describe('Home object, desktop', () => {
     await expect.poll(async () => (await lean(page))!.clip, { timeout: 8000 }).toBe(false);
     await expect.poll(async () => (await lean(page))!.u, { timeout: 5000 }).toBeLessThan(-2);
   });
-
-  test('the droplet melt plays at its own rate', async ({ page }) => {
-    await page.goto('');
-    /* the manifest is in once the lean has started loading */
-    await expect.poll(() => page.evaluate(() => !!(document.querySelector('.media.stage .m-layer') as any)?._seq), { timeout: 20_000 }).toBe(true);
-    await page.evaluate(() => (window as any).MediaStage.leave());
-    await expect.poll(() => page.evaluate(() => (document.querySelector('.media.stage video.m-drop') as HTMLVideoElement | null)?.playbackRate ?? null), { timeout: 10_000 }).toBe(1);
-  });
 });
 
-test('reduced motion: the Home object is the still poster, no float, no lean', async ({ browser }) => {
+test('reduced motion: the recorder is the still poster, no float, no lean', async ({ browser }) => {
   const ctx = await browser.newContext({ ...desktop, reducedMotion: 'reduce', baseURL: test.info().project.use.baseURL });
   const page = await ctx.newPage();
-  await page.goto('');
-  await page.mouse.move(1200, 380, { steps: 6 });
+  await page.goto('record/');
+  const box = (await page.locator('.rh .media').boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2 + 60, box.y + box.height / 2, { steps: 6 });
   await page.waitForTimeout(2500);
-  const stage = page.locator('.media.stage');
+  const stage = page.locator('.rh .media');
   await expect(stage).not.toHaveClass(/floating/);
   expect(await stage.locator('.m-layer').evaluate((l) => l.getAnimations().length)).toBe(0);
   await expect(stage.locator('.m-lean, video')).toHaveCount(0);

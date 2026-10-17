@@ -18,6 +18,7 @@ import { splitLines } from './lines';
 import { loadArt, type ArtLayer } from './art';
 import { motion } from './bus';
 import { onFirstFrame } from './frame';
+import { setupFlow, type Flow } from './flow';
 
 export interface Proj {
   slug: string; k: number; el: HTMLElement; stage: HTMLElement;
@@ -25,7 +26,9 @@ export interface Proj {
   obj: HTMLElement | null; txt: HTMLElement; title: HTMLElement; btn: HTMLAnchorElement;
   art: HTMLElement | null; layers: ArtLayer[]; tags: HTMLElement[];
   lines: { el: HTMLElement; o: number; mask: boolean }[];
-  stops: SVGGElement[]; route: SVGPathElement | null;
+  stops: SVGGElement[]; route: SVGPathElement[];
+  /** the objects preview (?objects=glass|line): the object beside the hero, and its line twin */
+  objx: HTMLElement | null; objLine: HTMLElement | null;
   short: boolean; top: number; pin: number;
 }
 export interface Flight {
@@ -66,13 +69,14 @@ export function initFlight(sec: HTMLElement): Flight {
       txt: el.querySelector<HTMLElement>('.txt-in')!, title: el.querySelector<HTMLElement>('.w-title')!,
       btn: el.querySelector<HTMLAnchorElement>('.btn')!,
       art: el.querySelector<HTMLElement>('.fl-art'), layers: [], tags: [...el.querySelectorAll<HTMLElement>('.fl-tag')],
-      lines: [], stops: [...el.querySelectorAll<SVGGElement>('.fl-stop')], route: el.querySelector<SVGPathElement>('.fl-route-line'),
+      lines: [], stops: [...el.querySelectorAll<SVGGElement>('.fl-stop')], route: [...el.querySelectorAll<SVGPathElement>('.fl-route-line')],
+      objx: el.querySelector<HTMLElement>('.fl-obj'), objLine: el.querySelector<HTMLElement>('.fl-obj-line'),
       short: el.hasAttribute('data-short'), top: 0, pin: 0,
     };
   });
   let paused = false;
   /* one cache per property, so an unchanged value is never written again */
-  const cache = { transform: new Map<Element, string>(), opacity: new Map<Element, string>(), strokeDashoffset: new Map<Element, string>(), visibility: new Map<Element, string>() };
+  const cache = { transform: new Map<Element, string>(), opacity: new Map<Element, string>(), strokeDashoffset: new Map<Element, string>(), visibility: new Map<Element, string>(), clipPath: new Map<Element, string>() };
   const put = (el: Element, prop: keyof typeof cache, v: string) => {
     const m = cache[prop];
     if (m.get(el) === v) return;
@@ -98,20 +102,23 @@ export function initFlight(sec: HTMLElement): Flight {
   flight.live = true;
   sec.setAttribute('data-live', '');
   initTicker();
+  /* ?work=flow (row S31): the same projects on a turning drum instead of the vertical flight (flow.ts) */
+  const objectsOn = /^(glass|line)$/.test(document.documentElement.dataset.objects ?? '');
+  const flow: Flow | null = document.documentElement.dataset.work === 'flow' ? setupFlow(sec, projects, phoneMq) : null;
 
   /* ---- layout: read on resize, font load and content change only ---- */
   let width = -1;
   function cut() {
     for (const p of projects) {
-      const promise = p.el.querySelector<HTMLElement>('[data-lines]');
+      const promise = p.stage.querySelector<HTMLElement>('[data-lines]');
       const pl = promise ? splitLines(promise) : [];
-      const meta = p.el.querySelector<HTMLElement>('.w-meta .li');
-      const title = p.el.querySelector<HTMLElement>('.w-title .li');
+      const meta = p.stage.querySelector<HTMLElement>('.w-meta .li');
+      const title = p.stage.querySelector<HTMLElement>('.w-title .li');
       p.lines = [
         ...(meta ? [{ el: meta, o: -0.04, mask: true }] : []),
         ...(title ? [{ el: title, o: 0, mask: true }] : []),
         ...pl.map((el, i) => ({ el, o: 0.06 * (i + 1), mask: true })),
-        { el: p.el.querySelector<HTMLElement>('.w-acts')!, o: 0.06 * (pl.length + 1), mask: false },
+        { el: p.stage.querySelector<HTMLElement>('.w-acts')!, o: 0.06 * (pl.length + 1), mask: false },
       ];
     }
     clearCache();
@@ -124,6 +131,7 @@ export function initFlight(sec: HTMLElement): Flight {
       p.top = r.top + sy;
       p.pin = p.el.hasAttribute('data-last') ? Math.max(0, p.el.offsetHeight - p.stage.offsetHeight) : 0;
     }
+    flow?.measure();
     kick();
   }
 
@@ -160,6 +168,11 @@ export function initFlight(sec: HTMLElement): Flight {
     const kp = 1 - Math.exp(-f.dt / 100);
     px += (tx - px) * kp; py += (ty - py) * kp;
     const settling = Math.abs(tx - px) > 0.002 || Math.abs(ty - py) > 0.002;
+    if (flow) {
+      flow.frame({ ...f, vw: innerWidth }, px, py, (p) => p.lines, put);
+      for (const p of projects) if (p.short) loop(p, Math.abs(p.top - y) < 0.6 * vh);
+      return settling;
+    }
 
     for (const p of projects) {
       const u0 = (p.top - y) / vh;
@@ -182,6 +195,14 @@ export function initFlight(sec: HTMLElement): Flight {
       const hz = rz - 1.2 * h;
       put(p.hero, 'transform', `translate3d(0, ${f1(hy - 0.05 * h * vh)}px, 0) perspective(1400px) rotateX(${f2(rx + 4 * h)}deg) rotate(${f2(hz)}deg) skewY(${f2(sk)}deg) scale(${f3(sc)})`);
       if (p.twin) put(p.twin, 'opacity', f3(smooth(0.22, 0.8, au)));
+      /* the object beside the hero (?objects): nearer than the print (1.28), it arrives late and leaves
+         early, leaning a little as it passes; the line twin draws itself upward as it arrives */
+      if (p.objx && objectsOn) {
+        const oy = (1.28 - 1) * u * vh;
+        put(p.objx, 'transform', `translate3d(${f1(-px * 22)}px, ${f1(oy - py * 10)}px, 0) rotate(${f2(-3 + 4 * u + sk * 0.8)}deg)`);
+        put(p.objx, 'opacity', f3(1 - smooth(0.55, 1.05, au)));
+        if (p.objLine) put(p.objLine, 'clipPath', `inset(${f1(100 * smooth(0.08, 0.62, u))}% 0 0 0)`);
+      }
       if (p.short) loop(p, au < 0.6);
 
       /* the side frames: other screens of the same project, dim, mostly outside the view (W5, W6) */
@@ -229,13 +250,17 @@ export function initFlight(sec: HTMLElement): Flight {
          of a view before rest) to the end of the hold, so the route is whole when the torn edge takes the
          view (W7, spec v3 §9.2) */
       if (p.stops.length && p.art) {
-        const n = p.stops.length;
+        /* each route (the desktop drawing's, the phone master's) lights its own places in order */
         const t = clamp((0.35 - u0) / (0.35 + Math.max(pinU, 0.05)));
-        p.stops.forEach((g, i) => {
-          const a = n > 1 ? smooth(i / n - 0.04, (i + 1) / n, t) : t;
-          put(g, 'opacity', f3(0.25 + 0.75 * a));
-        });
-        if (p.route) put(p.route, 'strokeDashoffset', f3(1 - smooth(0.5 / n, 1, t)));
+        for (const rl of p.route) {
+          const set = p.stops.filter((g) => g.ownerSVGElement === rl.ownerSVGElement);
+          const n = Math.max(1, set.length);
+          set.forEach((g, i) => {
+            const a = n > 1 ? smooth(i / n - 0.04, (i + 1) / n, t) : t;
+            put(g, 'opacity', f3(0.25 + 0.75 * a));
+          });
+          put(rl, 'strokeDashoffset', f3(1 - smooth(0.5 / n, 1, t)));
+        }
       }
     }
     return settling;
@@ -254,8 +279,16 @@ export function initFlight(sec: HTMLElement): Flight {
     if (warmed.has(p)) return;
     warmed.add(p);
     /* phones never show the side frames (here or in the layer): their pictures stay unfetched */
-    const sel = phoneMq.matches ? '.fl-hero img[loading="lazy"]' : 'img[loading="lazy"]';
-    p.el.querySelectorAll<HTMLImageElement>(sel).forEach((im) => { im.loading = 'eager'; });
+    /* the objects preview's pictures stay unfetched while the switch is off (objects.css) */
+    const sel = phoneMq.matches ? '.fl-hero img[loading="lazy"]' : objectsOn ? 'img[loading="lazy"]' : 'img[loading="lazy"]:not(.fl-obj img)';
+    p.stage.querySelectorAll<HTMLImageElement>(sel).forEach((im) => { im.loading = 'eager'; });
+    /* the hero's screens are decoded ahead too (round six critique): a loaded but undecoded picture is
+       decoded only when it enters the view, and at a steady scroll on a phone the print showed an empty
+       black screen for about 0.7 s */
+    p.stage.querySelectorAll<HTMLImageElement>('.fl-hero .pr-screen img').forEach((im) => {
+      const dec = () => im.decode().catch(() => {});
+      if (im.complete && im.naturalWidth) dec(); else im.addEventListener('load', dec, { once: true });
+    });
     if (phoneMq.matches) { p.sides.forEach((s) => s.classList.add('ready')); return; }
     p.sides.forEach((s) => {
       const im = s.querySelector<HTMLImageElement>('.pr-screen img');

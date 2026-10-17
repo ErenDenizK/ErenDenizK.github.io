@@ -1,0 +1,71 @@
+---
+/* How it's made as "the loop on the desk" (how.form: loop; round 6, S29; project-story §6.2). The clock
+   from the project's study-window engraving, enlarged into a dial: its stations are the steps of making
+   it (how.process, when the owner has confirmed them) or else the product's layers, in order, clockwise
+   from twelve. The hand sweeps with the scroll; as it reaches a station, that station's numeral takes the
+   next pigment of the product's light (its aura cycles cherry, iris, lagoon) and the station's card does
+   the product's own press and release (0.945, then 1.035, then 1). Under the dial the layers' entries
+   stand as a short list. Everything is a pure function of the section's view progress --hp (how.css);
+   --hp stays 1 without scroll timelines and under reduced motion: the hand at the last station, all lit. */
+import { cut, seg, arc, hatch, type Pt } from '../engrave';
+interface Props { items: string[]; layers?: { name: string; items: number[] }[]; process?: { step: string; by: string }[]; id: string; src?: string }
+const { items, layers, process, id, src } = Astro.props;
+const stations = process?.length ? process.map((p) => ({ name: p.step, by: p.by, items: [] as number[] })) : (layers ?? []).map((l) => ({ name: l.name, by: '', items: l.items }));
+const n = stations.length;
+const W = 440, H = 440, cx = W / 2, cy = 190, R = 128;
+const at = (k: number, rr: number): Pt => { const a = ((k / n) * 360 - 90) * (Math.PI / 180); return [cx + rr * Math.cos(a), cy + rr * Math.sin(a)]; };
+const ink: string[] = [];
+/* the case: a double rim, the inner one lighter; a core shadow on the lower right of the rim's thickness */
+ink.push(cut(arc(cx, cy, R + 14, R + 14, -100, 262, 48), 2.2, 0.4));
+ink.push(cut(arc(cx, cy, R + 4, R + 4, -96, 266, 48), 1.0, 0.4));
+ink.push(cut(arc(cx, cy, R - 10, R - 10, -90, 270, 48), 0.6, 0.5));
+/* sixty minute ticks, twelve hour ticks */
+for (let m = 0; m < 60; m++) {
+  const a = (m * 6 - 90) * (Math.PI / 180), long = m % 5 === 0;
+  const r0 = R - (long ? 14 : 7), r1 = R - 2;
+  ink.push(seg([cx + r0 * Math.cos(a), cy + r0 * Math.sin(a)], [cx + r1 * Math.cos(a), cy + r1 * Math.sin(a)], long ? 1.6 : 0.7, 0.4, 2));
+}
+/* the stand and the desk it rests on, in perspective toward the plate's centre */
+ink.push(cut([[cx - 58, cy + R + 12], [cx - 104, H - 30]], 1.8), cut([[cx + 58, cy + R + 12], [cx + 104, H - 30]], 1.8));
+ink.push(seg([20, H - 30], [W - 20, H - 30], 1.6, 0.1), seg([46, H - 18], [W - 46, H - 18], 0.8, 0.1));
+const shade = hatch(cx - R - 16, cy - R - 16, 2 * R + 32, 2 * R + 32, 60, 3.4, 0.6);
+const ring = `M${cx} ${cy - R - 15}A${R + 15} ${R + 15} 0 1 1 ${cx - 0.1} ${cy - R - 15}ZM${cx} ${cy - R - 3}A${R + 3} ${R + 3} 0 1 0 ${cx + 0.1} ${cy - R - 3}Z`;
+const desk = hatch(20, H - 30, W - 40, 12, 0, 3, 0.5);
+const two = (k: number) => String(k + 1).padStart(2, '0');
+const hand = cut([[0, 10], [0, -R + 30]], 3.2, 0.25);
+const tail = cut([[0, 0], [0, 22]], 2.2, 0.4);
+/* src: in Home's layer the drawing is not in the page (the page's HTML budget): the slot takes the
+   drawing from the project's static page when the layer is built (scripts/plates.ts) */
+---
+<div class="hm hm-loop" style={`--n: ${n}; --h: ${H}px`}>
+  {src ? <div class="hm-art hm-art-slot" data-plate-src={src} style={`aspect-ratio: ${W} / ${H}`} aria-hidden="true"></div> : (
+  <svg class="hm-art" viewBox={`0 0 ${W} ${H}`} width={W} height={H} fill="currentColor" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id={`${id}-desk`}><path d={`M20 ${H - 30}H${W - 20}L${W - 46} ${H - 18}H46Z`} /></clipPath>
+      <clipPath id={`${id}-ring`}><path d={ring} clip-rule="evenodd" /></clipPath>
+      <clipPath id={`${id}-lr`}><path d={`M${cx} ${cy}L${cx + R + 20} ${cy - 40}L${cx + R + 20} ${cy + R + 20}L${cx - 40} ${cy + R + 20}Z`} /></clipPath>
+    </defs>
+    <g class="hm-tone" clip-path={`url(#${id}-lr)`}><path d={shade} clip-path={`url(#${id}-ring)`} /></g>
+    <path class="hm-tone" d={desk} clip-path={`url(#${id}-desk)`} />
+    <path class="hm-ink" d={ink.join('')} />
+    {stations.map((s, k) => {
+      const [x, y] = at(k, R - 34), [lx, ly] = at(k, R + 44);
+      return (
+        <g class="hm-st" style={`--i: ${k}; --c: var(--a${(k % 3) + 1})`}>
+          <circle class="hm-dot" cx={x} cy={y} r="5" />
+          <g transform={`translate(${lx} ${ly})`}><g class="hm-card"><rect x="-16" y="-11" width="32" height="22" rx="3" /><text y="4" text-anchor="middle">{two(k)}</text></g></g>
+        </g>
+      );
+    })}
+    <g transform={`translate(${cx} ${cy})`}><g class="hm-hand"><path d={hand} /><path d={tail} /><circle r="5" /></g></g>
+  </svg>
+  )}
+  <ol class="hm-list hm-list-loop" aria-labelledby={id}>
+    {stations.map((s, k) => (
+      <li class="hm-i" style={`--i: ${k}; --c: var(--a${(k % 3) + 1})`}>
+        <span class="hm-name label"><span class="hm-n" aria-hidden="true">{two(k)}</span>{s.name}{s.by && <span class="hm-by"> · {s.by}</span>}</span>
+        {s.items.length > 0 && <ul class="hm-items">{s.items.map((i) => <li>{items[i]}</li>)}</ul>}
+      </li>
+    ))}
+  </ol>
+</div>

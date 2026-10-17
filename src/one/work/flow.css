@@ -1,0 +1,38 @@
+/* The flow (lab switch ?work=flow; row S31; scripts/flow.ts): the projects on a turning drum. Only with
+   JavaScript and motion, like the flight; without them Work is the same still list. The blocks become
+   spacers one scroll length (--fl-l) apart, and every stage stands in one sticky view (.fl-flow). The
+   stage keeps the flight's composition (hero under the bar, texts under it, the drawing behind); the
+   drum only moves it. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.still)[data-work="flow"] .work[data-flow] { --fl-l: calc(1.1 * var(--sv)); }
+  html.js:not(.still) .work[data-flow] .proj { height: var(--fl-l); }
+  html.js:not(.still) .work[data-flow] .proj[data-last] { height: calc(var(--sv) + var(--hold)); }
+  /* the first spacer climbs under the view instead of the view taking a negative margin: a sticky box's
+     negative bottom margin would let it outstay its section by a whole view */
+  html.js:not(.still) .work[data-flow] .fl-flow ~ .proj[data-k="0"] { margin-top: calc(-1 * var(--sv)); }
+  html.js:not(.still) .work[data-flow] .fl-flow { position: sticky; top: 0; height: var(--sv);
+    z-index: 0; overflow: clip; pointer-events: none; }
+  /* one perspective for the whole drum, its eye at the hero's height, so every sheet turns about the same
+     axis and the far ones shrink toward the same point */
+  html.js:not(.still) .work[data-flow] .fl-stage { position: absolute; inset: 0; height: var(--sv);
+    perspective: 1700px; perspective-origin: 50% calc(var(--htop) + var(--hh) / 2); }
+  html.js:not(.still) .work[data-flow] .fl-hero { transform-style: flat; backface-visibility: hidden; }
+  html.js:not(.still) .work[data-flow] .fl-side { backface-visibility: hidden; width: calc(var(--hw) * .44); }
+  html.js:not(.still) .work[data-flow] .fl-side .pr { --shade: .5; }
+  html.js:not(.still) .work[data-flow] .fl-art { will-change: transform, opacity; }
+  /* the block's own rules, carried by the stage (flow.ts copies the attributes) */
+  html.js:not(.still) .work[data-flow] .fl-stage[data-short] { --hw: min(600px, 46vw, calc((var(--sv) - 400px) * 1.6 + 16px)); }
+  html.js:not(.still) .work[data-flow] .fl-stage[data-short] .fl-art { top: -24%; }
+  html.js:not(.still) .work[data-flow] .fl-stage.opened :is(.fl-hero, .fl-side, .txt-in) { visibility: hidden; }
+  /* the side sheets sit closer to the hero in the flow: they travel beside it on the outer drum */
+  html.js:not(.still) .work[data-flow] .fl-side-r { left: calc(50% + var(--hw) * .1); top: calc(var(--htop) + 10px); transform: none; }
+  html.js:not(.still) .work[data-flow] .fl-side-l { left: calc(50% - var(--hw) * .1 - var(--hw) * .44); top: calc(var(--htop) + var(--hh) * .45); transform: none; }
+
+  @media (max-width: 699.98px) {
+    html.js:not(.still)[data-work="flow"] .work[data-flow] { --fl-l: var(--sv); }
+    html.js:not(.still) .work[data-flow] .fl-stage { perspective: 1100px; }
+    /* a phone frame stands a little smaller in the flow, so its texts fit the one view it has */
+    html.js:not(.still) .work[data-flow] .fl-stage[data-phone] { --hw: 206px; --hh: calc(190px * 844 / 390 + 34px); }
+    html.js:not(.still) .work[data-flow] .fl-stage[data-short] { --hw: calc(100vw - 72px); --hh: calc((var(--hw) - 16px) / 1.6 + 34px); }
+  }
+}

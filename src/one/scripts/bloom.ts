@@ -10,9 +10,12 @@
       sit on one arc that bulges out of the rail there, each name arriving with its own delay, the current
       one lit in its section's light. No box: the page behind blurs on a gradient from the right edge
       (strongest at the rail, nothing at the far side) and darkens with it, so the names come forward.
-      Three entrances (`?bloom=drop|palm|fan`, default drop): drop rises from the point while a pool of
-      light spreads lower and wider; palm sweeps the names open along the arc around one pivot, like
-      fingers opening; fan unfolds them one by one from the point outward.
+      Three entrances (`?bloom=drop|palm|fan`, default drop): in drop the beads themselves leave the rail
+      along the arc and each name grows out of its own bead, while a pool of light spreads lower and wider
+      (round six, S1); palm sweeps the names open along the arc around one pivot, like fingers opening; fan
+      unfolds them one by one from the point outward. Every name stands one pitch apart (S13).
+   3. Choose a name. It gives under the press, the bloom closes carrying it home to its bead, and the page
+      travels there frame by frame (S14, travel.ts).
 
    Keyboard: the column is a button; Enter or Space opens the names with focus on the current one, the
    arrows, Home and End move, Escape closes. Reduced motion (or ?still): the same names appear at once,
@@ -21,6 +24,7 @@
 import type { RailApi } from '../../scripts/rail';
 import { root, reduce, params } from '../../scripts/env';
 import { pauseField } from './bus';
+import { travel, bezier, now, after } from './travel';
 
 type Variant = 'drop' | 'palm' | 'fan';
 const VARIANTS: Variant[] = ['drop', 'palm', 'fan'];
@@ -35,10 +39,20 @@ const FOLLOW = 70;           // ms: the page's time constant behind the scrub th
 const ENTRY = 260;           // ms: the same at the start of a scrub, relaxing to FOLLOW in about 300 ms
 const SLOT = [26, 36];       // the scrub column's pitch per section: least, most
 /** the bloom's geometry, fine pointer and touch */
+/* One pitch for every name (round six, S13: "equal spacing between the names; now some are very close and
+   some not; it looks cheap"). The page's parts no longer open a gap between the names: the arc line breaks
+   for `brk` px between two parts instead, so the rhythm stays even and the parts still read. */
 const G = {
-  fine: { pitch: 40, gap: 14, depth: 76, radius: 640, top: 92, bottom: 32, dotGap: 16, inset: 24 },
-  touch: { pitch: 46, gap: 10, depth: 60, radius: 560, top: 84, bottom: 28, dotGap: 14, inset: 20 },
+  fine: { pitch: 40, brk: 12, depth: 76, radius: 640, top: 92, bottom: 32, dotGap: 16, inset: 24 },
+  touch: { pitch: 46, brk: 12, depth: 60, radius: 560, top: 84, bottom: 28, dotGap: 14, inset: 20 },
 };
+/* The beads' journey (S1: "no dots may stay behind at the side: the dots must move and become part of the
+   new part, so it feels born from the rail"): out along the curve, back along it, and the chosen one
+   carried home with its name (S14). ms. */
+const TRIP = { out: 680, back: 440, carry: 640, press: 150 };
+const glideE = bezier(0.22, 1, 0.36, 1);      // out: leaves fast, settles long (the glide spring's curve)
+const backE = bezier(0.45, 0, 0.2, 1);        // back: gathers, then lands softly on its bead
+const carryE = bezier(0.5, 0, 0.15, 1);
 
 const vibrate = (ms: number) => { try { navigator.vibrate?.(ms); } catch { /* not allowed before a gesture */ } };
 const still = () => reduce() || root.classList.contains('still');
@@ -48,17 +62,27 @@ const ease = (name: string, fb: string) => {
 };
 
 /* Home's rail and an opened project's rail both use this; the root class stays while either lives */
-let live = 0;
+let live = 0, uid = 0;
+
+/** Home's rail, for the brief's project links (travel.ts): the section a target is in, and a dot's flight
+    into that section's bead */
+export interface HomeRail { api: RailApi; index(el: HTMLElement): number; fly(from: HTMLElement, i: number, color: string): void }
+let home: HomeRail | null = null;
+export const homeRail = () => home;
 
 export function bloom(group: (el: HTMLElement) => string | undefined) {
   return (api: RailApi) => {
     const { nav, btn, links, marks, secs } = api;
+    /* a page with fewer than two sections (a Record entry, the 404) has only the plain rail: the beads'
+       column is never placed, so there is nothing to bloom (ADR-0019: the Record's pages share the shell) */
+    if (!nav.parentElement) return { destroy() {} };
     const n = secs.length;
     const ac = new AbortController();
     const sig = { signal: ac.signal };
     live++;
     root.classList.add('rail-bloom');
     nav.dataset.bloom = VARIANT;
+    const id = 'bl' + uid++;
     const groups = secs.map((s) => group(s.el));
     const gstart = groups.map((g, i) => i > 0 && g !== groups[i - 1]);
 
@@ -75,7 +99,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
     svg.setAttribute('class', 'bl-arc');
     const defs = document.createElementNS(NS, 'defs');
     const grad = document.createElementNS(NS, 'linearGradient');
-    grad.id = 'bl-arc-g';
+    grad.id = id + '-g';
     grad.setAttribute('gradientUnits', 'userSpaceOnUse');
     grad.setAttribute('x1', '0'); grad.setAttribute('x2', '0');
     for (const [o, a] of [[0, 0], [0.18, 1], [0.82, 1], [1, 0]]) {
@@ -85,8 +109,13 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       st.setAttribute('stop-opacity', String(a));
       grad.append(st);
     }
-    defs.append(grad);
+    /* the breaks between the page's parts (S13): black bands in a mask over the arc */
+    const mask = document.createElementNS(NS, 'mask');
+    mask.id = id + '-m';
+    mask.setAttribute('maskUnits', 'userSpaceOnUse');
+    defs.append(grad, mask);
     const arcUp = document.createElementNS(NS, 'path'), arcDn = document.createElementNS(NS, 'path');
+    for (const p of [arcUp, arcDn]) { p.setAttribute('stroke', `url(#${id}-g)`); p.setAttribute('mask', `url(#${id}-m)`); }
     svg.append(defs, arcUp, arcDn);
     const pool = document.createElement('i');
     pool.className = 'bl-pool';
@@ -334,25 +363,80 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
     };
 
     /* ---------- tap to bloom ---------- */
-    let open = false, origin = { x: 0, y: 0 }, piv = { x: 0, y: 0 }, sy = 0;
+    let open = false, origin = { x: 0, y: 0 }, piv = { x: 0, y: 0 }, sy = 0, k0 = 0;
+    let arcC = { cx: 0, R: 1, yc: 0 };
     const slots: { x: number; y: number; dx: number }[] = [];
+    const dots = rows.map((li) => li.querySelector('.bl-dot') as HTMLElement);
+    const texts = rows.map((li) => li.querySelector('.rail-t') as HTMLElement);
+    /* the beads leave the rail only in `drop` (the owner's choice, S1); palm and fan keep the round-four motion */
+    const travels = () => VARIANT === 'drop';
+    const stopAll = () => rows.forEach((r, j) => { [r, dots[j], texts[j]].forEach((e) => e.getAnimations().forEach((x) => x.cancel())); });
+    const showBeads = () => marks.forEach((m) => m.style.removeProperty('opacity'));
+
+    /* ---------- the beads' journey (S1, S14) ----------
+       A bead and its name's dot are one thing: the dot starts exactly on its bead, in the bead's shape, and
+       the bead is hidden that same frame. The path follows the bloom: the dot leaves the rail sideways first,
+       then glides along the arc to its row (back: along the arc first, then onto the rail). */
+    /** the bead's centre and shape now (it may have changed while the names were out) */
+    const bead = (j: number) => {
+      const r = marks[j].getBoundingClientRect();
+      const m = marks[j];
+      /* the dot's own shape in the same state (rail.css .bl-dot): a line 3 x 22, a dot 4 x 4, a dash 8 x 2 */
+      const [w, h] = m.classList.contains('on') ? [3, 22] : m.classList.contains('done') ? [4, 4] : [8, 2];
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2, sx: Math.max(0.3, r.width / w), sy: Math.max(0.1, r.height / h) };
+    };
+    const xAt = (y: number) => arcC.cx - Math.sqrt(Math.max(0, arcC.R * arcC.R - (y - arcC.yc) ** 2));
+    /** the point at s (0: the bead, 1: the row) on bead j's path, relative to its row's dot */
+    const at = (j: number, b: ReturnType<typeof bead>, s: number) => {
+      const t = slots[j];
+      const y = b.y + (t.y - b.y) * s;
+      const p = 1 - (1 - Math.min(1, s * 1.8)) ** 2;
+      return { dx: b.x + (xAt(y) - b.x) * p - t.x, dy: y - t.y };
+    };
+    /** keyframes for a trip: `fwd` from the bead out, else from the row home; `E` paces it; `shape` adds the
+        bead's scale at the bead's end; `move` false keeps only the scale (the carried row moves the dot) */
+    const trip = (j: number, fwd: boolean, E: (u: number) => number, shape = true, move = true) => {
+      const b = bead(j), out: Keyframe[] = [];
+      for (let q = 0; q <= 16; q++) {
+        const u = q / 16, s = fwd ? E(u) : 1 - E(u);
+        const pt = at(j, b, s);
+        const g = Math.min(1, s * 2.2);   // the shape turns from the bead's to the dot's in the first part
+        const sx = shape ? b.sx + (1 - b.sx) * g : 1, sy = shape ? b.sy + (1 - b.sy) * g : 1;
+        out.push({ transform: `${move ? `translate(${pt.dx.toFixed(2)}px, ${pt.dy.toFixed(2)}px) ` : ''}scale(${sx.toFixed(3)}, ${sy.toFixed(3)})` });
+      }
+      return out;
+    };
+    /** the arc's breaks between the page's parts (S13) */
+    const breaks = (ys: number[]) => {
+      while (mask.firstChild) mask.firstChild.remove();
+      const rect = (y: number, h: number, fill: string) => {
+        const r = document.createElementNS(NS, 'rect');
+        r.setAttribute('x', '0'); r.setAttribute('width', String(innerWidth));
+        r.setAttribute('y', String(y)); r.setAttribute('height', String(h)); r.setAttribute('fill', fill);
+        mask.append(r);
+      };
+      rect(0, innerHeight, '#fff');
+      const brk = g().brk;
+      ys.forEach((y, j) => { if (gstart[j]) rect((ys[j - 1] + y) / 2 - brk / 2, brk, '#000'); });
+    };
 
     function openAt(y0: number, k: number, keyboard: boolean) {
-      rows.forEach((r) => r.getAnimations().forEach((x) => x.cancel()));
+      stopAll();
+      clearPress();
       open = true;
+      k0 = k;
       sy = api.y();
       hideTag();
       const geo = g();
       const a = axis();
       origin = { x: a.x, y: y0 };
       const vh = innerHeight;
-      /* rows: the pressed section at the press point, the others above and below it, one pitch apart and a
-         gap between the page's parts; the block is moved, whole, to fit between the bar and the bottom */
+      /* rows: the pressed section at the press point, the others above and below it, every one exactly one
+         pitch apart (S13); the block is moved, whole, to fit between the bar and the bottom */
       let pitch = geo.pitch;
-      const gapsAll = gstart.filter(Boolean).length;
       const room = vh - geo.top - geo.bottom;
-      if ((n - 1) * pitch + gapsAll * geo.gap > room) pitch = Math.max(30, (room - gapsAll * geo.gap) / (n - 1));
-      const off = (j: number) => j * pitch + gstart.slice(0, j + 1).filter(Boolean).length * geo.gap;
+      if ((n - 1) * pitch > room) pitch = Math.max(30, room / (n - 1));
+      const off = (j: number) => j * pitch;
       let ys = secs.map((_, j) => y0 + off(j) - off(k));
       const lo = geo.top + pitch / 2, hi = vh - geo.bottom - pitch / 2;
       const shift = ys[0] < lo ? lo - ys[0] : ys[n - 1] > hi ? hi - ys[n - 1] : 0;
@@ -366,7 +450,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       const R = Math.max(geo.radius, (far * far + sag * sag) / (2 * sag));
       const cx = a.x - geo.depth + R;
       piv = { x: cx, y: yc };
-      const xAt = (y: number) => cx - Math.sqrt(Math.max(0, R * R - (y - yc) ** 2));
+      arcC = { cx, R, yc };
       const nr = nav.getBoundingClientRect();
       slots.length = 0;
       rows.forEach((li, j) => {
@@ -387,6 +471,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       arcUp.setAttribute('d', pts(yc, y1));
       arcDn.setAttribute('d', pts(yc, y2));
       grad.setAttribute('y1', String(y1)); grad.setAttribute('y2', String(y2));
+      breaks(ys);
       svg.setAttribute('viewBox', `0 0 ${innerWidth} ${vh}`);
       fx.style.setProperty('--ox', a.x + 'px');
       fx.style.setProperty('--oy', y0 + 'px');
@@ -400,6 +485,8 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       fx.classList.add('on');
       btn.setAttribute('aria-expanded', 'true');
       if (!still()) enter(k);
+      /* the beads are out on the arc now (still: they are there at once): none stays on the rail */
+      if (travels()) marks.forEach((m) => { m.style.opacity = '0'; });
       if (keyboard) links[Math.max(0, api.cur())].focus({ preventScroll: true });
     }
 
@@ -424,16 +511,16 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
         const s = slots[j];
         const t = li.querySelector('.rail-t') as HTMLElement;
         if (VARIANT === 'drop') {
-          /* from the press point: each name rises out of it, its own delay by its distance from the point */
-          const delay = 40 + 30 * dk ** 0.85;
-          /* all the way from the rail, and 70 % of the way from the press height: the names leave the point in
-             order instead of from one pixel, so none is ever drawn over another */
-          const ox = origin.x - s.x, oy = (origin.y - s.y) * 0.7;
-          li.animate([{ transform: `translate(${ox}px, ${oy}px) scale(.5)` }, { transform: 'none' }], { duration: 760, delay, easing: glide, fill: 'backwards' });
-          /* the name is still unseen while the drop leaves the point, so nothing piles up there */
-          li.animate([{ opacity: 0, filter: 'blur(10px)' }, { opacity: 0, filter: 'blur(8px)', offset: 0.16 }, { opacity: 1, filter: 'blur(0)' }],
-            { duration: 560, delay, easing: 'cubic-bezier(.33, 1, .68, 1)', fill: 'backwards' });
-          t.animate([dim, {}], { duration: 900, delay: delay + 120, easing: 'ease-out', fill: 'backwards' });
+          /* the bead itself travels (S1): it leaves the rail from where it stood, nearest the press point first,
+             and glides along the arc to its row; the name then grows out of its own dot, leftward, unblurring,
+             so every name is born from its bead. Delays grow with the distance from the pressed row. */
+          const delay = 30 + 34 * dk ** 0.85;
+          dots[j].animate(trip(j, true, glideE), { duration: TRIP.out, delay, easing: 'linear', fill: 'backwards' });
+          const td = delay + TRIP.out * 0.4;
+          t.style.transformOrigin = '100% 50%';
+          t.animate([{ opacity: 0, transform: 'translateX(22px) scale(.86)', filter: 'blur(6px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }],
+            { duration: 520, delay: td, easing: glide, fill: 'backwards' });
+          t.animate([dim, {}], { duration: 820, delay: td + 80, easing: 'ease-out', fill: 'backwards' });
         } else if (VARIANT === 'palm') {
           /* fingers opening: every name starts folded onto the pressed one and swings open around one pivot
              (the arc's centre), the outer ones last */
@@ -463,28 +550,118 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       if (!root.classList.contains('layer-open')) pauseField(false);
       veil.classList.remove('on');
       fx.classList.remove('on');
-      const done = () => { nav.classList.remove('is-bloom'); rows.forEach((r) => { r.getAnimations().forEach((x) => x.cancel()); r.style.transformOrigin = ''; }); };
+      const done = () => {
+        nav.classList.remove('is-bloom');
+        clearPress();
+        stopAll();
+        rows.forEach((r) => { r.style.transformOrigin = ''; });
+        showBeads();
+      };
       if (focusBtn) btn.focus({ preventScroll: true });
       if (still()) { done(); return; }
-      const outs = rows.map((li, j) => {
-        li.getAnimations().forEach((x) => x.cancel());
-        const s = slots[j];
-        const keep = j === chosen;
-        return li.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translate(${(origin.x - s.x) * 0.3}px, ${(origin.y - s.y) * (keep ? 0 : 0.18)}px) scale(${keep ? 1 : 0.94})` }],
-          { duration: keep ? 340 : 200, delay: keep ? 60 : 0, easing: 'cubic-bezier(.4, 0, 1, 1)', fill: 'forwards' });
-      });
+      stopAll();
+      const outs: Animation[] = [];
+      if (travels()) {
+        /* the names go back into their dots, and the dots travel home along the arc, the farthest from the press
+           point a beat later; each bead shows again the frame its dot lands on it */
+        const dk = (j: number) => Math.abs(j - k0);
+        rows.forEach((li, j) => {
+          if (j === chosen) return;
+          texts[j].style.transformOrigin = '100% 50%';
+          /* from where the name is now (a press has already dimmed it): no from-keyframe */
+          outs.push(texts[j].animate([{ opacity: 0, transform: 'translateX(16px) scale(.9)', filter: 'blur(3px)' }],
+            { duration: 200, easing: 'cubic-bezier(.4, 0, 1, 1)', fill: 'forwards' }));
+          const back = dots[j].animate(trip(j, false, backE), { duration: TRIP.back, delay: 60 + 16 * dk(j) ** 0.85, easing: 'linear', fill: 'forwards' });
+          back.finished.then(() => { if (!open) marks[j].style.removeProperty('opacity'); }, () => {});
+          outs.push(back);
+        });
+        if (chosen >= 0) outs.push(...carry(chosen));
+      } else {
+        rows.forEach((li, j) => {
+          const s = slots[j];
+          const keep = j === chosen;
+          outs.push(li.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: `translate(${(origin.x - s.x) * 0.3}px, ${(origin.y - s.y) * (keep ? 0 : 0.18)}px) scale(${keep ? 1 : 0.94})` }],
+            { duration: keep ? 340 : 200, delay: keep ? 60 : 0, easing: 'cubic-bezier(.4, 0, 1, 1)', fill: 'forwards' }));
+        });
+      }
       /* the names leave on the document timeline; the bloom ends when they have (a reopen cancels them) */
       Promise.all(outs.map((x) => x.finished)).then(() => { if (!open) done(); }, () => {});
     }
 
-    /* choosing a name goes there; the chosen one leaves last */
+    /* S14: the chosen name is carried home. It waits a beat, lit, while the others leave; then the whole row
+       rides back along the arc with its dot, the name drawing into the dot as it goes, and the dot lands on
+       its bead in the bead's shape. The bead swells once in the section's light: the rail has taken the
+       choice, and the page travels there. */
+    function carry(j: number): Animation[] {
+      const li = rows[j];
+      const opts = { duration: TRIP.carry, delay: 110, easing: 'linear', fill: 'forwards' as const };
+      const ride = li.animate(trip(j, false, carryE, false, true), opts);
+      const shape = dots[j].animate(trip(j, false, carryE, true, false), opts);
+      texts[j].style.transformOrigin = '100% 50%';
+      const name = texts[j].animate([
+        { opacity: 1, transform: 'none', filter: 'blur(0)' },
+        { opacity: 1, transform: 'translateX(-2px)', filter: 'blur(0)', offset: 0.3 },
+        { opacity: 0, transform: 'translateX(14px) scale(.62)', filter: 'blur(2px)' },
+      ], { duration: TRIP.carry * 0.72, delay: 110 + TRIP.carry * 0.06, easing: 'cubic-bezier(.45, 0, .65, .3)', fill: 'forwards' });
+      ride.finished.then(() => {
+        if (open) return;
+        const m = marks[j];
+        m.style.removeProperty('opacity');
+        const a = secs[j].a;
+        m.animate([{ scale: '2.2 1.5', backgroundColor: a, boxShadow: `0 0 12px 2px ${a}` }, { scale: '1 1', boxShadow: '0 0 0 0 transparent' }],
+          { duration: 760, easing: 'cubic-bezier(.22, 1, .36, 1)' });
+      }, () => {});
+      return [ride, shape, name];
+    }
+
+    /* the press on a name (S14: "the rail must acknowledge the click inside itself"): the name gives and takes
+       its section's light, its dot grows into the lit line with a ring of light leaving it, and the other
+       names step back; the close starts once the press has been seen for TRIP.press */
+    let pressed = -1, pressT = 0;
+    const clearPress = () => {
+      nav.classList.remove('has-press');
+      links.forEach((l) => l.classList.remove('is-press'));
+      pressed = -1;
+    };
+    const pressOn = (i: number) => {
+      if (pressed === i) return;
+      clearPress();
+      pressed = i;
+      pressT = now();
+      nav.classList.add('has-press');
+      links[i].classList.add('is-press');
+    };
+    nav.addEventListener('pointerdown', (e) => {
+      const a = (e.target as Element).closest<HTMLAnchorElement>('a.rail-i');
+      if (!a || !open || e.button !== 0) return;
+      pressOn(+a.dataset.i!);
+    }, sig);
+    nav.addEventListener('pointercancel', () => { if (open) clearPress(); }, sig);
+
+    /* choosing a name: the press is seen, the bloom closes carrying the choice, the page travels */
     nav.addEventListener('click', (e) => {
       const a = (e.target as Element).closest<HTMLAnchorElement>('a.rail-i');
       if (!a || !open || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();
       const i = +a.dataset.i!;
-      api.go(i, e.detail === 0);
-      close(false, i);
+      const keyboard = e.detail === 0;
+      if (still()) { close(false, i); api.go(i, keyboard); return; }
+      if (pressed !== i) pressOn(i);
+      const wait = Math.max(0, TRIP.press - (now() - pressT));
+      after(wait, () => {
+        if (!open) return;
+        close(false, i);
+        travel(() => api.top(i), {
+          scroller: { y: api.y, set: (y) => api.setY(y, 'instant'), vh: () => innerHeight },
+          delay: 180,
+          onLand: () => {
+            if (!keyboard) return;
+            const el = secs[i].el;
+            if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1');
+            el.focus({ preventScroll: true });
+          },
+        });
+      });
     }, sig);
     nav.addEventListener('keydown', (e) => {
       if (!open) return;
@@ -514,9 +691,44 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
     addEventListener('resize', () => { if (open) close(false); }, { passive: true, signal: ac.signal });
     if (!nav.classList.contains('in-layer')) document.addEventListener('one:layer-open', () => { close(false); endScrub(false); }, sig);
 
+    /* Home's rail answers the brief's project links (travel.ts, S33) */
+    let me: HomeRail | null = null;
+    if (!nav.classList.contains('in-layer')) {
+      me = {
+        api,
+        index: (el) => secs.findIndex((s) => s.el === el || s.el.contains(el) || el.contains(s.el)),
+        fly: (from, i, color) => flyInto(from, i, color),
+      };
+      home = me;
+    }
+    /** a copy of the link's dot flies on an arc into bead i, which takes the colour and swells as it lands */
+    function flyInto(from: HTMLElement, i: number, color: string) {
+      const a = from.getBoundingClientRect(), m = marks[i], b = m.getBoundingClientRect();
+      const x0 = a.left + a.width / 2, y0 = a.top + a.height / 2;
+      const dx = b.left + b.width / 2 - x0, dy = b.top + b.height / 2 - y0;
+      const dot = document.createElement('i');
+      dot.className = 'bl-fly';
+      dot.setAttribute('aria-hidden', 'true');
+      dot.style.cssText = `left:${x0}px;top:${y0}px;--c:${color}`;
+      document.body.append(dot);
+      const lift = Math.min(120, Math.abs(dx) * 0.18 + 40);
+      const kf: Keyframe[] = [];
+      for (let q = 0; q <= 16; q++) {
+        const u = q / 16, e = glideE(u), arc = Math.sin(Math.PI * Math.min(1, e * 1.05));
+        kf.push({ transform: `translate(${(dx * e).toFixed(1)}px, ${(dy * e - arc * lift).toFixed(1)}px) scale(${(1 + arc * 0.7 - (u > 0.85 ? (u - 0.85) * 3 : 0)).toFixed(3)})`, opacity: u > 0.9 ? 1 - (u - 0.9) * 10 : 1 });
+      }
+      const fl = dot.animate(kf, { duration: 680, easing: 'linear', fill: 'forwards' });
+      fl.finished.then(() => {
+        dot.remove();
+        m.animate([{ scale: '2.4 1.6', backgroundColor: color, boxShadow: `0 0 14px 2px ${color}` }, { scale: '1 1', boxShadow: '0 0 0 0 transparent' }],
+          { duration: 900, easing: 'cubic-bezier(.22, 1, .36, 1)' });
+      }, () => dot.remove());
+    }
+
     return {
       mode(m: string) { if (m !== 'rungs') { close(false); endScrub(false); } },
       destroy() {
+        if (home === me) home = null;
         ac.abort();
         cancelAnimationFrame(raf);
         clearTimeout(holdT);

@@ -45,10 +45,14 @@ async function mask(pts, feather = 1.5) {
 const person = await mask(masks.person);
 const near = await mask(masks.near);
 
-/* known background: neither the person nor the hand (grown by 3 px, so no edge colour leaks into the fill) */
+/* known background: neither the person nor the hand, grown by about 4 px (review rows S6, S17). The cut
+   lines sit 1-2 px inside the true edge, so the ring just outside them still holds the person's edge
+   colour (hood, hair strands). That ring is filled too: otherwise the background layer, which moves
+   against the person, carried a dark ghost of the shoulder beside it. */
 const N = S * S;
 const known = new Float32Array(N);
-for (let i = 0; i < N; i++) known[i] = Math.max(0, 1 - Math.max(person[i], near[i]) / 255 * 1.4) ** 2;
+const grow = await sharp(Buffer.from(person.map((v, i) => Math.max(v, near[i]))), { raw: { width: S, height: S, channels: 1 } }).blur(3).extractChannel(0).raw().toBuffer();
+for (let i = 0; i < N; i++) known[i] = Math.max(0, 1 - Math.max(person[i], near[i], Math.min(255, grow[i] * 2.5)) / 255) ** 2;
 const blurF = async (data, ch, sigma) => {
   const buf = Buffer.alloc(N * ch);
   for (let i = 0; i < N * ch; i++) buf[i] = Math.max(0, Math.min(255, Math.round(data[i])));

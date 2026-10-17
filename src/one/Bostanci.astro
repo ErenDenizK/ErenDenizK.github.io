@@ -9,10 +9,13 @@
    0.92 to 1 at the middle of its pass, 1.03 as it leaves; 0.95 to 1 on phones), it develops from a dark
    grey print to its colour (an opacity cross-fade, no animated filter), the drawing draws round it,
    and the caption's lines rise in masks. Still twins: the photograph whole and in colour.
+   Light (review row S2): the brief's blue-hour set, so the field and the glass stay blue over the
+   photograph from either direction (without it the band kept the last project's light, Recto's lime).
    The note and the place come from the photos chapter of content/site.json (the caption is the one
    place of this note; the postcards no longer carry Bostancı). Files: npm run photos (pc-*). */
 import { getSite } from '../lib/site';
 import manifest from '../assets/photos/postcards.json';
+import { SETS, auraAttr, auraVars } from './aura.mjs';
 import './scene.css';
 
 const site = await getSite();
@@ -24,7 +27,7 @@ const set = (ext: string) => [...m.widths.map((w) => `${f(w, ext)} ${w}w`), ...(
 const sizes = '(min-width: 700px) 579px, calc(100vw - 32px)';
 ---
 {pic && m && (
-  <section class="bost" id="bostanci" data-scene aria-label={pic.note ?? pic.place}>
+  <section class="bost" id="bostanci" data-scene data-aura={auraAttr(SETS.brief)} style={auraVars(SETS.brief)} aria-label={pic.note ?? pic.place}>
     <svg class="draw" viewBox="0 0 1440 1240" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true" focusable="false">
       <circle class="d c1" cx="720" cy="620" r="520" stroke-dasharray="2 7" pathLength="1000" />
       <circle class="d c2" cx="720" cy="620" r="322" pathLength="1" transform="rotate(-90 720 620)" />
