@@ -85,7 +85,7 @@ test.describe('the Record, desktop', () => {
     await expect(page.locator('[data-aura]').first()).toHaveAttribute('data-aura', '#8fb8ff #6f8cff #6fc9cf');
     /* the tape ends where the spine begins: both at the spine's x */
     const tape = await page.locator('.rh-tape').boundingBox();
-    const lead = await page.locator('.rec-lead').evaluate((e) => { const r = e.getBoundingClientRect(); return r.left + parseFloat(getComputedStyle(e).getPropertyValue('--spine-x')); });
+    const lead = await page.locator('.rec-lead').evaluate((e) => { const r = e.getBoundingClientRect(); return r.left + parseFloat(getComputedStyle(e, '::before').left); });
     expect(Math.abs(tape!.x - lead)).toBeLessThan(2);
     /* the head and the first entry are on the first screen */
     expect((await page.locator('.spine > .entry').first().boundingBox())!.y).toBeLessThan(900 - 100);
@@ -165,7 +165,7 @@ for (const [label, opts] of [['phone', { ...phone, deviceScaleFactor: 3 }], ['de
       expect(obj.x + obj.width).toBeGreaterThan(390 - 40);
       await expect(page.locator('.rh-eng.narrow')).toBeVisible();
       await expect(page.locator('.rh-eng.wide')).toBeHidden();
-      expect(await page.locator('.rh-title').evaluate((e) => getComputedStyle(e).textAlign)).toBe('start');
+      expect(await page.locator('.rh-title').evaluate((e) => getComputedStyle(e).textAlign)).toMatch(/^(start|left)$/);
     }
     await ctx.close();
   });

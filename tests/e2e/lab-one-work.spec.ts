@@ -13,13 +13,17 @@ const LAB = 'lab/one-work/';
 const page_ = (slug: string) => `work/${slug}/`;
 const overflow = (page: Page) => page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
 
-test('the lab pages are hidden: noindex and out of the sitemap', async ({ page, request }) => {
-  for (const path of [LAB, ...PROJECTS.map(page_)]) {
+test('the Work lab is hidden; the project pages are canonical and in the sitemap (ADR-0019)', async ({ page, request }) => {
+  await page.goto(LAB + '?still');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
+  for (const path of PROJECTS.map(page_)) {
     await page.goto(path + '?still');
-    await expect(page.locator('meta[name="robots"]'), path).toHaveAttribute('content', 'noindex');
+    await expect(page.locator('meta[name="robots"]'), path).toHaveCount(0);
+    await expect(page.locator('link[rel="canonical"]'), path).toHaveAttribute('href', new RegExp(`/${path}$`));
   }
   const sitemap = await (await request.get('sitemap-0.xml')).text();
   expect(sitemap).not.toContain('/lab/');
+  for (const path of PROJECTS.map(page_)) expect(sitemap, path).toContain(`/${path}<`);
 });
 
 for (const [label, size] of [['1440', desktop], ['1180', tablet], ['390', phone], ['320', { ...phone, viewport: { width: 320, height: 640 } }]] as const) {

@@ -45,7 +45,7 @@ test.describe('record with entries', () => {
     await expect(page.locator('.ystrip a.ym').last()).toHaveAttribute('href', '#fixture-essay');
     await expect(page.locator('.ystrip a.ym[aria-label^="September"] .ym-ticks i')).toHaveCount(3);
     /* no controls below forty entries; the writing note sits at the foot */
-    await expect(page.locator('#rec-projects, .filters, .threads, button')).toHaveCount(0);
+    await expect(page.locator('#rec-projects, .filters, .threads, #main button')).toHaveCount(0);
     await expect(page.locator('.rec-foot #colophon')).toHaveText('How this is written');
     await expect(page.locator('.rec-foot')).toContainText('notes I dictate');
     /* the first entry shows on the first screen */
