@@ -35,6 +35,14 @@ V3), T24 is deferred (V2), T9 is superseded by V6, T8 waits for the owner (V4), 
 and the rows the round-two to round-four critiques call partly now say "partly" (G2-G8, M1, M2, M5,
 C2, P4, R2, E1, T19, T21, T26). The build lanes of round 5 set their own rows.
 
+Round 5 integration (2026-10-17, night): the integrator merged the polish, docs and Work lanes and took
+frame sequences at 1440 x 900 and 390 x 844 (DPR 3, touch): a steady scroll of the whole page, a rail
+jump to Eat Map and to English Prep with an image audit (no grey picture in any frame), Take a look to the
+settled layer, the bloom on Home and in the layer, the phone scrub, the card turn and the postcard back on
+the phone, the Eat Map hold and both filled bands. The frames set V14, V23, V24 and P4 to built; V13 waits
+for the owner's reading; V17, E1 and T26 stay partly. Headless Chromium only. The verdicts are in the
+round-five critique.
+
 ## Overall
 
 | Id | The owner said | What it means for the work | Status |
@@ -95,7 +103,7 @@ C2, P4, R2, E1, T19, T21, T26). The build lanes of round 5 set their own rows.
 | P1 | The Bostancı photo under the brief: did not like it. It shows only a little at the bottom and shows nothing. If used, use the large, uncropped, vertical version. A photo placed where it cannot be seen is a bad minus. | Show the photograph properly (vertical, uncropped, large) or not at all. The repo holds the 1932 x 2576 original. | built |
 | P2 | The photos are piled at the bottom. Picking up and turning them catches, as with the ID card. | Rebuild the postcard interaction on the proven card physics. | built |
 | P3 | Picking up is animated, but letting go is not. Very buggy. | Release animates back as smoothly as the pick-up. | built |
-| P4 | The card's back should change in design. Reimagine the postcard from scratch as a concept: list what a postcard contains, then design each part new: modern, elegant, innovative, like a resume or an artwork, especially the back and the frame. Do not paste the first search result for "postcard". | A new postcard design (front frame, back), designed from its parts. | partly |
+| P4 | The card's back should change in design. Reimagine the postcard from scratch as a concept: list what a postcard contains, then design each part new: modern, elegant, innovative, like a resume or an artwork, especially the back and the frame. Do not paste the first search result for "postcard". | A new postcard design (front frame, back), designed from its parts. | built (back in round 4; front frame in round 5: plate mark, bevelled window, gold hairline) |
 | P5 | Three photos side by side; hovering one lifts it, but it should feel like it is really picked up and placed on top, not passing through the others. | Hover lifts and re-stacks the card above the others with depth, no clipping through. | built |
 
 ## Record strip and the Record page
@@ -109,7 +117,7 @@ C2, P4, R2, E1, T19, T21, T26). The build lanes of round 5 set their own rows.
 
 | Id | The owner said | What it means for the work | Status |
 |---|---|---|---|
-| E1 | Still feels empty in places; textures etc. in the background. | Line-art textures and layered drawings across Home, with the aura. | partly |
+| E1 | Still feels empty in places; textures etc. in the background. | Line-art textures and layered drawings across Home, with the aura. | partly (round 5 filled the band above the recorder and the band before edk with the tape; other quiet bands not reviewed) |
 
 ## GitHub profile and badges
 
@@ -164,7 +172,7 @@ items noted but dropped, and open rows that no build lane owned. New rows:
 | T23 | message 2 (no repetition) | A lab-one test that finds no repeated sentence of 5+ words outside the brief; re-run after the postcard and Record strip changes. | task | built |
 | T24 | message 3 (all achievements, real work) | A short list for the owner of the real-work routes beyond the PR flow (READMEs worth starring, Discussions answers), with who does each. | task | deferred (V2: no rush) |
 | T25 | message 3 (PRs in the other projects too) | Pass the PR rule to the English Prep chat through the owner; H3 here is done (CLAUDE.md rule). | task | closed (V3: English Prep archived) |
-| T26 | messages 1 and 3 (motion everywhere, no empty wait; G6) | List every interactive element that gives no motion response and assign it to a lane. | task | partly (person area built in round 4; Work, the project layer and the bar not yet listed) |
+| T26 | messages 1 and 3 (motion everywhere, no empty wait; G6) | List every interactive element that gives no motion response and assign it to a lane. | task | partly (person area built in round 4; Work and the project layer in round 5: Take a look, next print, close cursor; the top bar not yet listed) |
 | T27 | message 3 (C2, card texture) | A denser texture on both faces of the ported ID card. | task | built |
 
 Rows G2, G3, G6, G7, G8, M1, M2 and E1 stay partly and must be owned by a lane in every round until
@@ -193,17 +201,17 @@ Sixteen rows from the second coverage audit (`docs/research/2026-10-coverage-pas
 |---|---|---|---|---|
 | V11 | coverage pass two (I1) | Answer the owner's model question in the morning report: every turn of this session ran on the same main model; no turn ran on the small one. | note (answer owed) | closed |
 | V12 | coverage pass two (J2) | One-line answer: HyperFrames renders HTML compositions to video files; in-page motion stays CSS and scripts. So it fits the later per-app video round, not the page. | note (answer owed) | closed |
-| V13 | coverage pass two (J9) | The postcard back's lower text on phones: check both readings of "açılmış" (spacing spread and colour washed out) at 390 DPR 3; show the before/after picture and ask which was meant. | task | open |
-| V14 | coverage pass two (J16, O2) | Judge the bloom variants by feel (the press point gives, then spreads wider; things open outwards), not by drawing a drop or a palm. Apply the chosen rail to the opened project's rail too, so there is one rail. | task | open |
+| V13 | coverage pass two (J9) | The postcard back's lower text on phones: check both readings of "açılmış" (spacing spread and colour washed out) at 390 DPR 3; show the before/after picture and ask which was meant. | task | waiting for the owner (both readings built in round 5: one tight group, contrast raised; the owner says which was meant) |
+| V14 | coverage pass two (J16, O2) | Judge the bloom variants by feel (the press point gives, then spreads wider; things open outwards), not by drawing a drop or a palm. Apply the chosen rail to the opened project's rail too, so there is one rail. | task | built (round 5: the beads give under the press, then the names bloom out; the layer's rail is the same rail with the steps as one part) |
 | V15 | coverage pass two (J20-J22) | Glass default: the lead keeps version A as the default, because the owner asked that the tab and the capsules each take the best of the other, and A also fixes the inactive tab label (1.9:1 over white). Today's glass stays one word away at `?glass=now`; the owner picks. | decided (lead; owner may overrule) | open |
 | V16 | coverage pass two (J24, J7, D5) | One morning question sheet, Turkish, each with a picture and a lab link: rail variants, glass versions, name typefaces, project objects (V4, with drawings), tape-as-spine, `?photo=flat | layers`, `?cap=line | open |
-| V17 | coverage pass two (G-rows rule) | Give the unowned leftovers an owner this round (a small Work-leftovers lane or the integrator): Work grey prints after a jump, the 1.6-2 s open wait, the Eat Map hold (spec 9.2), the parity plan column, the postcard front frame, the band before edk, silent elements outside the person area, the "Close" label as content. | task | open |
+| V17 | coverage pass two (G-rows rule) | Give the unowned leftovers an owner this round (a small Work-leftovers lane or the integrator): Work grey prints after a jump, the 1.6-2 s open wait, the Eat Map hold (spec 9.2), the parity plan column, the postcard front frame, the band before edk, silent elements outside the person area, the "Close" label as content. | task | partly (round 5 Work lane: prints load before a jump, open wait shorter, hold 300 px shorter, front frame, band before edk, Work controls move, Close from content; the parity plan column and the top bar are not done) |
 | V18 | coverage pass two (T6, T10, T13, T15, M1, M2) | A five-minute iPhone checklist for the owner (recorder `?spin`, glass blur, both pulls, rope on the first swing, scroll feel), with what "good" looks like; results update those rows. | task (owner) | open |
 | V19 | coverage pass two (T15) | T15 counts as done only after two or three people find both exits unaided, as in the owner's own test. | note | open |
 | V20 | coverage pass two (doc truth) | Tracker statuses: T22 closed (V1), T25 closed (V3), T24 deferred (V2), T9 superseded by V6, T8 "waiting for the owner" (V4), R1 merged into T20; add "partly" to the status values and use it. | task | built (2026-10-17, archivist lane) |
 | V21 | coverage pass two (I, J) | Brief log entries for 2026-10-16 evening and night; brief.md lines for T1, V6, V7, the masterpiece and phone-measurement standard, V1, V3; mark the 2026-10-09 "Desktop first" line superseded. | task | built (2026-10-17, archivist lane) |
 | V22 | coverage pass two (doc truth) | Refresh PLAN (where we are, phases 3 rows, morning questions, drop English Prep item), HANDOFF (round 2-4 state, metro photos, hero object, decisions) and the 10-16 journal. | task | built (2026-10-17, archivist lane; the night is in the 10-17 journal) |
-| V23 | coverage pass two (A15) | T27 wording: "a CD-like surface or similar; density, not realism; visible on the front too" (brief line 60), passed to whoever builds it. | task | open |
-| V24 | coverage pass two (A12) | Check the postcard burn-in against "too slow"; keep the small colour detail the owner liked. | task | open |
+| V23 | coverage pass two (A15) | T27 wording: "a CD-like surface or similar; density, not realism; visible on the front too" (brief line 60), passed to whoever builds it. | task | built (round 5: checked against the wording; the resting sheen on phones raised from 6 to 10 percent) |
+| V24 | coverage pass two (A12) | Check the postcard burn-in against "too slow"; keep the small colour detail the owner liked. | task | built (round 5: safelight red, warm grey, colour in 640 ms, 60 ms after the press) |
 | V25 | coverage pass two (D3, V8) | Give the type study the provisional 48/34 px answer: the name's size and weight, not only the face, may be what reads cheap; include size in the switch. | note | open |
 | V26 | coverage pass two (A19) | Dictation inside artifacts: the owner said not to bother if heavy; keep as a note, no work. | note | closed |
