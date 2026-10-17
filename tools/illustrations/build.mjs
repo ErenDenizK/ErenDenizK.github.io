@@ -73,11 +73,12 @@ ${stylesheet()}</style><h1>Illustration kit</h1>${rows}\n`)
 console.log(warnings.length ? `${warnings.length} warning(s)` : 'no warnings', '→', path.relative(process.cwd(), OUT))
 
 // The postcard backs' drawings (spec v3 §2.4): one engraved drawing per photograph, written straight into
-// the page's art folder (src/one/rest/art/pc-<photo>.svg), where Postcards.astro inlines it. Budget 18 KB.
+// the page's art folder (src/one/rest/art/pc-<photo>.svg), where Postcards.astro inlines it. Budget 30 KB (the round-six engraving guide, 1.10).
 const ART = path.join(HERE, '../../src/one/rest/art')
 for (const file of fs.readdirSync(path.join(HERE, 'postcards')).filter((f) => f.endsWith('.mjs') && f !== 'engrave.mjs').sort()) {
   const d = await import(pathToFileURL(path.join(HERE, 'postcards', file)))
+  if (!d.draw) continue // a module of primitives (burin.mjs), not a drawing
   const s = optimise(d.draw())
   fs.writeFileSync(path.join(ART, `pc-${d.photo}.svg`), s + '\n')
-  console.log(`pc-${d.photo}`.padEnd(28), `${(s.length / 1024).toFixed(1)} KB${s.length > 18 * 1024 ? '  over the 18 KB budget' : ''}`)
+  console.log(`pc-${d.photo}`.padEnd(28), `${(s.length / 1024).toFixed(1)} KB${s.length > 30 * 1024 ? '  over the 30 KB budget' : ''}`)
 }
