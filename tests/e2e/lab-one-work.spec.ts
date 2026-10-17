@@ -334,3 +334,43 @@ test.describe('round 3: capsules on the phone', () => {
     expect((await page.locator('.layer .cap-x .icon').boundingBox())!.width).toBeGreaterThanOrEqual(19);
   });
 });
+
+/* Round six, rows S20, S21, S36 (engraving guide §1.7, §2.11): the scenes never pile up in motion, and a
+   phone gets each scene's own portrait master, not the desktop drawing's back layer. */
+test.describe('round six: the engravings', () => {
+  const go = (page: Page, slug: string, f = 0) => page.evaluate(([s, k]) => scrollTo({ top: document.getElementById(s as string)!.getBoundingClientRect().top + scrollY + (k as number) * innerHeight, behavior: 'instant' }), [slug, f]);
+
+  test('desktop: the short block\'s drawing is not lifted into the block above, and every box overflows its block by under 10 %', async ({ page }) => {
+    await page.setViewportSize(desktop.viewport);
+    await page.goto('lab/one/');
+    for (const slug of PROJECTS) {
+      await go(page, slug); await page.waitForTimeout(300);
+      const o = await page.locator(`#${slug}`).evaluate((p: HTMLElement) => {
+        const b = p.getBoundingClientRect(), a = p.querySelector<HTMLElement>('.fl-art')!.getBoundingClientRect();
+        return { above: (b.top - a.top) / b.height, below: (a.bottom - b.bottom) / b.height };
+      });
+      expect(o.above).toBeLessThan(0.1);
+      expect(o.below).toBeLessThan(0.1);
+    }
+  });
+
+  test('phone: each scene with a phone master loads it as its one layer, and its route is the phone one', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...phone, deviceScaleFactor: 3 });
+    const page = await ctx.newPage();
+    await page.goto('lab/one/');
+    for (const slug of ['recto', 'eat-map']) {
+      await go(page, slug);
+      await expect(page.locator(`#${slug} .fl-art.live .fl-layer`)).toHaveCount(1);
+      await expect(page.locator(`#${slug} .fl-art .fl-layer-phone`)).toHaveCount(1);
+    }
+    await expect(page.locator('#eat-map .fl-route-p')).toBeVisible();
+    await expect(page.locator('#eat-map .fl-route-d')).toBeHidden();
+    /* the places of the phone route light up as the block arrives */
+    const lit = () => page.locator('#eat-map .fl-route-p .fl-stop').evaluateAll((g) => g.reduce((a, x) => a + +getComputedStyle(x).opacity, 0));
+    await go(page, 'eat-map', -0.3); await page.waitForTimeout(300);
+    const before = await lit();
+    await go(page, 'eat-map', 0.1); await page.waitForTimeout(300);
+    expect(await lit()).toBeGreaterThan(before);
+    await ctx.close();
+  });
+});
