@@ -18,6 +18,7 @@ import { splitLines } from './lines';
 import { loadArt, type ArtLayer } from './art';
 import { motion } from './bus';
 import { onFirstFrame } from './frame';
+import { setupFlow, type Flow } from './flow';
 
 export interface Proj {
   slug: string; k: number; el: HTMLElement; stage: HTMLElement;
@@ -98,20 +99,22 @@ export function initFlight(sec: HTMLElement): Flight {
   flight.live = true;
   sec.setAttribute('data-live', '');
   initTicker();
+  /* ?work=flow (row S31): the same projects on a turning drum instead of the vertical flight (flow.ts) */
+  const flow: Flow | null = document.documentElement.dataset.work === 'flow' ? setupFlow(sec, projects, phoneMq) : null;
 
   /* ---- layout: read on resize, font load and content change only ---- */
   let width = -1;
   function cut() {
     for (const p of projects) {
-      const promise = p.el.querySelector<HTMLElement>('[data-lines]');
+      const promise = p.stage.querySelector<HTMLElement>('[data-lines]');
       const pl = promise ? splitLines(promise) : [];
-      const meta = p.el.querySelector<HTMLElement>('.w-meta .li');
-      const title = p.el.querySelector<HTMLElement>('.w-title .li');
+      const meta = p.stage.querySelector<HTMLElement>('.w-meta .li');
+      const title = p.stage.querySelector<HTMLElement>('.w-title .li');
       p.lines = [
         ...(meta ? [{ el: meta, o: -0.04, mask: true }] : []),
         ...(title ? [{ el: title, o: 0, mask: true }] : []),
         ...pl.map((el, i) => ({ el, o: 0.06 * (i + 1), mask: true })),
-        { el: p.el.querySelector<HTMLElement>('.w-acts')!, o: 0.06 * (pl.length + 1), mask: false },
+        { el: p.stage.querySelector<HTMLElement>('.w-acts')!, o: 0.06 * (pl.length + 1), mask: false },
       ];
     }
     clearCache();
@@ -124,6 +127,7 @@ export function initFlight(sec: HTMLElement): Flight {
       p.top = r.top + sy;
       p.pin = p.el.hasAttribute('data-last') ? Math.max(0, p.el.offsetHeight - p.stage.offsetHeight) : 0;
     }
+    flow?.measure();
     kick();
   }
 
@@ -160,6 +164,11 @@ export function initFlight(sec: HTMLElement): Flight {
     const kp = 1 - Math.exp(-f.dt / 100);
     px += (tx - px) * kp; py += (ty - py) * kp;
     const settling = Math.abs(tx - px) > 0.002 || Math.abs(ty - py) > 0.002;
+    if (flow) {
+      flow.frame({ ...f, vw: innerWidth }, px, py, (p) => p.lines, put);
+      for (const p of projects) if (p.short) loop(p, Math.abs(p.top - y) < 0.6 * vh);
+      return settling;
+    }
 
     for (const p of projects) {
       const u0 = (p.top - y) / vh;
@@ -255,7 +264,7 @@ export function initFlight(sec: HTMLElement): Flight {
     warmed.add(p);
     /* phones never show the side frames (here or in the layer): their pictures stay unfetched */
     const sel = phoneMq.matches ? '.fl-hero img[loading="lazy"]' : 'img[loading="lazy"]';
-    p.el.querySelectorAll<HTMLImageElement>(sel).forEach((im) => { im.loading = 'eager'; });
+    p.stage.querySelectorAll<HTMLImageElement>(sel).forEach((im) => { im.loading = 'eager'; });
     if (phoneMq.matches) { p.sides.forEach((s) => s.classList.add('ready')); return; }
     p.sides.forEach((s) => {
       const im = s.querySelector<HTMLImageElement>('.pr-screen img');

@@ -61,9 +61,11 @@ const springs = tempoCSS(TEMPOS.portfolio);
       d.classList.toggle('fine', matchMedia('(hover: hover) and (pointer: fine)').matches);
       /* lab switches (spec §9): Work's form, the postcard caption, the open tempo, the card's photo */
       var pick = function (k, ok, def) { var m = new RegExp('[?&]' + k + '=([a-z0-9]+)').exec(q); return m && ok.indexOf(m[1]) >= 0 ? m[1] : def; };
-      d.dataset.work = pick('work', ['deck', 'drift'], 'deck');
+      d.dataset.work = pick('work', ['deck', 'drift', 'flow'], 'deck');
       d.dataset.cap = pick('cap', ['line', 'large'], 'large');
-      d.dataset.open = pick('open', ['900', '1400'], '900');
+      d.dataset.open = pick('open', ['900', '1400'], '1400');
+      /* round 6 (S4): the project objects in Work: their glass, their line twin, or none (today) */
+      d.dataset.objects = pick('objects', ['glass', 'line', 'none'], 'none');
       /* the ID card's photo: three cut layers in depth, or the flat photo (spec v3 §3.4) */
       d.dataset.photo = pick('photo', ['flat', 'layers'], 'layers');
       /* round 4 (V7, V8): the glass family's versions; the name's face and size (glass.css, charter §3) */

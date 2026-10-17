@@ -792,6 +792,16 @@ PART A owns the page; PART B owns one slot. PART B touches no file of PART A, an
    The owner asked to test both [O]. Default: large.
 3. `?open=900|1400`: the open tempo. The owner: "choose on a lab page" [O]. Default: 1400 since
    2026-10-17 (S8: "the long animation felt quite elegant").
+4. `?work=flow` (round 6, row S31): Work as a horizontal flow instead of the vertical flight. The
+   projects are sheets on an upright drum that turns with the scroll: the next project comes in from
+   the right edge half turned, faces the reader at the centre and turns away to the left; its other
+   screens fly on a wider drum; its engraving slides behind it at its depths; its texts change in place.
+   Each block becomes a spacer (anchors, rail beads and aura unchanged) and every stage stands in one
+   sticky view, so only transforms and opacities move (`scripts/flow.ts`, `flow.css`). A detent slows
+   the drum near each project. Same still twin. Default: the vertical flight, until the owner picks.
+5. `?objects=glass|line|none` (round 6, row S4): the project objects in Work. `glass`: each project's
+   glass object stands in its scene; `line`: its line twin, drawn from the same Blender model with
+   Grease Pencil Line Art (`tools/objects/lineart.py`); `none`: today. Default: none.
 
 Decided here and visible on the lab page (the owner may still overrule them): no glass object on
 the first screen (the edk object closes the page instead); the Bostancı platform as the brief's
