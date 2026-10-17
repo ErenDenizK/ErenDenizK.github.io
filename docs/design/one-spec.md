@@ -183,7 +183,7 @@ PART A reads the project sets from `world.json` at build time; it does not copy 
 | `--t-swap` | 500 ms | aura crossfade at a settle | Robin 500 [M] |
 | `--t-reveal` | 700 ms | text arriving | Anthony Fu 1000, shortened [M] |
 | `--t-move` | 900 ms | prints and frames arriving | Antoine 1 s [M] |
-| `--t-open` | 900 ms (lab switch: 1400) | the paper grows | Robin 1.38 s [M] |
+| `--t-open` | 900 ms, times 1.55 = 1400 ms by default since 2026-10-17 (S8; lab switch `?open=900`) | the paper grows | Robin 1.38 s [M] |
 | `--t-close` | 800 ms | the paper returns | |
 | `--t-draw` | 2400 ms | line drawing at arrival | Shopify 3 s [M] |
 | `--step` | 90 ms (phone 75) | stagger | Anthony Fu 90 [M] |
@@ -543,7 +543,7 @@ project: `paper` (the print mount → the layer ground), `shot` (the front scree
 object, desktop). Old snapshots of `shot` are hidden (`::view-transition-old(shot) { display: none }`)
 and the new one is `object-fit: cover` (tech §3).
 
-Open, desktop, `--t-open` 900 ms (the lab switch `?open=1400` multiplies every time by 1.55):
+Open, desktop, `--t-open` 900 ms. Since 2026-10-17 (row S8) every time below is multiplied by 1.55 (the open takes 1400 ms); the lab switch `?open=900` keeps the factor 1:
 
 | t (ms) | What |
 |---|---|
@@ -751,7 +751,7 @@ PART A owns the page; PART B owns one slot. PART B touches no file of PART A, an
   p95 ≤ 2 ms. GPU numbers are not gated (software GPU). Harness: `phase3/tech/measure.mjs`.
 - **Bytes:** section 7.2; `npm run budget` passes.
 - **Durations:** first visible response to any input ≤ 160 ms; UI ≤ 300 ms; reveals 500 to 900 ms;
-  open 900 ms (1400 with the switch); close 800 ms; arrival text complete ≤ 1.2 s, arrival
+  open 1400 ms (900 with `?open=900`); close 800 ms times the same factor; arrival text complete ≤ 1.2 s, arrival
   complete ≤ 2.8 s; after the last input, motion stops within 1.5 s (except the drift and video).
 - **Overflow:** none at 390, 1180 and 1440 (and none at 320).
 - **Targets:** at least 44 px on touch; at least 24 px with a pointer.
@@ -790,7 +790,8 @@ PART A owns the page; PART B owns one slot. PART B touches no file of PART A, an
    said "stacked or side by side" [O]. Default: deck.
 2. `?cap=line|large`: the postcard caption as one line under the card, or only in the large view.
    The owner asked to test both [O]. Default: large.
-3. `?open=900|1400`: the open tempo. The owner: "choose on a lab page" [O]. Default: 900.
+3. `?open=900|1400`: the open tempo. The owner: "choose on a lab page" [O]. Default: 1400 since
+   2026-10-17 (S8: "the long animation felt quite elegant").
 
 Decided here and visible on the lab page (the owner may still overrule them): no glass object on
 the first screen (the edk object closes the page instead); the Bostancı platform as the brief's

@@ -21,7 +21,10 @@ type VT = { finished: Promise<void>; updateCallbackDone: Promise<void>; skipTran
 const root = document.documentElement;
 const phone = () => matchMedia('(max-width: 699.98px)').matches;
 const canVT = () => typeof (document as unknown as { startViewTransition?: unknown }).startViewTransition === 'function' && motion() === 'full';
-const vtk = () => (/[?&]open=1400\b/.test(location.search) ? 1.55 : 1);
+/* the open tempo (owner, 2026-10-17, row S8): 1400 ms by default, since the owner found the long open
+   elegant; ?open=900 keeps the shorter tempo for side-by-side checks. Every time of the transition is
+   multiplied by this factor (work.css). */
+const vtk = () => (/[?&]open=900\b/.test(location.search) ? 1 : 1.55);
 const start = (fn: () => void | Promise<void>): VT => (document as unknown as { startViewTransition(f: () => void | Promise<void>): VT }).startViewTransition(fn);
 
 function name(el: Element | null | undefined, n: string) { if (el) (el as HTMLElement).style.viewTransitionName = n; }
