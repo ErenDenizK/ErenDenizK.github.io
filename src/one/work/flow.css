@@ -7,7 +7,10 @@
   html.js:not(.still)[data-work="flow"] .work[data-flow] { --fl-l: calc(1.1 * var(--sv)); }
   html.js:not(.still) .work[data-flow] .proj { height: var(--fl-l); }
   html.js:not(.still) .work[data-flow] .proj[data-last] { height: calc(var(--sv) + var(--hold)); }
-  html.js:not(.still) .work[data-flow] .fl-flow { position: sticky; top: 0; height: var(--sv); margin-bottom: calc(-1 * var(--sv));
+  /* the first spacer climbs under the view instead of the view taking a negative margin: a sticky box's
+     negative bottom margin would let it outstay its section by a whole view */
+  html.js:not(.still) .work[data-flow] .fl-flow ~ .proj[data-k="0"] { margin-top: calc(-1 * var(--sv)); }
+  html.js:not(.still) .work[data-flow] .fl-flow { position: sticky; top: 0; height: var(--sv);
     z-index: 0; overflow: clip; pointer-events: none; }
   /* one perspective for the whole drum, its eye at the hero's height, so every sheet turns about the same
      axis and the far ones shrink toward the same point */
