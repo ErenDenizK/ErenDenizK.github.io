@@ -2,8 +2,8 @@
 
 Eren Deniz Kuyucaklıoğlu's (they/them) personal site at `erendenizk.github.io`: presentation
 first, a public record of continuous work, grown level by level over four years. Since
-2026-10-15 it is moving to two pages, Home and Record, with one shared token set; the live
-four-page site runs until the new Home replaces it and is not the model for new work. Read
+2026-10-17 the two-page site is live: Home (`/`) and the Record (`/record/`), with one shared token
+set (ADR-0019); the four-page site is retired (its old addresses redirect). Read
 "Current intent" in `docs/brief.md` before any work; it is the owner's intent, every line is
 dated, and the newest line wins.
 
@@ -77,8 +77,8 @@ dated, and the newest line wins.
   different designs (owner, 2026-10-15); never force one scheme onto both.
 - Never write symbols (arrows, ticks, crosses) as characters: use `tools/icons`. Objects are
   pre-rendered media (ADR-0006); the owner kept pre-rendering on 2026-10-11 (option a). ADR-0007
-  (four tabs, the project sheet) is superseded by the two-page direction; the new routing ADR
-  replaces it.
+  (four tabs, the project sheet) is superseded by ADR-0019 (two pages; a project opens over Home
+  and keeps its address `/work/<slug>/`).
 
 ## Log entries
 
