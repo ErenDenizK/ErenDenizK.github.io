@@ -118,3 +118,27 @@ export default {
 | `entry-flow` | How a log entry is made (dictation, draft, review, published, a loop for changes); has a plate | real (CLAUDE.md "Log entries") |
 | `levels` | The site's levels on a four-year line, Level 1 underlined by hand | real (docs/history/roadmap-2026-10-08.md, brief §2.3); only the start is dated |
 | `sample-chart` | The bar primitive | sample data |
+
+## Scenes (the engravings behind the projects)
+
+`scenes/` draws the project scenes of the lab home (`src/one/work/art/`), after the engraving guide of
+round six. It is separate from the log's figures above and has its own rules.
+
+```
+scenes/engrave.mjs   the kit: tapered lines as filled shapes, hatching (parallel or toward a vanishing
+                     point), tone in three levels, stipple, the plate's fade at its top and bottom, the
+                     texts' clear zones, a pinhole camera with a shift lens
+scenes/world.mjs     a street in 3D (street coordinates, turns, a ground that falls or steps) and the
+                     list of drawn faces that hide what is behind them
+scenes/eat-map.mjs   Eat Map: the market street that rises out of its plan (desktop and phone masters)
+scenes/recto.mjs     Recto: the temple of pages in its walled precinct (desktop and phone masters)
+scenes/recto-temple.svg  the temple as the owner approved it; recto.mjs re-cuts it, it is not redrawn
+scenes/build.mjs     writes the four files and checks each against its size budget
+scenes/preview.mjs   writes one scene to any path, for review renders
+```
+
+Run `node tools/illustrations/scenes/build.mjs` (or name one scene). The output is seeded and
+deterministic. Each desktop file has the layers `#back`, `#mid` and `#front`; each phone master
+(`<slug>-phone.svg`) has one layer, `#phone`. The route's places are a hidden `#places` group.
+The files mark their ink as a fill (`data-ink="fill"`); `src/one/work/scripts/art.ts` bakes the ink
+colour and each layer's strength into them.
