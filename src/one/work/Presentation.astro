@@ -13,6 +13,8 @@ import Obj from './Obj.astro';
 import Print from './Print.astro';
 import Stepper from './Stepper.astro';
 import HowMade from './HowMade.astro';
+import Story from './Story.astro';
+import './story.css';
 import Icon from '../../components/Icon.astro';
 import type { Model } from './data';
 import { getSite } from '../../lib/site';
@@ -24,6 +26,29 @@ const vars = `--a1: ${m.aura[0]}; --a2: ${m.aura[1]}; --a3: ${m.aura[2]}; --pape
 const HERO = '(max-width: 699.98px) calc(100vw - 32px), 800px';
 const titleId = `${m.slug}-${mode}-title`;
 const close = (await getSite()).work.close;
+/* the story's order (round 6, S30; docs/design/project-story.md): the project's `story` names a preset,
+   and every section without content drops out before the chapters are numbered, so no number skips.
+   tour = the outcome line and the scrubbed steps; why = the quote; how = How it's made. */
+type Part = 'vision' | 'problem' | 'audience' | 'tour' | 'numbers' | 'why' | 'how' | 'decisions' | 'refuses' | 'check' | 'learned' | 'ahead' | 'record';
+const ORDERS: Record<Model['story'], Part[]> = {
+  default: ['vision', 'tour', 'numbers', 'why', 'how', 'decisions', 'refuses', 'check', 'learned', 'ahead', 'record'],
+  /* product first, then the story: the reader sees it working before being told how it was built */
+  dia: ['vision', 'tour', 'audience', 'check', 'how', 'decisions', 'refuses', 'numbers', 'why', 'learned', 'ahead', 'record'],
+  /* told as one of the product's own contrast lessons: before vs now, who it is for, then the product */
+  lesson: ['vision', 'problem', 'audience', 'tour', 'numbers', 'how', 'why', 'learned', 'ahead', 'record'],
+  /* a short form: the text is the map's key */
+  legend: ['vision', 'audience', 'refuses', 'check', 'how', 'ahead'],
+};
+const has: Record<Part, boolean> = {
+  vision: !!m.vision, problem: !!m.problem, audience: (m.audience?.length ?? 0) >= 2, tour: !!m.outcome || m.steps.length > 0,
+  numbers: !!m.numbers, why: !!m.quote, how: !!m.how, decisions: (m.decisions?.length ?? 0) >= 2, refuses: !!m.refuses?.length,
+  check: !!m.check, learned: !!m.learned, ahead: !!m.ahead, record: !!m.record?.length,
+};
+const parts = ORDERS[m.story].filter((k) => has[k]);
+/* the chapter index ("01 / Vision") on the sections that carry a heading, counted after hiding; shown
+   only when two or more such chapters are on the page */
+const headed = parts.filter((k) => !['tour', 'numbers', 'why'].includes(k));
+const chapter = (k: Part) => (headed.length >= 2 && headed.includes(k) ? `${String(headed.indexOf(k) + 1).padStart(2, '0')} / ` : '');
 ---
 <article class:list={['pres', `pres-${mode}`]} data-pres={m.slug} style={vars} aria-labelledby={titleId}>
   <div class="pg" data-vt="paper" aria-hidden="true">
@@ -66,25 +91,24 @@ const close = (await getSite()).work.close;
       )}
     </header>
 
-    {m.outcome && <p class="p-outcome">{m.outcome}</p>}
-    {m.steps.length > 0 && <Stepper m={m} />}
-
-    {m.numbers && (
-      <dl class="p-nums" data-rail-sec="Numbers">
-        {m.numbers.map((x) => <div><dt class="label">{x.label}</dt><dd>{x.value}</dd></div>)}
-      </dl>
-    )}
-
-    {m.quote && <blockquote class="p-quote" data-rail-sec="Why"><p>{m.quote}</p></blockquote>}
-
-    {m.how && (
-      <section class="p-how" data-rail-sec="How it's made" aria-labelledby={`${m.slug}-${mode}-how`}>
-        <h2 class="label" id={`${m.slug}-${mode}-how`}>How it's made</h2>
-        <div class:list={['how-card', { 'how-cut': m.howLayers }]}>
-          <HowMade items={m.how} layers={m.howLayers} id={`${m.slug}-${mode}-how`} />
-        </div>
-      </section>
-    )}
+    {parts.map((k) => (
+      k === 'tour' ? <>{m.outcome && <p class="p-outcome">{m.outcome}</p>}{m.steps.length > 0 && <Stepper m={m} />}</>
+      : k === 'numbers' ? (
+        <dl class="p-nums" data-rail-sec="Numbers">
+          {m.numbers!.map((x) => <div><dt class="label">{x.label}</dt><dd>{x.value}</dd></div>)}
+        </dl>
+      )
+      : k === 'why' ? <blockquote class="p-quote" data-rail-sec="Why"><p>{m.quote}</p></blockquote>
+      : k === 'how' ? (
+        <section class:list={['p-how', `p-how-${m.howForm}`]} data-rail-sec="How it's made" aria-labelledby={`${m.slug}-${mode}-how`}>
+          <h2 class="label" id={`${m.slug}-${mode}-how`}>{chapter(k) && <span class="sy-n" aria-hidden="true">{chapter(k)}</span>}How it's made</h2>
+          <div class:list={['how-card', { 'how-cut': m.howLayers && m.howForm === 'stack', 'how-plate': m.howForm !== 'stack' }]}>
+            <HowMade items={m.how!} layers={m.howLayers} form={m.howForm} process={m.howProcess} id={`${m.slug}-${mode}-how`} />
+          </div>
+        </section>
+      )
+      : <Story k={k} m={m} chapter={chapter(k)} id={`${m.slug}-${mode}`} />
+    ))}
 
     {next && (
       <a class="p-next" data-rail-sec="Next" href={next.href} data-next={next.slug} style={`--a1: ${next.aura[0]}; --paper: ${next.paper}`}>

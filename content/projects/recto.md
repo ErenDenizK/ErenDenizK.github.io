@@ -30,6 +30,7 @@ what:
 why:
   placeholder: owner to write
 how:
+  form: column
   items:
     - PDFium, compiled to WebAssembly, runs in a Web Worker.
     - Vite, React 19 and TypeScript.
@@ -52,4 +53,33 @@ learned:
   placeholder: owner to write
 next:
   placeholder: from the roadmap, owner to confirm
+story: dia
+vision:
+  placeholder: owner to write
+problem:
+  placeholder: owner to write
+audience:
+  placeholder: owner to write
+decisions:
+  placeholder: owner to pick from the material in the comment below
+refuses:
+  placeholder: owner to confirm
+check:
+  placeholder: owner to confirm
 ---
+<!-- Draft material for the project story (round 6, rows S29 and S30). Never rendered: the build
+reads only the front matter. The owner writes the words (S42); these lines only collect what the
+product's own files already say, so nothing is invented.
+
+vision (from recto/docs/VISION.md, "One sentence"): a free, open-source PDF editor that runs entirely
+in the browser, never uploads a file, and treats PDF editing as one document workspace rather than a
+grid of tools.
+problem (VISION, "The thesis"): hosted services upload every file and gate the free tier; open-source
+toolkits are a homepage of single-purpose tools (pick, upload, download, repeat).
+decisions, candidates (ADR titles in recto/docs/adr/): the engine stack (PDFium in WebAssembly); the
+virtual document model; no motion library; the compact read-only phone edition (ADR 0033).
+refuses (VISION principles and non-goals): no server for anything the browser cannot do; no
+accounts, quotas or upsell; phones read only.
+check (world.json promise): "Nothing leaves this device." The network panel shows it.
+how.process, to confirm: spec, agents build, I review, tests in three engines, ship.
+-->

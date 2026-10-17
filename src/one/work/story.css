@@ -1,0 +1,35 @@
+/* The project story's sections (round 6, S30; Story.astro). One idea per section, on the centre axis
+   like the rest of the presentation; each section's heading is its chapter word, with the "01 / " index
+   when two or more chapters show. Hidden sections leave no trace (they are never rendered). */
+.sy { position: relative; isolation: isolate; max-width: calc(var(--w-text) + 2 * var(--gut)); margin: var(--s-9) auto 0; padding: 0 var(--gut); text-align: center; }
+.sy::before { content: ""; position: absolute; inset: -60px -100px; z-index: -1; pointer-events: none; background: radial-gradient(closest-side, var(--hush), rgb(18 18 20 / 0)); }
+.sy-h { margin: 0 0 var(--s-4); font-weight: 500; }
+.sy-n { color: color-mix(in srgb, var(--a1) 72%, var(--ink)); font-variant-numeric: tabular-nums; }
+/* the statement after the hero: the name's display face, large, one line of vision */
+.sy-vision { margin: 0 auto; max-width: 18em; font: 400 clamp(30px, 4.2vw, 46px)/1.15 var(--f-name, var(--f-read)); letter-spacing: -.01em; color: var(--ink); text-wrap: balance; }
+.sy-prose, .sy-check { margin: 0 auto; max-width: 32em; font: 400 var(--fs-lede)/1.5 var(--f-sans); color: var(--ink-2); text-wrap: pretty; }
+/* the lesson form: the product's own "X vs Y" contrast block, before and now */
+.sy-vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--s-5); align-items: start; max-width: var(--w-wide); margin: 0 auto; text-align: left; }
+.sy-vs p { margin: 0; font: 400 var(--fs-body)/1.55 var(--f-sans); color: var(--ink-2); }
+.sy-vs .sy-vs-k { margin-bottom: var(--s-2); color: var(--ink-3); }
+.sy-vs-b p:not(.sy-vs-k) { color: var(--ink); }
+.sy-vs-mid { align-self: center; font: 500 var(--fs-label)/1 var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: color-mix(in srgb, var(--a1) 72%, var(--ink)); }
+.sy-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--s-4); max-width: var(--w-wide); margin: 0 auto; padding: 0; list-style: none; }
+.sy-cards li { padding: var(--s-5); border-radius: var(--r-card); background: var(--raised); box-shadow: var(--e-card); text-align: left; font: 400 var(--fs-body)/1.5 var(--f-sans); color: var(--ink); }
+.sy-dec, .sy-no, .sy-tape { list-style: none; margin: 0 auto; padding: 0; max-width: var(--w-wide); text-align: left; }
+.sy-dec li { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-1) var(--s-5); padding: var(--s-4) 0; border-top: 1px solid var(--line-2); }
+.sy-chose { margin: 0; font: 500 var(--fs-body)/1.4 var(--f-sans); color: var(--ink); }
+.sy-over { margin: 0; color: var(--ink-3); }
+.sy-over s { text-decoration-color: color-mix(in srgb, var(--a1) 70%, transparent); text-decoration-thickness: 1.5px; }
+.sy-because { grid-column: 1 / -1; margin: 0; font: 400 var(--fs-small)/1.5 var(--f-sans); color: var(--ink-2); }
+.sy-no li { padding: var(--s-2) 0; color: var(--ink-2); }
+.sy-no li::before { content: "No · "; color: color-mix(in srgb, var(--a1) 72%, var(--ink)); }
+.sy-tape { border-left: 1px dashed color-mix(in srgb, var(--a1) 50%, transparent); padding-left: var(--s-4); }
+.sy-tape li { padding: var(--s-2) 0; }
+.sy-tape a { color: var(--ink); text-decoration: none; }
+.sy-date { color: var(--ink-3); font-variant-numeric: tabular-nums; margin-right: var(--s-2); }
+@media (max-width: 699.98px) {
+  .sy-vs { grid-template-columns: 1fr; }
+  .sy-vs-mid { justify-self: start; }
+  .sy-dec li { grid-template-columns: 1fr; }
+}

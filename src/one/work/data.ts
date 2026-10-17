@@ -8,7 +8,7 @@ import { getWorld, shot, type Shot, type World, fills } from '../../lib/world';
 import { poster, type Poster } from '../../lib/media';
 import { readManifest } from '../../lib/files.mjs';
 import { WORDMARK_FACES } from '../../lib/wordmarks';
-import { url, ym, isPlaceholder, type Project } from '../../lib/site';
+import { url, ym, isPlaceholder, getLog, entriesFor, entryPath, entryTitle, dayMonYear, type Project } from '../../lib/site';
 import stageData from './stage.json';
 
 type StageEntry = { hero?: string; focus?: Record<string, [number, number]>; props?: { capture: string; crop: number[]; radius?: number; at: [number, number, number]; turn?: number; phone?: boolean }[] };
@@ -79,6 +79,22 @@ export type Model = {
   how?: string[];
   /** the product's layers for the cutaway (spec v3 §6): a name and the indices of its items in `how` */
   howLayers?: { name: string; items: number[] }[];
+  /** the plate How I made is drawn as (round 6, S29), and the steps of making it */
+  howForm: 'stack' | 'column' | 'loop' | 'legend';
+  howProcess?: { step: string; by: 'me' | 'agents' | 'both' }[];
+  /* the project story (round 6, S30; docs/design/project-story.md): each is left out until written */
+  story: 'default' | 'dia' | 'lesson' | 'legend';
+  vision?: string;
+  problem?: { text?: string; before?: string; now?: string };
+  audience?: string[];
+  decisions?: { chose: string; over: string; because: string; adr?: string }[];
+  refuses?: string[];
+  check?: { text: string; href?: string };
+  learned?: string;
+  /** the project's own next step (not the next project) */
+  ahead?: string;
+  /** the project's real Record entries, newest first (samples never count) */
+  record?: { title: string; date: string; href: string; version?: string }[];
   live?: { label: string; href: string; fill: string; ink: string };
   code?: { label: string; href: string };
   linksNote?: string;
@@ -128,6 +144,10 @@ function objVideos(name: string, key: 'idle' | 'spin' | 'spin-640'): Video {
   return list;
 }
 
+/** A story section's prose: its text, or its items joined; nothing while it is unwritten. */
+const sectionText = (sec: { text?: string; items?: string[]; placeholder?: string }) =>
+  sec.placeholder ? undefined : sec.text ?? (sec.items?.length ? sec.items.join(' ') : undefined);
+
 /** Projects, sorted by order, into Work's model. `base` is Home's path under the site base. */
 export async function models(projects: Project[], base: string): Promise<Model[]> {
   /* a caller may pass Home's full URL (url('lab/one/')): the site base is taken off, so it is never doubled */
@@ -135,6 +155,7 @@ export async function models(projects: Project[], base: string): Promise<Model[]
   if (site !== '/' && base.startsWith(site)) base = '/' + base.slice(site.length);
   const home = url(base);
   const list: Model[] = [];
+  const log = await getLog();
   for (const p of projects) {
     const d = p.data;
     const w = await getWorld(p.id);
@@ -212,6 +233,22 @@ export async function models(projects: Project[], base: string): Promise<Model[]
       quote: d.why.quote,
       how: how?.length ? how : undefined,
       howLayers: how?.length ? d.how.layers : undefined,
+      howForm: d.how.form,
+      howProcess: how?.length ? d.how.process : undefined,
+      story: d.story,
+      vision: typeof d.vision === 'string' ? d.vision : undefined,
+      problem: d.problem && !isPlaceholder(d.problem) ? d.problem : undefined,
+      audience: d.audience && !isPlaceholder(d.audience) ? d.audience.cards.map((c) => c.line) : undefined,
+      decisions: Array.isArray(d.decisions) ? d.decisions : undefined,
+      refuses: d.refuses && !isPlaceholder(d.refuses) ? d.refuses.items : undefined,
+      check: d.check && !isPlaceholder(d.check) ? d.check : undefined,
+      learned: sectionText(d.learned),
+      ahead: sectionText(d.next),
+      record: (() => {
+        const rs = entriesFor(p, log).filter((e) => !e.data.sample).sort((a, b) => +b.data.date - +a.data.date).slice(0, 5)
+          .map((e) => ({ title: entryTitle(e), date: dayMonYear(e.data.date), href: url(entryPath(e)), version: e.data.version }));
+        return rs.length ? rs : undefined;
+      })(),
       live: live ? { label: live.label, href: live.href, fill: d.accent.fill ?? (w && fills(w) ? w.accent.color : d.accent.color), ink: w?.accent.ink ?? '#121214' } : undefined,
       code: code ? { label: code.label, href: code.href } : undefined,
       linksNote: d.linksNote,

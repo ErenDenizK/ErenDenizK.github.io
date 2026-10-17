@@ -1,0 +1,60 @@
+---
+/* One section of the project story (round 6, rows S29 and S30; docs/design/project-story.md). The
+   presentation calls it only for a section that is written (data.ts leaves the others undefined), so an
+   unwritten section has no heading, no rail bead and no chapter number. Each section is one idea, set
+   in one form:
+   - vision: one large line in the name's display face, right after the hero (Robin's statement beat);
+   - problem: two short paragraphs, or, in the lesson form, the product's own "X vs Y" contrast block
+     (before / now), so the structure tells the story the way the product teaches;
+   - audience: two to four moments of use, as short cards;
+   - decisions: rows of "chose / over / because"; the refused option is struck by a drawn line as the
+     row scrolls in (story.css);
+   - refuses: a short column of what it will not do;
+   - check: one claim the reader can verify, and where;
+   - learned, ahead: the maker's prose; ahead is the project's own next step;
+   - record: the project's latest real Record entries on a short tape, the Record's own language.
+   `chapter` is the "01 / Vision" index, numbered after hiding by the presentation (empty when fewer
+   than two chapters show, so a lone heading never carries a number). */
+import type { Model } from './data';
+type Key = 'vision' | 'problem' | 'audience' | 'decisions' | 'refuses' | 'check' | 'learned' | 'ahead' | 'record';
+interface Props { k: Key; m: Model; chapter?: string; id: string }
+const { k, m, chapter, id } = Astro.props;
+const WORD: Record<Key, string> = { vision: 'Vision', problem: 'Problem', audience: 'For', decisions: 'Decisions', refuses: 'Refuses', check: 'Check it', learned: 'Learned', ahead: 'Ahead', record: 'Record' };
+const word = WORD[k];
+const hid = `${id}-${k}`;
+const lesson = m.story === 'lesson';
+---
+<section class:list={['sy', `sy-${k}`]} data-rail-sec={word} aria-labelledby={hid}>
+  <h2 class="sy-h label" id={hid}>{chapter && <span class="sy-n" aria-hidden="true">{chapter}</span>}{word}</h2>
+  {k === 'vision' && <p class="sy-vision">{m.vision}</p>}
+  {k === 'problem' && m.problem && (
+    lesson && m.problem.before && m.problem.now ? (
+      <div class="sy-vs">
+        <div class="sy-vs-a"><p class="sy-vs-k label">Before</p><p>{m.problem.before}</p></div>
+        <span class="sy-vs-mid" aria-hidden="true">vs</span>
+        <div class="sy-vs-b"><p class="sy-vs-k label">Now</p><p>{m.problem.now}</p></div>
+      </div>
+    ) : <p class="sy-prose">{m.problem.text ?? `${m.problem.before} ${m.problem.now}`}</p>
+  )}
+  {k === 'audience' && <ul class="sy-cards">{m.audience?.map((x) => <li>{x}</li>)}</ul>}
+  {k === 'decisions' && (
+    <ol class="sy-dec">
+      {m.decisions?.map((d) => (
+        <li>
+          <p class="sy-chose">{d.adr ? <a href={d.adr}>{d.chose}</a> : d.chose}</p>
+          <p class="sy-over"><span class="sy-over-k label">over</span> <s>{d.over}</s></p>
+          <p class="sy-because">{d.because}</p>
+        </li>
+      ))}
+    </ol>
+  )}
+  {k === 'refuses' && <ul class="sy-no">{m.refuses?.map((x) => <li>{x}</li>)}</ul>}
+  {k === 'check' && m.check && <p class="sy-check">{m.check.href ? <a href={m.check.href}>{m.check.text}</a> : m.check.text}</p>}
+  {k === 'learned' && <p class="sy-prose">{m.learned}</p>}
+  {k === 'ahead' && <p class="sy-prose">{m.ahead}</p>}
+  {k === 'record' && (
+    <ol class="sy-tape">
+      {m.record?.map((r) => <li><a href={r.href}><span class="sy-date">{r.date}</span> <span class="sy-t">{r.version ? `${m.title} ${r.version}` : r.title}</span></a></li>)}
+    </ol>
+  )}
+</section>
