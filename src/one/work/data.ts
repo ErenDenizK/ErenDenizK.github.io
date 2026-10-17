@@ -26,10 +26,12 @@ const artRaw = import.meta.glob<string>('./art/*.svg', { eager: true, query: '?r
 const lineUrls = import.meta.glob<string>('./objects/*-line.svg', { eager: true, query: '?url', import: 'default' });
 const glassFiles = import.meta.glob<{ default: ImageMetadata }>('./objects/*-glass.png', { eager: true });
 
-/** The places of a drawing: the flat ground rings of its #front group, in viewBox units, the lowest
-    first (the route lights them in that order as the torn paper rises: spec v2 §3.3.4). */
+/** The places of a drawing: the flat ground rings of its hidden #places group (or, in the older files, of
+    its #front group), in viewBox units, the lowest first (the route lights them in that order as the torn
+    paper rises: spec v2 §3.3.4). */
 function stopsOf(svg: string): [number, number][] {
-  const i = svg.indexOf('<g id="front"');
+  let i = svg.indexOf('<g id="places"');
+  if (i < 0) i = svg.indexOf('<g id="front"');
   if (i < 0) return [];
   const out: [number, number][] = [];
   for (const m of svg.slice(i).matchAll(/M(-?[\d.]+) (-?[\d.]+)a([\d.]+) ([\d.]+) 0 1 0/g)) {
@@ -37,6 +39,19 @@ function stopsOf(svg: string): [number, number][] {
     if (rx > 2.5 * ry && ry < 10 && !out.some(([a, b]) => Math.abs(a - x - rx) < 30 && Math.abs(b - y) < 30)) out.push([+(x + rx).toFixed(1), y]);
   }
   return out.sort((a, b) => b[1] - a[1]);
+}
+/** The view box of a drawing (the phone masters are portrait). */
+function boxOf(svg: string): [number, number] {
+  const m = svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);
+  return m ? [+m[1], +m[2]] : [1600, 1000];
+}
+/** A project's drawing and, when it has one, its phone master (art/<slug>-phone.svg: engraving guide
+    §1.7, every scene has its own composition for the phone). */
+function artOf(id: string): Model['art'] {
+  const k = `./art/${id}.svg`, kp = `./art/${id}-phone.svg`;
+  if (!artUrls[k]) return undefined;
+  const phone = artUrls[kp] ? { url: artUrls[kp], stops: stopsOf(artRaw[kp]), box: boxOf(artRaw[kp]) } : undefined;
+  return { url: artUrls[k], stops: stopsOf(artRaw[k]), phone };
 }
 
 /** One image in AVIF and WebP at the given widths (never wider than the master). */
@@ -103,7 +118,7 @@ export type Model = {
   heroClip?: { wide: Video; phone?: Video };
   props: Prop[];
   /** the line art behind the project, and its places (none without a file) */
-  art?: { url: string; stops: [number, number][] };
+  art?: { url: string; stops: [number, number][]; phone?: { url: string; stops: [number, number][]; box: [number, number] } };
   /** two or three words from the stack line, floated in Work's margins (spec v2 §3.3.1, parity SH14) */
   tags: string[];
   /** the label of a print without screens (the first part of the stack line) */
@@ -259,7 +274,7 @@ export async function models(projects: Project[], base: string): Promise<Model[]
       },
       heroClip,
       props,
-      art: artUrls[`./art/${p.id}.svg`] ? { url: artUrls[`./art/${p.id}.svg`], stops: stopsOf(artRaw[`./art/${p.id}.svg`]) } : undefined,
+      art: artOf(p.id),
       tags: (d.stack ?? '').split(/\s*·\s*/).filter(Boolean).slice(0, 3),
       kind: (d.stack ?? d.runsOn).split(/\s*[·,]\s*/)[0],
       href: url(`${base.replace(/^\/|\/$/g, '')}/work/${p.id}/`),

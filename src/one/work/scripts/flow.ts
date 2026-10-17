@@ -169,12 +169,16 @@ export function setupFlow(sec: HTMLElement, projects: Proj[], phoneMq: MediaQuer
 
         /* the last project's places light along its route through the hold, as in the flight */
         if (p.stops.length && p.art) {
-          const m = p.stops.length;
           const u0 = (p.top - f.y) / vh;
           const pinU = holdPx / vh;
           const q = clamp((0.35 - u0) / (0.35 + Math.max(pinU, 0.05)));
-          p.stops.forEach((st, i) => put(st, 'opacity', f3(0.25 + 0.75 * (m > 1 ? smooth(i / m - 0.04, (i + 1) / m, q) : q))));
-          if (p.route) put(p.route, 'strokeDashoffset', f3(1 - smooth(0.5 / m, 1, q)));
+          /* each route (the desktop drawing's, the phone master's) lights its own places in order */
+          for (const rl of p.route) {
+            const set = p.stops.filter((g) => g.ownerSVGElement === rl.ownerSVGElement);
+            const m = Math.max(1, set.length);
+            set.forEach((st, i) => put(st, 'opacity', f3(0.25 + 0.75 * (m > 1 ? smooth(i / m - 0.04, (i + 1) / m, q) : q))));
+            put(rl, 'strokeDashoffset', f3(1 - smooth(0.5 / m, 1, q)));
+          }
         }
       }
     },

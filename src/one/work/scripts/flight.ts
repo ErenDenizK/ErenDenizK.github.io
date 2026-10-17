@@ -26,7 +26,7 @@ export interface Proj {
   obj: HTMLElement | null; txt: HTMLElement; title: HTMLElement; btn: HTMLAnchorElement;
   art: HTMLElement | null; layers: ArtLayer[]; tags: HTMLElement[];
   lines: { el: HTMLElement; o: number; mask: boolean }[];
-  stops: SVGGElement[]; route: SVGPathElement | null;
+  stops: SVGGElement[]; route: SVGPathElement[];
   /** the objects preview (?objects=glass|line): the object beside the hero, and its line twin */
   objx: HTMLElement | null; objLine: HTMLElement | null;
   short: boolean; top: number; pin: number;
@@ -69,7 +69,7 @@ export function initFlight(sec: HTMLElement): Flight {
       txt: el.querySelector<HTMLElement>('.txt-in')!, title: el.querySelector<HTMLElement>('.w-title')!,
       btn: el.querySelector<HTMLAnchorElement>('.btn')!,
       art: el.querySelector<HTMLElement>('.fl-art'), layers: [], tags: [...el.querySelectorAll<HTMLElement>('.fl-tag')],
-      lines: [], stops: [...el.querySelectorAll<SVGGElement>('.fl-stop')], route: el.querySelector<SVGPathElement>('.fl-route-line'),
+      lines: [], stops: [...el.querySelectorAll<SVGGElement>('.fl-stop')], route: [...el.querySelectorAll<SVGPathElement>('.fl-route-line')],
       objx: el.querySelector<HTMLElement>('.fl-obj'), objLine: el.querySelector<HTMLElement>('.fl-obj-line'),
       short: el.hasAttribute('data-short'), top: 0, pin: 0,
     };
@@ -250,13 +250,17 @@ export function initFlight(sec: HTMLElement): Flight {
          of a view before rest) to the end of the hold, so the route is whole when the torn edge takes the
          view (W7, spec v3 §9.2) */
       if (p.stops.length && p.art) {
-        const n = p.stops.length;
+        /* each route (the desktop drawing's, the phone master's) lights its own places in order */
         const t = clamp((0.35 - u0) / (0.35 + Math.max(pinU, 0.05)));
-        p.stops.forEach((g, i) => {
-          const a = n > 1 ? smooth(i / n - 0.04, (i + 1) / n, t) : t;
-          put(g, 'opacity', f3(0.25 + 0.75 * a));
-        });
-        if (p.route) put(p.route, 'strokeDashoffset', f3(1 - smooth(0.5 / n, 1, t)));
+        for (const rl of p.route) {
+          const set = p.stops.filter((g) => g.ownerSVGElement === rl.ownerSVGElement);
+          const n = Math.max(1, set.length);
+          set.forEach((g, i) => {
+            const a = n > 1 ? smooth(i / n - 0.04, (i + 1) / n, t) : t;
+            put(g, 'opacity', f3(0.25 + 0.75 * a));
+          });
+          put(rl, 'strokeDashoffset', f3(1 - smooth(0.5 / n, 1, t)));
+        }
       }
     }
     return settling;
