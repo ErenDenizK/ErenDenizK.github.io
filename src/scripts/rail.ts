@@ -65,6 +65,8 @@ export interface RailApi {
   setY(top: number, behavior: ScrollBehavior): void;
   /** go to a section (smooth, or instant under reduced motion); a keyboard press moves focus there too */
   go(i: number, keyboard: boolean): void;
+  /** the scroll position going to section i lands on (what `go` uses) */
+  top(i: number): number;
 }
 
 /** The page's rail (every page). The project sheet makes its own with createRail (scripts/sheet.ts). */
@@ -304,11 +306,15 @@ export function createRail(o: RailOpts): Rail {
   };
 
   /* going to a section: smooth, or instant under reduced motion; a keyboard press also moves focus there */
-  function go(i: number, keyboard: boolean) {
+  /** where going to section i lands: its top under the bars (its scroll margin, if larger), the first at 0 */
+  function topOf(i: number) {
     const s = secs[i].el;
     const margin = parseFloat(getComputedStyle(s).scrollMarginTop) || 0;
-    const top = i === 0 ? 0 : Math.max(0, s.getBoundingClientRect().top - originY() - Math.max(margin, o.offset()));
-    setY(top, reduce() ? 'instant' : 'smooth');
+    return i === 0 ? 0 : Math.max(0, Math.min(fullH() - viewH(), s.getBoundingClientRect().top - originY() - Math.max(margin, o.offset())));
+  }
+  function go(i: number, keyboard: boolean) {
+    const s = secs[i].el;
+    setY(topOf(i), reduce() ? 'instant' : 'smooth');
     if (keyboard) {
       if (!s.hasAttribute('tabindex')) s.setAttribute('tabindex', '-1');
       s.focus({ preventScroll: true });
@@ -440,7 +446,7 @@ export function createRail(o: RailOpts): Rail {
   /* the opt-in interaction: it gets the parts once they exist */
   const extH = o.ext?.({
     nav, btn, list, links, marks, track: ladder, secs,
-    cur: () => cur, y: getY, max: () => max, start: (i) => secs[i]?.start ?? 0, setY, go,
+    cur: () => cur, y: getY, max: () => max, start: (i) => secs[i]?.start ?? 0, setY, go, top: topOf,
   });
   measure();
 

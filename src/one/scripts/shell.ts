@@ -8,7 +8,8 @@ import { initScene } from './scene';
 import { initLines } from './lines';
 import { pauseField, motion } from './bus';
 import { initRail } from '../../scripts/rail';
-import { bloom } from './bloom';
+import { bloom, homeRail } from './bloom';
+import { initBriefLinks } from './travel';
 import { initClock } from '../../scripts/clock';
 import { initGlass } from './glass';
 
@@ -27,6 +28,8 @@ initArrive();
 initRail({
   ext: bloom((el) => el.closest('#record') ? 'The record' : el.closest('#work') ? 'Work' : undefined),
 });
+/* the brief's project links travel the page there, as the rail's names do (review row S33, travel.ts) */
+initBriefLinks(homeRail);
 initClock();
 initGlass();
 
