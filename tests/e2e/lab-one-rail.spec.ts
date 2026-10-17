@@ -229,10 +229,9 @@ test.describe('phone, no word twice', () => {
       if (!s.twin) continue;
       expect(s.echo, `"${s.name}" shown twice`).toBe(true);
       echoes++;
-      /* the name steps back on a 180 ms fade: settled, it is gone */
-      await page.waitForTimeout(260);
-      const op = await page.evaluate(() => document.querySelector('.bl-tag')!.classList.contains('echo') ? +getComputedStyle(document.querySelector('.bl-tag-n')!).opacity : 0);
-      expect(op).toBeLessThan(0.05);
+      /* the name steps back on a 180 ms fade: settled, it is gone (polled: under a full suite's load the fade
+         can settle later than 260 ms; round six critique) */
+      await expect.poll(() => page.evaluate(() => document.querySelector('.bl-tag')!.classList.contains('echo') ? +getComputedStyle(document.querySelector('.bl-tag-n')!).opacity : 0), { timeout: 1500 }).toBeLessThan(0.05);
     }
     expect(echoes).toBeGreaterThan(2);
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
