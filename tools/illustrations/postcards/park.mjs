@@ -1,7 +1,9 @@
 // Postcard 01: the inner courtyard at YTÜ, through a tinted lens (spec v3 §2.4). The lens is the frame:
 // inside it the courtyard is drawn in full (trunks, engraved crowns, the lawn in perspective hatching, the
-// walkway, one walker); outside it the horizon and the trunks go on in dashed construction, so the
-// drawing shows what the lens does. Two fingertips that hold the lens enter from the left edge.
+// walkway); outside it the horizon and the trunks go on in dashed construction, so the drawing shows what
+// the lens does. Two fingertips that hold the lens enter from the left edge. The walker on the walkway was
+// removed in round six (review row S22; engraving guide, brief 2.3): a stick figure, the only figure in
+// the series drawn as a symbol, and one small figure took the eye off the lens.
 import { rng, poly, smooth, ellipse, ring, hatch, crown, svg } from './engrave.mjs';
 
 export const photo = 'park-through-lens';
@@ -13,9 +15,8 @@ export function draw() {
   const hz = 214; // the horizon, inside the lens
   const P = { line: '', fine: '', hat: '', dash: '', rim: '', rimF: '', rimH: '', hand: '', handF: '', handH: '' };
 
-  /* construction: one circle about the lens, one sight line from the walker down to the near lawn */
+  /* construction: one circle about the lens */
   P.dash += ellipse(L.cx, L.cy, 212, 212, 0, 200);
-  P.dash += poly([[364, hz - 12], [150, 330]]);
   /* outside the lens: the horizon and trunks continue, dashed */
   P.dash += poly([[0, hz + 6], [92, hz + 3]]) + poly([[432, hz - 2], [460, hz - 3]]);
   P.dash += poly([[56, hz + 4], [57, 120]]) + poly([[72, hz + 4], [73, 150]]) + poly([[447, hz - 2], [446, 96]]);
@@ -80,11 +81,8 @@ export function draw() {
       P.line += c2.line; P.fine += c2.fine; P.hat += c2.hatch;
     }
   }
-  /* people sitting on the far lawn, and the walker on the walkway, seen from the side */
+  /* people sitting on the far lawn, seen from the side */
   for (const [x, s] of [[200, 5], [286, 4.5], [298, 5]]) P.fine += `M${x - 2} ${hz + 1}q2 ${-s} 4 0M${x} ${hz + 1 - s}l0 ${-s * 0.4}`;
-  const wx = 366, wy = hz - 1;
-  P.line += `M${wx - 4} ${wy}q2 -6 3 -11q2 5 5 11M${wx - 1} ${wy - 11}q-1 -6 0 -10q2 -1 4 1q1 5 -1 9z` + ellipse(wx + 1, wy - 25, 2.6, 3);
-  P.hat += hatch([[wx - 1, wy - 11], [wx - 1, wy - 21], [wx + 3, wy - 20], [wx + 2, wy - 11]], { angle: 90, gap: 1.6 });
 
   /* the lens: rim, its inner edge, and the tint as a crescent of hatching along the right side */
   P.rim += ellipse(L.cx, L.cy, L.rx, L.ry, L.rot, 200);
@@ -103,7 +101,7 @@ export function draw() {
   const lens = ellipse(L.cx, L.cy, L.rx, L.ry, L.rot, 200);
   return svg({
     w: W, h: H, id: 'pc-park', title: 'The courtyard through a lens',
-    desc: 'An engraved drawing of the photograph: a lens held close, the courtyard inside it drawn in full, the horizon and trunks continuing outside it in dashes.',
+    desc: 'An engraved drawing of the photograph: a lens held close, the courtyard inside it drawn in full, its trees and lawn, the horizon and trunks continuing outside it in dashes.',
     clips: { lens },
     parts: [
       { c: 'd', d: P.dash },
