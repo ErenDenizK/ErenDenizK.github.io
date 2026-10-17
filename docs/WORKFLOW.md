@@ -61,6 +61,11 @@ study (3 in parallel) -> design lead -> build (2 in parallel) -> integrate + cri
 | Review | integrator and critic in one | the merge, defects fixed, `npm run verify`, the critique and 8 screenshots |
 | Lead review | the lead | looks at every screenshot at the three sizes, fixes what the critic left, merges into `dev` |
 
+**Concept gate (owner, 2026-10-17):** a new creative concept the owner has not approved (a new
+engraving subject, a new composition such as the first screen) first goes to the owner as a concept
+sheet: two or three rough sketches or a plain description of the idea, made in minutes. Full work
+starts after the owner's yes. Refinements of approved pieces go straight on.
+
 The prompt of every station quotes the owner's direction and the limits (cause 1 of the 2026-10-11
 postmortem: prompts that asked for excess). The workflow script is kept with the session; its prompts
 are the template for the next round.

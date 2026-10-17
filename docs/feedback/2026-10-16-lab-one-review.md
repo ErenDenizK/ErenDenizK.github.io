@@ -290,3 +290,10 @@ Status values: open, in work, partly, built (waiting for the owner), closed. Kin
 | S48 | The engravings move while scrolling and have a multi-layer structure: check their motion and depth as carefully as their drawing. | The art review grades each engraving in motion (layer speeds, separation, depth), not only still. | task | partly (separation checked in the handover; layer speeds not graded) |
 | S49 | Performance optimisation may go on in small steps without breaking the flow; big steps are not needed, but performance should improve a little at every stage, or everything tangles. | Revises S12: small, safe performance work in every round; no large refactor without the owner. | decided | closed |
 | S50 | The owner likes the work system; keep looking for improvements to the project and to the workflow, for quality and speed. | Note for the lead. | note | closed |
+
+### Round 6 notes (owner, 2026-10-17, after the round closed)
+
+| Id | The owner said | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| S51 | Test round 6 before any big new work. | Round 7 was stopped before it changed anything; round 6 ships first; round 7 waits for the owner's test. | decided | closed |
+| S52 | Not sure about the first-screen plate from the pictures. For something new and creative the owner has not approved (above all the Home's first screen), first show a quick concept: a rough sketch or a spoken description of the idea in minutes, before an hour of engraving. Fill the page with meaningful things, not lines everywhere that tire the eyes. | New rule: a new creative concept gets a concept sheet (rough sketches, the idea in words) and the owner's yes before full work; refinements of approved pieces go straight on. | decided | closed |
