@@ -2,19 +2,17 @@
 /* Path (spec v2 §3.5.4): the year as one line of five stops, continuing How I work's drawing. A line
    falls out of the chapter above into the first stop, then runs through the year: solid through the
    past, lit at now, dashed into next. It draws with the scroll (a pure function of the scene's --sp,
-   scene.css), and each stop's words rise as the line reaches its dot. Behind it, "the machine": the
-   processor floor plan of the line-art set at 8 %, at 0.85x (Who I am: "whatever sits closest to the
-   machine"). Desktop: the line runs across the wide column; phone: it stands on the left, like the
+   scene.css), and each stop's words rise as the line reaches its dot. The processor floor plan that
+   stood behind it is gone (review row S28: a boxy drawing nobody could name); How I work has the loom.
+   Desktop: the line runs across the wide column; phone: it stands on the left, like the
    lanes above it. The one place for "skipped the prep year". Content: the "next" chapter's timeline. */
 import { getSite } from '../../lib/site';
-import machine from './art/circuit.svg?url';
 const site = await getSite();
 const stops = site.about.chapters.find((c) => c.id === 'next')?.timeline ?? [];
 const nowAt = Math.max(0, stops.findIndex((s) => s.state === 'now'));
 ---
 {stops.length > 0 && (
   <section class="path" id="path" data-rail-sec="Path" data-scene style={`--n: ${stops.length}; --now: ${nowAt}`}>
-    <img class="machine" src={machine} alt="" width="1600" height="600" loading="lazy" decoding="async" />
     <div class="path-in">
       <h2 class="path-t" data-lines style="--a: 0.12; --w: 0.14">Path</h2>
       <ol class="line">
@@ -32,12 +30,6 @@ const nowAt = Math.max(0, stops.findIndex((s) => s.state === 'now'));
 
 <style>
   .path { position: relative; padding: 0 var(--gut); }
-  .machine {
-    position: absolute; left: 50%; top: 50%; width: 1600px; max-width: none; height: auto; margin: -300px 0 0 -800px;
-    opacity: 0.06; pointer-events: none;
-    -webkit-mask: radial-gradient(50% 50% at 50% 50%, #000 40%, transparent 100%); mask: radial-gradient(50% 50% at 50% 50%, #000 40%, transparent 100%);
-  }
-  :global(html.motion) .machine { transform: translateY(calc((var(--sp) - 0.5) * 18vh)); }
   .path-in { position: relative; width: min(var(--w-wide), 100%); margin: 0 auto; }
   /* the sub-head of chapter I stands on the chapter's one left edge: How I work's column (760 px, centred;
      340 px at 1440), spec v3 §9.3 */
@@ -72,7 +64,6 @@ const nowAt = Math.max(0, stops.findIndex((s) => s.state === 'now'));
 
   /* phone: the line stands on the left, as the lanes do above it; each stop's words beside its dot */
   @media (max-width: 699.98px) {
-    .machine { display: none; }
     .path-t { padding-left: 26px; }
     .line { --x0: 7.5px; grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
     .line::before { top: -72px; height: 72px; left: 7px; }
