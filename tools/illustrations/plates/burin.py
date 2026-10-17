@@ -65,7 +65,7 @@ def resample(pts, step):
     L = s[-1]
     if L < 1e-6:
         return pts[:1]
-    n = max(2, int(math.ceil(L / step)) + 1)
+    n = min(40000, max(2, int(math.ceil(L / step)) + 1))
     t = np.linspace(0, L, n)
     return np.stack([np.interp(t, s, pts[:, 0]), np.interp(t, s, pts[:, 1])], axis=1)
 
@@ -265,14 +265,21 @@ class Plate:
         ys, xs = np.mgrid[0:H, 0:W]
         X = (xs + 0.5) / self.res; Y = (ys + 0.5) / self.res
         tone = np.zeros((H, W), np.float32)
-        for sid, s in self.shapes.items():
-            m = self.label == sid
-            if not m.any():
+        # one sort of the label raster, then each shape's pixels as a slice (fast for thousands of shapes)
+        flat = self.label.ravel()
+        order = np.argsort(flat, kind='stable')
+        sids, starts, counts = np.unique(flat[order], return_index=True, return_counts=True)
+        Xf, Yf, tf = X.ravel(), Y.ravel(), tone.ravel()
+        for sid, a, n in zip(sids, starts, counts):
+            s = self.shapes.get(int(sid))
+            if s is None:
                 continue
+            idx = order[a:a + n]
             if callable(s.tone):
-                tone[m] = np.clip(s.tone(X[m], Y[m]), 0, 1.2)
+                tf[idx] = np.clip(s.tone(Xf[idx], Yf[idx]), 0, 1.2)
             else:
-                tone[m] = s.tone
+                tf[idx] = s.tone
+        tone = tf.reshape(H, W)
         if self.density is not None:
             tone *= self.density
         self.tonemap = tone
