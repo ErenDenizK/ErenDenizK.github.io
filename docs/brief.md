@@ -31,6 +31,27 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 - The briefs in the research archive's HTML files are accepted as brief. (2026-10-15)
 - The new Home is built on `/lab/one/`; it replaces the live pages after the owner approves it.
   (2026-10-16)
+- The standard is an artwork, a masterpiece, not a portfolio: every frame of every motion is
+  studied and must be flawless; every font, tap, light, colour and motion detail is expert,
+  creative and measured, never a technical feature. (2026-10-16; 2026-10-16, night)
+- Every measurement and check is made on the phone (390 x 844, DPR 3, touch) as well as on the
+  desktop (1440 x 900); the owner tests mostly on the phone. (2026-10-16, night)
+- The ID card sits next to How I work (the `?card=lanes` place), not at the end. (2026-10-16,
+  afternoon)
+- The rail: the plain rail at the right stays. It gets two more parts: press and hold to drag
+  through the page (scrub), and a click that is a showcase menu. Never a separate drawer, panel or
+  window: the menu grows or opens from the pressed point, as a feeling (a pressed water drop that
+  spreads lower and wider; a closed palm whose fingers open), not as a drawn shape. The background
+  blurs gradually from the rail's side, not inside a box, to bring the text and the pressed rail
+  forward, above all on phones. (2026-10-16, night; replaces the side panel of 2026-10-16,
+  afternoon)
+- Glass: one family for the top Home/Record tab and the bottom capsules; each takes the best of the
+  other (the tab's light that changes with the aura, the capsules' minimal body). Several versions
+  are tested; real refraction only where the device's GPU allows it, with a fallback. The owner
+  picks the version on the lab page. (2026-10-16, night)
+- HyperFrames (composed motion-graphic video) waits: it comes later, maybe one round per app, after
+  Home and Record are done. In-page animation stays CSS and scripts. (2026-10-16, night; replaces
+  "install HyperFrames or an alternative if needed", 2026-10-15)
 
 ### Who
 
@@ -213,7 +234,8 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
   tabs. (2026-10-09)
 - Liveliness and interactivity matter, not 3D for its own sake: the best method wins.
   (2026-10-09)
-- One object per tab that changes into the next; objects must look as good as the Blender
+- *Superseded by the two-page direction (2026-10-15): no tabs of objects; the objects' role on Home is
+  ADR-0018 (proposed).* One object per tab that changes into the next; objects must look as good as the Blender
   render, lighting is the bar; each may have its own animation. (2026-10-09)
 - Objects stay pre-rendered and get fixed (option a); real-time 3D on desktop is not taken up.
   (2026-10-11; on 2026-10-10 the stutter in tiny movements had reopened the question.)
@@ -233,7 +255,7 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 - Animation in every respect: elements that appear in sequence read better than a page that
   lands at once; the Work transition may try the long version. Never a loading screen.
   (2026-10-15)
-- Themes are open: dark refined, light, a hybrid, or a button cycling 3–5 colour themes, left to
+- *Superseded by "Theme: Graphite" below (2026-10-15, night).* Themes are open: dark refined, light, a hybrid, or a button cycling 3–5 colour themes, left to
   research and the lead's judgement, never ugly with the objects and renders. Black need not be
   pure black nor white pure white; every colour and text tone is measured against contrast rules,
   never guessed. (2026-10-15)
@@ -259,6 +281,8 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 ### Way of working
 
 - Work is split into separate chats; this chat focuses only on the portfolio. (2026-10-10)
+- English Prep is archived; no work and no rule changes there for now (the PR rule is not passed on).
+  (2026-10-16, night)
 - Start with a clean head: discard earlier rounds, do a fresh situation analysis, fix wrong
   CLAUDE.md, ADRs and docs; keep an evaluation board; report regularly. (2026-10-10)
 - Review everything with its purpose, its reason and a designer's discipline. (2026-10-10)
@@ -268,7 +292,8 @@ English Prep, Eat Map) live in their own repos and `docs/family-kit/SESSIONS.md`
 - Before any new task after the rejected Home round: a detailed analysis of why the output was
   so bad. (2026-10-11, late)
 - Desktop first: the owner tests desktop until it is right, then phones. Both matter.
-  (2026-10-09)
+  (2026-10-09) *Superseded:* both platforms matter equally and may be different designs
+  (2026-10-15); every check is made on the phone as well (2026-10-16, night).
 - The 2026-10-11 rounds were tested on the phone only. (2026-10-11, afternoon) Both platforms
   matter: a phone when the owner shares the site in person, a computer when an employer or a
   teacher opens it. (2026-10-15)
