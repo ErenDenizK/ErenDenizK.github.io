@@ -31,9 +31,10 @@ export function ogPath(id) {
   return `og/${id}.${hash(file)}.jpg`;
 }
 
-/** Cards the pages use: home, about and each project's `og` (variants and samples stay in tools/og). */
+/** Cards the pages use: home and each project's `og` (variants and samples stay in tools/og; the about card
+    went with the About page, ADR-0019). */
 function usedCards() {
-  const ids = new Set(['home', 'about']);
+  const ids = new Set(['home']);
   const dir = path.join(ROOT, 'content/projects');
   if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) {
     if (!/\.mdx?$/.test(f)) continue;                     // a project's folder holds its world.json

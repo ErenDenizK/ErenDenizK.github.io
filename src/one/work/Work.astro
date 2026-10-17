@@ -21,7 +21,7 @@ import Presentation from './Presentation.astro';
 import { models } from './data';
 import { getSite, type Project } from '../../lib/site';
 interface Props { projects: Project[]; base?: string }
-const { projects, base = '/lab/one/' } = Astro.props;
+const { projects, base = '/' } = Astro.props;
 const site = await getSite();
 const list = await models(projects, base);
 const two = (k: number) => String(k).padStart(2, '0');

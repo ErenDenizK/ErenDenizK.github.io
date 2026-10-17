@@ -1,0 +1,60 @@
+---
+/* The shared head lines of the two-page site (ADR-0019): the canonical URL, the link-preview card
+   (link-preview research §3), the icons, the manifest, the feed and the sitemap, and the structured data.
+   One layout (src/layouts/One.astro) and the static project page (src/one/work/Twin.astro) both print it,
+   so a page never ships without its canonical address or its card. A noindex page (a redirect, a sample
+   entry, a lab page) prints no canonical line: it is not an address of its own. */
+import { getSite, url, abs } from '../lib/site';
+import { ogPath } from '../lib/files.mjs';
+
+interface Props {
+  /** the page title as the card shows it (no site name); omitted on Home */
+  title?: string;
+  description: string;
+  og?: string;
+  ogAlt?: string;
+  type?: 'website' | 'article' | 'profile';
+  published?: Date;
+  modified?: Date;
+  jsonld?: object[];
+  noindex?: boolean;
+  /** Home and the person's part are a profile page; every other page names the person as its author */
+  profile?: boolean;
+}
+const site = await getSite();
+const { title, description, og = 'home', ogAlt, type = 'website', published, modified, jsonld = [], noindex = false, profile = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogFile = ogPath(og) ?? ogPath('home');
+const ogImage = ogFile ? abs(ogFile) : null;
+const github = site.links.github;
+const linkedin = typeof site.links.linkedin === 'string' ? site.links.linkedin : null;
+const person = {
+  '@type': 'Person', '@id': abs('#me'), name: site.name, alternateName: site.mark, url: abs(),
+  affiliation: { '@type': 'CollegeOrUniversity', name: site.kicker.school },
+  sameAs: [github, linkedin].filter(Boolean),
+};
+const graph = [
+  { '@type': 'WebSite', '@id': abs('#site'), url: abs(), name: site.name, alternateName: site.mark },
+  ...(profile ? [{ '@type': 'ProfilePage', url: canonical, isPartOf: { '@id': abs('#site') }, mainEntity: person }] : [{ ...person }]),
+  ...jsonld,
+];
+---
+{!noindex && <link rel="canonical" href={canonical}>}
+<link rel="icon" type="image/png" sizes="32x32" href={url('favicon-32.png')}>
+<link rel="apple-touch-icon" href={url('apple-touch-icon.png')}>
+<link rel="manifest" href={url('manifest.webmanifest')}>
+<link rel="alternate" type="application/atom+xml" title={`${site.log.title} · ${site.name}`} href={url('record/feed.xml')}>
+<link rel="sitemap" href={url('sitemap-index.xml')}>
+<meta property="og:type" content={type}>
+<meta property="og:site_name" content={site.name}>
+<meta property="og:title" content={title ?? site.name}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={canonical}>
+{ogImage && <meta property="og:image" content={ogImage}>}
+{ogImage && <meta property="og:image:width" content="1200">}
+{ogImage && <meta property="og:image:height" content="630">}
+{ogImage && <meta property="og:image:alt" content={ogAlt ?? `${title ?? site.name}. ${site.name}.`}>}
+{published && <meta property="article:published_time" content={published.toISOString()}>}
+{modified && <meta property="article:modified_time" content={modified.toISOString()}>}
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />

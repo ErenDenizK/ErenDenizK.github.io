@@ -13,6 +13,7 @@ import '../one/rail.css';
 import '../../tools/icons/out/icons.css';
 import Bar from '../one/Bar.astro';
 import Field from '../one/Field.astro';
+import Head from '../one/Head.astro';
 import interLatin from '../fonts/inter-latin.woff2?url';
 import newsLatin from '../fonts/newsreader-latin.woff2?url';
 import nameFace from '../fonts/name-newsreader.woff2?url';
@@ -20,15 +21,26 @@ import { TEMPOS, tempoCSS } from '../../docs/family-kit/springs.js';
 import { getSite, url } from '../lib/site';
 
 interface Props {
-  title: string;
+  /** the page's own title, without the site name; omitted on Home */
+  title?: string;
   description: string;
-  /** where Home lives (the lab page now, "/" later) */
-  home: string;
-  tab: 'home' | 'record';
+  /** where Home lives: the site root since 2026-10-17 (ADR-0019) */
+  home?: string;
+  tab: 'home' | 'record' | null;
   noindex?: boolean;
+  /** the link-preview card and the structured data (src/one/Head.astro) */
+  og?: string;
+  ogAlt?: string;
+  type?: 'website' | 'article' | 'profile';
+  published?: Date;
+  modified?: Date;
+  jsonld?: object[];
+  /** a class on <body class={page}>: the Record's pages set their own grammar on it */
+  page?: string;
 }
 const site = await getSite();
-const { title, description, home, tab, noindex = false } = Astro.props;
+const { title, description, home = url(), tab, noindex = false, og, ogAlt, type, published, modified, jsonld, page } = Astro.props;
+const fullTitle = title ? `${title} · ${site.name}` : site.name;
 /* the family kit's springs as CSS linear() curves, printed at build time (spec §2.7) */
 const springs = tempoCSS(TEMPOS.portfolio);
 ---
@@ -37,9 +49,10 @@ const springs = tempoCSS(TEMPOS.portfolio);
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>{title}</title>
+  <title>{fullTitle}</title>
   <meta name="description" content={description}>
   {noindex && <meta name="robots" content="noindex">}
+  <Head title={title} description={description} og={og} ogAlt={ogAlt} type={type} published={published} modified={modified} jsonld={jsonld} noindex={noindex} profile={tab === 'home'} />
   <meta name="theme-color" content="#121214">
   <meta name="color-scheme" content="dark">
   <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin>
@@ -75,7 +88,7 @@ const springs = tempoCSS(TEMPOS.portfolio);
     })();
   </script>
 </head>
-<body>
+<body class={page}>
   <a class="skip" href="#main">Skip to content</a>
   <Field />
   {/* L1 and L2: the 2.5D plates scroll with the page, above the field and under the grain */}

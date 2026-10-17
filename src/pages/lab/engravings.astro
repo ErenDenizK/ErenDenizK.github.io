@@ -11,7 +11,7 @@
    Nothing here is content: the captions are workbench labels. */
 import One from '../../layouts/One.astro';
 import SignalPlate from '../../one/SignalPlate.astro';
-import { getSite, url } from '../../lib/site';
+import { getSite } from '../../lib/site';
 import manifest from '../../assets/photos/postcards.json';
 
 const site = await getSite();
@@ -27,7 +27,7 @@ const series = [
   ['davutpasa', 'Davutpaşa, Orta Bahçe (provisional): the courtyard inside the old barracks, its radial paths and the pavilion.', 1600, 800],
 ] as const;
 ---
-<One title={`${site.name} (lab: engravings)`} description="A workbench for the engravings." home={url('lab/one/')} tab="home" noindex>
+<One title="Lab: engravings" description="A workbench for the engravings." tab="home" noindex>
   <section class="first" aria-label="The first-screen plate">
     <SignalPlate />
     <picture class="photo">

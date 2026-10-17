@@ -1,36 +1,33 @@
 ---
-/* A project's own page (UX research §2): complete without JavaScript and shaped like the sheet it
-   becomes over Work on wide screens. On phones it is the project view (owner, 2026-10-09: a page of
-   its own, not a drawer), with a labelled Back. */
-import Base from '../../layouts/Base.astro';
-import Icon from '../../components/Icon.astro';
-import ProjectCase from '../../components/ProjectCase.astro';
-import { getProjects, getLog, url, type Project } from '../../lib/site';
+/* A project's own page, /work/<slug>/ (ADR-0019; phase3 design-spec.md 3.3.4, "URLs"): the canonical
+   address of each project since the new Home became the site root (2026-10-17, review row S38). On Home a
+   project opens as a layer over the page and the address bar shows this URL; a direct visit, a reload or a
+   shared link gets the complete presentation here, without JavaScript, with Close as a link to
+   Home's #<slug>. The same frozen addresses the four-page site used, so old links still land on the
+   project. */
+import LabShell from '../../one/work/lab/LabShell.astro';
+import Presentation from '../../one/work/Presentation.astro';
+import '../../one/work/work.css';
+import { models } from '../../one/work/data';
+import { getProjects, getSite, url } from '../../lib/site';
 
 export async function getStaticPaths() {
-  const all = await getProjects();
-  return all.map((p, i) => ({
-    params: { slug: p.id },
-    props: { p, prev: all[(i - 1 + all.length) % all.length], next: all[(i + 1) % all.length], index: i, total: all.length },
-  }));
+  const projects = await getProjects();
+  const list = await models(projects, url());
+  return list.map((m) => {
+    const p = projects.find((x) => x.id === m.slug)!;
+    return { params: { slug: m.slug }, props: { m, next: list.find((x) => x.slug === m.next?.slug), summary: p.data.summary, og: p.data.og } };
+  });
 }
-interface Props { p: Project; prev: Project; next: Project; index: number; total: number }
-const { p, prev, next, index, total } = Astro.props;
-const projects = await getProjects();
-const log = await getLog();
-const entries = log.filter((e) => e.data.projects.some((r) => r.id === p.id));
-const d = p.data;
+const { m, next, summary, og } = Astro.props;
+const site = await getSite();
 ---
-<Base title={d.title} tab="work" description={d.summary} og={d.og ?? 'home'} ogAlt={`${d.title}: ${d.summary}`} pageClass="page-project" accent={d.accent.glow ?? d.accent.color}>
-  <div class="sheet-page" style={`--p: ${d.accent.color}; ${d.accent.glow ? `--pg: ${d.accent.glow};` : ''} ${d.accent.p2 ? `--p2: ${d.accent.p2};` : ''} ${d.accent.p3 ? `--p3: ${d.accent.p3};` : ''} ${d.accent.ink ? `--p-ink: ${d.accent.ink};` : ''} ${d.accent.fill ? `--p-fill: ${d.accent.fill};` : ''}`}>
-    <div class="backlight" aria-hidden="true"></div>
-    <div class="sheet" id="sheet">
-      <div class="sheet-bar">
-        <a class="back" href={url('work/')} data-back><Icon name="back" size={20} /><span class="back-l">Work</span></a>
-        <p class="crumb meta"><span class="crumb-w">Work · </span><b>{index + 1} of {total}</b></p>
-        <a class="icon-btn close" href={url('work/')} aria-label="Close" data-back><Icon name="close" size={20} /></a>
-      </div>
-      <ProjectCase p={p} prev={prev} next={next} index={index} total={total} entries={entries} allEntries={log} projects={projects} />
-    </div>
-  </div>
-</Base>
+<LabShell title={`${m.title} · ${site.name}`} card={m.title} description={summary} og={og ?? 'home'} ogAlt={`${m.title}: ${summary}`} noindex={false}>
+  <Presentation m={m} next={next} mode="page" />
+</LabShell>
+<script>
+  import { initStatic } from '../../one/work/scripts/work';
+  import { initGlass } from '../../one/scripts/glass';
+  initStatic();
+  initGlass();
+</script>

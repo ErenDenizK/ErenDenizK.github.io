@@ -1,22 +1,36 @@
 ---
-import Base from '../layouts/Base.astro';
+/* Not found (ADR-0019): on the two-page site there are two places to go, Home and the Record. The page
+   stands in the brief's blue hour, with the Record's tape as its one drawing: a loose end of tape that
+   has run off the reel, drawing itself once (still twin: drawn). noindex. */
+import One from '../layouts/One.astro';
 import Icon from '../components/Icon.astro';
-import Foot from '../components/Foot.astro';
+import { SETS, auraAttr, auraVars } from '../one/aura.mjs';
 import { url } from '../lib/site';
 ---
-<Base title="Not found" tab={null} description="This address does not exist on the site." noindex>
-  <div class="inner">
-    <header class="vhead nf">
-      <p class="meta">404</p>
-      <h1 class="vtitle">Nothing here</h1>
-      <p class="vdek lede">This address does not exist, or it moved. Everything on the site is one of these four:</p>
-      <div class="links">
-        <a class="btn" href={url()}>Home <Icon name="arrow-right" weight="medium" /></a>
-        <a class="qlink" href={url('work/')}>Work</a>
-        <a class="qlink" href={url('record/')}>Record</a>
-        <a class="qlink" href={url('about/')}>About</a>
-      </div>
-    </header>
-    <Foot />
-  </div>
-</Base>
+<One title="Not found" description="This address does not exist on the site." tab={null} noindex page="nf-page">
+  <section class="nf" data-aura={auraAttr(SETS.brief)} data-rail-accent={SETS.brief[0]} style={auraVars(SETS.brief)}>
+    <svg class="nf-tape" viewBox="0 0 600 220" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+      <path pathLength="1" d="M-20 170C90 170 120 40 230 52S330 200 420 150 520 30 620 60" />
+    </svg>
+    <p class="nf-code meta">404</p>
+    <h1 class="nf-title">Nothing here</h1>
+    <p class="nf-dek lede">This address does not exist, or it moved when the site became two pages.</p>
+    <div class="nf-links">
+      <a class="btn" href={url()}>Home <Icon name="arrow-right" weight="medium" /></a>
+      <a class="btn nf-rec" href={url('record/')}>The record <Icon name="arrow-right" weight="medium" /></a>
+    </div>
+  </section>
+</One>
+<style>
+  .nf { position: relative; min-height: 100svh; display: grid; align-content: center; justify-items: center; text-align: center; gap: var(--s-4); padding: calc(var(--bar-h) + var(--s-6)) var(--gut) var(--s-9); }
+  .nf-tape { position: absolute; left: 50%; top: 50%; width: min(1100px, 140vw); translate: -50% -96%; overflow: visible; pointer-events: none; }
+  .nf-tape path { fill: none; stroke: color-mix(in srgb, var(--record-1) 45%, transparent); stroke-width: 0.85; stroke-dasharray: 1 1; }  /* user units: pathLength cannot be used with a non-scaling stroke */
+  :global(html.motion) .nf-tape path { animation: nf-draw 2200ms var(--ease-out) 200ms both; }
+  @keyframes nf-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  .nf-code { position: relative; font: 500 var(--fs-label) / 1 var(--f-sans); color: var(--ink-3); letter-spacing: 0.06em; }
+  .nf-title { position: relative; font: 500 var(--fs-title) / 1 var(--f-serif); letter-spacing: -0.02em; }
+  .nf-dek { position: relative; max-width: 26em; }
+  .nf-links { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3); margin-top: var(--s-4); }
+  .nf .btn :global(.icon) { transition: translate 200ms var(--ease-out); }
+  .nf .btn:hover :global(.icon) { translate: 2px 0; }
+</style>

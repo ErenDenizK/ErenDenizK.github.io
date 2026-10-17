@@ -5,7 +5,7 @@
    has moved (scripts/shell.ts sets html.moved). The time is written before first paint; scripts/clock.ts
    keeps it on the minute. */
 import { url } from '../lib/site';
-interface Props { home: string; tab: 'home' | 'record'; mark: string }
+interface Props { home: string; tab: 'home' | 'record' | null; mark: string }
 const { home, tab, mark } = Astro.props;
 const tabs = [['home', 'Home', home], ['record', 'Record', url('record/')]] as const;
 ---

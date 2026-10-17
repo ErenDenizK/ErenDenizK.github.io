@@ -73,6 +73,9 @@ export const homeRail = () => home;
 export function bloom(group: (el: HTMLElement) => string | undefined) {
   return (api: RailApi) => {
     const { nav, btn, links, marks, secs } = api;
+    /* a page with fewer than two sections (a Record entry, the 404) has only the plain rail: the beads'
+       column is never placed, so there is nothing to bloom (ADR-0019: the Record's pages share the shell) */
+    if (!nav.parentElement) return { destroy() {} };
     const n = secs.length;
     const ac = new AbortController();
     const sig = { signal: ac.signal };

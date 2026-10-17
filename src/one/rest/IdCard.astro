@@ -39,7 +39,7 @@ const links = [
    face is 500 x 800), and the micro line along the lower edge */
 const guil = ([['idc-a', 84, 700], ['idc-b', 440, 170]] as const).map(([n, x, y]) => {
   const e = BOX[n];
-  return { src: url(`lab/one/guil/${n}.svg`), style: `left: ${((x - e) / 5).toFixed(2)}%; top: ${((y - e) / 8).toFixed(2)}%; width: ${(e / 2.5).toFixed(2)}%; height: ${(e / 4).toFixed(2)}%` };
+  return { src: url(`guil/${n}.svg`), style: `left: ${((x - e) / 5).toFixed(2)}%; top: ${((y - e) / 8).toFixed(2)}%; width: ${(e / 2.5).toFixed(2)}%; height: ${(e / 4).toFixed(2)}%` };
 });
 const city = site.about.chapters.flatMap((c) => c.facts ?? []).find(([key]) => key === 'City')?.[1];
 const micro = [site.mark, k.school, city].filter(Boolean).join(' · ').toUpperCase();
