@@ -120,7 +120,31 @@ Switch with `?bloom=drop|palm|fan`.
   pointer without the ease; no swell, no roll.
 - Without JavaScript or in forced colours there is no rail; the platform's scrollbar stays (ADR-0013).
 
-## 6. Open
+## 6. Round five (review row V14 and the round-four critique)
+
+- The give. The owner's words for the tap are a feeling: "the press point gives, then spreads wider,
+  things open outward". Round four drew the spread (the names leave the point, the pool of light grows
+  lower and wider) but nothing gave. Now, while a press is down, the beads round the press point sink up to
+  3 px toward the screen's edge and shrink to 70 %, most at the point and fading over about 18 px
+  (`--g`, a Gaussian of the distance). The press takes 90 ms to sink and the beads come back in 160 ms. A
+  tap then blooms out of that dimple, a hold becomes the scrub, a swipe lets the beads go. Reduced motion:
+  no give.
+- `drop` stays the default. Its frames still show no name over another; with the give, the gesture
+  reads as press, give, spread.
+- No word twice. While a section's own title is in view, the big name beside the scrub thumb steps
+  back (180 ms) and the tag keeps only its part and the section's number, "Work · 04 / 10", where the
+  name's foot was. A title is a leaf element of 18 px type or more inside the section whose text is the
+  name, contains it or is contained in it ("The record" for "Record"). The name's roll fades through
+  `filter: opacity()`, which multiplies with the CSS opacity, so a name that has given way never flashes
+  back in for the roll. Test: `lab-one-rail.spec.ts`, "phone, no word twice".
+- One rail. The opened project's layer already builds its rail with the same `bloom()` (`open.ts`, round
+  four), so the give, the scrub, the tag and the bloom are the same there; this round changed only
+  `bloom.ts` and `rail.css`. The layer passes no parts (`bloom(() => undefined)`), so its names have no
+  gaps between groups and its tag no part line. A hook for the layer's parts (Overview and Facts, the
+  steps, How it's made and Next) would be one argument in `open.ts`, which belongs to the Work lane:
+  noted for it, not done here.
+
+## 7. Open
 
 - Safari on a real iPhone: the hold under `touch-action: pan-y`, the vibration (iOS has none), and the
   blur layers' cost at DPR 3.
