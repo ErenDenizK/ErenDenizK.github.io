@@ -486,21 +486,21 @@
   }
  },
  "shadow": {
-  "blend": "multiply",
+  "blend": "normal",
   "pose": "rest",
   "w": 600,
   "h": 600,
-  "min": 0.352,
+  "min": 0.349,
   "sources": [
    {
-    "src": "shadow.avif",
+    "src": "shadow-a.avif",
     "type": "image/avif",
-    "bytes": 1189
+    "bytes": 1705
    },
    {
-    "src": "shadow.webp",
+    "src": "shadow-a.webp",
     "type": "image/webp",
-    "bytes": 1504
+    "bytes": 5136
    }
   ]
  },
@@ -613,7 +613,7 @@
   }
  },
  "bytes": {
-  "shadow": 1189,
+  "shadow": 1705,
   "poster1200": 14850,
   "leanHalf": 395522,
   "leanFull": 1012555,
@@ -628,33 +628,33 @@
    "h264": 255040
   },
   "tiers": {
-   "firstPaint": 16039,
+   "firstPaint": 16555,
    "phone": {
-    "av1": 388846,
-    "hevc": 436977,
-    "h264": 435179
+    "av1": 389362,
+    "hevc": 437493,
+    "h264": 435695
    },
-   "desktopLow": 411561,
+   "desktopLow": 412077,
    "desktopFull": {
-    "av1": 1676503,
-    "hevc": 1770063,
-    "h264": 1696045
+    "av1": 1677019,
+    "hevc": 1770579,
+    "h264": 1696561
    },
    "phoneSpin": {
-    "av1": 466814,
-    "hevc": 498802,
-    "h264": 409867
+    "av1": 467330,
+    "hevc": 499318,
+    "h264": 410383
    },
    "phoneSpinSizes": {
     "640": {
-     "av1": 412594,
-     "hevc": 454411,
-     "h264": 367565
+     "av1": 413110,
+     "hevc": 454927,
+     "h264": 368081
     },
     "1040": {
-     "av1": 466814,
-     "hevc": 498802,
-     "h264": 409867
+     "av1": 467330,
+     "hevc": 499318,
+     "h264": 410383
     }
    }
   },
