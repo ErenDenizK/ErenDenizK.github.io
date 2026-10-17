@@ -258,6 +258,8 @@ const site = defineCollection({
       kicker: z.string(), title: z.string(), dek: z.string(), byHand: z.string(),
       /** The one way into a project's focus view from its section. */
       cta: z.string(),
+      /** The way out of an opened project: the close capsule's label and the close cursor's word. */
+      close: z.string(),
       /** Catalog group headings; a group with no projects is left out. */
       groups: z.object({ directed: z.string(), byHand: z.string() }),
     }),

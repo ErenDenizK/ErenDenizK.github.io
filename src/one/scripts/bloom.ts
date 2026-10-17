@@ -98,7 +98,9 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
     tagG.className = 'bl-tag-g';
     const tagN = document.createElement('span');
     tagN.className = 'bl-tag-n';
-    tag.append(tagG, tagN);
+    const tagO = document.createElement('span');
+    tagO.className = 'bl-tag-o';
+    tag.append(tagG, tagN, tagO);
     fx.append(svg, pool, thumb, tag);
     nav.parentElement!.insertBefore(veil, nav);
     nav.parentElement!.insertBefore(fx, nav);
@@ -153,6 +155,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       tau = Math.max(FOLLOW, tau - dt * 0.6);
       const next = Math.abs(target - y) < 0.5 ? target : y + (target - y) * k;
       api.setY(next, 'instant');
+      echo();
       if (Math.abs(target - next) >= 0.5) raf = requestAnimationFrame(follow); else last = 0;
     };
     const showTag = (i: number, y: number, quiet: boolean) => {
@@ -166,17 +169,44 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       tag.style.setProperty('--a', secs[i].a);
       tag.classList.toggle('quiet', quiet);
       tag.classList.add('on');
-      if (i === shown) return;
+      if (i === shown) { echo(); return; }
       const dir = shown < 0 ? 0 : i > shown ? 1 : -1;
       shown = i;
       /* the part's name, unless it only repeats the section's ("The record" over "Record") */
       const gl = groups[i];
       tagG.textContent = gl && !gl.toLowerCase().includes(secs[i].label.toLowerCase()) ? gl : '';
       tagN.textContent = secs[i].label;
-      if (!still() && dir) tagN.animate([{ opacity: 0.2, translate: `0 ${dir * 9}px`, filter: 'blur(2px)' }, { opacity: 1, translate: '0 0', filter: 'blur(0)' }],
+      tagO.textContent = `${tagG.textContent ? tagG.textContent + ' · ' : ''}${String(i + 1).padStart(2, '0')} / ${String(n).padStart(2, '0')}`;
+      /* the roll fades through filter: opacity(), which multiplies with the CSS opacity, so a name that gives
+         way to its title (echo) never flashes back in for the roll's 220 ms */
+      echo();
+      if (!still() && dir) tagN.animate([{ translate: `0 ${dir * 9}px`, filter: 'opacity(0.2) blur(2px)' }, { translate: '0 0', filter: 'opacity(1) blur(0)' }],
         { duration: 220, easing: 'cubic-bezier(.22, 1, .36, 1)' });
     };
-    const hideTag = () => { tag.classList.remove('on'); shown = -1; };
+    const hideTag = () => { tag.classList.remove('on', 'echo'); shown = -1; };
+    /* No word shown twice (round five; round-four critique §3: on the phone "Eat Map" stood beside the
+       project's own "Eat Map"). Each section's own title on the page is found once: the leaf elements of
+       18 px type or more whose text is the section's name, or contains it, or is contained in it ("The
+       record" for "Record", "Eren Deniz Kuyucaklıoğlu" for "Eren"). While one of them is in view, the big
+       name beside the thumb steps back and the tag keeps only its part and the section's number
+       ("Work · 03 / 10"), so the reader still feels where the thumb is and reads the name once, on the page. */
+    const norm = (t: string) => t.replace(/\s+/g, ' ').trim().toLowerCase();
+    const titles: (HTMLElement[] | undefined)[] = [];
+    const titlesOf = (i: number) => (titles[i] ??= (() => {
+      const l = norm(secs[i].label);
+      return [secs[i].el, ...secs[i].el.querySelectorAll<HTMLElement>('*')].filter((e) => {
+        if (e.closest('.rail, .bl-fx') || !e.textContent || e.childElementCount > 2) return false;
+        const t = norm(e.textContent);
+        if (t.length < 3 || t.length > 40 || !(t === l || t.includes(l) || l.includes(t))) return false;
+        return parseFloat(getComputedStyle(e).fontSize) >= 18;
+      });
+    })());
+    const echo = () => {
+      if (shown < 0 || tag.classList.contains('quiet')) { tag.classList.remove('echo'); return; }
+      const top = parseFloat(getComputedStyle(root).getPropertyValue('--bar-h')) || 64;
+      const on = titlesOf(shown).some((e) => { const r = e.getBoundingClientRect(); return r.width > 0 && r.bottom > top && r.top < innerHeight; });
+      tag.classList.toggle('echo', on);
+    };
     const moveThumb = (y: number) => {
       thumbY = Math.max(top0, Math.min(top0 + n * slot, y));
       const a = axis();
@@ -198,6 +228,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       if (open) close(false);
       press.scrub = true;
       clearTimeout(holdT);
+      give(null);
       if (!btn.hasPointerCapture(press.id)) try { btn.setPointerCapture(press.id); } catch { /* gone */ }
       layoutScrub();
       nav.classList.add('is-scrub');
@@ -235,6 +266,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       if (type === 'mouse') { e.preventDefault(); btn.setPointerCapture(e.pointerId); }
       clearTimeout(holdT);
       holdT = window.setTimeout(startScrub, HOLD[type]);
+      if (!open && !still()) give(e.clientY);
     }, sig);
     btn.addEventListener('pointermove', (e) => {
       if (!press) {
@@ -250,7 +282,7 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       const d = Math.hypot(e.clientX - press.x0, e.clientY - press.y0);
       if (d < SLOP[press.type]) return;
       if (press.type === 'mouse') startScrub();
-      else { clearTimeout(holdT); press = null; }   // a swipe: the platform scrolls
+      else { clearTimeout(holdT); press = null; give(null); }   // a swipe: the platform scrolls
     }, sig);
     btn.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !press) hideTag(); }, sig);
     /* while a finger scrubs, its moves are the rail's, not the page's (the button keeps touch-action: pan-y
@@ -263,13 +295,14 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       const p = press;
       press = null;
       clearTimeout(holdT);
+      give(null);
       if (e.type !== 'pointerup') return;
       swallow = true;
       setTimeout(() => { swallow = false; }, 0);
       if (open) close(false); else openAt(p.y0, nearest(p.y0), false);
     };
     btn.addEventListener('pointerup', up, sig);
-    btn.addEventListener('pointercancel', (e) => { if (press && e.pointerId === press.id) { if (press.scrub) endScrub(false); else { clearTimeout(holdT); press = null; } } }, sig);
+    btn.addEventListener('pointercancel', (e) => { if (press && e.pointerId === press.id) { if (press.scrub) endScrub(false); else { clearTimeout(holdT); press = null; give(null); } } }, sig);
     btn.addEventListener('lostpointercapture', (e) => { if (press?.scrub && e.pointerId === press.id) endScrub(false); }, sig);
     /* the keyboard (and a pointer's click, which the press already handled) */
     btn.addEventListener('click', (e) => {
@@ -280,6 +313,20 @@ export function bloom(group: (el: HTMLElement) => string | undefined) {
       openAt(r.top + r.height / 2, c, true);
     }, sig);
 
+    /* the give (round five, review row V14: "the press point gives, then spreads wider, things open
+       outward"): while a press is down, the beads around it sink toward the screen's edge and shrink, most
+       at the press point and fading over about 18 px, as a surface gives under a fingertip. A tap then
+       blooms out of that dimple; a hold turns it into the scrub; a swipe lets it go. The beads come back
+       on their own 160 ms ease. */
+    const give = (y: number | null) => {
+      nav.classList.toggle('is-press', y !== null);
+      marks.forEach((m) => {
+        if (y === null) { m.style.removeProperty('--g'); return; }
+        const r = m.getBoundingClientRect();
+        const g = Math.exp(-(((r.top + r.height / 2 - y) / 18) ** 2));
+        if (g > 0.02) m.style.setProperty('--g', g.toFixed(3)); else m.style.removeProperty('--g');
+      });
+    };
     const nearest = (y: number) => {
       let best = 0, bd = Infinity;
       marks.forEach((m, i) => { const r = m.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - y); if (d < bd) { bd = d; best = i; } });

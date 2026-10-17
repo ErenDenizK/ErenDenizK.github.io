@@ -14,10 +14,14 @@
   background: radial-gradient(closest-side, var(--hush), rgb(18 18 20 / 0)); }
 :is(.work, .pres) .wm { line-height: 1; }
 .work .btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: var(--r-pill);
-  font: 500 var(--fs-small)/1 var(--f-sans); background: var(--ink); color: var(--ground);
-  transition: background-color var(--t-quick) var(--ease-ui), transform var(--t-press) var(--ease-ui); }
-.work .btn:hover { background: var(--ink-hi); }
-.work .btn:active { transform: scale(.97); }
+  font: 500 var(--fs-small)/1 var(--f-sans); background: var(--ink); color: var(--ground); -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--t-quick) var(--ease-ui), translate var(--t-ui) var(--ease-out), box-shadow var(--t-ui) var(--ease-out), scale var(--t-press) var(--ease-ui); }
+/* every control answers with motion (review G6, T26): the button rises 2 px into a soft lit shadow under a
+   fine pointer and gives under a press (spec v3 §9.6: 120 ms, 0.98) */
+@media (hover: hover) and (pointer: fine) {
+  .work .btn:hover { background: var(--ink-hi); translate: 0 -2px; box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--a1, var(--ink)) 70%, transparent); }
+}
+.work .btn:active { scale: .98; translate: 0 0; box-shadow: none; }
 
 /* ---------- a print ---------- */
 .pr { position: relative; }
@@ -107,12 +111,15 @@
     --hw: min(760px, 56vw, calc((var(--sv) - 400px) * 1.6 + 16px));
     --hh: calc((var(--hw) - 16px) / 1.6 + 36px);
     --htop: calc(var(--bar-h) + 28px);
-    --sw: calc(var(--hw) * .58); }
+    --sw: calc(var(--hw) * .58);
+    /* the last block's hold (spec v3 §9.2): 300 px shorter than the half view of round 2, never under
+       120 px. The tear's height, its opaque part and the person's part all follow it. */
+    --hold: max(120px, calc(.5 * var(--sv) - 300px)); }
   html.js:not(.still) .work .proj { max-width: none; margin: 0; height: calc(.95 * var(--sv)); pointer-events: none; }
   html.js:not(.still) .work .proj[data-short] { --hw: min(600px, 46vw, calc((var(--sv) - 400px) * 1.6 + 16px)); }
   html.js:not(.still) .work .fl-stage { position: absolute; left: 0; right: 0; top: 0; height: var(--sv); pointer-events: none; }
   /* the last block holds still while the torn paper rises over it (W7) */
-  html.js:not(.still) .work .proj[data-last] { height: calc(1.5 * var(--sv)); }
+  html.js:not(.still) .work .proj[data-last] { height: calc(var(--sv) + var(--hold)); }
   html.js:not(.still) .work .proj[data-last] .fl-stage { position: sticky; }
   html.js:not(.still) .work .fl-art { top: -2%; width: max(1520px, 106vw); }
   html.js:not(.still) .work .fl-route-line { stroke-dashoffset: 1; }
@@ -129,6 +136,9 @@
   html.js:not(.still) .work .pr-twin img { filter: grayscale(1) brightness(.78) contrast(1.05); }
 
   html.js:not(.still) .work .fl-side { display: block; position: absolute; z-index: 2; width: var(--sw); transform-origin: 50% 50%; }
+  /* decode before reveal (review V17): out of sight until its picture is decoded (scripts/flight.ts) */
+  html.js:not(.still) .work .fl-side { opacity: 0; transition: opacity 240ms var(--ease-ui); }
+  html.js:not(.still) .work .fl-side.ready { opacity: 1; }
   html.js:not(.still) .work .fl-side .pr { --shade: .64; }
   html.js:not(.still) .work .fl-side .pr-mount { padding: 6px 6px 20px; }
   html.js:not(.still) .work .fl-side .pr-cap { display: none; }
@@ -153,14 +163,14 @@
   html.js:not(.still) .work .fl-hero:active .pr-in { transform: scale(.985); transition: transform var(--t-press) var(--ease-ui); }
 
   /* the torn paper of the person's part (W7): it rises over the held last block at the page's speed */
-  /* it starts at the view's foot when the hold (half a view) begins and is opaque exactly as far as the
-     held stage reaches, then hands over to the person's part in a short fade */
-  html.js:not(.still) .work .w-tear { display: block; position: relative; z-index: 0; height: calc(.6 * var(--sv));
-    margin: calc(-.5 * var(--sv)) 0 calc(-.1 * var(--sv)); pointer-events: none; }
+  /* it starts at the view's foot when the hold begins and is opaque exactly as far as the held stage
+     reaches (the hold's length), then hands over to the person's part in a short fade (a tenth of a view) */
+  html.js:not(.still) .work .w-tear { display: block; position: relative; z-index: 0; height: calc(var(--hold) + .1 * var(--sv));
+    margin: calc(-1 * var(--hold)) 0 calc(-.1 * var(--sv)); pointer-events: none; }
   html.js:not(.still) #work ~ .rest > .tear { display: none; }
   /* the person's part rides right behind the moving edge: no stretch of blank paper between the tear and
      How I work (review W7, G3). The part is pulled up by the hold, less a short margin under the edge. */
-  html.js:not(.still) #work ~ .rest { margin-top: calc(-.5 * var(--sv) + var(--s-8)); }
+  html.js:not(.still) #work ~ .rest { margin-top: calc(-1 * var(--hold) + var(--s-8)); }
   /* the part starts on the opaque paper of the edge and lets the aura back in over 40 % of a view, so no
      seam shows where the two papers meet */
   html.js:not(.still) #work ~ .rest > .sheet { padding-top: var(--s-6);
@@ -168,25 +178,24 @@
   .w-edge { display: none; position: absolute; left: 0; top: -46px; width: 100%; height: 48px; overflow: visible; }
   .w-edge-fill { fill: var(--paper); }
   .w-edge-fibre { fill: none; stroke: var(--line-2); stroke-width: 1; vector-effect: non-scaling-stroke; }
-  .w-sheet { position: absolute; inset: 0; background: linear-gradient(var(--paper) 0 83%, rgb(23 23 26 / 0) 100%); }
+  .w-sheet { position: absolute; inset: 0; background: linear-gradient(var(--paper) 0 var(--hold), rgb(23 23 26 / 0) 100%); }
   .w-edge-1440 { display: block; }
   @media (max-width: 1099.98px) { .w-edge-1440 { display: none; } .w-edge-820 { display: block; } }
   @media (max-width: 699.98px) { .w-edge-820 { display: none; } .w-edge-390 { display: block; } }
 
   /* the phone: its own composition, not a smaller desktop (spec v2 §3.3.3) */
   @media (max-width: 699.98px) {
-    html.js:not(.still) .work { --hw: calc(100vw - 40px); --hh: calc(var(--hw) + 18px); --htop: calc(var(--bar-h) + 24px); }
+    html.js:not(.still) .work { --hw: calc(100vw - 40px); --hh: calc(var(--hw) + 18px); --htop: calc(var(--bar-h) + 24px);
+      --hold: max(120px, calc(.4 * var(--sv) - 200px)); }
     html.js:not(.still) .work .proj { height: var(--sv); }
     html.js:not(.still) .work .proj:has(.fl-hero .pr[data-phone-frame]) { height: calc(1.15 * var(--sv)); --hw: 234px; --hh: calc(218px * 844 / 390 + 34px); }
     html.js:not(.still) .work .proj[data-short] { --hw: calc(100vw - 72px); --hh: calc((var(--hw) - 16px) / 1.6 + 34px); }
-    html.js:not(.still) .work .proj[data-last] { height: calc(1.4 * var(--sv)); }
     html.js:not(.still) .work .fl-hero { margin-left: calc(var(--hw) / -2); }
     html.js:not(.still) .work .fl-side, html.js:not(.still) .work .fl-tag { display: none; }
     html.js:not(.still) .work .fl-art { width: 950px; top: 4%; }
     html.js:not(.still) .work .txt { top: calc(var(--htop) + var(--hh) + 18px); }
     html.js:not(.still) .work .w-promise { max-width: 22em; }
-    html.js:not(.still) .work .w-tear { margin-top: calc(-.4 * var(--sv)); height: calc(.5 * var(--sv)); margin-bottom: calc(-.1 * var(--sv)); }
-    html.js:not(.still) #work ~ .rest { margin-top: calc(-.4 * var(--sv) + var(--s-7)); }
+    html.js:not(.still) #work ~ .rest { margin-top: calc(-1 * var(--hold) + var(--s-7)); }
   }
 }
 
@@ -377,8 +386,16 @@ html.layer-open .layer .rail-plain.in-layer { display: block !important; view-tr
 .p-next-label { display: block; }
 .p-next-title { display: block; margin-top: var(--s-2); font-size: var(--fs-h2); }
 .p-next-title .wm { color: var(--wm-c, var(--ink)); }
-.p-next-print { display: block; width: min(560px, 78vw); margin: var(--s-6) auto 0; rotate: 2.5deg; transition: translate 300ms var(--ease-out); }
-.p-next:hover .p-next-print { translate: 0 -8px; }
+.p-next-print { display: block; width: min(560px, 78vw); margin: var(--s-6) auto 0; rotate: 2.5deg;
+  transition: translate 300ms var(--ease-out), scale var(--t-press) var(--ease-ui); }
+.p-next-title { transition: translate 300ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .p-next:hover .p-next-print { translate: 0 -8px; }
+  .p-next:hover .p-next-title { translate: 0 -2px; }
+}
+/* a press (touch has no hover): the print gives, so the tap is felt before the next project opens */
+.p-next { -webkit-tap-highlight-color: transparent; }
+.p-next:active .p-next-print { scale: .985; }
 .p-next .pr { --shade: .3; }
 
 /* ---------- the bottom bar (spec v3 §4, §5): two glass capsules on the tab bar's tokens ----------
@@ -416,6 +433,7 @@ html:not(.fine) .cap-lb { margin-right: 16px; }
 html:not(.fine) .cap-kbd { display: none; }
 .caps.folded .cap-more { grid-template-columns: 0fr; }
 .caps.folded .cap-more-in { opacity: 0; }
+.caps.fold-now .cap-more, .caps.fold-now .cap-more-in { transition: none; }
 /* the pull ring: drawn around the cross as a finger pulls the layer toward its close point */
 .cap-ring { position: absolute; inset: 0; width: 100%; height: 100%; rotate: -90deg; pointer-events: none; overflow: visible; }
 .cap-ring circle { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: var(--pull, 0) 100; opacity: calc(var(--pull, 0) * .05); }
@@ -438,6 +456,8 @@ html.motion .layer .cap-a { transition-delay: 60ms; }
   font: 500 var(--fs-cap)/1 var(--f-sans); color: var(--ink); white-space: nowrap;
   background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-edge); }
 .layer.cur-x .cursor-x { opacity: 1; scale: 1; }
+/* a press on the empty space: the disc gives before the close begins */
+.layer.cur-x:active .cursor-x { scale: .9; transition-duration: var(--t-press); }
 .layer.cur-x, .layer.cur-x * { cursor: none; }
 html.still .cursor-x { transition: opacity var(--t-quick) linear; scale: 1; }
 /* touch: the layer's own pull replaces the platform's bounce at its top and end (exits.ts) */
@@ -487,6 +507,12 @@ html.still .cursor-x { transition: opacity var(--t-quick) linear; scale: 1; }
 ::view-transition-group(*) { animation-duration: calc(var(--t-open) * var(--vt-k, 1)); animation-timing-function: var(--ease-path); }
 html.vt-close::view-transition-group(*) { animation-duration: calc(var(--t-close) * var(--vt-k, 1)); }
 ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+/* the page itself is not captured for the open, the close or the next project (review V17: the 1.6 to 2 s
+   wait). Its new picture covered the old one at once (no animation above), so the old capture was never
+   seen, and on a long page with glass and the field it was the largest part of the wait before the paper
+   moved. Unnamed, the page stays live under the shared elements, in its new state, exactly as the new
+   capture showed it. Measured at 1440 headless: the old capture fell from about 450 to about 230 ms. */
+html:is(.vt-open, .vt-close) { view-transition-name: none; }
 ::view-transition-group(paper-old) { z-index: 1; }
 ::view-transition-group(paper) { z-index: 2; }
 ::view-transition-group(obj) { z-index: 3; mix-blend-mode: plus-lighter; }

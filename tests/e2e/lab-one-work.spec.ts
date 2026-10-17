@@ -154,7 +154,7 @@ test.describe('the flight (desktop)', () => {
     expect(await page.locator('#recto .fl-hero').evaluate((e) => e.style.transform)).toMatch(/rotateX\(-?[1-9]/);
   });
 
-  test('the drawings load as layers, and the places of the last one light ahead of the torn edge', async ({ page }) => {
+  test('the drawings load as layers, and the places of the last one light along its route', async ({ page }) => {
     await page.goto('lab/one/');
     for (const slug of PROJECTS) {
       await at(page, slug, 0);
@@ -166,6 +166,70 @@ test.describe('the flight (desktop)', () => {
     await at(page, 'eat-map', 0.5); await page.waitForTimeout(300);
     const after = await lit();
     expect(after.reduce((a, b) => a + b)).toBeGreaterThan(before.reduce((a, b) => a + b));
+  });
+
+  test('round five (V17): the Eat Map hold is short and never one still picture', async ({ page }) => {
+    await page.goto('lab/one/');
+    const hold = await page.locator('#eat-map').evaluate((p: HTMLElement) => p.offsetHeight - p.querySelector<HTMLElement>('.fl-stage')!.offsetHeight);
+    /* spec v3 §9.2: 300 px shorter than the half view of round 2 (450 px at 900 px), never under 120 px */
+    expect(hold).toBeGreaterThanOrEqual(120);
+    expect(hold).toBeLessThanOrEqual(0.5 * 900 - 300 + 1);
+    const look = () => page.evaluate(() => {
+      const p = document.getElementById('eat-map')!;
+      return { hero: p.querySelector<HTMLElement>('.fl-hero')!.style.transform, art: p.querySelector<HTMLElement>('.fl-art')!.style.transform,
+        route: getComputedStyle(p.querySelector('.fl-route-line')!).strokeDashoffset, acts: +getComputedStyle(p.querySelector('.w-acts')!).opacity };
+    });
+    const top = await page.locator('#eat-map').evaluate((p) => p.getBoundingClientRect().top + scrollY);
+    const shots = [];
+    for (const f of [0, 0.5, 1]) {
+      await page.evaluate((y) => scrollTo({ top: y, behavior: 'instant' }), Math.round(top + f * hold));
+      await page.waitForTimeout(400);
+      shots.push(await look());
+    }
+    /* the frame, the drawing and the route all change during the hold, and the button has left before
+       the torn edge reaches it */
+    expect(new Set(shots.map((s) => s.hero)).size).toBe(3);
+    expect(new Set(shots.map((s) => s.art)).size).toBe(3);
+    expect(new Set(shots.map((s) => s.route)).size).toBe(3);
+    expect(shots[0].acts).toBeGreaterThan(0.95);
+    expect(shots[1].acts).toBeLessThan(0.05);
+  });
+
+  test('round five (V17): the side frames are fetched before a jump and shown only once decoded', async ({ page }) => {
+    await page.goto('lab/one/');
+    await page.waitForTimeout(1500);
+    /* still at the top of the page: every picture of Work is already here, decoded and shown */
+    const sides = await page.locator('#work .fl-side').evaluateAll((s) => s.map((e) => {
+      const im = e.querySelector('img')!;
+      return { ready: e.classList.contains('ready'), loaded: im.complete && im.naturalWidth > 0 };
+    }));
+    expect(sides.length).toBeGreaterThan(0);
+    for (const s of sides) expect(s).toEqual({ ready: true, loaded: true });
+  });
+
+  test('round five (V17): the click lifts the paper before any other work, and the page is not captured', async ({ page }) => {
+    await page.goto('lab/one/');
+    await at(page, 'recto', 0); await page.waitForTimeout(400);
+    await page.evaluate(() => {
+      const w = window as unknown as { seen: { lift: boolean; root: string[] } };
+      w.seen = { lift: false, root: [] };
+      document.addEventListener('click', () => queueMicrotask(() => {
+        w.seen.lift = document.querySelector('#recto .fl-hero .pr-in')!.getAnimations().length > 0;
+      }));
+      new MutationObserver(() => {
+        if (document.documentElement.classList.contains('vt-open')) w.seen.root.push(getComputedStyle(document.documentElement).viewTransitionName);
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    });
+    await page.locator('#recto .btn').click();
+    await expect(page.locator('.layer.settled')).toHaveCount(1);
+    const seen = await page.evaluate(() => (window as unknown as { seen: { lift: boolean; root: string[] } }).seen);
+    expect(seen.lift).toBe(true);
+    expect(seen.root[0]).toBe('none');
+    /* the close's label and the close cursor's word come from content (site.json work.close) */
+    await expect(page.locator('.layer .cap-lb')).toHaveText('Close');
+    await expect(page.locator('.layer .cursor-x b')).toHaveText('Close');
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.layer')).toHaveCount(0);
   });
 
   test('a frame clicked in mid flight opens its project; the layer has its rail and scrubbed steps', async ({ page }) => {

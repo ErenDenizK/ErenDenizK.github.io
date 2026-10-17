@@ -84,6 +84,11 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
         <span class="rs-pool" aria-hidden="true"></span>
         {/* the tape: from under the left reel to the spine's top, an S that ends going straight down; the
             box stretches with the column, the stroke does not (non-scaling) */}
+        {/* round five (review row E1): the tape's leader comes down out of the Photos chapter into the right
+            reel, so the band above the recorder holds one line of the same tape, not nothing */}
+        <div class="rs-lead" aria-hidden="true">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><path d="M0 0C0 58 100 42 100 100" /></svg>
+        </div>
         <div class="rs-tape" aria-hidden="true">
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><path d="M100 0C100 72 0 28 0 100" /></svg>
         </div>
@@ -117,6 +122,11 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
           </ul>
           <div class="rs-tail" aria-hidden="true"></div>
           <a class="rs-all" href={url('record/')}><span class="all-mark" aria-hidden="true"></span><span class="all-t">The whole record</span><Icon name="arrow-right" /></a>
+          {/* round five (E1, T7): past the last mark the tape runs on, out of the strip, and turns toward the
+              page's axis, where the footer's edk stands; it ends above the object and never touches it */}
+          <div class="rs-out" aria-hidden="true">
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><path d="M0 0C0 62 100 38 100 100" /></svg>
+          </div>
         </div>
       </div>
     </div>
@@ -156,7 +166,20 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
   /* the tape: from under the left reel (0.36 S, 0.8 S of the slot) to the spine's top at the head */
   .rs-tape { position: absolute; left: var(--spine-x); top: calc(var(--S) * 0.8); width: calc(50% - var(--S) * 0.14 - var(--spine-x)); height: calc(var(--S) * 0.2 + var(--pad)); pointer-events: none;
     container-type: size; }
-  .rs-tape svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .rs-tape svg, .rs-lead svg, .rs-out svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  /* the leader: from under the Photos hint, 150 px above the strip, down into the right reel (0.13 S right of
+     the object's centre, --ox); it fades in from nothing and fades again where it meets the glass */
+  .rs-front { --ox: 50%; }
+  .rs-lead { position: absolute; left: calc(var(--ox) - var(--S) * 0.42); top: -150px; width: calc(var(--S) * 0.55); height: calc(150px + var(--S) * 0.17);
+    pointer-events: none; container-type: size;
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 38%, #000 78%, transparent); mask-image: linear-gradient(180deg, transparent, #000 38%, #000 78%, transparent); }
+  /* the run out: from under the last mark to the page's axis, ending about 60 px into the footer, above the
+     edk object (its glyph starts some 70 px below the object's box top) */
+  .rs-out { position: absolute; left: var(--spine-x); top: 100%; width: calc(50% - var(--spine-x)); height: 128px; pointer-events: none; container-type: size;
+    -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent); mask-image: linear-gradient(180deg, #000 55%, transparent); }
+  .rs-lead path, .rs-out path { fill: none; stroke: var(--tape); stroke-width: 1.5px; vector-effect: non-scaling-stroke; --L: calc(hypot(100cqw, 100cqh) * 1.07); }
+  :global(html.motion) .rs-lead path { stroke-dasharray: var(--L) var(--L); stroke-dashoffset: calc((1 - clamp(0, var(--sp) / 0.1, 1)) * var(--L)); }
+  :global(html.motion) .rs-out path { stroke-dasharray: var(--L) var(--L); stroke-dashoffset: calc((1 - clamp(0, (var(--sp) - 0.6) / 0.1, 1)) * var(--L)); }
   /* --L: the curve's length on screen. pathLength cannot be used with a non-scaling stroke (the dash is
      then measured in neither space), so the length is the box's diagonal times 1.07 (this S curve is 1.03
      to 1.09 times its chord for every box the layouts make) */
@@ -165,9 +188,12 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
 
   /* the reel drawing: centred on the left reel, four S wide; clipped to a band that fades in above the
      strip, so the rings never reach into Photos, and to the strip's full width */
-  .rs-art { position: absolute; left: 0; right: 0; top: -160px; bottom: 0; overflow: clip; pointer-events: none;
-    -webkit-mask-image: linear-gradient(180deg, transparent, #000 160px); mask-image: linear-gradient(180deg, transparent, #000 160px); }
-  .rs-rings { position: absolute; left: calc(50% - var(--S) * 0.125 - var(--S) * 2); top: calc(160px + var(--S) * 0.53 - var(--S) * 2); width: calc(var(--S) * 4); height: calc(var(--S) * 4); max-width: none; overflow: visible; }
+  /* round five (E1): the band above the recorder was a dark run of about 280 px with only the object in it;
+     the drawing now rises 260 px above the strip (it was 160), on an eased fade (a quarter at 130 px), so the
+     outer rings and spokes reach up toward the Photos hint without standing on it */
+  .rs-art { position: absolute; left: 0; right: 0; top: -260px; bottom: 0; overflow: clip; pointer-events: none;
+    -webkit-mask-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.25) 130px, #000 260px); mask-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.25) 130px, #000 260px); }
+  .rs-rings { position: absolute; left: calc(50% - var(--S) * 0.125 - var(--S) * 2); top: calc(260px + var(--S) * 0.53 - var(--S) * 2); width: calc(var(--S) * 4); height: calc(var(--S) * 4); max-width: none; overflow: visible; }
   .rs-rings path { fill: none; stroke: var(--record-1); stroke-width: calc(1 / var(--S-n)); }
   .rs-rings .rg { opacity: 0.2; }
   .rs-rings .dash { opacity: 0.17; stroke-dasharray: calc(2 / var(--S-n)) calc(6 / var(--S-n)); }
@@ -330,6 +356,9 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
   .all-t { grid-column: 3; font: 500 var(--fs-small) / 1 var(--f-sans); padding-right: var(--s-2); }
   .rs-all :global(.icon) { color: var(--ink-3); transition: color var(--t-press), translate 200ms var(--ease-out); }
   .rs-all:hover .all-mark { scale: 1.3; box-shadow: inset 0 0 0 1.5px var(--record-1); }
+  /* the run out answers the link it leaves from: on hover or focus the tape brightens to the Record's light */
+  .rs-out path { transition: stroke 240ms var(--ease-out); }
+  .rs-spine:has(.rs-all:is(:hover, :focus-visible)) .rs-out path { stroke: var(--record-1); }
   .rs-all:hover :global(.icon) { color: var(--ink); translate: 2px 0; }
   :global(html.motion) .rs-all { --k: clamp(0, (var(--sp) - 0.59) / 0.04, 1); opacity: var(--k); transform: translateY(calc((1 - var(--k)) * var(--rise))); }
 
@@ -341,6 +370,9 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
        title. Only the six inner rings and three small ones are drawn. */
     .rstrip { --gutter: 0px; --spine-w: 22px; --S: 176px; --S-n: 176; --pad: 28px; }
     .rs-obj { margin: 0 0 0 auto; }
+    .rs-front { --ox: calc(100% - var(--S) / 2); }
+    /* the phone's hint ends 112 px above the strip and is centred: the leader starts under it, at 96 px */
+    .rs-lead { top: -96px; height: calc(96px + var(--S) * 0.17); }
     .rs-pool { left: auto; right: calc(var(--S) * -0.35); }
     .rs-tape { width: calc(100% - var(--S) * 0.64 - var(--spine-x)); }
     .rs-rings { left: calc(100% - var(--gut) - var(--S) * 0.625 - var(--S) * 2); }
