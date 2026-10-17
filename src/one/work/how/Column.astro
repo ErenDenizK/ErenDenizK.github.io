@@ -12,8 +12,8 @@
    before it leaves); when the capital lands, the project's light pulses once under the column and settles,
    the plate's only colour. --hp stays 1 without scroll timelines and under reduced motion. */
 import { cut, seg, arc, hatch, type Pt } from '../engrave';
-interface Props { items: string[]; layers: { name: string; items: number[] }[]; process?: { step: string; by: string }[]; id: string }
-const { items, layers, process, id } = Astro.props;
+interface Props { items: string[]; layers: { name: string; items: number[] }[]; process?: { step: string; by: string }[]; id: string; src?: string }
+const { items, layers, process, id, src } = Astro.props;
 const n = layers.length;
 const W = 420, cx = W / 2, r = 58;
 /* the parts, bottom up, with their heights */
@@ -83,8 +83,11 @@ const art = placed.map((p) => ({ p, d: draw(p) }));
 /* the dowel through the section, drum to drum */
 /* (cut open: a thin outlined pin across each joint, never a solid block) */
 const dowel = placed.filter((p) => p.kind !== 'stylobate' && p.kind !== 'capital').map((p) => `M${cx + 3} ${p.y0 - 7}h9v14h-9Z`).join('');
+/* src: in Home's layer the drawing is not in the page (the page's HTML budget): the slot takes the
+   drawing from the project's static page when the layer is built (scripts/plates.ts) */
 ---
 <div class="hm hm-column" style={`--n: ${parts.length}; --h: ${H}px`}>
+  {src ? <div class="hm-art hm-art-slot" data-plate-src={src} style={`aspect-ratio: ${W} / ${H}`} aria-hidden="true"></div> : (
   <svg class="hm-art" viewBox={`0 0 ${W} ${H}`} width={W} height={H} fill="currentColor" aria-hidden="true" focusable="false">
     <defs>
       {art.map((a) => <clipPath id={`${id}-s${a.p.i}`}><path d={a.d.sec} /></clipPath>)}
@@ -104,6 +107,7 @@ const dowel = placed.filter((p) => p.kind !== 'stylobate' && p.kind !== 'capital
     {/* the export: a sheet that drops through the shaft into the base */}
     <path class="hm-sheet" d={cut([[cx - 26, 0], [cx + 26, 0]], 2.2, 0.5)} style={`--from: ${PAD - 20}px; --to: ${(placed.find((p) => p.kind === 'base')?.y0 ?? H - PAD - 40) + 9}px`} />
   </svg>
+  )}
   <ol class="hm-list" aria-labelledby={id}>
     {layers.map((l, i) => {
       const p = placed.find((x) => x.layer === i)!;

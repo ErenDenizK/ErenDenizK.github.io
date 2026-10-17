@@ -16,6 +16,7 @@ import { initStepper, type Stepper } from './stepper';
 import { spin } from './loops';
 import { onFirstFrame } from './frame';
 import { initExits, wasFolded, rememberFold, type Exits } from './exits';
+import { fillPlates } from './plates';
 
 type VT = { finished: Promise<void>; updateCallbackDone: Promise<void>; skipTransition(): void };
 const root = document.documentElement;
@@ -94,6 +95,8 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     });
     /* the hero must be decoded before the new state is shown: a lazy image would only start loading then */
     l.querySelectorAll<HTMLImageElement>('.hero img').forEach((im) => (im.loading = 'eager'));
+    /* the How it's made plate comes from the project's static page (plates.ts: Home's HTML budget) */
+    fillPlates(l);
     return l;
   }
 

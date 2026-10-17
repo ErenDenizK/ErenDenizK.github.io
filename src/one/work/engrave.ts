@@ -25,22 +25,27 @@ export function cut(pts: Pt[], w: number, end = 0.2): string {
   return 'M' + [...L, ...R.reverse()].map(([x, y]) => `${f(x)} ${f(y)}`).join('L') + 'Z';
 }
 
-/** A straight line as a cut, sampled so the taper reads. */
-export const seg = (a: Pt, b: Pt, w: number, end = 0.2) => cut(Array.from({ length: 9 }, (_, i) => [a[0] + ((b[0] - a[0]) * i) / 8, a[1] + ((b[1] - a[1]) * i) / 8] as Pt), w, end);
+/** A straight line as a cut, sampled at `k` + 1 points so the taper reads (2 makes a thin lozenge, enough
+    for hatching and ticks; the page's HTML budget counts every coordinate). */
+export const seg = (a: Pt, b: Pt, w: number, end = 0.2, k = 4) => cut(Array.from({ length: k + 1 }, (_, i) => [a[0] + ((b[0] - a[0]) * i) / k, a[1] + ((b[1] - a[1]) * i) / k] as Pt), w, end);
 
 /** Points on an ellipse arc (degrees, 0 = +x, clockwise on screen). */
 export function arc(cx: number, cy: number, rx: number, ry: number, a0: number, a1: number, n = 24): Pt[] {
   return Array.from({ length: n + 1 }, (_, i) => { const a = ((a0 + ((a1 - a0) * i) / n) * Math.PI) / 180; return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)] as Pt; });
 }
 
-/** Parallel hatch cuts across a box at an angle (degrees), spaced `gap`; clip them with a clipPath. */
-export function hatch(x: number, y: number, w: number, h: number, angle: number, gap: number, wt: number): string {
+/** Parallel hatch cuts across a box at an angle (degrees), spaced `gap`, as plain segments: the caller
+    strokes them thin (how.css) and clips them to a shape. Only lines that cross the box are written, each
+    as long as the box is along it, so a plate stays inside the page's HTML budget. `wt` is kept for the
+    callers' reading; the weight lives in how.css by role. */
+export function hatch(x: number, y: number, w: number, h: number, angle: number, gap: number, _wt?: number): string {
   const a = (angle * Math.PI) / 180, dx = Math.cos(a), dy = Math.sin(a);
-  const cx = x + w / 2, cy = y + h / 2, R = Math.hypot(w, h) / 2 + gap;
+  const cx = x + w / 2, cy = y + h / 2;
+  const S = (Math.abs(w * dy) + Math.abs(h * dx)) / 2, Ld = (Math.abs(w * dx) + Math.abs(h * dy)) / 2;
   const out: string[] = [];
-  for (let s = -R; s <= R; s += gap) {
+  for (let s = -S + gap / 2; s <= S; s += gap) {
     const ox = cx - dy * s, oy = cy + dx * s;
-    out.push(seg([ox - dx * R, oy - dy * R], [ox + dx * R, oy + dy * R], wt, 0.35));
+    out.push(`M${f(ox - dx * Ld)} ${f(oy - dy * Ld)}L${f(ox + dx * Ld)} ${f(oy + dy * Ld)}`);
   }
   return out.join('');
 }

@@ -15,8 +15,8 @@ import Loop from './how/Loop.astro';
 import Legend from './how/Legend.astro';
 import './how/how.css';
 /* round 6 (S29): each project may name its own plate (`how.form`); stack, this cutaway, is the default */
-interface Props { items: string[]; layers?: { name: string; items: number[] }[]; id: string; form?: 'stack' | 'column' | 'loop' | 'legend'; process?: { step: string; by: 'me' | 'agents' | 'both' }[] }
-const { items, layers, id, form = 'stack', process } = Astro.props;
+interface Props { items: string[]; layers?: { name: string; items: number[] }[]; id: string; form?: 'stack' | 'column' | 'loop' | 'legend'; process?: { step: string; by: 'me' | 'agents' | 'both' }[]; src?: string }
+const { items, layers, id, form = 'stack', process, src } = Astro.props;
 
 /* the drawing, in user units = CSS px at the desktop width (the phone scales the whole figure) */
 const W = 360, A = 170, B = 62, T = 6, P = 76, PAD = 14;   // the closed pitch (10 px) lives in work.css
@@ -42,9 +42,9 @@ const used = new Set(layers?.flatMap((l) => l.items) ?? []);
 const rest = items.filter((_, i) => !used.has(i));
 const two = (k: number) => String(k + 1).padStart(2, '0');
 ---
-{form === 'column' && layers && n >= 2 ? <Column items={items} layers={layers} process={process} id={id} />
-: form === 'loop' && ((layers && n >= 2) || (process && process.length >= 2)) ? <Loop items={items} layers={layers} process={process} id={id} />
-: form === 'legend' && items.length >= 2 ? <Legend items={items} id={id} />
+{form === 'column' && layers && n >= 2 ? <Column items={items} layers={layers} process={process} id={id} src={src} />
+: form === 'loop' && ((layers && n >= 2) || (process && process.length >= 2)) ? <Loop items={items} layers={layers} process={process} id={id} src={src} />
+: form === 'legend' && items.length >= 2 ? <Legend items={items} id={id} src={src} />
 : layers && n >= 2 ? (
   <div class="cut" style={`--n: ${n}; --h: ${H}px; --mid: ${mid}px`}>
     <svg class="cut-art" viewBox={`0 0 ${W} ${H}`} width={W} height={H} fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">

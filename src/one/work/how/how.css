@@ -6,8 +6,9 @@
 .hm { position: relative; color: color-mix(in srgb, var(--a1) 64%, var(--ink)); }
 .hm-art { display: block; width: 440px; max-width: 100%; height: auto; margin: 0 auto; overflow: visible; }
 .hm-ink { opacity: .9; }
-.hm-tone { opacity: .5; }
-.hm-sec { opacity: .55; }
+.hm-tone, .hm-sec { fill: none; stroke: currentColor; stroke-linecap: round; }
+.hm-tone { opacity: .5; stroke-width: .6; }
+.hm-sec { opacity: .55; stroke-width: .75; }
 .hm-con { opacity: .3; }
 .hm-num { font: 500 10px/1 var(--f-sans); letter-spacing: .12em; fill: currentColor; opacity: .7; }
 .hm-list, .hm-items, .hm-frieze { list-style: none; margin: 0; padding: 0; }

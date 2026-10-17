@@ -6,8 +6,8 @@
    pops (its one bounce, for one glyph) and the light stays still, as the product's does. A pure function
    of the section's view progress --hp (how.css). Shown only once the owner has written the items. */
 import { cut, seg, hatch, type Pt } from '../engrave';
-interface Props { items: string[]; id: string }
-const { items, id } = Astro.props;
+interface Props { items: string[]; id: string; src?: string }
+const { items, id, src } = Astro.props;
 const n = Math.min(items.length, 5);
 const W = 420, H = 150;
 const pts: Pt[] = Array.from({ length: n }, (_, k) => [70 + (k * (W - 140)) / Math.max(1, n - 1), k % 2 ? 58 : 98]);
@@ -15,8 +15,11 @@ const frame = [seg([10, 10], [W - 10, 10], 1.6), seg([W - 10, 10], [W - 10, H - 
   seg([16, 16], [W - 16, 16], 0.6), seg([W - 16, 16], [W - 16, H - 16], 0.6), seg([W - 16, H - 16], [16, H - 16], 0.6), seg([16, H - 16], [16, 16], 0.6)].join('');
 const route = 'M' + pts.map(([x, y]) => `${x} ${y}`).join('L');
 const two = (k: number) => String(k + 1).padStart(2, '0');
+/* src: in Home's layer the drawing is not in the page (the page's HTML budget): the slot takes the
+   drawing from the project's static page when the layer is built (scripts/plates.ts) */
 ---
 <div class="hm hm-legend" style={`--n: ${n}; --h: ${H}px`}>
+  {src ? <div class="hm-art hm-art-slot" data-plate-src={src} style={`aspect-ratio: ${W} / ${H}`} aria-hidden="true"></div> : (
   <svg class="hm-art" viewBox={`0 0 ${W} ${H}`} width={W} height={H} fill="currentColor" aria-hidden="true" focusable="false">
     <path class="hm-ink" d={frame} />
     <path class="hm-route" d={route} pathLength="1" fill="none" />
@@ -30,6 +33,7 @@ const two = (k: number) => String(k + 1).padStart(2, '0');
     ))}
     <circle class="hm-pop" cx={pts[n - 1]?.[0] ?? 0} cy={pts[n - 1]?.[1] ?? 0} r="5" />
   </svg>
+  )}
   <ol class="hm-list hm-list-loop" aria-labelledby={id}>
     {items.slice(0, n).map((x, k) => <li class="hm-i" style={`--i: ${k}`}><span class="hm-name label"><span class="hm-n" aria-hidden="true">{two(k)}</span></span><ul class="hm-items"><li>{x}</li></ul></li>)}
   </ol>

@@ -103,7 +103,7 @@ const chapter = (k: Part) => (headed.length >= 2 && headed.includes(k) ? `${Stri
         <section class:list={['p-how', `p-how-${m.howForm}`]} data-rail-sec="How it's made" aria-labelledby={`${m.slug}-${mode}-how`}>
           <h2 class="label" id={`${m.slug}-${mode}-how`}>{chapter(k) && <span class="sy-n" aria-hidden="true">{chapter(k)}</span>}How it's made</h2>
           <div class:list={['how-card', { 'how-cut': m.howLayers && m.howForm === 'stack', 'how-plate': m.howForm !== 'stack' }]}>
-            <HowMade items={m.how!} layers={m.howLayers} form={m.howForm} process={m.howProcess} id={`${m.slug}-${mode}-how`} />
+            <HowMade items={m.how!} layers={m.howLayers} form={m.howForm} process={m.howProcess} id={`${m.slug}-${mode}-how`} src={mode === 'layer' ? m.href : undefined} />
           </div>
         </section>
       )
