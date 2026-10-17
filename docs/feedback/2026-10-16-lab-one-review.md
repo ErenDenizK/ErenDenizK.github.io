@@ -274,3 +274,13 @@ Status values: open, in work, partly, built (waiting for the owner), closed. Kin
 | S43 | Give these drawings a name to refer to them. | Name: "the engravings" (Turkish: "gravürler"). | decided | closed |
 | S44 | Say what research, technique, skill, connection or reference photos are needed for flawless drawings. | Ask the owner (Davutpaşa photos, Istanbul places). | owner question | open |
 | S45 | Check the project files, old prompts, CLAUDE.md and old things; keep the project clean. | Clean-up station this round. | task | open |
+
+### Round 6 additions (owner, 2026-10-17, a second message; information, not a new priority)
+
+| Id | The owner said | What it means for the work | Kind | Status |
+|---|---|---|---|---|
+| S46 | Davutpaşa reference photos sent (five). The place meant is the Orta Bahçe: the central courtyard inside the old barracks, a rectangular historic building with trees and paths in the middle; iconic; students spend much time there. | Draw the Davutpaşa engraving of the Orta Bahçe from `docs/research/references/davutpasa/` (references only, never published). | task | open |
+| S47 | Swipe-to-close (photo view, project) was not noticed even by the owner; it catches a bit and is not obvious; partly an optimisation problem. | Make the pull-to-close discoverable and smooth (with S15's motion language). | task | open |
+| S48 | The engravings move while scrolling and have a multi-layer structure: check their motion and depth as carefully as their drawing. | The art review grades each engraving in motion (layer speeds, separation, depth), not only still. | task | open |
+| S49 | Performance optimisation may go on in small steps without breaking the flow; big steps are not needed, but performance should improve a little at every stage, or everything tangles. | Revises S12: small, safe performance work in every round; no large refactor without the owner. | decided | closed |
+| S50 | The owner likes the work system; keep looking for improvements to the project and to the workflow, for quality and speed. | Note for the lead. | note | closed |
