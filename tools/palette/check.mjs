@@ -35,15 +35,13 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 /* ---- 1. Where the tokens live ----
 
    Every top-level `:root` block in these files is read, in this order; a later file wins. The family
-   kit's light.css is listed because the site imports it; today it declares no colour tokens. */
+   kit's light.css is listed because the site imports it; today it declares no colour tokens. Since
+   2026-10-17 the two-page site is the live site (ADR-0019): its token file is the base, and the
+   four-page stylesheets (global.css and the rest) are gone with their pages
+   (docs/history/removed-2026-10-17.md). */
 const TOKEN_FILES = [
-  'src/styles/global.css',
+  'src/one/tokens.css',
   'src/styles/rail.css',
-  'src/styles/work.css',
-  'src/styles/log.css',
-  'src/styles/showcase.css',
-  'src/styles/embassy.css',
-  'src/styles/transitions.css',
   'src/styles/wordmarks.css',
   'docs/family-kit/light.css',
 ];
@@ -320,8 +318,9 @@ export function resolve(value, tokens, seen = new Set()) {
    One rule may list several such selectors. A surface theme is its candidate's tokens plus its own.
    Candidates whose tokens come out identical are measured once and reported under all their names. */
 export const THEMES = [
-  { name: 'dark', scope: 'site', note: 'the current house theme (src/styles/global.css)', overrides: {} },
-  /* the two-page site on its lab page: its own token file and rows (one.mjs) */
+  /* the live site since 2026-10-17 (ADR-0019): the two-page token file and its rows (one.mjs). The
+     four-page house theme ('dark', scope 'site') went with its stylesheets; its rows stay below as the
+     record of what it measured and run only for a theme of that scope (a lab candidate). */
   ...[oneTheme()].filter(Boolean),
 ];
 
