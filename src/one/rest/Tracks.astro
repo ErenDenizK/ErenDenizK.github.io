@@ -13,9 +13,18 @@
    pauses the drops off screen. This is the chapter's one ambient loop. Still twins: the figure is
    drawn and a drop rests at the top of each line.
    Texture: faint rain hairlines in the margins at 0.7x, the brief's rain come back as drops.
+   The loom (engraving guide §2.6, review row S28): behind the figure, an engraved Jacquard loom. Its left
+   half is a hand loom (pulley, heddles, the shuttle), its right half the Jacquard head with its chain of
+   punched cards; both feed one warp, and the warp ends at the fell, the U where the lanes meet: the
+   cloth is woven where both matter. The lanes' lines stand on warp threads, so the drops fall along the
+   warp. The text's column is its clear zone. Ambient strength (.065-.09, baked into the file); it drifts
+   with the chapter's --sp. Phones take their own master: the warp beside the lane line, the card chain
+   down the right edge. Drawn by tools/illustrations/plates/loom.py.
    Phone: the lanes stacked, the agents' line continuing the hand's line, no U; the node and "Both
    matter." follow the second lane. Content: the "work" chapter of content/site.json. */
 import { getSite } from '../../lib/site';
+import loom from './art/loom.svg?url';
+import loomPhone from './art/loom-phone.svg?url';
 const site = await getSite();
 const ch = site.about.chapters.find((c) => c.id === 'work');
 const tr = ch?.tracks;
@@ -39,6 +48,10 @@ const lanes = tr?.lanes.map((l, j) => ({ ...l, j, a: 0.12 + j * 0.03 })) ?? [];
       </defs>
       <path d={rain} stroke="url(#rain-g)" />
     </svg>
+    <picture class="loom" aria-hidden="true">
+      <source media="(max-width: 699.98px)" srcset={loomPhone} width="390" height="1150" />
+      <img src={loom} alt="" width="1600" height="1100" loading="lazy" decoding="async" />
+    </picture>
     <div class="how-in">
       <h2 class="how-t h2" data-lines style="--a: 0.04; --w: 0.16">{ch.title}</h2>
       {ch.text[0] && <p class="how-lede" data-rise style="--a: 0.08; --w: 0.18">{ch.text[0]}</p>}
@@ -68,6 +81,9 @@ const lanes = tr?.lanes.map((l, j) => ({ ...l, j, a: 0.12 + j * 0.03 })) ?? [];
   .rain { position: absolute; left: 0; top: -10%; width: 100%; height: 120%; max-width: none; fill: none; stroke-width: 1; pointer-events: none; }
   .rain path { vector-effect: non-scaling-stroke; }
   :global(html.motion) .rain { transform: translateY(calc((var(--sp) - 0.5) * 30vh)); }
+  /* the loom: band y = section y + 226 at 1440 (its text clear zone is measured there) */
+  .loom img { position: absolute; left: 50%; top: -226px; width: 1600px; height: 1100px; max-width: none; margin-left: -800px; pointer-events: none; }
+  :global(html.motion) .loom img { transform: translateY(calc((var(--sp) - 0.5) * 12vh)); }
   .how-in { position: relative; width: min(760px, 100%); margin: 0 auto; }
   .how-t { text-align: center; }
   /* the chapter's inner rhythm (spec v3 §9.2): 24 under the title, then 48 between lede, figure and quote */
@@ -154,6 +170,7 @@ const lanes = tr?.lanes.map((l, j) => ({ ...l, j, a: 0.12 + j * 0.03 })) ?? [];
   /* ---------- phone: the lanes stacked, the agents' line continuing the hand's line ---------- */
   @media (max-width: 699.98px) {
     .rain { display: none; }
+    .loom img { left: 0; top: -170px; width: 390px; height: 1150px; margin-left: 0; }
     .how-t, .how-lede { text-align: left; }
     .how-lede { margin-left: 0; }
     .tracks { margin-top: var(--s-7); }

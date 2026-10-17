@@ -31,7 +31,7 @@ import { getSite, url } from '../../lib/site';
 import manifest from '../../assets/photos/postcards.json';
 import meta from '../../assets/photos/postcards-meta.json';
 import grain from '../../assets/photos/grain.png?url';
-import city from './art/istanbul.svg?url';
+import city from './art/bostanci-pier.svg?url';
 
 const site = await getSite();
 const t = site.about.postcard;
@@ -209,9 +209,12 @@ const cards = list.map((p, i) => {
 
 <style>
   .photos { position: relative; padding: 0 var(--gut); text-align: center; }
-  /* the city the photographs were taken in, engraved, as the table's far horizon (line-art set, 8 %) */
-  .city { position: absolute; left: 50%; bottom: -150px; width: 1600px; max-width: none; height: auto; margin-left: -800px; opacity: 0.08; pointer-events: none;
-    -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
+  /* the place the photographs were taken, engraved, as the table's far horizon (review row S34; engraving
+     guide §2.9, the Istanbul series): the Bostancı pier at dusk at the left, a vapur coming in at the
+     right, the Princes' Islands under the cards' feet. Only the margins and the band under the cards
+     show, so it is composed there; its strength (.06-.09) and its edge fades are in the drawing. The
+     horizon runs on into the Record's tape. Drawn by tools/illustrations/plates/coast.py. */
+  .city { position: absolute; left: 50%; bottom: -150px; width: 1600px; max-width: none; height: auto; margin-left: -800px; pointer-events: none; }
   :global(html.motion) .city { transform: translateY(calc((var(--sp) - 0.5) * 16vh)); }
   .photos-lede { margin: var(--s-4) auto 0; max-width: 30em; font: 400 var(--fs-body) / var(--lh-lede) var(--f-sans); color: var(--ink-2); }
 
