@@ -185,7 +185,7 @@ export async function models(projects: Project[], base: string): Promise<Model[]
       const clip = kindOf(id) === 'signature';
       const s = shot(p.id, w!, { id }, clip ? 'signature' : 'screen');
       const ph = phoneId ? shot(p.id, w!, { id: phoneId }) : null;
-      const wide = await pic(s.img, [680, 1360]);
+      const wide = await pic(s.img, [680, 1360, 2040]);   /* 2040: a print drawn 880 px wide at 2x, or cropped to cover at 3x (layout sweep) */
       const out: Screen = {
         id, alt: s.alt, ...split(caption(id)), wide,
         phone: ph ? await pic(ph.img, [390, 780], 70) : undefined, phoneFrame: !!ph,
