@@ -411,7 +411,7 @@ html.layer-open .layer .rail-plain.in-layer { display: block !important; view-tr
   font: 500 var(--fs-small)/1 var(--f-sans); color: var(--ink); white-space: nowrap; -webkit-tap-highlight-color: transparent;
   transition: background-color var(--t-quick) var(--ease-ui), box-shadow var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
 .glass a:hover { background-color: var(--glass-hover); box-shadow: var(--glass-hover-glow); }
-.glass a:active { scale: .96; }
+html:not(.g-live) .glass a:active { scale: .96; } /* with JavaScript: the liquid motion (glass.css) */
 .glass a:focus-visible { outline-offset: -2px; border-radius: var(--r-pill); }
 .cap-a .cap-go { background: var(--fill); color: var(--fill-ink); }
 .cap-a .cap-go:hover { background: color-mix(in srgb, var(--fill) 88%, #fff); box-shadow: none; }

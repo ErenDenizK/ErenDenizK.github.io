@@ -276,7 +276,10 @@ test.describe('round 3: capsules and cutaway (desktop)', () => {
     await expect(page.locator('.layer .caps')).not.toHaveClass(/folded/);
     await expect(page.locator('.layer .cap-lb')).toBeVisible();
     await expect(page.locator('.layer .cap-kbd')).toHaveText('esc');
-    /* two capsules, apart, on one line and one height (T13, T14) */
+    /* two capsules, apart, on one line and one height (T13, T14); measured at rest, with the pointer away
+       (a hovered glass leans toward the pointer: the liquid motion, S15) */
+    await page.mouse.move(5, 300);
+    await expect.poll(() => a.evaluate((el) => el.style.transform), { timeout: 4000 }).toBe('');
     await page.waitForTimeout(500);
     const [bc, ba] = [await c.boundingBox(), await a.boundingBox()];
     expect(Math.round(bc!.height)).toBe(Math.round(ba!.height));
