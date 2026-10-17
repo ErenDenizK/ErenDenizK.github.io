@@ -299,7 +299,7 @@ class Plate:
                     k = np.clip((tone - h.t0) / max(1e-6, h.t1 - h.t0), 0, 1) ** h.gamma
                     w = np.where(lab == sid, h.w0 + (h.w1 - h.w0) * k, 0.0)
                     w[k <= 0] = 0
-                    mk = h.mask if h.mask is not None else mask
+                    mk = h.mask if h.mask is not None else self._mask_for(s.layer)
                     if mk is not None:
                         w = w * mk(pts[:, 0], pts[:, 1])
                     w[w < h.w0 * 0.75] = 0
@@ -309,7 +309,16 @@ class Plate:
         self.pending = []
         if mask is not None:
             for L in self.order:
-                self.dots[L] = [d for d in self.dots[L] if mask(np.array([d[0]]), np.array([d[1]]))[0] > 0.4]
+                mk = self._mask_for(L)
+                if mk is not None:
+                    self.dots[L] = [d for d in self.dots[L] if mk(np.array([d[0]]), np.array([d[1]]))[0] > 0.4]
+
+    def _mask_for(self, layer):
+        """The plate's mask may be one function or a dict by layer ('*' for the rest)."""
+        m = self.mask
+        if isinstance(m, dict):
+            return m.get(layer, m.get('*'))
+        return m
 
     def _runs(self, pts, w, layer, min_len=2.5, taper=3.5):
         on = w > 0
@@ -372,8 +381,9 @@ class Plate:
                 g = np.array([self.shapes[l].group if l in self.shapes else -1 for l in lab])
                 ok |= g == grp
             ws = ws * ok
-        if self.mask is not None:
-            ws = ws * self.mask(pts[:, 0], pts[:, 1])
+        mk = self._mask_for(layer)
+        if mk is not None:
+            ws = ws * mk(pts[:, 0], pts[:, 1])
             ws[ws < 0.35] = 0
         self._runs(pts, ws, layer, min_len=1.5, taper=taper)
 
@@ -404,8 +414,9 @@ class Plate:
             facing = -(out @ LIGHT)      # 1 = turned fully from the light
             ws = w * (0.62 + 0.55 * np.clip(facing, 0, 1))
         ws = np.where(vis, np.maximum(ws, wmin), 0)
-        if self.mask is not None:
-            ws = ws * self.mask(pts[:, 0], pts[:, 1])
+        mk = self._mask_for(layer)
+        if mk is not None:
+            ws = ws * mk(pts[:, 0], pts[:, 1])
             ws[ws < 0.35] = 0
         self._runs(pts, ws, layer, min_len=1.5, taper=3.0)
 
@@ -441,6 +452,17 @@ class Plate:
                 self.dot(x, y, layer, r)
 
     # --- output -------------------------------------------------------------
+    def layer_bbox(self, name, pad=4):
+        pts = [p for p in self.layers.get(name, [])]
+        pts += [s[0] for s in self.strokes.get(name, [])]
+        if self.dots.get(name):
+            pts.append(np.array([[d[0], d[1]] for d in self.dots[name]]))
+        if not pts:
+            return (0, 0, self.W, self.H)
+        a = np.concatenate(pts)
+        x0, y0 = np.floor(a.min(0) - pad); x1, y1 = np.ceil(a.max(0) + pad)
+        return (int(max(0, x0)), int(max(0, y0)), int(min(self.W, x1)), int(min(self.H, y1)))
+
     def svg_layer(self, name, q=QUANT):
         parts = []
         for poly in self.layers.get(name, []):
@@ -473,9 +495,13 @@ class Plate:
         spath = [(w, "".join(v)) for w, v in byw.items()]
         return fill, dpath, spath
 
-    def svg(self, layers_alpha: dict, ink='currentColor', cls='', extra_defs='', q=QUANT, title=None, ids=True):
+    def svg(self, layers_alpha: dict, ink='currentColor', cls='', extra_defs='', q=QUANT, title=None, ids=True, crop=None):
         W, H = self.W, self.H
-        out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W*q} {H*q}" width="{W}" height="{H}"'
+        x0, y0 = 0, 0
+        if crop:
+            x0, y0, x1, y1 = crop
+            W, H = x1 - x0, y1 - y0
+        out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{x0*q} {y0*q} {W*q} {H*q}" width="{W}" height="{H}"'
                + (f' class="{cls}"' if cls else '') + ' aria-hidden="true" focusable="false">']
         if title:
             out.append(f'<title>{title}</title>')

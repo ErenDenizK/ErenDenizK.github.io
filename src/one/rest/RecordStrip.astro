@@ -7,11 +7,15 @@
    mark on the spine. No uppercase labels, no kind words, no pills.
    The head is the new page's grammar (spec v3 §8.1): a frontispiece, the recorder centred above the
    chapter's centred title (phones: at the right, the head on the spine), standing on its own dark ground
-   in its own line drawing (reel rings around the left reel, construction spokes, a loose strand from the
-   right reel). The recorder's tape leaves it under the left reel and becomes the spine: one line from
+   in its own engraving (review row S27, engraving guide §2.7): an exploded tape transport. The supply
+   reel's flange stands large behind the object (the round-five reel rings, now its turned face and the
+   wound tape in its windows), the take-up reel is lifted out to the right, the head and its guide posts
+   float to the upper left, and the capstan with its pinch roller stands where the tape turns down into
+   the spine. Drawn by tools/illustrations/plates/record.py; three images, so each part can move. The recorder's tape leaves it under the left reel and becomes the spine: one line from
    the object to the last row.
    Motion (a pure function of the chapter's --sp, scene.css; reversible; stroke-dashoffset, transform and
-   opacity only): the rings draw from the inside out and the ground fades in, the tape draws from the
+   opacity only): the reels fade in and turn with the scroll (the tape is moving), the mechanism settles
+   into place as the ground fades in, the tape draws from the
    reel, the spine runs on down, each mark lands as the line reaches it and its row follows, the year
    strip's months fill from January, the tail draws last. Round four: the title rises over --sp 0.08 to
    0.18 and the dek over 0.13 to 0.23, so on a phone the title is up before the dek (at its 0.4 floor)
@@ -39,44 +43,28 @@ const first = log.length ? log[log.length - 1].data.date : null;
 const since = first ? `${log.length} ${log.length === 1 ? 'entry' : 'entries'} since ${monYear(first)}` : '';
 const [nowWord, ...nowRest] = site.now.label.split(',');
 
-/* The reel drawing, in units of the object's size S, centred on the left reel of the poster (at 0.375 S,
-   0.53 S of the slot; the right reel at 0.63 S). Circles are drawn as two arcs from the top, so each ring
-   draws on from twelve o'clock. Every third ring is dashed. Rings past the sixth are desktop only. */
-const f = (n: number) => +n.toFixed(4);
-const ring = (cx: number, r: number) => `M${f(cx)} ${f(-r)}A${f(r)} ${f(r)} 0 1 1 ${f(cx)} ${f(r)}A${f(r)} ${f(r)} 0 1 1 ${f(cx)} ${f(-r)}`;
-const RIGHT = 0.255;   // the right reel, from the left one
-const rings = Array.from({ length: 9 }, (_, i) => ({ d: ring(0, 0.5 + i * 0.17), dashed: i % 3 === 2, i, wide: i > 5 }));
-const small = Array.from({ length: 5 }, (_, i) => ({ d: ring(RIGHT, 0.3 + i * 0.16), i, wide: i > 2 }));
-const spokes = Array.from({ length: 6 }, (_, i) => {
-  const a = (i * Math.PI) / 3 + 0.3;
-  return `M${f(Math.cos(a) * 0.45)} ${f(Math.sin(a) * 0.45)}L${f(Math.cos(a) * 1.9)} ${f(Math.sin(a) * 1.9)}`;
-});
+/* the engraving's three parts (band coordinates: the band is 1440 x 900 on desktop, centred, and 390 x 720
+   on phones, right-aligned with the object; its top is the art box's top, 260 px above the strip) */
+import flange from './art/record-flange.svg?url';
+import takeup from './art/record-takeup.svg?url';
+import mech from './art/record-mech.svg?url';
+import flangeP from './art/record-flange-phone.svg?url';
+import takeupP from './art/record-takeup-phone.svg?url';
+import mechP from './art/record-mech-phone.svg?url';
 ---
 {rows.length > 0 && (
   <section class="rstrip" id="record" data-rail-sec="Record" data-scene data-rail-accent={SETS.record[0]} data-aura={auraAttr(SETS.record)} style={auraVars(SETS.record)}>
     <div class="rs-art" aria-hidden="true">
-      <svg class="rs-rings" viewBox="-2 -2 4 4" focusable="false">
-        <defs>
-          {/* the drawing fades with distance from the reel, so no text stands on more than a trace of it,
-              and it is cut out of the object's circle, so no line crosses the glass (spec v3 §8.4) */}
-          <radialGradient id="rs-fade" cx="0" cy="0" r="2" gradientUnits="userSpaceOnUse">
-            <stop offset="0.31" stop-color="#fff" /><stop offset="0.45" stop-color="#8f8f8f" /><stop offset="0.7" stop-color="#4d4d4d" /><stop offset="0.975" stop-color="#000" />
-          </radialGradient>
-          <radialGradient id="rs-hole" cx="0.125" cy="-0.03" r="0.56" gradientUnits="userSpaceOnUse">
-            <stop offset="0.76" stop-color="#000" stop-opacity="1" /><stop offset="1" stop-color="#000" stop-opacity="0" />
-          </radialGradient>
-          <mask id="rs-mask" maskUnits="userSpaceOnUse" x="-2" y="-2" width="4" height="4">
-            <rect x="-2" y="-2" width="4" height="4" fill="url(#rs-fade)" />
-            <circle cx="0.125" cy="-0.03" r="0.56" fill="url(#rs-hole)" />
-          </mask>
-        </defs>
-        <g mask="url(#rs-mask)">
-          {spokes.map((d) => <path class="sp" d={d} />)}
-          {rings.map((r) => <path class:list={['rg', { dash: r.dashed, wide: r.wide }]} d={r.d} pathLength="1" style={`--i: ${r.i}`} />)}
-          {small.map((r) => <path class:list={['rg', 'dash', 'sm', { wide: r.wide }]} d={r.d} style={`--i: ${r.i + 1}`} />)}
-          <path class="strand" d={`M${RIGHT} 0.27C${RIGHT + 0.07} 0.55 0.6 0.66 1.12 0.78`} pathLength="1" />
-        </g>
-      </svg>
+      <div class="rs-eng wide">
+        <div class="rs-fl-w"><img class="rs-fl" src={flange} alt="" width="588" height="586" loading="lazy" decoding="async" /></div>
+        <img class="rs-tu" src={takeup} alt="" width="252" height="250" loading="lazy" decoding="async" />
+        <img class="rs-me" src={mech} alt="" width="254" height="423" loading="lazy" decoding="async" />
+      </div>
+      <div class="rs-eng narrow">
+        <div class="rs-fl-w"><img class="rs-fl" src={flangeP} alt="" width="321" height="395" loading="lazy" decoding="async" /></div>
+        <img class="rs-tu" src={takeupP} alt="" width="130" height="129" loading="lazy" decoding="async" />
+        <img class="rs-me" src={mechP} alt="" width="265" height="280" loading="lazy" decoding="async" />
+      </div>
     </div>
 
     <div class="rs-in">
@@ -193,19 +181,29 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
      outer rings and spokes reach up toward the Photos hint without standing on it */
   .rs-art { position: absolute; left: 0; right: 0; top: -260px; bottom: 0; overflow: clip; pointer-events: none;
     -webkit-mask-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.25) 130px, #000 260px); mask-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.25) 130px, #000 260px); }
-  .rs-rings { position: absolute; left: calc(50% - var(--S) * 0.125 - var(--S) * 2); top: calc(260px + var(--S) * 0.53 - var(--S) * 2); width: calc(var(--S) * 4); height: calc(var(--S) * 4); max-width: none; overflow: visible; }
-  .rs-rings path { fill: none; stroke: var(--record-1); stroke-width: calc(1 / var(--S-n)); }
-  .rs-rings .rg { opacity: 0.2; }
-  .rs-rings .dash { opacity: 0.17; stroke-dasharray: calc(2 / var(--S-n)) calc(6 / var(--S-n)); }
-  .rs-rings .sp { opacity: 0.1; }
-  .rs-rings .strand { opacity: 0.3; stroke-width: calc(1.2 / var(--S-n)); }
-  /* motion: the rings draw from the inside out over --sp 0 to 0.12, the dashed ones and the spokes fade
-     in with them, the ground comes up under the object, then the tape draws (0.1 to 0.19) */
-  :global(html.motion) .rstrip { --kr: clamp(0, var(--sp) / 0.14, 1); --ktape: clamp(0, (var(--sp) - 0.1) / 0.09, 1); }
-  :global(html.motion) .rs-rings .rg { --k: clamp(0, (var(--sp) - 0.02 - var(--i) * 0.01) / 0.06, 1); stroke-dasharray: 1 1; stroke-dashoffset: calc(1 - var(--k)); }
-  :global(html.motion) .rs-rings .dash { stroke-dasharray: calc(2 / var(--S-n)) calc(6 / var(--S-n)); stroke-dashoffset: 0; opacity: calc(0.17 * var(--k)); }
-  :global(html.motion) .rs-rings .sp { opacity: calc(0.1 * var(--kr)); }
-  :global(html.motion) .rs-rings .strand { stroke-dasharray: 1 1; stroke-dashoffset: calc(1 - var(--ktape)); }
+  /* the engraving: each part at its place in the band; the flange's clear zones (the object's glass, the
+     head below) are masks on a wrapper that does not turn, so the drawing can turn under them */
+  .rs-eng { position: absolute; top: 0; width: 1440px; height: 900px; left: calc(50% - 720px); }
+  .rs-eng img { position: absolute; max-width: none; }
+  .rs-eng.narrow { display: none; width: 390px; height: 720px; left: calc(100% - 390px); }
+  .wide .rs-fl-w { position: absolute; left: 393px; top: 123px; width: 588px; height: 586px;
+    -webkit-mask: radial-gradient(circle at 327px 287px, transparent 172px, #000 204px), linear-gradient(#000 437px, transparent 567px); -webkit-mask-composite: source-in;
+    mask: radial-gradient(circle at 327px 287px, transparent 172px, #000 204px) intersect, linear-gradient(#000 437px, transparent 567px); }
+  .wide .rs-fl { left: 0; top: 0; width: 588px; height: 586px; transform-origin: 289.5px 296px; }
+  .wide .rs-tu { left: 973px; top: 191px; width: 252px; height: 250px; transform-origin: 123px 127px; }
+  .wide .rs-me { left: 194px; top: 271px; width: 254px; height: 423px; }
+  .narrow .rs-fl-w { position: absolute; left: 69px; top: 153px; width: 321px; height: 395px;
+    -webkit-mask: radial-gradient(circle at 217px 195px, transparent 100px, #000 122px), linear-gradient(#000 277px, transparent 327px); -webkit-mask-composite: source-in;
+    mask: radial-gradient(circle at 217px 195px, transparent 100px, #000 122px) intersect, linear-gradient(#000 277px, transparent 327px); }
+  .narrow .rs-fl { left: 0; top: 0; width: 321px; height: 395px; transform-origin: 195px 200px; }
+  .narrow .rs-tu { left: 23px; top: 84px; width: 130px; height: 129px; transform-origin: 63px 66px; }
+  .narrow .rs-me { left: 13px; top: 174px; width: 265px; height: 280px; }
+  /* motion: the reels fade in over --sp 0 to 0.14 and turn as the strip passes (the supply reel slowly,
+     the smaller take-up reel faster, as a tape transport turns); the mechanism comes in from the object's
+     side and settles at its place (the exploded view opens) */
+  :global(html.motion) .rs-fl { opacity: var(--kr); transform: rotate(calc(var(--sp) * -64deg)); }
+  :global(html.motion) .rs-tu { opacity: var(--kr); transform: rotate(calc(var(--sp) * -150deg)); }
+  :global(html.motion) .rs-me { opacity: var(--kr); transform: translate(calc((1 - var(--kr)) * 48px), calc((1 - var(--kr)) * 10px)); }
   :global(html.motion) .rs-pool { opacity: var(--kr); }
   :global(html.motion) .rs-tape path { stroke-dasharray: var(--L) var(--L); stroke-dashoffset: calc((1 - var(--ktape)) * var(--L)); }
 
@@ -367,7 +365,7 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
     /* phone (spec v3 §8.1): the chapter hangs on the spine. The recorder stands at the right inside the
        gutter (its glow and shadow end before the screen edge and the rail), the head and the year strip
        start right of the spine, and the tape leaves the object and turns down into the spine above the
-       title. Only the six inner rings and three small ones are drawn. */
+       title. The phone has its own engraving (the reels at the top, the capstan at the spine). */
     .rstrip { --gutter: 0px; --spine-w: 22px; --S: 176px; --S-n: 176; --pad: 28px; }
     .rs-obj { margin: 0 0 0 auto; }
     .rs-front { --ox: calc(100% - var(--S) / 2); }
@@ -375,8 +373,8 @@ const spokes = Array.from({ length: 6 }, (_, i) => {
     .rs-lead { top: -96px; height: calc(96px + var(--S) * 0.17); }
     .rs-pool { left: auto; right: calc(var(--S) * -0.35); }
     .rs-tape { width: calc(100% - var(--S) * 0.64 - var(--spine-x)); }
-    .rs-rings { left: calc(100% - var(--gut) - var(--S) * 0.625 - var(--S) * 2); }
-    .rs-rings .wide { display: none; }
+    .rs-eng.wide { display: none; }
+    .rs-eng.narrow { display: block; }
     .rs-head { text-align: left; padding-left: var(--spine-w); padding-top: var(--s-3); }
     .rs-dek { margin-left: 0; }
     .rs-year { grid-template-columns: 1fr; gap: 14px; margin-top: var(--s-6); padding-left: var(--spine-w); }
