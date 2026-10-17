@@ -1,12 +1,34 @@
 ---
-/* The brief (design spec §3.2): the name, the lede and three rows, centred on the page axis, standing
-   on the Bostancı plate (Plate.astro). The intro is the one place allowed to summarise (spec §3.5): the
-   rows name the school, the products and the Record, and link to their one place below.
-   Studying: the school and the year (the lede already gives the subject). Building: one chip per
-   project, in its colour, linking to it in Work. Writing: the Record and the date of its newest entry,
-   hidden while the Record is empty. */
+/* The first screen (review rows S32, S33; the first-screen study's comp A, "The signal"): the brief
+   standing on the Bostancı platform. The owner's photograph is whole and the full view height, placed so
+   its vanishing point (its own red signal) sits on the page axis; the first-screen engraving
+   (SignalPlate.astro) continues the photograph to both edges in the photograph's own camera; a hairline
+   frame holds the brief across the seam of line and colour (Renaissance's title frame). The brief's text
+   is unchanged (design spec §3.2): the name, the lede and three rows. The construction drawing of rounds
+   one to five (Plate.astro: the circle, the horizon, the diagonals, the red signal) is the engraving's
+   scaffold group now, on the true vanishing point: the accepted idea got its picture (S26). The
+   photograph's frame of round five (Bostanci.astro) is folded in here; its note and place stay as the
+   caption.
+
+   Desktop: photograph 75svh x 100svh, its left edge 21.278svh left of the axis (the plate's box). The
+   frame is centred on the axis above the signal; a thread hangs from its lower edge to the signal.
+   Phone (under 700 px): the photograph at full width under the bar (top 16.41vw), the name in its sky,
+   the lede and the rows below it on the engraved platform, quietened under the words.
+
+   Arrival (html.motion; the study's clock): the grey print is there at first paint (it is the LCP), the
+   name sharpens in, the lede and rows rise by 0.9 s, the engraving radiates from the vanishing point
+   (SignalPlate), the frame draws from 0.9 s, the signal lights at 2.3 s, and the colour opens from the
+   signal over the grey print (2.4 to 4.6 s). Every entrance fills backwards only, so nothing waits.
+   Handover into Work (a pure function of the section's --sp, scene.css, so it reverses on the way up):
+   the frame and the words lift away, the colour drains back into the signal, the signal turns Recto's
+   green, the engraving's structure fades and leaves its floor, and the stage lags the page.
+   Still twins (reduced motion, ?still, no JavaScript): the photograph in colour, everything at rest.
+   Light (S2): the brief's blue-hour set over the whole first screen. */
 import { getSite, getProjects, getLog, projectColor, dayMon, iso, url } from '../lib/site';
 import { SETS, auraAttr, auraVars } from './aura.mjs';
+import SignalPlate from './SignalPlate.astro';
+import manifest from '../assets/photos/postcards.json';
+import './scene.css';
 
 const site = await getSite();
 const projects = await getProjects();
@@ -14,45 +36,113 @@ const log = await getLog();
 const newest = log[0];
 const k = site.kicker;
 const year = k.year.charAt(0).toLowerCase() + k.year.slice(1);
+
+const pic = site.about.chapters.find((c) => c.id === 'photos')?.photos?.find((p) => p.photo === 'bostanci-rain-dusk');
+const m = (manifest as Record<string, { width: number; height: number; widths: number[]; full: number }>)['bostanci-rain-dusk'];
+const files = import.meta.glob<string>('../assets/photos/pc-bostanci-rain-dusk-*.{avif,webp}', { eager: true, query: '?url', import: 'default' });
+const f = (w: number | 'full', ext: string) => files[`../assets/photos/pc-bostanci-rain-dusk-${w}.${ext}`];
+const set = (ext: string) => [...m.widths.map((w) => `${f(w, ext)} ${w}w`), ...(m.full ? [`${f('full', ext)} ${m.full}w`] : [])].join(', ');
+const sizes = '(min-width: 700px) 75vh, 100vw';
 ---
-<section id="brief" class="brief" data-rail-sec={site.firstName} data-rail-accent={SETS.brief[0]} data-aura={auraAttr(SETS.brief)} style={auraVars(SETS.brief)}>
-  <div class="brief-in hushed">
+<section id="brief" class="brief" data-scene data-rail-sec={site.firstName} data-rail-accent={SETS.brief[0]} data-aura={auraAttr(SETS.brief)} style={auraVars(SETS.brief)}>
+  <div class="stage">
+    <SignalPlate />
+    {pic && m && (
+      <figure class="photo" id="bostanci" aria-label={pic.note ?? pic.place}>
+        {/* the grey print it develops from (the same file, a static filter) and the colour over it */}
+        <img class="print" src={f(1080, 'webp')} srcset={set('webp')} sizes={sizes} alt="" width={m.width} height={m.height} aria-hidden="true" fetchpriority="high" decoding="async" />
+        <picture class="colour">
+          <source type="image/avif" srcset={set('avif')} sizes={sizes} />
+          <img src={f(1080, 'webp')} srcset={set('webp')} sizes={sizes} alt={pic.alt} width={m.width} height={m.height} fetchpriority="high" decoding="async" />
+        </picture>
+        <span class="dusk" aria-hidden="true"></span>
+        <i class="sig" aria-hidden="true"></i>
+        <span class="marks" aria-hidden="true"><i></i><i></i></span>
+      </figure>
+    )}
+  </div>
+
+  <div class="brief-in">
+    <span class="frame-line" aria-hidden="true"></span>
     {/* one line on desktop; on phones the two lines of content nameLines (charter §3, "The name") */}
     <h1 class="name">{site.nameLines.map((l, i) => <>{i > 0 && ' '}<span class="nl">{l}</span></>)}</h1>
-    <p class="lede" data-in style="--d: 180ms">{site.lede}</p>
-    <dl class="rows">
-      <div class="row" data-in style="--d: 270ms">
-        <dt class="label">Studying</dt>
-        <dd class="v"><span class="wide">{k.school}</span><span class="short">{k.schoolShort}</span>, {year}</dd>
-      </div>
-      <div class="row" data-in style="--d: 360ms">
-        <dt class="label">Building</dt>
-        <dd>
-          <ul class="chips">
-            {projects.map((p) => (
-              <li><a class="chip" href={`#${p.id}`} style={`--c: ${projectColor(p)}`}><i class="dot" aria-hidden="true"></i>{p.data.title}</a></li>
-            ))}
-          </ul>
-        </dd>
-      </div>
-      {newest && (
-        <div class="row" data-in style="--d: 450ms">
-          <dt class="label">Writing</dt>
-          <dd class="v"><a class="tl" href={url('record/')}>{site.log.title}</a> <span class="when">· last entry <time datetime={iso(newest.data.date)}>{dayMon(newest.data.date)}</time></span></dd>
+    <div class="words">
+      <p class="lede" data-in style="--d: 180ms">{site.lede}</p>
+      <dl class="rows">
+        <div class="row" data-in style="--d: 300ms">
+          <dt class="label">Studying</dt>
+          <dd class="v"><span class="wide">{k.school}</span><span class="short">{k.schoolShort}</span>, {year}</dd>
         </div>
-      )}
-    </dl>
+        <div class="row" data-in style="--d: 420ms">
+          <dt class="label">Building</dt>
+          <dd>
+            <ul class="chips">
+              {projects.map((p) => (
+                <li><a class="chip" href={`#${p.id}`} style={`--c: ${projectColor(p)}`}><i class="dot" aria-hidden="true"></i>{p.data.title}</a></li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+        {newest && (
+          <div class="row" data-in style="--d: 540ms">
+            <dt class="label">Writing</dt>
+            <dd class="v"><a class="tl" href={url('record/')}>{site.log.title}</a> <span class="when">· last entry <time datetime={iso(newest.data.date)}>{dayMon(newest.data.date)}</time></span></dd>
+          </div>
+        )}
+      </dl>
+    </div>
   </div>
+  {pic && (
+    <p class="bcap" data-in style="--d: 1400ms">
+      {pic.note && <span class="note">{pic.note}</span>} <span class="place">{pic.place}</span>
+    </p>
+  )}
 </section>
 
 <style>
-  .brief { position: relative; padding: 196px var(--gut) var(--s-9); text-align: center; }
-  .brief-in { width: min(var(--w-text), 100%); margin: 0 auto; }
-  /* the name may be wider than the text column (the study's 60 px is 652 px of ink): its box takes the
-     whole width between the gutters, up to 880 px, centred on the page axis */
-  .name { margin-inline: calc((min(100vw - 2 * var(--gut), 880px) - 100%) / -2); }
-  .lede { margin: var(--s-5) auto 0; max-width: 34em; }
-  .rows { margin-top: var(--s-7); display: grid; gap: var(--s-4); justify-items: center; }
+  /* ---------- geometry: the photograph's box (SignalPlate's comment) ---------- */
+  .brief {
+    --ph: 100svh; --pw: 75svh; --pl: calc(50% - 21.278svh); --pt: 0px;
+    /* the signal in the photograph (photo px 557, 1512 of 1932 x 2576) */
+    --sx: 28.83%; --sy: 58.7%;
+    --hand: clamp(0, (var(--sp) - 0.5) * 2, 1);
+    position: relative; height: 100svh; min-height: 620px; overflow-x: clip; text-align: center;
+  }
+  .stage { position: absolute; inset: 0; pointer-events: none; }
+  /* the plate fades out at its own lower edge and at its sides, so a wide window never shows where it ends */
+  .stage :global(.sigplate) {
+    -webkit-mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(#000 82%, transparent);
+    -webkit-mask-composite: source-in; mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(#000 82%, transparent);
+    mask-composite: intersect;
+  }
+
+  .photo { position: absolute; z-index: 1; left: var(--pl); top: var(--pt); width: var(--pw); height: var(--ph); margin: 0; overflow: hidden;
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.07), 0 30px 120px -30px rgb(40 70 200 / 0.45); }
+  .photo img, .photo picture { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+  .photo .print { filter: grayscale(1) brightness(0.6) contrast(1.06); }
+  /* the dusk the camera saw: the sky deepened toward the top, so the words read on it */
+  .dusk { position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(rgb(6 10 30 / 0.7), rgb(6 10 30 / 0.5) 32%, rgb(6 10 30 / 0.08) 58%, rgb(6 10 30 / 0.2)); }
+  .sig { position: absolute; left: var(--sx); top: var(--sy); width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%;
+    background: color-mix(in oklab, var(--signal), var(--c-recto, #a6d873) calc(var(--go, 0) * 100%));
+    box-shadow: 0 0 calc(16px + var(--go, 0) * 26px) calc(5px + var(--go, 0) * 7px) color-mix(in oklab, rgb(255 90 90 / 0.55), rgb(166 216 115 / 0.65) calc(var(--go, 0) * 100%)); }
+  /* crop marks at two corners: the photograph is a print laid into the plate */
+  .marks i { position: absolute; width: 18px; height: 18px; border: 0 solid rgb(201 212 255 / 0.5); }
+  .marks i:nth-child(1) { left: 14px; top: 14px; border-width: 1px 0 0 1px; }
+  .marks i:nth-child(2) { right: 14px; bottom: 14px; border-width: 0 1px 1px 0; }
+
+  /* ---------- the brief in its hairline frame, centred on the axis above the signal ---------- */
+  .brief-in { position: absolute; z-index: 2; left: 50%; top: max(104px, 13.5svh); width: min(640px, calc(100% - 2 * var(--gut))); translate: -50% 0;
+    padding: clamp(28px, 4.4svh, 44px) 40px clamp(26px, 4svh, 38px); }
+  .brief-in::before { content: ""; position: absolute; inset: -40px -120px; z-index: -1; pointer-events: none;
+    background: radial-gradient(closest-side, rgb(8 10 22 / 0.5), rgb(8 10 22 / 0.26) 62%, transparent); }
+  .frame-line { position: absolute; inset: 0; border: 1px solid rgb(201 212 255 / 0.36); pointer-events: none; }
+  /* the thread from the frame to the signal: the brief hangs on the light */
+  .frame-line::after { content: ""; position: absolute; left: calc(50% - 0.5px); top: 100%; width: 1px;
+    height: var(--thread, 0px); background: linear-gradient(rgb(201 212 255 / 0.36), rgb(255 107 107 / 0.55)); }
+  .name { margin-inline: -24px; text-shadow: 0 2px 30px rgb(6 10 30 / 0.55); }
+  .lede { margin: var(--s-4) auto 0; max-width: 31em; text-shadow: 0 1px 18px rgb(6 10 30 / 0.7); }
+  .rows { margin-top: var(--s-6); display: grid; gap: var(--s-3); justify-items: center; }
   .row { display: flex; align-items: center; justify-content: center; gap: var(--s-4); flex-wrap: wrap; }
   .v { font: 400 var(--fs-body) / 1.4 var(--f-sans); color: var(--ink); }
   .when { color: var(--ink-3); }
@@ -60,23 +150,87 @@ const year = k.year.charAt(0).toLowerCase() + k.year.slice(1);
   .v .tl { display: inline-block; padding-block: 12px; margin-block: -12px; }
   .short { display: none; }
   .chips { display: flex; gap: var(--s-2); flex-wrap: wrap; justify-content: center; }
+  .chip { background: rgb(14 16 30 / 0.55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  /* the photograph's caption: left of the print, bottom-aligned, on the engraved ground (round five's place) */
+  .bcap { position: absolute; z-index: 2; right: calc(50% + 21.278svh + var(--s-5)); bottom: var(--s-6); width: 240px; margin: 0; text-align: right; }
+  .note { display: block; font: italic 400 var(--fs-h3) / 1.25 var(--f-serif); letter-spacing: -0.01em; color: var(--ink-2); text-wrap: balance; }
+  .place { display: block; margin-top: var(--s-2); font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); }
 
+  /* ---------- the phone: the photograph under the bar, the name in its sky ---------- */
   @media (max-width: 699.98px) {
-    .brief { padding-top: 112px; padding-bottom: var(--s-8); }
-    .lede { margin-top: var(--s-4); }
-    .rows { margin-top: var(--s-6); }
-    .row { flex-direction: column; gap: var(--s-2); }
-    .wide { display: none; }
-    .short { display: inline; }
+    /* the stage rises by the plate's 16.41vw, so the photograph starts at the top of the screen, under the
+       glass bar (the bar refracts its sky), and the words begin where it ends */
+    .brief { --ph: 133.333vw; --pw: 100vw; --pl: 0px; --pt: 16.41vw; height: auto; min-height: 0;
+      padding: calc(133.333vw + var(--s-4)) 0 var(--s-7); }
+    .stage { top: -16.41vw; }
+    .stage :global(.sigplate) { -webkit-mask: linear-gradient(#000 70%, transparent); mask: linear-gradient(#000 70%, transparent); }
+    .photo { box-shadow: none; }
+    .dusk { background: linear-gradient(rgb(6 10 30 / 0.62), rgb(6 10 30 / 0.3) 30%, rgb(6 10 30 / 0.02) 52%, rgb(6 10 30 / 0.05) 82%, rgb(13 15 25 / 0.7)); }
+    .marks { display: none; }
+    .brief-in { position: static; width: auto; translate: none; padding: 0 var(--gut); }
+    .brief-in::before, .frame-line { display: none; }
+    .name { position: absolute; z-index: 2; left: var(--gut); right: var(--gut); top: 92px; margin: 0; }
     .nl { display: block; }
     :global(html[data-name="current"]) .nl { display: inline; }
+    /* under the words the engraved platform is quieter, so the words stay clean */
+    .words { position: relative; }
+    .words::before { content: ""; position: absolute; inset: -20px -16px -12px; z-index: -1; pointer-events: none;
+      background: radial-gradient(closest-side, rgb(12 14 24 / 0.72), rgb(12 14 24 / 0.4) 70%, transparent); }
+    .lede { margin-top: 0; }
+    .lede { font-size: 17px; line-height: 1.5; }
+    /* one line per row where it fits; the chips take their own line under their label */
+    .rows { margin-top: var(--s-4); gap: var(--s-2); }
+    .row { gap: var(--s-3); flex-wrap: nowrap; }
+    .row:has(.chips) { flex-direction: column; gap: var(--s-2); }
+    .wide { display: none; }
+    .short { display: inline; }
+    .bcap { position: static; width: auto; margin: var(--s-6) var(--gut) 0; text-align: center; }
+    .note { font-size: 17px; }
   }
 
-  /* arrival (spec §4.1): the name is there from first paint; the lede and the rows rise 10 px in turn */
-  :global(html.motion) [data-in] { animation: brief-in var(--t-reveal) var(--ease-out) var(--d) both; }
-  @keyframes brief-in { from { opacity: 0; translate: 0 10px; } }
+  /* ---------- arrival ---------- */
+  :global(html.motion) .name { animation: name-in 760ms var(--ease-out) 60ms backwards; }
+  @keyframes name-in { from { opacity: 0.6; letter-spacing: 0.01em; filter: blur(3px); } }
+  :global(html.motion) [data-in] { animation: brief-in 900ms var(--ease-out) var(--d) backwards; }
+  @keyframes brief-in { from { opacity: 0; translate: 0 12px; } }
+  :global(html.motion) .frame-line { animation: frame-in 1400ms var(--ease-draw) 900ms backwards; }
+  @keyframes frame-in { from { clip-path: inset(0 50% 100% 50%); } 55% { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 -100vh 0); } }
+  :global(html.motion) .sig { animation: sig-on 700ms var(--spring, cubic-bezier(0.34, 1.56, 0.64, 1)) 2300ms backwards; }
+  @keyframes sig-on { from { scale: 0; opacity: 0; } }
+  /* the colour opens from the signal over the grey print, then the drain on the way to Work takes it back */
+  :global(html.motion) .photo { animation: resolve 2200ms cubic-bezier(0.6, 0, 0.3, 1) 2400ms backwards; }
+  @property --open { syntax: '<number>'; inherits: true; initial-value: 1; }
+  @keyframes resolve { from { --open: 0; } to { --open: 1; } }
+  :global(html.motion) .colour { clip-path: circle(calc(150% * var(--open) * (1 - clamp(0, (var(--hand) - 0.05) / 0.35, 1))) at var(--sx) var(--sy)); }
+
+  /* ---------- handover into Work: pure functions of --hand (0 at rest, 1 when the screen has left) ---------- */
+  :global(html.motion) .brief-in { opacity: calc(1 - clamp(0, var(--hand) / 0.4, 1)); translate: -50% calc(var(--hand) * -60px); }
+  :global(html.motion) .bcap { opacity: calc(1 - clamp(0, var(--hand) / 0.3, 1)); }
+  :global(html.motion) .stage { translate: 0 calc(var(--hand) * 16svh); }
+  :global(html.motion) .photo { --go: clamp(0, (var(--hand) - 0.28) / 0.2, 1); opacity: calc(1 - clamp(0, (var(--hand) - 0.42) / 0.26, 1)); }
+  :global(html.motion) .stage :global(.sp-g:not([data-group="ground"], [data-group="scaffold"])) { opacity: calc(1 - clamp(0, (var(--hand) - 0.22) / 0.36, 1)); }
+  /* the floor and the scaffold stay longest, then give the ground to Recto's own engraving (no two scenes
+     stand on each other, S20) */
+  :global(html.motion) .stage :global(.sp-g:is([data-group="ground"], [data-group="scaffold"])) { opacity: calc(1 - clamp(0, (var(--hand) - 0.45) / 0.35, 1)); }
   @media (max-width: 699.98px) {
-    :global(html.motion) [data-in] { animation-name: brief-in-s; }
-    @keyframes brief-in-s { from { opacity: 0; translate: 0 8px; } }
+    :global(html.motion) .brief-in { translate: none; opacity: 1; }
+    /* the words are taller than the photograph's screen here: they scroll away with the page, unfaded */
+    :global(html.motion) .bcap { opacity: 1; }
+    :global(html.motion) .stage { translate: 0 calc(var(--hand) * 20vh); }
   }
 </style>
+
+<script>
+  /* the thread's length: from the frame's lower edge to the signal (layout only, on resize) */
+  const brief = document.querySelector<HTMLElement>('#brief');
+  const line = brief?.querySelector<HTMLElement>('.frame-line');
+  const sig = brief?.querySelector<HTMLElement>('.sig');
+  if (brief && line && sig) {
+    const size = () => {
+      const a = line.getBoundingClientRect(), b = sig.getBoundingClientRect();
+      line.style.setProperty('--thread', `${Math.max(0, b.top + b.height / 2 - a.bottom - 10)}px`);
+    };
+    size();
+    new ResizeObserver(size).observe(brief);
+  }
+</script>

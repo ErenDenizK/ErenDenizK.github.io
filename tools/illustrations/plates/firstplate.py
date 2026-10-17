@@ -37,6 +37,15 @@ from burin import (Plate, Camera, parallel, ruled, rect, arc, bez, lin, radial, 
 GROUPS = ('scaffold', 'sky', 'horizon', 'ground', 'structure', 'wires', 'rain', 'light')
 ALPHA = {'scaffold': 0.16, 'sky': 0.13, 'horizon': 0.16, 'ground': 0.18, 'structure': 0.2, 'wires': 0.2,
          'rain': 0.12, 'light': 0.22}
+# Strength on the page (integration, round 6): beside the full-colour photograph the desktop plate read as
+# empty ground at the ladder's values, so the desktop masters carry 1.5 times the alpha (sky and rain 1.3,
+# so the weather stays behind the structure); the phone master sits under the words and keeps 1.15.
+GAIN = {True: {'sky': 1.3, 'rain': 1.3}, False: {}}
+GAIN_ALL = {True: 1.5, False: 1.15}
+
+
+def alpha(gname, desktop):
+    return round(ALPHA[gname] * GAIN[desktop].get(gname, GAIN_ALL[desktop]), 3)
 
 
 class Scene:
@@ -439,7 +448,7 @@ def build(desktop=True, seed=11):
 def write(P, info, out, suffix=''):
     sizes = {}
     for gname in GROUPS:
-        svg = P.svg({gname: ALPHA[gname]}, ink='#e8e3dd', q=4)
+        svg = P.svg({gname: alpha(gname, suffix == '')}, ink='#e8e3dd', q=4)
         open(f'{out}/signal-{gname}{suffix}.svg', 'w').write(svg)
         sizes[gname] = len(svg)
     return sizes

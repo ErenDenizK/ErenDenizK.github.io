@@ -25,7 +25,9 @@ const GROUPS = [
   ['scaffold', 'mid', 0], ['sky', 'back', 1500], ['horizon', 'back', 700], ['ground', 'mid', 300],
   ['structure', 'mid', 900], ['wires', 'front', 1200], ['rain', 'front', 1800], ['light', 'mid', 2200],
 ] as const;
-const files = import.meta.glob<string>('./art/signal/signal-*.svg', { eager: true, query: '?url', import: 'default' });
+const files = import.meta.glob<string>('./art/signal/signal-*.svg', { eager: true, query: '?url&no-inline', import: 'default' });
+/* no-inline: Vite would inline the small groups as data URIs into Home's HTML (about 9 KB gzip of
+   first-paint budget); as files they load beside the HTML and cache across pages */
 const src = (g: string, phone: boolean) => files[`./art/signal/signal-${g}${phone ? '-phone' : ''}.svg`];
 ---
 <div class="sigplate" data-sigplate aria-hidden="true">

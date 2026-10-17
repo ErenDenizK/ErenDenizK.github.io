@@ -21,7 +21,7 @@ async function complete(page: Page) {
   await expect(page.locator('h1')).toHaveText('Eren Deniz Kuyucaklıoğlu');
   await expect(page.locator('#brief .lede')).toBeVisible();
   await expect(page.locator('#brief .row')).toHaveCount(3);
-  await expect(page.locator('#bostanci img')).toBeVisible();
+  await expect(page.locator('#bostanci .colour img')).toBeVisible();
   await expect(page.locator('#work[data-part="work"]')).toHaveCount(1);
   const labels = await page.locator('[data-rail-sec]').evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.railSec));
   for (const s of STRIPS) expect(labels, `strip ${s}`).toContain(s);
@@ -111,13 +111,59 @@ test.describe('the person\'s part, desktop', () => {
 
   test('the Bostancı photograph is shown whole and vertical, at least 700 px tall', async ({ page }) => {
     await page.goto(PAGE);
-    const img = page.locator('#bostanci img');
+    const img = page.locator('#bostanci .colour img');
     await img.scrollIntoViewIfNeeded();
     await expect.poll(() => img.evaluate((e: HTMLImageElement) => e.complete && e.naturalWidth > 0)).toBe(true);
     const r = await img.evaluate((e: HTMLImageElement) => ({ w: e.offsetWidth, h: e.offsetHeight, nw: e.naturalWidth, nh: e.naturalHeight }));
     expect(r.h).toBeGreaterThan(700);
     expect(r.h).toBeGreaterThan(r.w);
     expect(Math.abs(r.w / r.h - r.nw / r.nh), 'not cropped').toBeLessThan(0.01);
+  });
+
+  /* round 6 (S32): the first screen is the brief on the Bostancı plate. The photograph is whole and the
+     full view height with its signal on the page axis, the engraving continues it to both edges, and the
+     brief's frame stands on the axis above the signal. */
+  test('round six (S32): the first screen holds the whole photograph on the axis, the plate and the brief', async ({ page }) => {
+    await page.goto(PAGE);
+    const img = page.locator('#bostanci .colour img');
+    await expect.poll(() => img.evaluate((e: HTMLImageElement) => e.complete && e.naturalWidth > 0)).toBe(true);
+    const g = await page.evaluate(() => {
+      const r = (s: string) => document.querySelector(s)!.getBoundingClientRect();
+      const p = r('#bostanci'), sig = r('#bostanci .sig'), plate = r('#brief .sigplate'), frame = r('#brief .brief-in');
+      return { p, sig: { x: sig.x + sig.width / 2, y: sig.y + sig.height / 2 }, plate, frame, vw: innerWidth, vh: innerHeight,
+        groups: document.querySelectorAll('#brief .sigplate .sp-g').length };
+    });
+    expect(g.p.top).toBeGreaterThanOrEqual(0);
+    expect(g.p.bottom).toBeLessThanOrEqual(g.vh + 1);
+    expect(g.p.height).toBeGreaterThan(g.vh - 2);
+    expect(Math.abs(g.p.width / g.p.height - 0.75), 'whole, 3:4').toBeLessThan(0.01);
+    expect(Math.abs(g.sig.x - g.vw / 2), 'the signal on the page axis').toBeLessThan(8);
+    expect(g.plate.left).toBeLessThanOrEqual(0);
+    expect(g.plate.right).toBeGreaterThanOrEqual(g.vw);
+    expect(g.groups).toBe(8);
+    expect(Math.abs(g.frame.x + g.frame.width / 2 - g.vw / 2)).toBeLessThan(2);
+    expect(g.frame.bottom, 'the frame stands above the signal').toBeLessThan(g.sig.y);
+    /* the handover: one screen down, the words have gone and the colour has drained into the signal */
+    await page.evaluate(() => scrollTo(0, innerHeight * 0.8));
+    await expect.poll(() => page.locator('#brief .brief-in').evaluate((e) => +getComputedStyle(e).opacity)).toBeLessThan(0.05);
+  });
+
+  test('round six (S32): on a phone the photograph starts at the top, whole, and the brief fits the first screen', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...phone, deviceScaleFactor: 3 });
+    const page = await ctx.newPage();
+    await page.goto(PAGE);
+    const g = await page.evaluate(() => {
+      const r = (s: string) => document.querySelector(s)!.getBoundingClientRect();
+      const rows = [...document.querySelectorAll('#brief .row')].map((e) => e.getBoundingClientRect().bottom);
+      return { p: r('#bostanci'), name: r('#brief .name'), rows, vw: innerWidth, vh: innerHeight };
+    });
+    expect(Math.abs(g.p.top)).toBeLessThan(1);
+    expect(Math.abs(g.p.width - g.vw)).toBeLessThan(1);
+    expect(Math.abs(g.p.width / g.p.height - 0.75)).toBeLessThan(0.01);
+    expect(g.name.top, 'the name stands in the photograph\'s sky').toBeGreaterThan(g.p.top);
+    expect(g.name.bottom).toBeLessThan(g.p.top + g.p.height / 2);
+    expect(Math.max(...g.rows), 'every row in the first screen').toBeLessThanOrEqual(g.vh);
+    await ctx.close();
   });
 
   test('the ID card turns over with the keyboard and on click, and only the visible face is reachable', async ({ page }) => {
