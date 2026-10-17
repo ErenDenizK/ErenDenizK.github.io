@@ -715,3 +715,10 @@ reference); the brief's project links must travel animated; Istanbul and Davutpa
 series; an intermittent missing close animation of the photo view; Recto's scene fuller. The new
 lab Home is now the product: move to it and to the Record page. No agent limits this week. The
 drawings are called "the engravings".
+
+### 2026-10-17 (model routing and refactoring)
+
+Refactoring is left to the lead's judgment, with advice to the owner: improve, but do not break
+features in motion. Use Sonnet 5.5 (or Haiku 5.5) where a settled spec makes it safe, Opus 5.5 for
+the engravings and judgment; only 5.5 models; measure our own runs and refine. The owner's routing
+report was read and adapted (`docs/process/model-routing.md`).

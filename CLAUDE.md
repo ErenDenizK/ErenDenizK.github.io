@@ -50,6 +50,10 @@ dated, and the newest line wins.
   config) and Claude as the signed committer, with the session's co-author trailer.
 - Pace: no fixed agent limit (owner, 2026-10-17): the lead sizes the line to the work, runs
   agents in parallel where their files do not overlap, and keeps one integrator per merge.
+- Models (owner, 2026-10-17; only 5.5 models): Opus 5.5 for the lead, design, the engravings, studies
+  that decide, the critic and the integrator; Sonnet 5.5 for builders with a settled spec, the
+  archivist and long reads; Haiku 5.5 for searches, inventories and log reading. Effort `medium`; never
+  `xhigh` or `max`. The table, the guards and the metrics: `docs/process/model-routing.md`.
 - English for the site, docs and commits. The owner talks in Turkish, often by dictation:
   read through transcription errors and confirm names.
 - How to ask: every question to the owner comes with a short plain-language brief of the
