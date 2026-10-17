@@ -37,6 +37,9 @@ const decode = (img: HTMLImageElement | null, ms = 350) => !img ? Promise.resolv
 export function initOpen(sec: HTMLElement, deck: Flight) {
   let layer: HTMLElement | null = null, open: Proj | null = null, vt: VT | null = null, steps: Stepper | null = null, clipT = 0;
   let rail: Rail | null = null, smoother: { destroy(): void } | null = null, exits: Exits | null = null;
+  /* set from the press that closes until the layer is gone: the history.back() of that press brings a
+     popstate later, which must not close it a second time (and skip its morph) */
+  let closing = false;
   const tpl = (slug: string) => sec.querySelector<HTMLTemplateElement>(`template[data-pres-tpl="${slug}"]`);
 
   /* the block's side of the shared names: the hero frame, its side frames, the texts */
@@ -224,22 +227,30 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     steps?.destroy(); steps = null;
     rail?.destroy(); rail = null;
     smoother?.destroy(); smoother = null;
-    layer?.remove(); layer = null;
+    layer?.remove(); layer = null; closing = false;
     if (open) { open.el.classList.remove('opened'); emit('one:layer-close', open.slug); }
     pauseField(false);
     deck.pause(false);
     pauseTicker(false);
   }
   function closeProject(o: { ua?: boolean } = {}) {
-    if (!layer || !open) return;
+    if (!layer || !open || closing) return;
+    closing = true;
     if (vt) vt.skipTransition();
     rememberFold();
     const p = open, l = layer;
     const done = () => p.btn.focus({ preventScroll: true });
-    if (!canVT() || o.ua) {
+    /* a layer read past its hero screen (round six critique): the shared screen would fly in from above
+       while Home stood empty under it for 250 to 400 ms. Then the layer fades away over Home instead, where
+       the print already stands. */
+    const hero = l.querySelector('[data-vt="shot"]')?.getBoundingClientRect();
+    const far = !!hero && (hero.bottom < 0 || hero.top > innerHeight);
+    if (!canVT() || o.ua || far) {
       if (motion() === 'full' && !o.ua) {
-        l.classList.add('fade-out');
-        setTimeout(() => { if (layer === l) { drop(); done(); } }, 160);
+        l.classList.add('fade-out'); l.classList.toggle('far', far);
+        /* Home's print and texts stand under the fading layer, not after it */
+        if (far) { p.el.classList.remove('opened'); deck.pause(false); pauseTicker(false); pauseField(false); }
+        setTimeout(() => { if (layer === l) { drop(); done(); } }, far ? 320 : 160);
       } else { drop(); done(); }
       return;
     }
@@ -318,7 +329,9 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     else if (n && layer.contains(n)) { e.preventDefault(); next(n.dataset.next!); }
   });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && layer && !e.defaultPrevented) { e.preventDefault(); back(); } });
-  function back() { if ((history.state as { p?: string } | null)?.p) history.back(); else closeProject(); }
+  /* the close starts on the press itself (round six critique: waiting for history.back()'s popstate left
+     the press without an answer for up to 0.6 s on a phone); the popstate that follows finds it closing */
+  function back() { const pushed = !!(history.state as { p?: string } | null)?.p; closeProject(); if (pushed) history.back(); }
   addEventListener('popstate', (e) => {
     const slug = (e.state as { p?: string } | null)?.p;
     const ua = !!(e as PopStateEvent & { hasUAVisualTransition?: boolean }).hasUAVisualTransition;

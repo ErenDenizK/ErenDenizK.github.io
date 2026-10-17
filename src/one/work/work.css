@@ -211,6 +211,8 @@
 .layer::-webkit-scrollbar { display: none; }
 .layer.fade { animation: one-in var(--t-quick) var(--ease-ui) both; }
 .layer.fade-out { animation: one-out var(--t-quick) var(--ease-ui) both; }
+/* the close from deep in a layer (scripts/open.ts): a longer fade, so the hand-over to Home is seen */
+.layer.fade-out.far { animation-duration: 320ms; }
 .pres { position: relative; isolation: isolate; min-height: 100%; color: var(--ink); overflow-x: clip; padding-bottom: 0;
   --hero-w: min(800px, calc(100vw - 2 * var(--gut)), max(520px, calc((var(--sv) - 400px) * 1.6))); }
 .pres-page { min-height: 100vh; }
