@@ -10,9 +10,12 @@
       sit on one arc that bulges out of the rail there, each name arriving with its own delay, the current
       one lit in its section's light. No box: the page behind blurs on a gradient from the right edge
       (strongest at the rail, nothing at the far side) and darkens with it, so the names come forward.
-      Three entrances (`?bloom=drop|palm|fan`, default drop): drop rises from the point while a pool of
-      light spreads lower and wider; palm sweeps the names open along the arc around one pivot, like
-      fingers opening; fan unfolds them one by one from the point outward.
+      Three entrances (`?bloom=drop|palm|fan`, default drop): in drop the beads themselves leave the rail
+      along the arc and each name grows out of its own bead, while a pool of light spreads lower and wider
+      (round six, S1); palm sweeps the names open along the arc around one pivot, like fingers opening; fan
+      unfolds them one by one from the point outward. Every name stands one pitch apart (S13).
+   3. Choose a name. It gives under the press, the bloom closes carrying it home to its bead, and the page
+      travels there frame by frame (S14, travel.ts).
 
    Keyboard: the column is a button; Enter or Space opens the names with focus on the current one, the
    arrows, Home and End move, Escape closes. Reduced motion (or ?still): the same names appear at once,
