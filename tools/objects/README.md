@@ -134,9 +134,11 @@ subtracts the ground (`max(0, px − #0A0A0B)`, so the ground becomes exact blac
   rectangle in the manifest. The format is chosen by a black test on three grid frames (bytes,
   object error, and whether ground far from the object decodes to exact 0), recorded in
   `$OBJECT_MASTERS/<name>/encode-report.json`;
-- `shadow.avif|webp`: the floor shadow as a 600² grayscale map, `m = composite / ground`
-  clamped to 1 and feathered to exactly 1 over the outer 12 % of the square (a key shadow can run
-  off it, and the page's ground does not stop there), meaning "multiply the ground by this";
+- `shadow-a.avif|webp`: the floor shadow, 600², as black with alpha `1 − m`, where
+  `m = composite / ground` clamped to 1 and feathered to exactly 1 over the outer 12 % of the square
+  (a key shadow can run off it, and the page's ground does not stop there). Drawn with normal
+  blending it multiplies the ground by `m` with no blend mode. The older form (`shadow.*`, a grey map
+  drawn with multiply) showed as a white square on iPhone (S10); `shadow_alpha.py` converts it;
 - `interact.*.mp4`, `droplet-out.*.mp4`, `droplet-in.*.mp4` (the same clip reversed, because
   browsers cannot play video backwards) and `idle.*.mp4` (a 6 s figure-of-eight through the
   grid, synthesised from the grid frames: no extra render) and, where the `spin` stage exists,
@@ -188,7 +190,7 @@ picks which videos to re-encode; the others are kept from the existing manifest.
   droplet: { fps: 60, frames: 24, duration: 0.4, dropletFrame: 23, curve,
              out: { sources },                // rest → droplet: the leaving object, forward
              in:  { sources } },              // droplet → rest: the arriving object
-  shadow: { blend: "multiply", pose: "rest", w: 600, h: 600, min,   // optional; covers the square
+  shadow: { blend: "normal", pose: "rest", w: 600, h: 600, min,   // optional; covers the square
             sources: [{ src, type: "image/avif"|"image/webp", bytes }] },
   bytes: { shadow, poster1200, leanHalf, leanFull, clips: {av1, hevc, h264}, idle: {…},
            spin: {…}, spinSizes: { <w>: {…} },                                 // when there is a spin
