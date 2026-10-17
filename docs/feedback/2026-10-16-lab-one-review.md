@@ -5,7 +5,12 @@ when the owner sees it fixed ("her şey benim gözümde düzelene ve temiz olana
 updates the Status column at each milestone. Source: the owner's dictated message of 2026-10-16
 (condensed verbatim in `docs/history/brief-log.md`, same date).
 
-Status values: open, in work, built (waiting for the owner), closed (the owner accepted).
+Status values: open, partly, in work, built (waiting for the owner), closed (the owner accepted).
+"Partly" means better, but a frame or a part still fails, or the proof needs real hardware; the
+round critiques say which part. A row can also be "deferred" (the owner said later),
+"superseded by" a newer row, "merged into" another row, or "waiting for the owner" (a decision or a
+device check only the owner can give). Since 2026-10-17 (V20) the Status column uses these words
+instead of the critiques' notes alone.
 
 Round 2 (2026-10-16): a row is set to built only where the critic's frame sequences show it fixed on
 `/lab/one/` at 1440 x 900 and 390 x 844 (headless Chromium, not real hardware). The evidence, the
@@ -25,29 +30,34 @@ built with a default chosen from the studies; the owner picks the final version 
 (`?glass=a|b|c|now`, `?name=nr|current|playfair|fraunces`, `?bloom=drop|palm|fan`). Headless Chromium only.
 The verdicts are in the round-four critique.
 
+Round 5 (2026-10-17, night): the archivist lane set the statuses of V20. T22 and T25 are closed (V1,
+V3), T24 is deferred (V2), T9 is superseded by V6, T8 waits for the owner (V4), R1 is merged into T20,
+and the rows the round-two to round-four critiques call partly now say "partly" (G2-G8, M1, M2, M5,
+C2, P4, R2, E1, T19, T21, T26). The build lanes of round 5 set their own rows.
+
 ## Overall
 
 | Id | The owner said | What it means for the work | Status |
 |---|---|---|---|
 | G1 | The first screen is OK: acceptable, simple, nice. | Keep the brief's text and layout. Only its plate changes (P1). | closed |
-| G2 | The order of the parts is as wanted, but the presentation fails. | Keep the order; redo the presentation of Work, the person's part, photos and the Record strip. | open |
-| G3 | The site must not look cheap anywhere. | Every part passes an "is this cheap?" review in the critic's checklist. | open |
-| G4 | Treat it as an art project, not a portfolio. Every frame, opened and studied frame by frame, must be flawless and feel like a masterpiece ("wow, this is creative"). | The critic reviews frame sequences of every motion; a frame with a defect stops the line. | open |
-| G5 | Before the Record, review the design tokens, the fill and empty-space ratios and the animations. | A token and rhythm audit (type, spacing, density, motion) before Record work starts. | open |
-| G6 | Every user interaction (scroll down or up, click) must be felt. Everything alive and responsive; responsive does not mean fast: an animation may be long, but there is always an animation, never an empty wait. | Scroll-linked motion everywhere (continuous, not stepped); no state where input gives no visible response. | open |
-| G7 | Read Shopify and the other references more: list every feature they have and check whether we have it. It need not match; the goal is the same fullness of features. | A feature parity matrix: each reference feature, ours or not, plan. | open |
-| G8 | Maybe Shopify and Robin have scroll animations but no click-to-enlarge, and that is why it was not understood. | The parity matrix separates scroll features from click features; the click-to-enlarge model comes from our own open (which works) and Robin's open. | open |
+| G2 | The order of the parts is as wanted, but the presentation fails. | Keep the order; redo the presentation of Work, the person's part, photos and the Record strip. | partly |
+| G3 | The site must not look cheap anywhere. | Every part passes an "is this cheap?" review in the critic's checklist. | partly |
+| G4 | Treat it as an art project, not a portfolio. Every frame, opened and studied frame by frame, must be flawless and feel like a masterpiece ("wow, this is creative"). | The critic reviews frame sequences of every motion; a frame with a defect stops the line. | partly |
+| G5 | Before the Record, review the design tokens, the fill and empty-space ratios and the animations. | A token and rhythm audit (type, spacing, density, motion) before Record work starts. | partly |
+| G6 | Every user interaction (scroll down or up, click) must be felt. Everything alive and responsive; responsive does not mean fast: an animation may be long, but there is always an animation, never an empty wait. | Scroll-linked motion everywhere (continuous, not stepped); no state where input gives no visible response. | partly |
+| G7 | Read Shopify and the other references more: list every feature they have and check whether we have it. It need not match; the goal is the same fullness of features. | A feature parity matrix: each reference feature, ours or not, plan. | partly |
+| G8 | Maybe Shopify and Robin have scroll animations but no click-to-enlarge, and that is why it was not understood. | The parity matrix separates scroll features from click features; the click-to-enlarge model comes from our own open (which works) and Robin's open. | partly |
 | G9 | Work on this until everything is fixed and clean in the owner's eyes. | This tracker stays open until every row is closed. | open |
 
 ## Scrolling and motion
 
 | Id | The owner said | What it means for the work | Status |
 |---|---|---|---|
-| M1 | Scrolling feels like it catches. Not the duration: the design is bad, so the animations do not feel good. | Redesign the scroll structure, not only timings. | open |
-| M2 | The animations do not feel oiled and polished. Everything should feel like it floats in the air or on a pond: smooth. | Inertial, smoothed scroll feel (desktop); scroll-linked motion with soft, continuous easing; no stepped jumps. | open |
+| M1 | Scrolling feels like it catches. Not the duration: the design is bad, so the animations do not feel good. | Redesign the scroll structure, not only timings. | partly |
+| M2 | The animations do not feel oiled and polished. Everything should feel like it floats in the air or on a pond: smooth. | Inertial, smoothed scroll feel (desktop); scroll-linked motion with soft, continuous easing; no stepped jumps. | partly |
 | M3 | Waits while scrolling are not a problem in themselves. | Long scenes are allowed if they move. | built |
 | M4 | Every scroll should animate, as in Shopify and the other examples: text slides slowly and continuously, also in reverse (not only on first arrival); text shapes itself with the motion; the page turns with it. | Scroll-scrubbed motion (reversible), not one-shot reveals. | built |
-| M5 | Improve every scroll animation. | Part of the frame-by-frame review (G4). | open |
+| M5 | Improve every scroll animation. | Part of the frame-by-frame review (G4). | partly |
 
 ## Work
 
@@ -74,7 +84,7 @@ The verdicts are in the round-four critique.
 | Id | The owner said | What it means for the work | Status |
 |---|---|---|---|
 | C1 | The ID card feels like a much buggier version; nothing like the previous one. Swing, interactivity, the flip on a hard shake, the general flip, the hover: all buggy, catching, ugly. | Drop the reimplemented card. | built |
-| C2 | Take the previous card exactly (the version the owner loved) and improve it: a bit more texture, a livelier photo, and on hover the card and the rope sway as feedback. | Port the live `IdCard` (dev before the two-page line) unchanged, then add: denser texture, a livelier photo, hover sway of card and lanyard. | open |
+| C2 | Take the previous card exactly (the version the owner loved) and improve it: a bit more texture, a livelier photo, and on hover the card and the rope sway as feedback. | Port the live `IdCard` (dev before the two-page line) unchanged, then add: denser texture, a livelier photo, hover sway of card and lanyard. | partly |
 | C3 | Not sure the card belongs there in the order. | The lead proposes its place; shown on the lab page. | closed (T1: next to How I work) |
 | C4 | How I work (By hand / With agents): much more readable now, but the previous design was much more elegant: two lanes with a slow effect like falling drops. Now it looks cheap. | Bring back the previous tracks figure's design and its drop motion; keep today's readability. | built |
 
@@ -85,21 +95,21 @@ The verdicts are in the round-four critique.
 | P1 | The Bostancı photo under the brief: did not like it. It shows only a little at the bottom and shows nothing. If used, use the large, uncropped, vertical version. A photo placed where it cannot be seen is a bad minus. | Show the photograph properly (vertical, uncropped, large) or not at all. The repo holds the 1932 x 2576 original. | built |
 | P2 | The photos are piled at the bottom. Picking up and turning them catches, as with the ID card. | Rebuild the postcard interaction on the proven card physics. | built |
 | P3 | Picking up is animated, but letting go is not. Very buggy. | Release animates back as smoothly as the pick-up. | built |
-| P4 | The card's back should change in design. Reimagine the postcard from scratch as a concept: list what a postcard contains, then design each part new: modern, elegant, innovative, like a resume or an artwork, especially the back and the frame. Do not paste the first search result for "postcard". | A new postcard design (front frame, back), designed from its parts. | open |
+| P4 | The card's back should change in design. Reimagine the postcard from scratch as a concept: list what a postcard contains, then design each part new: modern, elegant, innovative, like a resume or an artwork, especially the back and the frame. Do not paste the first search result for "postcard". | A new postcard design (front frame, back), designed from its parts. | partly |
 | P5 | Three photos side by side; hovering one lifts it, but it should feel like it is really picked up and placed on top, not passing through the others. | Hover lifts and re-stacks the card above the others with depth, no clipping through. | built |
 
 ## Record strip and the Record page
 
 | Id | The owner said | What it means for the work | Status |
 |---|---|---|---|
-| R1 | The Record examples on Home do not match the Record's design language at all. | The Home strip uses the Record's design language. | built |
-| R2 | Define the Record page's design language and build to it. The owner likes the Record page a lot, above all its 3D object and its animations. | Write the Record design language from the live Record (keep the recorder object and its motion). | open |
+| R1 | The Record examples on Home do not match the Record's design language at all. | The Home strip uses the Record's design language. | merged into T20 |
+| R2 | Define the Record page's design language and build to it. The owner likes the Record page a lot, above all its 3D object and its animations. | Write the Record design language from the live Record (keep the recorder object and its motion). | partly |
 
 ## Emptiness and decoration
 
 | Id | The owner said | What it means for the work | Status |
 |---|---|---|---|
-| E1 | Still feels empty in places; textures etc. in the background. | Line-art textures and layered drawings across Home, with the aura. | open |
+| E1 | Still feels empty in places; textures etc. in the background. | Line-art textures and layered drawings across Home, with the aura. | partly |
 
 ## GitHub profile and badges
 
@@ -128,7 +138,7 @@ Kept as said; the lead's classification in the last column (task, note, or decid
 | T5 | Which round is this? The plans are right; continue. | Round 3; the open list of round 2 carries on. | decided | closed |
 | T6 | The Record's 3D object has a small mobile render problem. | Reproduce and fix the recorder object on phones. | task | built |
 | T7 | The edk at the very bottom stays for now, but it is cut off from the rest of the page. A better thing may be designed much later, only when the owner asks. | No work now; recorded as a known weak point. | note | open |
-| T8 | With the 3D objects gone from most of the page, the owner is unsure. Two remain: edk (not well received) and the recorder (loved, but alone). Think, research and evaluate: new 3D objects from scratch? Where? In the background? The owner loves the recorder object and does not want it gone; fit it better into the whole page. | A study of the 3D objects' role on the new page, with options and a recommendation; the recorder stays. | task | built |
+| T8 | With the 3D objects gone from most of the page, the owner is unsure. Two remain: edk (not well received) and the recorder (loved, but alone). Think, research and evaluate: new 3D objects from scratch? Where? In the background? The owner loves the recorder object and does not want it gone; fit it better into the whole page. | A study of the 3D objects' role on the new page, with options and a recommendation; the recorder stays. | task | waiting for the owner (V4: the objects options need pictures) |
 | T9 | The panel that opens when the rail is clicked is good and makes jumping easy, but it should match the rail's lively look: maybe it grows from the side instead of a small window, blurs the background slightly, a bit more Apple design. | Redesign the rail's jump panel: grows from the rail's edge, light backdrop blur. | task | superseded by V6 (the owner rejected the panel) |
 | T10 | The lanyard does not move when the card moves by itself: on the small hover response and the phone's first swing. It must react to those too, not only to pulling. | The lanyard follows every card motion (hover sway, idle, entrance). | task | built |
 | T11 | In the opened project, the "How it's made" part's object is a bad object; design something much better. | Replace that object with a designed piece. | task | built |
@@ -139,9 +149,9 @@ Kept as said; the lead's classification in the last column (task, note, or decid
 | T16 | The Record could also come next, but this page still has many improvements to make. | Finish Home first; Record page after. | decided | closed |
 | T17 | The background drawings are very good, the colours are very good, the animations are really beautiful: a good prototype. Moving the card was good. | Keep the drawings, colours and motion. | decided | closed |
 | T18 | Ask about anything missing; the owner can dictate. Same plan and discipline. | Questions only where a gap remains. | note | closed |
-| T19 | It is a presentational artwork; every detail thought through. Look into these points in the visuals too. | The critic checks every new piece frame by frame. | task | open |
+| T19 | It is a presentational artwork; every detail thought through. Look into these points in the visuals too. | The critic checks every new piece frame by frame. | task | partly (standing row; each round) |
 | T20 | The Record part reached by scrolling down Home does not fit the new page's design language: it feels copy-pasted from outside. Harmonise and improve it. | Rework the Home Record strip so it is born from the new page's language while keeping the Record's identity. | task | built |
-| T21 | Continue the next steps already listed (tests and the open rows). | The round-2 open rows (G5, G7 follow-ups, partly rows) continue. | task | open |
+| T21 | Continue the next steps already listed (tests and the open rows). | The round-2 open rows (G5, G7 follow-ups, partly rows) continue. | task | partly (standing row; each round) |
 
 ## Coverage audit (lead, 2026-10-16)
 
@@ -152,13 +162,13 @@ items noted but dropped, and open rows that no build lane owned. New rows:
 |---|---|---|---|---|
 | T22 | message 1 ("HyperFrames or an alternative") | Decide with the owner whether composed motion-graphic loops (HyperFrames renders here) are made for the project presentations and the hero, or why not. | owner question | closed (V1: after Home and Record) |
 | T23 | message 2 (no repetition) | A lab-one test that finds no repeated sentence of 5+ words outside the brief; re-run after the postcard and Record strip changes. | task | built |
-| T24 | message 3 (all achievements, real work) | A short list for the owner of the real-work routes beyond the PR flow (READMEs worth starring, Discussions answers), with who does each. | task | open (deferred by V2) |
+| T24 | message 3 (all achievements, real work) | A short list for the owner of the real-work routes beyond the PR flow (READMEs worth starring, Discussions answers), with who does each. | task | deferred (V2: no rush) |
 | T25 | message 3 (PRs in the other projects too) | Pass the PR rule to the English Prep chat through the owner; H3 here is done (CLAUDE.md rule). | task | closed (V3: English Prep archived) |
-| T26 | messages 1 and 3 (motion everywhere, no empty wait; G6) | List every interactive element that gives no motion response and assign it to a lane. | task | open (person area built in round 4; Work, the project layer and the bar not yet listed) |
+| T26 | messages 1 and 3 (motion everywhere, no empty wait; G6) | List every interactive element that gives no motion response and assign it to a lane. | task | partly (person area built in round 4; Work, the project layer and the bar not yet listed) |
 | T27 | message 3 (C2, card texture) | A denser texture on both faces of the ported ID card. | task | built |
 
-Rows G2, G3, G6, G7, G8, M1, M2 and E1 stay open and must be owned by a lane in every round until
-closed. C3 is answered by T1; H3 is done (the rule is in CLAUDE.md since PR #1).
+Rows G2, G3, G6, G7, G8, M1, M2 and E1 stay partly and must be owned by a lane in every round until
+closed (V17 names the unowned leftovers). C3 is answered by T1; H3 is done (the rule is in CLAUDE.md since PR #1).
 
 ## Round 4 (owner, 2026-10-16, night; answers and new points)
 
@@ -190,9 +200,9 @@ Sixteen rows from the second coverage audit (`docs/research/2026-10-coverage-pas
 | V17 | coverage pass two (G-rows rule) | Give the unowned leftovers an owner this round (a small Work-leftovers lane or the integrator): Work grey prints after a jump, the 1.6-2 s open wait, the Eat Map hold (spec 9.2), the parity plan column, the postcard front frame, the band before edk, silent elements outside the person area, the "Close" label as content. | task | open |
 | V18 | coverage pass two (T6, T10, T13, T15, M1, M2) | A five-minute iPhone checklist for the owner (recorder `?spin`, glass blur, both pulls, rope on the first swing, scroll feel), with what "good" looks like; results update those rows. | task (owner) | open |
 | V19 | coverage pass two (T15) | T15 counts as done only after two or three people find both exits unaided, as in the owner's own test. | note | open |
-| V20 | coverage pass two (doc truth) | Tracker statuses: T22 closed (V1), T25 closed (V3), T24 deferred (V2), T9 superseded by V6, T8 "waiting for the owner" (V4), R1 merged into T20; add "partly" to the status values and use it. | task | open |
-| V21 | coverage pass two (I, J) | Brief log entries for 2026-10-16 evening and night; brief.md lines for T1, V6, V7, the masterpiece and phone-measurement standard, V1, V3; mark the 2026-10-09 "Desktop first" line superseded. | task | open |
-| V22 | coverage pass two (doc truth) | Refresh PLAN (where we are, phases 3 rows, morning questions, drop English Prep item), HANDOFF (round 2-4 state, metro photos, hero object, decisions) and the 10-16 journal. | task | open |
+| V20 | coverage pass two (doc truth) | Tracker statuses: T22 closed (V1), T25 closed (V3), T24 deferred (V2), T9 superseded by V6, T8 "waiting for the owner" (V4), R1 merged into T20; add "partly" to the status values and use it. | task | built (2026-10-17, archivist lane) |
+| V21 | coverage pass two (I, J) | Brief log entries for 2026-10-16 evening and night; brief.md lines for T1, V6, V7, the masterpiece and phone-measurement standard, V1, V3; mark the 2026-10-09 "Desktop first" line superseded. | task | built (2026-10-17, archivist lane) |
+| V22 | coverage pass two (doc truth) | Refresh PLAN (where we are, phases 3 rows, morning questions, drop English Prep item), HANDOFF (round 2-4 state, metro photos, hero object, decisions) and the 10-16 journal. | task | built (2026-10-17, archivist lane; the night is in the 10-17 journal) |
 | V23 | coverage pass two (A15) | T27 wording: "a CD-like surface or similar; density, not realism; visible on the front too" (brief line 60), passed to whoever builds it. | task | open |
 | V24 | coverage pass two (A12) | Check the postcard burn-in against "too slow"; keep the small colour detail the owner liked. | task | open |
 | V25 | coverage pass two (D3, V8) | Give the type study the provisional 48/34 px answer: the name's size and weight, not only the face, may be what reads cheap; include size in the switch. | note | open |
