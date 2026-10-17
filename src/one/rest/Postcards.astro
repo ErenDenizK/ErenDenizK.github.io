@@ -15,8 +15,9 @@
      left half, the right column holds the stamp, the message, five colour bands and the colophon.
      Every value comes from content/site.json (home.postcards) or tools/photos/live.mjs.
      Motion (§2.5): as the back comes face-on the drawing draws itself on (construction, then lines,
-     then hatching), the stamp lands, the ring settles, the flourish draws last; a later turn replays
-     only the flourish. Reduced motion: drawn at once.
+     then hatching; a burin plate: its contours, then its tone in from the upper left), the stamp
+     lands, the ring settles, the flourish draws last; a later turn replays only the flourish. Reduced
+     motion: drawn at once.
    Table (desktop): three cards side by side on parallel planes; hover picks one up without passing
    through another (scripts/postcards.ts). Phone: a loose pile, tap to open. A click or a tap grows the
    card into the large view, where the ID card's engine (card3d.ts, tilt) swings it by a drag and turns
@@ -499,6 +500,17 @@ const cards = list.map((p, i) => {
   html.motion .pc-big .is-drawn .bk-ring { opacity: 0.75; rotate: 0deg; transition: opacity 300ms var(--ease-out) 560ms, rotate 520ms var(--ease-out) 560ms; }
   html.motion .pc-big .is-drawn.is-back-on .bk-sig path { stroke-dashoffset: 0; transition: stroke-dashoffset 600ms var(--ease-draw) var(--fd, 1500ms); }
   .pc-big .no-drawing { --fd: 300ms; }
+  /* the burin plates (round six; tools/illustrations/postcards/burin.mjs): every line is a filled shape
+     that swells and tapers, so a line cannot draw itself on by its own dash. Each layer is shown through
+     a mask: the contours through their centre lines (pathLength 1, drawn on by the rules above, class k
+     first, then m), the fine lines and the tone through a soft diagonal edge (.wipe) that travels in from
+     the upper left, the way the plate's light falls. Without motion the masks stand open. */
+  .pc-big .bk-plate .burin .wipe { transform-box: view-box; }
+  html.motion .pc-big .bk-plate .burin .wipe { transform: translate(-160%, -160%); }
+  html.motion .pc-big .is-drawn .bk-plate .burin path.m { transition-delay: 420ms; }
+  html.motion .pc-big .is-drawn .bk-plate .burin .wipe { transform: none; transition: transform 1500ms var(--ease-draw) 360ms; }
+  html.motion .pc-big .is-drawn .bk-plate .burin mask[id$='-t'] .wipe,
+  html.motion .pc-big .is-drawn .bk-plate .burin mask[id$='-q'] .wipe { transition-duration: 1900ms; transition-delay: 620ms; }
 
   /* the morph: the small card's face and the large card share one name while it grows */
   .pc.is-hero .pc-mount, .pc-big .big.is-hero { view-transition-name: pc-hero; }
