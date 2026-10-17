@@ -1,0 +1,66 @@
+---
+/* The Record's head (ADR-0019; record-language §4.5, §5, §6; review rows S38, S27, S5). The Home strip,
+   opened: the same frontispiece in the same place, so the recorder that flies from the strip on "The
+   whole record" lands where it stood (the `stage` view-transition name, record.css). The recorder stands
+   on its dark ground inside engraver C's exploded tape transport (the supply reel's flange behind it,
+   the take-up reel lifted out to the right, the head and the capstan where the tape turns down; drawn by
+   tools/illustrations/plates/record.py, the same three files as the strip). The tape leaves the recorder
+   under its left reel and turns down into the spine (record.css: the tape becomes the Record's one line,
+   from the head to the last row of the oldest year).
+   Motion (record.css): the arrival plays once, in about two seconds (the reels wind into place, the tape
+   draws, the title rises, the spine runs down, the months fill, the first marks land); after it the reels
+   turn with the page's scroll, the tape moving while the record is read. The recorder is the Record's
+   own (scripts/media.ts): it floats, leans toward a pointer near it, and a press plays its clip; phones
+   keep the floating poster (spin "off", as on the strip, until the device check of spec v3 §8.4). Still
+   twins (reduced motion, ?still, no JavaScript): everything drawn complete, the poster. */
+import Media from '../../components/Media.astro';
+import Icon from '../../components/Icon.astro';
+import flange from '../rest/art/record-flange.svg?url&no-inline';
+import takeup from '../rest/art/record-takeup.svg?url&no-inline';
+import mech from '../rest/art/record-mech.svg?url&no-inline';
+import flangeP from '../rest/art/record-flange-phone.svg?url&no-inline';
+import takeupP from '../rest/art/record-takeup-phone.svg?url&no-inline';
+import mechP from '../rest/art/record-mech-phone.svg?url&no-inline';
+interface Props {
+  title: string;
+  dek?: string;
+  /** the count line: "8 entries since Sep 2026" */
+  count?: string;
+  /** a link back up (a year's archive: to the whole record) */
+  back?: { href: string; label: string };
+}
+const { title, dek, count, back } = Astro.props;
+---
+<header class="rh">
+  <div class="rh-art" aria-hidden="true">
+    <div class="rh-eng wide">
+      <div class="rh-fl-w"><span class="rh-turn"><img class="rh-fl" src={flange} alt="" width="588" height="586" decoding="async" fetchpriority="low" /></span></div>
+      <span class="rh-turn rh-tu-t"><img class="rh-tu" src={takeup} alt="" width="252" height="250" decoding="async" fetchpriority="low" /></span>
+      <img class="rh-me" src={mech} alt="" width="254" height="423" decoding="async" fetchpriority="low" />
+    </div>
+    <div class="rh-eng narrow">
+      <div class="rh-fl-w"><span class="rh-turn"><img class="rh-fl" src={flangeP} alt="" width="321" height="395" decoding="async" fetchpriority="low" /></span></div>
+      <span class="rh-turn rh-tu-t"><img class="rh-tu" src={takeupP} alt="" width="130" height="129" decoding="async" fetchpriority="low" /></span>
+      <img class="rh-me" src={mechP} alt="" width="265" height="280" decoding="async" fetchpriority="low" />
+    </div>
+  </div>
+  <div class="rh-in">
+    <div class="rh-front">
+      <span class="rh-pool" aria-hidden="true"></span>
+      {/* the tape: from under the left reel to the spine's top, an S that ends going straight down; the
+          box stretches with the column, the stroke does not (non-scaling) */}
+      <div class="rh-tape" aria-hidden="true">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><path d="M100 0C100 72 0 28 0 100" /></svg>
+      </div>
+      <div class="rh-obj">
+        <Media obj="recorder" slot="record" class="rh-media" sizes="(min-width: 700px) 300px, 176px" spin="off" priority />
+      </div>
+    </div>
+    <div class="rh-text">
+      {back && <a class="rh-back" href={back.href}><Icon name="arrow-left" /><span>{back.label}</span></a>}
+      <h1 class="rh-title" id="h-log">{title}</h1>
+      {dek && <p class="rh-dek">{dek}</p>}
+      {count && <p class="meta rh-count" id="log-count">{count}</p>}
+    </div>
+  </div>
+</header>

@@ -2,14 +2,19 @@
 /* One entry of any kind at its frozen address /record/<year>/<slug>/ (log.md §6.1, §9 as amended
    2026-10-09): a faint light in the project's colour at the top (Log blue without one), the reading
    column at 21 px with ~70-character lines, an optional pull-out key line, the image at figure width,
-   and a closing "Next:" line from the owner's notes. Essays add a contents list from 1240 px. */
-import Base from '../../../layouts/Base.astro';
+   and a closing "Next:" line from the owner's notes. Essays add a contents list from 1240 px.
+   On the two-page token set since 2026-10-17 (ADR-0019; record.css): the bar with the Home/Record tab, the
+   rail, the Record's aura, the reading rules unchanged. The address never changes. */
+import One from '../../../layouts/One.astro';
 import Icon from '../../../components/Icon.astro';
 import Figure from '../../../components/Figure.astro';
 import { Picture } from 'astro:assets';
-import Foot from '../../../components/Foot.astro';
+import Foot from '../../../one/Foot.astro';
+import { SETS, auraAttr, auraVars } from '../../../one/aura.mjs';
+import '../../../one/record/record.css';
+import '../../../../tools/illustrations/out/illustrations.css';
 import { render } from 'astro:content';
-import { getLog, getProjects, getSite, url, abs, entryPath, entrySlug, entryYear, entryTitle, iso, longDate, dayMonYear, categoryLabel, readingMinutes, entryProjects, projectColor, inkVars, rowShape, releaseName, LOG_BLUE, type LogEntry } from '../../../lib/site';
+import { getLog, getProjects, getSite, url, abs, entryPath, entrySlug, entryYear, entryTitle, iso, longDate, dayMonYear, categoryLabel, readingMinutes, entryProjects, projectColor, inkVars, rowShape, releaseName, LOG_BLUE, projectPath, type LogEntry } from '../../../lib/site';
 
 export async function getStaticPaths() {
   const all = await getLog();
@@ -34,9 +39,10 @@ const jsonld = d.kind === 'note' || d.sample ? [] : [{
   url: abs(entryPath(e)), author: { '@id': abs('#me') }, inLanguage: 'en',
 }];
 ---
-<Base title={title} tab="record" description={d.dek ?? title} type={d.sample ? 'website' : 'article'} published={d.sample ? undefined : d.date} modified={d.sample ? undefined : modified} og="home" jsonld={jsonld} accent={light} pageClass="page-post" noindex={d.sample}>
+<One title={title} tab="record" description={d.dek ?? title} type={d.sample ? 'website' : 'article'} published={d.sample ? undefined : d.date} modified={d.sample ? undefined : modified} og="home" jsonld={jsonld} noindex={d.sample} page="rec-page">
+  <div class="rec-post" data-aura={auraAttr(SETS.record)} data-rail-accent={light} style={auraVars(SETS.record)}>
   <div class="post-light" style={`--p: ${light}`} aria-hidden="true"></div>
-  <div class:list={['inner post-wrap', { 'has-toc': toc.length > 0 }]}>
+  <div class:list={['post-wrap', { 'has-toc': toc.length > 0 }]}>
     <nav class="post-toc" aria-label="On this page">
       <a class="qlink post-back" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
       {toc.length > 0 && <><p class="meta">On this page</p><ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></>}
@@ -44,7 +50,7 @@ const jsonld = d.kind === 'note' || d.sample ? [] : [{
     <article class:list={['post', `post-${d.kind}`, { 'post-release': release }]} data-slug={entrySlug(e)} style={`--p: ${light}${inkVars(pj[0])}`} data-rail-heads={toc.length > 0 ? '' : undefined} data-rail-accent={light} data-rail-minutes={d.kind === 'essay' ? readingMinutes(e.body) : undefined}>
       <a class="qlink post-back post-back-sm" href={url('record/')}><Icon name="arrow-left" />{site.log.title}</a>
       <header class="post-head" data-rail-sec={title}>
-        <p class="meta"><time datetime={iso(d.date)}>{longDate(d.date)}</time> · {meta.join(' · ')}{pj.map((p) => <> · <a class="pj" href={url(`work/${p.id}/`)} style={`--p: ${p.data.accent.glow ?? p.data.accent.color}${inkVars(p)}`}>{p.data.title}</a></>)}</p>
+        <p class="meta"><time datetime={iso(d.date)}>{longDate(d.date)}</time> · {meta.join(' · ')}{pj.map((p) => <> · <a class="pj" href={url(projectPath(p))} style={`--p: ${p.data.accent.glow ?? p.data.accent.color}${inkVars(p)}`}>{p.data.title}</a></>)}</p>
         {release && release !== title && <p class="post-version">{release}</p>}
         {d.kind === 'note' ? <h1 class="vh">{title}</h1> : <h1 class:list={['post-title', { 'is-version': release === title }]}>{title}</h1>}
         {d.dek && <p class="lede post-dek">{d.dek}</p>}
@@ -68,7 +74,7 @@ const jsonld = d.kind === 'note' || d.sample ? [] : [{
       {d.next && <p class="post-next"><b>Next:</b> {d.next}</p>}
       <footer class="post-foot">
         <div class="post-meta-row">
-          <p class="meta">Published {dayMonYear(d.date)}{modified > d.date && <> · Updated {dayMonYear(modified)}</>} · <a href={url('about/#colophon')}>How this is written</a></p>
+          <p class="meta">Published {dayMonYear(d.date)}{modified > d.date && <> · Updated {dayMonYear(modified)}</>} · <a href={url('record/#colophon')}>How this is written</a></p>
           <button type="button" class="qlink copy-link" data-copy={abs(entryPath(e))} hidden><span class="icon-swap"><Icon name="copy" /><Icon name="check" /></span><span class="copy-l">Copy link</span></button>
         </div>
         <nav class="post-nav" aria-label="Older and newer">
@@ -78,5 +84,7 @@ const jsonld = d.kind === 'note' || d.sample ? [] : [{
       </footer>
     </article>
   </div>
-  <div class="inner"><Foot /></div>
-</Base>
+  <div class="rec-post-end"><Foot /></div>
+  </div>
+  <script>import '../../../one/scripts/record';</script>
+</One>

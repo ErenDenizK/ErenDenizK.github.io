@@ -1,0 +1,460 @@
+/* The Record's pages on the two-page token set (ADR-0019; record-language §2, §5, §6; review row S38).
+   The language the owner loves, kept: one living object over a still, precise document. The recorder and
+   its engraving carry the life; the list is calm and dense, its rows never rise or fade on scroll. The
+   kinds differ by shape (a note a small dot and its whole sentence, an entry a dot and a headline, an
+   essay a ring, a release a ringed dot and a version in its project's colour), never by a badge. Colour
+   does one job, "which project". The year strip draws a tick per entry, empty months stay honest gaps.
+   New here: the Home strip's grammar (spec v3 §8): the frontispiece, and the tape that leaves the
+   recorder and becomes the spine: one line from the head through every year to the oldest row.
+   Every value reads the two-page set (tokens.css); the Record's grid is --rec-* there (charter, Record
+   grid). Old names that the shared row components still carry (.meta, .pj) are styled here. */
+
+.rec-page {
+  --gutter: var(--rec-gutter); --spine-w: var(--rec-spine); --spine-x: calc(var(--gutter) + var(--spine-w) / 2);
+  --log: var(--record-1); --log-ink: #a8d3ff;
+  --rule-s: var(--line-3);                  /* the spine and the strip's baseline (record-language §5.2: measured, 0.22) */
+  --tape: color-mix(in srgb, var(--record-1) 55%, transparent);
+  --S: 300px;                               /* the recorder */
+  --pad: 56px;                              /* the run of tape from the object's foot to the head */
+  --top: calc(var(--bar-h) + 12px);         /* where the object stands under the bar */
+  --rise: 12px;
+}
+.rec-page .meta { font: 400 var(--fs-label) / 1.35 var(--f-sans); color: var(--ink-3); font-variant-numeric: tabular-nums; letter-spacing: 0.005em; }
+.rec-page .pj { color: var(--p-ink, color-mix(in srgb, var(--p) 86%, var(--ink))); font-weight: 500; }
+.rec-page .sep { color: var(--ink-4); padding: 0 0.4em; }
+.rec-page .entry[hidden], .rec-page .ygroup[hidden] { display: none; }
+
+/* ======================================================================================================
+   The head: the frontispiece (RecordHead.astro)
+   No z-index and no isolating property on anything around the object (spec v3 §8.4): the stage's
+   plus-lighter must reach the dark ground, or the poster's black square shows. Everything paints in
+   document order: the drawing, the ground, the tape, then the object.
+   ====================================================================================================== */
+.rh { position: relative; padding: var(--top) var(--gut) 0; }
+.rh-in { position: relative; width: min(var(--rec-w), 100%); margin: 0 auto; }
+.rh-front { position: relative; height: calc(var(--S) + var(--pad)); }
+.rh-obj { position: relative; width: var(--S); margin: 0 auto; }
+.rh-pool { position: absolute; left: calc(50% - var(--S) * 0.85); top: calc(var(--S) * -0.35); width: calc(var(--S) * 1.7); aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgb(13 13 15 / 0.92), rgb(13 13 15 / 0.7) 55%, transparent); }
+/* the Record's blue light behind the object (record-language §2.2: one pool, about 11 %) */
+.rh-front::before { content: ""; position: absolute; left: calc(50% - var(--S) * 1.4); top: calc(var(--S) * -0.9); width: calc(var(--S) * 2.8); aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--record-1) 11%, transparent), transparent); }
+/* the tape: from under the left reel (0.36 S, 0.8 S of the slot) to the spine's top at the head */
+.rh-tape { position: absolute; left: var(--spine-x); top: calc(var(--S) * 0.8); width: calc(50% - var(--S) * 0.14 - var(--spine-x)); height: calc(var(--S) * 0.2 + var(--pad)); pointer-events: none; container-type: size; }
+.rh-tape svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+/* --L: the curve's length on screen; a non-scaling stroke cannot use pathLength, so it is the box's
+   diagonal times 1.07 (the strip's measure: this S curve is 1.03 to 1.09 times its chord) */
+.rh-tape path { fill: none; stroke: var(--tape); stroke-width: 1.5px; vector-effect: non-scaling-stroke; --L: calc(hypot(100cqw, 100cqh) * 1.07); }
+
+/* the engraving: the strip's band (1440 x 900, centred; 390 x 720 on phones, right-aligned with the
+   object), placed so its top is 260 px above the object's top, as on Home. The flange's clear zones (the
+   object's glass, the head below) are masks on a wrapper that does not turn. */
+.rh-art { position: absolute; left: 0; right: 0; top: calc(var(--top) - 260px); height: 900px; overflow: clip; pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.5) 150px, #000 280px, #000 70%, transparent); mask-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.5) 150px, #000 280px, #000 70%, transparent); }
+.rh-eng { position: absolute; top: 0; width: 1440px; height: 900px; left: calc(50% - 720px); }
+.rh-eng img { position: absolute; max-width: none; }
+.rh-eng .rh-turn { position: absolute; display: block; }
+.rh-eng.narrow { display: none; width: 390px; height: 720px; left: calc(100% - 390px); }
+.wide .rh-fl-w { position: absolute; left: 393px; top: 123px; width: 588px; height: 586px;
+  -webkit-mask: radial-gradient(circle at 327px 287px, transparent 172px, #000 204px), linear-gradient(#000 437px, transparent 567px); -webkit-mask-composite: source-in;
+  mask: radial-gradient(circle at 327px 287px, transparent 172px, #000 204px) intersect, linear-gradient(#000 437px, transparent 567px); }
+.wide .rh-fl-w .rh-turn { inset: 0; transform-origin: 289.5px 296px; }
+.wide .rh-fl { left: 0; top: 0; width: 588px; height: 586px; transform-origin: 289.5px 296px; }
+.wide .rh-tu-t { left: 973px; top: 191px; width: 252px; height: 250px; transform-origin: 123px 127px; }
+.wide .rh-tu { left: 0; top: 0; width: 252px; height: 250px; transform-origin: 123px 127px; }
+.wide .rh-me { left: 194px; top: 271px; width: 254px; height: 423px; }
+.narrow .rh-fl-w { position: absolute; left: 69px; top: 153px; width: 321px; height: 395px;
+  -webkit-mask: radial-gradient(circle at 217px 195px, transparent 100px, #000 122px), linear-gradient(#000 277px, transparent 327px); -webkit-mask-composite: source-in;
+  mask: radial-gradient(circle at 217px 195px, transparent 100px, #000 122px) intersect, linear-gradient(#000 277px, transparent 327px); }
+.narrow .rh-fl-w .rh-turn { inset: 0; transform-origin: 195px 200px; }
+.narrow .rh-fl { left: 0; top: 0; width: 321px; height: 395px; transform-origin: 195px 200px; }
+.narrow .rh-tu-t { left: 23px; top: 84px; width: 130px; height: 129px; transform-origin: 63px 66px; }
+.narrow .rh-tu { left: 0; top: 0; width: 130px; height: 129px; transform-origin: 63px 66px; }
+.narrow .rh-me { left: 13px; top: 174px; width: 265px; height: 280px; }
+
+/* the head's text: centred on the page axis, as the strip's (spec v3 §8.1) */
+.rh-text { position: relative; text-align: center; padding-top: var(--s-4); }
+.rh-title { font: 500 var(--fs-h2) / 1.1 var(--f-serif); letter-spacing: -0.02em; text-wrap: balance; }
+.rh-dek { margin: var(--s-3) auto 0; max-width: 30em; font: 400 var(--fs-body) / 1.5 var(--f-sans); color: var(--ink-2); text-wrap: pretty; }
+.rh-count { margin-top: var(--s-2); }
+.rh-back { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-bottom: var(--s-1); font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink-2);
+  transition: color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
+.rh-back .icon { color: var(--ink-3); transition: color var(--t-quick) var(--ease-ui), translate 200ms var(--ease-out); }
+.rh-back:hover { color: var(--ink); }
+.rh-back:hover .icon { color: var(--ink); translate: -2px 0; }
+.rh-back:active { scale: 0.98; }
+
+/* the recorder flies here from the Home strip ("The whole record" names the strip's stage `stage` on its
+   click): ground-subtracted media, so the snapshot is composited the same way and the ground stays exact
+   through the flight. The old object leaves in 360 ms, the new one arrives in 480 ms from 240 ms. */
+.rh .m-stage { view-transition-name: stage; }
+::view-transition-group(stage) { animation-duration: 720ms; animation-timing-function: var(--ease-path, cubic-bezier(0.65, 0, 0.35, 1)); mix-blend-mode: plus-lighter; }
+::view-transition-old(stage) { animation: rec-obj-out 360ms var(--ease-ui) both; }
+::view-transition-new(stage) { animation: rec-obj-in 480ms var(--ease-out) 240ms both; }
+@keyframes rec-obj-out { to { opacity: 0; transform: scale(0.97); } }
+@keyframes rec-obj-in { from { opacity: 0; transform: scale(1.03); } }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
+
+/* ======================================================================================================
+   The arrival: once per load, about two seconds, then the page is a still document (motion contract:
+   transform, opacity and stroke-dashoffset only). Before html.rec-in (set on the first frame by
+   scripts/record.ts) each part waits in its first state; without html.motion it is at rest from the
+   first paint (reduced motion, ?still, no JavaScript).
+   0-1400 ms   the reels wind into place (the flange turns 40 deg, the take-up 110), the mechanism slides in
+   0-600 ms    the dark ground fades in under the object
+   350-1150    the tape draws from the reel to the spine
+   180-900     the title rises, then the dek (+120) and the count (+240)
+   1100-3300   the spine runs on from the tape's end, past the head, down the first year (eased out)
+   1000-1900   the months fill from January
+   1760-2800   the first six marks land on the spine as the line comes down to them
+   ====================================================================================================== */
+html.motion .rec-page .rh-turn { transform: rotate(-40deg); opacity: 0; }
+html.motion .rec-page .rh-tu-t { transform: rotate(-110deg); }
+html.motion .rec-page .rh-me { transform: translate(48px, 10px); opacity: 0; }
+html.motion .rec-page .rh-pool { opacity: 0; }
+html.motion .rec-page .rh-tape path { stroke-dasharray: var(--L) var(--L); stroke-dashoffset: var(--L); }
+html.motion .rec-page .rh-text > * { opacity: 0; transform: translateY(14px); }
+html.motion .rec-page .rh-text::before, html.motion .rec-page .rec-lead::before, html.motion .rec-page .ygroup:first-child::before { transform: scaleY(0); }
+html.motion .rec-page .ygroup:first-child .ym-ticks i { transform: scaleY(0); opacity: 0.3; }
+html.motion .rec-page .ygroup:first-child .entry:nth-child(-n+6) .e-mark { transform: scale(0.4); opacity: 0; }
+
+html.motion.rec-in .rec-page .rh-turn, html.motion.rec-in .rec-page .rh-me { transform: none; opacity: 1;
+  transition: transform 1400ms var(--ease-out), opacity 700ms var(--ease-ui); }
+html.motion.rec-in .rec-page .rh-pool { opacity: 1; transition: opacity 600ms var(--ease-ui); }
+html.motion.rec-in .rec-page .rh-tape path { stroke-dashoffset: 0; transition: stroke-dashoffset 800ms var(--ease-ui) 350ms; }
+html.motion.rec-in .rec-page .rh-text > * { opacity: 1; transform: none; transition: opacity 720ms var(--ease-out), transform 720ms var(--ease-out); transition-delay: calc(180ms + var(--i, 0) * 120ms); }
+.rh-text > :nth-child(2) { --i: 1; } .rh-text > :nth-child(3) { --i: 2; } .rh-text > :nth-child(4) { --i: 3; }
+html.motion.rec-in .rec-page .rh-text::before { transform: none; transition: transform 380ms linear 1100ms; }
+html.motion.rec-in .rec-page .rec-lead::before { transform: none; transition: transform 160ms linear 1480ms; }
+html.motion.rec-in .rec-page .ygroup:first-child::before { transform: none; transition: transform 1700ms var(--ease-out) 1640ms; }
+html.motion.rec-in .rec-page .ygroup:first-child .ym-ticks i { transform: none; opacity: 1; transition: transform 420ms var(--ease-out), opacity 420ms var(--ease-ui); transition-delay: calc(1000ms + var(--m, 0) * 45ms); }
+html.motion.rec-in .rec-page .ygroup:first-child .entry:nth-child(-n+6) .e-mark { transform: none; opacity: 1; transition: transform 380ms var(--ease-out), opacity 300ms var(--ease-ui), scale var(--t-press) var(--ease-out); transition-delay: calc(1760ms + var(--n, 0) * 120ms), calc(1760ms + var(--n, 0) * 120ms), 0ms; }
+.rec-page .entry:nth-child(2) { --n: 1; } .rec-page .entry:nth-child(3) { --n: 2; } .rec-page .entry:nth-child(4) { --n: 3; }
+.rec-page .entry:nth-child(5) { --n: 4; } .rec-page .entry:nth-child(6) { --n: 5; }
+.rec-page .ym:nth-child(2) { --m: 1; } .rec-page .ym:nth-child(3) { --m: 2; } .rec-page .ym:nth-child(4) { --m: 3; }
+.rec-page .ym:nth-child(5) { --m: 4; } .rec-page .ym:nth-child(6) { --m: 5; } .rec-page .ym:nth-child(7) { --m: 6; }
+.rec-page .ym:nth-child(8) { --m: 7; } .rec-page .ym:nth-child(9) { --m: 8; } .rec-page .ym:nth-child(10) { --m: 9; }
+.rec-page .ym:nth-child(11) { --m: 10; } .rec-page .ym:nth-child(12) { --m: 11; }
+
+/* after the arrival the reels turn with the page's scroll: the tape moves while the record is read (a
+   scroll timeline on the inner image, so it never fights the arrival on its wrapper). Browsers without
+   scroll timelines keep the reels still, which is the still twin. */
+@keyframes rec-reel { from { rotate: 0deg; } to { rotate: -150deg; } }
+@keyframes rec-reel-fast { from { rotate: 0deg; } to { rotate: -320deg; } }
+@supports (animation-timeline: scroll()) {
+  html.motion .rec-page .rh-fl { animation: rec-reel linear both; }
+  html.motion .rec-page .rh-tu { animation: rec-reel-fast linear both; }
+  html.motion body.rec-page .rh-fl, html.motion body.rec-page .rh-tu { animation-timeline: scroll(root); }
+}
+
+/* ======================================================================================================
+   The body: the spine, the years, the rows (record-language §2.3; the strip's rules, spec v3 §8.1)
+   ====================================================================================================== */
+.rec-body { position: relative; padding: 0 var(--gut); }
+.rec-body > * { width: min(var(--rec-w), 100%); margin-left: auto; margin-right: auto; }
+/* the tape, now the spine: the line runs from the head's top (where the tape's curve ends) down past the
+   title to the first year; each year carries it on through its rows to the next year; the oldest year
+   fades it out over its last 48 px */
+.rh-text::before, .rec-lead::before { content: ""; position: absolute; left: var(--spine-x); top: 0; bottom: 0; width: 1.5px; translate: -0.75px 0; transform-origin: 50% 0; }
+.rh-text::before { background: linear-gradient(180deg, var(--tape), color-mix(in srgb, var(--tape) 50%, var(--rule-s))); }
+.rec-lead { position: relative; height: var(--s-7); }
+.rec-lead::before { background: linear-gradient(180deg, color-mix(in srgb, var(--tape) 50%, var(--rule-s)), var(--rule-s)); }
+.ygroup { position: relative; }
+.ygroup::before { content: ""; position: absolute; left: var(--spine-x); top: 0; bottom: -56px; width: 1.5px; translate: -0.75px 0; transform-origin: 50% 0; background: var(--rule-s); }
+.ygroup:last-child::before { bottom: 0; background: linear-gradient(180deg, var(--rule-s), var(--rule-s) calc(100% - 48px), transparent); }
+.ygroup + .ygroup { margin-top: 56px; }
+/* the per-year hairline of the four-page Record is the one line above now */
+.rec-page .log-list .spine::before { content: none; }
+
+/* the year: in the gutter, the strip over the content column; a splice on the spine marks the year */
+.y-head { position: relative; display: grid; grid-template-columns: calc(var(--gutter) + var(--spine-w)) minmax(0, var(--rec-col)); align-items: end; padding-top: var(--s-4); }
+.y-head::after { content: ""; position: absolute; left: calc(var(--spine-x) - 7px); bottom: 31px; width: 14px; height: 1.5px; border-radius: 1px; background: var(--ink-3); box-shadow: 0 0 0 3px var(--ground); }
+.y-label { display: grid; gap: 2px; padding-bottom: 22px; max-width: calc(var(--spine-x) - 14px); }
+.y-label h2 { font: 400 var(--fs-h4) / 1 var(--f-serif); letter-spacing: -0.01em; font-variant-numeric: lining-nums tabular-nums; }
+.y-count { white-space: nowrap; }
+
+/* the year strip: twelve months, a tick per entry, stacked; a picture, the months are anchors */
+.ystrip { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); max-width: var(--rec-col); }
+.ym { display: grid; grid-template-rows: 40px auto; padding: 0 3px; border-radius: 4px; transition: scale var(--t-press) var(--ease-out); }
+.ym-ticks { display: flex; flex-direction: column-reverse; justify-content: flex-start; gap: 3px; padding-bottom: 6px; border-bottom: 1px solid var(--line-2); position: relative; }
+.ym-ticks i { display: block; height: 4px; border-radius: 2px; background: var(--c); transform-origin: 50% 100%; }
+.ym-ticks i.t-note { width: 45%; }
+.ym-ticks i.t-release { height: 6px; }
+.ym-more { position: absolute; right: 0; top: 0; font: 500 var(--fs-cap) / 1 var(--f-sans); color: var(--ink-3); }
+.ym-l { padding-top: 7px; font: 400 var(--fs-cap) / 1 var(--f-sans); color: var(--ink-3); }
+.ym.on .ym-l { color: var(--ink-2); }
+a.ym:hover .ym-l { color: var(--ink); }
+a.ym:hover .ym-ticks i { filter: brightness(1.15); }
+a.ym:active { scale: 0.98; }
+a.ym:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* the rows: mark, date, text on the Record's columns */
+.spine { position: relative; padding-bottom: 8px; }
+.spine > .entry, .kinds > .entry { position: relative; display: grid; grid-template-columns: var(--gutter) var(--spine-w) minmax(0, var(--rec-col)); align-items: baseline; padding: 26px 0; scroll-margin-top: calc(var(--bar-h) + 16px); }
+.spine > .entry::before { content: ""; position: absolute; left: calc(var(--gutter) + var(--spine-w)); width: min(var(--rec-col), calc(100% - var(--gutter) - var(--spine-w))); top: 0; height: 1px; background: var(--line-1); }
+.spine > .entry:first-child::before { content: none; }
+.e-date { grid-column: 1; grid-row: 1; color: var(--ink-3); white-space: nowrap; }
+a.e-date:hover { color: var(--ink); text-decoration: underline; }
+.e-main { grid-column: 3; grid-row: 1; min-width: 0; }
+
+/* marks by shape; each cuts the spine with a ring of ground. Two or three projects share the mark in
+   hard-edged slices (--m). No glow (log.md §8). */
+.e-mark { position: relative; grid-column: 2; grid-row: 1; align-self: start; justify-self: center; width: 11px; height: 11px; margin-top: var(--mark-y, 10px); border-radius: 50%;
+  background: var(--m, var(--p, var(--log))); box-shadow: 0 0 0 4px var(--ground); transition: scale var(--t-press) var(--ease-out); }
+.s-note .e-mark { width: 8px; height: 8px; --mark-y: 13px; }
+.s-essay .e-mark { width: 13px; height: 13px; --mark-y: 9px; box-shadow: none;
+  -webkit-mask: radial-gradient(circle, transparent 3.4px, #000 3.9px); mask: radial-gradient(circle, transparent 3.4px, #000 3.9px); }
+.s-release .e-mark { width: 10px; height: 10px; --mark-y: 15px; box-shadow: 0 0 0 2.5px var(--ground), 0 0 0 4px color-mix(in srgb, var(--p) 80%, transparent), 0 0 0 7px var(--ground); }
+.entry:hover .e-mark, .entry:focus-within .e-mark, .entry:target .e-mark { scale: 1.3; }
+.entry:active .e-mark { scale: 1.5; }
+
+/* a note: its whole text, at reading size (the Record prints it whole; Home cuts it to two lines) */
+.n-text { font: 430 21px / 1.5 var(--f-serif); color: var(--read); max-width: 28em; text-wrap: pretty; hanging-punctuation: first allow-end; }
+.n-text p + p { margin-top: 0.6em; }
+.n-text a { color: var(--log-ink); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--log-ink) 45%, transparent); text-underline-offset: 0.18em; }
+.s-note .e-meta { margin-top: 10px; }
+/* an entry and an essay: one title size with the strip (21 / 430; spec v3 §8.1); the title's link covers
+   the row, the project names sit above it */
+.e-title { font: 430 21px / 1.4 var(--f-serif); letter-spacing: -0.005em; color: var(--read); text-wrap: balance; }
+.e-link { color: inherit; transition: color var(--t-press); }
+.e-link::after { content: ""; position: absolute; inset: 0; z-index: 0; }
+.entry:hover .e-link { color: var(--ink-hi); }
+.entry .e-link:active { color: var(--ink-2); }
+.e-link:focus-visible { outline: none; }
+.e-link:focus-visible::after { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: 8px; }
+.e-dek { margin-top: 8px; color: var(--ink-2); max-width: 34em; font: 400 var(--fs-body) / 1.5 var(--f-sans); text-wrap: pretty; }
+.e-meta { margin-top: 12px; position: relative; z-index: 1; width: fit-content; }
+/* a project name draws a 1 px underline in its own colour from the left and sinks on press (T26) */
+.e-meta .pj { display: inline-block; padding-block: 4px; margin-block: -4px;
+  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 3px) / 0 1px no-repeat;
+  transition: background-size 200ms var(--ease-out), scale var(--t-press) var(--ease-out); }
+.e-meta .pj:hover { background-size: 100% 1px; }
+.e-meta .pj:active { scale: 0.97; }
+/* a release: the version large in its project's colour, up to three items */
+.r-name { font: 400 var(--fs-h2) / 1.08 var(--f-serif); letter-spacing: -0.018em; color: var(--p-ink, color-mix(in srgb, var(--p) 88%, var(--ink))); font-variant-numeric: lining-nums; }
+.entry.s-release:hover .e-link { color: color-mix(in srgb, var(--p-ink, var(--p)) 70%, var(--ink-hi)); }
+.r-title { margin-top: 6px; font: 400 var(--fs-h4) / 1.25 var(--f-serif); color: var(--ink); }
+.r-items { margin-top: 12px; display: grid; gap: 4px; max-width: 34em; }
+.r-items li { position: relative; padding-left: 18px; font: 400 var(--fs-small) / 1.5 var(--f-sans); color: var(--ink-2); }
+.r-items li::before { content: ""; position: absolute; left: 2px; top: 0.66em; width: 7px; height: 1.5px; border-radius: 1px; background: color-mix(in srgb, var(--p) 70%, transparent); }
+
+/* the thumbnail of an essay or a release: the 16:10 plate. From 1180 px it stands in the margin right of
+   the content column, top-aligned with its row; below, it runs the column's width above the text. */
+.e-thumb { position: relative; display: block; grid-column: 3; grid-row: 1; width: 100%; aspect-ratio: 16 / 10; margin: 4px 0 14px; border-radius: 6px; overflow: hidden;
+  background: color-mix(in srgb, var(--p) 10%, var(--ground)); box-shadow: 0 18px 40px -22px rgb(0 0 0 / 0.8); }
+.e-thumb picture, .e-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.e-thumb img { transition: filter var(--t-press) var(--ease-out); }
+.e-thumb::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgb(255 248 238 / 0.1); pointer-events: none; }
+.e-plate { display: grid; place-items: center; width: 100%; height: 100%; }
+.e-plate svg { width: 82%; height: auto; }
+.entry:hover .e-thumb img { filter: brightness(1.06); }
+.spine > .entry.has-thumb .e-main { grid-row: 2; }
+@media (min-width: 1180px) {
+  .spine > .entry.has-thumb { grid-template-columns: var(--gutter) var(--spine-w) minmax(0, var(--rec-col)) minmax(0, 1fr); }
+  .spine > .entry.has-thumb .e-main { grid-row: 1; }
+  .spine > .entry.has-thumb .e-thumb { grid-column: 4; grid-row: 1; align-self: start; justify-self: end; width: min(100% - 32px, var(--rec-thumb) - 28px); margin: 4px 0 0; }
+}
+
+/* hit sizes (spec v3 §9.6): on touch the whole row is one target (a note's date link spans the row like
+   an entry's title link) and the project names read as text, so a tap is never ambiguous */
+.rec-page a.e-date { padding-block: 4px; margin-block: -4px; }
+@media (pointer: coarse) {
+  .rec-page a.e-date::after { content: ""; position: absolute; inset: 0; z-index: 0; }
+  .rec-page .e-meta { pointer-events: none; }
+  .rec-page .n-text a { position: relative; z-index: 1; }
+}
+
+/* one row of project links, only from about forty entries (log.md §5.3) */
+.rec-projects { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; padding-left: calc(var(--gutter) + var(--spine-w)); margin-bottom: var(--s-2); font: 500 var(--fs-small) / 1 var(--f-sans); }
+.rec-projects a { display: inline-flex; align-items: center; min-height: 44px; color: var(--p-ink, color-mix(in srgb, var(--p, var(--ink)) 86%, var(--ink))); }
+.rec-projects a[data-p=""] { color: var(--ink-2); }
+.rec-projects a:hover, .rec-projects a[aria-current="page"] { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
+
+/* archives of past years, from 100 entries */
+.ygroup.collapsed .entry:nth-child(n+4) { display: none; }
+.y-more { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin: 8px 0 0 calc(var(--gutter) + var(--spine-w)); font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink-2); }
+.y-more:hover { color: var(--ink); }
+
+/* the empty record: the same frame, nothing on it; what the marks and colours will mean. The spine is
+   dashed there: the honest gap of a record not yet written. */
+.log-empty::before { background: repeating-linear-gradient(180deg, var(--rule-s) 0 4px, transparent 4px 9px) !important; }
+.empty-spine { padding: 26px 0 8px; }
+.empty-lead, .empty-colours { margin-left: calc(var(--gutter) + var(--spine-w)); }
+.empty-lead { font: 430 21px / 1.5 var(--f-serif); color: var(--read); max-width: 28em; text-wrap: pretty; }
+.kinds { margin: 22px 0 0; }
+.kinds .entry { padding: 13px 0; }
+.kinds .entry p { grid-column: 3; color: var(--ink-2); font: 400 var(--fs-small) / 1.45 var(--f-sans); }
+.kinds .e-mark { --p: var(--ink-3); --mark-y: 6px; }
+.kinds .s-note .e-mark { --mark-y: 7px; }
+.kinds .s-essay .e-mark { --mark-y: 5px; }
+.kinds .e-date { color: var(--ink-2); }
+.empty-colours { margin-top: 18px; padding-bottom: 8px; max-width: 46em; }
+
+/* the foot: how it is written and the feed, after the record rather than before it */
+.rec-foot { display: grid; gap: 10px; margin-top: var(--s-8) !important; padding-left: calc(var(--gutter) + var(--spine-w)); }
+.rec-foot > * { max-width: 40em; }
+.rec-foot .rf-rule { height: 1px; background: var(--line-1); max-width: var(--rec-col); margin-bottom: var(--s-2); }
+.rec-foot h2 { font: 400 var(--fs-h4) / 1.25 var(--f-serif); color: var(--ink); scroll-margin-top: calc(var(--bar-h) + 24px); }
+.rec-foot p { color: var(--ink-2); }
+.rec-foot .rf-text { font: 400 var(--fs-body) / 1.55 var(--f-sans); }
+.rec-foot a { color: var(--ink-2); text-decoration: underline; text-decoration-color: var(--ink-4); text-underline-offset: 0.22em; transition: color var(--t-quick) var(--ease-ui), text-decoration-color var(--t-quick) var(--ease-ui); }
+.rec-foot a:hover { color: var(--ink); text-decoration-color: currentColor; }
+
+/* ======================================================================================================
+   An entry at its frozen address (log.md §6.1, §9): a faint light in its project's colour at the top, the
+   reading column at 21 px with about 70 characters a line, the key line, the image at figure width, and
+   the owner's "Next:" line. Essays add a contents list from 1240 px.
+   ====================================================================================================== */
+.rec-post { position: relative; }
+.post-light { position: absolute; z-index: 0; left: 0; right: 0; top: 0; height: 640px; pointer-events: none;
+  background:
+    radial-gradient(52% 70% at 36% 0%, color-mix(in srgb, var(--p) 14%, transparent), transparent 70%),
+    radial-gradient(30% 40% at 62% 6%, color-mix(in srgb, var(--p) 6%, transparent), transparent 80%); }
+.post-wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 180px minmax(0, 720px) 180px; justify-content: center; gap: 0 56px; padding: calc(var(--bar-h) + 40px) var(--gut) 0; }
+.post-toc { position: sticky; top: calc(var(--bar-h) + 40px); align-self: start; display: grid; gap: 4px; }
+.post-toc .meta { margin: 28px 0 6px; }
+.post-toc ol { display: grid; gap: 2px; }
+.post-toc ol a { display: block; padding: 6px 0 6px 14px; color: var(--ink-3); font: 400 var(--fs-small) / 1.45 var(--f-sans); border-left: 1px solid var(--line-1); transition: color var(--t-press), border-color var(--t-press); }
+.post-toc ol a:hover { color: var(--ink); }
+.post-toc ol a.on { color: var(--ink); border-left-color: var(--log); }
+.post-wrap:not(.has-toc) .post-toc ol, .post-wrap:not(.has-toc) .post-toc .meta { display: none; }
+.post-back { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink-2); transition: color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
+.post-back .icon { color: var(--ink-3); transition: color var(--t-quick) var(--ease-ui), translate 200ms var(--ease-out); }
+.post-back:hover { color: var(--ink); }
+.post-back:hover .icon { color: var(--ink); translate: -2px 0; }
+.post-back:active { scale: 0.98; }
+.post-back-sm { display: none; }
+.post > :not(.post-flow, .post-foot) { max-width: 600px; }
+.post-head { padding-top: 4px; }
+.post-title { font: 400 var(--fs-title) / 0.98 var(--f-serif); letter-spacing: -0.02em; margin: 16px 0 0 -0.03em; text-wrap: balance; }
+.post-entry .post-title, .post-note .post-title, .post-release .post-title { font-size: var(--fs-h2); line-height: 1.06; }
+.post-title.is-version { color: var(--p-ink, color-mix(in srgb, var(--p) 88%, var(--ink))); }
+.post-version { margin-top: 18px; font: 400 var(--fs-h3) / 1.1 var(--f-serif); color: var(--p-ink, color-mix(in srgb, var(--p) 88%, var(--ink))); }
+.post-version + .post-title { margin-top: 6px; }
+.post-dek { margin-top: 20px; max-width: 26em; }
+/* the reading flow: the key line and the image sit after the body's first paragraph on screen (CSS order),
+   so the first sentence stays on the first screen (readability research L2) */
+.post-flow { display: flex; flex-direction: column; margin-top: 44px; }
+.post-note .post-flow { margin-top: 28px; }
+.post-body { display: contents; }
+.post-body > * { order: 4; max-width: 28em; }
+.post-body > .help-note { order: 0; margin: 0 0 1.4em; }
+.post-body > p:first-of-type { order: 1; margin-top: 0; }
+.post-body > .fig { max-width: none; }
+.post-flow > .post-key { order: 2; }
+.post-flow > .post-fig { order: 3; }
+.post-body h2 { font: 400 var(--fs-h3) / 1.2 var(--f-serif); letter-spacing: -0.012em; color: var(--ink); margin: 1.9em 0 0.6em; scroll-margin-top: calc(var(--bar-h) + 24px); }
+.post-body h2 + p { margin-top: 0; }
+.post-key { margin: 1.5em 0 0.4em; align-self: flex-start; padding-left: 20px; border-left: 2px solid color-mix(in srgb, var(--p) 70%, transparent);
+  font: 400 clamp(28px, 2.6vw, 36px) / 1.15 var(--f-serif); letter-spacing: -0.015em; color: var(--p-ink, color-mix(in srgb, var(--p) 88%, var(--ink))); font-variant-numeric: lining-nums; text-wrap: balance; }
+.post-flow > .post-fig { margin-top: 2.2em; margin-bottom: 2.4em; }
+.post-fig picture, .post-fig img { display: block; width: 100%; height: auto; border-radius: 10px; }
+.post-fig img { box-shadow: 0 0 0 1px var(--line-1), 0 24px 60px -30px rgb(0 0 0 / 0.8); }
+.post-fig figcaption { margin-top: 14px; }
+.post-next { margin-top: 2em; font: 400 var(--fs-body) / 1.5 var(--f-sans); color: var(--ink-2); }
+.post-next b { font-weight: 600; color: var(--p-ink, color-mix(in srgb, var(--p) 80%, var(--ink))); }
+.help-note { margin-bottom: 1.4em; }
+/* reading text: Newsreader 21 / 1.55 at weight 430, about 70 characters a line; 19 px on phones; links in
+   Record blue */
+.read { font: 430 21px / 1.55 var(--f-serif); color: var(--read); max-width: 28em; text-wrap: pretty; hanging-punctuation: first allow-end; }
+.read > * + * { margin-top: 1em; }
+.read a { color: var(--log-ink); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--log-ink) 45%, transparent); text-underline-offset: 0.18em; }
+.read a:hover { text-decoration-color: currentColor; }
+.read strong, .read b { font-weight: 500; color: var(--ink); }
+.read em, .read i { font-style: italic; }
+.read ul, .read ol { padding-left: 1.2em; }
+.read ul > li { position: relative; }
+.read ul > li::before { content: ""; position: absolute; left: -1em; top: 0.75em; width: 8px; height: 1.5px; border-radius: 1px; background: color-mix(in srgb, var(--p, var(--log)) 75%, transparent); }
+.read ol { list-style: decimal; }
+.read li + li { margin-top: 0.35em; }
+.note-body { font: 430 27px / 1.42 var(--f-serif); color: var(--ink); }
+.note-body > * { max-width: 24em; }
+/* corrections and updates inside an entry (log.md §3.5, §3.6) */
+.correction, .update { font: 400 var(--fs-small) / 1.45 var(--f-sans); color: var(--ink-2); padding: 12px 0 12px 16px; border-left: 1px solid var(--line-2); max-width: 34em; }
+.correction { margin-bottom: 1.1em; }
+.update { margin-top: 1.1em; }
+.correction b, .update b { font-weight: 500; color: var(--ink); }
+.rec-post del { color: var(--ink-3); text-decoration-thickness: 1px; }
+.rec-post ins { text-decoration: none; color: var(--ink); }
+/* a figure from tools/illustrations: two drawings, one per width */
+.fig { --fw: min(720px, calc(100vw - 2 * var(--gut))); width: var(--fw); margin: 2.4em calc((100% - var(--fw)) / 2); container-type: inline-size; }
+.fig-w { display: none; }
+.fig-n svg { margin: 0 auto; }
+@container (min-width: 720px) { .fig-w { display: block; } .fig-n { display: none; } }
+.fig figcaption { margin-top: 18px; max-width: 40em; }
+/* the foot of an entry: when, how it is written, the link, older and newer */
+.post-foot { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--line-2); }
+.post-meta-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; }
+.post-meta-row a { text-decoration: underline; text-decoration-color: var(--ink-4); text-underline-offset: 0.22em; }
+.post-meta-row a:hover { color: var(--ink); text-decoration-color: currentColor; }
+.copy-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink-2); transition: color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
+.copy-link:hover { color: var(--ink); }
+.copy-link:active { scale: 0.97; }
+.icon-swap .icon + .icon { display: none; }
+.copied .icon-swap .icon:first-child { display: none; }
+.copied .icon-swap .icon + .icon { display: inline-block; }
+.post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+.pn { display: grid; gap: 6px; padding: 14px 0; color: inherit; transition: scale var(--t-press) var(--ease-ui); }
+.pn:last-child { text-align: right; justify-items: end; }
+.pn .meta { display: inline-flex; align-items: center; gap: 6px; }
+.pn b { font: 400 var(--fs-h4) / 1.25 var(--f-serif); transition: color var(--t-press); }
+a.pn:hover b { color: var(--ink-hi); }
+a.pn:active { scale: 0.99; }
+.pn b.none { color: var(--ink-3); }
+.rec-post-end { padding-top: var(--s-8); }
+
+@media (max-width: 1240px) {
+  .post-wrap { grid-template-columns: minmax(0, 720px); }
+  .post-toc { display: none; }
+  .post-back-sm { display: inline-flex; margin-bottom: 20px; }
+}
+
+/* ======================================================================================================
+   Phones: the Record's phone grid (spine at the left, the date above each row); a different composition
+   from desktop, as the strip's (spec v3 §8.1): the recorder at the right, the head on the spine.
+   ====================================================================================================== */
+@media (max-width: 699.98px) {
+  .rec-page { --gutter: 0px; --spine-w: 22px; --S: 176px; --pad: 28px; --rise: 8px; }
+  .rh-obj { margin: 0 0 0 auto; }
+  .rh-pool { left: auto; right: calc(var(--S) * -0.35); }
+  .rh-front::before { left: auto; right: calc(var(--S) * -1); }
+  .rh-tape { width: calc(100% - var(--S) * 0.64 - var(--spine-x)); }
+  .rh-eng.wide { display: none; }
+  .rh-eng.narrow { display: block; }
+  .rh-text { text-align: left; padding-left: var(--spine-w); padding-top: var(--s-3); }
+  .rh-dek { margin-left: 0; }
+  .rec-lead { height: var(--s-6); }
+  .y-head { grid-template-columns: 1fr; gap: 14px; padding-left: var(--spine-w); }
+  .y-head::after { left: calc(var(--spine-x) - 6px); width: 12px; }
+  .y-label { display: flex; align-items: baseline; gap: 12px; padding: 0; max-width: none; }
+  .ym { padding: 0 2px; }
+  .ym-l { font-size: 11px; }
+  .spine > .entry, .spine > .entry.has-thumb, .kinds > .entry { grid-template-columns: var(--spine-w) minmax(0, 1fr); padding: 22px 0; row-gap: 0; }
+  .spine > .entry .e-mark { grid-column: 1; grid-row: 1 / span 2; }
+  .spine > .entry .e-date { grid-column: 2; grid-row: 1; margin-bottom: 6px; }
+  .spine > .entry .e-main { grid-column: 2; grid-row: 2; }
+  .spine > .entry.has-thumb .e-thumb { grid-column: 2; grid-row: 2; }
+  .spine > .entry.has-thumb .e-main { grid-row: 3; }
+  .spine > .entry::before { left: var(--spine-w); width: calc(100% - var(--spine-w)); }
+  .e-mark { --mark-y: 4px !important; }
+  .s-release .e-mark { --mark-y: 5px !important; }
+  .n-text, .e-title, .empty-lead { font-size: 19px; }
+  .empty-lead, .empty-colours, .rec-foot, .y-more, .rec-projects { margin-left: 0; padding-left: var(--spine-w); }
+  .empty-spine .empty-lead, .empty-spine .empty-colours { margin-left: var(--spine-w); padding-left: 0; }
+  .kinds .entry { grid-template-columns: var(--spine-w) 76px minmax(0, 1fr); padding: 10px 0; }
+  .kinds .e-mark { grid-column: 1; grid-row: 1 !important; }
+  .kinds .entry .e-date { grid-column: 2; margin: 0; }
+  .kinds .entry p { grid-column: 3; }
+  .post-wrap { padding-top: calc(var(--bar-h) + 16px); }
+  .read { font-size: 19px; line-height: 1.55; hyphens: auto; -webkit-hyphens: auto; }
+  .note-body { font-size: 23px; }
+  .post-key { margin-top: 32px; font-size: 26px; }
+  .post-fig { --fw: calc(100vw - 2 * var(--gut)); margin-top: 32px; }
+  .post-light { height: 420px; background: radial-gradient(90% 60% at 30% 0%, color-mix(in srgb, var(--p) 14%, transparent), transparent 75%); }
+  .post-nav { grid-template-columns: 1fr; gap: 0; }
+  .pn:last-child { text-align: left; justify-items: start; }
+}
+
+/* a year's archive: the year is the page's title; its group keeps the strip and the count but not a second
+   year heading (record-language §3 item 1) */
+.rec-year .y-label h2 { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

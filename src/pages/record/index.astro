@@ -1,15 +1,20 @@
 ---
-/* The record (docs/design/log.md, amended 2026-10-09 after the readability research §8): a short
-   header, then one coloured timeline: each year's strip and its rows on a date spine, the mark of each
-   row in its project's colour. No controls until about forty entries, then one row of project links.
-   How it is written and the feed sit at the foot. With no entries the same frame shows, empty and
-   honest: the year's strip with nothing on it, and what each mark on the spine will mean. */
-import Base from '../../layouts/Base.astro';
-import Media from '../../components/Media.astro';
-import Foot from '../../components/Foot.astro';
+/* The Record, the second of the two pages (ADR-0019; record-language §2, §5, §6; review row S38). The
+   Home strip, opened: the frontispiece (the recorder in its engraving), then one coloured timeline: each
+   year's strip and its rows on the date spine, the mark of each row in its project's colour, the spine one
+   line with the recorder's tape. No controls until about forty entries, then one row of project links.
+   How it is written and the feed sit at the foot. With no entries the same frame shows, empty and honest:
+   the year's strip with nothing on it, and what each mark on the spine will mean. */
+import One from '../../layouts/One.astro';
+import RecordHead from '../../one/record/RecordHead.astro';
+import RecordFoot from '../../one/record/RecordFoot.astro';
+import Foot from '../../one/Foot.astro';
 import LogList from '../../components/LogList.astro';
 import YearStrip from '../../components/YearStrip.astro';
+import { SETS, auraAttr, auraVars } from '../../one/aura.mjs';
 import { getSite, getLog, getProjects, url, monYear, entriesFor, projectColor, inkVars, PROJECT_LINKS_FROM } from '../../lib/site';
+import '../../one/media.css';
+import '../../one/record/record.css';
 const site = await getSite();
 const entries = await getLog();
 const projects = await getProjects();
@@ -20,47 +25,40 @@ const count = entries.length
 const linked = entries.length >= PROJECT_LINKS_FROM ? projects.filter((p) => entriesFor(p, entries).length > 0) : [];
 const thisYear = String(new Date().getUTCFullYear());
 ---
-<Base title="The record" tab="record" description={site.log.dek} og="home">
-  <div class="inner rec">
-    <header class="rec-head">
-      <div class="rec-text">
-        <h1 class="rec-title" id="h-log">{site.log.title}</h1>
-        <p class="rec-dek">{site.log.dek}</p>
-        <p class="meta" id="log-count">{count}</p>
-      </div>
-      <Media obj="recorder" slot="record" stage class="rec-media" sizes="(min-width: 900px) 320px, 176px" priority />
-    </header>
-
-    {linked.length > 0 && (
-      <nav class="rec-projects" id="rec-projects" aria-label="Show one project">
-        {linked.map((p) => <a href={`?project=${p.id}`} data-p={p.id} style={`--p: ${projectColor(p)}${inkVars(p)}`}>{p.data.title}</a>)}
-        <a href={url('record/')} data-p="">Everything</a>
-      </nav>
-    )}
-
-    {entries.length ? <LogList entries={entries} projects={projects} /> : (
-      <section class="ygroup log-empty" aria-labelledby="h-empty">
-        <div class="y-head">
-          <div class="y-label"><h2 id="h-empty">{thisYear}</h2></div>
-          <YearStrip year={thisYear} entries={[]} projects={projects} />
+<One title={site.log.title} description={site.log.dek} tab="record" og="home" page="rec-page">
+  <div class="rec" data-aura={auraAttr(SETS.record)} data-rail-accent={SETS.record[0]} style={auraVars(SETS.record)}>
+    <RecordHead title={site.log.title} dek={site.log.dek} count={count} />
+    <div class="rec-body" id="record">
+      <div class="rec-lead" aria-hidden="true"></div>
+      {linked.length > 0 && (
+        <nav class="rec-projects" id="rec-projects" aria-label="Show one project">
+          {linked.map((p) => <a href={`?project=${p.id}`} data-p={p.id} style={`--p: ${projectColor(p)}${inkVars(p)}`}>{p.data.title}</a>)}
+          <a href={url('record/')} data-p="">Everything</a>
+        </nav>
+      )}
+      {entries.length ? <LogList entries={entries} projects={projects} /> : (
+        <div class="log-list">
+          <section class="ygroup log-empty" aria-labelledby="h-empty" data-rail-sec={thisYear}>
+            <div class="y-head">
+              <div class="y-label"><h2 id="h-empty">{thisYear}</h2></div>
+              <YearStrip year={thisYear} entries={[]} projects={projects} />
+            </div>
+            <div class="entries spine empty-spine">
+              <p class="empty-lead">{site.log.empty}</p>
+              <ul class="kinds" aria-label="What the marks will mean">
+                <li class="entry s-note"><span class="e-mark" aria-hidden="true"></span><span class="e-date meta">Note</span><p>One to three sentences from the week, read here in full.</p></li>
+                <li class="entry s-entry"><span class="e-mark" aria-hidden="true"></span><span class="e-date meta">Entry</span><p>A few paragraphs with a title: what I did, why, what comes next.</p></li>
+                <li class="entry s-release"><span class="e-mark" aria-hidden="true"></span><span class="e-date meta">Release</span><p>A version shipped, set in its project's colour.</p></li>
+                <li class="entry s-essay"><span class="e-mark" aria-hidden="true"></span><span class="e-date meta">Essay</span><p>A longer piece with figures, on a page of its own.</p></li>
+              </ul>
+              <p class="empty-colours meta">Each mark takes the colour of its project:{projects.map((p, i) => <>{i > 0 && ','} <span class="pj" style={`--p: ${projectColor(p)}${inkVars(p)}`}>{p.data.title}</span></>)}; blue when it is about none.</p>
+            </div>
+          </section>
         </div>
-        <div class="entries spine empty-spine">
-          <p class="empty-lead">{site.log.empty}</p>
-          <ul class="kinds" aria-label="What the marks will mean">
-            <li class="entry s-note"><span class="e-mark" aria-hidden="true"></span><span class="e-date meta">Note</span><p>One to three sentences from the week, read here in full.</p></li>
-            <li class="entry s-entry"><span class="e-mark" aria-hidden="true"></span><span class="e-date meta">Entry</span><p>A few paragraphs with a title: what I did, why, what comes next.</p></li>
-            <li class="entry s-release"><span class="e-mark" aria-hidden="true"></span><span class="e-date meta">Release</span><p>A version shipped, set in its project's colour.</p></li>
-            <li class="entry s-essay"><span class="e-mark" aria-hidden="true"></span><span class="e-date meta">Essay</span><p>A longer piece with figures, on a page of its own.</p></li>
-          </ul>
-          <p class="empty-colours meta">Each mark takes the colour of its project:{projects.map((p, i) => <>{i > 0 && ','} <span class="pj" style={`--p: ${projectColor(p)}${inkVars(p)}`}>{p.data.title}</span></>)}; blue when it is about none.</p>
-        </div>
-      </section>
-    )}
-
-    <aside class="rec-foot" aria-label="About the record">
-      <p class="meta">{site.log.writingNote}</p>
-      <p class="meta"><a href={url('about/#colophon')}>How this is written</a><span class="sep">·</span><a href={url('record/feed.xml')}>Atom feed</a></p>
-    </aside>
+      )}
+      <RecordFoot />
+    </div>
     <Foot />
   </div>
-</Base>
+  <script>import '../../one/scripts/record';</script>
+</One>
