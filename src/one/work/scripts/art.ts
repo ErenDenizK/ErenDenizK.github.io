@@ -5,13 +5,21 @@
    in from the box's colour), so each layer is rasterised once and the compositor moves it at its own
    speed (back 0.85x, front 1.15x, with pointer parallax; mid moves with the page and stays painted). Inline SVG layers were measured to
    repaint every frame (about 40 ms a frame at 1440 px in the audit rig); images do not. Phones take the
-   back layer only (spec v2 §3.3.3: one drawing layer). */
+   back layer only (spec v2 §3.3.3: one drawing layer), or the scene's phone master when it has one
+   (art/<slug>-phone.svg, one #phone group: engraving guide §1.7).
+
+   The engravings of round six (data-ink="fill") draw every line as a filled, tapered shape; their ink is a
+   fill, and each layer takes its own strength from the opacity ladder (guide §1.9: back lighter, front
+   stronger than the subject). */
 
 export type ArtLayer = { el: HTMLImageElement; depth: number; px: number; still: boolean };
-const DEPTH: Record<string, [number, number]> = { back: [0.85, 4], mid: [1, 10], front: [1.15, 18] };
+const DEPTH: Record<string, [number, number]> = { back: [0.85, 4], mid: [1, 10], front: [1.15, 18], phone: [0.9, 0] };
+/* the opacity ladder of the engraving guide (§1.9) as a share of --art-o (.16): back .11, mid .16, front .19 */
+const LADDER: Record<string, number> = { back: 0.7, mid: 1, front: 1.2, phone: 1 };
 
 export function loadArt(box: HTMLElement, phone: boolean, done: (layers: ArtLayer[]) => void) {
-  const url = box.dataset.art;
+  const master = phone && box.dataset.artPhone;
+  const url = master || box.dataset.art;
   if (!url) return;
   /* the ink and the drawing's strength are baked into the strokes, so no layer needs a group opacity
      (a group opacity is one more full-size pass for the compositor) */
@@ -22,11 +30,12 @@ export function loadArt(box: HTMLElement, phone: boolean, done: (layers: ArtLaye
     const doc = new DOMParser().parseFromString(txt, 'image/svg+xml');
     const src = doc.documentElement;
     if (src.nodeName !== 'svg') return;
-    const groups = ['back', 'mid', 'front'];
+    const groups = master ? ['phone'] : ['back', 'mid', 'front'];
+    const fill = src.getAttribute('data-ink') === 'fill';
     const [, , VW, VH] = (src.getAttribute('viewBox') || '0 0 1600 1000').split(/[ ,]+/).map(Number);
     /* each layer's image is cut to its drawing's box (inside the view box): less area to composite */
     const probe = document.importNode(src, true) as unknown as SVGSVGElement;
-    probe.setAttribute('style', 'position:absolute;left:-9999px;top:0;width:1600px;height:1000px;visibility:hidden');
+    probe.setAttribute('style', `position:absolute;left:-9999px;top:0;width:${VW}px;height:${VH}px;visibility:hidden`);
     document.body.append(probe);
     const boxes: Record<string, [number, number, number, number]> = {};
     for (const id of groups) {
@@ -39,14 +48,20 @@ export function loadArt(box: HTMLElement, phone: boolean, done: (layers: ArtLaye
     }
     probe.remove();
     const layers: ArtLayer[] = [];
-    for (const id of phone ? ['back'] : groups) {
+    for (const id of phone && !master ? ['back'] : groups) {
       if (!src.querySelector(`g#${id}`)) continue;
       const svg = src.cloneNode(true) as Element;
-      for (const o of groups) if (o !== id) svg.querySelector(`g#${o}`)?.remove();
+      for (const o of ['back', 'mid', 'front', 'phone']) if (o !== id) svg.querySelector(`g#${o}`)?.remove();
       svg.querySelector('title')?.remove();
       svg.querySelector('desc')?.remove();
-      svg.setAttribute('stroke', ink);
-      svg.setAttribute('stroke-opacity', strength);
+      if (fill) {
+        svg.setAttribute('fill', ink);
+        svg.setAttribute('fill-opacity', String(+strength * (LADDER[id] ?? 1)));
+      } else {
+        svg.setAttribute('stroke', ink);
+        svg.setAttribute('stroke-opacity', strength);
+      }
+      svg.querySelector('g#places')?.remove();
       const [bx, by, bw, bh] = boxes[id] ?? [0, 0, VW, VH];
       svg.setAttribute('viewBox', `${bx} ${by} ${bw} ${bh}`);
       svg.setAttribute('width', String(bw));
@@ -59,6 +74,15 @@ export function loadArt(box: HTMLElement, phone: boolean, done: (layers: ArtLaye
       img.setAttribute('aria-hidden', 'true');
       img.src = URL.createObjectURL(blob);
       img.style.cssText = `left: ${(bx / VW) * 100}%; top: ${(by / VH) * 100}%; width: ${(bw / VW) * 100}%; height: ${(bh / VH) * 100}%`;
+      /* a drawing of the earlier rounds was drawn to its box's edges: fade its ink over the top and bottom
+         18 % of the box, so that two neighbouring scenes never pile up in motion (row S20; the round-six
+         engravings fade in the drawing itself and need no mask) */
+      if (!fill) {
+        const at = (Y: number) => (((Y - by) / bh) * 100).toFixed(1);
+        const m = `linear-gradient(to bottom, transparent ${at(0)}%, #000 ${at(VH * 0.18)}%, #000 ${at(VH * 0.82)}%, transparent ${at(VH)}%)`;
+        img.style.setProperty('-webkit-mask-image', m);
+        img.style.setProperty('mask-image', m);
+      }
       /* the middle layer moves with the page: it needs no transform and no layer of its own */
       layers.push({ el: img, depth: DEPTH[id][0], px: DEPTH[id][1], still: id === 'mid' });
     }

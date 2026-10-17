@@ -48,14 +48,20 @@ const edges = [edge(390, 11), edge(820, 23), edge(1440, 7)];
     return (
       <div class="proj" id={m.slug} data-slug={m.slug} data-k={k} data-short={short ? '' : undefined} data-last={last ? '' : undefined}
         data-rail-sec={m.title} data-rail-accent={m.aura[0]} data-aura={m.aura.join(' ')}
-        style={`--a1: ${m.aura[0]}; --a2: ${m.aura[1]}; --a3: ${m.aura[2]}; --paper: ${m.paper}${m.art ? `; --art: url("${m.art.url}")` : ''}`}>
+        style={`--a1: ${m.aura[0]}; --a2: ${m.aura[1]}; --a3: ${m.aura[2]}; --paper: ${m.paper}${m.art ? `; --art: url("${m.art.url}")` : ''}${m.art?.phone ? `; --art-phone: url("${m.art.phone.url}"); --art-phone-ar: ${m.art.phone.box[0]} / ${m.art.phone.box[1]}` : ''}`}>
         <div class="fl-stage">
           {m.art && (
-            <div class="fl-art" data-art={m.art.url} aria-hidden="true">
+            <div class:list={['fl-art', m.art.phone && 'has-phone']} data-art={m.art.url} data-art-phone={m.art.phone?.url} aria-hidden="true">
               {m.art.stops.length > 0 && (
-                <svg class="fl-route" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid meet" focusable="false">
+                <svg class="fl-route fl-route-d" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid meet" focusable="false">
                   <path class="fl-route-line" d={'M' + m.art.stops.map(([x, y]) => `${x} ${y}`).join(' L')} pathLength="1" />
                   {m.art.stops.map(([x, y]) => <g class="fl-stop" transform={`translate(${x} ${y})`}><ellipse rx="34" ry="9" /><ellipse class="fl-stop-in" rx="14" ry="4" /></g>)}
+                </svg>
+              )}
+              {m.art.phone && m.art.phone.stops.length > 0 && (
+                <svg class="fl-route fl-route-p" viewBox={`0 0 ${m.art.phone.box[0]} ${m.art.phone.box[1]}`} preserveAspectRatio="xMidYMid meet" focusable="false">
+                  <path class="fl-route-line" d={'M' + m.art.phone.stops.map(([x, y]) => `${x} ${y}`).join(' L')} pathLength="1" />
+                  {m.art.phone.stops.map(([x, y]) => <g class="fl-stop" transform={`translate(${x} ${y})`}><ellipse rx="22" ry="6" /><ellipse class="fl-stop-in" rx="9" ry="2.6" /></g>)}
                 </svg>
               )}
             </div>

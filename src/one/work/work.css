@@ -78,6 +78,7 @@
 .fl-route-line { fill: none; stroke: var(--a1); stroke-width: 1.5; stroke-dasharray: 1 1; stroke-dashoffset: 0; opacity: .4; }
 .fl-stop ellipse { fill: none; stroke: var(--a1); stroke-width: 1.25; }
 .fl-stop .fl-stop-in { fill: var(--a1); stroke: none; opacity: .7; }
+.fl-route-p { display: none; }
 .fl-tag, .fl-side, .w-tear { display: none; }
 .fl-hero { position: relative; z-index: 2; display: block; }
 .fl-hero .pr-mount { padding: 8px 8px 28px;
@@ -101,6 +102,12 @@
   .fl-hero .pr-obj { aspect-ratio: 16 / 10; }
   .fl-hero:has(.pr[data-phone-frame]) { width: 234px; margin: 0 auto; }
   .fl-art { width: 950px; top: -6%; }
+  /* a scene with a phone master (engraving guide §1.7): its own portrait composition, at about one unit a
+     pixel, centred on the column */
+  .fl-art.has-phone { width: clamp(440px, calc(100vw + 90px), 560px); aspect-ratio: var(--art-phone-ar); top: -3%; }
+  .fl-art.has-phone::before { -webkit-mask-image: var(--art-phone); mask-image: var(--art-phone); }
+  .fl-art.has-phone .fl-route-d { display: none; }
+  .fl-art.has-phone .fl-route-p { display: block; }
 }
 
 /* ---------- Work, the flight (JavaScript and motion; spec v2 §3.3) ----------
@@ -123,9 +130,8 @@
   html.js:not(.still) .work .proj[data-last] .fl-stage { position: sticky; }
   html.js:not(.still) .work .fl-art { top: -2%; width: max(1520px, 106vw); }
   html.js:not(.still) .work .fl-route-line { stroke-dashoffset: 1; }
-  /* the places of the short block's drawing sit low in it: lift the drawing so they ring the frame and
-     stay out of the texts' hush (spec v2 §5.3) */
-  html.js:not(.still) .work .proj[data-short] .fl-art { top: -24%; }
+  /* the short block's drawing is no longer lifted into the block above (row S20, engraving guide §2.11):
+     its places are composed low in its own box, and each box overflows its block by under 10 % */
   html.js:not(.still) .work :is(.fl-layer-back, .fl-layer-front),
   html.js:not(.still) .work :is(.fl-hero, .fl-side, .fl-tag, .txt-in, .li) { will-change: transform; }
 
@@ -193,6 +199,7 @@
     html.js:not(.still) .work .fl-hero { margin-left: calc(var(--hw) / -2); }
     html.js:not(.still) .work .fl-side, html.js:not(.still) .work .fl-tag { display: none; }
     html.js:not(.still) .work .fl-art { width: 950px; top: 4%; }
+    html.js:not(.still) .work .fl-art.has-phone { width: clamp(440px, calc(100vw + 90px), 560px); top: -3%; }
     html.js:not(.still) .work .txt { top: calc(var(--htop) + var(--hh) + 18px); }
     html.js:not(.still) .work .w-promise { max-width: 22em; }
     html.js:not(.still) #work ~ .rest { margin-top: calc(-1 * var(--hold) + var(--s-7)); }
