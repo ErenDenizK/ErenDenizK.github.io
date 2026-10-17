@@ -5,7 +5,7 @@
    has moved (scripts/shell.ts sets html.moved). The time is written before first paint; scripts/clock.ts
    keeps it on the minute. */
 import { url } from '../lib/site';
-interface Props { home: string; tab: 'home' | 'record'; mark: string }
+interface Props { home: string; tab: 'home' | 'record' | null; mark: string }
 const { home, tab, mark } = Astro.props;
 const tabs = [['home', 'Home', home], ['record', 'Record', url('record/')]] as const;
 ---
@@ -61,11 +61,12 @@ const tabs = [['home', 'Home', home], ['record', 'Record', url('record/')]] as c
   /* the glass family (glass.css, tokens.css) is shared with the opened project's capsules: one height, one label size */
   .tabs a {
     position: relative; isolation: isolate; min-height: var(--glass-item); padding: 0 20px; display: inline-flex; align-items: center;
-    border-radius: var(--r-pill); font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--glass-label-off);
+    border-radius: var(--r-pill); font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--glass-label-off); -webkit-tap-highlight-color: transparent;
     transition: color var(--t-quick) var(--ease-ui), background-color var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui);
   }
   .tabs a:hover { color: var(--ink); }
-  .tabs a:active { scale: 0.98; }
+  /* without the liquid motion (scripts/glass-motion.ts) the press is this small give */
+  :global(html:not(.g-live)) .tabs a:active { scale: 0.98; }
   .tabs a:focus-visible { outline-offset: -2px; border-radius: var(--r-pill); }
   .tabs a[aria-current="page"] { color: var(--ink); }
   /* the active bed: faint light with the current aura glowing up from under it (glass.css) */

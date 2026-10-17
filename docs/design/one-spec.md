@@ -183,7 +183,7 @@ PART A reads the project sets from `world.json` at build time; it does not copy 
 | `--t-swap` | 500 ms | aura crossfade at a settle | Robin 500 [M] |
 | `--t-reveal` | 700 ms | text arriving | Anthony Fu 1000, shortened [M] |
 | `--t-move` | 900 ms | prints and frames arriving | Antoine 1 s [M] |
-| `--t-open` | 900 ms (lab switch: 1400) | the paper grows | Robin 1.38 s [M] |
+| `--t-open` | 900 ms, times 1.55 = 1400 ms by default since 2026-10-17 (S8; lab switch `?open=900`) | the paper grows | Robin 1.38 s [M] |
 | `--t-close` | 800 ms | the paper returns | |
 | `--t-draw` | 2400 ms | line drawing at arrival | Shopify 3 s [M] |
 | `--step` | 90 ms (phone 75) | stagger | Anthony Fu 90 [M] |
@@ -219,6 +219,34 @@ All content is centred on the page axis. Desktop and phone differ where noted [O
   tab-ind`).
 
 ### 3.2 The brief (PART A)
+
+**Round 6 (2026-10-17, rows S32 and S33): the first screen is the brief on the Bostancı plate.** This
+note replaces the layout and the plate below; the text rules (the name, the lede, the three rows and
+their sources) are unchanged. Source: the first-screen study's comp A, "The signal". Code:
+`src/one/Brief.astro` (layout, arrival, handover) and `src/one/SignalPlate.astro` (the engraving).
+
+- Desktop: the Bostancı photograph is whole, 3:4 and the full view height. Its left edge is 21.278svh
+  left of the page axis, so its vanishing point and its red signal sit on the axis. The first-screen
+  engraving is drawn in the photograph's camera and continues it to both edges; it fades at its sides
+  and its lower edge. A hairline frame (640 px) holds the brief on the axis above the signal, and a
+  thread hangs from the frame to the signal. The photograph's note and place stand left of it,
+  bottom-aligned. On windows under 800 px tall the frame tightens so it still ends above the signal.
+- Phone: the photograph at full width from the top of the screen, under the glass bar; the name in
+  its sky; the lede and the rows below it on the engraved platform, quietened under the words. All
+  rows fit in 844 px. The note and the place follow the rows.
+- Arrival: the grey print and the construction drawing (the scaffold group: the circle, the horizon,
+  the diagonals of rounds one to five) are there at first paint. The name sharpens in, the lede and
+  rows rise by 0.9 s, the other engraving groups radiate from the vanishing point, the frame draws
+  from 0.6 s, the signal lights at 1.4 s, and the colour opens from the signal over the grey print
+  from 1.5 to 3.5 s.
+- Handover into Work, a pure function of scroll: the frame and the words lift and fade, the colour
+  drains back into the signal, the signal turns Recto's green, the engraving's structure fades and
+  then its floor, and the stage lags the page (16svh on desktop).
+- The chips travel the page to their project (S33, `scripts/travel.ts`, rail-bloom §7).
+- `Plate.astro` and `Bostanci.astro` are no longer placed on Home; their ideas live on in the
+  scaffold group and in the first screen's photograph.
+
+The text below is the round-one to round-five layout, kept as history.
 
 Desktop (comp `first-1440.png`):
 - Column `--w-text` 600 px. The name's top at y 196.
@@ -543,7 +571,7 @@ project: `paper` (the print mount → the layer ground), `shot` (the front scree
 object, desktop). Old snapshots of `shot` are hidden (`::view-transition-old(shot) { display: none }`)
 and the new one is `object-fit: cover` (tech §3).
 
-Open, desktop, `--t-open` 900 ms (the lab switch `?open=1400` multiplies every time by 1.55):
+Open, desktop, `--t-open` 900 ms. Since 2026-10-17 (row S8) every time below is multiplied by 1.55 (the open takes 1400 ms); the lab switch `?open=900` keeps the factor 1:
 
 | t (ms) | What |
 |---|---|
@@ -751,7 +779,7 @@ PART A owns the page; PART B owns one slot. PART B touches no file of PART A, an
   p95 ≤ 2 ms. GPU numbers are not gated (software GPU). Harness: `phase3/tech/measure.mjs`.
 - **Bytes:** section 7.2; `npm run budget` passes.
 - **Durations:** first visible response to any input ≤ 160 ms; UI ≤ 300 ms; reveals 500 to 900 ms;
-  open 900 ms (1400 with the switch); close 800 ms; arrival text complete ≤ 1.2 s, arrival
+  open 1400 ms (900 with `?open=900`); close 800 ms times the same factor; arrival text complete ≤ 1.2 s, arrival
   complete ≤ 2.8 s; after the last input, motion stops within 1.5 s (except the drift and video).
 - **Overflow:** none at 390, 1180 and 1440 (and none at 320).
 - **Targets:** at least 44 px on touch; at least 24 px with a pointer.
@@ -790,7 +818,18 @@ PART A owns the page; PART B owns one slot. PART B touches no file of PART A, an
    said "stacked or side by side" [O]. Default: deck.
 2. `?cap=line|large`: the postcard caption as one line under the card, or only in the large view.
    The owner asked to test both [O]. Default: large.
-3. `?open=900|1400`: the open tempo. The owner: "choose on a lab page" [O]. Default: 900.
+3. `?open=900|1400`: the open tempo. The owner: "choose on a lab page" [O]. Default: 1400 since
+   2026-10-17 (S8: "the long animation felt quite elegant").
+4. `?work=flow` (round 6, row S31): Work as a horizontal flow instead of the vertical flight. The
+   projects are sheets on an upright drum that turns with the scroll: the next project comes in from
+   the right edge half turned, faces the reader at the centre and turns away to the left; its other
+   screens fly on a wider drum; its engraving slides behind it at its depths; its texts change in place.
+   Each block becomes a spacer (anchors, rail beads and aura unchanged) and every stage stands in one
+   sticky view, so only transforms and opacities move (`scripts/flow.ts`, `flow.css`). A detent slows
+   the drum near each project. Same still twin. Default: the vertical flight, until the owner picks.
+5. `?objects=glass|line|none` (round 6, row S4): the project objects in Work. `glass`: each project's
+   glass object stands in its scene; `line`: its line twin, drawn from the same Blender model with
+   Grease Pencil Line Art (`tools/objects/lineart.py`); `none`: today. Default: none.
 
 Decided here and visible on the lab page (the owner may still overrule them): no glass object on
 the first screen (the edk object closes the page instead); the Bostancı platform as the brief's

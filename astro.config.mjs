@@ -40,6 +40,10 @@ const samples = sampleSlugs();
 /** @param {string} page */
 const isSample = (page) => { const m = /\/record\/\d{4}\/([^/]+)\/?$/.exec(page); return !!m && samples.has(m[1]); };
 
+/** The four-page site's pages that are redirects now (ADR-0019); /work/<slug>/ stays a page of its own. */
+/** @param {string} page */
+const isRetired = (page) => /\/(work|about)\/?$/.test(new URL(page).pathname);
+
 export default defineConfig({
   site: process.env.SITE_URL || 'https://erendenizk.github.io',
   base,
@@ -50,8 +54,9 @@ export default defineConfig({
   devToolbar: { enabled: false },
   integrations: [
     mdx(),
-    /* /lab/ holds hidden component workbenches (ADR-0008): never in the sitemap; nor are samples */
-    sitemap({ filter: (page) => !/\/404\/?$/.test(page) && !/\/lab\//.test(page) && !isSample(page) }),
+    /* /lab/ holds hidden component workbenches (ADR-0008): never in the sitemap; nor are samples, nor the
+       retired four-page addresses that only redirect (/work/, /about/; ADR-0019), nor the rosette files */
+    sitemap({ filter: (page) => !/\/404\/?$/.test(page) && !/\/lab\//.test(page) && !/\/guil\//.test(page) && !isRetired(page) && !isSample(page) }),
     siteAssets(),
   ],
 });

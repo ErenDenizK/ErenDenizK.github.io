@@ -1,0 +1,73 @@
+/* The How I made plates (round 6, S29): column, loop, legend. They leave the dark card of the stack and
+   stand on the project's own engraved ground, in the ink of its engraving, so the plate continues the
+   scene behind the layer. Every motion is a function of --hp, the section's view progress (work.css
+   registers it; 1 when nothing drives it: the still twin, reduced motion, no scroll timelines). */
+.how-plate { background: none; box-shadow: none; padding: var(--s-4) 0 0; }
+.hm { position: relative; color: color-mix(in srgb, var(--a1) 64%, var(--ink)); }
+.hm-art { display: block; width: 440px; max-width: 100%; height: auto; margin: 0 auto; overflow: visible; }
+.hm-ink { opacity: .9; }
+.hm-tone, .hm-sec { fill: none; stroke: currentColor; stroke-linecap: round; }
+.hm-tone { opacity: .5; stroke-width: .6; }
+.hm-sec { opacity: .55; stroke-width: .75; }
+.hm-con { opacity: .3; }
+.hm-num { font: 500 10px/1 var(--f-sans); letter-spacing: .12em; fill: currentColor; opacity: .7; }
+.hm-list, .hm-items, .hm-frieze { list-style: none; margin: 0; padding: 0; }
+.hm-name { display: block; color: var(--ink-3); }
+.hm-n { margin-right: 10px; color: color-mix(in srgb, var(--a1) 72%, var(--ink)); font-variant-numeric: tabular-nums; }
+.hm-items li { margin-top: var(--s-2); font: 400 var(--fs-small)/1.5 var(--f-sans); color: var(--ink-2); text-wrap: pretty; }
+
+/* the column: the parts land from the stylobate up, each from a thin sheet into its drum, no bounce */
+.hm-column .hm-part { --d: clamp(0, (var(--hp) - var(--i) * .1) / .22, 1);
+  transform-box: fill-box; transform-origin: 50% 100%; transform: translateY(calc((1 - var(--d)) * -34px)) scaleY(calc(.08 + .92 * var(--d))); opacity: calc(.15 + .85 * var(--d)); }
+.hm-dowel { opacity: calc(clamp(0, (var(--hp) - .55) / .2, 1) * .8); }
+.hm-sheet { --s: clamp(0, (var(--hp) - .5) / .34, 1); transform: translateY(calc(var(--from) + (var(--to) - var(--from)) * var(--s)));
+  opacity: calc(min(clamp(0, (var(--hp) - .5) * 12, 1), 1 - clamp(0, (var(--hp) - .86) * 14, 1) * .55)); }
+/* one pulse of the light under the column when the capital lands, then it settles (the product's event
+   light: still at rest, it moves on arrival and settles) */
+.hm-glow { fill: var(--a1); filter: blur(14px);
+  opacity: calc(min(clamp(0, (var(--hp) - .8) / .07, 1), 1 - .68 * clamp(0, (var(--hp) - .88) / .1, 1)) * .45); }
+.hm-frieze { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2) var(--s-4); margin-top: var(--s-6);
+  font: 400 var(--fs-small)/1.4 var(--f-sans); color: var(--ink-2); }
+.hm-frieze li { padding: var(--s-2) var(--s-3); border-top: 1px solid color-mix(in srgb, var(--a1) 40%, transparent); }
+.hm-by { display: block; color: var(--ink-3); }
+
+/* the loop: the hand sweeps to the last station; each station lights in its pigment and presses */
+.hm-loop .hm-hand { transform: rotate(calc(var(--hp) * (var(--n) - 1) / var(--n) * 360deg)); }
+.hm-loop .hm-hand path, .hm-loop .hm-hand circle { fill: currentColor; }
+.hm-loop .hm-st { --q: clamp(0, (var(--hp) * (var(--n) - 1) - var(--i)) * 3 + 1, 1); }
+.hm-dot { fill: color-mix(in srgb, var(--c) calc(var(--q) * 100%), currentColor); opacity: calc(.35 + .65 * var(--q)); }
+.hm-card { transform-box: fill-box; transform-origin: 50% 50%;
+  /* 1, then .945, then 1.035, then 1 as the hand arrives: the product's press and release */
+  transform: scale(calc(1 - .055 * clamp(0, var(--q) * 3, 1) + .09 * clamp(0, var(--q) * 3 - 1, 1) - .035 * clamp(0, var(--q) * 3 - 2, 1))); }
+.hm-card rect { fill: color-mix(in srgb, var(--raised) 70%, transparent); stroke: color-mix(in srgb, var(--c) calc(var(--q) * 100%), currentColor); stroke-width: 1.2; }
+.hm-card text { font: 600 10px/1 var(--f-sans); letter-spacing: .08em; fill: color-mix(in srgb, var(--c) calc(var(--q) * 100%), var(--ink-3)); }
+.hm-list-loop { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: var(--s-5) var(--s-6); max-width: 760px; margin: var(--s-6) auto 0; }
+.hm-list-loop .hm-n { color: var(--c, currentColor); }
+
+/* the legend: the route traces from symbol to symbol; the last one pops once */
+.hm-route { stroke: var(--a1); stroke-width: 1.4; stroke-dasharray: 1 1; stroke-dashoffset: calc(1 - clamp(0, (var(--hp) - .3) / .55, 1)); opacity: .6; vector-effect: non-scaling-stroke; }
+.hm-pop { fill: var(--a1); transform-box: fill-box; transform-origin: 50% 50%;
+  transform: scale(calc(clamp(0, (var(--hp) - .85) * 20, 1.3) - .3 * clamp(0, (var(--hp) - .9) * 15, 1))); }
+
+@media (min-width: 900px) {
+  /* the column: its entries left and right of the drawing, a short leader to their part */
+  .hm-column { min-height: calc(var(--h) + 24px); }
+  .hm-column .hm-list { position: absolute; inset: 0; pointer-events: none; }
+  .hm-column .hm-i { position: absolute; top: calc(var(--y) - 10px); width: calc(50% - 240px); pointer-events: auto;
+    opacity: clamp(0, (var(--hp) - .3 - var(--i) * .08) / .2, 1); }
+  .hm-column .hm-l { right: calc(50% + 236px); text-align: right; }
+  .hm-column .hm-r { left: calc(50% + 236px); }
+  .hm-column .hm-i::before { content: ""; position: absolute; top: 8px; width: 60px; height: 1px; background: currentColor; opacity: .4; }
+  .hm-column .hm-l::before { left: calc(100% + 8px); }
+  .hm-column .hm-r::before { right: calc(100% + 8px); }
+}
+@media (max-width: 899.98px) {
+  .hm-art { width: min(340px, 100%); }
+  .hm-column .hm-list { display: grid; gap: var(--s-5); margin-top: var(--s-6); }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.js:not(.still) .hm { animation: how-p linear both; }
+    html.js:not(.still) body .hm { animation-timeline: view(); animation-range: entry 5% cover 60%; }
+  }
+}

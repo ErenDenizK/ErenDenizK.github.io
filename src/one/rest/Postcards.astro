@@ -15,8 +15,9 @@
      left half, the right column holds the stamp, the message, five colour bands and the colophon.
      Every value comes from content/site.json (home.postcards) or tools/photos/live.mjs.
      Motion (§2.5): as the back comes face-on the drawing draws itself on (construction, then lines,
-     then hatching), the stamp lands, the ring settles, the flourish draws last; a later turn replays
-     only the flourish. Reduced motion: drawn at once.
+     then hatching; a burin plate: its contours, then its tone in from the upper left), the stamp
+     lands, the ring settles, the flourish draws last; a later turn replays only the flourish. Reduced
+     motion: drawn at once.
    Table (desktop): three cards side by side on parallel planes; hover picks one up without passing
    through another (scripts/postcards.ts). Phone: a loose pile, tap to open. A click or a tap grows the
    card into the large view, where the ID card's engine (card3d.ts, tilt) swings it by a drag and turns
@@ -30,7 +31,7 @@ import { getSite, url } from '../../lib/site';
 import manifest from '../../assets/photos/postcards.json';
 import meta from '../../assets/photos/postcards-meta.json';
 import grain from '../../assets/photos/grain.png?url';
-import city from './art/istanbul.svg?url';
+import city from './art/bostanci-pier.svg?url';
 
 const site = await getSite();
 const t = site.about.postcard;
@@ -52,7 +53,7 @@ type Meta = { palette: { hex: string; share: number }[]; deep: string; crop: str
 const REST = [-5, 2, -2, 3];
 const n = list.length;
 const pad = (i: number) => String(i).padStart(2, '0');
-const guil = url('lab/one/guil/pc.svg');
+const guil = url('guil/pc.svg');
 
 /** relative luminance of a hex colour, for the ink on a colour band */
 const lum = (h: string) => { const v = [1, 3, 5].map((k) => parseInt(h.slice(k, k + 2), 16) / 255).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
@@ -189,7 +190,9 @@ const cards = list.map((p, i) => {
     const imgs = [...table.querySelectorAll<HTMLImageElement>('.pc-pic img')];
     table.dataset.pcFade = '';
     for (const im of imgs) {
-      const ok = () => im.closest('.pc-pic')?.classList.add('is-in');
+      /* decoded before it fades in, and so before it is needed (round six critique): a file that was loaded
+         but not decoded showed its tone plate for up to 0.7 s after a rail jump to the photos */
+      const ok = () => { im.decode().catch(() => {}).then(() => im.closest('.pc-pic')?.classList.add('is-in')); };
       if (im.complete && im.naturalWidth) ok(); else im.addEventListener('load', ok, { once: true });
     }
     const early = () => { for (const im of imgs) { im.fetchPriority = 'low'; im.loading = 'eager'; } };
@@ -208,9 +211,12 @@ const cards = list.map((p, i) => {
 
 <style>
   .photos { position: relative; padding: 0 var(--gut); text-align: center; }
-  /* the city the photographs were taken in, engraved, as the table's far horizon (line-art set, 8 %) */
-  .city { position: absolute; left: 50%; bottom: -150px; width: 1600px; max-width: none; height: auto; margin-left: -800px; opacity: 0.08; pointer-events: none;
-    -webkit-mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
+  /* the place the photographs were taken, engraved, as the table's far horizon (review row S34; engraving
+     guide §2.9, the Istanbul series): the Bostancı pier at dusk at the left, a vapur coming in at the
+     right, the Princes' Islands under the cards' feet. Only the margins and the band under the cards
+     show, so it is composed there; its strength (.06-.09) and its edge fades are in the drawing. The
+     horizon runs on into the Record's tape. Drawn by tools/illustrations/plates/coast.py. */
+  .city { position: absolute; left: 50%; bottom: -150px; width: 1600px; max-width: none; height: auto; margin-left: -800px; pointer-events: none; }
   :global(html.motion) .city { transform: translateY(calc((var(--sp) - 0.5) * 16vh)); }
   .photos-lede { margin: var(--s-4) auto 0; max-width: 30em; font: 400 var(--fs-body) / var(--lh-lede) var(--f-sans); color: var(--ink-2); }
 
@@ -324,7 +330,7 @@ const cards = list.map((p, i) => {
     font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink); white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent;
     transition: background-color var(--t-quick) var(--ease-ui), box-shadow var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
   .pv-glass button:hover { background-color: var(--glass-hover); box-shadow: var(--glass-hover-glow); }
-  .pv-glass button:active { scale: 0.96; }
+  :global(html:not(.g-live)) .pv-glass button:active { scale: 0.96; } /* with JavaScript: the liquid motion (glass.css) */
   .pv-glass button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
   .pv-turn { gap: 8px; padding: 0 18px !important; }
   .pv-turn :global(.icon) { color: var(--ink-2); }
@@ -499,12 +505,31 @@ const cards = list.map((p, i) => {
   html.motion .pc-big .is-drawn .bk-ring { opacity: 0.75; rotate: 0deg; transition: opacity 300ms var(--ease-out) 560ms, rotate 520ms var(--ease-out) 560ms; }
   html.motion .pc-big .is-drawn.is-back-on .bk-sig path { stroke-dashoffset: 0; transition: stroke-dashoffset 600ms var(--ease-draw) var(--fd, 1500ms); }
   .pc-big .no-drawing { --fd: 300ms; }
+  /* the burin plates (round six; tools/illustrations/postcards/burin.mjs): every line is a filled shape
+     that swells and tapers, so a line cannot draw itself on by its own dash. Each layer is shown through
+     a mask: the contours through their centre lines (pathLength 1, drawn on by the rules above, class k
+     first, then m), the fine lines and the tone through a soft diagonal edge (.wipe) that travels in from
+     the upper left, the way the plate's light falls. Without motion the masks stand open. */
+  .pc-big .bk-plate .burin .wipe { transform-box: view-box; }
+  html.motion .pc-big .bk-plate .burin .wipe { transform: translate(-160%, -160%); }
+  html.motion .pc-big .is-drawn .bk-plate .burin path.m { transition-delay: 420ms; }
+  html.motion .pc-big .is-drawn .bk-plate .burin .wipe { transform: none; transition: transform 1500ms var(--ease-draw) 360ms; }
+  html.motion .pc-big .is-drawn .bk-plate .burin mask[id$='-t'] .wipe,
+  html.motion .pc-big .is-drawn .bk-plate .burin mask[id$='-q'] .wipe { transition-duration: 1900ms; transition-delay: 620ms; }
 
   /* the morph: the small card's face and the large card share one name while it grows */
   .pc.is-hero .pc-mount, .pc-big .big.is-hero { view-transition-name: pc-hero; }
   ::view-transition-group(pc-hero) { animation-duration: 640ms; animation-timing-function: var(--ease-path); }
   html.pc-vt::view-transition-group(*), html.pc-vt::view-transition-old(*), html.pc-vt::view-transition-new(*) { animation-duration: 640ms; }
   ::view-transition-old(pc-hero), ::view-transition-new(pc-hero) { height: 100%; object-fit: cover; }
+  /* the dimmed, blurred backdrop comes and goes with the card (round six critique): the page's own rule
+     (work.css) gives the root no animation, so the backdrop appeared and vanished in one frame while the
+     card was still large */
+  html.pc-vt::view-transition-old(root) { animation: one-out 360ms var(--ease-ui) both; }
+  html.pc-vt::view-transition-new(root) { animation: one-in 360ms var(--ease-ui) both; }
+  /* the bar is part of the page in this morph: as its own group it stood sharp above the blur for the whole
+     morph and was blurred in one frame at the end of an open */
+  html.pc-vt .bar, html.pc-vt .bar * { view-transition-name: none !important; }
 
   @media (max-width: 699.98px) {
     .pc-big .big.port { height: auto; width: min(calc(100vw - 32px), calc(76svh * var(--ratio))); }

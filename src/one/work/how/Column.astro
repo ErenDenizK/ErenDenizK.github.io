@@ -1,0 +1,127 @@
+---
+/* How it's made as "the column, in section" (how.form: column; round 6, S29; project-story §6.1). The
+   project's scene is a temple whose columns are stacks of paper; this plate is one of those columns drawn
+   as a treatise plate: the left half its outside (fluting, shaded toward the edge, light from the upper
+   left), the right half cut through (the section, hatched at 45 degrees, with the dowel that pins each
+   drum to the next). Each layer of the product is one part of the column, read from the data, top down:
+   the first layer is the capital, the last the stylobate (its three steps), the one before it the base,
+   and the others the drums of the shaft. So the drawing adds no facts: it gives the layers a body.
+   Motion (how.css, a pure function of the section's view progress --hp, both ways): the parts land from
+   the stylobate up, each a thin sheet that thickens into its drum, with no bounce (the product's own rule
+   for anything the user starts); a sheet drops through the shaft into the base (the export, re-opened
+   before it leaves); when the capital lands, the project's light pulses once under the column and settles,
+   the plate's only colour. --hp stays 1 without scroll timelines and under reduced motion. */
+import { cut, seg, arc, hatch, type Pt } from '../engrave';
+interface Props { items: string[]; layers: { name: string; items: number[] }[]; process?: { step: string; by: string }[]; id: string; src?: string }
+const { items, layers, process, id, src } = Astro.props;
+const n = layers.length;
+const W = 420, cx = W / 2, r = 58;
+/* the parts, bottom up, with their heights */
+type Part = { kind: 'stylobate' | 'base' | 'drum' | 'capital'; layer: number; h: number };
+const parts: Part[] = [];
+parts.push({ kind: 'stylobate', layer: n - 1, h: 40 });
+if (n >= 4) parts.push({ kind: 'base', layer: n - 2, h: 34 });
+for (let l = (n >= 4 ? n - 3 : n - 2); l >= 1; l--) parts.push({ kind: 'drum', layer: l, h: 66 });
+parts.push({ kind: 'capital', layer: 0, h: 50 });
+const PAD = 34;
+const H = PAD * 2 + parts.reduce((a, p) => a + p.h, 0) + 30;
+let yb = H - PAD - 10;
+const placed = parts.map((p, i) => { const y1 = yb, y0 = yb - p.h; yb = y0; return { ...p, i, y0, y1 }; });
+const two = (k: number) => String(k + 1).padStart(2, '0');
+
+/* entasis: the shaft narrows a little toward the top */
+const shaftTop = placed.find((p) => p.kind === 'capital')!.y1, shaftBot = placed.find((p) => p.kind === 'base' || p.kind === 'stylobate')!.y0;
+const rad = (y: number) => r - 6 * ((shaftBot - y) / Math.max(1, shaftBot - shaftTop));
+
+function draw(p: (typeof placed)[number]) {
+  const ink: string[] = [], tone: string[] = [], sec: string[] = [], clip: string[] = [];
+  const { y0, y1 } = p;
+  if (p.kind === 'drum') {
+    const ra = rad(y0), rb = rad(y1);
+    ink.push(seg([cx - ra, y0], [cx - rb, y1], 1.9), seg([cx + ra, y0], [cx + rb, y1], 1.9));
+    ink.push(cut(arc(cx, y1, rb, rb * 0.16, 0, 180), 1.4), cut(arc(cx, y0, ra, ra * 0.16, 0, 180), 0.9, 0.35));
+    /* fluting on the outside half: closer toward the edge, so the drum reads round */
+    for (let k = 1; k <= 6; k++) { const t = Math.cos((k / 7) * (Math.PI / 2)); ink.push(seg([cx - ra * t, y0 + 4], [cx - rb * t, y1 - 2], 0.7 + 0.12 * k, 0.15)); }
+    /* shade toward the left edge (the light is upper left, the round turns away at the far side: the
+       outside half is the near side, so only a thin core shadow) */
+    tone.push(hatch(cx - ra, y0, ra * 0.32, p.h, 80, 3, 0.55));
+    clip.push(`M${cx - ra} ${y0}L${cx - ra * 0.68} ${y0}L${cx - rb * 0.68} ${y1}L${cx - rb} ${y1}Z`);
+    sec.push(`M${cx} ${y0 + 2}L${cx + ra} ${y0 + 2}L${cx + rb} ${y1 - 1}L${cx} ${y1 - 1}Z`);
+  } else if (p.kind === 'capital') {
+    const ab = 86, ech = r + 14;
+    ink.push(seg([cx - ab, y0], [cx + ab, y0], 1.9), seg([cx - ab, y0 + 14], [cx + ab, y0 + 14], 1.6), seg([cx - ab, y0], [cx - ab, y0 + 14], 1.6), seg([cx + ab, y0], [cx + ab, y0 + 14], 1.6));
+    ink.push(cut([[cx - ech, y0 + 14], [cx - ech + 6, y0 + 26], [cx - r - 2, y0 + 38], [cx - rad(y1) , y1]], 1.8));
+    ink.push(cut([[cx + ech, y0 + 14], [cx + ech - 6, y0 + 26], [cx + r + 2, y0 + 38], [cx + rad(y1), y1]], 1.8));
+    ink.push(cut(arc(cx, y0 + 40, r + 1, 7, 0, 180), 0.9, 0.3));
+    tone.push(hatch(cx - ech, y0 + 14, 24, 26, 70, 3, 0.55));
+    clip.push(`M${cx - ech} ${y0 + 14}L${cx - ech + 22} ${y0 + 14}L${cx - r + 10} ${y1}L${cx - rad(y1)} ${y1}Z`);
+    sec.push(`M${cx} ${y0 + 1}L${cx + ab} ${y0 + 1}L${cx + ab} ${y0 + 14}L${cx + ech} ${y0 + 14}L${cx + r + 2} ${y0 + 38}L${cx + rad(y1)} ${y1 - 1}L${cx} ${y1 - 1}Z`);
+  } else if (p.kind === 'base') {
+    const rt = rad(y0), rp = r + 22;
+    ink.push(cut([[cx - rt, y0], [cx - rt - 8, y0 + 6], [cx - rp + 4, y0 + 14], [cx - rp, y0 + 20]], 1.8), cut([[cx + rt, y0], [cx + rt + 8, y0 + 6], [cx + rp - 4, y0 + 14], [cx + rp, y0 + 20]], 1.8));
+    ink.push(seg([cx - rp, y0 + 20], [cx + rp, y0 + 20], 1.4), seg([cx - rp, y0 + 20], [cx - rp, y1], 1.7), seg([cx + rp, y0 + 20], [cx + rp, y1], 1.7), seg([cx - rp, y1], [cx + rp, y1], 1.9));
+    /* the slot the checked export rests in */
+    ink.push(seg([cx - 30, y0 + 9], [cx + 30, y0 + 9], 0.8, 0.4));
+    tone.push(hatch(cx - rp, y0 + 20, 20, p.h - 20, 75, 3, 0.55));
+    clip.push(`M${cx - rp} ${y0 + 20}H${cx - rp + 18}V${y1}H${cx - rp}Z`);
+    sec.push(`M${cx} ${y0 + 1}L${cx + rt} ${y0 + 1}L${cx + rp} ${y0 + 20}L${cx + rp} ${y1 - 1}L${cx} ${y1 - 1}Z`);
+  } else {
+    /* three steps: the tests run in three engines */
+    const ws = [r + 66, r + 82, r + 98];
+    ws.forEach((w, k) => {
+      const a = y0 + k * 13 + 1, b = a + 12;
+      ink.push(seg([cx - w, a], [cx + w, a], 1.5), seg([cx - w, a], [cx - w, b], 1.3), seg([cx + w, a], [cx + w, b], 1.3));
+      if (k === 2) ink.push(seg([cx - w, b], [cx + w, b], 2.1));
+      /* the riser's shade: short vertical cuts on the far left of each step */
+      tone.push(hatch(cx - w, a, 34, 12, 90, 3, 0.5));
+      clip.push(`M${cx - w + 1} ${a + 1}H${cx - w + 30}V${b}H${cx - w + 1}Z`);
+    });
+  }
+  return { ink: ink.join(''), tone: tone.join(''), sec: sec.join(''), clip: clip.join('') };
+}
+const art = placed.map((p) => ({ p, d: draw(p) }));
+/* the dowel through the section, drum to drum */
+/* (cut open: a thin outlined pin across each joint, never a solid block) */
+const dowel = placed.filter((p) => p.kind !== 'stylobate' && p.kind !== 'capital').map((p) => `M${cx + 3} ${p.y0 - 7}h9v14h-9Z`).join('');
+/* src: in Home's layer the drawing is not in the page (the page's HTML budget): the slot takes the
+   drawing from the project's static page when the layer is built (scripts/plates.ts) */
+---
+<div class="hm hm-column" style={`--n: ${parts.length}; --h: ${H}px`}>
+  {src ? <div class="hm-art hm-art-slot" data-plate-src={src} style={`aspect-ratio: ${W} / ${H}`} aria-hidden="true"></div> : (
+  <svg class="hm-art" viewBox={`0 0 ${W} ${H}`} width={W} height={H} fill="currentColor" aria-hidden="true" focusable="false">
+    <defs>
+      {art.map((a) => <clipPath id={`${id}-s${a.p.i}`}><path d={a.d.sec} /></clipPath>)}
+      {art.map((a) => <clipPath id={`${id}-t${a.p.i}`}><path d={a.d.clip} /></clipPath>)}
+    </defs>
+    <ellipse class="hm-glow" cx={cx} cy={H - PAD + 4} rx="150" ry="22" />
+    {/* the axis of the column, a construction line */}
+    <path class="hm-con" d={seg([cx, PAD - 18], [cx, H - PAD + 2], 0.6, 0.6)} />
+    {art.map(({ p, d }) => (
+      <g class="hm-part" style={`--i: ${p.i}`}>
+        {d.sec && <path class="hm-sec" d={hatch(cx, p.y0, 110, p.y1 - p.y0, 45, 4.2, 0.75)} clip-path={`url(#${id}-s${p.i})`} />}
+        <path class="hm-tone" d={d.tone} clip-path={`url(#${id}-t${p.i})`} />
+        <path class="hm-ink" d={d.ink} />
+      </g>
+    ))}
+    <path class="hm-dowel" d={dowel} fill="none" stroke="currentColor" stroke-width="0.9" />
+    {/* the export: a sheet that drops through the shaft into the base */}
+    <path class="hm-sheet" d={cut([[cx - 26, 0], [cx + 26, 0]], 2.2, 0.5)} style={`--from: ${PAD - 20}px; --to: ${(placed.find((p) => p.kind === 'base')?.y0 ?? H - PAD - 40) + 9}px`} />
+  </svg>
+  )}
+  <ol class="hm-list" aria-labelledby={id}>
+    {layers.map((l, i) => {
+      const p = placed.find((x) => x.layer === i)!;
+      return (
+        <li class:list={['hm-i', i % 2 ? 'hm-r' : 'hm-l']} style={`--y: ${(p.y0 + p.y1) / 2}px; --i: ${p.i}`}>
+          <span class="hm-name label"><span class="hm-n" aria-hidden="true">{two(i)}</span>{l.name}</span>
+          <ul class="hm-items">{l.items.map((k) => <li>{items[k]}</li>)}</ul>
+        </li>
+      );
+    })}
+  </ol>
+  {process && (
+    <ol class="hm-frieze" aria-label="How it was made">
+      {process.map((s) => <li data-by={s.by}><span class="hm-by label">{s.by}</span>{s.step}</li>)}
+    </ol>
+  )}
+</div>

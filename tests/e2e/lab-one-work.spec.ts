@@ -1,5 +1,5 @@
-/* Work (src/one/work/, spec v2 §3.3 to §3.4): on its scratch page /lab/one-work/ and on /lab/one/, and
-   the static twin of each presentation at /lab/one/work/<slug>/. Hidden like every lab page; no
+/* Work (src/one/work/, spec v2 §3.3 to §3.4): on its scratch page /lab/one-work/ and on Home, and each
+   project's own page at /work/<slug>/ (the canonical project address since 2026-10-17, ADR-0019); no
    horizontal overflow at the four widths; the still twin (no JavaScript, reduced motion) is a complete
    list whose links open complete pages; the flight is a pure function of the scroll position (no pin
    but the last block's hold, the same picture on the way back); the open works from a frame in mid
@@ -10,16 +10,20 @@ import { desktop, tablet, phone, PROJECTS } from './helpers';
 import { BASE } from '../../playwright.config';
 
 const LAB = 'lab/one-work/';
-const page_ = (slug: string) => `lab/one/work/${slug}/`;
+const page_ = (slug: string) => `work/${slug}/`;
 const overflow = (page: Page) => page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
 
-test('the lab pages are hidden: noindex and out of the sitemap', async ({ page, request }) => {
-  for (const path of [LAB, ...PROJECTS.map(page_)]) {
+test('the Work lab is hidden; the project pages are canonical and in the sitemap (ADR-0019)', async ({ page, request }) => {
+  await page.goto(LAB + '?still');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
+  for (const path of PROJECTS.map(page_)) {
     await page.goto(path + '?still');
-    await expect(page.locator('meta[name="robots"]'), path).toHaveAttribute('content', 'noindex');
+    await expect(page.locator('meta[name="robots"]'), path).toHaveCount(0);
+    await expect(page.locator('link[rel="canonical"]'), path).toHaveAttribute('href', new RegExp(`/${path}$`));
   }
   const sitemap = await (await request.get('sitemap-0.xml')).text();
   expect(sitemap).not.toContain('/lab/');
+  for (const path of PROJECTS.map(page_)) expect(sitemap, path).toContain(`/${path}<`);
 });
 
 for (const [label, size] of [['1440', desktop], ['1180', tablet], ['390', phone], ['320', { ...phone, viewport: { width: 320, height: 640 } }]] as const) {
@@ -59,16 +63,16 @@ test.describe('the still twin', () => {
       await expect(proj).toHaveAttribute('data-aura', /^#[0-9a-f]{6} #[0-9a-f]{6} #[0-9a-f]{6}$/);
       await expect(proj.locator('.w-title')).toBeVisible();
       await expect(proj.locator('.w-promise')).toBeVisible();
-      await expect(proj.locator('.btn')).toHaveAttribute('href', new RegExp(`/lab/one/work/${slug}/$`));
+      await expect(proj.locator('.btn')).toHaveAttribute('href', new RegExp(`${BASE}work/${slug}/$`));
       await expect(proj.locator('.fl-hero .pr')).toBeVisible();
     }
     await page.locator('.proj[data-slug="recto"] .btn').click();
-    await expect(page).toHaveURL(/\/lab\/one\/work\/recto\/$/);
+    await expect(page).toHaveURL(new RegExp(`${BASE}work/recto/$`));
     await expect(page.locator('h1')).toHaveText('Recto');
     await expect(page.locator('.facts dt')).toHaveText(['Role', 'Runs on', 'Stack']);
     await expect(page.locator('.st')).toHaveCount(3);
     await expect(page.locator('.st-title').first()).toHaveText('Markup');
-    await expect(page.locator('[data-close]')).toHaveAttribute('href', /\/lab\/one\/#recto$/);
+    await expect(page.locator('[data-close]')).toHaveAttribute('href', new RegExp(`${BASE}#recto$`));
     await expect(page.locator('.cap-go')).toHaveAttribute('href', 'https://erendenizk.github.io/recto/');
     /* unwritten sections stay hidden (Recto's why, learned and next are placeholders) */
     expect(await page.locator('body').innerText()).not.toMatch(/owner to|to confirm|to come/i);
@@ -88,7 +92,7 @@ test.describe('reduced motion', () => {
     await expect(page.locator('#work')).not.toHaveAttribute('data-live', '');
     expect(await page.locator('.proj#recto .fl-hero').evaluate((e) => getComputedStyle(e).transform)).toBe('none');
     await page.locator('.proj[data-slug="english-prep"] .btn').click();
-    await expect(page).toHaveURL(/\/lab\/one\/work\/english-prep\/$/);
+    await expect(page).toHaveURL(new RegExp(`${BASE}work/english-prep/$`));
     await expect(page.locator('.layer .cap-x')).toBeFocused();
     await expect(page.locator('.layer .steps')).not.toHaveClass(/pinned/);
   });
@@ -105,7 +109,7 @@ for (const [label, size] of [['desktop', desktop], ['phone', phone]] as const) {
       const y0 = await page.evaluate(() => scrollY);
       const hl = await page.evaluate(() => history.length);
       await page.locator('.proj[data-k="1"] .btn').click();
-      await expect(page).toHaveURL(/\/lab\/one\/work\/english-prep\/$/);
+      await expect(page).toHaveURL(new RegExp(`${BASE}work/english-prep/$`));
       await expect(page.locator('.layer .cap-x')).toBeFocused();
       await expect(page.locator('#main')).toHaveJSProperty('inert', true);
       expect(await page.evaluate(() => history.length)).toBe(hl + 1);
@@ -136,7 +140,7 @@ test.describe('the flight (desktop)', () => {
   const at = (page: Page, slug: string, f: number) => page.evaluate(([s, f]) => scrollTo({ top: document.getElementById(s as string)!.getBoundingClientRect().top + scrollY + (f as number) * innerHeight, behavior: 'instant' }), [slug, f]);
 
   test('nothing is pinned but the last block, and every value follows the scroll position', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await expect(page.locator('#work')).toHaveAttribute('data-live', '');
     const sticky = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>('#work *')].filter((e) => getComputedStyle(e).position === 'sticky').map((e) => e.closest('.proj')?.id));
     expect(sticky).toEqual(['eat-map']);
@@ -155,7 +159,7 @@ test.describe('the flight (desktop)', () => {
   });
 
   test('the drawings load as layers, and the places of the last one light along its route', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     for (const slug of PROJECTS) {
       await at(page, slug, 0);
       await expect(page.locator(`#${slug} .fl-art.live .fl-layer`)).toHaveCount(3);
@@ -169,7 +173,7 @@ test.describe('the flight (desktop)', () => {
   });
 
   test('round five (V17): the Eat Map hold is short and never one still picture', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     const hold = await page.locator('#eat-map').evaluate((p: HTMLElement) => p.offsetHeight - p.querySelector<HTMLElement>('.fl-stage')!.offsetHeight);
     /* spec v3 §9.2: 300 px shorter than the half view of round 2 (450 px at 900 px), never under 120 px */
     expect(hold).toBeGreaterThanOrEqual(120);
@@ -196,7 +200,7 @@ test.describe('the flight (desktop)', () => {
   });
 
   test('round five (V17): the side frames are fetched before a jump and shown only once decoded', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await page.waitForTimeout(1500);
     /* still at the top of the page: every picture of Work is already here, decoded and shown */
     const sides = await page.locator('#work .fl-side').evaluateAll((s) => s.map((e) => {
@@ -208,7 +212,7 @@ test.describe('the flight (desktop)', () => {
   });
 
   test('round five (V17): the click lifts the paper before any other work, and the page is not captured', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await at(page, 'recto', 0); await page.waitForTimeout(400);
     await page.evaluate(() => {
       const w = window as unknown as { seen: { lift: boolean; root: string[] } };
@@ -233,10 +237,10 @@ test.describe('the flight (desktop)', () => {
   });
 
   test('a frame clicked in mid flight opens its project; the layer has its rail and scrubbed steps', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await at(page, 'recto', 0.25); await page.waitForTimeout(400);
     await page.locator('#recto .fl-hero').click({ force: true });
-    await expect(page).toHaveURL(/\/lab\/one\/work\/recto\/$/);
+    await expect(page).toHaveURL(new RegExp(`${BASE}work/recto/$`));
     await expect(page.locator('.layer .cap-x')).toBeFocused();
     const rail = page.locator('.layer .rail.in-layer');
     await expect(rail).toBeVisible();
@@ -259,8 +263,8 @@ test.describe('the flight (desktop)', () => {
 });
 
 test('on Home every project link stays under the site base once', async ({ page }) => {
-  await page.goto('lab/one/?still');
-  for (const slug of PROJECTS) await expect(page.locator(`#${slug} .btn`)).toHaveAttribute('href', `${BASE}lab/one/work/${slug}/`);
+  await page.goto('?still');
+  for (const slug of PROJECTS) await expect(page.locator(`#${slug} .btn`)).toHaveAttribute('href', `${BASE}work/${slug}/`);
 });
 
 test.describe('round 3: capsules and cutaway (desktop)', () => {
@@ -268,7 +272,7 @@ test.describe('round 3: capsules and cutaway (desktop)', () => {
   const at = (page: Page, slug: string) => page.evaluate((s) => scrollTo({ top: document.getElementById(s)!.getBoundingClientRect().top + scrollY, behavior: 'instant' }), slug);
 
   test('the close is its own capsule, labelled first, folded after 4 s and on later opens; one height for both', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await at(page, 'recto'); await page.waitForTimeout(400);
     await page.locator('#recto .btn').click();
     await expect(page.locator('.layer.settled')).toHaveCount(1);
@@ -276,7 +280,10 @@ test.describe('round 3: capsules and cutaway (desktop)', () => {
     await expect(page.locator('.layer .caps')).not.toHaveClass(/folded/);
     await expect(page.locator('.layer .cap-lb')).toBeVisible();
     await expect(page.locator('.layer .cap-kbd')).toHaveText('esc');
-    /* two capsules, apart, on one line and one height (T13, T14) */
+    /* two capsules, apart, on one line and one height (T13, T14); measured at rest, with the pointer away
+       (a hovered glass leans toward the pointer: the liquid motion, S15) */
+    await page.mouse.move(5, 300);
+    await expect.poll(() => a.evaluate((el) => el.style.transform), { timeout: 4000 }).toBe('');
     await page.waitForTimeout(500);
     const [bc, ba] = [await c.boundingBox(), await a.boundingBox()];
     expect(Math.round(bc!.height)).toBe(Math.round(ba!.height));
@@ -294,18 +301,20 @@ test.describe('round 3: capsules and cutaway (desktop)', () => {
     await page.keyboard.press('Escape');
   });
 
-  test('how it is made is the cutaway: one slab and one labelled entry per layer, every item kept', async ({ page }) => {
-    await page.goto('lab/one/');
+  /* round 6 (S29): Recto draws its own plate, the column in section (how.form: column); the stack cutaway
+     stays the default form and is drawn by HowMade.astro for any project without a form of its own */
+  test('how it is made is the project\'s plate: one part and one labelled entry per layer, every item kept', async ({ page }) => {
+    await page.goto('');
     await at(page, 'recto'); await page.waitForTimeout(400);
     await page.locator('#recto .btn').click();
     await expect(page.locator('.layer.settled')).toHaveCount(1);
     await expect(page.locator('.layer .how-crop')).toHaveCount(0);
-    await expect(page.locator('.layer .cut .pl')).toHaveCount(5);
-    await expect(page.locator('.layer .cut-i')).toHaveCount(5);
-    await expect(page.locator('.layer .cut-i .cut-name').first()).toContainText('Browser tab');
-    await expect(page.locator('.layer .cut-items li')).toHaveCount(6);
-    /* the drawing follows the section's progress: closed and undrawn below the view, apart once in view */
-    const hp = () => page.locator('.layer .cut').evaluate((e) => +getComputedStyle(e).getPropertyValue('--hp'));
+    await expect(page.locator('.layer .hm-column .hm-part')).toHaveCount(5);
+    await expect(page.locator('.layer .hm-column .hm-i')).toHaveCount(5);
+    await expect(page.locator('.layer .hm-i .hm-name').first()).toContainText('Browser tab');
+    await expect(page.locator('.layer .hm-items li')).toHaveCount(6);
+    /* the drawing follows the section's progress: unbuilt below the view, standing once in view */
+    const hp = () => page.locator('.layer .hm').evaluate((e) => +getComputedStyle(e).getPropertyValue('--hp'));
     await page.evaluate(() => { const l = document.querySelector('.layer')!; const c = l.querySelector('.p-how')!; l.scrollTop = c.getBoundingClientRect().top + l.scrollTop - innerHeight; });
     await page.waitForTimeout(300);
     const low = await hp();
@@ -320,7 +329,7 @@ test.describe('round 3: capsules and cutaway (desktop)', () => {
 test.describe('round 3: capsules on the phone', () => {
   test.use(phone);
   test('close at the left gutter, actions at the right one, one height', async ({ page }) => {
-    await page.goto('lab/one/');
+    await page.goto('');
     await page.evaluate(() => scrollTo({ top: document.getElementById('recto')!.getBoundingClientRect().top + scrollY, behavior: 'instant' }));
     await page.waitForTimeout(400);
     await page.locator('#recto .btn').click();
@@ -332,5 +341,45 @@ test.describe('round 3: capsules on the phone', () => {
     expect(Math.round(c.height)).toBe(Math.round(a.height));
     expect(c.height).toBeGreaterThanOrEqual(52);
     expect((await page.locator('.layer .cap-x .icon').boundingBox())!.width).toBeGreaterThanOrEqual(19);
+  });
+});
+
+/* Round six, rows S20, S21, S36 (engraving guide §1.7, §2.11): the scenes never pile up in motion, and a
+   phone gets each scene's own portrait master, not the desktop drawing's back layer. */
+test.describe('round six: the engravings', () => {
+  const go = (page: Page, slug: string, f = 0) => page.evaluate(([s, k]) => scrollTo({ top: document.getElementById(s as string)!.getBoundingClientRect().top + scrollY + (k as number) * innerHeight, behavior: 'instant' }), [slug, f]);
+
+  test('desktop: the short block\'s drawing is not lifted into the block above, and every box overflows its block by under 10 %', async ({ page }) => {
+    await page.setViewportSize(desktop.viewport);
+    await page.goto('');
+    for (const slug of PROJECTS) {
+      await go(page, slug); await page.waitForTimeout(300);
+      const o = await page.locator(`#${slug}`).evaluate((p: HTMLElement) => {
+        const b = p.getBoundingClientRect(), a = p.querySelector<HTMLElement>('.fl-art')!.getBoundingClientRect();
+        return { above: (b.top - a.top) / b.height, below: (a.bottom - b.bottom) / b.height };
+      });
+      expect(o.above).toBeLessThan(0.1);
+      expect(o.below).toBeLessThan(0.1);
+    }
+  });
+
+  test('phone: each scene with a phone master loads it as its one layer, and its route is the phone one', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...phone, deviceScaleFactor: 3 });
+    const page = await ctx.newPage();
+    await page.goto('');
+    for (const slug of ['recto', 'eat-map']) {
+      await go(page, slug);
+      await expect(page.locator(`#${slug} .fl-art.live .fl-layer`)).toHaveCount(1);
+      await expect(page.locator(`#${slug} .fl-art .fl-layer-phone`)).toHaveCount(1);
+    }
+    await expect(page.locator('#eat-map .fl-route-p')).toBeVisible();
+    await expect(page.locator('#eat-map .fl-route-d')).toBeHidden();
+    /* the places of the phone route light up as the block arrives */
+    const lit = () => page.locator('#eat-map .fl-route-p .fl-stop').evaluateAll((g) => g.reduce((a, x) => a + +getComputedStyle(x).opacity, 0));
+    await go(page, 'eat-map', -0.3); await page.waitForTimeout(300);
+    const before = await lit();
+    await go(page, 'eat-map', 0.1); await page.waitForTimeout(300);
+    expect(await lit()).toBeGreaterThan(before);
+    await ctx.close();
   });
 });

@@ -1,0 +1,37 @@
+---
+/* A retired address of the four-page site (ADR-0019): a static page that sends the reader on to where the
+   content lives now. GitHub Pages has no server redirects, so this is a meta refresh at 0 s plus a plain
+   link for a browser that ignores it. noindex, and its canonical line names the new address, so a search
+   engine moves the old URL's standing there. Out of the sitemap (astro.config.mjs). */
+import { getSite, abs } from '../lib/site';
+interface Props {
+  /** the new address, under the site base (url('#work'), url('record/')) */
+  to: string;
+  /** what the reader is sent to, in words: "Work on Home" */
+  label: string;
+}
+const { to, label } = Astro.props;
+const site = await getSite();
+const target = new URL(to, Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{`${label} · ${site.name}`}</title>
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href={target}>
+  <meta http-equiv="refresh" content={`0; url=${to}`}>
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#121214">
+  <style>
+    html { background: #121214; color: #e8e3dd; font: 17px/1.5 system-ui, sans-serif; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+    a { color: #a8d3ff; }
+  </style>
+</head>
+<body>
+  <p data-redirect={to}>This page moved: <a href={to}>{label}</a>.</p>
+</body>
+</html>

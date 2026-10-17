@@ -64,9 +64,9 @@
      1. the lean is a torque on the clip: each step a sideways force -900 px/s² x sin(lean) on the rope's
         last point, so the rope bends a few pixels as the pointer leans the card and relaxes on the same
         hang spring; a pitch lifts the clip toward the viewer by L (1 - cos pitch) / 2;
-     2. the card's yaw (the entrance twist, the turn) twists the strap's lower 30 %: that part of the
-        ribbon narrows by |cos yaw| and shows its plain back face past 90 deg (the lettering is masked off
-        it), so a turned card hangs from a half-twisted strap, as a real one does;
+     2. the card's yaw (the entrance twist, the turn) turns the strap. Round six (review row S18): the
+        whole visible strap turns as one ribbon, narrowing by |cos yaw| and showing its plain back face past
+        90 deg; the twist is taken up where the strap fades out of the page, so nothing breaks mid-rope;
      3. touch gets the rope too, without the hand: the strap is the same renderer, and the entrance push
         swings strap and card together instead of the card swinging about a fixed clip;
      4. the hover sway's push and the lean's force add, so sway and lean read as one motion;
@@ -123,7 +123,12 @@ const BOUNCE = 0.3; // restitution at a limit
 const TWIST_MAX = 12; // deg, while held
 /* round three: the lanyard follows the card (see the header) */
 const K_LEAN = 900; // px/s² per radian of lean, sideways on the clip
-const TWIST_PART = 0.3; // the strap's lower part that twists with the card's yaw
+/* round six (review row S18): the strap no longer breaks at 70 % of its length. The whole visible strap
+   turns with the card, as one ribbon; the twist is taken up in its top part, where the strap fades out of
+   the page: the first TWIST_ZONE of the fade, which the mask keeps fully transparent (IdCard.astro,
+   #idc-rope-fade), so the twist itself is never seen. */
+const TWIST_ZONE = 0.3;
+const RIBBON_SUB = 4; // samples per rope segment along the drawn curve
 const SCROLL_DRAG = 0.04, SCROLL_DRAG_MAX = 60; // px/s at the rope's middle per px/s of scroll, and the cap
 const SCROLL_TILT = 0.3; // the most a scroll tips the photo's layers (--py)
 
@@ -146,9 +151,11 @@ function setup(el: HTMLElement) {
   const rope = el.querySelector<SVGSVGElement>('[data-card-rope]');
   const ropePath = rope?.querySelector<SVGPathElement>('[data-rope-path]');
   const ropeFade = rope?.querySelector<SVGLinearGradientElement>('linearGradient');
-  /* round three: the strap's lower part, drawn narrower as it twists, and the lettering's mask */
-  const ropeLow = [...(rope?.querySelectorAll<SVGPathElement>('[data-rope-low]') ?? [])];
-  const ropeUp = [...(rope?.querySelectorAll<SVGPathElement>('[data-rope-up]') ?? [])];
+  /* round six: the strap as a ribbon (edge, front, back) and the lettering's mask */
+  const ribEdge = rope?.querySelector<SVGPathElement>('[data-rope-edge]');
+  const ribFront = rope?.querySelector<SVGPathElement>('[data-rope-front]');
+  const ribBack = rope?.querySelector<SVGPathElement>('[data-rope-back]');
+  let fadeLen = 140;
   const textStops = [...(rope?.querySelectorAll<SVGStopElement>('[data-rope-tstop]') ?? [])];
   const hold = el.querySelector<HTMLElement>('.idc-hold');
   /* the floor shadow (round five, round-four critique §6): it stayed a full card-sized dark block while the
@@ -247,7 +254,8 @@ function setup(el: HTMLElement) {
     segLen = (L / SEG) * 0.985;
     damp = 2 * 0.9 * Math.sqrt(G / L);
     limits();
-    if (ropeFade) ropeFade.setAttribute('y2', String(Math.min(0.6 * L, 140)));
+    fadeLen = Math.min(0.6 * L, 140);
+    if (ropeFade) ropeFade.setAttribute('y2', String(fadeLen));
     rope?.querySelector('[data-rope-tgrad]')?.setAttribute('y2', String(L));
     /* hang the rope straight and let it settle offline, so the page opens on the rope's own rest */
     for (let i = 0; i <= SEG; i++) { const p = pts[i]; p.x = p.px = 0; p.y = p.py = (restY * i) / SEG; }
@@ -356,18 +364,78 @@ function setup(el: HTMLElement) {
       return d;
     };
     ropePath.setAttribute('d', trace(0, SEG));
-    if (!ropeLow.length) return;
-    /* the twist: the lower part narrows by |cos yaw| and shows its back face past 90 deg */
-    const k = Math.round(SEG * (1 - TWIST_PART));
-    const c = Math.cos((yaw * Math.PI) / 180);
-    const up = trace(0, k), low = trace(k, SEG);
-    for (const e of ropeUp) e.setAttribute('d', up);
-    for (const e of ropeLow) { e.setAttribute('d', low); e.style.strokeWidth = `calc(${Math.max(0.1, Math.abs(c)).toFixed(3)} * var(--sw))`; }
-    rope!.classList.toggle('is-back', c < 0);
-    const vis = c <= 0.3 ? 0 : (c - 0.3) / 0.7;
+    if (!ribEdge || !ribFront || !ribBack) return;
+    ribbon(P, yaw);
+  }
+
+  /** The strap as a ribbon (round six, review row S18). Samples the same curve as trace(); at each
+      sample the strap is turned by yaw x ramp, where the ramp climbs from 0 at the anchor to 1 inside the
+      fade (smoothstep), so all of the visible strap turns together with the card and no kink shows. The
+      half width is |cos| of that turn; where the cos is negative the strap shows its plain back. */
+  function ribbon(P: number[][], yaw: number) {
+    const mid = (i: number) => [(P[i][0] + P[i + 1][0]) / 2, (P[i][1] + P[i + 1][1]) / 2];
+    const S: number[][] = [];
+    for (let i = 0; i < SEG; i++) {
+      /* segment i of the drawn curve: P0 -> mid(0) is a line; then quadratics through the midpoints */
+      const a = i === 0 ? P[0] : mid(i - 1);
+      const b = i === SEG - 1 ? P[SEG] : mid(i);
+      const c = i === 0 ? [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2] : P[i];
+      for (let j = 0; j < RIBBON_SUB; j++) {
+        const t = j / RIBBON_SUB, u = 1 - t;
+        S.push([u * u * a[0] + 2 * u * t * c[0] + t * t * b[0], u * u * a[1] + 2 * u * t * c[1] + t * t * b[1]]);
+      }
+    }
+    S.push(P[SEG]);
+    const n = S.length;
+    const W = 0.066 * w; // the strap's width, 6.6 % of the card's (IdCard.astro)
+    const zone = Math.max(8, TWIST_ZONE * fadeLen);
+    let along = 0;
+    const cs: number[] = [], nx: number[] = [], ny: number[] = [];
+    for (let i = 0; i < n; i++) {
+      if (i > 0) along += Math.hypot(S[i][0] - S[i - 1][0], S[i][1] - S[i - 1][1]);
+      const p = S[Math.max(0, i - 1)], q = S[Math.min(n - 1, i + 1)];
+      const dx = q[0] - p[0], dy = q[1] - p[1], d = Math.hypot(dx, dy) || 1;
+      nx.push(-dy / d); ny.push(dx / d);
+      const r = Math.min(1, along / zone), ramp = r * r * (3 - 2 * r);
+      cs.push(Math.cos((yaw * ramp * Math.PI) / 180));
+    }
+    const f = (v: number) => v.toFixed(2);
+    /** a closed shape between offsets +h and -h over samples a..b (fractional ends allowed) */
+    const at = (k: number, h: (i: number) => number, side: 1 | -1) => {
+      const i = Math.min(n - 2, Math.floor(k)), t = k - i;
+      const x = S[i][0] + (S[i + 1][0] - S[i][0]) * t, y = S[i][1] + (S[i + 1][1] - S[i][1]) * t;
+      const hx = nx[i] + (nx[i + 1] - nx[i]) * t, hy = ny[i] + (ny[i + 1] - ny[i]) * t;
+      const hh = h(i) + (h(i + 1) - h(i)) * t;
+      return `${f(x + side * hx * hh)} ${f(y + side * hy * hh)}`;
+    };
+    const shape = (a: number, b: number, h: (i: number) => number) => {
+      if (b - a <= 0) return '';
+      const ks: number[] = [a];
+      for (let i = Math.ceil(a + 1e-6); i < b; i++) ks.push(i);
+      ks.push(b);
+      return 'M' + ks.map((k) => at(k, h, 1)).join('L') + 'L' + ks.reverse().map((k) => at(k, h, -1)).join('L') + 'Z';
+    };
+    const hEdge = (i: number) => (W / 2) * Math.max(0.05, Math.abs(cs[i]));
+    const hBand = (i: number) => Math.max(0, hEdge(i) - 1);
+    ribEdge!.setAttribute('d', shape(0, n - 1, hEdge));
+    /* runs of one face, split where the cos crosses zero (there the strap is edge-on) */
+    let front = '', back = '', a = 0;
+    for (let i = 0; i < n - 1; i++) {
+      if ((cs[i] >= 0) === (cs[i + 1] >= 0)) continue;
+      const k = i + cs[i] / (cs[i] - cs[i + 1]);
+      if (cs[i] >= 0) front += shape(a, k, hBand); else back += shape(a, k, hBand);
+      a = k;
+    }
+    if (cs[n - 1] >= 0) front += shape(a, n - 1, hBand); else back += shape(a, n - 1, hBand);
+    ribFront!.setAttribute('d', front || 'M0 0');
+    ribBack!.setAttribute('d', back || 'M0 0');
+    /* the lettering: full while the strap faces the viewer, gone before it is edge-on */
+    const c = cs[n - 1];
+    const vis = c <= 0.35 ? 0 : Math.min(1, (c - 0.35) / 0.5);
     if (textStops.length === 2) {
-      textStops[0].setAttribute('offset', ((k - 0.8) / SEG).toFixed(3));
-      textStops[1].setAttribute('offset', ((k + 0.2) / SEG).toFixed(3));
+      textStops[0].setAttribute('offset', '0');
+      textStops[1].setAttribute('offset', '1');
+      textStops[0].setAttribute('stop-opacity', vis.toFixed(3));
       textStops[1].setAttribute('stop-opacity', vis.toFixed(3));
     }
   }

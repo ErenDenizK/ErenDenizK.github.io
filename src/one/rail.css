@@ -66,6 +66,8 @@ html.rail-bloom .rail.rail .rail-i {
   height: 100%; padding: 0 0 0 20px; gap: 16px; justify-content: flex-end; box-shadow: none; pointer-events: auto;
   font: 400 23px / 1 var(--f-serif); letter-spacing: -0.006em; font-optical-sizing: auto;
   border-radius: var(--r-focus);
+  /* the press state is designed (round six, S14): the browser's own tap box must not cover it */
+  -webkit-tap-highlight-color: transparent;
 }
 html.rail-bloom .rail.rail .rail-t {
   opacity: 1; max-width: none; overflow: visible; color: var(--ink-3);
@@ -141,7 +143,8 @@ html.rail-touch .bl-veil::after {
 /* ---------- the effects: the arc, the pool of light, the scrub thumb and its name ---------- */
 .bl-fx { position: fixed; inset: 0; z-index: calc(var(--z-rail) + 1); pointer-events: none; }
 .bl-arc { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; color: var(--ink); opacity: 0; transition: opacity 220ms var(--ease-out); }
-.bl-arc path { fill: none; stroke: url(#bl-arc-g); stroke-width: 1; }
+/* the stroke is set per rail in bloom.ts (its gradient and its breaks have ids of their own) */
+.bl-arc path { fill: none; stroke-width: 1; }
 .bl-fx.on .bl-arc { opacity: 0.16; transition-duration: 360ms; }
 .bl-pool {
   position: absolute; left: var(--ox); top: var(--oy); width: 160px; height: 160px; border-radius: 50%;
@@ -201,3 +204,31 @@ html.rail-touch .bl-tag-n { font-size: 28px; }
   html.rail-bloom .rail.rail .rail-t { transition: color 120ms linear; translate: none !important; }
 }
 html.still .bl-veil, html.still .bl-veil > i, html.still .bl-veil::after, html.still .bl-arc, html.still .bl-pool, html.still .bl-tag, html.still .bl-thumb { transition: none; }
+
+/* ---------- round six: the press on a name, and a link's dot flying into its bead (bloom.ts, S14, S33) ---------- */
+/* the press: the name gives and takes its section's light; its dot grows into the lit line and a ring of
+   light leaves it; the other names step back. The close follows once the press has been seen (150 ms). */
+html.rail-bloom .rail.rail .rail-t { transform-origin: 100% 50%; }
+html.rail-bloom .rail.rail.has-press .rail-i:not(.is-press) .rail-t { opacity: 0.42; transition: opacity 160ms var(--ease-out), color 180ms var(--ease-out); }
+html.rail-bloom .rail.rail .rail-i.is-press .rail-t {
+  color: var(--a); scale: 0.96; translate: -4px 0;
+  text-shadow: 0 0 22px color-mix(in srgb, var(--a) 50%, transparent);
+  transition: color 90ms var(--ease-out), scale 90ms var(--ease-out), translate 90ms var(--ease-out);
+}
+/* doubled class: it wins over the hover dash (12 px wide) under the pressing pointer */
+.rail-i.rail-i.is-press .bl-dot::before {
+  width: 3px; height: 22px; border-radius: 1.5px; background: var(--a);
+  box-shadow: 0 0 12px 2px color-mix(in srgb, var(--a) 65%, transparent);
+  transition: width 90ms var(--ease-out), height 140ms var(--ease-out), background-color 90ms;
+}
+.bl-dot::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%;
+  border: 1px solid var(--a); opacity: 0; scale: 0.2; pointer-events: none;
+}
+.rail-i.is-press .bl-dot::after { animation: bl-ring 560ms cubic-bezier(.22, 1, .36, 1) both; }
+@keyframes bl-ring { 0% { opacity: 0.9; scale: 0.2; } 100% { opacity: 0; scale: 1.6; } }
+.bl-fly {
+  position: fixed; z-index: calc(var(--z-rail) + 2); width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%;
+  background: var(--c); box-shadow: 0 0 10px 1px var(--c); pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) { .rail-i.is-press .bl-dot::after { animation: none; } }

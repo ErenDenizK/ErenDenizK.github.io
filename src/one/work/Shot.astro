@@ -6,13 +6,20 @@ import type { Screen } from './data';
 interface Props { s: Screen; sizes: string; phoneSizes: string; eager?: boolean; cls?: string; alt?: string }
 const { s, sizes, phoneSizes, eager = false, cls = 'shot-img', alt } = Astro.props;
 const PHONE = '(max-width: 699.98px)';
+/* no phone capture: under 700 px the wide screen is cropped to a squarer frame, so covering it takes about
+   1.6 times the frame's width in pixels (the layout sweep measured 1.2-1.34x stretch at 3x without this).
+   The phone size is the caller's own phone entry (or phoneSizes), times 1.6; a print hidden on phones
+   names 1px there and keeps it, so it never fetches more. */
+const phoneOf = (x: string) => (x === '1px' ? x : `calc((${x.replace(/^calc\((.*)\)$/, '$1')}) * 1.6)`);
+const own = sizes.startsWith(PHONE) ? /^\(max-width: 699\.98px\)\s+([^,]+),\s*(.*)$/.exec(sizes) : null;
+const wideSizes = s.phone ? sizes : own ? `${PHONE} ${phoneOf(own[1].trim())}, ${own[2]}` : `${PHONE} ${phoneOf(phoneSizes)}, ${sizes}`;
 const style = `--fx: ${s.focus[0] * 100}%; --fy: ${s.focus[1] * 100}%; --pfx: ${s.phoneFocus[0] * 100}%; --pfy: ${s.phoneFocus[1] * 100}%`;
 ---
 <picture>
   {s.phone && <source media={PHONE} type="image/avif" srcset={s.phone.avif} sizes={phoneSizes} />}
   {s.phone && <source media={PHONE} type="image/webp" srcset={s.phone.webp} sizes={phoneSizes} />}
-  <source type="image/avif" srcset={s.wide.avif} sizes={sizes} />
-  <source type="image/webp" srcset={s.wide.webp} sizes={sizes} />
+  <source type="image/avif" srcset={s.wide.avif} sizes={wideSizes} />
+  <source type="image/webp" srcset={s.wide.webp} sizes={wideSizes} />
   <img class={cls} src={s.wide.src} alt={alt ?? s.alt} width={s.wide.w} height={s.wide.h} style={style}
     loading={eager ? undefined : 'lazy'} decoding="async" data-phone-frame={s.phone ? '' : undefined} />
 </picture>

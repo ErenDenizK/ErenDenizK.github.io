@@ -8,7 +8,12 @@
 .media { position: relative; aspect-ratio: 1; width: 100%; --gx: 50%; --gy: 40%; }
 .media .m-stage { position: absolute; inset: 0; mix-blend-mode: plus-lighter; }
 .media .m-shadow-pic { display: contents; }
-.media .m-shadow { position: absolute; inset: 0; width: 100%; height: 100%; mix-blend-mode: multiply; pointer-events: none; transition: opacity 200ms linear; }
+.media .m-shadow { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; transition: opacity 200ms linear; }
+/* S10: the shadow is black with alpha and needs no blend mode. An older grey map (data-blend
+   "multiply") still multiplies; on iPhone that blend can land in a layer without the dark ground
+   and show a white square, so there it is not drawn at all: no shadow is better than a box. */
+.media .m-shadow[data-blend="multiply"] { mix-blend-mode: multiply; }
+@supports (-webkit-touch-callout: none) { .media .m-shadow[data-blend="multiply"] { display: none; } }
 .media .m-glow { position: absolute; inset: -34%; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--light, var(--edk)) var(--glow-base), transparent), color-mix(in srgb, var(--light, var(--edk)) 4%, transparent) 55%, transparent 100%);
   transition: background var(--d-4) var(--ease-move); }

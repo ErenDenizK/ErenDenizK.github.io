@@ -1,0 +1,83 @@
+---
+/* The first-screen plate (review row S32; engraving guide §2.8 as the first-screen study recommends it,
+   comp A "The signal"). The Bostancı platform engraved in the photograph's own camera, so the plate
+   continues the owner's photograph to both edges of the screen. This component is the engraving only:
+   the step that builds the first screen places it, puts the photograph in the box this plate leaves for
+   it, and sets the text on top. Drawn by tools/illustrations/plates/firstplate.py.
+
+   Geometry (the photograph's box, for the step that places it):
+   - desktop: the plate is 1.111 view heights tall and centred on the page axis; the photograph is the
+     whole view height, 3:4, with its left edge 21.278vh left of the axis (top 0, 75vh x 100vh). The
+     vanishing point is on the axis at 57.59 % of the plate's height; the red signal sits just above it.
+   - phone (under 700 px): the plate is the full width; the photograph is full width, 3:4, its top at
+     16.41vw (64 / 390), and the vanishing point at 28.36 % across and 39.71 % down the plate.
+
+   Groups and depth: sky and horizon (back), ground and structure (mid), wires and rain (front), the
+   scaffold (the brief's construction drawing since round one) and the light (lamp, signal, reflections).
+   Each group is one image, so it is rasterised once and moves on the compositor.
+
+   Arrival (spec: the study's comp A clock): each group opens as a radial mask that grows from the
+   vanishing point: scaffold at 0, ground 300 ms, horizon 700, structure 900, wires 1200, sky 1500, rain
+   1800, light 2200; each over 1800 ms on the Shopify line curve (cubic-bezier(.34,.22,.47,.84)). Every
+   entrance finishes. Pointer parallax on a fine pointer: back 4 px, mid 9 px, front 14 px, smoothed.
+   Still twin (no JS, reduced motion): the plate whole and still. */
+const GROUPS = [
+  ['scaffold', 'mid', 0], ['sky', 'back', 1500], ['horizon', 'back', 700], ['ground', 'mid', 300],
+  ['structure', 'mid', 900], ['wires', 'front', 1200], ['rain', 'front', 1800], ['light', 'mid', 2200],
+] as const;
+const files = import.meta.glob<string>('./art/signal/signal-*.svg', { eager: true, query: '?url&no-inline', import: 'default' });
+/* no-inline: Vite would inline the small groups as data URIs into Home's HTML (about 9 KB gzip of
+   first-paint budget); as files they load beside the HTML and cache across pages */
+const src = (g: string, phone: boolean) => files[`./art/signal/signal-${g}${phone ? '-phone' : ''}.svg`];
+---
+<div class="sigplate" data-sigplate aria-hidden="true">
+  {GROUPS.map(([g, depth, delay]) => (
+    <picture class={`sp-g sp-${depth}`} style={`--d: ${delay}ms`} data-group={g}>
+      <source media="(max-width: 699.98px)" srcset={src(g, true)} />
+      <img src={src(g, false)} alt="" width="1600" height="1000" decoding="async" fetchpriority={g === 'ground' ? 'high' : undefined} />
+    </picture>
+  ))}
+</div>
+
+<script>
+  /* pointer parallax (desktop, fine pointer, motion allowed): one smoothed --px/--py on the plate, the
+     layers multiply it by their depth. Stops writing once settled. */
+  const plate = document.querySelector<HTMLElement>('[data-sigplate]');
+  const fine = matchMedia('(pointer: fine) and (min-width: 700px)');
+  const calm = matchMedia('(prefers-reduced-motion: reduce)');
+  if (plate && fine.matches && !calm.matches) {
+    let tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+    const step = () => {
+      x += (tx - x) * 0.2; y += (ty - y) * 0.2;
+      plate.style.setProperty('--px', x.toFixed(3)); plate.style.setProperty('--py', y.toFixed(3));
+      raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.002 ? requestAnimationFrame(step) : 0;
+    };
+    addEventListener('pointermove', (e) => {
+      tx = (e.clientX / innerWidth - 0.5) * 2; ty = (e.clientY / innerHeight - 0.5) * 2;
+      if (!raf) raf = requestAnimationFrame(step);
+    }, { passive: true });
+  }
+</script>
+
+<style>
+  @property --r { syntax: '<length>'; inherits: false; initial-value: 4000px; }
+  .sigplate { --vx: 50%; --vy: 57.59%; position: absolute; top: 0; left: calc(50% - 88.889svh); width: 177.778svh; height: 111.111svh; pointer-events: none; }
+  .sp-g, .sp-g img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; max-width: none; }
+  .sp-back { --k: 4px; } .sp-mid { --k: 9px; } .sp-front { --k: 14px; }
+  .sp-g { transform: translate(calc(var(--px, 0) * var(--k) * -1), calc(var(--py, 0) * var(--k) * -0.6)); }
+
+  /* the arrival: a radial mask per group, from the vanishing point outward */
+  :global(html.motion) .sp-g {
+    -webkit-mask: radial-gradient(circle at var(--vx) var(--vy), #000 calc(var(--r) - 180px), transparent var(--r));
+    mask: radial-gradient(circle at var(--vx) var(--vy), #000 calc(var(--r) - 180px), transparent var(--r));
+    animation: sp-open 1800ms cubic-bezier(0.34, 0.22, 0.47, 0.84) var(--d) backwards;
+  }
+  /* it fills backwards only: once open, --r is back at its initial 4000 px and the mask is a no-op */
+  @keyframes sp-open { from { --r: 0px; } to { --r: 1900px; } }
+  @media (prefers-reduced-motion: reduce) { .sp-g { animation: none !important; -webkit-mask: none !important; mask: none !important; } }
+
+  @media (max-width: 699.98px) {
+    .sigplate { --vx: 28.36%; --vy: 39.71%; left: 0; width: 100vw; height: 256.41vw; }
+    .sp-g { transform: none; }
+  }
+</style>

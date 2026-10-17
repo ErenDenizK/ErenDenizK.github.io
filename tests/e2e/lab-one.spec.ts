@@ -1,6 +1,6 @@
-/* The two-page site's lab page, the shell and the person's part (src/pages/lab/one.astro; spec v2 §3.2,
-   §3.5 to §3.7, §8): hidden like the other workbenches (noindex, out of the sitemap, linked from nowhere),
-   no sideways scroll at the three check sizes and at 320 px, and a complete page in both still twins:
+/* Home, the shell and the person's part (src/pages/index.astro since 2026-10-17, ADR-0019; it was the lab
+   page /lab/one/; spec v2 §3.2, §3.5 to §3.7, §8): the site root (indexed, canonical, in the sitemap; the
+   old lab address redirects here and no page links to a lab page), no sideways scroll at the three check sizes and at 320 px, and a complete page in both still twins:
    reduced motion (nothing waits, every scene at rest, no fixed field) and no JavaScript (every part
    present, the postcards captioned, the card's front alone). Then, on desktop: the Bostancı photograph
    whole; the ported ID card (in chapter I between How I work and Path; turns by keyboard and by click, a
@@ -12,8 +12,11 @@
    PART B's Work has its own spec. */
 import { test, expect, type Page } from '@playwright/test';
 import { desktop, tablet, phone } from './helpers';
+import { BASE } from '../../playwright.config';
 
-const PAGE = 'lab/one/';
+const PAGE = '';
+/* Home's own path, after a postcard or a photo view closes */
+const HOME_PATH = new RegExp(`^${BASE.replace(/\//g, '\\/')}$`);
 /* every part of the person's chapters, by its rail label (the page's index, spec v2 §3.1) */
 const STRIPS = ['How I work', 'Path', 'Photos', 'Record', 'Now', 'Card'];
 
@@ -21,7 +24,7 @@ async function complete(page: Page) {
   await expect(page.locator('h1')).toHaveText('Eren Deniz Kuyucaklıoğlu');
   await expect(page.locator('#brief .lede')).toBeVisible();
   await expect(page.locator('#brief .row')).toHaveCount(3);
-  await expect(page.locator('#bostanci img')).toBeVisible();
+  await expect(page.locator('#bostanci .colour img')).toBeVisible();
   await expect(page.locator('#work[data-part="work"]')).toHaveCount(1);
   const labels = await page.locator('[data-rail-sec]').evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.railSec));
   for (const s of STRIPS) expect(labels, `strip ${s}`).toContain(s);
@@ -42,14 +45,19 @@ async function hiddenAfterScroll(page: Page) {
   return page.locator('[data-arrive], [data-rise], [data-lines], .pc-open, .stop .what').evaluateAll((els) => els.filter((e) => +getComputedStyle(e).opacity < 0.99).map((e) => e.className || e.tagName));
 }
 
-test('the lab page is hidden: noindex, out of the sitemap, linked from nowhere', async ({ page, request }) => {
+test('Home is the site root: indexed and canonical; the lab address redirects; no page links to a lab page', async ({ page, request }) => {
   await page.goto(PAGE);
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/$/);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /\/og\/home\.[\w]+\.jpg$/);
+  await expect(page.locator('link[rel="alternate"][type="application/atom+xml"]')).toHaveCount(1);
   const map = await (await request.get('sitemap-0.xml')).text();
   expect(map).not.toContain('/lab/');
-  for (const p of ['', 'record/', 'about/', 'work/']) {
+  const lab = await (await request.get('lab/one/')).text();
+  expect(lab).toMatch(new RegExp(`http-equiv="refresh" content="0; url=${BASE}"`));
+  for (const p of ['', 'record/', 'work/recto/']) {
     await page.goto(p + '?still');
-    expect(await page.locator('a[href*="lab/one"]').count(), `/${p} links to the lab`).toBe(0);
+    expect(await page.locator('a[href*="lab/"]').count(), `/${p} links to a lab page`).toBe(0);
   }
 });
 
@@ -111,13 +119,59 @@ test.describe('the person\'s part, desktop', () => {
 
   test('the Bostancı photograph is shown whole and vertical, at least 700 px tall', async ({ page }) => {
     await page.goto(PAGE);
-    const img = page.locator('#bostanci img');
+    const img = page.locator('#bostanci .colour img');
     await img.scrollIntoViewIfNeeded();
     await expect.poll(() => img.evaluate((e: HTMLImageElement) => e.complete && e.naturalWidth > 0)).toBe(true);
     const r = await img.evaluate((e: HTMLImageElement) => ({ w: e.offsetWidth, h: e.offsetHeight, nw: e.naturalWidth, nh: e.naturalHeight }));
     expect(r.h).toBeGreaterThan(700);
     expect(r.h).toBeGreaterThan(r.w);
     expect(Math.abs(r.w / r.h - r.nw / r.nh), 'not cropped').toBeLessThan(0.01);
+  });
+
+  /* round 6 (S32): the first screen is the brief on the Bostancı plate. The photograph is whole and the
+     full view height with its signal on the page axis, the engraving continues it to both edges, and the
+     brief's frame stands on the axis above the signal. */
+  test('round six (S32): the first screen holds the whole photograph on the axis, the plate and the brief', async ({ page }) => {
+    await page.goto(PAGE);
+    const img = page.locator('#bostanci .colour img');
+    await expect.poll(() => img.evaluate((e: HTMLImageElement) => e.complete && e.naturalWidth > 0)).toBe(true);
+    const g = await page.evaluate(() => {
+      const r = (s: string) => document.querySelector(s)!.getBoundingClientRect();
+      const p = r('#bostanci'), sig = r('#bostanci .sig'), plate = r('#brief .sigplate'), frame = r('#brief .brief-in');
+      return { p, sig: { x: sig.x + sig.width / 2, y: sig.y + sig.height / 2 }, plate, frame, vw: innerWidth, vh: innerHeight,
+        groups: document.querySelectorAll('#brief .sigplate .sp-g').length };
+    });
+    expect(g.p.top).toBeGreaterThanOrEqual(0);
+    expect(g.p.bottom).toBeLessThanOrEqual(g.vh + 1);
+    expect(g.p.height).toBeGreaterThan(g.vh - 2);
+    expect(Math.abs(g.p.width / g.p.height - 0.75), 'whole, 3:4').toBeLessThan(0.01);
+    expect(Math.abs(g.sig.x - g.vw / 2), 'the signal on the page axis').toBeLessThan(8);
+    expect(g.plate.left).toBeLessThanOrEqual(0);
+    expect(g.plate.right).toBeGreaterThanOrEqual(g.vw);
+    expect(g.groups).toBe(8);
+    expect(Math.abs(g.frame.x + g.frame.width / 2 - g.vw / 2)).toBeLessThan(2);
+    expect(g.frame.bottom, 'the frame stands above the signal').toBeLessThan(g.sig.y);
+    /* the handover: one screen down, the words have gone and the colour has drained into the signal */
+    await page.evaluate(() => scrollTo(0, innerHeight * 0.8));
+    await expect.poll(() => page.locator('#brief .brief-in').evaluate((e) => +getComputedStyle(e).opacity)).toBeLessThan(0.05);
+  });
+
+  test('round six (S32): on a phone the photograph starts at the top, whole, and the brief fits the first screen', async ({ browser }) => {
+    const ctx = await browser.newContext({ ...phone, deviceScaleFactor: 3 });
+    const page = await ctx.newPage();
+    await page.goto(PAGE);
+    const g = await page.evaluate(() => {
+      const r = (s: string) => document.querySelector(s)!.getBoundingClientRect();
+      const rows = [...document.querySelectorAll('#brief .row')].map((e) => e.getBoundingClientRect().bottom);
+      return { p: r('#bostanci'), name: r('#brief .name'), rows, vw: innerWidth, vh: innerHeight };
+    });
+    expect(Math.abs(g.p.top)).toBeLessThan(1);
+    expect(Math.abs(g.p.width - g.vw)).toBeLessThan(1);
+    expect(Math.abs(g.p.width / g.p.height - 0.75)).toBeLessThan(0.01);
+    expect(g.name.top, 'the name stands in the photograph\'s sky').toBeGreaterThan(g.p.top);
+    expect(g.name.bottom).toBeLessThan(g.p.top + g.p.height / 2);
+    expect(Math.max(...g.rows), 'every row in the first screen').toBeLessThanOrEqual(g.vh);
+    await ctx.close();
   });
 
   test('the ID card turns over with the keyboard and on click, and only the visible face is reachable', async ({ page }) => {
@@ -221,7 +275,7 @@ test.describe('the person\'s part, desktop', () => {
     await expect(dlg).toHaveAttribute('open', '');
     await page.goBack();
     await expect(dlg).not.toHaveAttribute('open', '');
-    expect(new URL(page.url()).pathname).toMatch(/lab\/one\/$/);
+    expect(new URL(page.url()).pathname).toMatch(HOME_PATH);
     /* the labelled close closes, and after the first close it starts folded */
     await page.locator('[data-postcard="2"] .pc-open').click();
     await expect(dlg).toHaveAttribute('open', '');
@@ -243,6 +297,43 @@ test.describe('the person\'s part, desktop', () => {
     /* round four: the press turns it once, never twice (its click is not a second request) */
     await page.waitForTimeout(1200);
     await expect(big).toHaveClass(/is-flipped/);
+  });
+
+  test('round six (S35): every close plays one morph, never skipped, and the card shrinks back in it', async ({ page }) => {
+    /* the close's history.back() brought a popstate that closed the view a second time and skipped the
+       first morph, so the card never shrank back; record every view transition and what it animated */
+    await page.addInitScript(() => {
+      const w = window as unknown as { __vt: { skipped: boolean; hero: boolean }[] };
+      w.__vt = [];
+      const d = Document.prototype;
+      const orig = d.startViewTransition;
+      if (!orig) return;
+      d.startViewTransition = function (this: Document, f?: ViewTransitionUpdateCallback | StartViewTransitionOptions) {
+        const rec = { skipped: false, hero: false };
+        w.__vt.push(rec);
+        const t = orig.call(this, f);
+        t.ready.then(() => { rec.hero = document.getAnimations().some((a) => ((a.effect as KeyframeEffect | null)?.pseudoElement ?? '').includes('pc-hero')); }, () => { rec.skipped = true; });
+        return t;
+      };
+    });
+    await page.goto(PAGE);
+    const vts = () => page.evaluate(() => (window as unknown as { __vt: { skipped: boolean; hero: boolean }[] }).__vt.slice());
+    const dlg = page.locator('[data-pc-dialog]');
+    const card = page.locator('[data-postcard="1"]');
+    await card.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(600);
+    for (const how of ['close', 'escape', 'dark space'] as const) {
+      await card.locator('.pc-open').click();
+      await expect(dlg).toHaveClass(/settled/);
+      await page.evaluate(() => { (window as unknown as { __vt: unknown[] }).__vt.length = 0; });
+      if (how === 'close') await dlg.locator('[data-pv-close]').click();
+      else if (how === 'escape') await page.keyboard.press('Escape');
+      else await page.mouse.click(12, page.viewportSize()!.height / 2);
+      await expect(dlg).not.toHaveAttribute('open', '');
+      await page.waitForTimeout(900);
+      expect(await vts(), how).toEqual([{ skipped: false, hero: true }]);
+      expect(new URL(page.url()).pathname, how).toMatch(HOME_PATH);
+    }
   });
 
   test('round four: a postcard press that lands before the large view\'s code loads is kept and opens it', async ({ page }) => {
@@ -373,6 +464,37 @@ test('touch: the strap is a rope too (driven by the card, never by a hand), and 
   await ctx.close();
 });
 
+/* Round 6, row S10: on iPhone the recorder's contact shadow showed as a white square. The old file was a grey
+   map on white, drawn with multiply; a blend that lands in a layer without the dark ground returns the
+   white. The shadow is now black with alpha, drawn with normal blending: whatever layer it lands in, it
+   has no light pixel to show. */
+test('round six (S10): on a phone the recorder\'s shadow is black with alpha, with no blend mode', async ({ browser }) => {
+  const ctx = await browser.newContext(phone);
+  const page = await ctx.newPage();
+  await page.goto(PAGE);
+  const media = page.locator('#record .rs-media');
+  await media.scrollIntoViewIfNeeded();
+  const sh = media.locator('img.m-shadow');
+  await expect(sh).toHaveAttribute('data-blend', 'normal');
+  await expect.poll(() => sh.evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth)).toBeGreaterThan(0);
+  const r = await sh.evaluate((i: HTMLImageElement) => {
+    const c = document.createElement('canvas'); c.width = i.naturalWidth; c.height = i.naturalHeight;
+    const g = c.getContext('2d')!; g.drawImage(i, 0, 0);
+    const d = g.getImageData(0, 0, c.width, c.height).data;
+    let rgb = 0, alpha = 0, edge = 0;
+    for (let k = 0; k < d.length; k += 4) { rgb = Math.max(rgb, d[k], d[k + 1], d[k + 2]); alpha = Math.max(alpha, d[k + 3]); }
+    for (let x = 0; x < c.width; x++) edge = Math.max(edge, d[x * 4 + 3]);   // the top row: the far floor
+    return { blend: getComputedStyle(i).mixBlendMode, display: getComputedStyle(i).display, rgb, alpha, edge, file: i.currentSrc.split('/').pop() };
+  });
+  expect(r.file).toMatch(/^shadow-a\./);
+  expect(r.blend).toBe('normal');
+  expect(r.display).not.toBe('none');
+  expect(r.rgb, 'no light pixel anywhere in the shadow').toBeLessThanOrEqual(2);
+  expect(r.alpha, 'the shadow is there').toBeGreaterThan(100);
+  expect(r.edge, 'the far floor is clear').toBeLessThanOrEqual(2);
+  await ctx.close();
+});
+
 /* Round 4, rows V7 and V8: the name in its display instance (48 px desktop, two lines of 34 px on a phone,
    the bar mark in the same face) and the glass family, with today's settings behind lab switches. */
 test.describe('the name and the glass (round 4)', () => {
@@ -428,6 +550,50 @@ test.describe('the name and the glass (round 4)', () => {
     expect(now.rim).toBe('none');
     expect(now.blur).toBe('blur(22px) saturate(1.5)');
     expect(now.off).toBe('rgb(161, 157, 150)'); /* --ink-3 */
+  });
+
+  /* round 6, row S15: the liquid motion (scripts/glass-motion.ts). A hover leans and bulges the body toward
+     the pointer and moves its light; a press swells the body and raises the item; at rest the inline
+     styles go; reduced motion changes no shape. */
+  test('the liquid glass: hover bulges toward the pointer, a press swells, rest clears; still: no shape change', async ({ page }) => {
+    await page.setViewportSize(desktop.viewport);
+    await page.goto(PAGE);
+    await expect(page.locator('html')).toHaveClass(/g-live/);
+    const t = page.locator('.tabs'), home = page.locator('.tabs a[data-tab=home]');
+    const box = (await t.boundingBox())!;
+    await page.mouse.move(box.x + box.width - 6, box.y + box.height / 2, { steps: 3 });
+    await expect.poll(() => t.evaluate((el) => parseFloat(el.style.getPropertyValue('--gl') || '0'))).toBeGreaterThan(0.3);
+    const hover = await t.evaluate((el) => ({ tr: el.style.transform, tilt: parseFloat(el.style.getPropertyValue('--g-tilt')) }));
+    expect(hover.tr).toMatch(/translate\(\d/); /* toward the right, where the pointer is */
+    expect(hover.tilt).toBeLessThan(-10);
+    await home.evaluate((a) => a.addEventListener('click', (e) => e.preventDefault(), { once: true }));
+    const hb = (await home.boundingBox())!;
+    await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2);
+    await page.mouse.down();
+    await expect.poll(() => home.evaluate((a) => parseFloat(a.style.getPropertyValue('--ip') || '0'))).toBeGreaterThan(0.9);
+    const sy = await t.evaluate((el) => +(/scale\([^,]+, ([\d.]+)\)/.exec(el.style.transform)?.[1] ?? 1));
+    expect(sy).toBeGreaterThan(1.03);
+    await page.mouse.up();
+    await page.mouse.move(700, 700);
+    await expect.poll(() => t.evaluate((el) => el.style.transform), { timeout: 4000 }).toBe('');
+    expect(await home.evaluate((a) => a.style.transform)).toBe('');
+
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(PAGE);
+    await page.mouse.move(box.x + box.width - 6, box.y + box.height / 2, { steps: 3 });
+    await page.waitForTimeout(300);
+    expect(await t.evaluate((el) => el.style.transform)).toBe('');
+  });
+
+  /* round 6, row S2: the glass takes its light from the field, and over Bostancı that light is the brief's
+     blue from either direction (it kept Recto's lime when the reader came back up from Work) */
+  test('over Bostancı the glass light is the brief\'s blue, also when coming back up from Recto', async ({ page }) => {
+    await page.setViewportSize(desktop.viewport);
+    await page.goto(PAGE);
+    await page.locator('#recto').evaluate((el) => el.scrollIntoView());
+    await expect.poll(() => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--a1').trim())).not.toBe('rgb(111, 140, 255)');
+    await page.locator('#bostanci').evaluate((el) => { const r = el.getBoundingClientRect(); scrollBy(0, r.top + r.height / 2 - innerHeight / 2); });
+    await expect.poll(() => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--a1').trim()), { timeout: 4000 }).toBe('rgb(111, 140, 255)');
   });
 });
 

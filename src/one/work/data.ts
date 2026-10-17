@@ -8,7 +8,7 @@ import { getWorld, shot, type Shot, type World, fills } from '../../lib/world';
 import { poster, type Poster } from '../../lib/media';
 import { readManifest } from '../../lib/files.mjs';
 import { WORDMARK_FACES } from '../../lib/wordmarks';
-import { url, ym, isPlaceholder, type Project } from '../../lib/site';
+import { url, ym, isPlaceholder, getLog, entriesFor, entryPath, entryTitle, dayMonYear, type Project } from '../../lib/site';
 import stageData from './stage.json';
 
 type StageEntry = { hero?: string; focus?: Record<string, [number, number]>; props?: { capture: string; crop: number[]; radius?: number; at: [number, number, number]; turn?: number; phone?: boolean }[] };
@@ -20,11 +20,18 @@ const propFiles = import.meta.glob<{ default: ImageMetadata }>('./props/*.png', 
    ahead (scripts/art.ts) and uses the file itself as a CSS mask for the still twin. */
 const artUrls = import.meta.glob<string>('./art/*.svg', { eager: true, query: '?url', import: 'default' });
 const artRaw = import.meta.glob<string>('./art/*.svg', { eager: true, query: '?raw', import: 'default' });
+/* The objects preview (round 6, row S4; lab switch ?objects=glass|line|none): each object's line twin,
+   drawn from its Blender model (tools/objects/lineart.py), and its poster with alpha (tools/objects/
+   alpha.py), which needs no blend mode. Keyed by the object's name, not the project. */
+const lineUrls = import.meta.glob<string>('./objects/*-line.svg', { eager: true, query: '?url', import: 'default' });
+const glassFiles = import.meta.glob<{ default: ImageMetadata }>('./objects/*-glass.png', { eager: true });
 
-/** The places of a drawing: the flat ground rings of its #front group, in viewBox units, the lowest
-    first (the route lights them in that order as the torn paper rises: spec v2 §3.3.4). */
+/** The places of a drawing: the flat ground rings of its hidden #places group (or, in the older files, of
+    its #front group), in viewBox units, the lowest first (the route lights them in that order as the torn
+    paper rises: spec v2 §3.3.4). */
 function stopsOf(svg: string): [number, number][] {
-  const i = svg.indexOf('<g id="front"');
+  let i = svg.indexOf('<g id="places"');
+  if (i < 0) i = svg.indexOf('<g id="front"');
   if (i < 0) return [];
   const out: [number, number][] = [];
   for (const m of svg.slice(i).matchAll(/M(-?[\d.]+) (-?[\d.]+)a([\d.]+) ([\d.]+) 0 1 0/g)) {
@@ -32,6 +39,19 @@ function stopsOf(svg: string): [number, number][] {
     if (rx > 2.5 * ry && ry < 10 && !out.some(([a, b]) => Math.abs(a - x - rx) < 30 && Math.abs(b - y) < 30)) out.push([+(x + rx).toFixed(1), y]);
   }
   return out.sort((a, b) => b[1] - a[1]);
+}
+/** The view box of a drawing (the phone masters are portrait). */
+function boxOf(svg: string): [number, number] {
+  const m = svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);
+  return m ? [+m[1], +m[2]] : [1600, 1000];
+}
+/** A project's drawing and, when it has one, its phone master (art/<slug>-phone.svg: engraving guide
+    §1.7, every scene has its own composition for the phone). */
+function artOf(id: string): Model['art'] {
+  const k = `./art/${id}.svg`, kp = `./art/${id}-phone.svg`;
+  if (!artUrls[k]) return undefined;
+  const phone = artUrls[kp] ? { url: artUrls[kp], stops: stopsOf(artRaw[kp]), box: boxOf(artRaw[kp]) } : undefined;
+  return { url: artUrls[k], stops: stopsOf(artRaw[k]), phone };
 }
 
 /** One image in AVIF and WebP at the given widths (never wider than the master). */
@@ -56,7 +76,7 @@ export type Screen = {
   clip?: { wide: Video; phone?: Video; poster: Pic };
 };
 export type Prop = { pic: Pic; w: number; h: number; at: [number, number, number]; turn: number; phone: boolean; radius: number };
-export type Obj = { name: string; poster: Poster; idle: Video; spin: Video; spinPhone: Video };
+export type Obj = { name: string; poster: Poster; idle: Video; spin: Video; spinPhone: Video; line?: string; glass?: Pic };
 export type Model = {
   slug: string; title: string; order: number;
   /** the three pigments of the project's light: a1 the brightest, a3 the deepest */
@@ -74,6 +94,22 @@ export type Model = {
   how?: string[];
   /** the product's layers for the cutaway (spec v3 §6): a name and the indices of its items in `how` */
   howLayers?: { name: string; items: number[] }[];
+  /** the plate How I made is drawn as (round 6, S29), and the steps of making it */
+  howForm: 'stack' | 'column' | 'loop' | 'legend';
+  howProcess?: { step: string; by: 'me' | 'agents' | 'both' }[];
+  /* the project story (round 6, S30; docs/design/project-story.md): each is left out until written */
+  story: 'default' | 'dia' | 'lesson' | 'legend';
+  vision?: string;
+  problem?: { text?: string; before?: string; now?: string };
+  audience?: string[];
+  decisions?: { chose: string; over: string; because: string; adr?: string }[];
+  refuses?: string[];
+  check?: { text: string; href?: string };
+  learned?: string;
+  /** the project's own next step (not the next project) */
+  ahead?: string;
+  /** the project's real Record entries, newest first (samples never count) */
+  record?: { title: string; date: string; href: string; version?: string }[];
   live?: { label: string; href: string; fill: string; ink: string };
   code?: { label: string; href: string };
   linksNote?: string;
@@ -82,7 +118,7 @@ export type Model = {
   heroClip?: { wide: Video; phone?: Video };
   props: Prop[];
   /** the line art behind the project, and its places (none without a file) */
-  art?: { url: string; stops: [number, number][] };
+  art?: { url: string; stops: [number, number][]; phone?: { url: string; stops: [number, number][]; box: [number, number] } };
   /** two or three words from the stack line, floated in Work's margins (spec v2 §3.3.1, parity SH14) */
   tags: string[];
   /** the label of a print without screens (the first part of the stack line) */
@@ -123,6 +159,10 @@ function objVideos(name: string, key: 'idle' | 'spin' | 'spin-640'): Video {
   return list;
 }
 
+/** A story section's prose: its text, or its items joined; nothing while it is unwritten. */
+const sectionText = (sec: { text?: string; items?: string[]; placeholder?: string }) =>
+  sec.placeholder ? undefined : sec.text ?? (sec.items?.length ? sec.items.join(' ') : undefined);
+
 /** Projects, sorted by order, into Work's model. `base` is Home's path under the site base. */
 export async function models(projects: Project[], base: string): Promise<Model[]> {
   /* a caller may pass Home's full URL (url('lab/one/')): the site base is taken off, so it is never doubled */
@@ -130,6 +170,7 @@ export async function models(projects: Project[], base: string): Promise<Model[]
   if (site !== '/' && base.startsWith(site)) base = '/' + base.slice(site.length);
   const home = url(base);
   const list: Model[] = [];
+  const log = await getLog();
   for (const p of projects) {
     const d = p.data;
     const w = await getWorld(p.id);
@@ -144,7 +185,7 @@ export async function models(projects: Project[], base: string): Promise<Model[]
       const clip = kindOf(id) === 'signature';
       const s = shot(p.id, w!, { id }, clip ? 'signature' : 'screen');
       const ph = phoneId ? shot(p.id, w!, { id: phoneId }) : null;
-      const wide = await pic(s.img, [680, 1360]);
+      const wide = await pic(s.img, [680, 1360, 2040]);   /* 2040: a print drawn 880 px wide at 2x, or cropped to cover at 3x (layout sweep) */
       const out: Screen = {
         id, alt: s.alt, ...split(caption(id)), wide,
         phone: ph ? await pic(ph.img, [390, 780], 70) : undefined, phoneFrame: !!ph,
@@ -207,13 +248,33 @@ export async function models(projects: Project[], base: string): Promise<Model[]
       quote: d.why.quote,
       how: how?.length ? how : undefined,
       howLayers: how?.length ? d.how.layers : undefined,
+      howForm: d.how.form,
+      howProcess: how?.length ? d.how.process : undefined,
+      story: d.story,
+      vision: typeof d.vision === 'string' ? d.vision : undefined,
+      problem: d.problem && !isPlaceholder(d.problem) ? d.problem : undefined,
+      audience: d.audience && !isPlaceholder(d.audience) ? d.audience.cards.map((c) => c.line) : undefined,
+      decisions: Array.isArray(d.decisions) ? d.decisions : undefined,
+      refuses: d.refuses && !isPlaceholder(d.refuses) ? d.refuses.items : undefined,
+      check: d.check && !isPlaceholder(d.check) ? d.check : undefined,
+      learned: sectionText(d.learned),
+      ahead: sectionText(d.next),
+      record: (() => {
+        const rs = entriesFor(p, log).filter((e) => !e.data.sample).sort((a, b) => +b.data.date - +a.data.date).slice(0, 5)
+          .map((e) => ({ title: entryTitle(e), date: dayMonYear(e.data.date), href: url(entryPath(e)), version: e.data.version }));
+        return rs.length ? rs : undefined;
+      })(),
       live: live ? { label: live.label, href: live.href, fill: d.accent.fill ?? (w && fills(w) ? w.accent.color : d.accent.color), ink: w?.accent.ink ?? '#121214' } : undefined,
       code: code ? { label: code.label, href: code.href } : undefined,
       linksNote: d.linksNote,
-      obj: { name: d.object, poster: poster(d.object), idle: objVideos(d.object, 'idle'), spin: objVideos(d.object, 'spin'), spinPhone: objVideos(d.object, 'spin-640') },
+      obj: {
+        name: d.object, poster: poster(d.object), idle: objVideos(d.object, 'idle'), spin: objVideos(d.object, 'spin'), spinPhone: objVideos(d.object, 'spin-640'),
+        line: lineUrls[`./objects/${d.object}-line.svg`],
+        glass: glassFiles[`./objects/${d.object}-glass.png`] ? await pic(glassFiles[`./objects/${d.object}-glass.png`].default, [240, 400, 640], 72) : undefined,
+      },
       heroClip,
       props,
-      art: artUrls[`./art/${p.id}.svg`] ? { url: artUrls[`./art/${p.id}.svg`], stops: stopsOf(artRaw[`./art/${p.id}.svg`]) } : undefined,
+      art: artOf(p.id),
       tags: (d.stack ?? '').split(/\s*·\s*/).filter(Boolean).slice(0, 3),
       kind: (d.stack ?? d.runsOn).split(/\s*[·,]\s*/)[0],
       href: url(`${base.replace(/^\/|\/$/g, '')}/work/${p.id}/`),

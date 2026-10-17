@@ -1,0 +1,33 @@
+/* The objects preview (round 6, row S4; lab switch ?objects=glass|line|none, default none). The owner
+   chose option 2 of the objects question without a clear picture of it; this switch lets them test both
+   on the real page. glass: the project's glass object stands in its scene, at the lower left of the hero
+   print, in front of the engraving (its poster with alpha, so no blend mode is needed: the round-6 study
+   of the white square on iPhones). line: the object's line twin from its Blender model, painted in the
+   project's ink through the file as a mask, in the same place; where the object already is the print
+   (a project without screens) and in the opened project, the twin replaces the glass. none: today.
+   Nothing here is fetched while the switch is off (display: none, lazy pictures, masks). */
+.fl-obj { display: none; }
+.obj-line { display: none; }
+:root[data-objects="glass"] .work .fl-obj, :root[data-objects="line"] .work .fl-obj { display: block; position: relative; z-index: 4;
+  width: 180px; aspect-ratio: 1; margin: calc(-1 * var(--s-8)) 0 0 calc(-1 * var(--s-5)); pointer-events: none; }
+:root[data-objects="glass"] .fl-obj-line, :root[data-objects="line"] .fl-obj-glass { display: none; }
+.fl-obj-glass img { display: block; width: 100%; height: 100%; object-fit: contain; }
+/* the twin: the line drawing as a mask, in the ink the project's engraving uses, a little brighter */
+.fl-obj-line, .obj-line { position: absolute; inset: 0; background: color-mix(in srgb, var(--a1, #e8e2d6) 34%, #f4efe4);
+  -webkit-mask: var(--line) center / contain no-repeat; mask: var(--line) center / contain no-repeat; }
+:root[data-objects="line"] .obj-line { display: block; }
+:root[data-objects="line"] .obj > :is(picture, video) { visibility: hidden; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* in the flight and the flow: beside the hero's lower left corner, in front of it by a third of its width */
+  html.js:not(.still) .work .fl-obj { position: absolute; margin: 0; --ow: clamp(220px, calc(var(--hw) * .44), 360px); width: var(--ow);
+    left: calc(50% - var(--hw) / 2 - var(--ow) * .84); top: calc(var(--htop) + var(--hh) - var(--ow) * .86); transform-origin: 60% 80%; will-change: transform, opacity; }
+  html.js:not(.still) .work .fl-obj-line { will-change: clip-path; }
+  @media (max-width: 699.98px) {
+    html.js:not(.still) .work .fl-obj { --ow: 136px; left: auto; right: 2px; top: calc(var(--htop) + var(--hh) - var(--ow) * .78); }
+  }
+}
+/* the twin is ink without a body: where it crosses the print, a pool of the project's paper under it keeps
+   its lines apart from the screen's text */
+:root[data-objects="line"] .work .fl-obj::before { content: ""; position: absolute; inset: 8%; border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--paper, #17191e) 88%, transparent), transparent); }

@@ -1,6 +1,6 @@
 # ADR-0007: Every tab is a page; the browser navigates, and only the project sheet is scripted
 
-**Status:** **Superseded by the two-page direction (2026-10-15); a new ADR follows.** Two pages (Home and Record) and one tab between them replace the four tabs; a project opens inside Home, in the same UI, with no sheet, dialog or new page (brief log, 2026-10-15, late night). The live site keeps this routing until the new Home ships. Earlier status: accepted 2026-10-09 by the owner, with a shorter melt that overlaps the navigation (item 3);
+**Status:** **Superseded by [ADR-0019](0019-two-page-routing.md) (2026-10-17)**, after the two-page direction of 2026-10-15. Two pages (Home and Record) and one tab between them replace the four tabs; a project opens inside Home, in the same UI, with no sheet, dialog or new page (brief log, 2026-10-15, late night). The live site kept this routing until the new Home shipped on 2026-10-17. Earlier status: accepted 2026-10-09 by the owner, with a shorter melt that overlaps the navigation (item 3);
 item 5 and the `/log/` URLs superseded by `docs/design/log.md` (2026-10-09) · **Rests on:** brief §4.1, §7 (2026-10-09: "page transitions and
 navigation are a little buggy", "the top navigation is troublesome, especially clicking Home");
 ADR-0002 (content is HTML), ADR-0005 item 1 (one object per tab, changing into the next), ADR-0006

@@ -62,7 +62,7 @@ type Lean = {
       device width the half frames were last decoded at (0: decoded at their own size) */
   halfBlobs: Blob[]; halfW: number;
 };
-export type ObjInfo = { manifest: string | null; src: string; srcset?: { type: string; srcset: string }[]; shadow?: { src: string; sources: { type: string; src: string }[] } | null; light: string };
+export type ObjInfo = { manifest: string | null; src: string; srcset?: { type: string; srcset: string }[]; shadow?: { src: string; blend?: string; sources: { type: string; src: string }[] } | null; light: string };
 
 const MID = 360;             // a change is committed once it passes its midpoint (craft audit §4.2)
 const manifests = new Map<string, Promise<Manifest | null>>();
@@ -291,7 +291,7 @@ function apply(el: Slot, name: string, opts: { instant?: boolean; light?: string
   if (sh) {
     const pic = document.createElement('picture'); pic.className = 'm-shadow-pic';
     for (const s of sh.sources) { const so = document.createElement('source'); so.type = s.type; so.srcset = s.src; pic.appendChild(so); }
-    const img = new Image(); img.className = 'm-shadow'; img.alt = ''; img.src = sh.src; pic.appendChild(img);
+    const img = new Image(); img.className = 'm-shadow'; img.alt = ''; img.dataset.blend = sh.blend || 'multiply'; img.src = sh.src; pic.appendChild(img);
     el.insertBefore(pic, el.querySelector('.m-stage'));
   }
   const neo = layerFor(name, old.querySelector('source')?.getAttribute('sizes') || undefined);

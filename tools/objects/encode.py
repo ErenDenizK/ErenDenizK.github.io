@@ -17,10 +17,10 @@ libsvtav1, libx265 and libx264 (Ubuntu's ffmpeg 6.1 has all three).
    it backward; browsers cannot play video in reverse) and an idle loop synthesised from the
    grid, each as AV1 10-bit, HEVC Main 10 (hvc1) and H.264 High, BT.709 matrix and primaries,
    limited range, the sRGB transfer tagged (see COLOR), +faststart, no audio. Clips are padded back to the full square so they sit on the poster.
-4. The floor shadow (frames.py stage `shadow`), which step 1 zeroes: a small grayscale map
-   m = composite / ground, clamped to 1, meaning "multiply the ground by this". The page draws
-   it under the object with mix-blend-mode: multiply, so ground * m + object reproduces the
-   poster's floor.
+4. The floor shadow (frames.py stage `shadow`), which step 1 zeroes: a small map
+   m = composite / ground, clamped to 1, meaning "multiply the ground by this", written as black
+   with alpha 1 - m (shadow-a.*). The page draws it under the object with normal blending, so
+   ground * m + object reproduces the poster's floor without a blend mode (S10).
 5. manifest.json: what the media stage reads (shape in README.md, "The manifest").
 6. (Removed 2026-10-15.) The live frame engine's normal maps and clip stills. The owner rejected
    ADR-0009 and the engine was deleted; git history keeps this step.
@@ -636,18 +636,24 @@ if os.path.isdir(sdir) and any(f.startswith("f_") for f in os.listdir(sdir)):
     m = 1 - (1 - m) * d * d * (3 - 2 * d)
     m[m > 0.995] = 1.0                                 # far floor: exactly "no change"
     sw = m.shape[1]
-    im8 = Image.fromarray(np.round(m * 255).astype(np.uint8), "L")
-    shadow = {"blend": "multiply", "pose": "rest", "w": sw, "h": m.shape[0], "min": round(float(m.min()), 3),
+    # Black with alpha 1 - m, drawn with normal blending: B * m on any ground, the same pixels as a
+    # multiply by m, and no blend mode for a composited layer to lose (S10: on iPhone the multiply
+    # map showed as a white square). shadow_alpha.py converts files written by the old multiply form.
+    a8 = np.round((1 - m) * 255).astype(np.uint8)
+    rgba8 = np.zeros(a8.shape + (4,), np.uint8)
+    rgba8[..., 3] = a8
+    im8 = Image.fromarray(rgba8, "RGBA")
+    shadow = {"blend": "normal", "pose": "rest", "w": sw, "h": m.shape[0], "min": round(float(m.min()), 3),
               "sources": []}
     for fmt in ("avif", "webp"):
-        p = os.path.join(OUT, f"shadow.{fmt}")
+        p = os.path.join(OUT, f"shadow-a.{fmt}")
         if fmt == "avif":
-            im8.save(p, "AVIF", quality=70, speed=4)
+            im8.save(p, "AVIF", quality=85, speed=4)
         else:
-            im8.save(p, "WEBP", quality=80, method=6)
-        dec = np.asarray(Image.open(p).convert("L")).astype(int)
-        report[f"shadow_{fmt}"] = {"bytes": size(p), "max_err_levels": int(np.abs(dec - np.round(m * 255)).max()),
-                                   "white_off": int((dec[m == 1] != 255).sum())}
+            im8.save(p, "WEBP", lossless=True, method=6)
+        dec = np.asarray(Image.open(p).convert("RGBA"))[..., 3].astype(int)
+        report[f"shadow_{fmt}"] = {"bytes": size(p), "max_err_levels": int(np.abs(dec - a8).max()),
+                                   "clear_off": int((dec[m == 1] != 0).sum())}
         shadow["sources"].append({"src": rel(p), "type": f"image/{fmt}", "bytes": size(p)})
 
 # ================================================================ 5. manifest

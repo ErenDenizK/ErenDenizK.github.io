@@ -20,9 +20,28 @@ what:
 why:
   placeholder: owner to write
 how:
+  form: legend
   placeholder: owner to write
 learned:
   placeholder: owner to write
 next:
   placeholder: owner to write
+story: legend
+vision:
+  placeholder: owner to write
+problem:
+  placeholder: owner to write
+audience:
+  placeholder: owner to write
+decisions:
+  placeholder: owner to pick from the material in the comment below
+refuses:
+  placeholder: owner to confirm
+check:
+  placeholder: owner to confirm
 ---
+<!-- Draft material for the project story (round 6). Never rendered. The short form (story: legend)
+waits for the new Eat Map engraving; until then every section stays hidden.
+check (world.json promise): "Only the people here see your log ..." Owner to confirm.
+how, for the legend plate: three steps of making it, owner to write.
+-->

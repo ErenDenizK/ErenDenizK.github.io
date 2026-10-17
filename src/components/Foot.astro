@@ -1,8 +1,0 @@
----
-import { getSite, siteUpdated, dayMonYear, url } from '../lib/site';
-const site = await getSite();
----
-<footer class="foot meta">
-  <span>{site.host}</span>
-  <span><a href={url('record/feed.xml')}>Atom feed</a> · Grown level by level, updated {dayMonYear(siteUpdated())}</span>
-</footer>

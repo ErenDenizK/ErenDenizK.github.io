@@ -14,12 +14,14 @@
    heroes with their texts and the drawing at rest, and every "Take a look" is a real link to the
    project's static page. One presentation per project waits in a <template> for scripts/open.ts. */
 import './work.css';
+import './flow.css';
+import './objects.css';
 import Print from './Print.astro';
 import Presentation from './Presentation.astro';
 import { models } from './data';
 import { getSite, type Project } from '../../lib/site';
 interface Props { projects: Project[]; base?: string }
-const { projects, base = '/lab/one/' } = Astro.props;
+const { projects, base = '/' } = Astro.props;
 const site = await getSite();
 const list = await models(projects, base);
 const two = (k: number) => String(k).padStart(2, '0');
@@ -48,14 +50,20 @@ const edges = [edge(390, 11), edge(820, 23), edge(1440, 7)];
     return (
       <div class="proj" id={m.slug} data-slug={m.slug} data-k={k} data-short={short ? '' : undefined} data-last={last ? '' : undefined}
         data-rail-sec={m.title} data-rail-accent={m.aura[0]} data-aura={m.aura.join(' ')}
-        style={`--a1: ${m.aura[0]}; --a2: ${m.aura[1]}; --a3: ${m.aura[2]}; --paper: ${m.paper}${m.art ? `; --art: url("${m.art.url}")` : ''}`}>
+        style={`--a1: ${m.aura[0]}; --a2: ${m.aura[1]}; --a3: ${m.aura[2]}; --paper: ${m.paper}${m.art ? `; --art: url("${m.art.url}")` : ''}${m.art?.phone ? `; --art-phone: url("${m.art.phone.url}"); --art-phone-ar: ${m.art.phone.box[0]} / ${m.art.phone.box[1]}` : ''}`}>
         <div class="fl-stage">
           {m.art && (
-            <div class="fl-art" data-art={m.art.url} aria-hidden="true">
+            <div class:list={['fl-art', m.art.phone && 'has-phone']} data-art={m.art.url} data-art-phone={m.art.phone?.url} aria-hidden="true">
               {m.art.stops.length > 0 && (
-                <svg class="fl-route" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid meet" focusable="false">
+                <svg class="fl-route fl-route-d" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid meet" focusable="false">
                   <path class="fl-route-line" d={'M' + m.art.stops.map(([x, y]) => `${x} ${y}`).join(' L')} pathLength="1" />
                   {m.art.stops.map(([x, y]) => <g class="fl-stop" transform={`translate(${x} ${y})`}><ellipse rx="34" ry="9" /><ellipse class="fl-stop-in" rx="14" ry="4" /></g>)}
+                </svg>
+              )}
+              {m.art.phone && m.art.phone.stops.length > 0 && (
+                <svg class="fl-route fl-route-p" viewBox={`0 0 ${m.art.phone.box[0]} ${m.art.phone.box[1]}`} preserveAspectRatio="xMidYMid meet" focusable="false">
+                  <path class="fl-route-line" d={'M' + m.art.phone.stops.map(([x, y]) => `${x} ${y}`).join(' L')} pathLength="1" />
+                  {m.art.phone.stops.map(([x, y]) => <g class="fl-stop" transform={`translate(${x} ${y})`}><ellipse rx="22" ry="6" /><ellipse class="fl-stop-in" rx="9" ry="2.6" /></g>)}
                 </svg>
               )}
             </div>
@@ -66,6 +74,20 @@ const edges = [edge(390, 11), edge(820, 23), edge(1440, 7)];
               <Print m={m} s={s} i={i + 1} n={m.prints.length} sizes={SIDE} />
             </div>
           ))}
+          {/* the objects preview (row S4, objects.css): the project's glass object, or its line twin, stands
+              in its scene beside the hero; hidden (and never fetched) unless ?objects=glass|line */}
+          {!short && (m.obj.glass || m.obj.line) && (
+            <div class="fl-obj" aria-hidden="true">
+              {m.obj.glass && (
+                <picture class="fl-obj-glass">
+                  <source type="image/avif" srcset={m.obj.glass.avif} sizes="(max-width: 699.98px) 120px, 300px" />
+                  <source type="image/webp" srcset={m.obj.glass.webp} sizes="(max-width: 699.98px) 120px, 300px" />
+                  <img src={m.obj.glass.src} alt="" width={m.obj.glass.w} height={m.obj.glass.h} loading="lazy" decoding="async" />
+                </picture>
+              )}
+              {m.obj.line && <span class="fl-obj-line" style={`--line: url("${m.obj.line}")`}></span>}
+            </div>
+          )}
           <a class="fl-hero" href={m.href} tabindex="-1" aria-hidden="true" data-open={m.slug}>
             {short
               ? <Print m={m} i={0} n={1} sizes={HERO} eager num={`${two(k + 1)} / ${two(list.length)}`} />

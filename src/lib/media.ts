@@ -21,8 +21,9 @@ export type Poster = {
   src: string;
   sources: { type: string; srcset: string }[];
   manifest: string | null;
-  /** Optional contact shadow (manifest `shadow`), drawn with multiply under the additive object. */
-  shadow: { src: string; sources: { type: string; src: string }[] } | null;
+  /** Optional contact shadow (manifest `shadow`) under the additive object. `blend` is the manifest's:
+      "normal" for black with alpha (S10), "multiply" for an older grey map. */
+  shadow: { src: string; blend: string; sources: { type: string; src: string }[] } | null;
 };
 
 export function poster(name: string): Poster {
@@ -43,7 +44,7 @@ export function poster(name: string): Poster {
       sources: [...byType].map(([type, l]) => ({ type, srcset: l.join(', ') })),
       manifest: dir + 'manifest.json',
       shadow: m.shadow?.sources?.length
-        ? { src: dir + m.shadow.sources[m.shadow.sources.length - 1].src, sources: m.shadow.sources.map((x: { src: string; type: string }) => ({ type: x.type, src: dir + x.src })) }
+        ? { src: dir + m.shadow.sources[m.shadow.sources.length - 1].src, blend: m.shadow.blend || 'multiply', sources: m.shadow.sources.map((x: { src: string; type: string }) => ({ type: x.type, src: dir + x.src })) }
         : null,
     };
   }

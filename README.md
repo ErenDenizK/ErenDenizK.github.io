@@ -8,9 +8,9 @@ Astro 7 (static), on GitHub Pages. Every page is complete HTML without JavaScrip
 adds the moving objects, the project sheet and the transitions. Decisions are in
 [docs/adr/](docs/adr/), research in [docs/research/](docs/research/).
 
-The site is moving to two pages, Home and Record, with one shared token set (the owner's direction of
-2026-10-15; [brief log](docs/history/brief-log.md), last two sections). The routes, components and
-styles below describe the live four-page site until the new Home replaces it. Content stays the same.
+Since 2026-10-17 the site is two pages, Home and the Record, with one shared token set
+([ADR-0019](docs/adr/0019-two-page-routing.md)). The four-page site is retired; its old addresses
+(`/work/`, `/about/`) redirect into Home. Content stays the same.
 
 ## Run it
 
@@ -49,15 +49,16 @@ media/archive/         retired objects (the microphone, the card file) and the d
                        site (media/archive/README.md)
 src/
   content.config.ts    the schemas: a bad field fails the build
-  pages/               routes: /, /work/, /work/<slug>/, /record/, /record/<year>/<slug>/, /about/, 404, feed;
-                       lab/ holds hidden workbenches (postcard, themes; noindex, not in the sitemap)
-  components/          Media (the object stage), ProjectCase, LogRow, Figure, Icon, IdCard, Postcard, ...
-  scripts/             media.ts (stage), lean.ts (where an object looks), sheet.ts (project sheet),
-                       log.ts, card3d.ts (cards), postcard.ts (About's postcards), reel.ts (Work's
-                       capture reels), clock.ts (Istanbul time in the bar), site.ts, rail.ts (scroll
-                       rail), embassy.ts, accent.ts, env.ts
-  styles/              global.css (tokens and layout), log.css, transitions.css, rail.css, showcase.css,
-                       work.css, embassy.css, wordmarks.css
+  pages/               routes: / (Home), /work/<slug>/ (a project's own page), /record/,
+                       /record/<year>/, /record/<year>/<slug>/, 404, feed; /work/, /about/ and /lab/one/
+                       are redirects; lab/ holds hidden workbenches (noindex, not in the sitemap)
+  layouts/One.astro    the one document of both pages (bar, field, grain, rail)
+  one/                 Home's parts (Brief, Work in one/work/, the person's part in one/rest/), the
+                       Record's head and rules (one/record/), tokens.css, the shell's scripts
+  components/          Media (the object stage), LogList, LogRow, YearStrip, Figure, Icon
+  scripts/             media.ts (stage), lean.ts (where an object looks), log.ts, clock.ts (Istanbul
+                       time in the bar), rail.ts (scroll rail), env.ts
+  styles/              rail.css, wordmarks.css
   fonts/               subset Newsreader (roman and italic) and Inter, and the wordmark faces Funnel
                        Display and Nunito (tools/fonts/subset.py)
   assets/photos/       graded photos (tools/photos/grade.mjs) and About's postcards (tools/photos/postcards.mjs)

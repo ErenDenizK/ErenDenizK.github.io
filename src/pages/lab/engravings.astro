@@ -1,0 +1,65 @@
+---
+/* The engravings' workbench (review rows S32, S34; engraving guide §2.8-2.10): noindex, linked from
+   nowhere, out of the sitemap (astro.config.mjs filters /lab/). It shows the pieces that are drawn but
+   not placed on Home yet, so the owner can judge them before they go anywhere (row S59):
+   1. the first-screen plate (SignalPlate) with the photograph in the box it leaves for it, as the
+      first-screen study's comp A places it (?nophoto shows the engraving alone, ?still the still twin);
+   2. the Istanbul series: the Bosphorus panorama and the Maiden's Tower, unplaced (the first screen
+      takes the Bostancı platform, as the study recommends); the Bostancı pier band is on Home;
+   3. the Davutpaşa Orta Bahçe study, provisional (drawn from the owner's reference photos, which are
+      never published).
+   Nothing here is content: the captions are workbench labels. */
+import One from '../../layouts/One.astro';
+import SignalPlate from '../../one/SignalPlate.astro';
+import { getSite } from '../../lib/site';
+import manifest from '../../assets/photos/postcards.json';
+
+const site = await getSite();
+const m = (manifest as Record<string, { width: number; height: number; widths: number[]; full: number }>)['bostanci-rain-dusk'];
+const files = import.meta.glob<string>('../../assets/photos/pc-bostanci-rain-dusk-*.{avif,webp}', { eager: true, query: '?url', import: 'default' });
+const f = (w: number | 'full', ext: string) => files[`../../assets/photos/pc-bostanci-rain-dusk-${w}.${ext}`];
+const set = (ext: string) => [...m.widths.map((w) => `${f(w, ext)} ${w}w`), ...(m.full ? [`${f('full', ext)} ${m.full}w`] : [])].join(', ');
+const plates = import.meta.glob<string>('../../one/art/series/*.svg', { eager: true, query: '?url', import: 'default' });
+const plate = (n: string) => plates[`../../one/art/series/${n}.svg`];
+const series = [
+  ['bosphorus', 'The Bosphorus from Salacak: the historic peninsula far off, the Maiden’s Tower on its rock, a ferry.', 1600, 700],
+  ['maidens-tower', 'The Maiden’s Tower, the phone’s portrait plate: the tower on its rock, the Asian shore behind.', 390, 844],
+  ['davutpasa', 'Davutpaşa, Orta Bahçe (provisional): the courtyard inside the old barracks, its radial paths and the pavilion.', 1600, 800],
+] as const;
+---
+<One title="Lab: engravings" description="A workbench for the engravings." tab="home" noindex>
+  <section class="first" aria-label="The first-screen plate">
+    <SignalPlate />
+    <picture class="photo">
+      <source type="image/avif" srcset={set('avif')} sizes="(min-width: 700px) 75vh, 100vw" />
+      <img src={f(1080, 'webp')} srcset={set('webp')} sizes="(min-width: 700px) 75vh, 100vw" alt="" width={m.width} height={m.height} fetchpriority="high" />
+    </picture>
+  </section>
+  <div class="lab-in">
+    <p class="meta">Lab, not linked from the site. The first-screen plate above: the engraving continues the photograph; add ?nophoto to see it alone.</p>
+    {series.map(([n, cap, w, h]) => plate(n) && (
+      <figure class:list={['pl', n]}>
+        <img src={plate(n)} alt="" width={w} height={h} loading="lazy" decoding="async" />
+        <figcaption class="meta">{cap}</figcaption>
+      </figure>
+    ))}
+  </div>
+</One>
+
+<script>
+  if (/[?&]nophoto\b/.test(location.search)) document.querySelector<HTMLElement>('.first .photo')?.style.setProperty('display', 'none');
+</script>
+
+<style>
+  .first { position: relative; height: 100svh; overflow: hidden; }
+  .photo img { position: absolute; top: 0; left: calc(50% - 21.278svh); width: 75svh; height: 100svh; object-fit: cover; }
+  @media (max-width: 699.98px) {
+    .first { height: 256.41vw; }
+    .photo img { left: 0; top: 16.41vw; width: 100vw; height: 133.33vw; }
+  }
+  .lab-in { padding: var(--s-7) var(--gut) 160px; display: grid; gap: var(--s-8); justify-items: center; }
+  .meta { font: 400 var(--fs-label) / 1.4 var(--f-sans); color: var(--ink-3); max-width: 60em; }
+  .pl { display: grid; gap: var(--s-3); justify-items: center; width: 100%; }
+  .pl img { width: 100%; max-width: 1600px; height: auto; border: 1px solid var(--line-2); }
+  .pl.maidens-tower img { max-width: 390px; }
+</style>

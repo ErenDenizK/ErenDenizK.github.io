@@ -1,6 +1,8 @@
 ---
-/* PART B's scratch document (phase3 design-spec.md 7.5): noindex, unlinked, out of the sitemap (the
-   sitemap filter in astro.config.mjs drops /lab/). It stands in for PART A's layout until that lands:
+/* The document of a project's own page, /work/<slug>/ (ADR-0019), and of the Work lab (phase3
+   design-spec.md 7.5). Since 2026-10-17 the project pages are the canonical project addresses: they print
+   the shared head (src/one/Head.astro: canonical, card, feed) and are indexed; the lab keeps noindex. It
+   holds:
    the faces, the tokens, a light field that answers setAura, the grain, html.js / html.still before
    first paint, and the answers to one:layer-open / one:layer-close (inert #main). */
 import '../../tokens.css';
@@ -8,9 +10,10 @@ import '../../glass.css';
 import './demo.css';
 import interLatin from '../../../fonts/inter-latin.woff2?url';
 import newsLatin from '../../../fonts/newsreader-latin.woff2?url';
+import Head from '../../Head.astro';
 import { url } from '../../../lib/site';
-interface Props { title: string }
-const { title } = Astro.props;
+interface Props { title: string; description?: string; og?: string; ogAlt?: string; noindex?: boolean; card?: string }
+const { title, description, og, ogAlt, noindex = true, card } = Astro.props;
 ---
 <!doctype html>
 <html lang="en" data-base={url()}>
@@ -18,7 +21,9 @@ const { title } = Astro.props;
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{title}</title>
-  <meta name="robots" content="noindex">
+  {description && <meta name="description" content={description}>}
+  {noindex && <meta name="robots" content="noindex">}
+  {description && <Head title={card ?? title} description={description} og={og} ogAlt={ogAlt} noindex={noindex} />}
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#121214">
   <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin>

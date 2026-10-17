@@ -1,0 +1,14 @@
+---
+/* The Record's foot (log.md §5.3; ADR-0019): how the record is written (the colophon line that lived on the
+   About page, now at the record it describes, at #colophon) and the feed. After the record, never before
+   it. */
+import { getSite, url } from '../../lib/site';
+const site = await getSite();
+const how = site.about.colophon.find(([k]) => k === 'The record');
+---
+<aside class="rec-foot" aria-labelledby="colophon" data-rail-sec="How it is written">
+  <div class="rf-rule" aria-hidden="true"></div>
+  <h2 id="colophon">How this is written</h2>
+  <p class="rf-text">{how ? `${how[0]} ${how[1]}` : site.log.writingNote}</p>
+  <p class="meta"><a href={url('record/feed.xml')}>Atom feed</a></p>
+</aside>
