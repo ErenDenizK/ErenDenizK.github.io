@@ -48,8 +48,8 @@ dated, and the newest line wins.
   pushed and are deleted after the lead merges them into `dev`.
 - Every commit names the owner as author (`author.name` / `author.email` in the repo's git
   config) and Claude as the signed committer, with the session's co-author trailer.
-- Pace: research and review up to four agents at a time, builders two. This is a default, not a
-  hard rule: run more when the gain is clear, fewer when the weekly limit is tight.
+- Pace: no fixed agent limit (owner, 2026-10-17): the lead sizes the line to the work, runs
+  agents in parallel where their files do not overlap, and keeps one integrator per merge.
 - English for the site, docs and commits. The owner talks in Turkish, often by dictation:
   read through transcription errors and confirm names.
 - How to ask: every question to the owner comes with a short plain-language brief of the

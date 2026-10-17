@@ -698,3 +698,20 @@ Condensed; the owner's words in quotes.
 12. Keep working through the night: open work first; if nothing is left, research small
     improvements (no big changes); otherwise iterate the rail. Check again that nothing that turned
     into a note in earlier messages was left undone; gather everything.
+
+### 2026-10-17 (answers to the morning sheet and a long brief)
+
+Dictated, Turkish. Every point is a row S1–S45 in `docs/feedback/2026-10-16-lab-one-review.md`. Short
+form: drop rail, but the beads must travel into the bloom; glass A (check the Bostancı colour);
+Newsreader display cut; preview objects options 1 and 2 to test; keep the tape spine; recut the
+card's 2.5D shoulder; the long 1400 ms open felt elegant. The recorder shows as a white box on
+phones. Optimisation and refactoring only later, on the owner's word. Rail labels need equal
+spacing and a click response; all glass buttons need liquid-glass motion; the lanyard must pivot
+from its off-screen top; separate the moving project drawings; redraw Eat Map's city, the park
+walker, the metro and the cat drawings and the How I work background; add a Record drawing;
+a better drop; per-project How I made; longer project stories from a study of variants; evaluate a
+horizontal flying flow for Work; the first screen is weak and must be recomposed (Renaissance as a
+reference); the brief's project links must travel animated; Istanbul and Davutpaşa engraving
+series; an intermittent missing close animation of the photo view; Recto's scene fuller. The new
+lab Home is now the product: move to it and to the Record page. No agent limits this week. The
+drawings are called "the engravings".
