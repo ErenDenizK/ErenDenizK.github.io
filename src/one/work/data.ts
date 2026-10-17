@@ -20,6 +20,11 @@ const propFiles = import.meta.glob<{ default: ImageMetadata }>('./props/*.png', 
    ahead (scripts/art.ts) and uses the file itself as a CSS mask for the still twin. */
 const artUrls = import.meta.glob<string>('./art/*.svg', { eager: true, query: '?url', import: 'default' });
 const artRaw = import.meta.glob<string>('./art/*.svg', { eager: true, query: '?raw', import: 'default' });
+/* The objects preview (round 6, row S4; lab switch ?objects=glass|line|none): each object's line twin,
+   drawn from its Blender model (tools/objects/lineart.py), and its poster with alpha (tools/objects/
+   alpha.py), which needs no blend mode. Keyed by the object's name, not the project. */
+const lineUrls = import.meta.glob<string>('./objects/*-line.svg', { eager: true, query: '?url', import: 'default' });
+const glassFiles = import.meta.glob<{ default: ImageMetadata }>('./objects/*-glass.png', { eager: true });
 
 /** The places of a drawing: the flat ground rings of its #front group, in viewBox units, the lowest
     first (the route lights them in that order as the torn paper rises: spec v2 §3.3.4). */
@@ -56,7 +61,7 @@ export type Screen = {
   clip?: { wide: Video; phone?: Video; poster: Pic };
 };
 export type Prop = { pic: Pic; w: number; h: number; at: [number, number, number]; turn: number; phone: boolean; radius: number };
-export type Obj = { name: string; poster: Poster; idle: Video; spin: Video; spinPhone: Video };
+export type Obj = { name: string; poster: Poster; idle: Video; spin: Video; spinPhone: Video; line?: string; glass?: Pic };
 export type Model = {
   slug: string; title: string; order: number;
   /** the three pigments of the project's light: a1 the brightest, a3 the deepest */
@@ -210,7 +215,11 @@ export async function models(projects: Project[], base: string): Promise<Model[]
       live: live ? { label: live.label, href: live.href, fill: d.accent.fill ?? (w && fills(w) ? w.accent.color : d.accent.color), ink: w?.accent.ink ?? '#121214' } : undefined,
       code: code ? { label: code.label, href: code.href } : undefined,
       linksNote: d.linksNote,
-      obj: { name: d.object, poster: poster(d.object), idle: objVideos(d.object, 'idle'), spin: objVideos(d.object, 'spin'), spinPhone: objVideos(d.object, 'spin-640') },
+      obj: {
+        name: d.object, poster: poster(d.object), idle: objVideos(d.object, 'idle'), spin: objVideos(d.object, 'spin'), spinPhone: objVideos(d.object, 'spin-640'),
+        line: lineUrls[`./objects/${d.object}-line.svg`],
+        glass: glassFiles[`./objects/${d.object}-glass.png`] ? await pic(glassFiles[`./objects/${d.object}-glass.png`].default, [240, 400, 640], 72) : undefined,
+      },
       heroClip,
       props,
       art: artUrls[`./art/${p.id}.svg`] ? { url: artUrls[`./art/${p.id}.svg`], stops: stopsOf(artRaw[`./art/${p.id}.svg`]) } : undefined,

@@ -21,7 +21,7 @@
 import type { Proj } from './flight';
 
 export interface FlowFrame { y: number; v: number; vh: number; vw: number; dt: number }
-type Put = (el: Element, prop: 'transform' | 'opacity' | 'strokeDashoffset' | 'visibility', v: string) => void;
+type Put = (el: Element, prop: 'transform' | 'opacity' | 'strokeDashoffset' | 'visibility' | 'clipPath', v: string) => void;
 type Line = { el: HTMLElement; o: number; mask: boolean };
 
 const clamp = (v: number, a = 0, b = 1) => (v < a ? a : v > b ? b : v);
@@ -107,6 +107,14 @@ export function setupFlow(sec: HTMLElement, projects: Proj[], phoneMq: MediaQuer
         const rz = -1 - N.tilt * tt + sk * 0.6;
         const sc = 1 - 0.05 * h;
         put(p.hero, 'transform', `translate3d(${f1(x)}px, ${f1(-0.05 * h * vh + Math.abs(x) * 0.04)}px, ${f1(zd)}px) rotateY(${f2(ry)}deg) rotateX(${f2(fl - py * N.lean * 0.6 + 4 * h)}deg) rotate(${f2(rz)}deg) scale(${f3(sc)})`);
+        /* the object beside the hero (?objects) rides the drum a little outside the sheet, so it parts
+           from the print as the drum turns; its line twin draws upward as it comes to the front */
+        if (p.objx) {
+          const Ro = R * 1.1, xo = Ro * Math.sin(th), zo = Ro * (Math.cos(th) - 1) + 60;
+          put(p.objx, 'transform', `translate3d(${f1(xo)}px, ${f1(Math.abs(x) * 0.05)}px, ${f1(zo)}px) rotateY(${f2(ry * 0.6)}deg) rotate(${f2(-3 - 3 * tt + sk)}deg)`);
+          put(p.objx, 'opacity', f3(1 - smooth(0.6, 1.1, at)));
+          if (p.objLine) put(p.objLine, 'clipPath', `inset(${f1(100 * smooth(0.1, 0.7, tt))}% 0 0 0)`);
+        }
         /* the greyscale twin: colour comes back as the sheet faces the reader */
         if (p.twin) put(p.twin, 'opacity', f3(smooth(0.12, 0.6, at)));
         put(p.hero, 'opacity', f3(1 - smooth(1.25, 1.7, at)));

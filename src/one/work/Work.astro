@@ -15,6 +15,7 @@
    project's static page. One presentation per project waits in a <template> for scripts/open.ts. */
 import './work.css';
 import './flow.css';
+import './objects.css';
 import Print from './Print.astro';
 import Presentation from './Presentation.astro';
 import { models } from './data';
@@ -67,6 +68,20 @@ const edges = [edge(390, 11), edge(820, 23), edge(1440, 7)];
               <Print m={m} s={s} i={i + 1} n={m.prints.length} sizes={SIDE} />
             </div>
           ))}
+          {/* the objects preview (row S4, objects.css): the project's glass object, or its line twin, stands
+              in its scene beside the hero; hidden (and never fetched) unless ?objects=glass|line */}
+          {!short && (m.obj.glass || m.obj.line) && (
+            <div class="fl-obj" aria-hidden="true">
+              {m.obj.glass && (
+                <picture class="fl-obj-glass">
+                  <source type="image/avif" srcset={m.obj.glass.avif} sizes="(max-width: 699.98px) 120px, 300px" />
+                  <source type="image/webp" srcset={m.obj.glass.webp} sizes="(max-width: 699.98px) 120px, 300px" />
+                  <img src={m.obj.glass.src} alt="" width={m.obj.glass.w} height={m.obj.glass.h} loading="lazy" decoding="async" />
+                </picture>
+              )}
+              {m.obj.line && <span class="fl-obj-line" style={`--line: url("${m.obj.line}")`}></span>}
+            </div>
+          )}
           <a class="fl-hero" href={m.href} tabindex="-1" aria-hidden="true" data-open={m.slug}>
             {short
               ? <Print m={m} i={0} n={1} sizes={HERO} eager num={`${two(k + 1)} / ${two(list.length)}`} />

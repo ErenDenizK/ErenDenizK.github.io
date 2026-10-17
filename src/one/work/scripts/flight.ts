@@ -27,6 +27,8 @@ export interface Proj {
   art: HTMLElement | null; layers: ArtLayer[]; tags: HTMLElement[];
   lines: { el: HTMLElement; o: number; mask: boolean }[];
   stops: SVGGElement[]; route: SVGPathElement | null;
+  /** the objects preview (?objects=glass|line): the object beside the hero, and its line twin */
+  objx: HTMLElement | null; objLine: HTMLElement | null;
   short: boolean; top: number; pin: number;
 }
 export interface Flight {
@@ -68,12 +70,13 @@ export function initFlight(sec: HTMLElement): Flight {
       btn: el.querySelector<HTMLAnchorElement>('.btn')!,
       art: el.querySelector<HTMLElement>('.fl-art'), layers: [], tags: [...el.querySelectorAll<HTMLElement>('.fl-tag')],
       lines: [], stops: [...el.querySelectorAll<SVGGElement>('.fl-stop')], route: el.querySelector<SVGPathElement>('.fl-route-line'),
+      objx: el.querySelector<HTMLElement>('.fl-obj'), objLine: el.querySelector<HTMLElement>('.fl-obj-line'),
       short: el.hasAttribute('data-short'), top: 0, pin: 0,
     };
   });
   let paused = false;
   /* one cache per property, so an unchanged value is never written again */
-  const cache = { transform: new Map<Element, string>(), opacity: new Map<Element, string>(), strokeDashoffset: new Map<Element, string>(), visibility: new Map<Element, string>() };
+  const cache = { transform: new Map<Element, string>(), opacity: new Map<Element, string>(), strokeDashoffset: new Map<Element, string>(), visibility: new Map<Element, string>(), clipPath: new Map<Element, string>() };
   const put = (el: Element, prop: keyof typeof cache, v: string) => {
     const m = cache[prop];
     if (m.get(el) === v) return;
@@ -100,6 +103,7 @@ export function initFlight(sec: HTMLElement): Flight {
   sec.setAttribute('data-live', '');
   initTicker();
   /* ?work=flow (row S31): the same projects on a turning drum instead of the vertical flight (flow.ts) */
+  const objectsOn = /^(glass|line)$/.test(document.documentElement.dataset.objects ?? '');
   const flow: Flow | null = document.documentElement.dataset.work === 'flow' ? setupFlow(sec, projects, phoneMq) : null;
 
   /* ---- layout: read on resize, font load and content change only ---- */
@@ -191,6 +195,14 @@ export function initFlight(sec: HTMLElement): Flight {
       const hz = rz - 1.2 * h;
       put(p.hero, 'transform', `translate3d(0, ${f1(hy - 0.05 * h * vh)}px, 0) perspective(1400px) rotateX(${f2(rx + 4 * h)}deg) rotate(${f2(hz)}deg) skewY(${f2(sk)}deg) scale(${f3(sc)})`);
       if (p.twin) put(p.twin, 'opacity', f3(smooth(0.22, 0.8, au)));
+      /* the object beside the hero (?objects): nearer than the print (1.28), it arrives late and leaves
+         early, leaning a little as it passes; the line twin draws itself upward as it arrives */
+      if (p.objx && objectsOn) {
+        const oy = (1.28 - 1) * u * vh;
+        put(p.objx, 'transform', `translate3d(${f1(-px * 22)}px, ${f1(oy - py * 10)}px, 0) rotate(${f2(-3 + 4 * u + sk * 0.8)}deg)`);
+        put(p.objx, 'opacity', f3(1 - smooth(0.55, 1.05, au)));
+        if (p.objLine) put(p.objLine, 'clipPath', `inset(${f1(100 * smooth(0.08, 0.62, u))}% 0 0 0)`);
+      }
       if (p.short) loop(p, au < 0.6);
 
       /* the side frames: other screens of the same project, dim, mostly outside the view (W5, W6) */
