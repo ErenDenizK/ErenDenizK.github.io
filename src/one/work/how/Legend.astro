@@ -1,0 +1,36 @@
+---
+/* How it's made as "the legend of the map" (how.form: legend; round 6, S29; project-story §6.3): a
+   cartographic key in the manner of the insurance plans of Istanbul the project's engraving draws on. Each
+   item of how is one hatched symbol in a framed key, and a small plan beside it joins the symbols by the
+   route line Work already draws; when the route reaches the last symbol, one point of the product's light
+   pops (its one bounce, for one glyph) and the light stays still, as the product's does. A pure function
+   of the section's view progress --hp (how.css). Shown only once the owner has written the items. */
+import { cut, seg, hatch, type Pt } from '../engrave';
+interface Props { items: string[]; id: string }
+const { items, id } = Astro.props;
+const n = Math.min(items.length, 5);
+const W = 420, H = 150;
+const pts: Pt[] = Array.from({ length: n }, (_, k) => [70 + (k * (W - 140)) / Math.max(1, n - 1), k % 2 ? 58 : 98]);
+const frame = [seg([10, 10], [W - 10, 10], 1.6), seg([W - 10, 10], [W - 10, H - 10], 1.6), seg([W - 10, H - 10], [10, H - 10], 1.6), seg([10, H - 10], [10, 10], 1.6),
+  seg([16, 16], [W - 16, 16], 0.6), seg([W - 16, 16], [W - 16, H - 16], 0.6), seg([W - 16, H - 16], [16, H - 16], 0.6), seg([16, H - 16], [16, 16], 0.6)].join('');
+const route = 'M' + pts.map(([x, y]) => `${x} ${y}`).join('L');
+const two = (k: number) => String(k + 1).padStart(2, '0');
+---
+<div class="hm hm-legend" style={`--n: ${n}; --h: ${H}px`}>
+  <svg class="hm-art" viewBox={`0 0 ${W} ${H}`} width={W} height={H} fill="currentColor" aria-hidden="true" focusable="false">
+    <path class="hm-ink" d={frame} />
+    <path class="hm-route" d={route} pathLength="1" fill="none" />
+    {pts.map(([x, y], k) => (
+      <g class="hm-st" style={`--i: ${k}`}>
+        <clipPath id={`${id}-g${k}`}><circle cx={x} cy={y} r="13" /></clipPath>
+        <path class="hm-tone" d={hatch(x - 14, y - 14, 28, 28, [45, 0, 90, 135, 30][k % 5], 3, 0.7)} clip-path={`url(#${id}-g${k})`} />
+        <path class="hm-ink" d={cut([[x - 13, y], [x - 9, y - 9], [x, y - 13], [x + 9, y - 9], [x + 13, y], [x + 9, y + 9], [x, y + 13], [x - 9, y + 9], [x - 13, y]], 1.4, 0.6)} />
+        <text class="hm-num" x={x} y={y + 30} text-anchor="middle">{two(k)}</text>
+      </g>
+    ))}
+    <circle class="hm-pop" cx={pts[n - 1]?.[0] ?? 0} cy={pts[n - 1]?.[1] ?? 0} r="5" />
+  </svg>
+  <ol class="hm-list hm-list-loop" aria-labelledby={id}>
+    {items.slice(0, n).map((x, k) => <li class="hm-i" style={`--i: ${k}`}><span class="hm-name label"><span class="hm-n" aria-hidden="true">{two(k)}</span></span><ul class="hm-items"><li>{x}</li></ul></li>)}
+  </ol>
+</div>
