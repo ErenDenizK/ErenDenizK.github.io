@@ -133,7 +133,9 @@ export function initOpen(sec: HTMLElement, deck: Flight) {
     const pres = l.querySelector<HTMLElement>('.pres')!;
     rail = createRail({
       scroller: l, host: l, sections: [...pres.querySelectorAll<HTMLElement>('[data-rail-sec]')], content: pres,
-      flat: l, id: 'layer-rail', extraClass: 'in-layer', ext: bloom(() => undefined),
+      /* one rail (rail-bloom §6): the steps are the layer's one part, so they get the gaps and the part
+         line that Work and The record get on Home */
+      flat: l, id: 'layer-rail', extraClass: 'in-layer', ext: bloom((el) => (el.classList.contains('st-mark') ? 'Steps' : undefined)),
       offset: () => (parseFloat(getComputedStyle(root).getPropertyValue('--bar-h')) || 76) + 16,
     });
     clipT = window.setTimeout(() => playHero(l), 300);
