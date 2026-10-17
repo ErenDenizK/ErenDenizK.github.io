@@ -328,7 +328,7 @@ const cards = list.map((p, i) => {
     font: 500 var(--fs-small) / 1 var(--f-sans); color: var(--ink); white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent;
     transition: background-color var(--t-quick) var(--ease-ui), box-shadow var(--t-quick) var(--ease-ui), scale var(--t-press) var(--ease-ui); }
   .pv-glass button:hover { background-color: var(--glass-hover); box-shadow: var(--glass-hover-glow); }
-  .pv-glass button:active { scale: 0.96; }
+  :global(html:not(.g-live)) .pv-glass button:active { scale: 0.96; } /* with JavaScript: the liquid motion (glass.css) */
   .pv-glass button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
   .pv-turn { gap: 8px; padding: 0 18px !important; }
   .pv-turn :global(.icon) { color: var(--ink-2); }

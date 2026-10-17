@@ -429,6 +429,50 @@ test.describe('the name and the glass (round 4)', () => {
     expect(now.blur).toBe('blur(22px) saturate(1.5)');
     expect(now.off).toBe('rgb(161, 157, 150)'); /* --ink-3 */
   });
+
+  /* round 6, row S15: the liquid motion (scripts/glass-motion.ts). A hover leans and bulges the body toward
+     the pointer and moves its light; a press swells the body and raises the item; at rest the inline
+     styles go; reduced motion changes no shape. */
+  test('the liquid glass: hover bulges toward the pointer, a press swells, rest clears; still: no shape change', async ({ page }) => {
+    await page.setViewportSize(desktop.viewport);
+    await page.goto(PAGE);
+    await expect(page.locator('html')).toHaveClass(/g-live/);
+    const t = page.locator('.tabs'), home = page.locator('.tabs a[data-tab=home]');
+    const box = (await t.boundingBox())!;
+    await page.mouse.move(box.x + box.width - 6, box.y + box.height / 2, { steps: 3 });
+    await expect.poll(() => t.evaluate((el) => parseFloat(el.style.getPropertyValue('--gl') || '0'))).toBeGreaterThan(0.3);
+    const hover = await t.evaluate((el) => ({ tr: el.style.transform, tilt: parseFloat(el.style.getPropertyValue('--g-tilt')) }));
+    expect(hover.tr).toMatch(/translate\(\d/); /* toward the right, where the pointer is */
+    expect(hover.tilt).toBeLessThan(-10);
+    await home.evaluate((a) => a.addEventListener('click', (e) => e.preventDefault(), { once: true }));
+    const hb = (await home.boundingBox())!;
+    await page.mouse.move(hb.x + hb.width / 2, hb.y + hb.height / 2);
+    await page.mouse.down();
+    await expect.poll(() => home.evaluate((a) => parseFloat(a.style.getPropertyValue('--ip') || '0'))).toBeGreaterThan(0.9);
+    const sy = await t.evaluate((el) => +(/scale\([^,]+, ([\d.]+)\)/.exec(el.style.transform)?.[1] ?? 1));
+    expect(sy).toBeGreaterThan(1.03);
+    await page.mouse.up();
+    await page.mouse.move(700, 700);
+    await expect.poll(() => t.evaluate((el) => el.style.transform), { timeout: 4000 }).toBe('');
+    expect(await home.evaluate((a) => a.style.transform)).toBe('');
+
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(PAGE);
+    await page.mouse.move(box.x + box.width - 6, box.y + box.height / 2, { steps: 3 });
+    await page.waitForTimeout(300);
+    expect(await t.evaluate((el) => el.style.transform)).toBe('');
+  });
+
+  /* round 6, row S2: the glass takes its light from the field, and over Bostancı that light is the brief's
+     blue from either direction (it kept Recto's lime when the reader came back up from Work) */
+  test('over Bostancı the glass light is the brief\'s blue, also when coming back up from Recto', async ({ page }) => {
+    await page.setViewportSize(desktop.viewport);
+    await page.goto(PAGE);
+    await page.locator('#recto').evaluate((el) => el.scrollIntoView());
+    await expect.poll(() => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--a1').trim())).not.toBe('rgb(111, 140, 255)');
+    await page.locator('#bostanci').evaluate((el) => { const r = el.getBoundingClientRect(); scrollBy(0, r.top + r.height / 2 - innerHeight / 2); });
+    await expect.poll(() => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--a1').trim()), { timeout: 4000 }).toBe('rgb(111, 140, 255)');
+  });
 });
 
 test('round four (V5): on a phone the postcard back\'s lower block stays tight and inside the card', async ({ browser }) => {
