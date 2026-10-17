@@ -68,7 +68,7 @@ function mount(fig: HTMLElement) {
   };
   /* the same clocks as before (Tracks.astro's node pulses keep them): 7.0 s and 5.6 s, a second,
      fainter drop on the agents' lane */
-  const drops = [make(0, 7, -1.2, 1, 'd0', node.querySelector('.n0')), make(1, 5.6, -3.6, 1, 'd1', node.querySelector('.n1')), make(1, 5.6, -0.8, 0.55, 'd1b')];
+  const drops = [make(0, 7, -1.2, 1, 'd0', node.querySelector<HTMLElement>('.n0')), make(1, 5.6, -3.6, 1, 'd1', node.querySelector<HTMLElement>('.n1')), make(1, 5.6, -0.8, 0.55, 'd1b')];
   fig.append(svg);
 
   let len = [0, 0];

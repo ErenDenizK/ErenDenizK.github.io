@@ -251,10 +251,10 @@ test.describe('the person\'s part, desktop', () => {
     await page.addInitScript(() => {
       const w = window as unknown as { __vt: { skipped: boolean; hero: boolean }[] };
       w.__vt = [];
-      const d = Document.prototype as Document & { startViewTransition?: (f: () => void) => { ready: Promise<void> } };
+      const d = Document.prototype;
       const orig = d.startViewTransition;
       if (!orig) return;
-      d.startViewTransition = function (this: Document, f: () => void) {
+      d.startViewTransition = function (this: Document, f?: ViewTransitionUpdateCallback | StartViewTransitionOptions) {
         const rec = { skipped: false, hero: false };
         w.__vt.push(rec);
         const t = orig.call(this, f);
